@@ -13,20 +13,17 @@ public partial class CTakeDamageInfo
     /// </returns>
     public HitGroup_t GetHitGroup()
     {
-        IntPtr v4 = Marshal.ReadIntPtr(Handle, 0x70);
+        if (Handle == IntPtr.Zero)
+            return HitGroup_t.HITGROUP_INVALID;
 
-        if (v4 == nint.Zero)
+        try
+        {
+            byte hitGroupValue = Marshal.ReadByte(Handle, 0x80);
+            return (HitGroup_t)hitGroupValue;
+        }
+        catch
         {
             return HitGroup_t.HITGROUP_INVALID;
         }
-
-        IntPtr v1 = Marshal.ReadIntPtr(v4, 16);
-
-        if (v1 == nint.Zero)
-        {
-            return HitGroup_t.HITGROUP_GENERIC;
-        }
-
-        return (HitGroup_t)Marshal.ReadInt32(v1, 56);
     }
 }
