@@ -172,7 +172,7 @@ jobs:
           path: managed/CounterStrikeSharp.API/bin/Release
 
   publish:
-    if: ${{ github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v') && github.repository == 'roflmuffin/CounterStrikeSharp' }}
+    if: ${{ github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v') && github.repository == 'mrc4tt/CounterStrikeSharp' }}
     permissions:
       contents: write
     needs: ["setup", "build_linux", "build_windows", "build_managed"]
