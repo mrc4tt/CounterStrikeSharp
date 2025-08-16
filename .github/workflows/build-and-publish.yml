@@ -203,7 +203,7 @@ jobs:
           name: counterstrikesharp-api-${{ needs.setup.outputs.gitversion_semver }}
           path: build/api
 
-      # TODO: This stuff should really be in a matrix
+      # TODO: This stuff should be in a matrix
       - name: Add API to Artifacts
         run: |
           mkdir -p build/linux/addons/counterstrikesharp/api
@@ -251,3 +251,10 @@ jobs:
             counterstrikesharp-with-runtime-windows-${{ needs.setup.outputs.gitversion_semver }}.zip
             counterstrikesharp-linux-${{ needs.setup.outputs.gitversion_semver }}.zip
             counterstrikesharp-with-runtime-linux-${{ needs.setup.outputs.gitversion_semver }}.zip
+
+      - name: Publish NuGet package (self-hosted)
+        run: |
+          dotnet nuget push build/api/CounterStrikeSharp.API.${{ needs.setup.outputs.gitversion_semver }}.nupkg \
+            --api-key ${{ secrets.NUGET_API_KEY }} \
+            --source ${{ secrets.NUGET_SOURCE }} \
+            --skip-duplicate
