@@ -2,7 +2,7 @@
 # https://git-cliff.org/docs/configuration
 
 [remote.github]
-owner = "roflmuffin"
+owner = "mrc4tt"
 repo = "CounterStrikeSharp"
 # token = ""
 
