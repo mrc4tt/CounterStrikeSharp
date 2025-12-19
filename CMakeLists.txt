@@ -126,6 +126,7 @@ target_include_directories(
 
 if(LINUX)
     include("makefiles/linux.base.cmake")
+
     set_target_properties(${PROJECT_NAME} PROPERTIES
                           PREFIX ""
                           LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/addons/counterstrikesharp/bin/linuxsteamrt64"
