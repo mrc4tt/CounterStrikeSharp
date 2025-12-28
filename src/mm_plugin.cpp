@@ -337,11 +337,11 @@ const char* CounterStrikeSharpMMPlugin::GetDate() { return BUILD_TIMESTAMP; }
 
 const char* CounterStrikeSharpMMPlugin::GetLogTag() { return "CSSHARP"; }
 
-const char* CounterStrikeSharpMMPlugin::GetAuthor() { return "Roflmuffin"; }
+const char* CounterStrikeSharpMMPlugin::GetAuthor() { return "Roflmuffin (forked by Miksen)"; }
 
 const char* CounterStrikeSharpMMPlugin::GetDescription() { return "Counter Strike .NET Scripting Runtime"; }
 
 const char* CounterStrikeSharpMMPlugin::GetName() { return "CounterStrikeSharp"; }
 
-const char* CounterStrikeSharpMMPlugin::GetURL() { return "https://github.com/roflmuffin/CounterStrikeSharp"; }
+const char* CounterStrikeSharpMMPlugin::GetURL() { return "https://github.com/mrc4tt/CounterStrikeSharp"; }
 } // namespace counterstrikesharp

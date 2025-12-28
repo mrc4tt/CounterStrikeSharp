@@ -27,6 +27,9 @@ QUEUE_TASK_FOR_FRAME: tick:int, callback:func -> void
 QUEUE_TASK_FOR_NEXT_WORLD_UPDATE: callback:func -> void
 GET_VALVE_INTERFACE: interfaceType:int, interfaceName:string -> pointer
 GET_COMMAND_PARAM_VALUE: param:string, dataType:DataType_t, defaultValue:any -> any
+FIND_COMMAND_LINE_PARAM: param:string -> bool
+GET_COMMAND_LINE_PARAM: param:string, defaultValue:string -> string
+GET_COMMAND_LINE_STRING: -> string
 PRINT_TO_SERVER_CONSOLE: msg:string -> void
 DISCONNECT_CLIENT: slot:int, reason:int -> void
 CLIENT_PRINT: slot:int, hudDestination:int, msg:string -> void

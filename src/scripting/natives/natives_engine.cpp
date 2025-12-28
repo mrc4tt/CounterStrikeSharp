@@ -227,6 +227,30 @@ void GetCommandParamValue(ScriptContext& scriptContext)
     scriptContext.ThrowNativeError("Invalid param type");
 }
 
+bool FindCommandLineParam(ScriptContext& scriptContext)
+{
+    auto paramName = scriptContext.GetArgument<const char*>(0);
+    
+    // FindParm returns the index (1-based) if found, 0 if not found
+    int index = CommandLine()->FindParm(paramName);
+    
+    return index != 0;
+}
+
+const char* GetCommandLineParam(ScriptContext& scriptContext)
+{
+    auto paramName = scriptContext.GetArgument<const char*>(0);
+    auto defaultValue = scriptContext.GetArgument<const char*>(1);
+    
+    // ParmValue returns the value after the param, or defaultValue if not found
+    return CommandLine()->ParmValue(paramName, defaultValue);
+}
+
+const char* GetCommandLineString(ScriptContext& scriptContext)
+{
+    return CommandLine()->GetCmdLine();
+}
+
 void PrintToServerConsole(ScriptContext& scriptContext)
 {
     auto message = scriptContext.GetArgument<const char*>(0);
@@ -294,6 +318,9 @@ REGISTER_NATIVES(engine, {
     ScriptEngine::RegisterNativeHandler("QUEUE_TASK_FOR_FRAME", QueueTaskForFrame);
     ScriptEngine::RegisterNativeHandler("GET_VALVE_INTERFACE", GetValveInterface);
     ScriptEngine::RegisterNativeHandler("GET_COMMAND_PARAM_VALUE", GetCommandParamValue);
+    ScriptEngine::RegisterNativeHandler("FIND_COMMAND_LINE_PARAM", FindCommandLineParam);
+    ScriptEngine::RegisterNativeHandler("GET_COMMAND_LINE_PARAM", GetCommandLineParam);
+    ScriptEngine::RegisterNativeHandler("GET_COMMAND_LINE_STRING", GetCommandLineString);
     ScriptEngine::RegisterNativeHandler("PRINT_TO_SERVER_CONSOLE", PrintToServerConsole);
     ScriptEngine::RegisterNativeHandler("DISCONNECT_CLIENT", DisconnectClient);
     ScriptEngine::RegisterNativeHandler("CLIENT_PRINT", ClientPrint);

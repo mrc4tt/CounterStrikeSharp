@@ -14,6 +14,7 @@ CMakeSettings.json
 build-*/
 build/
 build_test/
+out/
 
 # Prerequisites
 *.d
@@ -32,6 +33,7 @@ build_test/
 *.so
 *.dylib
 *.dll
+*.sh
 
 # Fortran module files
 *.mod
@@ -42,6 +44,8 @@ build_test/
 *.la
 *.a
 *.lib
+
+*.config
 
 !mono*.lib
 !**/external_includes/**/*.lib
