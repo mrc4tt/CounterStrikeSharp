@@ -3,20 +3,19 @@
 <h1 align=center><code>CounterStrikeSharp</code></h1>
 
 <div align=center>
-    <a href=https://github.com/roflmuffin/CounterStrikeSharp/releases><img src=https://img.shields.io/github/v/release/roflmuffin/CounterStrikeSharp?style=flat-square&label=latest></a>
-    <a href=https://github.com/roflmuffin/CounterStrikeSharp/releases><img src=https://img.shields.io/github/release-date/roflmuffin/CounterStrikeSharp?style=flat-square&label=last%20release></a>
-  <a href=https://github.com/roflmuffin/CounterStrikeSharp/releases><img src=https://img.shields.io/github/downloads/roflmuffin/CounterStrikeSharp/total.svg?style=flat-square alt=downloads></a>
-  <a href=https://discord.gg/eAZU3guKWU><img src=https://img.shields.io/discord/1160907911501991946?logo=discord&cacheSeconds=3500&style=flat-square alt="chat on discord"></a>
+    <a href=https://github.com/mrc4tt/CounterStrikeSharp/releases><img src=https://img.shields.io/github/v/release/roflmuffin/CounterStrikeSharp?style=flat-square&label=latest></a>
+    <a href=https://github.com/mrc4tt/CounterStrikeSharp/releases><img src=https://img.shields.io/github/release-date/roflmuffin/CounterStrikeSharp?style=flat-square&label=last%20release></a>
+    <a href=https://github.com/mrc4tt/CounterStrikeSharp/releases><img src=https://img.shields.io/github/downloads/roflmuffin/CounterStrikeSharp/total.svg?style=flat-square alt=downloads></a>
 </div>
 <br>
 
 CounterStrikeSharp is a server side modding framework for Counter-Strike 2. This project implements a .NET 8 scripting layer on top of a Metamod Source Plugin, allowing developers to create plugins that interact with the game server in a modern language (C#) to facilitate the creation of maintainable and testable code.
 
-[Come and join our Discord](https://discord.gg/eAZU3guKWU)
+**Forked version by Miksen**
 
 ## Install
 
-Download the latest build from [here](https://github.com/roflmuffin/CounterStrikeSharp/releases). (Download the with runtime version if this is your first time installing).
+Download the latest build from [here](https://github.com/mrc4tt/CounterStrikeSharp/releases). (Download the with runtime version if this is your first time installing).
 
 Detailed installation instructions can be found in the [docs](https://docs.cssharp.dev/docs/guides/getting-started.html).
 
