@@ -230,10 +230,10 @@ void GetCommandParamValue(ScriptContext& scriptContext)
 bool FindCommandLineParam(ScriptContext& scriptContext)
 {
     auto paramName = scriptContext.GetArgument<const char*>(0);
-    
+
     // FindParm returns the index (1-based) if found, 0 if not found
     int index = CommandLine()->FindParm(paramName);
-    
+
     return index != 0;
 }
 
@@ -241,15 +241,12 @@ const char* GetCommandLineParam(ScriptContext& scriptContext)
 {
     auto paramName = scriptContext.GetArgument<const char*>(0);
     auto defaultValue = scriptContext.GetArgument<const char*>(1);
-    
+
     // ParmValue returns the value after the param, or defaultValue if not found
     return CommandLine()->ParmValue(paramName, defaultValue);
 }
 
-const char* GetCommandLineString(ScriptContext& scriptContext)
-{
-    return CommandLine()->GetCmdLine();
-}
+const char* GetCommandLineString(ScriptContext& scriptContext) { return CommandLine()->GetCmdLine(); }
 
 void PrintToServerConsole(ScriptContext& scriptContext)
 {
