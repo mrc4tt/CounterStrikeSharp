@@ -1,3 +1,6 @@
+## What's Changed in v1.0.355
+* We dont need to publish nuget ([0d1563b](https://github.com/mrc4tt/CounterStrikeSharp/commit/0d1563b9fa12d3ef67c7cedce145e0a5be67e469))
+
 ## What's Changed in v1.0.354
 * small fixes ([89be6ee](https://github.com/mrc4tt/CounterStrikeSharp/commit/89be6ee048511a2d407d2547b8108bf3fc84eac2))
 * Fix: code-format ([7400d62](https://github.com/mrc4tt/CounterStrikeSharp/commit/7400d622f4ae82d1b7aa4fb0cdb6fdb53940b09e))
