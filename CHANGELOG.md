@@ -1,3 +1,8 @@
+## What's Changed in v1.0.354
+* small fixes ([89be6ee](https://github.com/mrc4tt/CounterStrikeSharp/commit/89be6ee048511a2d407d2547b8108bf3fc84eac2))
+* Fix: code-format ([7400d62](https://github.com/mrc4tt/CounterStrikeSharp/commit/7400d622f4ae82d1b7aa4fb0cdb6fdb53940b09e))
+* Fix Debian 13 Support + Added support for CommandLine ([bd990b9](https://github.com/mrc4tt/CounterStrikeSharp/commit/bd990b9a6a883ef6efbafef54d451915e9802ee2))
+
 ## What's Changed in v1.0.353
 * chore(release): v1.0.353 ([0bbcc38](https://github.com/mrc4tt/CounterStrikeSharp/commit/0bbcc38f4cec259618dc1fa3beabe4e1a1addce9))
 * DEB13 support? ([ce61d68](https://github.com/mrc4tt/CounterStrikeSharp/commit/ce61d6803a2a9e1e77e27f5916015a687551ddcb))
@@ -332,7 +337,7 @@
 * Allow manual publish-docs.yml by [@roflmuffin](https://github.com/roflmuffin) ([0a6fe09](https://github.com/mrc4tt/CounterStrikeSharp/commit/0a6fe0946db2d62f3d01f2abd275300fe78f37d8))
 
 ## What's Changed in v1.0.290
-* Added hitgroup to CTakeDamageInfo ([7929751](https://github.com/mrc4tt/CounterStrikeSharp/commit/79297511e386e32042fe0bb2d6e95aad37ef1389))
+* Added hitgroup to CTakeDamageInfo by [@schwarper](https://github.com/schwarper) ([7929751](https://github.com/mrc4tt/CounterStrikeSharp/commit/79297511e386e32042fe0bb2d6e95aad37ef1389))
 
 ## What's Changed in v1.0.289
 * CBaseEntity player teleport adjustment update by [@schwarper](https://github.com/schwarper) ([c6d3988](https://github.com/mrc4tt/CounterStrikeSharp/commit/c6d39889026c995bfe131434b6a3891a4019388c))
@@ -1459,7 +1464,7 @@
 * feat: add initial `GetValveInterface` native by [@roflmuffin](https://github.com/roflmuffin) ([e253397](https://github.com/mrc4tt/CounterStrikeSharp/commit/e253397957772b5c8d954be1731b84832b052b8b))
 * Automatic event registration refactoring by [@Muinez](https://github.com/Muinez) ([7480abc](https://github.com/mrc4tt/CounterStrikeSharp/commit/7480abc929bf6779863bc7ed93a313160420b5ab))
 * feat: update game directory native, add constants/addresses namespace by [@roflmuffin](https://github.com/roflmuffin) ([312ae55](https://github.com/mrc4tt/CounterStrikeSharp/commit/312ae550c8a265f1740c51852c2d0e733b18af78))
-* fix: remove boxing for set methods (thanks Muinez) ([f7a1c55](https://github.com/mrc4tt/CounterStrikeSharp/commit/f7a1c5552dde15e1fc05b99e1ccb4fc4c4d9dddd))
+* fix: remove boxing for set methods (thanks Muinez) by [@roflmuffin](https://github.com/roflmuffin) ([f7a1c55](https://github.com/mrc4tt/CounterStrikeSharp/commit/f7a1c5552dde15e1fc05b99e1ccb4fc4c4d9dddd))
 * feat: more game event improvements, automatic registration by [@roflmuffin](https://github.com/roflmuffin) ([c1c2ec6](https://github.com/mrc4tt/CounterStrikeSharp/commit/c1c2ec6994c514029acd4997719b03e4b7a8cf7e))
 * feat: add `EventNameAttribute` for enriching GameEvent types by [@roflmuffin](https://github.com/roflmuffin) ([e33330c](https://github.com/mrc4tt/CounterStrikeSharp/commit/e33330ccb58abb80c5e4b87c1ebc4056e07d2e8e))
 * fix: pr-check workflow by [@roflmuffin](https://github.com/roflmuffin) ([11b074d](https://github.com/mrc4tt/CounterStrikeSharp/commit/11b074dbab1b483d6b0738f3ae917dc66d87905c))
