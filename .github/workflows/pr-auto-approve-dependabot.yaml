@@ -9,7 +9,7 @@ permissions:
 jobs:
   dependabot-auto-merge:
     runs-on: ubuntu-latest
-    if: github.event.pull_request.user.login == 'dependabot[bot]' && github.repository == 'roflmuffin/CounterStrikeSharp'
+    if: github.event.pull_request.user.login == 'dependabot[bot]' && github.repository == 'mrc4tt/CounterStrikeSharp'
     steps:
       - name: Fetch Dependabot metadata
         id: metadata

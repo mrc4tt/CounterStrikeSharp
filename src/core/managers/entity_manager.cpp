@@ -15,15 +15,14 @@
  */
 
 #include "core/managers/entity_manager.h"
+#include "core/function.h"
 #include "core/gameconfig.h"
 #include "core/globals.h"
 #include "core/log.h"
 #include "core/recipientfilters.h"
 #include "core/cs2_sdk/entity/dump.h"
-
 #include <funchook.h>
 #include <vector>
-
 #include <public/eiface.h>
 #include "scripting/callback_manager.h"
 
@@ -116,6 +115,10 @@ void EntityManager::OnAllInitialized()
         CSSHARP_CORE_CRITICAL("Failed to find signature for \'CBaseEntity_TakeDamageOld\'");
         return;
     }
+
+    Func_OnTakeDamage =
+        new ValveFunction((void*)CBaseEntity_TakeDamageOld, CALL_CONV,
+                          std::vector<DataType_t>{ DATA_TYPE_POINTER, DATA_TYPE_POINTER, DATA_TYPE_POINTER }, DATA_TYPE_LONG_LONG);
 
     auto m_hook = funchook_create();
     funchook_prepare(m_hook, (void**)&m_pFireOutputInternal, (void*)&DetourFireOutputInternal);
