@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
@@ -14,6 +14,47 @@ using System.Diagnostics.Eventing.Reader;
 
 namespace CounterStrikeSharp.API.Modules.Admin
 {
+    /// <summary>
+    /// SourceMod-style single-letter flag support for CounterStrikeSharp.
+    /// Allows using "abcdefz" format instead of ["@css/generic", "@css/kick", ...].
+    /// </summary>
+    public static class SourceModFlags
+    {
+        private static readonly Dictionary<char, string> FlagMap = new()
+        {
+            { 'a', "@css/reservation" },
+            { 'b', "@css/generic" },
+            { 'c', "@css/kick" },
+            { 'd', "@css/ban" },
+            { 'e', "@css/unban" },
+            { 'f', "@css/slay" },
+            { 'g', "@css/changemap" },
+            { 'h', "@css/cvar" },
+            { 'i', "@css/config" },
+            { 'j', "@css/chat" },
+            { 'k', "@css/vote" },
+            { 'l', "@css/password" },
+            { 'm', "@css/rcon" },
+            { 'n', "@css/cheats" },
+            { 'z', "@css/root" }
+        };
+
+        /// <summary>
+        /// Converts SourceMod flags (e.g., "abcdefz") to CSS permission flags.
+        /// </summary>
+        public static HashSet<string> Convert(string flags)
+        {
+            var result = new HashSet<string>();
+            if (string.IsNullOrEmpty(flags)) return result;
+
+            foreach (char c in flags.ToLower())
+                if (FlagMap.TryGetValue(c, out var permission))
+                    result.Add(permission);
+
+            return result;
+        }
+    }
+
     public partial class AdminData
     {
         [JsonPropertyName("identity")] public required string Identity { get; init; }
@@ -29,7 +70,26 @@ namespace CounterStrikeSharp.API.Modules.Admin
 
         public void InitalizeFlags()
         {
-            AddFlags(_flags);
+            var processedFlags = new HashSet<string>();
+            
+            foreach (var flag in _flags)
+            {
+                // Check if this is SourceMod format (only letters, not starting with @)
+                if (!string.IsNullOrEmpty(flag) && 
+                    flag.All(c => char.IsLetter(c)) && 
+                    !flag.StartsWith("@"))
+                {
+                    // Convert SourceMod format to CSS permissions
+                    processedFlags.UnionWith(SourceModFlags.Convert(flag));
+                }
+                else
+                {
+                    // Regular CSS format
+                    processedFlags.Add(flag);
+                }
+            }
+            
+            AddFlags(processedFlags);
         }
 
         /// <summary>
