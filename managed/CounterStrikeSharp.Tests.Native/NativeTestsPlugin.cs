@@ -38,13 +38,13 @@ namespace NativeTestsPlugin
 
         public override string ModuleDescription => "A an automated test plugin.";
 
-        private int gameThreadId;
+        public static int gameThreadId;
 
         public override void Load(bool hotReload)
         {
             gameThreadId = Thread.CurrentThread.ManagedThreadId;
             // Loading blocks the game thread, so we use NextFrame to run our tests asynchronously.
-            Server.NextFrame(() => RunTests());
+            Server.NextWorldUpdate(() => RunTests());
             AddCommand("css_run_tests", "Runs the xUnit tests for the native plugin.", (player, info) => { RunTests(); });
         }
 

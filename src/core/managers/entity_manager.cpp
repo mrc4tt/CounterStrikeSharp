@@ -49,6 +49,12 @@ CCheckTransmitInfoList::CCheckTransmitInfoList(CCheckTransmitInfoHack** pInfoInf
 {
 }
 
+#ifdef _WIN32
+#define CALL_CONV CONV_THISCALL
+#else
+#define CALL_CONV CONV_CDECL
+#endif
+
 int g_iCheckTransmit = -1;
 
 void EntityManager::OnAllInitialized()
@@ -123,10 +129,6 @@ void EntityManager::OnAllInitialized()
     auto m_hook = funchook_create();
     funchook_prepare(m_hook, (void**)&m_pFireOutputInternal, (void*)&DetourFireOutputInternal);
     funchook_install(m_hook, 0);
-
-    auto hook = funchook_create();
-    funchook_prepare(hook, (void**)&CBaseEntity_TakeDamageOld, (void*)&DetourCBaseEntity_TakeDamageOld);
-    funchook_install(hook, 0);
 
     // Listener is added in ServerStartup as entity system is not initialised at this stage.
 }
