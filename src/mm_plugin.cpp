@@ -252,12 +252,6 @@ void CounterStrikeSharpMMPlugin::AllPluginsLoaded()
     }
 }
 
-if (globals::entityManager.Func_OnTakeDamage)
-{
-    globals::entityManager.Func_OnTakeDamage->AddHook(&OnTakeDamageProxy);
-}
-}
-
 void CounterStrikeSharpMMPlugin::Hook_GameFrame(bool simulating, bool bFirstTick, bool bLastTick)
 {
     /**

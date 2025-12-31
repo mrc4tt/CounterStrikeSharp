@@ -122,6 +122,7 @@ target_include_directories(
     PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/src
     ${CMAKE_CURRENT_SOURCE_DIR}/src/core/cs2_sdk
+    ${CMAKE_CURRENT_SOURCE_DIR}/libraries
 )
 
 if(LINUX)
