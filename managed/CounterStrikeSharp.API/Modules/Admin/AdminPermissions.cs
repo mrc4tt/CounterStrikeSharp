@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
@@ -14,47 +14,6 @@ using System.Diagnostics.Eventing.Reader;
 
 namespace CounterStrikeSharp.API.Modules.Admin
 {
-    /// <summary>
-    /// SourceMod-style single-letter flag support for CounterStrikeSharp.
-    /// Allows using "abcdefz" format instead of ["@css/generic", "@css/kick", ...].
-    /// </summary>
-    public static class SourceModFlags
-    {
-        private static readonly Dictionary<char, string> FlagMap = new()
-        {
-            { 'a', "@css/reservation" },
-            { 'b', "@css/generic" },
-            { 'c', "@css/kick" },
-            { 'd', "@css/ban" },
-            { 'e', "@css/unban" },
-            { 'f', "@css/slay" },
-            { 'g', "@css/changemap" },
-            { 'h', "@css/cvar" },
-            { 'i', "@css/config" },
-            { 'j', "@css/chat" },
-            { 'k', "@css/vote" },
-            { 'l', "@css/password" },
-            { 'm', "@css/rcon" },
-            { 'n', "@css/cheats" },
-            { 'z', "@css/root" }
-        };
-
-        /// <summary>
-        /// Converts SourceMod flags (e.g., "abcdefz") to CSS permission flags.
-        /// </summary>
-        public static HashSet<string> Convert(string flags)
-        {
-            var result = new HashSet<string>();
-            if (string.IsNullOrEmpty(flags)) return result;
-
-            foreach (char c in flags.ToLower())
-                if (FlagMap.TryGetValue(c, out var permission))
-                    result.Add(permission);
-
-            return result;
-        }
-    }
-
     public partial class AdminData
     {
         [JsonPropertyName("identity")] public required string Identity { get; init; }
@@ -70,26 +29,7 @@ namespace CounterStrikeSharp.API.Modules.Admin
 
         public void InitalizeFlags()
         {
-            var processedFlags = new HashSet<string>();
-            
-            foreach (var flag in _flags)
-            {
-                // Check if this is SourceMod format (only letters, not starting with @)
-                if (!string.IsNullOrEmpty(flag) && 
-                    flag.All(c => char.IsLetter(c)) && 
-                    !flag.StartsWith("@"))
-                {
-                    // Convert SourceMod format to CSS permissions
-                    processedFlags.UnionWith(SourceModFlags.Convert(flag));
-                }
-                else
-                {
-                    // Regular CSS format
-                    processedFlags.Add(flag);
-                }
-            }
-            
-            AddFlags(processedFlags);
+            AddFlags(_flags);
         }
 
         /// <summary>
@@ -175,6 +115,54 @@ namespace CounterStrikeSharp.API.Modules.Admin
         
         // TODO: ServiceCollection
         private static ILogger _logger = CoreLogging.Factory.CreateLogger("AdminManager");
+
+        // Permission alias mapping - allows plugins to use intuitive names
+        // Example: @css/map is an alias for @css/changemap
+        private static readonly Dictionary<string, HashSet<string>> PermissionAliases = new()
+        {
+            // CSS aliases - more intuitive names
+            ["@css/map"] = new HashSet<string> { "@css/changemap" },
+            ["@css/console"] = new HashSet<string> { "@css/rcon" },
+            ["@css/admin"] = new HashSet<string> { "@css/generic" },
+            
+            // MatchZy custom domain aliases
+            ["@custom/prac"] = new HashSet<string> { "@css/changemap" },
+            ["@custom/map"] = new HashSet<string> { "@css/changemap" },
+            ["@custom/match"] = new HashSet<string> { "@css/generic" },
+            ["@custom/config"] = new HashSet<string> { "@css/config" },
+            ["@custom/rcon"] = new HashSet<string> { "@css/rcon" },
+            ["@custom/admin"] = new HashSet<string> { "@css/root" },
+            ["@custom/player"] = new HashSet<string> { "@css/kick" },
+        };
+
+        /// <summary>
+        /// Resolves permission aliases to their actual permissions.
+        /// Bidirectional: if checking @css/map, matches @css/changemap and vice versa.
+        /// </summary>
+        private static HashSet<string> ResolvePermissionAliases(params string[] permissions)
+        {
+            var resolved = new HashSet<string>(permissions);
+            
+            foreach (var permission in permissions)
+            {
+                // Check if this permission is an alias for something
+                if (PermissionAliases.TryGetValue(permission, out var targets))
+                {
+                    resolved.UnionWith(targets);
+                }
+                
+                // Check if something else is an alias for this permission (bidirectional)
+                foreach (var (alias, aliasTargets) in PermissionAliases)
+                {
+                    if (aliasTargets.Contains(permission))
+                    {
+                        resolved.Add(alias);
+                    }
+                }
+            }
+            
+            return resolved;
+        }
 
         public static void LoadAdminData(string adminDataPath)
         {
@@ -297,9 +285,12 @@ namespace CounterStrikeSharp.API.Modules.Admin
             var playerData = GetPlayerAdminData(steamId);
             if (playerData == null) return false;
 
+            // Resolve aliases before checking permissions
+            var resolvedFlags = ResolvePermissionAliases(flags).ToArray();
+
             // Check to see that all of the domains in the flags that we're checking are
             // present in our player data.
-            var localDomains = flags.Where(
+            var localDomains = resolvedFlags.Where(
                flag => flag.StartsWith(PermissionCharacters.UserPermissionChar))
                .Distinct()
                .Select(domain => domain.Split('/').First()[1..])
@@ -313,7 +304,7 @@ namespace CounterStrikeSharp.API.Modules.Admin
             foreach (var domain in playerData.Flags)
             {
                 if (!playerData.DomainHasFlags(domain.Key,
-                    flags
+                    resolvedFlags
                     .Where(flag => flag.StartsWith(PermissionCharacters.UserPermissionChar + domain.Key + '/'))
                     .ToArray()))
                 {
