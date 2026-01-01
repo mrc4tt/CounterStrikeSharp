@@ -1,3 +1,22 @@
+## What's Changed in v1.0.356-beta
+* feat: fix sourcemod-style support/aliases ([77a6cb0](https://github.com/mrc4tt/CounterStrikeSharp/commit/77a6cb0fc1c49158712ff1d27346dfb94ce4745e))
+* feat: support sourcemod admin-flags examples ([24accbf](https://github.com/mrc4tt/CounterStrikeSharp/commit/24accbfbca0744b5eb6420cc17c5cfe3ff53649b))
+* fix space ([6f25619](https://github.com/mrc4tt/CounterStrikeSharp/commit/6f2561902ca541c5e3a414e501f14c0312686d9a))
+* fix build ([5cdec9b](https://github.com/mrc4tt/CounterStrikeSharp/commit/5cdec9bd329327fa8926a631877cadef47fbec5b))
+* . ([9c85df6](https://github.com/mrc4tt/CounterStrikeSharp/commit/9c85df63e2c38f7f6d801ceabc734ecd758f0ddc))
+* feat: fix ([d725e8a](https://github.com/mrc4tt/CounterStrikeSharp/commit/d725e8a9cf97c3e06c7ddb7e1602e04aeb4c46fe))
+* fix: `TerminateRound` parameter order mismatch by [@ELDment](https://github.com/ELDment) ([7dbb12f](https://github.com/mrc4tt/CounterStrikeSharp/commit/7dbb12f72ce09dff0efca71d0c3591862c222d53))
+* fix: ensure compatibility with `CS2Fixes` by [@ELDment](https://github.com/ELDment) ([9a8d45c](https://github.com/mrc4tt/CounterStrikeSharp/commit/9a8d45c9e646ed6419f54fbd0205cca9e2d1e612))
+* tests: fix unhooking of some functions in tests by [@roflmuffin](https://github.com/roflmuffin) ([c0093a6](https://github.com/mrc4tt/CounterStrikeSharp/commit/c0093a6ced7767c240cf1a474ed12411f3854b57))
+* chore(deps): bump libraries/hl2sdk-cs2 from `3bb772f` to `6e735c1` by [@dependabot[bot]](https://github.com/dependabot[bot]) ([3485169](https://github.com/mrc4tt/CounterStrikeSharp/commit/3485169de126aa15fa2326944898160fbbb5316a))
+* fix(async): nested nextframes now run on expected tick by [@roflmuffin](https://github.com/roflmuffin) ([3a0093b](https://github.com/mrc4tt/CounterStrikeSharp/commit/3a0093b3950be98166ba10953a0a7668cab7a3d8))
+* fix: use dynohook for take damage for compatibility by [@roflmuffin](https://github.com/roflmuffin) ([38c64c1](https://github.com/mrc4tt/CounterStrikeSharp/commit/38c64c1c330605817561d62bd6b7154c972c77fa))
+* feat(timers): run timer logic every tick to enable tick based timers by [@roflmuffin](https://github.com/roflmuffin) ([55d7939](https://github.com/mrc4tt/CounterStrikeSharp/commit/55d79391693cfe3f9ddd45ed8bc4d75598a68386))
+* perf: improve performance of next frame and next world update by [@roflmuffin](https://github.com/roflmuffin) ([5895683](https://github.com/mrc4tt/CounterStrikeSharp/commit/5895683e5d1e989c25eb4f809f857f05dfb97cf3))
+* fix(async): Server.NextFrame not queueing after 1024 concurrent tasks by [@roflmuffin](https://github.com/roflmuffin) ([39d26d1](https://github.com/mrc4tt/CounterStrikeSharp/commit/39d26d1e954ff320a5da0d29b5824741bf513657))
+* tests: add more in-game tests by [@roflmuffin](https://github.com/roflmuffin) ([fb27d6f](https://github.com/mrc4tt/CounterStrikeSharp/commit/fb27d6fa6f236ba5bf6c5c008f6254e05d0c250f))
+* fix: ensure compatibility with `CS2Fixes` by [@ELDment](https://github.com/ELDment) ([b0e25fd](https://github.com/mrc4tt/CounterStrikeSharp/commit/b0e25fd5c2c7ee945f976f6db383dfea3dec4315))
+
 ## What's Changed in v1.0.355
 * We dont need to publish nuget ([0d1563b](https://github.com/mrc4tt/CounterStrikeSharp/commit/0d1563b9fa12d3ef67c7cedce145e0a5be67e469))
 
@@ -12,19 +31,6 @@
 
 ## New Contributors
 * [@mrc4tt](https://github.com/mrc4tt) made their first contribution
-* fix: ensure compatibility with `CS2Fixes` by [@ELDment](https://github.com/ELDment) in [#1163](https://github.com/roflmuffin/CounterStrikeSharp/pull/1163) ([9a8d45c](https://github.com/roflmuffin/CounterStrikeSharp/commit/9a8d45c9e646ed6419f54fbd0205cca9e2d1e612))
-* tests: fix unhooking of some functions in tests ([c0093a6](https://github.com/roflmuffin/CounterStrikeSharp/commit/c0093a6ced7767c240cf1a474ed12411f3854b57))
-* chore(deps): bump libraries/hl2sdk-cs2 from `3bb772f` to `6e735c1` by [@dependabot[bot]](https://github.com/dependabot[bot]) in [#1160](https://github.com/roflmuffin/CounterStrikeSharp/pull/1160) ([3485169](https://github.com/roflmuffin/CounterStrikeSharp/commit/3485169de126aa15fa2326944898160fbbb5316a))
-
-## What's Changed in v1.0.354
-* fix(async): nested nextframes now run on expected tick ([3a0093b](https://github.com/roflmuffin/CounterStrikeSharp/commit/3a0093b3950be98166ba10953a0a7668cab7a3d8))
-
-## What's Changed in v1.0.353
-* fix: use dynohook for take damage for compatibility in [#1159](https://github.com/roflmuffin/CounterStrikeSharp/pull/1159) ([38c64c1](https://github.com/roflmuffin/CounterStrikeSharp/commit/38c64c1c330605817561d62bd6b7154c972c77fa))
-* feat(timers): run timer logic every tick to enable tick based timers in [#1157](https://github.com/roflmuffin/CounterStrikeSharp/pull/1157) ([55d7939](https://github.com/roflmuffin/CounterStrikeSharp/commit/55d79391693cfe3f9ddd45ed8bc4d75598a68386))
-* perf: improve performance of next frame and next world update in [#1155](https://github.com/roflmuffin/CounterStrikeSharp/pull/1155) ([5895683](https://github.com/roflmuffin/CounterStrikeSharp/commit/5895683e5d1e989c25eb4f809f857f05dfb97cf3))
-* fix(async): Server.NextFrame not queueing after 1024 concurrent tasks in [#1154](https://github.com/roflmuffin/CounterStrikeSharp/pull/1154) ([39d26d1](https://github.com/roflmuffin/CounterStrikeSharp/commit/39d26d1e954ff320a5da0d29b5824741bf513657))
-* tests: add more in-game tests in [#1152](https://github.com/roflmuffin/CounterStrikeSharp/pull/1152) ([fb27d6f](https://github.com/roflmuffin/CounterStrikeSharp/commit/fb27d6fa6f236ba5bf6c5c008f6254e05d0c250f))
 
 ## What's Changed in v1.0.352
 * feat(listeners): add entity & player damage listeners by [@roflmuffin](https://github.com/roflmuffin) ([395b237](https://github.com/mrc4tt/CounterStrikeSharp/commit/395b237dce74f4b1d933e8df3e5518818107b274))
