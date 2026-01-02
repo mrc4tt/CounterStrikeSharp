@@ -223,7 +223,7 @@ jobs:
       - name: Add dotnet runtime
         shell: bash
         run: |
-          DOTNET_ROOT=$(dirname "$(dirname "$(which dotnet)")")
+          DOTNET_ROOT=$(dirname "$(readlink -f "$(command -v dotnet)")")
 
           echo "Using DOTNET_ROOT=$DOTNET_ROOT"
           dotnet --list-runtimes
