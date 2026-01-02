@@ -1,8 +1,12 @@
 ## What's Changed in v1.0.358
+* fix dotnet ([857e800](https://github.com/mrc4tt/CounterStrikeSharp/commit/857e800422e0e072c5a7662f6082b25a91d89cce))
 * try again ([933273d](https://github.com/mrc4tt/CounterStrikeSharp/commit/933273df056d1e847bacbbc8a42816089e95a920))
 * fix workflow again ([1d5fb6f](https://github.com/mrc4tt/CounterStrikeSharp/commit/1d5fb6fb25010fcb50c9c57418493cae06b9b00b))
 * Feat: fix flags to work - if admin has single flag from customDB ([5fd5ae9](https://github.com/mrc4tt/CounterStrikeSharp/commit/5fd5ae9e50e9a457bbad467427d533d855b6c7f1))
 * test: workflow ([f1219bd](https://github.com/mrc4tt/CounterStrikeSharp/commit/f1219bd3ec420f37bea2b4edce3fcbec84cf3399))
+
+## New Contributors
+* [@mrc4tt](https://github.com/mrc4tt) made their first contribution
 
 ## What's Changed in v1.0.357
 * temp: fix z permission to work, rest need rework ([4d23c41](https://github.com/mrc4tt/CounterStrikeSharp/commit/4d23c419fcf2f6ca6e3d44237e65c51946b40fad))
@@ -275,8 +279,8 @@
 * chore(changelog): update cliff.toml by [@roflmuffin](https://github.com/roflmuffin) ([5daf947](https://github.com/mrc4tt/CounterStrikeSharp/commit/5daf94791f2c468f1ff5b08c48d0f4cdd00003cc))
 * feat(config): add toml loading support by [@roflmuffin](https://github.com/roflmuffin) ([c50213c](https://github.com/mrc4tt/CounterStrikeSharp/commit/c50213c4425992ab13c3555b32428d0a58694516))
 * chore: add links to contributors github page by [@roflmuffin](https://github.com/roflmuffin) ([c02d31c](https://github.com/mrc4tt/CounterStrikeSharp/commit/c02d31cb2ee1dab4b662ba305ee0eab3c625561c))
-* chore: update changelog to use semantic tags by [@roflmuffin](https://github.com/roflmuffin) ([98cbca4](https://github.com/mrc4tt/CounterStrikeSharp/commit/98cbca44d4202d05bbf3fd1f8ec7f38255bacf4a))
-* fix(gameevents): promote `core.gameevents` to have higher priority by [@roflmuffin](https://github.com/roflmuffin) ([4cf88fc](https://github.com/mrc4tt/CounterStrikeSharp/commit/4cf88fc03e0dea699cef1a2f51ec9d7088769523))
+* chore: update changelog to use semantic tags ([98cbca4](https://github.com/mrc4tt/CounterStrikeSharp/commit/98cbca44d4202d05bbf3fd1f8ec7f38255bacf4a))
+* fix(gameevents): promote `core.gameevents` to have higher priority ([4cf88fc](https://github.com/mrc4tt/CounterStrikeSharp/commit/4cf88fc03e0dea699cef1a2f51ec9d7088769523))
 * chrore: Implement SemVer instead of build numbers by [@roflmuffin](https://github.com/roflmuffin) ([f1dff6d](https://github.com/mrc4tt/CounterStrikeSharp/commit/f1dff6d4d3f2b0dbf64615560e848b697d3a8904))
 
 ## What's Changed in v1.0.312
@@ -1357,8 +1361,8 @@
 * fix: fixes game event creation, and setting of player indexes, fixes #19 and #20 by [@roflmuffin](https://github.com/roflmuffin) ([acea60d](https://github.com/mrc4tt/CounterStrikeSharp/commit/acea60d87ca6b0e76140749986a382b987a83955))
 * feat: add `PrintToServerConsole` native that uses `ConPrint` by [@roflmuffin](https://github.com/roflmuffin) ([9ed89b4](https://github.com/mrc4tt/CounterStrikeSharp/commit/9ed89b4c0f4d8b8254fcb0bbe6a9ce61ccfca209))
 * fix: add gamedata for changeteam by [@roflmuffin](https://github.com/roflmuffin) ([7efbbc6](https://github.com/mrc4tt/CounterStrikeSharp/commit/7efbbc649d3a42015082ade2df6cfa5ef02e2425))
-* feat: add `ChangeTeam` offset by [@roflmuffin](https://github.com/roflmuffin) ([822115e](https://github.com/mrc4tt/CounterStrikeSharp/commit/822115eddb4dca6c482ff68726506b5e397c7902))
-* feat: add CollisionGroup enum by [@roflmuffin](https://github.com/roflmuffin) ([7b9e237](https://github.com/mrc4tt/CounterStrikeSharp/commit/7b9e237feaa6e71a2646a518902eca4fc970534c))
+* feat: add `ChangeTeam` offset ([822115e](https://github.com/mrc4tt/CounterStrikeSharp/commit/822115eddb4dca6c482ff68726506b5e397c7902))
+* feat: add CollisionGroup enum ([7b9e237](https://github.com/mrc4tt/CounterStrikeSharp/commit/7b9e237feaa6e71a2646a518902eca4fc970534c))
 * feat: add reading & writing of ConVars by [@roflmuffin](https://github.com/roflmuffin) ([c72fbdc](https://github.com/mrc4tt/CounterStrikeSharp/commit/c72fbdc73bebf6b31d7c5c01dfbf1538b93323c1))
 * fix: update test plugin after GiveNamedItem change by [@roflmuffin](https://github.com/roflmuffin) ([3e87c16](https://github.com/mrc4tt/CounterStrikeSharp/commit/3e87c16e33153eee937ad704f1b9bfbbb04deb90))
 * Modified GiveNamedItem to return created entity pointer by [@Muinez](https://github.com/Muinez) ([ddaa0b3](https://github.com/mrc4tt/CounterStrikeSharp/commit/ddaa0b3905cb7910d5e7623098f235e4534ebd90))
