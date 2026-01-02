@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
@@ -115,54 +115,6 @@ namespace CounterStrikeSharp.API.Modules.Admin
         
         // TODO: ServiceCollection
         private static ILogger _logger = CoreLogging.Factory.CreateLogger("AdminManager");
-
-        // Permission alias mapping - allows plugins to use intuitive names
-        // Example: @css/map is an alias for @css/changemap
-        private static readonly Dictionary<string, HashSet<string>> PermissionAliases = new()
-        {
-            // CSS aliases - more intuitive names
-            ["@css/map"] = new HashSet<string> { "@css/changemap" },
-            ["@css/console"] = new HashSet<string> { "@css/rcon" },
-            ["@css/admin"] = new HashSet<string> { "@css/generic" },
-            
-            // MatchZy custom domain aliases
-            ["@custom/prac"] = new HashSet<string> { "@css/changemap" },
-            ["@custom/map"] = new HashSet<string> { "@css/changemap" },
-            ["@custom/match"] = new HashSet<string> { "@css/generic" },
-            ["@custom/config"] = new HashSet<string> { "@css/config" },
-            ["@custom/rcon"] = new HashSet<string> { "@css/rcon" },
-            ["@custom/admin"] = new HashSet<string> { "@css/root" },
-            ["@custom/player"] = new HashSet<string> { "@css/kick" },
-        };
-
-        /// <summary>
-        /// Resolves permission aliases to their actual permissions.
-        /// Bidirectional: if checking @css/map, matches @css/changemap and vice versa.
-        /// </summary>
-        private static HashSet<string> ResolvePermissionAliases(params string[] permissions)
-        {
-            var resolved = new HashSet<string>(permissions);
-            
-            foreach (var permission in permissions)
-            {
-                // Check if this permission is an alias for something
-                if (PermissionAliases.TryGetValue(permission, out var targets))
-                {
-                    resolved.UnionWith(targets);
-                }
-                
-                // Check if something else is an alias for this permission (bidirectional)
-                foreach (var (alias, aliasTargets) in PermissionAliases)
-                {
-                    if (aliasTargets.Contains(permission))
-                    {
-                        resolved.Add(alias);
-                    }
-                }
-            }
-            
-            return resolved;
-        }
 
         public static void LoadAdminData(string adminDataPath)
         {
@@ -285,12 +237,9 @@ namespace CounterStrikeSharp.API.Modules.Admin
             var playerData = GetPlayerAdminData(steamId);
             if (playerData == null) return false;
 
-            // Resolve aliases before checking permissions
-            var resolvedFlags = ResolvePermissionAliases(flags).ToArray();
-
             // Check to see that all of the domains in the flags that we're checking are
             // present in our player data.
-            var localDomains = resolvedFlags.Where(
+            var localDomains = flags.Where(
                flag => flag.StartsWith(PermissionCharacters.UserPermissionChar))
                .Distinct()
                .Select(domain => domain.Split('/').First()[1..])
@@ -304,7 +253,7 @@ namespace CounterStrikeSharp.API.Modules.Admin
             foreach (var domain in playerData.Flags)
             {
                 if (!playerData.DomainHasFlags(domain.Key,
-                    resolvedFlags
+                    flags
                     .Where(flag => flag.StartsWith(PermissionCharacters.UserPermissionChar + domain.Key + '/'))
                     .ToArray()))
                 {
