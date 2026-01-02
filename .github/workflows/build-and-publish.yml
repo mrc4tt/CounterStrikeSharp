@@ -223,7 +223,13 @@ jobs:
       - name: Add dotnet runtime
         shell: bash
         run: |
-          DOTNET_ROOT=$(dirname "$(readlink -f "$(command -v dotnet)")")
+          DOTNET_ROOT="${DOTNET_ROOT:-$(dirname "$(readlink -f "$(command -v dotnet)")")}"\
+          
+          if [ ! -d "$DOTNET_ROOT/shared" ]; then
+            echo "Expected shared runtime at $DOTNET_ROOT/shared but it was not found." >&2
+            ls -la "$DOTNET_ROOT" || true
+            exit 1
+          fi
 
           echo "Using DOTNET_ROOT=$DOTNET_ROOT"
           dotnet --list-runtimes
