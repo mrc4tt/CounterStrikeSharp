@@ -1,4 +1,6 @@
 ## What's Changed in v1.0.358
+* try again ([933273d](https://github.com/mrc4tt/CounterStrikeSharp/commit/933273df056d1e847bacbbc8a42816089e95a920))
+* fix workflow again ([1d5fb6f](https://github.com/mrc4tt/CounterStrikeSharp/commit/1d5fb6fb25010fcb50c9c57418493cae06b9b00b))
 * Feat: fix flags to work - if admin has single flag from customDB ([5fd5ae9](https://github.com/mrc4tt/CounterStrikeSharp/commit/5fd5ae9e50e9a457bbad467427d533d855b6c7f1))
 * test: workflow ([f1219bd](https://github.com/mrc4tt/CounterStrikeSharp/commit/f1219bd3ec420f37bea2b4edce3fcbec84cf3399))
 
