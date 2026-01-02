@@ -23,6 +23,8 @@
 #include <locale>
 #include <filesystem>
 #include <sstream>
+#include <vector>
+#include <algorithm>
 
 #ifdef WIN32
 #include <Windows.h>
