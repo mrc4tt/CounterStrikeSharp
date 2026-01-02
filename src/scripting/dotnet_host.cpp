@@ -21,6 +21,8 @@
 
 #include <codecvt>
 #include <locale>
+#include <filesystem>
+#include <sstream>
 
 #ifdef WIN32
 #include <Windows.h>
@@ -97,12 +99,82 @@ void* get_export(void* h, const char* name)
 bool load_hostfxr()
 {
     std::string base_dir = counterstrikesharp::utils::GetRootDirectory();
+    namespace fs = std::filesystem;
     namespace css = counterstrikesharp;
+
+    const fs::path fxr_root = fs::path(base_dir) / "dotnet" / "host" / "fxr";
+    if (!fs::exists(fxr_root) || !fs::is_directory(fxr_root))
+    {
+        CSSHARP_CORE_CRITICAL("hostfxr root not found at {0}", fxr_root.string().c_str());
+        return false;
+    }
+
+    auto parse_version = [](const std::string& v) {
+        std::vector<int> parts;
+        std::stringstream ss(v);
+        std::string part;
+        while (std::getline(ss, part, '.'))
+        {
+            try
+            {
+                parts.push_back(std::stoi(part));
+            }
+            catch (...)
+            {
+                return std::vector<int>{};
+            }
+        }
+        return parts;
+    };
+
+    auto is_newer = [](const std::vector<int>& a, const std::vector<int>& b) {
+        const auto max_sz = std::max(a.size(), b.size());
+        for (size_t i = 0; i < max_sz; ++i)
+        {
+            const int av = i < a.size() ? a[i] : 0;
+            const int bv = i < b.size() ? b[i] : 0;
+            if (av != bv)
+                return av > bv;
+        }
+        return false;
+    };
+
+    std::string best_version;
+    std::vector<int> best_parts;
+
+    for (const auto& entry : fs::directory_iterator(fxr_root))
+    {
+        if (!entry.is_directory())
+            continue;
+
+        const auto name = entry.path().filename().string();
+        if (name.rfind("8.", 0) != 0)
+            continue;
+
+        const auto parts = parse_version(name);
+        if (parts.empty())
+            continue;
+
+        if (best_version.empty() || is_newer(parts, best_parts))
+        {
+            best_version = name;
+            best_parts = parts;
+        }
+    }
+
+    if (best_version.empty())
+    {
+        CSSHARP_CORE_CRITICAL("No 8.x hostfxr version found under {0}", fxr_root.string().c_str());
+        return false;
+    }
+
 #if _WIN32
-    std::wstring buffer = std::wstring(css::widen(base_dir) + L"\\dotnet\\host\\fxr\\8.0.12\\hostfxr.dll");
+    const fs::path fxr_path = fxr_root / best_version / "hostfxr.dll";
+    std::wstring buffer = css::widen(fxr_path.string());
     CSSHARP_CORE_INFO("Loading hostfxr from {0}", css::narrow(buffer).c_str());
 #else
-    std::string buffer = std::string(base_dir + "/dotnet/host/fxr/8.0.12/libhostfxr.so");
+    const fs::path fxr_path = fxr_root / best_version / "libhostfxr.so";
+    std::string buffer = fxr_path.string();
     CSSHARP_CORE_INFO("Loading hostfxr from {0}", buffer.c_str());
 #endif
 

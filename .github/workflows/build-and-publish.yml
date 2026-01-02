@@ -234,11 +234,28 @@ jobs:
           echo "Using DOTNET_ROOT=$DOTNET_ROOT"
           dotnet --list-runtimes
 
-          mkdir -p build/linux/addons/counterstrikesharp/dotnet
-          mkdir -p build/windows/addons/counterstrikesharp/dotnet
+          latest_netcore=$(dotnet --list-runtimes | awk '/Microsoft.NETCore.App 8\./{print $2}' | sort -V | tail -1)
+          latest_aspnet=$(dotnet --list-runtimes | awk '/Microsoft.AspNetCore.App 8\./{print $2}' | sort -V | tail -1)
+          latest_fxr=$(ls "$DOTNET_ROOT/host/fxr" | grep '^8\.' | sort -V | tail -1)
 
-          cp -r "$DOTNET_ROOT/shared" build/linux/addons/counterstrikesharp/dotnet/
-          cp -r "$DOTNET_ROOT/shared" build/windows/addons/counterstrikesharp/dotnet/
+          if [ -z "$latest_netcore" ] || [ -z "$latest_aspnet" ] || [ -z "$latest_fxr" ]; then
+            echo "Could not determine latest 8.x runtime versions." >&2
+            exit 1
+          fi
+
+          mkdir -p build/linux/addons/counterstrikesharp/dotnet/shared/Microsoft.NETCore.App
+          mkdir -p build/windows/addons/counterstrikesharp/dotnet/shared/Microsoft.NETCore.App
+          mkdir -p build/linux/addons/counterstrikesharp/dotnet/shared/Microsoft.AspNetCore.App
+          mkdir -p build/windows/addons/counterstrikesharp/dotnet/shared/Microsoft.AspNetCore.App
+          mkdir -p build/linux/addons/counterstrikesharp/dotnet/host/fxr
+          mkdir -p build/windows/addons/counterstrikesharp/dotnet/host/fxr
+
+          cp -r "$DOTNET_ROOT/shared/Microsoft.NETCore.App/$latest_netcore" build/linux/addons/counterstrikesharp/dotnet/shared/Microsoft.NETCore.App/
+          cp -r "$DOTNET_ROOT/shared/Microsoft.NETCore.App/$latest_netcore" build/windows/addons/counterstrikesharp/dotnet/shared/Microsoft.NETCore.App/
+          cp -r "$DOTNET_ROOT/shared/Microsoft.AspNetCore.App/$latest_aspnet" build/linux/addons/counterstrikesharp/dotnet/shared/Microsoft.AspNetCore.App/
+          cp -r "$DOTNET_ROOT/shared/Microsoft.AspNetCore.App/$latest_aspnet" build/windows/addons/counterstrikesharp/dotnet/shared/Microsoft.AspNetCore.App/
+          cp -r "$DOTNET_ROOT/host/fxr/$latest_fxr" build/linux/addons/counterstrikesharp/dotnet/host/fxr/
+          cp -r "$DOTNET_ROOT/host/fxr/$latest_fxr" build/windows/addons/counterstrikesharp/dotnet/host/fxr/
 
       - name: Zip Builds
         run: |
