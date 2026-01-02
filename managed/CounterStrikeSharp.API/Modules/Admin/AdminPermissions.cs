@@ -27,9 +27,29 @@ namespace CounterStrikeSharp.API.Modules.Admin
         // Value is a hashmap of the flags inside of the domain (e.g "@css/generic")
         public Dictionary<string, HashSet<string>> Flags { get; init; } = new();
 
+        // Permission aliases for flexible permission checking
+        // Maps alternate permission names to canonical names
+        // e.g., "@css/changemap" -> "@css/map", "@css/mapchange" -> "@css/map"
+        private static readonly Dictionary<string, string> PermissionAliases = new(StringComparer.OrdinalIgnoreCase)
+        {
+            // Map permission variations to their canonical name (@css/map)
+            { "@css/changemap", "@css/map" },
+            { "@css/mapchange", "@css/map" }
+        };
+
         public void InitalizeFlags()
         {
             AddFlags(_flags);
+        }
+
+        /// <summary>
+        /// Resolves a permission flag to its canonical name, handling aliases.
+        /// </summary>
+        /// <param name="flag">The flag to resolve (may be an alias)</param>
+        /// <returns>The canonical flag name</returns>
+        public static string ResolvePermissionAlias(string flag)
+        {
+            return PermissionAliases.TryGetValue(flag, out var canonical) ? canonical : flag;
         }
 
         /// <summary>
@@ -105,7 +125,29 @@ namespace CounterStrikeSharp.API.Modules.Admin
         {
             if (!Flags.ContainsKey(domain)) return false;
             if (DomainHasRootFlag(domain) && !ignoreRoot) return true;
-            return Flags[domain].IsSupersetOf(flags);
+            
+            // Resolve aliases for all required flags
+            var resolvedFlags = flags.Select(ResolvePermissionAlias).ToArray();
+            
+            // Check if domain has all required flags (considering aliases)
+            foreach (var flag in resolvedFlags)
+            {
+                if (!Flags[domain].Contains(flag))
+                {
+                    // Check if any flag in domain matches this requirement (via alias)
+                    bool found = false;
+                    foreach (var domainFlag in Flags[domain])
+                    {
+                        if (ResolvePermissionAlias(domainFlag) == flag)
+                        {
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (!found) return false;
+                }
+            }
+            return true;
         }
     }
 
@@ -237,9 +279,12 @@ namespace CounterStrikeSharp.API.Modules.Admin
             var playerData = GetPlayerAdminData(steamId);
             if (playerData == null) return false;
 
+            // Resolve aliases for all required flags first
+            var resolvedFlags = flags.Select(AdminData.ResolvePermissionAlias).ToArray();
+
             // Check to see that all of the domains in the flags that we're checking are
             // present in our player data.
-            var localDomains = flags.Where(
+            var localDomains = resolvedFlags.Where(
                flag => flag.StartsWith(PermissionCharacters.UserPermissionChar))
                .Distinct()
                .Select(domain => domain.Split('/').First()[1..])
@@ -253,7 +298,7 @@ namespace CounterStrikeSharp.API.Modules.Admin
             foreach (var domain in playerData.Flags)
             {
                 if (!playerData.DomainHasFlags(domain.Key,
-                    flags
+                    resolvedFlags
                     .Where(flag => flag.StartsWith(PermissionCharacters.UserPermissionChar + domain.Key + '/'))
                     .ToArray()))
                 {

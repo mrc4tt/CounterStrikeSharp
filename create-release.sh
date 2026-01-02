@@ -152,12 +152,6 @@ if ! git diff --quiet CHANGELOG.md; then
                     --title "$NEW_TAG - Beta Pre-release" \
                     --notes "⚠️ **BETA PRE-RELEASE** - This version is for testing purposes only
 
-## Installation
-Download the beta build and test thoroughly before the stable release.
-
-## What's Changed
-See the [CHANGELOG](https://github.com/mrc4tt/CounterStrikeSharp/blob/$NEW_TAG/CHANGELOG.md) for full details.
-
 ## Feedback
 Please report any issues or feedback before we promote this to stable release."; then
                     echo "✅ Pre-release created successfully on GitHub!"
@@ -184,9 +178,6 @@ Please report any issues or feedback before we promote this to stable release.";
                 if gh release create "$NEW_TAG" \
                     --title "$NEW_TAG" \
                     --notes "✅ **STABLE RELEASE**
-
-## What's Changed
-See the [CHANGELOG](https://github.com/mrc4tt/CounterStrikeSharp/blob/$NEW_TAG/CHANGELOG.md) for full details.
 
 ## Installation
 Download the latest stable build from the assets below."; then
@@ -248,9 +239,6 @@ elif [ -n "$IS_BETA" ] && [ "$BETA" = false ]; then
             if gh release create "$NEW_TAG" \
                 --title "$NEW_TAG" \
                 --notes "✅ **STABLE RELEASE** (promoted from $LATEST_TAG)
-
-## What's Changed
-See the [CHANGELOG](https://github.com/mrc4tt/CounterStrikeSharp/blob/$NEW_TAG/CHANGELOG.md) for full details.
 
 ## Installation
 Download the latest stable build from the assets below."; then
