@@ -1,3 +1,7 @@
+## What's Changed in v1.0.358
+* Feat: fix flags to work - if admin has single flag from customDB ([5fd5ae9](https://github.com/mrc4tt/CounterStrikeSharp/commit/5fd5ae9e50e9a457bbad467427d533d855b6c7f1))
+* test: workflow ([f1219bd](https://github.com/mrc4tt/CounterStrikeSharp/commit/f1219bd3ec420f37bea2b4edce3fcbec84cf3399))
+
 ## What's Changed in v1.0.357
 * temp: fix z permission to work, rest need rework ([4d23c41](https://github.com/mrc4tt/CounterStrikeSharp/commit/4d23c419fcf2f6ca6e3d44237e65c51946b40fad))
 
