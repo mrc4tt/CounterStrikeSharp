@@ -202,6 +202,11 @@ jobs:
           name: counterstrikesharp-api-${{ needs.setup.outputs.gitversion_semver }}
           path: build/api
 
+      - name: Setup .NET 8 runtime
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
       # TODO: This stuff should really be in a matrix
       - name: Add API to Artifacts
         run: |
@@ -216,14 +221,18 @@ jobs:
           (cd build/windows && zip -qq -r ../../counterstrikesharp-windows-${{ needs.setup.outputs.gitversion_semver }}.zip *)
 
       - name: Add dotnet runtime
+        shell: bash
         run: |
-          mkdir -p build/linux/addons/counterstrikesharp/dotnet
-          curl -s -L https://download.visualstudio.microsoft.com/download/pr/c1371dc2-eed2-47be-9af3-ae060dbe3c7d/bd509e0a87629764ed47608466d183e6/aspnetcore-runtime-8.0.3-linux-x64.tar.gz \
-          | tar xvz -C build/linux/addons/counterstrikesharp/dotnet
+          DOTNET_ROOT=$(dirname "$(dirname "$(which dotnet)")")
 
+          echo "Using DOTNET_ROOT=$DOTNET_ROOT"
+          dotnet --list-runtimes
+
+          mkdir -p build/linux/addons/counterstrikesharp/dotnet
           mkdir -p build/windows/addons/counterstrikesharp/dotnet
-          curl -s -L https://download.visualstudio.microsoft.com/download/pr/086d1dd6-57a5-437a-a1ef-549cf702fb48/dd4a8fe6c53a1016a414d6f2925c1323/aspnetcore-runtime-8.0.3-win-x64.zip -o dotnet.zip
-          unzip -qq dotnet.zip -d build/windows/addons/counterstrikesharp/dotnet
+
+          cp -r "$DOTNET_ROOT/shared" build/linux/addons/counterstrikesharp/dotnet/
+          cp -r "$DOTNET_ROOT/shared" build/windows/addons/counterstrikesharp/dotnet/
 
       - name: Zip Builds
         run: |
