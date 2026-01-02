@@ -133,8 +133,7 @@ bool load_hostfxr()
         {
             const int av = i < a.size() ? a[i] : 0;
             const int bv = i < b.size() ? b[i] : 0;
-            if (av != bv)
-                return av > bv;
+            if (av != bv) return av > bv;
         }
         return false;
     };
@@ -144,16 +143,13 @@ bool load_hostfxr()
 
     for (const auto& entry : fs::directory_iterator(fxr_root))
     {
-        if (!entry.is_directory())
-            continue;
+        if (!entry.is_directory()) continue;
 
         const auto name = entry.path().filename().string();
-        if (name.rfind("8.", 0) != 0)
-            continue;
+        if (name.rfind("8.", 0) != 0) continue;
 
         const auto parts = parse_version(name);
-        if (parts.empty())
-            continue;
+        if (parts.empty()) continue;
 
         if (best_version.empty() || is_newer(parts, best_parts))
         {
