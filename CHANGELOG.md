@@ -1,4 +1,7 @@
-## What's Changed in v1.0.356
+## What's Changed in v1.0.357
+* temp: fix z permission to work, rest need rework ([4d23c41](https://github.com/mrc4tt/CounterStrikeSharp/commit/4d23c419fcf2f6ca6e3d44237e65c51946b40fad))
+
+## What's Changed in v1.0.356-beta
 * feat: fix sourcemod-style support/aliases ([77a6cb0](https://github.com/mrc4tt/CounterStrikeSharp/commit/77a6cb0fc1c49158712ff1d27346dfb94ce4745e))
 * feat: support sourcemod admin-flags examples ([24accbf](https://github.com/mrc4tt/CounterStrikeSharp/commit/24accbfbca0744b5eb6420cc17c5cfe3ff53649b))
 * fix space ([6f25619](https://github.com/mrc4tt/CounterStrikeSharp/commit/6f2561902ca541c5e3a414e501f14c0312686d9a))
