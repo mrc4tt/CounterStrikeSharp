@@ -81,7 +81,11 @@ void* load_library(const char_t* path)
 void* get_export(void* h, const char* name)
 {
     void* f = ::GetProcAddress((HMODULE)h, name);
-    assert(f != nullptr);
+    if (f == nullptr)
+    {
+        DWORD error = GetLastError();
+        CSSHARP_CORE_WARN("GetProcAddress failed for '{0}': Error code {1}", name, error);
+    }
     return f;
 }
 #else
@@ -181,10 +185,27 @@ bool load_hostfxr()
 
     // Load hostfxr and get desired exports
     void* lib = load_library(buffer.c_str());
+    if (lib == nullptr)
+    {
+#ifdef _WINDOWS
+        CSSHARP_CORE_CRITICAL("Failed to load hostfxr library from: {0}", css::narrow(buffer).c_str());
+#else
+        CSSHARP_CORE_CRITICAL("Failed to load hostfxr library from: {0}", buffer.c_str());
+#endif
+        return false;
+    }
+    
+    CSSHARP_CORE_INFO("Successfully loaded hostfxr library, getting function exports...");
+    
     init_fptr = (hostfxr_initialize_for_runtime_config_fn)get_export(lib, "hostfxr_initialize_for_runtime_config");
     if (init_fptr == nullptr)
     {
         CSSHARP_CORE_CRITICAL("unable to get export function: \"hostfxr_initialize_for_runtime_config\"");
+        CSSHARP_CORE_CRITICAL("Possible causes:");
+        CSSHARP_CORE_CRITICAL("  1. Wrong .NET runtime version (expected 8.0.x)");
+        CSSHARP_CORE_CRITICAL("  2. Corrupted or missing hostfxr.dll");
+        CSSHARP_CORE_CRITICAL("  3. Architecture mismatch (must be x64)");
+        CSSHARP_CORE_CRITICAL("  4. Incompatible .NET runtime");
         return false;
     }
     get_delegate_fptr = (hostfxr_get_runtime_delegate_fn)get_export(lib, "hostfxr_get_runtime_delegate");
