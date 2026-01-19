@@ -1,3 +1,10 @@
+## What's Changed in v1.0.359
+* Fix Windows runtime: Download hostfxr.dll separately ([bfaf02b](https://github.com/mrc4tt/CounterStrikeSharp/commit/bfaf02b1c947f3af3228def30bac3171587f874e))
+* opps... ([94bab9f](https://github.com/mrc4tt/CounterStrikeSharp/commit/94bab9f6e89a5ce5aa648a7f2084af80e3aa7cb3))
+* Test: changes for dotnet_host ([36ff475](https://github.com/mrc4tt/CounterStrikeSharp/commit/36ff475524facfc0f90fce132ecf6c560caf68d4))
+* nextframe limit ([b553c9d](https://github.com/mrc4tt/CounterStrikeSharp/commit/b553c9d87542211954415eda34604884e93132bb))
+* Add Debian 13 and Ubuntu 24 support to README ([0b1d041](https://github.com/mrc4tt/CounterStrikeSharp/commit/0b1d0414b29c05d16f83ca92de4a98bb19b8093c))
+
 ## What's Changed in v1.0.358
 * winfix 0.1 ([2202f2e](https://github.com/mrc4tt/CounterStrikeSharp/commit/2202f2ea14940e270ab3b8cd975c778cdb3de7e8))
 * windows-build fix? ([07d368e](https://github.com/mrc4tt/CounterStrikeSharp/commit/07d368ee988e6807c4fbdc62bbfe030eb2cf3bf9))
