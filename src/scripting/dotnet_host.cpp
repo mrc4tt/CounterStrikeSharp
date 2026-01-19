@@ -194,9 +194,9 @@ bool load_hostfxr()
 #endif
         return false;
     }
-    
+
     CSSHARP_CORE_INFO("Successfully loaded hostfxr library, getting function exports...");
-    
+
     init_fptr = (hostfxr_initialize_for_runtime_config_fn)get_export(lib, "hostfxr_initialize_for_runtime_config");
     if (init_fptr == nullptr)
     {
