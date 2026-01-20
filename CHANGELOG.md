@@ -1,3 +1,6 @@
+## What's Changed in v1.0.360
+* Test: memory ([b9f8fca](https://github.com/mrc4tt/CounterStrikeSharp/commit/b9f8fcae9df9200ce0cab0e2237e948f990054af))
+
 ## What's Changed in v1.0.359
 * Fix Windows runtime: Download hostfxr.dll separately ([bfaf02b](https://github.com/mrc4tt/CounterStrikeSharp/commit/bfaf02b1c947f3af3228def30bac3171587f874e))
 * opps... ([94bab9f](https://github.com/mrc4tt/CounterStrikeSharp/commit/94bab9f6e89a5ce5aa648a7f2084af80e3aa7cb3))
