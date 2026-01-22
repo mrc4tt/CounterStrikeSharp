@@ -2,6 +2,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Text;
 using System.Text.Json;
 
 namespace CounterStrikeSharp.API.Core.Translations
@@ -140,7 +141,7 @@ namespace CounterStrikeSharp.API.Core.Translations
             var resources = new Dictionary<string, string>();
             if (File.Exists(filePath))
             {
-                using var reader = new StreamReader(filePath);
+                using var reader = new StreamReader(filePath, Encoding.UTF8);
 
                 using var document = JsonDocument.Parse(reader.BaseStream, _jsonDocumentOptions);
 

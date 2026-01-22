@@ -1,4 +1,6 @@
-﻿using System.Text.Json;
+﻿using System.IO;
+using System.Text;
+using System.Text.Json;
 using System.Reflection;
 using System.Runtime.Serialization;
 using CounterStrikeSharp.API.Modules.Config;
@@ -90,7 +92,7 @@ public static class PluginConfigExtensions
                 throw new FileNotFoundException($"Configuration file '{configPath} not found.");
             }
 
-            var configContent = File.ReadAllText(configPath);
+            var configContent = File.ReadAllText(configPath, Encoding.UTF8);
 
             T? newConfig = null;
             switch (Path.GetExtension(configPath))

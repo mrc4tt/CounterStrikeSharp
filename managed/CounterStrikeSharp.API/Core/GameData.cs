@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using CounterStrikeSharp.API.Core.Hosting;
@@ -52,7 +53,7 @@ public sealed class GameDataProvider : IStartupService
 
             foreach (string filePath in Directory.EnumerateFiles(_gameDataDirectoryPath, "*.json"))
             {
-                string jsonContent = File.ReadAllText(filePath);
+                string jsonContent = File.ReadAllText(filePath, Encoding.UTF8);
                 Dictionary<string, LoadedGameData> loadedMethods = JsonSerializer.Deserialize<Dictionary<string, LoadedGameData>>(jsonContent)!;
 
                 foreach (KeyValuePair<string, LoadedGameData> loadedMethod in loadedMethods)

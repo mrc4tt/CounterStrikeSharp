@@ -1,6 +1,7 @@
 ﻿﻿using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Text;
 using System.Text.Json.Serialization;
 using System.Text.Json;
 using CounterStrikeSharp.API.Modules.Entities;
@@ -168,7 +169,7 @@ namespace CounterStrikeSharp.API.Modules.Admin
                     return;
                 }
                 var settings = new JsonSerializerOptions() { ReadCommentHandling = JsonCommentHandling.Skip };
-                var adminsFromFile = JsonSerializer.Deserialize<Dictionary<string, AdminData>>(File.ReadAllText(adminDataPath), settings);
+                var adminsFromFile = JsonSerializer.Deserialize<Dictionary<string, AdminData>>(File.ReadAllText(adminDataPath, Encoding.UTF8), settings);
                 if (adminsFromFile == null) { throw new FileNotFoundException(); }
 
                 foreach (var adminDef in adminsFromFile.Values)

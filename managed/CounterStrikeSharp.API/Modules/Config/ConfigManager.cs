@@ -121,9 +121,9 @@ namespace CounterStrikeSharp.API.Modules.Config
             switch (Path.GetExtension(path))
             {
                 case ".toml":
-                    return Toml.ToModel<T>(File.ReadAllText(path), options: TomlModelOptions);
+                    return Toml.ToModel<T>(File.ReadAllText(path, Encoding.UTF8), options: TomlModelOptions);
                 case ".json":
-                    return JsonSerializer.Deserialize<T>(File.ReadAllText(path), JsonSerializerOptions)!;
+                    return JsonSerializer.Deserialize<T>(File.ReadAllText(path, Encoding.UTF8), JsonSerializerOptions)!;
             }
 
             throw new NotSupportedException("Unsupported configuration file format");

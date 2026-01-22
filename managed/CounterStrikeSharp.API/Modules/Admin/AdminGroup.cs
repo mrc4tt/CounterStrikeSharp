@@ -38,7 +38,7 @@ namespace CounterStrikeSharp.API.Modules.Admin
                     return;
                 }
 
-                var groupsFromFile = JsonSerializer.Deserialize<Dictionary<string, AdminGroupData>>(File.ReadAllText(adminGroupsPath), new JsonSerializerOptions() { ReadCommentHandling = JsonCommentHandling.Skip });
+                var groupsFromFile = JsonSerializer.Deserialize<Dictionary<string, AdminGroupData>>(File.ReadAllText(adminGroupsPath, Encoding.UTF8), new JsonSerializerOptions() { ReadCommentHandling = JsonCommentHandling.Skip });
                 if (groupsFromFile == null) { throw new FileNotFoundException(); }
                 foreach (var (key, groupDef) in groupsFromFile)
                 {

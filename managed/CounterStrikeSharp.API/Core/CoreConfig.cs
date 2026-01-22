@@ -17,6 +17,7 @@
 using System;
 using System.IO;
 using System.Reflection;
+using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using CounterStrikeSharp.API.Modules.Utils;
@@ -168,7 +169,7 @@ namespace CounterStrikeSharp.API.Core
             {
                 try
                 {
-                    var data = JsonSerializer.Deserialize<CoreConfigData>(File.ReadAllText(_coreConfigPath),
+                    var data = JsonSerializer.Deserialize<CoreConfigData>(File.ReadAllText(_coreConfigPath, Encoding.UTF8),
                         new JsonSerializerOptions() { ReadCommentHandling = JsonCommentHandling.Skip });
 
                     if (data != null)

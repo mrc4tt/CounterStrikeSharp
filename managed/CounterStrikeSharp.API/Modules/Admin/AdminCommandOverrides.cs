@@ -3,6 +3,7 @@ using CounterStrikeSharp.API.Modules.Entities;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Text.Json.Serialization;
 using System.Text.Json;
 using System.Linq;
@@ -31,7 +32,7 @@ namespace CounterStrikeSharp.API.Modules.Admin
                 }
 
                 var overridesFromFile = JsonSerializer.Deserialize<Dictionary<string, CommandData>>
-                    (File.ReadAllText(overridePath), new JsonSerializerOptions() { ReadCommentHandling = JsonCommentHandling.Skip });
+                    (File.ReadAllText(overridePath, Encoding.UTF8), new JsonSerializerOptions() { ReadCommentHandling = JsonCommentHandling.Skip });
                 if (overridesFromFile == null) { throw new FileNotFoundException(); }
                 foreach (var (command, overrideDef) in overridesFromFile)
                 {
