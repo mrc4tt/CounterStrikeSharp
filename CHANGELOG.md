@@ -1,3 +1,7 @@
+## What's Changed in v1.0.361
+* Update Linux signatures in gamedata.json ([4b47dde](https://github.com/mrc4tt/CounterStrikeSharp/commit/4b47dde964029137f80dbc0531ab08e7af4a0fb3))
+* fix(schema): update schema for 1.41.3.0 by [@roflmuffin](https://github.com/roflmuffin) ([17e88c5](https://github.com/mrc4tt/CounterStrikeSharp/commit/17e88c587c7349c3928e02a692c427fd18556974))
+
 ## What's Changed in v1.0.360
 * Test: memory ([b9f8fca](https://github.com/mrc4tt/CounterStrikeSharp/commit/b9f8fcae9df9200ce0cab0e2237e948f990054af))
 
