@@ -1,3 +1,7 @@
+## What's Changed in v1.0.363
+* . ([95d40fa](https://github.com/mrc4tt/CounterStrikeSharp/commit/95d40faf96b089810f488a284b73b7e40f43ecfc))
+* fix: bump sdk & update gamedata for patch 1.41.3.x by [@roflmuffin](https://github.com/roflmuffin) ([d2a32eb](https://github.com/mrc4tt/CounterStrikeSharp/commit/d2a32ebc24a89ddd402360ee9b95443b5f5b5e8b))
+
 ## What's Changed in v1.0.362
 * UTF8 huh ([5c71dcd](https://github.com/mrc4tt/CounterStrikeSharp/commit/5c71dcdfa3c6add4f935925bbbb23320b6395004))
 
