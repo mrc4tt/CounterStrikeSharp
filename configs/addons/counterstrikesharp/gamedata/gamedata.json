@@ -22,14 +22,14 @@
   },
   "CCSPlayerController_ChangeTeam": {
     "offsets": {
-      "windows": 109,
-      "linux": 108
+      "windows": 102,
+      "linux": 101
     }
   },
   "CCSPlayerController_Respawn": {
     "offsets": {
-      "windows": 277,
-      "linux": 279
+      "windows": 272,
+      "linux": 274
     }
   },
   "CBasePlayerController_SetPawn": {
@@ -97,26 +97,26 @@
   },
   "CCSPlayer_ItemServices_GiveNamedItem": {
     "offsets": {
-      "windows": 18,
-      "linux": 19
+      "windows": 19,
+      "linux": 20
     }
   },
   "CCSPlayer_ItemServices_DropActivePlayerWeapon": {
-    "offsets": {
-      "windows": 21,
-      "linux": 22
-    }
-  },
-  "CCSPlayer_ItemServices_RemoveWeapons": {
     "offsets": {
       "windows": 22,
       "linux": 23
     }
   },
+  "CCSPlayer_ItemServices_RemoveWeapons": {
+    "offsets": {
+      "windows": 23,
+      "linux": 24
+    }
+  },
   "CGameSceneNode_GetSkeletonInstance": {
     "offsets": {
       "windows": 8,
-      "linux": 8
+      "linux": 9
     }
   },
   "CCSGameRules_TerminateRound": {
@@ -168,8 +168,8 @@
   },
   "CBaseEntity_IsPlayerPawn": {
     "offsets": {
-      "windows": 174,
-      "linux": 173
+      "windows": 168,
+      "linux": 167
     }
   },
   "CEntitySystem_AddEntityIOEvent": {
@@ -182,14 +182,14 @@
   "LegacyGameEventListener": {
     "signatures": {
       "library": "server",
-      "windows": "48 8B 15 ? ? ? ? 48 85 D2 74 ? 83 F9 ? 77 ? 48 63 C1 48 C1 E0",
+      "windows": "48 8B 15 ? ? ? ? 48 85 D2 74 ? 83 F9 ? 77",
       "linux": "48 8B 05 ? ? ? ? 48 85 C0 74 ? 83 FF ? 77 ? 48 63 FF 48 C1 E7 ? 48 8D 44 38"
     }
   },
   "CBasePlayerPawn_CommitSuicide": {
     "offsets": {
-      "windows": 408,
-      "linux": 408
+      "windows": 400,
+      "linux": 400
     }
   },
   "CBasePlayerPawn_RemovePlayerItem": {
@@ -201,8 +201,8 @@
   },
   "CBaseEntity_Teleport": {
     "offsets": {
-      "windows": 168,
-      "linux": 167
+      "windows": 162,
+      "linux": 161
     }
   },
   "CBaseEntity_TakeDamageOld": {
