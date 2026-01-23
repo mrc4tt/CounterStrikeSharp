@@ -1,3 +1,6 @@
+## What's Changed in v1.0.364
+* . ([1a14656](https://github.com/mrc4tt/CounterStrikeSharp/commit/1a146562d541dcea3313b2ff4fd19b1f57a39889))
+
 ## What's Changed in v1.0.363
 * . ([95d40fa](https://github.com/mrc4tt/CounterStrikeSharp/commit/95d40faf96b089810f488a284b73b7e40f43ecfc))
 * fix: bump sdk & update gamedata for patch 1.41.3.x by [@roflmuffin](https://github.com/roflmuffin) ([d2a32eb](https://github.com/mrc4tt/CounterStrikeSharp/commit/d2a32ebc24a89ddd402360ee9b95443b5f5b5e8b))
