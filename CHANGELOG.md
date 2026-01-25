@@ -1,3 +1,6 @@
+## What's Changed in v1.0.365
+* next frame listeners at start ([2fc5309](https://github.com/mrc4tt/CounterStrikeSharp/commit/2fc53096672219c7df9ae542c3b8d6ee802f4794))
+
 ## What's Changed in v1.0.364
 * . ([1a14656](https://github.com/mrc4tt/CounterStrikeSharp/commit/1a146562d541dcea3313b2ff4fd19b1f57a39889))
 
