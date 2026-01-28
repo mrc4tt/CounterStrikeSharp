@@ -1,3 +1,6 @@
+## What's Changed in v1.0.366
+* feat: manual update ([2a16897](https://github.com/mrc4tt/CounterStrikeSharp/commit/2a1689790d8e10b1106cfabc35fa3e59954b31c7))
+
 ## What's Changed in v1.0.365
 * next frame listeners at start ([2fc5309](https://github.com/mrc4tt/CounterStrikeSharp/commit/2fc53096672219c7df9ae542c3b8d6ee802f4794))
 
