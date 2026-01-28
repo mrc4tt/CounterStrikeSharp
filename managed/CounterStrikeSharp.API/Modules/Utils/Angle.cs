@@ -14,6 +14,7 @@
  *  along with CounterStrikeSharp.  If not, see <https://www.gnu.org/licenses/>. *
  */
 
+
 using System.Threading;
 using System.Runtime.InteropServices;
 using System.Runtime.CompilerServices;
@@ -32,6 +33,7 @@ namespace CounterStrikeSharp.API.Modules.Utils
     public class Angle : NativeObject
     {
         public static readonly Angle Zero = new();
+
         private float _x;
         private float _y;
         private float _z;

@@ -47,7 +47,7 @@ namespace CounterStrikeSharp.API
             _handle = pointer;
         }
 
-                protected void SetHandle(IntPtr pointer)
+        protected void SetHandle(IntPtr pointer)
         {
             _handle = pointer;
         }
@@ -55,7 +55,7 @@ namespace CounterStrikeSharp.API
         protected virtual void EnsureNativeHandle()
         {
         }
-        
+
         /// <summary>
         /// Returns a new instance of the specified type using the pointer from the passed in object.
         /// </summary>

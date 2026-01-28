@@ -1,6 +1,6 @@
 <div align=right>Table of Contents ↗️</div>
 
-<h1 align=center><code>CounterStrikeSharp</code></h1>
+<h1 align=center><code>CounterStrikeSharp - Forked</code></h1>
 
 <div align=center>
     <a href=https://github.com/mrc4tt/CounterStrikeSharp/releases><img src=https://img.shields.io/github/v/release/roflmuffin/CounterStrikeSharp?style=flat-square&label=latest></a>
@@ -12,7 +12,8 @@
 CounterStrikeSharp is a server side modding framework for Counter-Strike 2. This project implements a .NET 8 scripting layer on top of a Metamod Source Plugin, allowing developers to create plugins that interact with the game server in a modern language (C#) to facilitate the creation of maintainable and testable code.
 
 **Forked version by Miksen**
-- Added Support for Debian 13, should work for newer Ubuntu 24.
+- Added support for Debian 13, should work for newer Ubuntu 24.
+- Added support for CommandLine API (GetCommandLineString) `CommandLine.GetCommandLineString`
 
 ## Install
 
