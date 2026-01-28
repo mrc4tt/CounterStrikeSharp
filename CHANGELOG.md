@@ -1,3 +1,6 @@
+## What's Changed in v1.0.367
+* 0x38 ([3f340e0](https://github.com/mrc4tt/CounterStrikeSharp/commit/3f340e0a5f7a9f0f65b7c6c36c7f9c4064966616))
+
 ## What's Changed in v1.0.366
 * feat: manual update ([2a16897](https://github.com/mrc4tt/CounterStrikeSharp/commit/2a1689790d8e10b1106cfabc35fa3e59954b31c7))
 
