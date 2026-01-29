@@ -178,7 +178,8 @@ bool load_hostfxr()
 
         if (env_version)
         {
-            CSSHARP_CORE_CRITICAL("Preferred hostfxr version {0} not found under {1}", preferred_version.c_str(), fxr_root.string().c_str());
+            CSSHARP_CORE_CRITICAL("Preferred hostfxr version {0} not found under {1}", preferred_version.c_str(),
+                                  fxr_root.string().c_str());
         }
         else
         {
