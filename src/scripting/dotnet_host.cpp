@@ -22,9 +22,6 @@
 #include <codecvt>
 #include <locale>
 #include <filesystem>
-#include <sstream>
-#include <vector>
-#include <algorithm>
 
 #ifdef WIN32
 #ifndef NOMINMAX
@@ -47,6 +44,7 @@
 
 #include <cassert>
 #include <iostream>
+#include <cstdlib>
 
 #include "core/log.h"
 #include "core/utils.h"
@@ -118,110 +116,79 @@ bool load_hostfxr()
         return false;
     }
 
-    auto parse_version = [](const std::string& v) {
-        std::vector<int> parts;
-        std::stringstream ss(v);
-        std::string part;
-        while (std::getline(ss, part, '.'))
-        {
-            try
-            {
-                parts.push_back(std::stoi(part));
-            }
-            catch (...)
-            {
-                return std::vector<int>{};
-            }
-        }
-        return parts;
-    };
+    const char* env_version = std::getenv("CSSHARP_HOSTFXR_VERSION");
+    const std::string preferred_version = env_version ? std::string(env_version) : "8.0.3";
 
-    auto is_newer = [](const std::vector<int>& a, const std::vector<int>& b) {
-        const auto max_sz = std::max(a.size(), b.size());
-        for (size_t i = 0; i < max_sz; ++i)
-        {
-            const int av = i < a.size() ? a[i] : 0;
-            const int bv = i < b.size() ? b[i] : 0;
-            if (av != bv) return av > bv;
-        }
-        return false;
-    };
-
-    std::string best_version;
-    std::vector<int> best_parts;
-
-    for (const auto& entry : fs::directory_iterator(fxr_root))
+    if (!preferred_version.empty())
     {
-        if (!entry.is_directory()) continue;
-
-        const auto name = entry.path().filename().string();
-        if (name.rfind("8.", 0) != 0) continue;
-
-        const auto parts = parse_version(name);
-        if (parts.empty()) continue;
-
-        if (best_version.empty() || is_newer(parts, best_parts))
+        const fs::path preferred_path = fxr_root / preferred_version;
+        if (fs::exists(preferred_path) && fs::is_directory(preferred_path))
         {
-            best_version = name;
-            best_parts = parts;
-        }
-    }
-
-    if (best_version.empty())
-    {
-        CSSHARP_CORE_CRITICAL("No 8.x hostfxr version found under {0}", fxr_root.string().c_str());
-        return false;
-    }
+            CSSHARP_CORE_INFO("Using preferred hostfxr version {0}", preferred_version.c_str());
 
 #if _WIN32
-    const fs::path fxr_path = fxr_root / best_version / "hostfxr.dll";
-    std::wstring buffer = css::widen(fxr_path.string());
-    CSSHARP_CORE_INFO("Loading hostfxr from {0}", css::narrow(buffer).c_str());
+            const fs::path fxr_path = preferred_path / "hostfxr.dll";
+            std::wstring buffer = css::widen(fxr_path.string());
+            CSSHARP_CORE_INFO("Loading hostfxr from {0}", css::narrow(buffer).c_str());
 #else
-    const fs::path fxr_path = fxr_root / best_version / "libhostfxr.so";
-    std::string buffer = fxr_path.string();
-    CSSHARP_CORE_INFO("Loading hostfxr from {0}", buffer.c_str());
+            const fs::path fxr_path = preferred_path / "libhostfxr.so";
+            std::string buffer = fxr_path.string();
+            CSSHARP_CORE_INFO("Loading hostfxr from {0}", buffer.c_str());
 #endif
 
-    // Load hostfxr and get desired exports
-    void* lib = load_library(buffer.c_str());
-    if (lib == nullptr)
-    {
+            void* lib = load_library(buffer.c_str());
+            if (lib == nullptr)
+            {
 #ifdef _WINDOWS
-        CSSHARP_CORE_CRITICAL("Failed to load hostfxr library from: {0}", css::narrow(buffer).c_str());
+                CSSHARP_CORE_CRITICAL("Failed to load hostfxr library from: {0}", css::narrow(buffer).c_str());
 #else
-        CSSHARP_CORE_CRITICAL("Failed to load hostfxr library from: {0}", buffer.c_str());
+                CSSHARP_CORE_CRITICAL("Failed to load hostfxr library from: {0}", buffer.c_str());
 #endif
+                return false;
+            }
+
+            CSSHARP_CORE_INFO("Successfully loaded hostfxr library, getting function exports...");
+
+            init_fptr = (hostfxr_initialize_for_runtime_config_fn)get_export(lib, "hostfxr_initialize_for_runtime_config");
+            if (init_fptr == nullptr)
+            {
+                CSSHARP_CORE_CRITICAL("unable to get export function: \"hostfxr_initialize_for_runtime_config\"");
+                CSSHARP_CORE_CRITICAL("Possible causes:");
+                CSSHARP_CORE_CRITICAL("  1. Wrong .NET runtime version (expected 8.0.x)");
+                CSSHARP_CORE_CRITICAL("  2. Corrupted or missing hostfxr.dll");
+                CSSHARP_CORE_CRITICAL("  3. Architecture mismatch (must be x64)");
+                CSSHARP_CORE_CRITICAL("  4. Incompatible .NET runtime");
+                return false;
+            }
+            get_delegate_fptr = (hostfxr_get_runtime_delegate_fn)get_export(lib, "hostfxr_get_runtime_delegate");
+            if (!get_delegate_fptr)
+            {
+                CSSHARP_CORE_CRITICAL("unable to get export function: \"hostfxr_get_runtime_delegate\"");
+                return false;
+            }
+            close_fptr = (hostfxr_close_fn)get_export(lib, "hostfxr_close");
+            if (!close_fptr)
+            {
+                CSSHARP_CORE_CRITICAL("unable to get export function: \"hostfxr_close\"");
+                return false;
+            }
+
+            return (init_fptr && get_delegate_fptr && close_fptr);
+        }
+
+        if (env_version)
+        {
+            CSSHARP_CORE_CRITICAL("Preferred hostfxr version {0} not found under {1}", preferred_version.c_str(), fxr_root.string().c_str());
+        }
+        else
+        {
+            CSSHARP_CORE_CRITICAL("Required hostfxr version {0} not found under {1}", preferred_version.c_str(), fxr_root.string().c_str());
+        }
         return false;
     }
 
-    CSSHARP_CORE_INFO("Successfully loaded hostfxr library, getting function exports...");
-
-    init_fptr = (hostfxr_initialize_for_runtime_config_fn)get_export(lib, "hostfxr_initialize_for_runtime_config");
-    if (init_fptr == nullptr)
-    {
-        CSSHARP_CORE_CRITICAL("unable to get export function: \"hostfxr_initialize_for_runtime_config\"");
-        CSSHARP_CORE_CRITICAL("Possible causes:");
-        CSSHARP_CORE_CRITICAL("  1. Wrong .NET runtime version (expected 8.0.x)");
-        CSSHARP_CORE_CRITICAL("  2. Corrupted or missing hostfxr.dll");
-        CSSHARP_CORE_CRITICAL("  3. Architecture mismatch (must be x64)");
-        CSSHARP_CORE_CRITICAL("  4. Incompatible .NET runtime");
-        return false;
-    }
-    get_delegate_fptr = (hostfxr_get_runtime_delegate_fn)get_export(lib, "hostfxr_get_runtime_delegate");
-    if (!get_delegate_fptr)
-    {
-        CSSHARP_CORE_CRITICAL("unable to get export function: \"hostfxr_get_runtime_delegate\"");
-        return false;
-    }
-    close_fptr = (hostfxr_close_fn)get_export(lib, "hostfxr_close");
-    if (!close_fptr)
-    {
-        CSSHARP_CORE_CRITICAL("unable to get export function: \"hostfxr_close\"");
-        return false;
-    }
-
-    return (init_fptr && get_delegate_fptr && close_fptr);
+    CSSHARP_CORE_CRITICAL("No hostfxr version configured");
+    return false;
 }
 // </SnippetLoadHostFxr>
 
