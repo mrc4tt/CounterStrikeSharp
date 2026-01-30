@@ -202,11 +202,6 @@ jobs:
           name: counterstrikesharp-api-${{ needs.setup.outputs.gitversion_semver }}
           path: build/api
 
-      - name: Setup .NET 8 runtime
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: 8.0.3
-
       # TODO: This stuff should really be in a matrix
       - name: Add API to Artifacts
         run: |
