@@ -137,7 +137,7 @@ jobs:
       - name: Build runtime v${{ needs.setup.outputs.gitversion_semver }}
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: "8.0.3"
+          dotnet-version: "8.0.x"
 
       - name: Install dependencies
         run: dotnet restore managed/CounterStrikeSharp.sln
@@ -220,68 +220,15 @@ jobs:
           (cd build/linux && zip -qq -r ../../counterstrikesharp-linux-${{ needs.setup.outputs.gitversion_semver }}.zip *)
           (cd build/windows && zip -qq -r ../../counterstrikesharp-windows-${{ needs.setup.outputs.gitversion_semver }}.zip *)
 
-      - name: Add dotnet runtime (Linux)
-        shell: bash
+      - name: Add dotnet runtime
         run: |
-          DOTNET_ROOT="${DOTNET_ROOT:-$(dirname "$(readlink -f "$(command -v dotnet)")")}"\
-          
-          if [ ! -d "$DOTNET_ROOT/shared" ]; then
-            echo "Expected shared runtime at $DOTNET_ROOT/shared but it was not found." >&2
-            ls -la "$DOTNET_ROOT" || true
-            exit 1
-          fi
+          mkdir -p build/linux/addons/counterstrikesharp/dotnet
+          curl -s -L https://download.visualstudio.microsoft.com/download/pr/c1371dc2-eed2-47be-9af3-ae060dbe3c7d/bd509e0a87629764ed47608466d183e6/aspnetcore-runtime-8.0.3-linux-x64.tar.gz \
+          | tar xvz -C build/linux/addons/counterstrikesharp/dotnet
 
-          echo "Using DOTNET_ROOT=$DOTNET_ROOT"
-          dotnet --list-runtimes
-
-          DOTNET_VERSION_NETCORE="8.0.3"
-          DOTNET_VERSION_ASPNET="8.0.3"
-          DOTNET_VERSION_FXR="8.0.3"
-
-          echo "DOTNET_VERSION_NETCORE=$DOTNET_VERSION_NETCORE" >> $GITHUB_ENV
-          echo "DOTNET_VERSION_ASPNET=$DOTNET_VERSION_ASPNET" >> $GITHUB_ENV
-          echo "DOTNET_VERSION_FXR=$DOTNET_VERSION_FXR" >> $GITHUB_ENV
-
-          mkdir -p build/linux/addons/counterstrikesharp/dotnet/shared/Microsoft.NETCore.App
-          mkdir -p build/linux/addons/counterstrikesharp/dotnet/shared/Microsoft.AspNetCore.App
-          mkdir -p build/linux/addons/counterstrikesharp/dotnet/host/fxr
-
-          cp -r "$DOTNET_ROOT/shared/Microsoft.NETCore.App/$DOTNET_VERSION_NETCORE" build/linux/addons/counterstrikesharp/dotnet/shared/Microsoft.NETCore.App/
-          cp -r "$DOTNET_ROOT/shared/Microsoft.AspNetCore.App/$DOTNET_VERSION_ASPNET" build/linux/addons/counterstrikesharp/dotnet/shared/Microsoft.AspNetCore.App/
-          cp -r "$DOTNET_ROOT/host/fxr/$DOTNET_VERSION_FXR" build/linux/addons/counterstrikesharp/dotnet/host/fxr/
-
-      - name: Download and add dotnet runtime (Windows)
-        shell: bash
-        run: |
-          echo "Downloading Windows .NET runtime ${{ env.DOTNET_VERSION_NETCORE }}"
-          
-          # Download Windows runtime packages
-          wget -q "https://dotnetcli.azureedge.net/dotnet/Runtime/${{ env.DOTNET_VERSION_NETCORE }}/dotnet-runtime-${{ env.DOTNET_VERSION_NETCORE }}-win-x64.zip" -O /tmp/dotnet-runtime-win.zip
-          wget -q "https://dotnetcli.azureedge.net/dotnet/aspnetcore/Runtime/${{ env.DOTNET_VERSION_ASPNET }}/aspnetcore-runtime-${{ env.DOTNET_VERSION_ASPNET }}-win-x64.zip" -O /tmp/aspnetcore-runtime-win.zip
-          
-          # Extract to temp directory
-          mkdir -p /tmp/dotnet-win
-          unzip -q /tmp/dotnet-runtime-win.zip -d /tmp/dotnet-win
-          unzip -q -o /tmp/aspnetcore-runtime-win.zip -d /tmp/dotnet-win
-          
-          # Create Windows runtime directories
-          mkdir -p build/windows/addons/counterstrikesharp/dotnet/shared/Microsoft.NETCore.App
-          mkdir -p build/windows/addons/counterstrikesharp/dotnet/shared/Microsoft.AspNetCore.App
-          mkdir -p build/windows/addons/counterstrikesharp/dotnet/host/fxr
-          
-          # Copy Windows runtime files
-          cp -r /tmp/dotnet-win/shared/Microsoft.NETCore.App/${{ env.DOTNET_VERSION_NETCORE }} build/windows/addons/counterstrikesharp/dotnet/shared/Microsoft.NETCore.App/
-          cp -r /tmp/dotnet-win/shared/Microsoft.AspNetCore.App/${{ env.DOTNET_VERSION_ASPNET }} build/windows/addons/counterstrikesharp/dotnet/shared/Microsoft.AspNetCore.App/
-          cp -r /tmp/dotnet-win/host/fxr/${{ env.DOTNET_VERSION_FXR }} build/windows/addons/counterstrikesharp/dotnet/host/fxr/
-          
-          # Verify hostfxr.dll exists
-          if [ ! -f "build/windows/addons/counterstrikesharp/dotnet/host/fxr/${{ env.DOTNET_VERSION_FXR }}/hostfxr.dll" ]; then
-            echo "ERROR: hostfxr.dll not found after extraction!"
-            ls -la build/windows/addons/counterstrikesharp/dotnet/host/fxr/${{ env.DOTNET_VERSION_FXR }}/
-            exit 1
-          fi
-          
-          echo "Successfully added Windows runtime with hostfxr.dll"
+          mkdir -p build/windows/addons/counterstrikesharp/dotnet
+          curl -s -L https://download.visualstudio.microsoft.com/download/pr/086d1dd6-57a5-437a-a1ef-549cf702fb48/dd4a8fe6c53a1016a414d6f2925c1323/aspnetcore-runtime-8.0.3-win-x64.zip -o dotnet.zip
+          unzip -qq dotnet.zip -d build/windows/addons/counterstrikesharp/dotnet
 
       - name: Zip Builds
         run: |
