@@ -1,6 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
+        <RuntimeFrameworkVersion>8.0.3</RuntimeFrameworkVersion>
+        <AspNetCoreRuntimeFrameworkVersion>8.0.3</AspNetCoreRuntimeFrameworkVersion>
+        <RollForward>Disable</RollForward>
+        <TargetLatestRuntimePatch>false</TargetLatestRuntimePatch>
         <EnableDynamicLoading>true</EnableDynamicLoading>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <GenerateCompatibilitySuppressionFile>true</GenerateCompatibilitySuppressionFile>

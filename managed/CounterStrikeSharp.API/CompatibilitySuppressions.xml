@@ -1449,6 +1449,18 @@
   </Suppression>
   <Suppression>
     <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:CounterStrikeSharp.API.Core.CCSGameRules.get_CTSpawnPoints</Target>
+    <Left>./ApiCompat/v202.dll</Left>
+    <Right>obj/Release/net8.0/CounterStrikeSharp.API.dll</Right>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:CounterStrikeSharp.API.Core.CCSGameRules.get_CTSpawnPointsMasterList</Target>
+    <Left>./ApiCompat/v202.dll</Left>
+    <Right>obj/Release/net8.0/CounterStrikeSharp.API.dll</Right>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
     <Target>M:CounterStrikeSharp.API.Core.CCSGameRules.get_DontIncrementCoopWave</Target>
     <Left>./ApiCompat/v202.dll</Left>
     <Right>obj/Release/net8.0/CounterStrikeSharp.API.dll</Right>
@@ -1570,6 +1582,18 @@
   <Suppression>
     <DiagnosticId>CP0002</DiagnosticId>
     <Target>M:CounterStrikeSharp.API.Core.CCSGameRules.get_SpawnedTerrorHuntHeavy</Target>
+    <Left>./ApiCompat/v202.dll</Left>
+    <Right>obj/Release/net8.0/CounterStrikeSharp.API.dll</Right>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:CounterStrikeSharp.API.Core.CCSGameRules.get_TerroristSpawnPoints</Target>
+    <Left>./ApiCompat/v202.dll</Left>
+    <Right>obj/Release/net8.0/CounterStrikeSharp.API.dll</Right>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:CounterStrikeSharp.API.Core.CCSGameRules.get_TerroristSpawnPointsMasterList</Target>
     <Left>./ApiCompat/v202.dll</Left>
     <Right>obj/Release/net8.0/CounterStrikeSharp.API.dll</Right>
   </Suppression>
@@ -3262,6 +3286,12 @@
   <Suppression>
     <DiagnosticId>CP0002</DiagnosticId>
     <Target>M:CounterStrikeSharp.API.Core.CMarkupVolumeWithRef.get_RefPos</Target>
+    <Left>./ApiCompat/v202.dll</Left>
+    <Right>obj/Release/net8.0/CounterStrikeSharp.API.dll</Right>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:CounterStrikeSharp.API.Core.CMolotovProjectile.get_HasBouncedOffPlayer</Target>
     <Left>./ApiCompat/v202.dll</Left>
     <Right>obj/Release/net8.0/CounterStrikeSharp.API.dll</Right>
   </Suppression>

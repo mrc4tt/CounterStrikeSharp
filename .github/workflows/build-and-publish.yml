@@ -137,7 +137,7 @@ jobs:
       - name: Build runtime v${{ needs.setup.outputs.gitversion_semver }}
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: "8.0.x"
+          dotnet-version: "8.0.3"
 
       - name: Install dependencies
         run: dotnet restore managed/CounterStrikeSharp.sln
@@ -205,7 +205,7 @@ jobs:
       - name: Setup .NET 8 runtime
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 8.0.x
+          dotnet-version: 8.0.3
 
       # TODO: This stuff should really be in a matrix
       - name: Add API to Artifacts
@@ -234,26 +234,21 @@ jobs:
           echo "Using DOTNET_ROOT=$DOTNET_ROOT"
           dotnet --list-runtimes
 
-          latest_netcore=$(dotnet --list-runtimes | awk '/Microsoft.NETCore.App 8\./{print $2}' | sort -V | tail -1)
-          latest_aspnet=$(dotnet --list-runtimes | awk '/Microsoft.AspNetCore.App 8\./{print $2}' | sort -V | tail -1)
-          latest_fxr=$(ls "$DOTNET_ROOT/host/fxr" | grep '^8\.' | sort -V | tail -1)
+          DOTNET_VERSION_NETCORE="8.0.3"
+          DOTNET_VERSION_ASPNET="8.0.3"
+          DOTNET_VERSION_FXR="8.0.3"
 
-          if [ -z "$latest_netcore" ] || [ -z "$latest_aspnet" ] || [ -z "$latest_fxr" ]; then
-            echo "Could not determine latest 8.x runtime versions." >&2
-            exit 1
-          fi
-
-          echo "DOTNET_VERSION_NETCORE=$latest_netcore" >> $GITHUB_ENV
-          echo "DOTNET_VERSION_ASPNET=$latest_aspnet" >> $GITHUB_ENV
-          echo "DOTNET_VERSION_FXR=$latest_fxr" >> $GITHUB_ENV
+          echo "DOTNET_VERSION_NETCORE=$DOTNET_VERSION_NETCORE" >> $GITHUB_ENV
+          echo "DOTNET_VERSION_ASPNET=$DOTNET_VERSION_ASPNET" >> $GITHUB_ENV
+          echo "DOTNET_VERSION_FXR=$DOTNET_VERSION_FXR" >> $GITHUB_ENV
 
           mkdir -p build/linux/addons/counterstrikesharp/dotnet/shared/Microsoft.NETCore.App
           mkdir -p build/linux/addons/counterstrikesharp/dotnet/shared/Microsoft.AspNetCore.App
           mkdir -p build/linux/addons/counterstrikesharp/dotnet/host/fxr
 
-          cp -r "$DOTNET_ROOT/shared/Microsoft.NETCore.App/$latest_netcore" build/linux/addons/counterstrikesharp/dotnet/shared/Microsoft.NETCore.App/
-          cp -r "$DOTNET_ROOT/shared/Microsoft.AspNetCore.App/$latest_aspnet" build/linux/addons/counterstrikesharp/dotnet/shared/Microsoft.AspNetCore.App/
-          cp -r "$DOTNET_ROOT/host/fxr/$latest_fxr" build/linux/addons/counterstrikesharp/dotnet/host/fxr/
+          cp -r "$DOTNET_ROOT/shared/Microsoft.NETCore.App/$DOTNET_VERSION_NETCORE" build/linux/addons/counterstrikesharp/dotnet/shared/Microsoft.NETCore.App/
+          cp -r "$DOTNET_ROOT/shared/Microsoft.AspNetCore.App/$DOTNET_VERSION_ASPNET" build/linux/addons/counterstrikesharp/dotnet/shared/Microsoft.AspNetCore.App/
+          cp -r "$DOTNET_ROOT/host/fxr/$DOTNET_VERSION_FXR" build/linux/addons/counterstrikesharp/dotnet/host/fxr/
 
       - name: Download and add dotnet runtime (Windows)
         shell: bash
