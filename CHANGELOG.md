@@ -1,3 +1,6 @@
+## What's Changed in v1.0.370
+* . ([c5d793c](https://github.com/mrc4tt/CounterStrikeSharp/commit/c5d793ce006e9314221d499507dd861746c57fa9))
+
 ## What's Changed in v1.0.369
 * test2 ([9a86a95](https://github.com/mrc4tt/CounterStrikeSharp/commit/9a86a957ea0b5996ea3a8f00b77d38d58b5d3f0f))
 * test ([4c2daf4](https://github.com/mrc4tt/CounterStrikeSharp/commit/4c2daf41c9af8ce7ff5c407293ec420eb54211e2))
