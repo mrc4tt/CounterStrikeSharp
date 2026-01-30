@@ -1,3 +1,8 @@
+## What's Changed in v1.0.369
+* test2 ([9a86a95](https://github.com/mrc4tt/CounterStrikeSharp/commit/9a86a957ea0b5996ea3a8f00b77d38d58b5d3f0f))
+* test ([4c2daf4](https://github.com/mrc4tt/CounterStrikeSharp/commit/4c2daf41c9af8ce7ff5c407293ec420eb54211e2))
+* . ([520a54c](https://github.com/mrc4tt/CounterStrikeSharp/commit/520a54cb18846c6fa6bf6f5289d87fe2e7a08254))
+
 ## What's Changed in v1.0.368
 * fix format again ([cfeb30f](https://github.com/mrc4tt/CounterStrikeSharp/commit/cfeb30fa78049639df1c5c637252252b99015cba))
 * revert back to use 8.0.3 hostfxr ([2910e70](https://github.com/mrc4tt/CounterStrikeSharp/commit/2910e708fa19ab1ce55cad8ee605faa34d7ff069))
