@@ -5,6 +5,7 @@
 #include <sourcehook/sourcehook.h>
 
 #include <memory>
+#include <atomic>
 #include <thread>
 
 #include "ISmmAPI.h"
@@ -125,7 +126,7 @@ typedef void* NetworkStateChanged_t(void* chainEntity, CNetworkStateChangedInfo&
 
 static void DetourGameEventManagerInit(IGameEventManager2* gameEventManager);
 
-extern bool gameLoopInitialized;
+extern std::atomic<bool> gameLoopInitialized;
 extern GetLegacyGameEventListener_t* GetLegacyGameEventListener;
 inline NetworkStateChanged_t* NetworkStateChanged = nullptr;
 extern std::thread::id gameThreadId;

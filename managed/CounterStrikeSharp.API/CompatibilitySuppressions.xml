@@ -1599,6 +1599,12 @@
   </Suppression>
   <Suppression>
     <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:CounterStrikeSharp.API.Core.CCSPlayer_ItemServices.DropActivePlayerWeapon(CounterStrikeSharp.API.Core.CBasePlayerWeapon)</Target>
+    <Left>./ApiCompat/v202.dll</Left>
+    <Right>obj/Release/net8.0/CounterStrikeSharp.API.dll</Right>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
     <Target>M:CounterStrikeSharp.API.Core.CCSPlayer_ItemServices.get_HasHeavyArmor</Target>
     <Left>./ApiCompat/v202.dll</Left>
     <Right>obj/Release/net8.0/CounterStrikeSharp.API.dll</Right>
@@ -1672,6 +1678,12 @@
   <Suppression>
     <DiagnosticId>CP0002</DiagnosticId>
     <Target>M:CounterStrikeSharp.API.Core.CCSPlayerController_InGameMoneyServices.get_AccountMoneyEarnedForNextRound</Target>
+    <Left>./ApiCompat/v202.dll</Left>
+    <Right>obj/Release/net8.0/CounterStrikeSharp.API.dll</Right>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:CounterStrikeSharp.API.Core.CCSPlayerController.DropActiveWeapon</Target>
     <Left>./ApiCompat/v202.dll</Left>
     <Right>obj/Release/net8.0/CounterStrikeSharp.API.dll</Right>
   </Suppression>

@@ -89,8 +89,9 @@ public partial class CCSPlayerController
     /// <summary>
     /// Drops the active player weapon on the ground.
     /// </summary>
+    /// <param name="vecDropMomentum">Optional drop momentum vector. Defaults to zero vector.</param>
     /// <exception cref="InvalidOperationException">Entity is not valid</exception>
-    public void DropActiveWeapon()
+    public void DropActiveWeapon(Vector? vecDropMomentum = null)
     {
         Guard.IsValidEntity(this);
 
@@ -99,7 +100,7 @@ public partial class CCSPlayerController
 
         if (activeWeapon == null || itemServices == null) return;
 
-        itemServices.DropActivePlayerWeapon(activeWeapon);
+        itemServices.DropActivePlayerWeapon(activeWeapon, vecDropMomentum);
     }
 
     /// <summary>

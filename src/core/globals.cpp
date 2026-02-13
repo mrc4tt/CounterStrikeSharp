@@ -91,7 +91,7 @@ VoiceManager voiceManager;
 TickScheduler tickScheduler;
 UserMessageManager userMessageManager;
 
-bool gameLoopInitialized = false;
+std::atomic<bool> gameLoopInitialized{false};
 GetLegacyGameEventListener_t* GetLegacyGameEventListener = nullptr;
 GameEventManagerInit_t* GameEventManagerInit = nullptr;
 std::thread::id gameThreadId;

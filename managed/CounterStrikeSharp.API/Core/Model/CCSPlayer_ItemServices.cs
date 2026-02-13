@@ -25,15 +25,19 @@ public partial class CCSPlayer_ItemServices
     /// <summary>
     /// Drops the active player weapon on the ground.
     /// </summary>
+    /// <param name="activeWeapon">The weapon to drop</param>
+    /// <param name="vecDropMomentum">Optional drop momentum vector. Defaults to zero vector (no momentum).</param>
     /// <exception cref="InvalidOperationException">ItemServices points to null</exception>
-    public void DropActivePlayerWeapon(CBasePlayerWeapon activeWeapon)
+    public void DropActivePlayerWeapon(CBasePlayerWeapon activeWeapon, Vector? vecDropMomentum = null)
     {
         if(Handle == IntPtr.Zero)
             throw new InvalidOperationException("ItemServices points to null.");
 
         Guard.IsValidEntity(activeWeapon);
 
-        VirtualFunction.CreateVoid<nint, nint>(Handle, GameData.GetOffset("CCSPlayer_ItemServices_DropActivePlayerWeapon"))(Handle, activeWeapon.Handle);
+        vecDropMomentum ??= new Vector(0, 0, 0);
+
+        VirtualFunction.CreateVoid<nint, nint, nint>(Handle, GameData.GetOffset("CCSPlayer_ItemServices_DropActivePlayerWeapon"))(Handle, activeWeapon.Handle, vecDropMomentum.Handle);
     }
 
     /// <summary>

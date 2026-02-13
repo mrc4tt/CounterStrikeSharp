@@ -279,9 +279,11 @@ void CounterStrikeSharpMMPlugin::Hook_RegisterLoopMode(const char* pszLoopModeNa
 {
     if (strcmp(pszLoopModeName, "game") == 0)
     {
-        if (!globals::gameLoopInitialized) globals::gameLoopInitialized = true;
-
-        CALL_GLOBAL_LISTENER(OnGameLoopInitialized());
+        bool expected = false;
+        if (globals::gameLoopInitialized.compare_exchange_strong(expected, true))
+        {
+            CALL_GLOBAL_LISTENER(OnGameLoopInitialized());
+        }
     }
 }
 
