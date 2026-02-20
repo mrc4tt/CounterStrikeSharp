@@ -1,3 +1,7 @@
+## What's Changed in v1.0.371
+* Fix entity error ([46b0974](https://github.com/mrc4tt/CounterStrikeSharp/commit/46b0974111ec1fb7e6be7cd959bbcba7ca405759))
+* patch ([205d173](https://github.com/mrc4tt/CounterStrikeSharp/commit/205d173a23bc787481bceee5ebd5498af65ac72e))
+
 ## What's Changed in v1.0.370
 * . ([c5d793c](https://github.com/mrc4tt/CounterStrikeSharp/commit/c5d793ce006e9314221d499507dd861746c57fa9))
 
