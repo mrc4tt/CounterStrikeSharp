@@ -1,3 +1,6 @@
+## What's Changed in v1.0.372
+* gamedata upd ([00a416b](https://github.com/mrc4tt/CounterStrikeSharp/commit/00a416bc385cebb3a3655bf86c957c9b53da6f6b))
+
 ## What's Changed in v1.0.371
 * Fix entity error ([46b0974](https://github.com/mrc4tt/CounterStrikeSharp/commit/46b0974111ec1fb7e6be7cd959bbcba7ca405759))
 * patch ([205d173](https://github.com/mrc4tt/CounterStrikeSharp/commit/205d173a23bc787481bceee5ebd5498af65ac72e))
