@@ -1,3 +1,6 @@
+## What's Changed in v1.0.373
+* test unsafe fix ([fcbfba4](https://github.com/mrc4tt/CounterStrikeSharp/commit/fcbfba4c590915b2ada736e7b9e39e41d169bdfc))
+
 ## What's Changed in v1.0.372
 * gamedata upd ([00a416b](https://github.com/mrc4tt/CounterStrikeSharp/commit/00a416bc385cebb3a3655bf86c957c9b53da6f6b))
 
