@@ -72,8 +72,11 @@ public static class EntitySystem
         if (pointer == IntPtr.Zero)
             return InvalidEHandleIndex;
 
-        return Schema.GetPointer<CEntityIdentity?>(pointer, "CEntityInstance", "m_pEntity")?.EntityHandle.Raw ??
-               InvalidEHandleIndex;
+        // Delegate to the native side which safely calls GetRefEHandle() on the
+        // engine entity. The previous managed implementation chased raw pointers
+        // through Schema (m_pEntity → identity + 0x10) which crashes with an
+        // uncatchable AccessViolationException if the entity pointer is stale.
+        return NativeAPI.GetRefFromEntityPointer(pointer);
     }
 
 }
