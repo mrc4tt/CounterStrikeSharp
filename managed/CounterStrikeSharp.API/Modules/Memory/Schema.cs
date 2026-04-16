@@ -6,12 +6,15 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using CounterStrikeSharp.API.Core;
+using FastGenericNew;
 
 namespace CounterStrikeSharp.API.Modules.Memory;
 
 public class Schema
 {
-    private static Dictionary<Tuple<string, string>, short> _schemaOffsets = new();
+    record SchemaKey(string ClassName, string PropertyName);
+
+    private static Dictionary<SchemaKey, short> _schemaOffsets = new();
 
     private static HashSet<string> _cs2BadList = new HashSet<string>()
     {
@@ -52,7 +55,7 @@ public class Schema
         "m_nActiveCoinRank",
         "m_nMusicID",
     };
-    
+
     public static int GetClassSize(string className) => NativeAPI.GetSchemaClassSize(className);
 
     public static short GetSchemaOffset(string className, string propertyName)
@@ -62,7 +65,7 @@ public class Schema
             throw new Exception($"Cannot set or get '{className}::{propertyName}' with \"FollowCS2ServerGuidelines\" option enabled.");
         }
 
-        var key = new Tuple<string, string>(className, propertyName);
+        var key = new SchemaKey(className, propertyName);
         if (!_schemaOffsets.TryGetValue(key, out var offset))
         {
             offset = NativeAPI.GetSchemaOffset(className, propertyName);
@@ -71,7 +74,7 @@ public class Schema
 
         return offset;
     }
-    
+
     public static bool IsSchemaFieldNetworked(string className, string propertyName)
     {
         return NativeAPI.IsSchemaFieldNetworked(className, propertyName);
@@ -100,7 +103,7 @@ public class Schema
     {
         if (pointer == IntPtr.Zero) throw new ArgumentNullException(nameof(pointer), "Schema target points to null.");
 
-        return (T)Activator.CreateInstance(typeof(T), pointer + GetSchemaOffset(className, memberName));
+        return FastNew.CreateInstance<T, IntPtr>(pointer + GetSchemaOffset(className, memberName));
     }
 
     public static unsafe ref T GetRef<T>(IntPtr pointer, string className, string memberName)
@@ -118,7 +121,7 @@ public class Schema
             return default;
         }
 
-        return (T)Activator.CreateInstance(typeof(T), pointerTo);
+        return FastNew.CreateInstance<T, IntPtr>(pointerTo);
     }
 
     public static T GetPointer<T>(IntPtr pointer, string className, string memberName)
@@ -131,7 +134,7 @@ public class Schema
             return default;
         }
 
-        return (T)Activator.CreateInstance(typeof(T), pointerTo);
+        return FastNew.CreateInstance<T, IntPtr>(pointerTo);
     }
 
     public static unsafe Span<T> GetFixedArray<T>(IntPtr pointer, string className, string memberName, int count)
