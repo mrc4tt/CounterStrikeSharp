@@ -830,18 +830,18 @@ namespace CounterStrikeSharp.API.Core
 			}
 		}
 
-        public static T GetCommandParamValue<T>(string param, DataType datatype, T defaultvalue){
-			lock (ScriptContext.GlobalScriptContext.Lock) {
-			ScriptContext.GlobalScriptContext.Reset();
-			ScriptContext.GlobalScriptContext.PushString(param);
-			ScriptContext.GlobalScriptContext.PushPrimitive(datatype);
-			ScriptContext.GlobalScriptContext.Push(defaultvalue);
-			ScriptContext.GlobalScriptContext.SetIdentifier(0x748F302F);
-			ScriptContext.GlobalScriptContext.Invoke();
-			ScriptContext.GlobalScriptContext.CheckErrors();
-		        return ScriptContext.GlobalScriptContext.GetResultPrimitive<T>();
-			}
-		}
+public static T GetCommandParamValue<T>(string param, DataType datatype, T defaultvalue) where T : unmanaged {
+    lock (ScriptContext.GlobalScriptContext.Lock) {
+        ScriptContext.GlobalScriptContext.Reset();
+        ScriptContext.GlobalScriptContext.PushString(param);
+        ScriptContext.GlobalScriptContext.PushPrimitive(datatype);
+        ScriptContext.GlobalScriptContext.PushPrimitive(defaultvalue);
+        ScriptContext.GlobalScriptContext.SetIdentifier(0x748F302F);
+        ScriptContext.GlobalScriptContext.Invoke();
+        ScriptContext.GlobalScriptContext.CheckErrors();
+        return ScriptContext.GlobalScriptContext.GetResultPrimitive<T>();
+    }
+}
 
         public static bool FindCommandLineParam(string param){
 			lock (ScriptContext.GlobalScriptContext.Lock) {
