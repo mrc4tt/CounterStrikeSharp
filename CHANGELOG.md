@@ -1,4 +1,4 @@
-## What's Changed in v1.0.377
+## What's Changed in v1.0.378
 * node.js for act only ([6d518bb](https://github.com/mrc4tt/CounterStrikeSharp/commit/6d518bba243b9208ee422ded06bd34067e57ea6d))
 
 ## What's Changed in v1.0.376
