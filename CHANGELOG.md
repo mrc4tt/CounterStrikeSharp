@@ -1,3 +1,6 @@
+## What's Changed in v1.0.376
+* test new action ([d3f0fd1](https://github.com/mrc4tt/CounterStrikeSharp/commit/d3f0fd1530abfce10b3cd1fb9fbe41eca217f24b))
+
 ## What's Changed in v1.0.375
 * feat: update API.cs ([69a2382](https://github.com/mrc4tt/CounterStrikeSharp/commit/69a23820e33d179178092499134171aa3827616b))
 
@@ -1036,10 +1039,10 @@
 * feat: defers calls to `HookEvent` until after game loop mode init by [@roflmuffin](https://github.com/roflmuffin) ([d50a945](https://github.com/mrc4tt/CounterStrikeSharp/commit/d50a945317dcaf63add1b4f22d9a5d0e788a8354))
 
 ## What's Changed in v1.0.116
-* fix: discord links by [@roflmuffin](https://github.com/roflmuffin) ([55396e0](https://github.com/mrc4tt/CounterStrikeSharp/commit/55396e005c1be2b2421b655ca3ac9835f4c84846))
+* fix: discord links ([55396e0](https://github.com/mrc4tt/CounterStrikeSharp/commit/55396e005c1be2b2421b655ca3ac9835f4c84846))
 
 ## What's Changed in v1.0.115
-* Merge branch 'FixSteamIdOnWindowsServer' into main by [@roflmuffin](https://github.com/roflmuffin) ([98b2b01](https://github.com/mrc4tt/CounterStrikeSharp/commit/98b2b01992ce99054a5aac6dc5f2bafe818f2792))
+* Merge branch 'FixSteamIdOnWindowsServer' into main ([98b2b01](https://github.com/mrc4tt/CounterStrikeSharp/commit/98b2b01992ce99054a5aac6dc5f2bafe818f2792))
 * tests: update tests, throw out of range exception <= 0 by [@roflmuffin](https://github.com/roflmuffin) ([a537be8](https://github.com/mrc4tt/CounterStrikeSharp/commit/a537be89e41e05a6e76b0aefc31d5212b248eb0c))
 * Merge remote-tracking branch 'origin/main' into FixSteamIdOnWindowsServer by [@roflmuffin](https://github.com/roflmuffin) ([c07d5d2](https://github.com/mrc4tt/CounterStrikeSharp/commit/c07d5d2aa95ffddbb12e3f6869daab1a6bd66262))
 
@@ -1471,8 +1474,8 @@
 * feat: Adds Chat Triggers for Console Commands by [@roflmuffin](https://github.com/roflmuffin) ([e8903e5](https://github.com/mrc4tt/CounterStrikeSharp/commit/e8903e5590370342d984636a7f3a457a93de32bc))
 * add libicu readme hint by [@Apfelwurm](https://github.com/Apfelwurm) ([cb10d9b](https://github.com/mrc4tt/CounterStrikeSharp/commit/cb10d9b45795a0365e6b8db86f1251a968049a43))
 * Add license preamble by [@roflmuffin](https://github.com/roflmuffin) ([9b1a14b](https://github.com/mrc4tt/CounterStrikeSharp/commit/9b1a14bfbd893d691d44dd8e206abfa959cc3e85))
-* Create ACKNOWLEDGEMENTS by [@roflmuffin](https://github.com/roflmuffin) ([adde012](https://github.com/mrc4tt/CounterStrikeSharp/commit/adde0128c6838fda5841a5544dd470fa8ba81b7e))
-* fix: remove trace logs by [@roflmuffin](https://github.com/roflmuffin) ([0bee31f](https://github.com/mrc4tt/CounterStrikeSharp/commit/0bee31f7260bcf5aaf91ae020af18a5491906c49))
+* Create ACKNOWLEDGEMENTS ([adde012](https://github.com/mrc4tt/CounterStrikeSharp/commit/adde0128c6838fda5841a5544dd470fa8ba81b7e))
+* fix: remove trace logs ([0bee31f](https://github.com/mrc4tt/CounterStrikeSharp/commit/0bee31f7260bcf5aaf91ae020af18a5491906c49))
 * Update README.md by [@roflmuffin](https://github.com/roflmuffin) ([2d97845](https://github.com/mrc4tt/CounterStrikeSharp/commit/2d978453118c08729ff1b919183872233242a69f))
 * fix: `OnMapEnd` listener now fires correctly on `changelevel` by [@roflmuffin](https://github.com/roflmuffin) ([90ea024](https://github.com/mrc4tt/CounterStrikeSharp/commit/90ea02465e4506577458d454ba1600fb47471848))
 * feat: add `CommitSuicide` vfunc method by [@roflmuffin](https://github.com/roflmuffin) ([369e7c6](https://github.com/mrc4tt/CounterStrikeSharp/commit/369e7c6aa9905dce03e87719ba47754a75fc2d0a))
