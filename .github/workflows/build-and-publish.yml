@@ -54,6 +54,22 @@ jobs:
     container:
       image: registry.gitlab.steamos.cloud/steamrt/sniper/sdk:latest
     steps:
+      # GitHub injects a node runtime into custom containers automatically; act
+      # does not. JS-based actions (checkout, upload-artifact, etc.) need node,
+      # so install it ourselves when running under act.
+      - name: Install Node.js (act only)
+        if: ${{ env.ACT == 'true' }}
+        shell: bash
+        run: |
+          if ! command -v node >/dev/null 2>&1; then
+            echo "Installing node.js for act..."
+            apt-get update
+            apt-get install -y curl ca-certificates
+            curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
+            apt-get install -y nodejs
+            node --version
+          fi
+
       - name: Prepare env
         shell: bash
         run: |
