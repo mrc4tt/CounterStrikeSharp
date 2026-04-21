@@ -1,3 +1,6 @@
+## What's Changed in v1.0.375
+* feat: update API.cs ([69a2382](https://github.com/mrc4tt/CounterStrikeSharp/commit/69a23820e33d179178092499134171aa3827616b))
+
 ## What's Changed in v1.0.374
 * ag2 update-test (gamedata LINUX only updated) ([d5845aa](https://github.com/mrc4tt/CounterStrikeSharp/commit/d5845aa6a50c63fefb9a7bdf5c75a9aa187d4b38))
 * testing ([6398b28](https://github.com/mrc4tt/CounterStrikeSharp/commit/6398b28aa2634d5994a51a936b702ee49b2f33ac))
