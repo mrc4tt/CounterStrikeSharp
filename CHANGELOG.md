@@ -1,3 +1,6 @@
+## What's Changed in v1.0.377
+* node.js for act only ([6d518bb](https://github.com/mrc4tt/CounterStrikeSharp/commit/6d518bba243b9208ee422ded06bd34067e57ea6d))
+
 ## What's Changed in v1.0.376
 * test new action ([d3f0fd1](https://github.com/mrc4tt/CounterStrikeSharp/commit/d3f0fd1530abfce10b3cd1fb9fbe41eca217f24b))
 
