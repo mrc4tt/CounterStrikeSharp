@@ -1,3 +1,10 @@
+## What's Changed in v1.0.374
+* ag2 update-test (gamedata LINUX only updated) ([d5845aa](https://github.com/mrc4tt/CounterStrikeSharp/commit/d5845aa6a50c63fefb9a7bdf5c75a9aa187d4b38))
+* testing ([6398b28](https://github.com/mrc4tt/CounterStrikeSharp/commit/6398b28aa2634d5994a51a936b702ee49b2f33ac))
+* devtest-fixmanaged ([994d603](https://github.com/mrc4tt/CounterStrikeSharp/commit/994d6030bd20319643ea9c9a2740bb3c2c2b7951))
+* Test dev ([62ee568](https://github.com/mrc4tt/CounterStrikeSharp/commit/62ee56821454224fa3750a7aa56baa525d7316ea))
+* forgot gamedata update ops ([d89f292](https://github.com/mrc4tt/CounterStrikeSharp/commit/d89f292e528a2f87d134fc1692e4a6fd3ed34170))
+
 ## What's Changed in v1.0.373
 * test unsafe fix ([fcbfba4](https://github.com/mrc4tt/CounterStrikeSharp/commit/fcbfba4c590915b2ada736e7b9e39e41d169bdfc))
 
