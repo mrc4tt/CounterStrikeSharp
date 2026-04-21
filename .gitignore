@@ -4,6 +4,9 @@ cmake-build-*/
 .kdev4/
 !**/protobuf/generated/
 
+# Local credentials for eng/update-schema.sh
+.env
+
 # configure_file auto generated.
 configs/addons/metamod/counterstrikesharp.vdf
 

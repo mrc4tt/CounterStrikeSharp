@@ -26,6 +26,8 @@ bool InitGameSystems();
 
 class CGameSystem : public CBaseGameSystem
 {
+    DECLARE_GAME_SYSTEM();
+
   public:
     GS_EVENT(BuildGameSessionManifest);
     GS_EVENT(ServerPreEntityThink);
