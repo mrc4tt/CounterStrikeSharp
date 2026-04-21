@@ -1,0 +1,152 @@
+name: Build Windows & Append to Release
+
+env:
+  BUILD_TYPE: Release
+
+permissions: {}
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    outputs:
+      gitversion_semver: ${{ steps.gitversion.outputs.semVer }}
+      gitversion_fullsemver: ${{ steps.gitversion.outputs.fullSemVer }}
+      gitversion_assemblysemver: ${{ steps.gitversion.outputs.assemblySemVer }}
+      gitversion_informationalversion: ${{ steps.gitversion.outputs.informationalVersion }}
+    steps:
+      - name: Install GitVersion
+        uses: gittools/actions/gitversion/setup@v1
+        with:
+          versionSpec: 6.0.x
+
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Execute GitVersion
+        id: gitversion
+        uses: gittools/actions/gitversion/execute@v1
+        with:
+          useConfigFile: true
+
+  build_windows:
+    needs: setup
+    runs-on: windows-latest
+    steps:
+      - name: Prepare env
+        shell: bash
+        run: |
+          echo "GITHUB_SHA_SHORT=${GITHUB_SHA::7}" >> $GITHUB_ENV
+          echo "SEMVER=${{ needs.setup.outputs.gitversion_semver }}" >> $GITHUB_ENV
+
+      - name: Visual Studio environment
+        shell: cmd
+        run: |
+          :: See https://github.com/microsoft/vswhere/wiki/Find-VC
+          for /f "usebackq delims=*" %%i in (`vswhere -latest -property installationPath`) do (
+            call "%%i"\Common7\Tools\vsdevcmd.bat -arch=x64 -host_arch=x64
+          )
+
+          :: Loop over all environment variables and make them global.
+          for /f "delims== tokens=1,2" %%a in ('set') do (
+            echo>>"%GITHUB_ENV%" %%a=%%b
+          )
+
+      - uses: actions/checkout@v4
+        with:
+          submodules: "recursive"
+
+      - name: Build
+        run: |
+          mkdir -p build
+          cd build
+          cmake -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} ..
+          cmake --build . --config ${{env.BUILD_TYPE}} -- /m:16
+
+      - name: Clean build directory
+        run: |
+          mkdir -p build/addons/counterstrikesharp/bin/win64
+          mv build/${{env.BUILD_TYPE}}/*.dll build/addons/counterstrikesharp/bin/win64
+          mkdir build/output/
+          mv build/addons build/output
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: counterstrikesharp-windows-${{ needs.setup.outputs.gitversion_semver }}
+          path: build/output/
+
+  build_managed:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: Install dependencies
+        run: dotnet restore managed/CounterStrikeSharp.sln
+
+      - name: Publish
+        run: |
+          dotnet publish -c Release \
+            /p:Version=${{ needs.setup.outputs.gitversion_semver }} \
+            /p:AssemblyVersion=${{ needs.setup.outputs.gitversion_assemblySemver }} \
+            /p:InformationalVersion=${{ needs.setup.outputs.gitversion_informationalversion }} \
+            managed/CounterStrikeSharp.API
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: counterstrikesharp-api-${{ needs.setup.outputs.gitversion_semver }}
+          path: managed/CounterStrikeSharp.API/bin/Release
+
+  publish_windows:
+    if: ${{ startsWith(github.ref, 'refs/tags/v') && github.repository == 'mrc4tt/CounterStrikeSharp' }}
+    permissions:
+      contents: write
+    needs: ["setup", "build_windows", "build_managed"]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: counterstrikesharp-windows-${{ needs.setup.outputs.gitversion_semver }}
+          path: build/windows
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: counterstrikesharp-api-${{ needs.setup.outputs.gitversion_semver }}
+          path: build/api
+
+      - name: Add API to Windows artifacts
+        run: |
+          mkdir -p build/windows/addons/counterstrikesharp/api
+          cp -r build/api/net8.0/publish/* build/windows/addons/counterstrikesharp/api
+
+      - name: Zip Windows (runtimeless)
+        run: (cd build/windows && zip -qq -r ../../counterstrikesharp-windows-${{ needs.setup.outputs.gitversion_semver }}.zip *)
+
+      - name: Add dotnet runtime
+        run: |
+          mkdir -p build/windows/addons/counterstrikesharp/dotnet
+          curl -s -L https://download.visualstudio.microsoft.com/download/pr/086d1dd6-57a5-437a-a1ef-549cf702fb48/dd4a8fe6c53a1016a414d6f2925c1323/aspnetcore-runtime-8.0.3-win-x64.zip -o dotnet.zip
+          unzip -qq dotnet.zip -d build/windows/addons/counterstrikesharp/dotnet
+
+      - name: Zip Windows (with runtime)
+        run: (cd build/windows && zip -qq -r ../../counterstrikesharp-with-runtime-windows-${{ needs.setup.outputs.gitversion_semver }}.zip *)
+
+      - name: Append to Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            counterstrikesharp-windows-${{ needs.setup.outputs.gitversion_semver }}.zip
+            counterstrikesharp-with-runtime-windows-${{ needs.setup.outputs.gitversion_semver }}.zip

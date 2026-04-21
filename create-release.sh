@@ -4,6 +4,7 @@ set -e
 
 DRY_RUN=false
 BETA=false
+NO_LOCAL=false
 
 # Parse command line arguments
 for arg in "$@"; do
@@ -18,10 +19,81 @@ for arg in "$@"; do
             echo "Running in BETA mode - will create pre-release version"
             shift
             ;;
+        --no-local|-n)
+            NO_LOCAL=true
+            echo "Skipping local Linux build via act - only Windows will be built (by GitHub Actions)"
+            shift
+            ;;
         *)
             ;;
     esac
 done
+
+# Runs the Linux + managed build locally via act and appends the Linux zips
+# to the GitHub release. GitHub Actions handles the Windows half on tag push
+# (.github/workflows/build-windows.yml), so this covers the remaining half.
+run_local_linux_build() {
+    local tag="$1"
+
+    if [ "$NO_LOCAL" = true ]; then
+        echo "Skipping local Linux build (--no-local)."
+        echo "Reminder: run it later with:"
+        echo "   act workflow_dispatch -W .github/workflows/build-and-publish.yml \\"
+        echo "       --input confirm_local=LOCAL \\"
+        echo "       -P ubuntu-latest=catthehacker/ubuntu:full-latest \\"
+        echo "       --artifact-server-path /tmp/act-artifacts \\"
+        echo "       -s GITHUB_TOKEN=\$(gh auth token)"
+        return 0
+    fi
+
+    if ! command -v act &> /dev/null; then
+        echo "⚠️  act not installed - skipping local Linux build."
+        echo "   Install: https://github.com/nektos/act"
+        echo "   Then run the command printed above to append Linux zips to $tag."
+        return 0
+    fi
+
+    if ! docker info &> /dev/null; then
+        echo "⚠️  Docker not running - skipping local Linux build."
+        echo "   Start Docker and run act manually to append Linux zips to $tag."
+        return 0
+    fi
+
+    if ! command -v gh &> /dev/null; then
+        echo "⚠️  gh CLI not found - cannot fetch GITHUB_TOKEN for act."
+        return 0
+    fi
+
+    local token
+    token=$(gh auth token 2>/dev/null || true)
+    if [ -z "$token" ]; then
+        echo "⚠️  gh auth token returned empty - run 'gh auth login' first."
+        return 0
+    fi
+
+    local artifact_dir
+    artifact_dir=$(mktemp -d -t act-artifacts-XXXXXX)
+
+    echo ""
+    echo "Running local Linux build via act (this takes a few minutes)..."
+    echo "   Artifacts: $artifact_dir"
+    echo ""
+
+    if act workflow_dispatch \
+        -W .github/workflows/build-and-publish.yml \
+        --input confirm_local=LOCAL \
+        -P ubuntu-latest=catthehacker/ubuntu:full-latest \
+        --artifact-server-path "$artifact_dir" \
+        -s GITHUB_TOKEN="$token"; then
+        echo "✅ Linux zips appended to release $tag"
+    else
+        echo "⚠️  act run failed. The GitHub release exists; Windows zips will still"
+        echo "   be uploaded by the GitHub workflow. Re-run act manually to add Linux."
+    fi
+
+    rm -rf "$artifact_dir"
+    return 0
+}
 
 echo "Starting automated release process..."
 
@@ -191,8 +263,12 @@ Download the latest stable build from the assets below."; then
                 echo "   Install it from: https://cli.github.com/"
             fi
         fi
+
+        # GitHub Actions is now handling the Windows build (build-windows.yml);
+        # run act locally to build Linux + managed and append to the same release.
+        run_local_linux_build "$NEW_TAG"
     fi
-    
+
     echo ""
     echo "=========================================="
     echo "Release $NEW_TAG completed successfully!"
@@ -208,8 +284,14 @@ Download the latest stable build from the assets below."; then
     else
         echo "   - Commit pushed: Yes"
         echo "   - Tag created and pushed: Yes"
+        echo "   - Windows build: running on GitHub Actions (build-windows.yml)"
+        if [ "$NO_LOCAL" = true ]; then
+            echo "   - Linux build: SKIPPED (run act manually to append)"
+        else
+            echo "   - Linux build: handled locally via act"
+        fi
     fi
-    
+
     if [ "$BETA" = true ]; then
         echo ""
         echo "Next steps:"
@@ -251,8 +333,10 @@ Download the latest stable build from the assets below."; then
             echo "⚠️ GitHub CLI (gh) not found. Skipping automatic release creation."
             echo "   Install it from: https://cli.github.com/"
         fi
+
+        run_local_linux_build "$NEW_TAG"
     fi
-    
+
     echo ""
     echo "=========================================="
     echo "Release $NEW_TAG completed successfully!"
@@ -266,6 +350,12 @@ Download the latest stable build from the assets below."; then
         echo "   - Tag created and pushed: (dry-run)"
     else
         echo "   - Tag created and pushed: Yes"
+        echo "   - Windows build: running on GitHub Actions (build-windows.yml)"
+        if [ "$NO_LOCAL" = true ]; then
+            echo "   - Linux build: SKIPPED (run act manually to append)"
+        else
+            echo "   - Linux build: handled locally via act"
+        fi
     fi
 else
     echo "No changes detected in CHANGELOG.md"
