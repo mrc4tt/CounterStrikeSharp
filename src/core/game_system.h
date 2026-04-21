@@ -22,13 +22,19 @@
 #include "entitysystem.h"
 #include "igamesystemfactory.h"
 
+// hl2sdk-cs2 removed DECLARE_GAME_SYSTEM() from igamesystem.h alongside the
+// YouForgot_DECLARE_GAME_SYSTEM_InYourClassDefinition pure virtual. Provide a
+// no-op fallback so this compiles against both old and new SDK revisions.
+#ifndef DECLARE_GAME_SYSTEM
+#define DECLARE_GAME_SYSTEM()
+#endif
+
 bool InitGameSystems();
 
 class CGameSystem : public CBaseGameSystem
 {
-    DECLARE_GAME_SYSTEM();
-
   public:
+    DECLARE_GAME_SYSTEM();
     GS_EVENT(BuildGameSessionManifest);
     GS_EVENT(ServerPreEntityThink);
     GS_EVENT(ServerPostEntityThink);

@@ -32,7 +32,11 @@ internal static partial class Program
         "SoundeventPathCornerPairNetworked_t",
         "AISound_t",
         "CAttachmentNameSymbolWithStorage",
-        "CAnimGraph2ParamAutoResetOptionalRef"
+        "CAnimGraph2ParamAutoResetOptionalRef",
+        "CUtlBinaryBlock",
+        "BASEPTR",
+        "ENTITYFUNCPTR",
+        "USEPTR"
     };
 
     private static readonly IReadOnlySet<string> IgnoreClassWildcards = new HashSet<string>
@@ -46,7 +50,8 @@ internal static partial class Program
         "CUtlOrderedMap",
         "CAnimGraph2ParamOptionalRef",
         "CUtlHashtable",
-        "CSmartPtr"
+        "CSmartPtr",
+        "CUtlLeanVector"
     };
 
     public static string SanitiseTypeName(string typeName) =>
@@ -230,7 +235,7 @@ internal static partial class Program
             var schemaPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Schema", schemaFile);
 
             var newSchema = JsonSerializer.Deserialize<NewSchemaModule>(
-                File.ReadAllText(schemaPath),
+                StripControlCharsInStrings(File.ReadAllBytes(schemaPath)),
                 SerializerOptions)!;
 
             var (enums, classes) = ConvertNewSchemaToOld(newSchema);
@@ -350,6 +355,7 @@ internal static partial class Program
         visited.Add("CNavLinkAnimgraphVar");
         visited.Add("DecalGroupOption_t");
         visited.Add("DestructibleHitGroupToDestroy_t");
+        visited.Add("PrecipitationFilter_t");
 
         var classBuilder = GetTemplate(true);
 
@@ -447,6 +453,16 @@ internal static partial class Program
             if (field.Type is { Category: SchemaTypeCategory.Atomic, Atomic: SchemaAtomicCategory.Collection })
             {
                 if (IgnoreClasses.Contains(field.Type.Inner!.Name)) continue;
+            }
+
+            // Pointer fields are only emittable when they point to a declared class or a string (char*).
+            // Otherwise (e.g. void*, Ptr<enum>) we can't synthesise a valid property and must skip
+            // before writing the SchemaMember attribute to avoid orphaning it on the next field.
+            if (field.Type.Category == SchemaTypeCategory.Ptr
+                && !field.Type.IsString
+                && field.Type.Inner?.Category != SchemaTypeCategory.DeclaredClass)
+            {
+                continue;
             }
 
             var requiresNewKeyword = parentFields.Any(x =>
@@ -566,6 +582,73 @@ internal static partial class Program
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
         AllowTrailingCommas = true
     };
+
+    // The schema dumper occasionally emits raw memory bytes (e.g. KV3 ClassDefaults
+    // pointer contents) inside string values without escaping, producing invalid
+    // JSON with unescaped control chars (< 0x20) and invalid UTF-8 sequences.
+    // Strip them in-place while preserving string boundaries.
+    private static byte[] StripControlCharsInStrings(byte[] input)
+    {
+        var output = new byte[input.Length];
+        var write = 0;
+        var inString = false;
+        var escape = false;
+        Span<byte> mb = stackalloc byte[4];
+        var mbLen = 0;
+        var mbExpected = 0;
+
+        for (var i = 0; i < input.Length; i++)
+        {
+            var b = input[i];
+
+            if (!inString)
+            {
+                if (b == (byte)'"') inString = true;
+                output[write++] = b;
+                continue;
+            }
+
+            if (escape)
+            {
+                output[write++] = b;
+                escape = false;
+                continue;
+            }
+
+            if (mbExpected > 0)
+            {
+                if ((b & 0xC0) == 0x80)
+                {
+                    mb[mbLen++] = b;
+                    if (mbLen == mbExpected)
+                    {
+                        for (var k = 0; k < mbLen; k++) output[write++] = mb[k];
+                        mbLen = 0;
+                        mbExpected = 0;
+                    }
+                }
+                else
+                {
+                    // truncated/invalid sequence - drop and reprocess current byte
+                    mbLen = 0;
+                    mbExpected = 0;
+                    i--;
+                }
+                continue;
+            }
+
+            if (b == (byte)'\\') { output[write++] = b; escape = true; continue; }
+            if (b == (byte)'"') { output[write++] = b; inString = false; continue; }
+            if (b < 0x20) continue;             // unescaped control char - drop
+            if (b < 0x80) { output[write++] = b; continue; }
+
+            if ((b & 0xE0) == 0xC0) { mb[0] = b; mbLen = 1; mbExpected = 2; continue; }
+            if ((b & 0xF0) == 0xE0) { mb[0] = b; mbLen = 1; mbExpected = 3; continue; }
+            if ((b & 0xF8) == 0xF0) { mb[0] = b; mbLen = 1; mbExpected = 4; continue; }
+            // invalid UTF-8 leading byte - drop
+        }
+        return output.AsSpan(0, write).ToArray();
+    }
 
     private static string EnumType(int alignment) =>
         alignment switch

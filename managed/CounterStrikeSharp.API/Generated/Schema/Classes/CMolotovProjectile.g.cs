@@ -29,5 +29,5 @@ public partial class CMolotovProjectile : CBaseCSGrenadeProjectile
 	// m_stillTimer
 	[SchemaMember("CMolotovProjectile", "m_stillTimer")]
 	public IntervalTimer StillTimer => Schema.GetDeclaredClass<IntervalTimer>(this.Handle, "CMolotovProjectile", "m_stillTimer");
-	
+
 }
