@@ -5,6 +5,7 @@ set -e
 DRY_RUN=false
 BETA=false
 NO_LOCAL=false
+FORCE=false
 
 # Parse command line arguments
 for arg in "$@"; do
@@ -22,6 +23,11 @@ for arg in "$@"; do
         --no-local|-n)
             NO_LOCAL=true
             echo "Skipping local Linux build via act - only Windows will be built (by GitHub Actions)"
+            shift
+            ;;
+        --force|-f)
+            FORCE=true
+            echo "FORCE mode - will tag current HEAD even if no new commits since last release"
             shift
             ;;
         *)
@@ -74,17 +80,58 @@ run_local_linux_build() {
     local artifact_dir
     artifact_dir=$(mktemp -d -t act-artifacts-XXXXXX)
 
+    # GitVersion refuses to run on "build servers" (which act advertises as)
+    # when the repo has >1 remote. Stash any non-origin remotes for the act
+    # run; restore them on any exit path (success, failure, Ctrl+C).
+    local -a stashed_remotes=()
+    local -a stashed_urls=()
+    local r
+    while IFS= read -r r; do
+        if [ -n "$r" ] && [ "$r" != "origin" ]; then
+            stashed_remotes+=("$r")
+            stashed_urls+=("$(git remote get-url "$r")")
+        fi
+    done < <(git remote)
+
+    if [ "${#stashed_remotes[@]}" -gt 0 ]; then
+        for r in "${stashed_remotes[@]}"; do
+            git remote remove "$r"
+        done
+        echo "Temporarily removed non-origin remotes: ${stashed_remotes[*]}"
+
+        # Build a restore command and register it as an EXIT trap so the
+        # remotes come back even if act fails or the user Ctrl+Cs.
+        local restore_cmd=""
+        local i
+        for i in "${!stashed_remotes[@]}"; do
+            restore_cmd+="git remote add '${stashed_remotes[$i]}' '${stashed_urls[$i]}' 2>/dev/null; "
+        done
+        trap "$restore_cmd" EXIT
+    fi
+
     echo ""
     echo "Running local Linux build via act (this takes a few minutes)..."
     echo "   Artifacts: $artifact_dir"
     echo ""
 
-    if act workflow_dispatch \
+    local act_status=0
+    act workflow_dispatch \
         -W .github/workflows/build-and-publish.yml \
         --input confirm_local=LOCAL \
         -P ubuntu-latest=catthehacker/ubuntu:full-latest \
         --artifact-server-path "$artifact_dir" \
-        -s GITHUB_TOKEN="$token"; then
+        -s GITHUB_TOKEN="$token" || act_status=$?
+
+    # Restore remotes immediately on normal exit + clear the trap
+    if [ "${#stashed_remotes[@]}" -gt 0 ]; then
+        for i in "${!stashed_remotes[@]}"; do
+            git remote add "${stashed_remotes[$i]}" "${stashed_urls[$i]}" 2>/dev/null || true
+        done
+        trap - EXIT
+        echo "Restored remotes: ${stashed_remotes[*]}"
+    fi
+
+    if [ "$act_status" -eq 0 ]; then
         echo "✅ Linux zips appended to release $tag"
     else
         echo "⚠️  act run failed. The GitHub release exists; Windows zips will still"
@@ -357,8 +404,80 @@ Download the latest stable build from the assets below."; then
             echo "   - Linux build: handled locally via act"
         fi
     fi
+elif [ "$FORCE" = true ]; then
+    # No changelog changes, but --force says: tag current HEAD anyway.
+    echo "No changelog changes, but --force set - tagging current HEAD as $NEW_TAG"
+
+    if [ "$DRY_RUN" = true ]; then
+        echo "Creating tag locally: $NEW_TAG"
+        git tag "$NEW_TAG"
+        echo "DRY-RUN: Would push tag to remote"
+    else
+        echo "Creating and pushing tag: $NEW_TAG"
+        git tag "$NEW_TAG"
+        git push origin tag "$NEW_TAG"
+
+        echo ""
+        echo "Creating GitHub release..."
+
+        if command -v gh &> /dev/null; then
+            if [ "$BETA" = true ]; then
+                if gh release create "$NEW_TAG" \
+                    --prerelease \
+                    --title "$NEW_TAG - Beta Pre-release" \
+                    --notes "⚠️ **BETA PRE-RELEASE** (forced - no new commits since $LATEST_TAG)
+
+## Feedback
+Please report any issues or feedback before we promote this to stable release."; then
+                    echo "✅ Pre-release created successfully on GitHub!"
+                else
+                    echo "⚠️ Failed to create pre-release. Please create it manually:"
+                    echo "   gh release create $NEW_TAG --prerelease --generate-notes"
+                fi
+            else
+                if gh release create "$NEW_TAG" \
+                    --title "$NEW_TAG" \
+                    --notes "✅ **STABLE RELEASE** (forced - no new commits since $LATEST_TAG)
+
+## Installation
+Download the latest stable build from the assets below."; then
+                    echo "✅ Release created successfully on GitHub!"
+                else
+                    echo "⚠️ Failed to create release. Please create it manually:"
+                    echo "   gh release create $NEW_TAG --generate-notes"
+                fi
+            fi
+        else
+            echo "⚠️ GitHub CLI (gh) not found. Skipping automatic release creation."
+            echo "   Install it from: https://cli.github.com/"
+        fi
+
+        run_local_linux_build "$NEW_TAG"
+    fi
+
+    echo ""
+    echo "=========================================="
+    echo "Release $NEW_TAG completed successfully!"
+    echo "=========================================="
+    echo "Summary:"
+    echo "   - Previous version: $LATEST_TAG"
+    echo "   - New version: $NEW_TAG"
+    echo "   - Release type: $RELEASE_TYPE (forced)"
+    echo "   - Changelog updated: No (no new commits)"
+    if [ "$DRY_RUN" = true ]; then
+        echo "   - Tag created and pushed: (dry-run)"
+    else
+        echo "   - Tag created and pushed: Yes"
+        echo "   - Windows build: running on GitHub Actions (build-windows.yml)"
+        if [ "$NO_LOCAL" = true ]; then
+            echo "   - Linux build: SKIPPED (run act manually to append)"
+        else
+            echo "   - Linux build: handled locally via act"
+        fi
+    fi
 else
     echo "No changes detected in CHANGELOG.md"
     echo "This might indicate that there are no new commits since the last release."
+    echo "Use --force / -f to tag current HEAD anyway."
     exit 1
 fi
