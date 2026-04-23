@@ -7,7 +7,7 @@ namespace CounterStrikeSharp.API.Modules.Entities;
 
 public static class EntitySystem
 {
-    private static IntPtr ConcreteEntityListPointer => NativeAPI.GetConcreteEntityListPointer();
+    private static Lazy<IntPtr> ConcreteEntityListPointer = new(NativeAPI.GetConcreteEntityListPointer);
 
     private const int MaxEntities = 32768;
     private const int MaxEntitiesPerChunk = 512;
@@ -16,8 +16,8 @@ public static class EntitySystem
     private const int HandleOffset = 0x10;
     private const uint InvalidEHandleIndex = 0xFFFFFFFF;
 
-    static unsafe Span<IntPtr> IdentityChunks => new((void*)ConcreteEntityListPointer, MaxChunks);
-    public static IntPtr FirstActiveEntity => Marshal.ReadIntPtr(ConcreteEntityListPointer, MaxEntitiesPerChunk);
+    static unsafe Span<IntPtr> IdentityChunks => new((void*)ConcreteEntityListPointer.Value, MaxChunks);
+    public static IntPtr FirstActiveEntity => Marshal.ReadIntPtr(ConcreteEntityListPointer.Value, MaxEntitiesPerChunk);
 
     public static IntPtr? GetEntityByHandle(uint raw)
     {

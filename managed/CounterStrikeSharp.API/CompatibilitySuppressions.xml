@@ -1863,6 +1863,36 @@
   </Suppression>
   <Suppression>
     <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:CounterStrikeSharp.API.Core.CCSPlayerPawn.get_AimPunchAngle</Target>
+    <Left>./ApiCompat/v202.dll</Left>
+    <Right>obj/Release/net8.0/CounterStrikeSharp.API.dll</Right>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:CounterStrikeSharp.API.Core.CCSPlayerPawn.get_AimPunchAngleVel</Target>
+    <Left>./ApiCompat/v202.dll</Left>
+    <Right>obj/Release/net8.0/CounterStrikeSharp.API.dll</Right>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:CounterStrikeSharp.API.Core.CCSPlayerPawn.get_AimPunchCache</Target>
+    <Left>./ApiCompat/v202.dll</Left>
+    <Right>obj/Release/net8.0/CounterStrikeSharp.API.dll</Right>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:CounterStrikeSharp.API.Core.CCSPlayerPawn.get_AimPunchTickBase</Target>
+    <Left>./ApiCompat/v202.dll</Left>
+    <Right>obj/Release/net8.0/CounterStrikeSharp.API.dll</Right>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:CounterStrikeSharp.API.Core.CCSPlayerPawn.get_AimPunchTickFraction</Target>
+    <Left>./ApiCompat/v202.dll</Left>
+    <Right>obj/Release/net8.0/CounterStrikeSharp.API.dll</Right>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
     <Target>M:CounterStrikeSharp.API.Core.CCSPlayerPawn.get_Landseconds</Target>
     <Left>./ApiCompat/v202.dll</Left>
     <Right>obj/Release/net8.0/CounterStrikeSharp.API.dll</Right>

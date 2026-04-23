@@ -25,6 +25,9 @@ const output = await $`${HERE}/rcon -a ${config.GS_HOST}:${config.GS_PORT} -p ${
 // Extract the file path from RCON output
 const match = output.match(/Wrote file output to (.+)/);
 if (!match) {
+  console.error("--- RCON response ---");
+  console.error(output || "<empty>");
+  console.error("---------------------");
   throw new Error("Could not find schema output path in RCON response");
 }
 const filepath = match[1].trim();
