@@ -32,11 +32,7 @@ internal static partial class Program
         "SoundeventPathCornerPairNetworked_t",
         "AISound_t",
         "CAttachmentNameSymbolWithStorage",
-        "CAnimGraph2ParamAutoResetOptionalRef",
-        "CUtlBinaryBlock",
-        "BASEPTR",
-        "ENTITYFUNCPTR",
-        "USEPTR"
+        "CAnimGraph2ParamAutoResetOptionalRef"
     };
 
     private static readonly IReadOnlySet<string> IgnoreClassWildcards = new HashSet<string>
@@ -51,7 +47,12 @@ internal static partial class Program
         "CAnimGraph2ParamOptionalRef",
         "CUtlHashtable",
         "CSmartPtr",
-        "CUtlLeanVector"
+        "CUtlLeanVector",
+        "CUtlBinaryBlock",
+        "CEntityNameString",
+        "BASEPTR",
+        "ENTITYFUNCPTR",
+        "USEPTR"
     };
 
     public static string SanitiseTypeName(string typeName) =>
@@ -311,14 +312,47 @@ internal static partial class Program
             }
         }
 
-        // Do a search from NetworkClasses.Names
+        var bfsRoots = new HashSet<string>(NetworkClasses.Names)
+        {
+            "CTakeDamageInfo",
+            "CTakeDamageResult",
+            "CEntitySubclassVDataBase",
+            "CFiringModeFloat",
+            "CFiringModeInt",
+            "CSkillFloat",
+            "CSkillInt",
+            "CRangeFloat",
+            "CNavLinkAnimgraphVar",
+            "DecalGroupOption_t",
+            "DestructibleHitGroupToDestroy_t",
+            "PrecipitationFilter_t"
+        };
+
+        foreach (var className in allClasses.Keys)
+        {
+            if (className.Contains("VData"))
+                bfsRoots.Add(className);
+        }
+
         var visited = new HashSet<string>();
         var search = new BreadthFirstSearchAlgorithm<string, Edge<string>>(graph);
         search.FinishVertex += node => { visited.Add(node); };
 
-        foreach (var networkClassName in NetworkClasses.Names)
+        foreach (var root in bfsRoots)
         {
-            search.Compute(networkClassName);
+            if (!graph.ContainsVertex(root))
+            {
+                if (allClasses.ContainsKey(root))
+                {
+                    visited.Add(root);
+                    continue;
+                }
+
+                Console.WriteLine($"Warning: root class '{root}' not found in schema, skipping.");
+                continue;
+            }
+
+            search.Compute(root);
         }
 
         // Clear output directory
@@ -343,26 +377,12 @@ internal static partial class Program
                 newBuilder.ToString().ReplaceLineEndings("\r\n"));
         }
 
-        // Manually whitelist some classes
-        visited.Add("CTakeDamageInfo");
-        visited.Add("CTakeDamageResult");
-        visited.Add("CEntitySubclassVDataBase");
-        visited.Add("CFiringModeFloat");
-        visited.Add("CFiringModeInt");
-        visited.Add("CSkillFloat");
-        visited.Add("CSkillInt");
-        visited.Add("CRangeFloat");
-        visited.Add("CNavLinkAnimgraphVar");
-        visited.Add("DecalGroupOption_t");
-        visited.Add("DestructibleHitGroupToDestroy_t");
-        visited.Add("PrecipitationFilter_t");
-
         var classBuilder = GetTemplate(true);
 
         var visitedClassNames = new HashSet<string>();
         foreach (var (className, schemaClass) in allClasses)
         {
-            if (visited.Contains(className) || className.Contains("VData"))
+            if (visited.Contains(className))
             {
                 var isPointeeType = pointeeTypes.Contains(className);
 
@@ -455,12 +475,13 @@ internal static partial class Program
                 if (IgnoreClasses.Contains(field.Type.Inner!.Name)) continue;
             }
 
-            // Pointer fields are only emittable when they point to a declared class or a string (char*).
-            // Otherwise (e.g. void*, Ptr<enum>) we can't synthesise a valid property and must skip
-            // before writing the SchemaMember attribute to avoid orphaning it on the next field.
+            // Skip pointer fields whose inner type has no C# representation
+            // (e.g. `void*`, pointer to builtin). Only string-pointers and
+            // pointers to declared classes are emitted below.
             if (field.Type.Category == SchemaTypeCategory.Ptr
-                && !field.Type.IsString
-                && field.Type.Inner?.Category != SchemaTypeCategory.DeclaredClass)
+                && field.Type.Inner is { } ptrInner
+                && ptrInner.Category != SchemaTypeCategory.DeclaredClass
+                && !(ptrInner.Category == SchemaTypeCategory.Builtin && ptrInner.Name == "char"))
             {
                 continue;
             }

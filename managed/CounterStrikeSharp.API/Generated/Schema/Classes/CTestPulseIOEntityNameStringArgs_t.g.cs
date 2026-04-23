@@ -18,14 +18,6 @@ public partial class CTestPulseIOEntityNameStringArgs_t : NativeObject
 {
     public CTestPulseIOEntityNameStringArgs_t (IntPtr pointer) : base(pointer) {}
 
-	// nameA
-	[SchemaMember("CTestPulseIO::EntityNameStringArgs_t", "nameA")]
-	public string NameA
-	{
-		get { return Schema.GetUtf8String(this.Handle, "CTestPulseIO::EntityNameStringArgs_t", "nameA"); }
-		set { Schema.SetString(this.Handle, "CTestPulseIO::EntityNameStringArgs_t", "nameA", value); }
-	}
-
 	// strValueB
 	[SchemaMember("CTestPulseIO::EntityNameStringArgs_t", "strValueB")]
 	public string StrValueB

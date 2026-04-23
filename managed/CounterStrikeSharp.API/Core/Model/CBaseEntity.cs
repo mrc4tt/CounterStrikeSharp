@@ -1,5 +1,5 @@
 using FastGenericNew;
-﻿using System;
+using System;
 using System.Numerics;
 using System.Runtime.InteropServices;
 using CounterStrikeSharp.API.Modules.Memory;

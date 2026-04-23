@@ -71,7 +71,6 @@ namespace CounterStrikeSharp.API.Core
 
         [JsonPropertyName("MaximumFrameTasksExecutedPerTick")]
         public int MaximumFrameTasksExecutedPerTick { get; set; } = 1024;
-
     }
 
     /// <summary>
