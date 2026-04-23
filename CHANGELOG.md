@@ -1,52 +1,139 @@
-## What's Changed in v1.0.367
-* fix: update CBaseEntity_TakeDamageOld linux signature by [@tk1114632](https://github.com/tk1114632) in [#1287](https://github.com/roflmuffin/CounterStrikeSharp/pull/1287) ([d935b08](https://github.com/roflmuffin/CounterStrikeSharp/commit/d935b08cfa040c9b9c238615a544e1119bf10c29))
+## What's Changed in v1.0.380
+* fix readme ([0805adc](https://github.com/mrc4tt/CounterStrikeSharp/commit/0805adce76c2e501d6030a774136b4e777142003))
+* fix: patch and missed fix for EntitySystem ([5c6f7f1](https://github.com/mrc4tt/CounterStrikeSharp/commit/5c6f7f196ea43ba2ab3726e995f65368c0aa45e0))
+* feat: lettryandseeifmypluginnolongercrashofthisversion ([478de78](https://github.com/mrc4tt/CounterStrikeSharp/commit/478de7836de006c6c86ba0172cabdf07f5106d7c))
+* fix: update CBaseEntity_TakeDamageOld linux signature by [@tk1114632](https://github.com/tk1114632) ([d935b08](https://github.com/mrc4tt/CounterStrikeSharp/commit/d935b08cfa040c9b9c238615a544e1119bf10c29))
+* fix: apply changes for AG2 update by [@roflmuffin](https://github.com/roflmuffin) ([8a9fbe8](https://github.com/mrc4tt/CounterStrikeSharp/commit/8a9fbe8fb5e1f50124911fec823d0cf07357a71f))
+* perf: improve ScriptContext performance by [@roflmuffin](https://github.com/roflmuffin) ([9b6d971](https://github.com/mrc4tt/CounterStrikeSharp/commit/9b6d971a04419aafeb54ca767143769a5b71be36))
+* test: add benchmarking script by [@roflmuffin](https://github.com/roflmuffin) ([1dbed74](https://github.com/mrc4tt/CounterStrikeSharp/commit/1dbed74afd5b73cf50a5105cad7a2a5c60dddc73))
+* chore: Update Schema Definitions to 1.41.4.1 by [@roflmuffin](https://github.com/roflmuffin) ([4799da3](https://github.com/mrc4tt/CounterStrikeSharp/commit/4799da3eae839dcba206f8ad8f23385b9b7e9529))
+* fix: Update Linux signatures for PostThink and TerminateRound by [@ianlucas](https://github.com/ianlucas) ([03a452c](https://github.com/mrc4tt/CounterStrikeSharp/commit/03a452ca37f310d8a7d25c0370ef6787565f5116))
+* fix(gamedata): Update linux sig for CEntitySystem_AddEntityIOEvent by [@xLeviNx](https://github.com/xLeviNx) ([4006494](https://github.com/mrc4tt/CounterStrikeSharp/commit/4006494c1edd530c861cee93375c555f455e7155))
+* chore(deps): bump libraries/hl2sdk-cs2 from `2530f5d` to `1227cc3` by [@dependabot[bot]](https://github.com/dependabot[bot]) ([aa89325](https://github.com/mrc4tt/CounterStrikeSharp/commit/aa89325cd7a3767f3a586e762dcb344988078d06))
+* chore: Update Schema Definitions to 1.41.3.5 by [@roflmuffin](https://github.com/roflmuffin) ([c543797](https://github.com/mrc4tt/CounterStrikeSharp/commit/c5437970f72242619d5da44b03bdfcf803187528))
+* refactor: Fix memory leak caused by allocating `Vector`, `QAngle`, etc. class objects by [@ELDment](https://github.com/ELDment) ([f06283a](https://github.com/mrc4tt/CounterStrikeSharp/commit/f06283aebc580b52e472684341583db58f9f896d))
+* chore(schema): Update Schema Definitions to 1.41.3.3 by [@roflmuffin](https://github.com/roflmuffin) ([60db1df](https://github.com/mrc4tt/CounterStrikeSharp/commit/60db1df2a21e22c4d29c8108d0f45f92bea9f759))
+* fix: use personal PAT for cronjob PRs by [@roflmuffin](https://github.com/roflmuffin) ([acc5744](https://github.com/mrc4tt/CounterStrikeSharp/commit/acc57441391a629ead8a4af788f4a87bf92fba5b))
+* feat(schema): add cronjob to re-generate schema by [@roflmuffin](https://github.com/roflmuffin) ([f0d6512](https://github.com/mrc4tt/CounterStrikeSharp/commit/f0d6512e7be4bbdec8cc0f9e38d2813540985b35))
+* fix: setup server next frame listeners at startup by [@roflmuffin](https://github.com/roflmuffin) ([dc138c1](https://github.com/mrc4tt/CounterStrikeSharp/commit/dc138c16f3e63ce2fb8f364da5c1d418a3214d84))
+* fix: update windows signatures for CCSPlayerPawnBase and CCSGameRules by [@K4ryuu](https://github.com/K4ryuu) ([9841c92](https://github.com/mrc4tt/CounterStrikeSharp/commit/9841c92e2da1d1f389f2374e4fb0f556f2a3e1a5))
+* fix: update set state changed offset for linux by [@roflmuffin](https://github.com/roflmuffin) ([3262827](https://github.com/mrc4tt/CounterStrikeSharp/commit/326282757fe094cc2eabfcb32fc8e86f6db9aabe))
+* fix: CPlayerPawnComponent pawn reference by [@roflmuffin](https://github.com/roflmuffin) ([1614e5c](https://github.com/mrc4tt/CounterStrikeSharp/commit/1614e5c50c8f80063902fe282b28dafd46ad0135))
+* fix(schema): update schema after followup update by [@roflmuffin](https://github.com/roflmuffin) ([c1d6bf4](https://github.com/mrc4tt/CounterStrikeSharp/commit/c1d6bf4f838de75382e91f8232bbe2f9b96d2b0f))
+* fix: bump sdk & update gamedata for patch 1.41.3.x by [@roflmuffin](https://github.com/roflmuffin) ([fe3e32f](https://github.com/mrc4tt/CounterStrikeSharp/commit/fe3e32f37984da992c6ec331525252eadc18c509))
+* fix(schema): update schema for 1.41.3.0 by [@roflmuffin](https://github.com/roflmuffin) ([f9617b9](https://github.com/mrc4tt/CounterStrikeSharp/commit/f9617b9a7e52d30d5c5c4433aa8c7ce0e3ad7e16))
+* feat: adds configurable limit to `NextFrame` tasks allowed to execute per frame by [@roflmuffin](https://github.com/roflmuffin) ([925fec0](https://github.com/mrc4tt/CounterStrikeSharp/commit/925fec04801fc09ce294051055b761069fcb733f))
+* chore(deps): bump libraries/hl2sdk-cs2 from `6e735c1` to `aba345d` by [@dependabot[bot]](https://github.com/dependabot[bot]) ([2eea759](https://github.com/mrc4tt/CounterStrikeSharp/commit/2eea759a2c8cc61bd2679157b78a6e4fb1f51a0e))
+* fix linux signature for CBaseEntity_TakeDamageOld ([90d3a12](https://github.com/mrc4tt/CounterStrikeSharp/commit/90d3a1222e9f59766855387a778f93325b43f060))
+* . ([00f0a26](https://github.com/mrc4tt/CounterStrikeSharp/commit/00f0a265f5cf577bcec019486aacc33f6bf2df5f))
+* opps ([4f77d82](https://github.com/mrc4tt/CounterStrikeSharp/commit/4f77d82d9b1bd0dcc06a4a9ca8544d1c1403b2cf))
+* patch gamedata(win/linux) ([7004291](https://github.com/mrc4tt/CounterStrikeSharp/commit/7004291b9f8eb3aef0ae256137b77111ab9484e7))
 
 ## New Contributors
-* [@tk1114632](https://github.com/tk1114632) made their first contribution in [#1287](https://github.com/roflmuffin/CounterStrikeSharp/pull/1287)
+* [@tk1114632](https://github.com/tk1114632) made their first contribution
+
+## What's Changed in v1.0.378
+* node.js for act only ([6d518bb](https://github.com/mrc4tt/CounterStrikeSharp/commit/6d518bba243b9208ee422ded06bd34067e57ea6d))
+
+## What's Changed in v1.0.376
+* test new action ([d3f0fd1](https://github.com/mrc4tt/CounterStrikeSharp/commit/d3f0fd1530abfce10b3cd1fb9fbe41eca217f24b))
+
+## What's Changed in v1.0.375
+* feat: update API.cs ([69a2382](https://github.com/mrc4tt/CounterStrikeSharp/commit/69a23820e33d179178092499134171aa3827616b))
+
+## What's Changed in v1.0.374
+* ag2 update-test (gamedata LINUX only updated) ([d5845aa](https://github.com/mrc4tt/CounterStrikeSharp/commit/d5845aa6a50c63fefb9a7bdf5c75a9aa187d4b38))
+* testing ([6398b28](https://github.com/mrc4tt/CounterStrikeSharp/commit/6398b28aa2634d5994a51a936b702ee49b2f33ac))
+* devtest-fixmanaged ([994d603](https://github.com/mrc4tt/CounterStrikeSharp/commit/994d6030bd20319643ea9c9a2740bb3c2c2b7951))
+* Test dev ([62ee568](https://github.com/mrc4tt/CounterStrikeSharp/commit/62ee56821454224fa3750a7aa56baa525d7316ea))
+* forgot gamedata update ops ([d89f292](https://github.com/mrc4tt/CounterStrikeSharp/commit/d89f292e528a2f87d134fc1692e4a6fd3ed34170))
+
+## What's Changed in v1.0.373
+* test unsafe fix ([fcbfba4](https://github.com/mrc4tt/CounterStrikeSharp/commit/fcbfba4c590915b2ada736e7b9e39e41d169bdfc))
+
+## What's Changed in v1.0.372
+* gamedata upd ([00a416b](https://github.com/mrc4tt/CounterStrikeSharp/commit/00a416bc385cebb3a3655bf86c957c9b53da6f6b))
+
+## What's Changed in v1.0.371
+* Fix entity error ([46b0974](https://github.com/mrc4tt/CounterStrikeSharp/commit/46b0974111ec1fb7e6be7cd959bbcba7ca405759))
+* patch ([205d173](https://github.com/mrc4tt/CounterStrikeSharp/commit/205d173a23bc787481bceee5ebd5498af65ac72e))
+
+## What's Changed in v1.0.370
+* . ([c5d793c](https://github.com/mrc4tt/CounterStrikeSharp/commit/c5d793ce006e9314221d499507dd861746c57fa9))
+
+## What's Changed in v1.0.369
+* test2 ([9a86a95](https://github.com/mrc4tt/CounterStrikeSharp/commit/9a86a957ea0b5996ea3a8f00b77d38d58b5d3f0f))
+* test ([4c2daf4](https://github.com/mrc4tt/CounterStrikeSharp/commit/4c2daf41c9af8ce7ff5c407293ec420eb54211e2))
+* . ([520a54c](https://github.com/mrc4tt/CounterStrikeSharp/commit/520a54cb18846c6fa6bf6f5289d87fe2e7a08254))
+
+## What's Changed in v1.0.368
+* fix format again ([cfeb30f](https://github.com/mrc4tt/CounterStrikeSharp/commit/cfeb30fa78049639df1c5c637252252b99015cba))
+* revert back to use 8.0.3 hostfxr ([2910e70](https://github.com/mrc4tt/CounterStrikeSharp/commit/2910e708fa19ab1ce55cad8ee605faa34d7ff069))
+
+## What's Changed in v1.0.367
+* 0x38 ([3f340e0](https://github.com/mrc4tt/CounterStrikeSharp/commit/3f340e0a5f7a9f0f65b7c6c36c7f9c4064966616))
 
 ## What's Changed in v1.0.366
-* fix: apply changes for AG2 update in [#1279](https://github.com/roflmuffin/CounterStrikeSharp/pull/1279) ([8a9fbe8](https://github.com/roflmuffin/CounterStrikeSharp/commit/8a9fbe8fb5e1f50124911fec823d0cf07357a71f))
+* feat: manual update ([2a16897](https://github.com/mrc4tt/CounterStrikeSharp/commit/2a1689790d8e10b1106cfabc35fa3e59954b31c7))
 
 ## What's Changed in v1.0.365
-* perf: improve ScriptContext performance in [#1264](https://github.com/roflmuffin/CounterStrikeSharp/pull/1264) ([9b6d971](https://github.com/roflmuffin/CounterStrikeSharp/commit/9b6d971a04419aafeb54ca767143769a5b71be36))
-* test: add benchmarking script in [#1252](https://github.com/roflmuffin/CounterStrikeSharp/pull/1252) ([1dbed74](https://github.com/roflmuffin/CounterStrikeSharp/commit/1dbed74afd5b73cf50a5105cad7a2a5c60dddc73))
-* chore: Update Schema Definitions to 1.41.4.1 in [#1245](https://github.com/roflmuffin/CounterStrikeSharp/pull/1245) ([4799da3](https://github.com/roflmuffin/CounterStrikeSharp/commit/4799da3eae839dcba206f8ad8f23385b9b7e9529))
+* next frame listeners at start ([2fc5309](https://github.com/mrc4tt/CounterStrikeSharp/commit/2fc53096672219c7df9ae542c3b8d6ee802f4794))
 
 ## What's Changed in v1.0.364
-* fix: Update Linux signatures for PostThink and TerminateRound by [@ianlucas](https://github.com/ianlucas) in [#1247](https://github.com/roflmuffin/CounterStrikeSharp/pull/1247) ([03a452c](https://github.com/roflmuffin/CounterStrikeSharp/commit/03a452ca37f310d8a7d25c0370ef6787565f5116))
+* . ([1a14656](https://github.com/mrc4tt/CounterStrikeSharp/commit/1a146562d541dcea3313b2ff4fd19b1f57a39889))
 
 ## What's Changed in v1.0.363
-* fix(gamedata): Update linux sig for CEntitySystem_AddEntityIOEvent by [@xLeviNx](https://github.com/xLeviNx) in [#1232](https://github.com/roflmuffin/CounterStrikeSharp/pull/1232) ([4006494](https://github.com/roflmuffin/CounterStrikeSharp/commit/4006494c1edd530c861cee93375c555f455e7155))
-* chore(deps): bump libraries/hl2sdk-cs2 from `2530f5d` to `1227cc3` by [@dependabot[bot]](https://github.com/dependabot[bot]) in [#1228](https://github.com/roflmuffin/CounterStrikeSharp/pull/1228) ([aa89325](https://github.com/roflmuffin/CounterStrikeSharp/commit/aa89325cd7a3767f3a586e762dcb344988078d06))
-* chore: Update Schema Definitions to 1.41.3.5 in [#1222](https://github.com/roflmuffin/CounterStrikeSharp/pull/1222) ([c543797](https://github.com/roflmuffin/CounterStrikeSharp/commit/c5437970f72242619d5da44b03bdfcf803187528))
+* . ([95d40fa](https://github.com/mrc4tt/CounterStrikeSharp/commit/95d40faf96b089810f488a284b73b7e40f43ecfc))
+* fix: bump sdk & update gamedata for patch 1.41.3.x by [@roflmuffin](https://github.com/roflmuffin) ([d2a32eb](https://github.com/mrc4tt/CounterStrikeSharp/commit/d2a32ebc24a89ddd402360ee9b95443b5f5b5e8b))
 
 ## What's Changed in v1.0.362
-* refactor: Fix memory leak caused by allocating `Vector`, `QAngle`, etc. class objects by [@ELDment](https://github.com/ELDment) in [#1182](https://github.com/roflmuffin/CounterStrikeSharp/pull/1182) ([f06283a](https://github.com/roflmuffin/CounterStrikeSharp/commit/f06283aebc580b52e472684341583db58f9f896d))
-* chore(schema): Update Schema Definitions to 1.41.3.3 in [#1206](https://github.com/roflmuffin/CounterStrikeSharp/pull/1206) ([60db1df](https://github.com/roflmuffin/CounterStrikeSharp/commit/60db1df2a21e22c4d29c8108d0f45f92bea9f759))
-* fix: use personal PAT for cronjob PRs ([acc5744](https://github.com/roflmuffin/CounterStrikeSharp/commit/acc57441391a629ead8a4af788f4a87bf92fba5b))
-* feat(schema): add cronjob to re-generate schema in [#1204](https://github.com/roflmuffin/CounterStrikeSharp/pull/1204) ([f0d6512](https://github.com/roflmuffin/CounterStrikeSharp/commit/f0d6512e7be4bbdec8cc0f9e38d2813540985b35))
+* UTF8 huh ([5c71dcd](https://github.com/mrc4tt/CounterStrikeSharp/commit/5c71dcdfa3c6add4f935925bbbb23320b6395004))
 
 ## What's Changed in v1.0.361
-* fix: setup server next frame listeners at startup ([dc138c1](https://github.com/roflmuffin/CounterStrikeSharp/commit/dc138c16f3e63ce2fb8f364da5c1d418a3214d84))
+* Update Linux signatures in gamedata.json ([4b47dde](https://github.com/mrc4tt/CounterStrikeSharp/commit/4b47dde964029137f80dbc0531ab08e7af4a0fb3))
+* fix(schema): update schema for 1.41.3.0 by [@roflmuffin](https://github.com/roflmuffin) ([17e88c5](https://github.com/mrc4tt/CounterStrikeSharp/commit/17e88c587c7349c3928e02a692c427fd18556974))
 
 ## What's Changed in v1.0.360
-* fix: update windows signatures for CCSPlayerPawnBase and CCSGameRules by [@K4ryuu](https://github.com/K4ryuu) in [#1199](https://github.com/roflmuffin/CounterStrikeSharp/pull/1199) ([9841c92](https://github.com/roflmuffin/CounterStrikeSharp/commit/9841c92e2da1d1f389f2374e4fb0f556f2a3e1a5))
+* Test: memory ([b9f8fca](https://github.com/mrc4tt/CounterStrikeSharp/commit/b9f8fcae9df9200ce0cab0e2237e948f990054af))
 
 ## What's Changed in v1.0.359
-* fix: update set state changed offset for linux ([3262827](https://github.com/roflmuffin/CounterStrikeSharp/commit/326282757fe094cc2eabfcb32fc8e86f6db9aabe))
+* Fix Windows runtime: Download hostfxr.dll separately ([bfaf02b](https://github.com/mrc4tt/CounterStrikeSharp/commit/bfaf02b1c947f3af3228def30bac3171587f874e))
+* opps... ([94bab9f](https://github.com/mrc4tt/CounterStrikeSharp/commit/94bab9f6e89a5ce5aa648a7f2084af80e3aa7cb3))
+* Test: changes for dotnet_host ([36ff475](https://github.com/mrc4tt/CounterStrikeSharp/commit/36ff475524facfc0f90fce132ecf6c560caf68d4))
+* nextframe limit ([b553c9d](https://github.com/mrc4tt/CounterStrikeSharp/commit/b553c9d87542211954415eda34604884e93132bb))
+* Add Debian 13 and Ubuntu 24 support to README ([0b1d041](https://github.com/mrc4tt/CounterStrikeSharp/commit/0b1d0414b29c05d16f83ca92de4a98bb19b8093c))
 
 ## What's Changed in v1.0.358
-* fix: CPlayerPawnComponent pawn reference ([1614e5c](https://github.com/roflmuffin/CounterStrikeSharp/commit/1614e5c50c8f80063902fe282b28dafd46ad0135))
+* winfix 0.1 ([2202f2e](https://github.com/mrc4tt/CounterStrikeSharp/commit/2202f2ea14940e270ab3b8cd975c778cdb3de7e8))
+* windows-build fix? ([07d368e](https://github.com/mrc4tt/CounterStrikeSharp/commit/07d368ee988e6807c4fbdc62bbfe030eb2cf3bf9))
+* format ([a09c438](https://github.com/mrc4tt/CounterStrikeSharp/commit/a09c438055b87d514d518ff8bda8fe9c5342abb4))
+* fix dotnet ([857e800](https://github.com/mrc4tt/CounterStrikeSharp/commit/857e800422e0e072c5a7662f6082b25a91d89cce))
+* try again ([933273d](https://github.com/mrc4tt/CounterStrikeSharp/commit/933273df056d1e847bacbbc8a42816089e95a920))
+* fix workflow again ([1d5fb6f](https://github.com/mrc4tt/CounterStrikeSharp/commit/1d5fb6fb25010fcb50c9c57418493cae06b9b00b))
+* Feat: fix flags to work - if admin has single flag from customDB ([5fd5ae9](https://github.com/mrc4tt/CounterStrikeSharp/commit/5fd5ae9e50e9a457bbad467427d533d855b6c7f1))
+* test: workflow ([f1219bd](https://github.com/mrc4tt/CounterStrikeSharp/commit/f1219bd3ec420f37bea2b4edce3fcbec84cf3399))
 
 ## What's Changed in v1.0.357
-* fix(schema): update schema after followup update ([c1d6bf4](https://github.com/roflmuffin/CounterStrikeSharp/commit/c1d6bf4f838de75382e91f8232bbe2f9b96d2b0f))
-* fix: bump sdk & update gamedata for patch 1.41.3.x in [#1187](https://github.com/roflmuffin/CounterStrikeSharp/pull/1187) ([fe3e32f](https://github.com/roflmuffin/CounterStrikeSharp/commit/fe3e32f37984da992c6ec331525252eadc18c509))
-* fix(schema): update schema for 1.41.3.0 ([f9617b9](https://github.com/roflmuffin/CounterStrikeSharp/commit/f9617b9a7e52d30d5c5c4433aa8c7ce0e3ad7e16))
+* temp: fix z permission to work, rest need rework ([4d23c41](https://github.com/mrc4tt/CounterStrikeSharp/commit/4d23c419fcf2f6ca6e3d44237e65c51946b40fad))
 
-## What's Changed in v1.0.356
-* feat: adds configurable limit to `NextFrame` tasks allowed to execute per frame ([925fec0](https://github.com/roflmuffin/CounterStrikeSharp/commit/925fec04801fc09ce294051055b761069fcb733f))
-* chore(deps): bump libraries/hl2sdk-cs2 from `6e735c1` to `aba345d` by [@dependabot[bot]](https://github.com/dependabot[bot]) in [#1170](https://github.com/roflmuffin/CounterStrikeSharp/pull/1170) ([2eea759](https://github.com/roflmuffin/CounterStrikeSharp/commit/2eea759a2c8cc61bd2679157b78a6e4fb1f51a0e))
-* fix: `TerminateRound` parameter order mismatch by [@ELDment](https://github.com/ELDment) in [#1162](https://github.com/roflmuffin/CounterStrikeSharp/pull/1162) ([7dbb12f](https://github.com/roflmuffin/CounterStrikeSharp/commit/7dbb12f72ce09dff0efca71d0c3591862c222d53))
+## What's Changed in v1.0.356-beta
+* feat: fix sourcemod-style support/aliases ([77a6cb0](https://github.com/mrc4tt/CounterStrikeSharp/commit/77a6cb0fc1c49158712ff1d27346dfb94ce4745e))
+* feat: support sourcemod admin-flags examples ([24accbf](https://github.com/mrc4tt/CounterStrikeSharp/commit/24accbfbca0744b5eb6420cc17c5cfe3ff53649b))
+* fix space ([6f25619](https://github.com/mrc4tt/CounterStrikeSharp/commit/6f2561902ca541c5e3a414e501f14c0312686d9a))
+* fix build ([5cdec9b](https://github.com/mrc4tt/CounterStrikeSharp/commit/5cdec9bd329327fa8926a631877cadef47fbec5b))
+* . ([9c85df6](https://github.com/mrc4tt/CounterStrikeSharp/commit/9c85df63e2c38f7f6d801ceabc734ecd758f0ddc))
+* feat: fix ([d725e8a](https://github.com/mrc4tt/CounterStrikeSharp/commit/d725e8a9cf97c3e06c7ddb7e1602e04aeb4c46fe))
+* fix: `TerminateRound` parameter order mismatch by [@ELDment](https://github.com/ELDment) ([7dbb12f](https://github.com/mrc4tt/CounterStrikeSharp/commit/7dbb12f72ce09dff0efca71d0c3591862c222d53))
+* fix: ensure compatibility with `CS2Fixes` by [@ELDment](https://github.com/ELDment) ([9a8d45c](https://github.com/mrc4tt/CounterStrikeSharp/commit/9a8d45c9e646ed6419f54fbd0205cca9e2d1e612))
+* tests: fix unhooking of some functions in tests by [@roflmuffin](https://github.com/roflmuffin) ([c0093a6](https://github.com/mrc4tt/CounterStrikeSharp/commit/c0093a6ced7767c240cf1a474ed12411f3854b57))
+* chore(deps): bump libraries/hl2sdk-cs2 from `3bb772f` to `6e735c1` by [@dependabot[bot]](https://github.com/dependabot[bot]) ([3485169](https://github.com/mrc4tt/CounterStrikeSharp/commit/3485169de126aa15fa2326944898160fbbb5316a))
+* fix(async): nested nextframes now run on expected tick by [@roflmuffin](https://github.com/roflmuffin) ([3a0093b](https://github.com/mrc4tt/CounterStrikeSharp/commit/3a0093b3950be98166ba10953a0a7668cab7a3d8))
+* fix: use dynohook for take damage for compatibility by [@roflmuffin](https://github.com/roflmuffin) ([38c64c1](https://github.com/mrc4tt/CounterStrikeSharp/commit/38c64c1c330605817561d62bd6b7154c972c77fa))
+* feat(timers): run timer logic every tick to enable tick based timers by [@roflmuffin](https://github.com/roflmuffin) ([55d7939](https://github.com/mrc4tt/CounterStrikeSharp/commit/55d79391693cfe3f9ddd45ed8bc4d75598a68386))
+* perf: improve performance of next frame and next world update by [@roflmuffin](https://github.com/roflmuffin) ([5895683](https://github.com/mrc4tt/CounterStrikeSharp/commit/5895683e5d1e989c25eb4f809f857f05dfb97cf3))
+* fix(async): Server.NextFrame not queueing after 1024 concurrent tasks by [@roflmuffin](https://github.com/roflmuffin) ([39d26d1](https://github.com/mrc4tt/CounterStrikeSharp/commit/39d26d1e954ff320a5da0d29b5824741bf513657))
+* tests: add more in-game tests by [@roflmuffin](https://github.com/roflmuffin) ([fb27d6f](https://github.com/mrc4tt/CounterStrikeSharp/commit/fb27d6fa6f236ba5bf6c5c008f6254e05d0c250f))
+* fix: ensure compatibility with `CS2Fixes` by [@ELDment](https://github.com/ELDment) ([b0e25fd](https://github.com/mrc4tt/CounterStrikeSharp/commit/b0e25fd5c2c7ee945f976f6db383dfea3dec4315))
 
 ## What's Changed in v1.0.355
 * We dont need to publish nuget ([0d1563b](https://github.com/mrc4tt/CounterStrikeSharp/commit/0d1563b9fa12d3ef67c7cedce145e0a5be67e469))
