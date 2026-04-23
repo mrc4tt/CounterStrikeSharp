@@ -14,7 +14,7 @@ CounterStrikeSharp is a server side modding framework for Counter-Strike 2. This
 **Forked version by Miksen for custom setup**
 - Added support for Debian 13, should work for newer Ubuntu 24.
 - Added support for CommandLine API (GetCommandLineString) `CommandLine.GetCommandLineString`
-(**Don't use this version, if you don't like it.**)
+- (**Don't use this version, if you don't like it.**)
 
 ## Install
 
@@ -136,6 +136,3 @@ cmake --build . --config Debug
 License
 -------
 CounterStrikeSharp is licensed under the GNU General Public License version 3. A special exemption is outlined regarding published plugins, which you can find in the [LICENSE](LICENSE) file.
-
-<img src="https://repobeats.axiom.co/api/embed/a96f228b8fa98c032070fa8dd831c967334ee553.svg" width="100%" />
-
