@@ -1,4 +1,4 @@
-#!/usr/bin/env -S deno run --allow-run --allow-read --allow-env --allow-net
+#!/usr/bin/env -S deno run --allow-run --allow-read --allow-write --allow-env --allow-net
 
 import $ from "https://deno.land/x/dax@0.39.2/mod.ts";
 import { load } from "https://deno.land/std@0.224.0/dotenv/mod.ts";
