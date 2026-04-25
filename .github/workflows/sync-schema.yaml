@@ -25,7 +25,24 @@ jobs:
       - uses: denoland/setup-deno@v2
 
       - name: Install lftp
-        run: sudo apt-get update && sudo apt-get install -y lftp
+        run: sudo apt-get update && sudo apt-get install -y lftp ncat
+
+      - name: Preflight - probe RCON reachability
+        env:
+          GS_HOST: ${{ secrets.GS_HOST }}
+          GS_PORT: ${{ secrets.GS_PORT }}
+        run: |
+          if [ -z "$GS_HOST" ] || [ -z "$GS_PORT" ]; then
+            echo "::error::GS_HOST or GS_PORT secret is empty — secrets aren't being injected."
+            exit 1
+          fi
+          echo "Resolving $GS_HOST..."
+          getent hosts "$GS_HOST" || { echo "::error::DNS resolution failed for $GS_HOST"; exit 1; }
+          echo "Probing TCP $GS_HOST:$GS_PORT (5s timeout)..."
+          if ! ncat -w 5 -z -v "$GS_HOST" "$GS_PORT"; then
+            echo "::error::RCON port $GS_PORT unreachable from GitHub runner. Likely cause: Pterodactyl/host firewall is blocking the runner's IP, RCON isn't bound (rcon_password unset in server.cfg), or the server is down."
+            exit 1
+          fi
 
       - name: Run schema update script
         env:
@@ -41,12 +58,25 @@ jobs:
           echo "set ssl:verify-certificate no" >> ~/.lftp/rc
           chmod +x eng/update-schema.ts
           chmod +x eng/rcon
-          ./eng/update-schema.ts
+          for attempt in 1 2 3 4 5; do
+            if ./eng/update-schema.ts; then
+              break
+            fi
+            if [ "$attempt" = "5" ]; then
+              echo "::error::update-schema failed after 5 attempts (RCON unreachable)."
+              exit 1
+            fi
+            echo "::warning::update-schema attempt $attempt failed, retrying in 30s..."
+            sleep 30
+          done
 
       - name: Get patch version
         id: version
         run: |
-          PATCH_VERSION=$(jq -r ".game_info.PatchVersion" managed/CounterStrikeSharp.SchemaGen/Schema/server.json)
+          SCHEMA=managed/CounterStrikeSharp.SchemaGen/Schema/server.json
+          # Strip C0 control chars (except \t \n \r) that CS2 dump_schema sometimes emits inside string values.
+          python3 -c "import re,sys,pathlib; p=pathlib.Path('$SCHEMA'); d=p.read_bytes().decode('utf-8','replace'); p.write_text(re.sub(r'[\x00-\x08\x0b\x0c\x0e-\x1f]','',d), encoding='utf-8')"
+          PATCH_VERSION=$(jq -r ".game_info.PatchVersion" "$SCHEMA")
           echo "patch_version=$PATCH_VERSION" >> $GITHUB_OUTPUT
 
       - name: Check for changes

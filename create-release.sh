@@ -147,8 +147,9 @@ echo "Starting automated release process..."
 echo "Fetching latest tags from remote..."
 git fetch --tags
 
-# Get all tags, sorted by version
-LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v1.0.0")
+# Get the highest version tag (ignore non-version tags like backup-* or build-number-*)
+LATEST_TAG=$(git tag --list 'v*' | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+(-beta)?$' | sort -V | tail -n 1)
+LATEST_TAG=${LATEST_TAG:-v1.0.0}
 echo "Latest tag found: $LATEST_TAG"
 
 # Parse version from tag (handling both beta and stable versions)

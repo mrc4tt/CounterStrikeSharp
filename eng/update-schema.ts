@@ -37,6 +37,13 @@ $.logStep("Downloading schema file from game server via SFTP...");
 const schemaOutput = `${HERE}/../managed/CounterStrikeSharp.SchemaGen/Schema/server.json`;
 await $`lftp -u ${config.SFTP_USER},${config.SFTP_PASS} ${config.SFTP_HOST} -e ${"set xfer:clobber on; get " + trimmedPath + " -o " + schemaOutput + "; bye"}`.quiet();
 
+$.logStep("Sanitizing server.json (stripping unescaped C0 control characters)...");
+const raw = await Deno.readFile(schemaOutput);
+const decoded = new TextDecoder("utf-8").decode(raw);
+const cleaned = decoded.replace(/[\x00-\x08\x0b\x0c\x0e-\x1f]/g, "");
+await Deno.writeTextFile(schemaOutput, cleaned);
+JSON.parse(cleaned);
+
 const schemaGenProject = `${HERE}/../managed/CounterStrikeSharp.SchemaGen/CounterStrikeSharp.SchemaGen.csproj`;
 const generatedSchemaDir = `${HERE}/../managed/CounterStrikeSharp.API/Generated/Schema`;
 $.logStep("Generating C# schema classes...");
