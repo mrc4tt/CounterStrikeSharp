@@ -3933,6 +3933,12 @@
   </Suppression>
   <Suppression>
     <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:CounterStrikeSharp.API.Core.Plugin.PluginContext.#ctor(System.IServiceProvider,CounterStrikeSharp.API.Core.Commands.ICommandManager,CounterStrikeSharp.API.Core.Hosting.IScriptHostConfiguration,System.String,System.Int32)</Target>
+    <Left>./ApiCompat/v202.dll</Left>
+    <Right>obj/Release/net8.0/CounterStrikeSharp.API.dll</Right>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
     <Target>M:CounterStrikeSharp.API.Core.shard_model_desc_t.get_Material</Target>
     <Left>./ApiCompat/v202.dll</Left>
     <Right>obj/Release/net8.0/CounterStrikeSharp.API.dll</Right>

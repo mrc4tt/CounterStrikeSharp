@@ -78,6 +78,16 @@ public static class VirtualFunctions
     public static Action<CEntityInstance, CTakeDamageInfo, CTakeDamageResult> CBaseEntity_TakeDamageOld =
         CBaseEntity_TakeDamageOldFunc.Invoke;
 
+    // Compatibility alias used by older third-party plugins (e.g. WC3) that hook the entity TakeDamage
+    // via DynamicHook with two parameters (entity, info). The underlying native function is the same one
+    // backing CBaseEntity_TakeDamageOldFunc above; declaring it with two generic params here is intentional —
+    // hook callbacks read parameters by index via DynoHook regardless of declared arity, so plugins reading
+    // hook.GetParam<CEntityInstance>(0) and hook.GetParam<CTakeDamageInfo>(1) work without modification.
+    // For invoking the function directly, prefer CBaseEntity_TakeDamageOldFunc (correct 3-arg ABI) or the
+    // OnEntityTakeDamagePre/Post listeners.
+    public static MemoryFunctionVoid<CEntityInstance, CTakeDamageInfo> CBaseEntity_TakeDamageFunc =
+        new(GameData.GetSignature("CBaseEntity_TakeDamage"));
+
     public static MemoryFunctionWithReturn<CCSPlayer_WeaponServices, CBasePlayerWeapon, bool> CCSPlayer_WeaponServices_CanUseFunc =
         new(GameData.GetSignature("CCSPlayer_WeaponServices_CanUse"));
 

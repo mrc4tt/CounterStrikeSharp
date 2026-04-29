@@ -55,7 +55,7 @@ namespace CounterStrikeSharp.API.Core.Plugin
         private readonly ICommandManager _commandManager;
         private readonly IScriptHostConfiguration _hostConfiguration;
         private readonly string _path;
-        private readonly FileSystemWatcher _fileWatcher;
+        private readonly SharedPluginFileWatcher? _sharedFileWatcher;
         private readonly IServiceProvider _applicationServiceProvider;
 
         public string FilePath => _path;
@@ -68,11 +68,13 @@ namespace CounterStrikeSharp.API.Core.Plugin
 
         public PluginContext(IServiceProvider applicationServiceProvider, ICommandManager commandManager,
             IScriptHostConfiguration hostConfiguration,
-            string path, int id)
+            string path, int id,
+            SharedPluginFileWatcher? sharedFileWatcher = null)
         {
             _commandManager = commandManager;
             _hostConfiguration = hostConfiguration;
             _path = path;
+            _sharedFileWatcher = sharedFileWatcher;
             PluginId = id;
 
             Loader = PluginLoader.CreateFromAssemblyFile(path,
@@ -82,32 +84,24 @@ namespace CounterStrikeSharp.API.Core.Plugin
                     typeof(ICommandManager)
                 }, config =>
                 {
-                    config.EnableHotReload = true;
+                    // Each EnableHotReload=true allocates its own inotify instance on Linux.
+                    // Gate it on the user-facing flag so disabling hot-reload actually frees those FDs.
+                    config.EnableHotReload = CoreConfig.PluginHotReloadEnabled;
                     config.IsUnloadable = true;
                     config.PreferSharedTypes = true;
                 });
 
             if (CoreConfig.PluginHotReloadEnabled)
             {
-                _fileWatcher = new FileSystemWatcher
-                {
-                    Path = Path.GetDirectoryName(path)
-                };
-
-                _fileWatcher.Deleted += async (s, e) =>
+                _sharedFileWatcher?.RegisterDelete(path, () =>
                 {
                     Server.NextWorldUpdate(() =>
                     {
-                        if (e.FullPath == path)
-                        {
-                            _logger.LogInformation("Plugin {Name} has been deleted, unloading...", Plugin.ModuleName);
-                            Unload(true);
-                        }
+                        _logger.LogInformation("Plugin {Name} has been deleted, unloading...", Plugin.ModuleName);
+                        Unload(true);
                     });
-                };
+                });
 
-                _fileWatcher.Filter = "*.dll";
-                _fileWatcher.EnableRaisingEvents = true;
                 Loader.Reloaded += async (s, e) => await OnReloadedAsync(s, e);
             }
         }
@@ -267,6 +261,11 @@ namespace CounterStrikeSharp.API.Core.Plugin
             var cachedName = Plugin.ModuleName;
 
             _logger.LogInformation("Unloading plugin {Name}", Plugin.ModuleName);
+
+            if (!hotReload)
+            {
+                _sharedFileWatcher?.UnregisterDelete(_path);
+            }
 
             try
             {
