@@ -22,6 +22,18 @@ public partial class CCSPlayer_MovementServices : CPlayer_MovementServices_Human
 	[SchemaMember("CCSPlayer_MovementServices", "m_AnimationState")]
 	public CCSPlayerAnimationState AnimationState => Schema.GetDeclaredClass<CCSPlayerAnimationState>(this.Handle, "CCSPlayer_MovementServices", "m_AnimationState");
 
+	// m_bUsingGroundTopologyOffset
+	[SchemaMember("CCSPlayer_MovementServices", "m_bUsingGroundTopologyOffset")]
+	public ref bool UsingGroundTopologyOffset => ref Schema.GetRef<bool>(this.Handle, "CCSPlayer_MovementServices", "m_bUsingGroundTopologyOffset");
+
+	// m_flAltitudeAtLastUsingGroundTopologyOffsetTransition
+	[SchemaMember("CCSPlayer_MovementServices", "m_flAltitudeAtLastUsingGroundTopologyOffsetTransition")]
+	public ref float AltitudeAtLastUsingGroundTopologyOffsetTransition => ref Schema.GetRef<float>(this.Handle, "CCSPlayer_MovementServices", "m_flAltitudeAtLastUsingGroundTopologyOffsetTransition");
+
+	// m_flUsingGroundTopologyOffsetTransitionSmoothing
+	[SchemaMember("CCSPlayer_MovementServices", "m_flUsingGroundTopologyOffsetTransitionSmoothing")]
+	public ref float UsingGroundTopologyOffsetTransitionSmoothing => ref Schema.GetRef<float>(this.Handle, "CCSPlayer_MovementServices", "m_flUsingGroundTopologyOffsetTransitionSmoothing");
+
 	// m_vecLadderNormal
 	[SchemaMember("CCSPlayer_MovementServices", "m_vecLadderNormal")]
 	public Vector LadderNormal => Schema.GetDeclaredClass<Vector>(this.Handle, "CCSPlayer_MovementServices", "m_vecLadderNormal");
@@ -213,14 +225,6 @@ public partial class CCSPlayer_MovementServices : CPlayer_MovementServices_Human
 	// m_vecWalkWishVel
 	[SchemaMember("CCSPlayer_MovementServices", "m_vecWalkWishVel")]
 	public Vector2D WalkWishVel => Schema.GetDeclaredClass<Vector2D>(this.Handle, "CCSPlayer_MovementServices", "m_vecWalkWishVel");
-
-	// m_gtLastTimeOnStaticWorldGround
-	[SchemaMember("CCSPlayer_MovementServices", "m_gtLastTimeOnStaticWorldGround")]
-	public ref float GtLastTimeOnStaticWorldGround => ref Schema.GetRef<float>(this.Handle, "CCSPlayer_MovementServices", "m_gtLastTimeOnStaticWorldGround");
-
-	// m_gtLastTimeInAir
-	[SchemaMember("CCSPlayer_MovementServices", "m_gtLastTimeInAir")]
-	public ref float GtLastTimeInAir => ref Schema.GetRef<float>(this.Handle, "CCSPlayer_MovementServices", "m_gtLastTimeInAir");
 
 	// m_bHasEverProcessedCommand
 	[SchemaMember("CCSPlayer_MovementServices", "m_bHasEverProcessedCommand")]
