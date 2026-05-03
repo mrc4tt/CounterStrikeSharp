@@ -269,10 +269,20 @@ namespace CounterStrikeSharp.API.Core
                         break;
                     }
 
-                    // Reload re-creates the AssemblyLoadContext so the current bytes on disk are read.
-                    // Unload+Load on the same context would silently return the cached old assembly,
-                    // or throw FileLoadException with the previous identity if the new file changed.
-                    plugin.Reload(true);
+                    // Reload re-creates the AssemblyLoadContext so the current bytes on disk are read,
+                    // and pre-validates the new file in a throwaway context first — if validation
+                    // fails the previously loaded plugin remains active.
+                    var reloaded = plugin.Reload(true);
+                    if (reloaded)
+                    {
+                        info.ReplyToCommand($"Reloaded plugin \"{pluginIdentifier}\".");
+                    }
+                    else
+                    {
+                        info.ReplyToCommand(
+                            $"Reload of \"{pluginIdentifier}\" was aborted — see server log for details. " +
+                            "If pre-load validation failed, the previously loaded version is still running.");
+                    }
                     break;
                 }
 
