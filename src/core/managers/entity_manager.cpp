@@ -338,6 +338,14 @@ bool EntityManager::Hook_OnTakeDamage_Alive_Pre(CBaseEntity* entity, CTakeDamage
 
 void EntityManager::Hook_OnTakeDamage_Alive_Post(CBaseEntity* entity, CTakeDamageInfo* info, CTakeDamageResult* pResult)
 {
+    // Guard against edge cases where the engine reaches the post-hook with a missing entity,
+    // info, or result. Plugins read schema fields directly off these pointers; a null Handle
+    // on the C# wrapper would throw ArgumentNullException out of every field accessor.
+    if (!entity || !info || !pResult)
+    {
+        return;
+    }
+
     auto* cb_entity = globals::entityManager.on_entity_take_damage_post_callback;
 
     HookResult result = HookResult::Continue;
