@@ -1,3 +1,15 @@
+## What's Changed in v1.0.381
+* Fix plugin refuse reload (due error) opps ([eeccf50](https://github.com/mrc4tt/CounterStrikeSharp/commit/eeccf50f69dbd28d181ad7082ddca886d6d45a9f))
+* test: support for plugins/customNAME/pluginname.dll ([59113b6](https://github.com/mrc4tt/CounterStrikeSharp/commit/59113b6389adac71abb2b2cd25bdfe42f7ce2ca7))
+* fix CCSPlayerController.cs ([46372ce](https://github.com/mrc4tt/CounterStrikeSharp/commit/46372ceac423ab44961e5fc09f68396dee652ad5))
+* patch CCSPlayer_ItemServices.cs ([4320db0](https://github.com/mrc4tt/CounterStrikeSharp/commit/4320db00152746aab4f3006a018845cb1a39fa31))
+* Merge pull request #2 from mrc4tt/chore/automated/schema-update in [#2](https://github.com/mrc4tt/CounterStrikeSharp/pull/2) ([f22325d](https://github.com/mrc4tt/CounterStrikeSharp/commit/f22325d5c645059d75f4189328391a7678d1b379))
+* chore: update schema definitions to 1.41.5.8 ([332d100](https://github.com/mrc4tt/CounterStrikeSharp/commit/332d100b46d9d366de03d468d297dd36bad66261))
+* fix workflow ([6e4ed56](https://github.com/mrc4tt/CounterStrikeSharp/commit/6e4ed5672be1bf373b62242be3d57fa0b4f1e413))
+* feat: TakeDamage back, SharedPluginFileWatcher, latest gamedata ([848e808](https://github.com/mrc4tt/CounterStrikeSharp/commit/848e808e27d7be0c8ad53cd0a61dde919a18ed40))
+* fix schema file ([f6633c4](https://github.com/mrc4tt/CounterStrikeSharp/commit/f6633c45a2ad6defa57f9c4ceb06f5399128b100))
+* small update ([07ab204](https://github.com/mrc4tt/CounterStrikeSharp/commit/07ab20414cf444e87f019c644c76baf214c0f7cb))
+
 ## What's Changed in v1.0.380
 * fix readme ([0805adc](https://github.com/mrc4tt/CounterStrikeSharp/commit/0805adce76c2e501d6030a774136b4e777142003))
 * fix: patch and missed fix for EntitySystem ([5c6f7f1](https://github.com/mrc4tt/CounterStrikeSharp/commit/5c6f7f196ea43ba2ab3726e995f65368c0aa45e0))
