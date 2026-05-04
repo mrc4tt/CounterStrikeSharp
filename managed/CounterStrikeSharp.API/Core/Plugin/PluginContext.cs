@@ -14,7 +14,6 @@
  *  along with CounterStrikeSharp.  If not, see <https://www.gnu.org/licenses/>. *
  */
 
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -95,30 +94,6 @@ namespace CounterStrikeSharp.API.Core.Plugin
             }
         }
 
-        /// <summary>
-        /// Returns the types from <paramref name="assembly"/> that successfully loaded, skipping any
-        /// that would otherwise throw <see cref="ReflectionTypeLoadException"/> due to stale or
-        /// unresolved references. This protects the AppDomain-wide scan in <see cref="Load"/> from
-        /// being killed by a single leaked <see cref="System.Runtime.Loader.AssemblyLoadContext"/>
-        /// (e.g. one left behind by an earlier failed reload) whose remaining types reference an
-        /// assembly version that no longer exists.
-        /// </summary>
-        private static IEnumerable<Type> GetLoadableTypes(Assembly assembly)
-        {
-            try
-            {
-                return assembly.GetTypes();
-            }
-            catch (ReflectionTypeLoadException ex)
-            {
-                return ex.Types.Where(t => t != null)!;
-            }
-            catch
-            {
-                return Array.Empty<Type>();
-            }
-        }
-
         private static PluginLoader CreateLoader(string path)
         {
             return PluginLoader.CreateFromAssemblyFile(path,
@@ -143,34 +118,8 @@ namespace CounterStrikeSharp.API.Core.Plugin
         /// Calling Unload() + Load() directly reuses the same AssemblyLoadContext, which either
         /// returns the cached old assembly or throws FileLoadException with the previous identity.
         /// </summary>
-        /// <returns>
-        /// True if the plugin was reloaded successfully. False if pre-load validation failed —
-        /// in that case the previously loaded plugin remains active and unchanged.
-        /// </returns>
-        public bool Reload(bool hotReload = true)
+        public void Reload(bool hotReload = true)
         {
-            if (!File.Exists(_path))
-            {
-                _logger.LogError("Cannot reload: plugin DLL is missing at {Path}", _path);
-                return false;
-            }
-
-            // Pre-validate the file in a throwaway AssemblyLoadContext. If the new bytes on disk
-            // are malformed (corrupted upload, broken strong-name blob from a bad obfuscator,
-            // wrong file type, etc.), catching it here lets us *abort* the reload before we
-            // destroy the working plugin instance. Without this, a failed Load() leaves the plugin
-            // permanently unloaded until the operator notices and restarts the host.
-            if (!TryProbeLoadAssembly(_path, out var probeError))
-            {
-                var displayName = (State == PluginState.Loaded ? Plugin?.ModuleName : null)
-                                  ?? Path.GetFileNameWithoutExtension(_path);
-                _logger.LogError(
-                    "Aborting reload of {Name}: the file at {Path} failed pre-load validation. " +
-                    "The currently loaded version remains active. Reason: {Reason}",
-                    displayName, _path, probeError);
-                return false;
-            }
-
             Unload(hotReload);
 
             try
@@ -189,19 +138,7 @@ namespace CounterStrikeSharp.API.Core.Plugin
                 Loader.Reloaded += async (s, e) => await OnReloadedAsync(s, e);
             }
 
-            try
-            {
-                Load(hotReload);
-            }
-            catch (Exception ex)
-            {
-                // Probe passed but real load failed (rare — usually a CSSharp-side init error,
-                // not an assembly-validity error). Surface clearly; the plugin is now unloaded.
-                _logger.LogError(ex,
-                    "Reload of {Path} passed pre-load validation but failed during plugin initialization. " +
-                    "Plugin is now unloaded.", _path);
-                return false;
-            }
+            Load(hotReload);
 
             try
             {
@@ -210,38 +147,6 @@ namespace CounterStrikeSharp.API.Core.Plugin
             catch (Exception ex)
             {
                 _logger.LogError(ex, "OnAllPluginsLoaded threw after reload of {Name}", Plugin?.ModuleName ?? _path);
-            }
-
-            return true;
-        }
-
-        /// <summary>
-        /// Probe-load an assembly in a throwaway collectible AssemblyLoadContext. Surfaces the
-        /// same exceptions the real load path would (BadImageFormatException, SecurityException
-        /// for invalid strong-name, FileLoadException for identity collisions, etc.) without
-        /// touching the live plugin's load context. The probe ALC is unloaded before returning.
-        /// </summary>
-        private static bool TryProbeLoadAssembly(string path, out string? error)
-        {
-            var alc = new System.Runtime.Loader.AssemblyLoadContext(
-                name: $"PluginProbe::{Path.GetFileNameWithoutExtension(path)}",
-                isCollectible: true);
-
-            try
-            {
-                alc.LoadFromAssemblyPath(path);
-                error = null;
-                return true;
-            }
-            catch (Exception ex)
-            {
-                error = $"{ex.GetType().Name}: {ex.Message.Trim()}";
-                return false;
-            }
-            finally
-            {
-                try { alc.Unload(); }
-                catch { /* best-effort cleanup; the probe ALC will be GC'd eventually anyway */ }
             }
         }
 
@@ -307,7 +212,7 @@ namespace CounterStrikeSharp.API.Core.Plugin
 
                 Type interfaceType = typeof(IPluginServiceCollection<>).MakeGenericType(pluginType);
                 Type[] serviceCollectionConfiguratorTypes = AppDomain.CurrentDomain.GetAssemblies()
-                    .SelectMany(assembly => GetLoadableTypes(assembly))
+                    .SelectMany(assembly => assembly.GetTypes())
                     .Where(type => interfaceType.IsAssignableFrom(type) && !type.IsInterface && !type.IsAbstract)
                     .ToArray();
 
