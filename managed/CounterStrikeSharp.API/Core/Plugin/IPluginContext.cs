@@ -9,5 +9,4 @@ public interface IPluginContext
     string FilePath { get; }
     void Load(bool hotReload);
     void Unload(bool hotReload);
-    void Reload(bool hotReload);
 }

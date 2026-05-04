@@ -77,7 +77,19 @@ namespace CounterStrikeSharp.API.Core.Plugin
             _sharedFileWatcher = sharedFileWatcher;
             PluginId = id;
 
-            Loader = CreateLoader(path);
+            Loader = PluginLoader.CreateFromAssemblyFile(path,
+                new[]
+                {
+                    typeof(IPlugin), typeof(ILogger), typeof(IServiceCollection), typeof(IPluginServiceCollection<>),
+                    typeof(ICommandManager)
+                }, config =>
+                {
+                    // Each EnableHotReload=true allocates its own inotify instance on Linux.
+                    // Gate it on the user-facing flag so disabling hot-reload actually frees those FDs.
+                    config.EnableHotReload = CoreConfig.PluginHotReloadEnabled;
+                    config.IsUnloadable = true;
+                    config.PreferSharedTypes = true;
+                });
 
             if (CoreConfig.PluginHotReloadEnabled)
             {
@@ -91,62 +103,6 @@ namespace CounterStrikeSharp.API.Core.Plugin
                 });
 
                 Loader.Reloaded += async (s, e) => await OnReloadedAsync(s, e);
-            }
-        }
-
-        private static PluginLoader CreateLoader(string path)
-        {
-            return PluginLoader.CreateFromAssemblyFile(path,
-                new[]
-                {
-                    typeof(IPlugin), typeof(ILogger), typeof(IServiceCollection), typeof(IPluginServiceCollection<>),
-                    typeof(ICommandManager)
-                }, config =>
-                {
-                    // Each EnableHotReload=true allocates its own inotify instance on Linux.
-                    // Gate it on the user-facing flag so disabling hot-reload actually frees those FDs.
-                    config.EnableHotReload = CoreConfig.PluginHotReloadEnabled;
-                    config.IsUnloadable = true;
-                    config.PreferSharedTypes = true;
-                });
-        }
-
-        /// <summary>
-        /// Unload, dispose the AssemblyLoadContext, and re-create a fresh PluginLoader so the next
-        /// Load() reads the current bytes from disk. Use this for manual <c>css_plugins restart</c>
-        /// flows where the operator may have replaced the DLL on disk before issuing the command.
-        /// Calling Unload() + Load() directly reuses the same AssemblyLoadContext, which either
-        /// returns the cached old assembly or throws FileLoadException with the previous identity.
-        /// </summary>
-        public void Reload(bool hotReload = true)
-        {
-            Unload(hotReload);
-
-            try
-            {
-                (Loader as IDisposable)?.Dispose();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogWarning(ex, "Failed to dispose previous PluginLoader for {Path} — continuing with fresh loader anyway", _path);
-            }
-
-            Loader = CreateLoader(_path);
-
-            if (CoreConfig.PluginHotReloadEnabled)
-            {
-                Loader.Reloaded += async (s, e) => await OnReloadedAsync(s, e);
-            }
-
-            Load(hotReload);
-
-            try
-            {
-                Plugin?.OnAllPluginsLoaded(hotReload);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "OnAllPluginsLoaded threw after reload of {Name}", Plugin?.ModuleName ?? _path);
             }
         }
 

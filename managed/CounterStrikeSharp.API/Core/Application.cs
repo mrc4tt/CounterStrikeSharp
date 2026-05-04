@@ -269,10 +269,9 @@ namespace CounterStrikeSharp.API.Core
                         break;
                     }
 
-                    // Reload re-creates the AssemblyLoadContext so the current bytes on disk are read.
-                    // Unload+Load on the same context would silently return the cached old assembly,
-                    // or throw FileLoadException with the previous identity if the new file changed.
-                    plugin.Reload(true);
+                    plugin.Unload(true);
+                    plugin.Load(true);
+                    plugin.Plugin.OnAllPluginsLoaded(true);
                     break;
                 }
 

@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Reflection.Metadata;
-using System.Reflection.PortableExecutable;
 using System.Runtime.Loader;
 using CounterStrikeSharp.API.Core.Capabilities;
 using CounterStrikeSharp.API.Core.Commands;
@@ -234,7 +232,7 @@ public class PluginManager : IPluginManager, IDisposable
         var rootSubDirs = Directory.GetDirectories(_scriptHostConfiguration.PluginPath)
             .Where(d => !Path.GetFileName(d).Equals("disabled", StringComparison.OrdinalIgnoreCase));
 
-        var pluginPaths = new List<string>();
+        var pluginDirectories = new List<string>();
 
         foreach (var subDir in rootSubDirs)
         {
@@ -245,98 +243,23 @@ public class PluginManager : IPluginManager, IDisposable
             {
                 var currentDir = stack.Pop();
                 var dirName = Path.GetFileName(currentDir);
+                var expectedDll = Path.Combine(currentDir, dirName + ".dll");
 
-                // 1. Conventional layout: <dirname>/<dirname>.dll — fastest, no metadata read.
-                var conventional = Path.Combine(currentDir, dirName + ".dll");
-                if (File.Exists(conventional))
+                if (File.Exists(expectedDll))
                 {
-                    pluginPaths.Add(conventional);
+                    pluginDirectories.Add(currentDir);
+                    // Stop scanning deeper in this directory
                     continue;
                 }
 
-                // 2. Fallback: folder name doesn't match the DLL (e.g. FSH-MatchZy/MatchZy.dll).
-                //    Identify the entry assembly by finding the top-level DLL that references
-                //    CounterStrikeSharp.API. Read PE metadata only — no JIT, no AssemblyLoadContext.
-                var entry = TryResolvePluginEntryByApiReference(currentDir);
-                if (entry != null)
-                {
-                    _logger.LogInformation(
-                        "Plugin entry resolved by CSSharp.API reference: {Path} (folder name '{Dir}' does not match DLL name)",
-                        entry, dirName);
-                    pluginPaths.Add(entry);
-                    continue;
-                }
-
-                // 3. Recurse into subdirectories (preserves nested-plugin behavior).
+                // Add subdirectories to stack for further scanning
                 foreach (var child in Directory.GetDirectories(currentDir))
                     stack.Push(child);
             }
         }
 
-        return pluginPaths.ToArray();
-    }
-
-    private string? TryResolvePluginEntryByApiReference(string directory)
-    {
-        string[] dlls;
-        try
-        {
-            dlls = Directory.GetFiles(directory, "*.dll", SearchOption.TopDirectoryOnly);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogDebug(ex, "Could not enumerate DLLs in {Dir}", directory);
-            return null;
-        }
-
-        if (dlls.Length == 0) return null;
-
-        var candidates = new List<string>();
-        foreach (var dll in dlls)
-        {
-            if (ReferencesCounterStrikeSharpApi(dll))
-            {
-                candidates.Add(dll);
-            }
-        }
-
-        if (candidates.Count == 1) return candidates[0];
-
-        if (candidates.Count > 1)
-        {
-            _logger.LogWarning(
-                "Skipping {Dir}: ambiguous plugin entry — multiple DLLs reference CounterStrikeSharp.API. " +
-                "Rename the folder to match one DLL, or place exactly one plugin DLL here. Candidates: {Candidates}",
-                directory,
-                string.Join(", ", candidates.Select(Path.GetFileName)));
-        }
-
-        return null;
-    }
-
-    private static bool ReferencesCounterStrikeSharpApi(string dllPath)
-    {
-        try
-        {
-            using var stream = File.OpenRead(dllPath);
-            using var pe = new PEReader(stream);
-            if (!pe.HasMetadata) return false;
-
-            var md = pe.GetMetadataReader();
-            foreach (var handle in md.AssemblyReferences)
-            {
-                var refName = md.GetString(md.GetAssemblyReference(handle).Name);
-                if (string.Equals(refName, "CounterStrikeSharp.API", StringComparison.Ordinal))
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-        catch
-        {
-            // Not a managed PE, corrupt metadata, locked file, etc. — treat as non-plugin.
-            return false;
-        }
+        return pluginDirectories
+                .Select(d => Path.Combine(d, Path.GetFileName(d) + ".dll"))
+                .ToArray();
     }
 }
