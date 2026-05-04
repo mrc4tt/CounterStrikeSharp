@@ -12,7 +12,7 @@ using Microsoft.Extensions.Logging;
 
 namespace CounterStrikeSharp.API.Core.Plugin.Host;
 
-public class PluginManager : IPluginManager, IDisposable
+public class PluginManager : IPluginManager
 {
     private readonly HashSet<PluginContext> _loadedPluginContexts = new();
     private readonly IScriptHostConfiguration _scriptHostConfiguration;
@@ -21,7 +21,6 @@ public class PluginManager : IPluginManager, IDisposable
     private readonly ILogger<PluginManager> _logger;
     private readonly Dictionary<string, Assembly> _sharedAssemblies = new();
     private bool _loadedSharedLibs = false;
-    private SharedPluginFileWatcher? _sharedFileWatcher;
 
     public PluginManager(IScriptHostConfiguration scriptHostConfiguration, ICommandManager commandManager,
         ILogger<PluginManager> logger, IServiceProvider serviceProvider, IServiceScopeFactory serviceScopeFactory)
@@ -30,18 +29,6 @@ public class PluginManager : IPluginManager, IDisposable
         _commandManager = commandManager;
         _logger = logger;
         _serviceProvider = serviceProvider;
-    }
-
-    internal SharedPluginFileWatcher? GetOrCreateSharedFileWatcher()
-    {
-        if (!CoreConfig.PluginHotReloadEnabled) return null;
-        return _sharedFileWatcher ??= new SharedPluginFileWatcher(_scriptHostConfiguration.PluginPath, _logger);
-    }
-
-    public void Dispose()
-    {
-        _sharedFileWatcher?.Dispose();
-        _sharedFileWatcher = null;
     }
 
     private void LoadLibrary(string path)
@@ -197,8 +184,7 @@ public class PluginManager : IPluginManager, IDisposable
     public void LoadPlugin(string path)
     {
         var plugin = new PluginContext(_serviceProvider, _commandManager, _scriptHostConfiguration, path,
-            _loadedPluginContexts.Select(x => x.PluginId).DefaultIfEmpty(0).Max() + 1,
-            GetOrCreateSharedFileWatcher());
+            _loadedPluginContexts.Select(x => x.PluginId).DefaultIfEmpty(0).Max() + 1);
         _loadedPluginContexts.Add(plugin);
         plugin.Load();
     }
