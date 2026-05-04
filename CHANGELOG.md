@@ -1,3 +1,8 @@
+## What's Changed in v1.0.382
+* ooops dont crash plugins restart if updated after upload. GG ([08f030f](https://github.com/mrc4tt/CounterStrikeSharp/commit/08f030f1a29ebc162c19bd7580a96fbf61b1ddab))
+* Revert "test: support for plugins/customNAME/pluginname.dll" ([c7fd1fb](https://github.com/mrc4tt/CounterStrikeSharp/commit/c7fd1fbf464eace4f080860d8a6a43966290fe0c))
+* Revert "Fix plugin refuse reload (due error) opps" ([6600134](https://github.com/mrc4tt/CounterStrikeSharp/commit/66001346dfa5ad649d9cfd3514346462f0bff680))
+
 ## What's Changed in v1.0.381
 * Fix plugin refuse reload (due error) opps ([eeccf50](https://github.com/mrc4tt/CounterStrikeSharp/commit/eeccf50f69dbd28d181ad7082ddca886d6d45a9f))
 * test: support for plugins/customNAME/pluginname.dll ([59113b6](https://github.com/mrc4tt/CounterStrikeSharp/commit/59113b6389adac71abb2b2cd25bdfe42f7ce2ca7))
