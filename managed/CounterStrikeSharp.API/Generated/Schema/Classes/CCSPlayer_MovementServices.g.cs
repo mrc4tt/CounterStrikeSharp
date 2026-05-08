@@ -26,10 +26,6 @@ public partial class CCSPlayer_MovementServices : CPlayer_MovementServices_Human
 	[SchemaMember("CCSPlayer_MovementServices", "m_bUsingGroundTopologyOffset")]
 	public ref bool UsingGroundTopologyOffset => ref Schema.GetRef<bool>(this.Handle, "CCSPlayer_MovementServices", "m_bUsingGroundTopologyOffset");
 
-	// m_flAltitudeAtLastUsingGroundTopologyOffsetTransition
-	[SchemaMember("CCSPlayer_MovementServices", "m_flAltitudeAtLastUsingGroundTopologyOffsetTransition")]
-	public ref float AltitudeAtLastUsingGroundTopologyOffsetTransition => ref Schema.GetRef<float>(this.Handle, "CCSPlayer_MovementServices", "m_flAltitudeAtLastUsingGroundTopologyOffsetTransition");
-
 	// m_flUsingGroundTopologyOffsetTransitionSmoothing
 	[SchemaMember("CCSPlayer_MovementServices", "m_flUsingGroundTopologyOffsetTransitionSmoothing")]
 	public ref float UsingGroundTopologyOffsetTransitionSmoothing => ref Schema.GetRef<float>(this.Handle, "CCSPlayer_MovementServices", "m_flUsingGroundTopologyOffsetTransitionSmoothing");
