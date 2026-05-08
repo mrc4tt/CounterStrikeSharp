@@ -1,3 +1,7 @@
+## What's Changed in v1.0.383
+* Merge pull request #3 from mrc4tt/chore/automated/schema-update in [#3](https://github.com/mrc4tt/CounterStrikeSharp/pull/3) ([ac8c94b](https://github.com/mrc4tt/CounterStrikeSharp/commit/ac8c94b01d86b390aeaca0d163f5f8aa2f2d879b))
+* chore: update schema definitions to 1.41.6.0 ([e353b87](https://github.com/mrc4tt/CounterStrikeSharp/commit/e353b87f2a4ad333010426a6ef98568cc0d7e3fb))
+
 ## What's Changed in v1.0.382
 * ooops dont crash plugins restart if updated after upload. GG ([08f030f](https://github.com/mrc4tt/CounterStrikeSharp/commit/08f030f1a29ebc162c19bd7580a96fbf61b1ddab))
 * Revert "test: support for plugins/customNAME/pluginname.dll" ([c7fd1fb](https://github.com/mrc4tt/CounterStrikeSharp/commit/c7fd1fbf464eace4f080860d8a6a43966290fe0c))
