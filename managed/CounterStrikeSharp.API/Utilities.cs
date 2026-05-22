@@ -229,9 +229,8 @@ namespace CounterStrikeSharp.API
 
             if (!Schema.IsSchemaFieldNetworked(className, fieldName))
             {
-                Application.Instance.Logger.LogWarning(
-                    "Field {ClassName}:{FieldName} is not networked, but SetStateChanged was called on it.", className, fieldName);
-                return;
+                Application.Instance.Logger.LogDebug(
+                    "Field {ClassName}:{FieldName} is not flagged networked; forwarding SetStateChanged anyway (sub-component / chain field).", className, fieldName);
             }
 
             int offset = Schema.GetSchemaOffset(className, fieldName);

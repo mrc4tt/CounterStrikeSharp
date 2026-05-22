@@ -77,6 +77,15 @@ public class FrameSchedulingTests
         mock.Verify(s => s(), Times.Once);
     }
 
+   [Fact]
+    public async Task QueueTaskForFrame_ReturnsValue()
+    {
+        var tickCount = Server.TickCount;
+        var returnValue = await Server.NextFrameAsync(() => Server.TickCount);
+
+        Assert.Equal(tickCount + 1, returnValue);
+    }
+
     [Fact]
     public async Task QueueTaskForNextWorldUpdate_RunsOnMainThread()
     {
@@ -102,6 +111,15 @@ public class FrameSchedulingTests
         await WaitOneFrame();
 
         mock.Verify(s => s(), Times.Once);
+    }
+
+    [Fact]
+    public async Task QueueTaskForNextWorldUpdate_ReturnsValue()
+    {
+        var tickCount = Server.TickCount;
+        var returnValue = await Server.NextWorldUpdateAsync(() => Server.TickCount);
+
+        Assert.Equal(tickCount + 1, returnValue);
     }
 
     [Fact]
