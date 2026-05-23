@@ -38,6 +38,7 @@
 #include "core/globals.h"
 #include "core/log.h"
 #include "core/managers/player_manager.h"
+#include "core/timer_system_startup_logic.h"
 #include "scripting/callback_manager.h"
 
 namespace counterstrikesharp {
@@ -90,19 +91,16 @@ void TimerSystem::OnLevelEnd()
 
 void TimerSystem::OnStartupServer(bool levelShutdown)
 {
-    if (levelShutdown && m_has_map_ticked)
+    // Pure decision logic lives in timer_system_startup_logic.h so it can be
+    // unit-tested without linking against this .cpp (which pulls in
+    // hl2sdk-cs2, spdlog, etc.). The helper ALWAYS resets the tick flags --
+    // see the header for the workshop-ss_dead-reload rationale.
+    if (timer_startup::ShouldFireLevelEndAndResetTickState(levelShutdown, m_has_map_ticked, m_has_map_simulated))
     {
         CALL_GLOBAL_LISTENER(OnLevelEnd());
 
         CSSHARP_CORE_TRACE("name={0}", "LevelShutdown");
     }
-
-    // Reset is UNCONDITIONAL -- universal_time math in OnGameFrame depends on
-    // m_has_map_ticked being false on the first frame of every new session,
-    // whether that session came in via a genuine LevelShutdown or a workshop
-    // ss_dead reload.
-    m_has_map_ticked = false;
-    m_has_map_simulated = false;
 }
 
 void TimerSystem::OnGameFrame(bool simulating)

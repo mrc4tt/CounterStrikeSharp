@@ -148,3 +148,14 @@ add_custom_command(
     COMMAND ${CMAKE_COMMAND} -E copy_directory
     ${CMAKE_SOURCE_DIR}/configs ${CMAKE_BINARY_DIR}
 )
+
+# Host-architecture unit tests. Opt-in: configure with -DBUILD_CSS_TESTS=ON to
+# build the css_unit_tests target, then run via `ctest --output-on-failure`.
+# CI builds the production target and the tests in separate jobs so a test
+# failure can't block release artifact upload, and a release build doesn't pay
+# the extra compile cost.
+option(BUILD_CSS_TESTS "Build host-arch C++ unit tests" OFF)
+if(BUILD_CSS_TESTS)
+    enable_testing()
+    add_subdirectory(src/core/tests)
+endif()

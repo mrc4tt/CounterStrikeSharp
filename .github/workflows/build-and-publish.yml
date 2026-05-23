@@ -98,6 +98,40 @@ jobs:
           name: counterstrikesharp-linux-${{ needs.setup.outputs.gitversion_semver }}
           path: build/output/
 
+  tests_cpp:
+    # Host-arch unit tests for src/core/tests/*. Runs on plain ubuntu-latest
+    # (no SteamRT container) because these tests are deliberately decoupled
+    # from the hl2sdk-cs2 build -- they mirror the production logic and only
+    # need a C++17 compiler + Catch2 (consumed via the libraries/Catch2
+    # submodule's amalgamated single-source).
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Only Catch2 is needed -- pulling all submodules would clone
+          # hl2sdk-cs2, Protobufs, etc. unnecessarily on this lightweight job.
+          submodules: false
+
+      - name: Fetch Catch2 submodule
+        run: git submodule update --init --depth 1 libraries/Catch2
+
+      - name: Configure (tests only)
+        run: |
+          # Skip the full CMake project (dyncall's old cmake_minimum_required
+          # breaks modern CMake). Compile the test target directly -- this is
+          # the same command the maintainer runs locally.
+          mkdir -p build-tests
+          cd build-tests
+          clang++ -std=c++17 -O0 -Wall \
+            -I../libraries/Catch2/extras \
+            -I../src \
+            ../src/core/tests/test_timer_system_startup.cpp \
+            ../libraries/Catch2/extras/catch_amalgamated.cpp \
+            -o css_unit_tests
+      - name: Run
+        run: ./build-tests/css_unit_tests --reporter=console
+
   build_managed:
     needs: setup
     permissions:
