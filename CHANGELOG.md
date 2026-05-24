@@ -1,3 +1,11 @@
+## What's Changed in v1.0.384
+* test. ([983c38f](https://github.com/mrc4tt/CounterStrikeSharp/commit/983c38f7a2538e9d24ac0345dafe4ed63abffebd))
+* update for c47b3f6 ([2e520bb](https://github.com/mrc4tt/CounterStrikeSharp/commit/2e520bbd88209ff5ab2103fbb02e1285ab3c6caa))
+* Task<TResult> ([727c6f9](https://github.com/mrc4tt/CounterStrikeSharp/commit/727c6f98afa14f77386e63084c1fa28b908a98ea))
+* Merge pull request #4 from mrc4tt/chore/automated/schema-update in [#4](https://github.com/mrc4tt/CounterStrikeSharp/pull/4) ([752073b](https://github.com/mrc4tt/CounterStrikeSharp/commit/752073b258b7ad52a1207e6cfd95100647989454))
+* chore: update schema definitions to 1.41.6.2 ([0bb8963](https://github.com/mrc4tt/CounterStrikeSharp/commit/0bb89639fad712682f16c7fb6127e77bf5076332))
+* untested: Hook_StartupServer against spurious second call (HLTV wakeup / ss_dead) ([c47b3f6](https://github.com/mrc4tt/CounterStrikeSharp/commit/c47b3f6ebbe238137508cf4070023dfb1d55cd17))
+
 ## What's Changed in v1.0.383
 * Merge pull request #3 from mrc4tt/chore/automated/schema-update in [#3](https://github.com/mrc4tt/CounterStrikeSharp/pull/3) ([ac8c94b](https://github.com/mrc4tt/CounterStrikeSharp/commit/ac8c94b01d86b390aeaca0d163f5f8aa2f2d879b))
 * chore: update schema definitions to 1.41.6.0 ([e353b87](https://github.com/mrc4tt/CounterStrikeSharp/commit/e353b87f2a4ad333010426a6ef98568cc0d7e3fb))
