@@ -117,6 +117,7 @@ bool CounterStrikeSharpMMPlugin::Load(PluginId id, ISmmAPI* ismm, char* error, s
     g_pCVar = globals::cvars;
     g_pSource2GameEntities = globals::gameEntities;
     interfaces::pGameResourceServiceServer = (CGameResourceService*)g_pGameResourceServiceServer;
+    CSSHARP_CORE_INFO("pGameResourceServiceServer resolved: {}", (void*)interfaces::pGameResourceServiceServer);
 
     if (utils::RelativeDirectory(std::string(basePath)) == "NotFound")
     {
@@ -208,6 +209,7 @@ static bool s_bLevelShutdownOccurred = false;
 
 void CounterStrikeSharpMMPlugin::Hook_StartupServer(const GameSessionConfiguration_t& config, ISource2WorldSession*, const char*)
 {
+    CSSHARP_CORE_INFO("Hook_StartupServer fired (pGameResourceServiceServer={})", (void*)interfaces::pGameResourceServiceServer);
     globals::entitySystem = interfaces::pGameResourceServiceServer->GetGameEntitySystem();
     // Remove before adding to prevent double-registration when workshop addon changes
     // trigger a second StartupServer within the same map session (ss_dead cycle).
@@ -268,6 +270,27 @@ void CounterStrikeSharpMMPlugin::Hook_GameFrame(bool simulating, bool bFirstTick
      * false | game is not ticking
      */
     // VPROF_BUDGET("CS#::Hook_GameFrame", "CS# On Frame");
+
+    // Fallback init for environments where Hook_StartupServer silently never
+    // fires -- e.g. CS2 under FEX-Emu on aarch64, where the SourceHook x86_64
+    // trampoline on INetworkServerService::StartupServer can fail to install
+    // or invoke. See GH roflmuffin/CounterStrikeSharp#1320. Without this
+    // fallback, globals::entitySystem stays nullptr and every entity-touching
+    // native throws "Entity system yet is not initialized".
+    if (!globals::entitySystem && interfaces::pGameResourceServiceServer)
+    {
+        auto* pEntitySystem = interfaces::pGameResourceServiceServer->GetGameEntitySystem();
+        if (pEntitySystem)
+        {
+            globals::entitySystem = pEntitySystem;
+            // Remove+Add for parity with Hook_StartupServer's idempotent registration.
+            globals::entitySystem->RemoveListenerEntity(&globals::entityManager.entityListener);
+            globals::entitySystem->AddListenerEntity(&globals::entityManager.entityListener);
+            CSSHARP_CORE_WARN("entitySystem lazy-initialized from Hook_GameFrame "
+                              "(Hook_StartupServer never fired -- FEX-Emu / hook failure?)");
+        }
+    }
+
     globals::timerSystem.OnGameFrame(simulating);
 
     auto callbacks = globals::tickScheduler.getCallbacks(globals::getGlobalVars()->tickcount);
