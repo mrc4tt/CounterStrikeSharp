@@ -9,16 +9,16 @@
 </div>
 <br>
 
-CounterStrikeSharp is a server side modding framework for Counter-Strike 2. This project implements a .NET 8 scripting layer on top of a Metamod Source Plugin, allowing developers to create plugins that interact with the game server in a modern language (C#) to facilitate the creation of maintainable and testable code.
+CounterStrikeSharp is a server-side modding framework for Counter-Strike 2. This project implements a .NET 8 scripting layer on top of a Metamod Source Plugin, allowing developers to create plugins that interact with the game server in a modern language (C#) to facilitate the creation of maintainable and testable code.
 
-**Forked version by Miksen for custom setup**
-- Added support for Debian 13, should work for newer Ubuntu 24.
+**Forked version by Miksen for own servers**
+- Added support for Debian 13 & Ubuntu 24.04
 - Added support for CommandLine API (GetCommandLineString) `CommandLine.GetCommandLineString`
-- (**Don't use this version, if you don't like it.**)
+- (**Don't use this version if you don't like it.**)
 
 ## Install
 
-Download the latest build from [here](https://github.com/mrc4tt/CounterStrikeSharp/releases). (Download the with runtime version if this is your first time installing).
+Download the latest build from [here](https://github.com/mrc4tt/CounterStrikeSharp/releases). (Download the with-runtime version if this is your first time installing).
 
 Detailed installation instructions can be found in the [docs](https://docs.cssharp.dev/docs/guides/getting-started.html).
 
@@ -40,58 +40,6 @@ These features are the core of the platform and work pretty well/have a low risk
   - [x] OnTick
 - [x] Server Information (current map, game time)
 - [x] Schema System Access (access player values like current weapon, money, location etc.)
-
-## Links
-
-- [Join the Discord](https://discord.gg/eAZU3guKWU): Ask questions, provide suggestions
-- [Read the docs](https://docs.cssharp.dev/): Getting started guide, hello world plugin example
-- [Issue tracker](https://github.com/roflmuffin/CounterStrikeSharp/issues): Raise any issues here
-- [Builds](https://github.com/roflmuffin/CounterStrikeSharp/actions): Download latest unstable dev snapshot
-- [Install Docs](https://docs.cssharp.dev/docs/guides/getting-started.html): Installation instructions
-- [Example Plugin](managed/TestPlugin/TestPlugin.cs): Test plugin with basic functionality
-
-## Examples
-
-You can view the [example Warcraft plugin](examples/WarcraftPlugin) migrated from the previous VSP.NET project to give you an idea of the kind of power this scripting runtime is capable of. This plugin shows how you can hook events, create commands, use third party libraries (SQLite) and do basic entity manipulation.
-
-### Basic Example with Game Event & Console Commands
-
-```csharp
-using CounterStrikeSharp.API.Core;
-
-namespace HelloWorldPlugin;
-
-public class HelloWorldPlugin : BasePlugin
-{
-    public override string ModuleName => "Hello World Plugin";
-
-    public override string ModuleVersion => "0.0.1";
-
-    public override string ModuleAuthor => "roflmuffin";
-
-    public override string ModuleDescription => "Simple hello world plugin";
-
-    public override void Load(bool hotReload)
-    {
-        Logger.LogInformation("Plugin loaded successfully!");
-    }
-
-    [GameEventHandler]
-    public HookResult OnPlayerConnect(EventPlayerConnect @event, GameEventInfo info)
-    {
-        // Userid will give you a reference to a CCSPlayerController class
-        Logger.LogInformation("Player {Name} has connected!", @event.Userid.PlayerName);
-
-        return HookResult.Continue;
-    }
-
-    [ConsoleCommand("css_issue_warning", "Issue warning to player")]
-    public void OnCommand(CCSPlayerController? player, CommandInfo command)
-    {
-        Logger.LogWarning("Player shouldn't be doing that");
-    }
-}
-```
 
 ## Credits
 
