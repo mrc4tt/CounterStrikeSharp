@@ -117,7 +117,7 @@ bool load_hostfxr()
     }
 
     const char* env_version = std::getenv("CSSHARP_HOSTFXR_VERSION");
-    const std::string preferred_version = env_version ? std::string(env_version) : "8.0.3";
+    const std::string preferred_version = env_version ? std::string(env_version) : "10.0.3";
 
     if (!preferred_version.empty())
     {
@@ -154,7 +154,7 @@ bool load_hostfxr()
             {
                 CSSHARP_CORE_CRITICAL("unable to get export function: \"hostfxr_initialize_for_runtime_config\"");
                 CSSHARP_CORE_CRITICAL("Possible causes:");
-                CSSHARP_CORE_CRITICAL("  1. Wrong .NET runtime version (expected 8.0.x)");
+                CSSHARP_CORE_CRITICAL("  1. Wrong .NET runtime version (expected 10.0.x)");
                 CSSHARP_CORE_CRITICAL("  2. Corrupted or missing hostfxr.dll");
                 CSSHARP_CORE_CRITICAL("  3. Architecture mismatch (must be x64)");
                 CSSHARP_CORE_CRITICAL("  4. Incompatible .NET runtime");

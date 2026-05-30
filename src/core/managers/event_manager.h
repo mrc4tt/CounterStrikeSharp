@@ -37,6 +37,7 @@ class CUtlString;
 #include <public/igameevents.h>
 
 #include <map>
+#include <mutex>
 #include <stack>
 #include <string>
 
@@ -103,6 +104,10 @@ class EventManager : public IGameEventListener2, public GlobalClass
     std::stack<EventHook*> m_EventStack;
     std::stack<IGameEvent*> m_EventCopies;
     std::stack<PendingEventHook> m_PendingHooks;
+    // Guards m_PendingHooks and the defer-vs-hook decision in HookEvent against the
+    // OnGameLoopInitialized drain. Closes the TOCTOU race where HookEvent reads
+    // gameLoopInitialized == false and pushes after the drain has already run.
+    std::mutex m_PendingHooksMutex;
 };
 
 } // namespace counterstrikesharp

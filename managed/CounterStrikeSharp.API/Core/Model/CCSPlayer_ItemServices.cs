@@ -15,6 +15,7 @@ using FastGenericNew;
  *  along with CounterStrikeSharp.  If not, see <https://www.gnu.org/licenses/>. *
  */
 
+using System.Numerics;
 using CounterStrikeSharp.API.Modules.Memory;
 using CounterStrikeSharp.API.Modules.Memory.DynamicFunctions;
 using CounterStrikeSharp.API.Modules.Utils;
@@ -34,7 +35,14 @@ public partial class CCSPlayer_ItemServices
 
         Guard.IsValidEntity(activeWeapon);
 
-        VirtualFunction.CreateVoid<nint, nint>(Handle, GameData.GetOffset("CCSPlayer_ItemServices_DropActivePlayerWeapon"))(Handle, activeWeapon.Handle);
+        // The native signature is DropActivePlayerWeapon(CBasePlayerWeapon*, const Vector& vecDropMomentum).
+        // Omitting the second argument leaves vecDropMomentum reading uninitialised stack and can produce
+        // NaN drop velocity, so pass a pointer to a zeroed Vector. Stack-allocated, no native handle leak.
+        unsafe
+        {
+            var dropMomentum = new Vector3();
+            VirtualFunction.CreateVoid<nint, nint, nint>(Handle, GameData.GetOffset("CCSPlayer_ItemServices_DropActivePlayerWeapon"))(Handle, activeWeapon.Handle, (nint)(&dropMomentum));
+        }
     }
 
     /// <summary>

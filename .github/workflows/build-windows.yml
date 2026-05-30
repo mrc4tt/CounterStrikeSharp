@@ -90,7 +90,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: "8.0.x"
+          dotnet-version: "10.0.x"
 
       - name: Install dependencies
         run: dotnet restore managed/CounterStrikeSharp.sln
@@ -130,7 +130,7 @@ jobs:
       - name: Add API to Windows artifacts
         run: |
           mkdir -p build/windows/addons/counterstrikesharp/api
-          cp -r build/api/net8.0/publish/* build/windows/addons/counterstrikesharp/api
+          cp -r build/api/net10.0/publish/* build/windows/addons/counterstrikesharp/api
 
       - name: Zip Windows (runtimeless)
         run: (cd build/windows && zip -qq -r ../../counterstrikesharp-windows-${{ needs.setup.outputs.gitversion_semver }}.zip *)
@@ -138,7 +138,7 @@ jobs:
       - name: Add dotnet runtime
         run: |
           mkdir -p build/windows/addons/counterstrikesharp/dotnet
-          curl -s -L https://download.visualstudio.microsoft.com/download/pr/086d1dd6-57a5-437a-a1ef-549cf702fb48/dd4a8fe6c53a1016a414d6f2925c1323/aspnetcore-runtime-8.0.3-win-x64.zip -o dotnet.zip
+          curl -s -L https://builds.dotnet.microsoft.com/dotnet/aspnetcore/Runtime/10.0.3/aspnetcore-runtime-10.0.3-win-x64.zip -o dotnet.zip
           unzip -qq dotnet.zip -d build/windows/addons/counterstrikesharp/dotnet
 
       - name: Zip Windows (with runtime)

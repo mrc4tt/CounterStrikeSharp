@@ -47,11 +47,21 @@ void EventManager::OnStartup() {}
 
 void EventManager::OnGameLoopInitialized()
 {
-    while (!m_PendingHooks.empty())
+    // Drain under the lock by moving the queue out, then hook with the lock released.
+    // HookEvent re-acquires the same (non-recursive) mutex, so calling it while holding
+    // the lock would deadlock. gameLoopInitialized is already true here, so the drained
+    // hooks take the direct-hook path and are not re-deferred.
+    std::stack<PendingEventHook> pending;
     {
-        const auto& pendingHook = m_PendingHooks.top();
+        std::lock_guard<std::mutex> lock(m_PendingHooksMutex);
+        std::swap(pending, m_PendingHooks);
+    }
+
+    while (!pending.empty())
+    {
+        const auto& pendingHook = pending.top();
         HookEvent(pendingHook.m_Name.c_str(), pendingHook.m_fnCallback, pendingHook.m_bPost);
-        m_PendingHooks.pop();
+        pending.pop();
     }
 }
 
@@ -78,12 +88,18 @@ bool EventManager::HookEvent(const char* szName, CallbackT fnCallback, bool bPos
     EventHook* pHook;
 
     // Plugin load is called before game loop (and thus events file is loaded)
-    // So we defer hooking until game loop is initialized
-    if (!globals::gameLoopInitialized)
+    // So we defer hooking until game loop is initialized. The check and push must be
+    // atomic with respect to the OnGameLoopInitialized drain, otherwise a hook pushed
+    // after the drain ran would never be processed. Lock is released before the actual
+    // hooking work below so the re-entrant call from the drain does not deadlock.
     {
-        const PendingEventHook pendingHook{ szName, fnCallback, bPost };
-        m_PendingHooks.push(pendingHook);
-        return true;
+        std::lock_guard<std::mutex> lock(m_PendingHooksMutex);
+        if (!globals::gameLoopInitialized)
+        {
+            const PendingEventHook pendingHook{ szName, fnCallback, bPost };
+            m_PendingHooks.push(pendingHook);
+            return true;
+        }
     }
 
     CSSHARP_CORE_TRACE("[EventManager] Hooking event: {0} with callback pointer: {1}", szName, (void*)fnCallback);
