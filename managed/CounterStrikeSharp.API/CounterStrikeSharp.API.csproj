@@ -1,9 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
-        <RuntimeFrameworkVersion>8.0.3</RuntimeFrameworkVersion>
-        <AspNetCoreRuntimeFrameworkVersion>8.0.3</AspNetCoreRuntimeFrameworkVersion>
-        <RollForward>Disable</RollForward>
+        <TargetFramework>net10.0</TargetFramework>
+        <RuntimeFrameworkVersion>10.0.3</RuntimeFrameworkVersion>
+        <AspNetCoreRuntimeFrameworkVersion>10.0.3</AspNetCoreRuntimeFrameworkVersion>
+        <!-- Major roll-forward lets net8.0-targeted plugin assemblies resolve and load on the bundled .NET 10 runtime -->
+        <RollForward>Major</RollForward>
         <TargetLatestRuntimePatch>false</TargetLatestRuntimePatch>
         <EnableDynamicLoading>true</EnableDynamicLoading>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -39,14 +40,13 @@
     <ItemGroup>
         <PackageReference Include="FastGenericNew" Version="3.3.1" />
         <PackageReference Include="McMaster.NETCore.Plugins" Version="1.4.0" />
-        <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-        <PackageReference Include="Microsoft.DotNet.ApiCompat.Task" Version="8.0.203" />
-        <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="8.0.3" />
-        <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
+        <PackageReference Include="Microsoft.DotNet.ApiCompat.Task" Version="10.0.103" />
+        <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="10.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="10.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.0" />
         <PackageReference Include="Scrutor" Version="4.2.2" />
-        <PackageReference Include="Serilog.Extensions.Logging" Version="8.0.0" />
+        <PackageReference Include="Serilog.Extensions.Logging" Version="9.0.2" />
         <PackageReference Include="Serilog.Sinks.Console" Version="5.0.0" />
         <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
         <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
@@ -74,8 +74,6 @@
             <Output PropertyName="SourceRevisionId" TaskParameter="ConsoleOutput" />
         </Exec>
     </Target>
-
-
     <!--  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">-->
     <!--    <Exec Command="dotnet run &#45;&#45;project ../../tooling/CodeGen.Natives" />-->
     <!--  </Target>-->
