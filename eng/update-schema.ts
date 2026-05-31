@@ -11,8 +11,9 @@ const config = z.object({
   GS_HOST: z.string().min(1, "GS_HOST env var is required"),
   GS_PORT: z.string().min(1, "GS_PORT env var is required"),
   GS_PASS: z.string().min(1, "GS_PASS env var is required"),
-  // SFTP connection details
+  // SFTP connection details (Pterodactyl SFTP listens on 2022 by default)
   SFTP_HOST: z.string().min(1, "SFTP_HOST env var is required"),
+  SFTP_PORT: z.string().default("2022"),
   SFTP_USER: z.string().min(1, "SFTP_USER env var is required"),
   SFTP_PASS: z.string().min(1, "SFTP_PASS env var is required"),
 }).parse(env);
@@ -35,7 +36,7 @@ const trimmedPath = filepath.replace(/^\/home\/container/, "");
 
 $.logStep("Downloading schema file from game server via SFTP...");
 const schemaOutput = `${HERE}/../managed/CounterStrikeSharp.SchemaGen/Schema/server.json`;
-await $`lftp -u ${config.SFTP_USER},${config.SFTP_PASS} ${config.SFTP_HOST} -e ${"set xfer:clobber on; get " + trimmedPath + " -o " + schemaOutput + "; bye"}`.quiet();
+await $`lftp -u ${config.SFTP_USER},${config.SFTP_PASS} sftp://${config.SFTP_HOST}:${config.SFTP_PORT} -e ${"set sftp:auto-confirm yes; set net:timeout 30; set net:max-retries 2; set xfer:clobber on; get " + trimmedPath + " -o " + schemaOutput + "; bye"}`;
 
 $.logStep("Sanitizing server.json (stripping unescaped C0 control characters)...");
 const raw = await Deno.readFile(schemaOutput);
