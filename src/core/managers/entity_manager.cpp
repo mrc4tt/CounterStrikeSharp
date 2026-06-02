@@ -274,6 +274,10 @@ int64 DetourCBaseEntity_TakeDamageOld(CBaseEntity* pThis, CTakeDamageInfo* pInfo
 // Returns "should take damage"
 bool EntityManager::Hook_OnTakeDamage_Alive_Pre(CBaseEntity* entity, CTakeDamageInfo* info, CTakeDamageResult* pResult)
 {
+    // entity->IsPawn() is dereferenced below. Bail to "take damage normally" on
+    // a null victim rather than crashing the trampoline.
+    if (!entity) return true;
+
     auto* cb_entity = globals::entityManager.on_entity_take_damage_pre_callback;
 
     HookResult result = HookResult::Continue;
@@ -338,6 +342,9 @@ bool EntityManager::Hook_OnTakeDamage_Alive_Pre(CBaseEntity* entity, CTakeDamage
 
 void EntityManager::Hook_OnTakeDamage_Alive_Post(CBaseEntity* entity, CTakeDamageInfo* info, CTakeDamageResult* pResult)
 {
+    // entity->IsPawn() is dereferenced below; guard the null victim case.
+    if (!entity) return;
+
     auto* cb_entity = globals::entityManager.on_entity_take_damage_post_callback;
 
     HookResult result = HookResult::Continue;
@@ -369,6 +376,15 @@ void DetourFireOutputInternal(CEntityIOOutput* const pThis,
                               void* unk1,
                               char* unk2)
 {
+    // m_pDesc/m_pName are read unconditionally below on every entity I/O fire.
+    // Runtime-created/malformed outputs can have a null descriptor — pass the
+    // call straight through instead of segfaulting the whole server.
+    if (!pThis || !pThis->m_pDesc || !pThis->m_pDesc->m_pName)
+    {
+        m_pFireOutputInternal(pThis, pActivator, pCaller, value, flDelay, unk1, unk2);
+        return;
+    }
+
     std::vector vecSearchKeys{ OutputKey_t("*", pThis->m_pDesc->m_pName), OutputKey_t("*", "*") };
 
     if (pCaller)

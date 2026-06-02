@@ -246,7 +246,7 @@ namespace CounterStrikeSharp.API.Core
                         break;
                     }
 
-                    plugin.Unload(false);
+                    _pluginManager.RemovePlugin(plugin);
                     break;
                 }
 

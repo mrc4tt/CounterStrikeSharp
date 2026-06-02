@@ -27,9 +27,9 @@ const ROOT = HERE.parentOrThrow();
 
 const paths = {
   apiProject: ROOT.join("managed/CounterStrikeSharp.API"),
-  apiBuild: ROOT.join("managed/CounterStrikeSharp.API/bin/Release/net8.0"),
+  apiBuild: ROOT.join("managed/CounterStrikeSharp.API/bin/Release/net10.0"),
   testProject: ROOT.join("managed/CounterStrikeSharp.Tests.Native/NativeTestsPlugin.csproj"),
-  testBuild: ROOT.join("managed/CounterStrikeSharp.Tests.Native/bin/Debug/net8.0"),
+  testBuild: ROOT.join("managed/CounterStrikeSharp.Tests.Native/bin/Debug/net10.0"),
   nativeSo: ROOT.join("build/addons/counterstrikesharp/bin/linuxsteamrt64/counterstrikesharp.so"),
   results: ROOT.join("TestResults/Benchmarks"),
 };
@@ -140,6 +140,41 @@ const localMd = paths.results.join("benchmark-results.md").toString();
 
 await $`lftp -u ${config.SFTP_USER},${config.SFTP_PASS} ${config.SFTP_HOST} -e ${`set xfer:clobber on; get ${remoteJson} -o ${localJson}; get ${remoteMd} -o ${localMd}; bye`}`.quiet();
 
+// ── Capture bench-host environment (best-effort) ──────────────────────────
+// Benchmarks run on the remote CS2 server, so CPU/OS/memory must come from
+// THAT box, not the build machine. We read them over SFTP. Jailed SFTP
+// accounts (rooted at the game dir) can't see /proc or /etc — tolerate that
+// and fall back to "unknown" so a missing header never aborts the run.
+
+async function fetchRemote(remotePath: string): Promise<string | null> {
+  const tmp = await Deno.makeTempFile();
+  try {
+    await $`lftp -u ${config.SFTP_USER},${config.SFTP_PASS} ${config.SFTP_HOST} -e ${`set xfer:clobber on; get ${remotePath} -o ${tmp}; bye`}`.quiet();
+    const text = await Deno.readTextFile(tmp);
+    return text.length ? text : null;
+  } catch {
+    return null;
+  } finally {
+    await Deno.remove(tmp).catch(() => {});
+  }
+}
+
+$.logStep("Capturing bench-host environment...");
+const cpuinfo = await fetchRemote("/proc/cpuinfo");
+const osRelease = await fetchRemote("/etc/os-release");
+const meminfo = await fetchRemote("/proc/meminfo");
+
+const cpuModel = cpuinfo?.match(/^model name\s*:\s*(.+)$/m)?.[1].trim() ?? "unknown";
+const cpuCount = cpuinfo ? (cpuinfo.match(/^processor\s*:/gm)?.length ?? 0) : 0;
+const osName = osRelease?.match(/^PRETTY_NAME="?(.*?)"?$/m)?.[1].trim() ?? "unknown";
+const memKb = parseInt(meminfo?.match(/^MemTotal:\s*(\d+)\s*kB/m)?.[1] ?? "0", 10);
+const memTotal = memKb ? `${(memKb / 1024 / 1024).toFixed(1)} GB` : "unknown";
+const runtimeTfm = "net10.0"; // managed bench host target framework
+
+if (cpuModel === "unknown") {
+  $.logLight("  CPU/OS unavailable (SFTP account likely jailed to game dir)");
+}
+
 // Stamp git metadata into the results (only available on the build machine)
 const gitBranch = (await $`git -C ${ROOT} rev-parse --abbrev-ref HEAD`.text()).trim();
 const gitCommit = (await $`git -C ${ROOT} rev-parse --short HEAD`.text()).trim();
@@ -147,13 +182,16 @@ const gitCommit = (await $`git -C ${ROOT} rev-parse --short HEAD`.text()).trim()
 const report = JSON.parse(await Deno.readTextFile(localJson));
 report.gitBranch = gitBranch;
 report.gitCommit = gitCommit;
+report.host = { cpuModel, cpuCount, os: osName, memTotal, runtimeTfm };
 await Deno.writeTextFile(localJson, JSON.stringify(report) + "\n");
 
-// Prepend git info to the markdown too
+// Prepend git + host info to the markdown too
 let md = await Deno.readTextFile(localMd);
 md = md.replace(
   "# Benchmark Results\n",
-  `# Benchmark Results\n\n- **Branch:** ${gitBranch}\n- **Commit:** ${gitCommit}\n`,
+  `# Benchmark Results\n\n- **Branch:** ${gitBranch}\n- **Commit:** ${gitCommit}\n` +
+    `- **CPU:** ${cpuModel} (${cpuCount} threads)\n- **OS:** ${osName}\n` +
+    `- **Memory:** ${memTotal}\n- **Runtime:** ${runtimeTfm}\n`,
 );
 await Deno.writeTextFile(localMd, md);
 

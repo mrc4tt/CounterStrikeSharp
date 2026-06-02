@@ -41,10 +41,16 @@ namespace CounterStrikeSharp.API.Core.Plugin
         void TerminateSelf(string reason);
     }
 
-    public class PluginContext : IPluginContext, ISelfPluginControl
+    public class PluginContext : IPluginContext, ISelfPluginControl, IDisposable
     {
         public PluginState State { get; set; } = PluginState.Unregistered;
         public IPlugin Plugin { get; private set; }
+
+        private bool _disposed;
+
+        // Set by PluginManager. Invoked when the context wants to be fully torn
+        // down (e.g. its DLL was deleted) so the manager drops + disposes it.
+        internal Action OnRequestRemoval { get; set; }
 
         private PluginLoader Loader { get; set; }
 
@@ -102,6 +108,10 @@ namespace CounterStrikeSharp.API.Core.Plugin
                         {
                             _logger.LogInformation("Plugin {Name} has been deleted, unloading...", Plugin.ModuleName);
                             Unload(true);
+                            // DLL is gone for good — release the ALC/watcher and
+                            // drop the context from the manager rather than
+                            // leaving a dead entry that leaks its Loader.
+                            OnRequestRemoval?.Invoke();
                         }
                     });
                 };
@@ -279,11 +289,32 @@ namespace CounterStrikeSharp.API.Core.Plugin
             }
             finally
             {
-                Plugin.Dispose();
-                _serviceScope.Dispose();
+                Plugin?.Dispose();
+                _serviceScope?.Dispose();
+                // Each Load() builds a fresh ServiceProvider (Serilog file sinks
+                // + singletons). Dispose the old one or every reload/restart
+                // leaks open log file handles and the singleton graph.
+                ServiceProvider?.Dispose();
+                ServiceProvider = null;
             }
 
             _logger.LogInformation("Finished unloading plugin {Name}", cachedName);
+        }
+
+        public void Dispose()
+        {
+            if (_disposed) return;
+            _disposed = true;
+
+            if (State != PluginState.Unloaded)
+            {
+                Unload(false);
+            }
+
+            // ALC + inotify instance live for the lifetime of the context, not a
+            // single Load/Unload cycle — only release them on full teardown.
+            _fileWatcher?.Dispose();
+            Loader?.Dispose();
         }
 
         public void TerminateWithReason(string reason)

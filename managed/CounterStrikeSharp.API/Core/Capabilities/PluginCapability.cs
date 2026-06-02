@@ -14,9 +14,14 @@ public sealed class PluginCapability<T>
 
     public T? Get()
     {
-        foreach (var provider in Providers[Name])
+        // TryGetValue: the key is absent when no provider was ever registered,
+        // and the list can be empty after a providing plugin unloaded.
+        if (Providers.TryGetValue(Name, out var list))
         {
-            return provider();
+            foreach (var provider in list)
+            {
+                return provider();
+            }
         }
 
         return default;

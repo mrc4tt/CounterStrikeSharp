@@ -253,7 +253,14 @@ void ValveFunction::Call(ScriptContext& script_context, int offset, bool bypass)
 
 dyno::ReturnAction HookHandler(dyno::HookType hookType, dyno::Hook& hook)
 {
-    auto* vf = g_HookMap[&hook];
+    auto it = g_HookMap.find(&hook);
+    if (it == g_HookMap.end())
+    {
+        // Hook fired after its ValveFunction mapping was torn down. Ignore
+        // instead of inserting (and dereferencing) a null entry.
+        return dyno::ReturnAction::Ignored;
+    }
+    auto* vf = it->second;
 
     if (hookType == dyno::HookType::Pre)
     {
@@ -426,15 +433,14 @@ void ValveFunction::AddHook(CallbackT callable, bool post)
 void ValveFunction::RemoveHook(CallbackT callable, bool post)
 {
     dyno::HookManager& manager = dyno::HookManager::Get();
-    dyno::Hook* hook = manager.hook((void*)m_ulAddr, [this] {
-#ifdef _WIN32
-        return new dyno::x64MsFastcall(ConvertArgsToDynoHook(m_Args), static_cast<dyno::DataType>(this->m_eReturnType));
-#else
-        return new dyno::x64SystemVcall(ConvertArgsToDynoHook(m_Args), static_cast<dyno::DataType>(this->m_eReturnType));
-#endif
-    });
-    g_HookMap[hook] = this;
-    m_trampoline = nullptr;
+
+    // Look the hook up instead of re-creating it: manager.hook() with a factory
+    // lambda would leak a fresh convention object and re-register the map entry.
+    dyno::Hook* hook = manager.find((void*)m_ulAddr);
+    if (hook == nullptr)
+    {
+        return;
+    }
 
     if (post)
     {
@@ -449,6 +455,18 @@ void ValveFunction::RemoveHook(CallbackT callable, bool post)
         {
             m_precallback->RemoveListener(callable);
         }
+    }
+
+    // If nothing is left listening on either side, tear the detour down. Leaving
+    // it installed would keep dispatching into plugin delegates whose
+    // AssemblyLoadContext may already be disposed (use-after-free on reload).
+    bool hasPre = m_precallback != nullptr && m_precallback->GetFunctionCount() > 0;
+    bool hasPost = m_postcallback != nullptr && m_postcallback->GetFunctionCount() > 0;
+    if (!hasPre && !hasPost && !m_callback.has_value())
+    {
+        g_HookMap.erase(hook);
+        manager.unhook((void*)m_ulAddr);
+        m_trampoline = nullptr;
     }
 }
 

@@ -294,12 +294,22 @@ namespace CounterStrikeSharp.API.Core
 
             var wrappedHandler = new Func<ScriptContext, HookResult>(context =>
             {
-                var args = new object[parameterTypes.Length];
-                for (int i = 0; i < parameterTypes.Length; i++)
+                // Reuse the empty-array singleton for zero-arg listeners (OnTick
+                // etc. fire every frame) instead of allocating object[0] per call.
+                object[] args;
+                if (parameterTypes.Length == 0)
                 {
-                    args[i] = context.GetArgument(castedParameterTypes[i] ?? parameterTypes[i], i);
-                    if (castedParameterTypes[i] != null)
-                        args[i] = Activator.CreateInstance(parameterTypes[i], new[] { args[i] });
+                    args = Array.Empty<object>();
+                }
+                else
+                {
+                    args = new object[parameterTypes.Length];
+                    for (int i = 0; i < parameterTypes.Length; i++)
+                    {
+                        args[i] = context.GetArgument(castedParameterTypes[i] ?? parameterTypes[i], i);
+                        if (castedParameterTypes[i] != null)
+                            args[i] = Activator.CreateInstance(parameterTypes[i], new[] { args[i] });
+                    }
                 }
 
                 var result = handler.DynamicInvoke(args);
@@ -665,35 +675,44 @@ namespace CounterStrikeSharp.API.Core
             if (_disposed) return;
             if (!disposing) return;
 
-            foreach (var subscriber in Handlers.Values)
+            // Snapshot each collection: subscriber.Dispose() calls back into
+            // Deregister*/Remove*, which mutates the same dictionary. Iterating
+            // .Values directly would throw InvalidOperationException partway
+            // through the first loop and leak the remaining subscribers/timers.
+            foreach (var subscriber in Handlers.Values.ToList())
             {
                 subscriber.Dispose();
             }
 
-            foreach (var subscriber in CommandListeners.Values)
+            foreach (var subscriber in CommandListeners.Values.ToList())
             {
                 subscriber.Dispose();
             }
 
-            foreach (var subscriber in Listeners.Values)
+            foreach (var subscriber in Listeners.Values.ToList())
             {
                 subscriber.Dispose();
             }
 
-            foreach (var subscriber in EntityOutputHooks.Values)
+            foreach (var subscriber in EntityOutputHooks.Values.ToList())
             {
                 subscriber.Dispose();
             }
 
-            foreach (var definition in CommandDefinitions)
+            foreach (var definition in CommandDefinitions.ToList())
             {
                 CommandManager.RemoveCommand(definition);
             }
 
-            foreach (var timer in Timers)
+            foreach (var timer in Timers.ToList())
             {
                 timer.Kill();
             }
+
+            // Drop any capability suppliers this plugin registered. Their
+            // delegates live in static Providers dictionaries and would
+            // otherwise pin this plugin's AssemblyLoadContext forever.
+            Capabilities.Capabilities.RemoveProvidersForAssembly(GetType().Assembly);
 
             _disposed = true;
         }

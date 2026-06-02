@@ -12,9 +12,10 @@ namespace CounterStrikeSharp.API.Modules.Memory;
 
 public class Schema
 {
-    record SchemaKey(string ClassName, string PropertyName);
-
-    private static Dictionary<SchemaKey, short> _schemaOffsets = new();
+    // Struct (ValueTuple) key instead of a record class: GetSchemaOffset runs on
+    // every schema property read (entity.Health, .AbsOrigin, ...). A record key
+    // heap-allocated on each lookup; a tuple key is stack-only.
+    private static Dictionary<(string ClassName, string PropertyName), short> _schemaOffsets = new();
 
     private static HashSet<string> _cs2BadList = new HashSet<string>()
     {
@@ -65,7 +66,12 @@ public class Schema
             throw new Exception($"Cannot set or get '{className}::{propertyName}' with \"FollowCS2ServerGuidelines\" option enabled.");
         }
 
-        var key = new SchemaKey(className, propertyName);
+        return GetSchemaOffsetCore(className, propertyName);
+    }
+
+    private static short GetSchemaOffsetCore(string className, string propertyName)
+    {
+        var key = (className, propertyName);
         if (!_schemaOffsets.TryGetValue(key, out var offset))
         {
             offset = NativeAPI.GetSchemaOffset(className, propertyName);
@@ -80,9 +86,20 @@ public class Schema
         return NativeAPI.IsSchemaFieldNetworked(className, propertyName);
     }
 
-    public static T GetSchemaValue<T>(IntPtr handle, string className, string propertyName)
+    public static unsafe T GetSchemaValue<T>(IntPtr handle, string className, string propertyName)
     {
         if (handle == IntPtr.Zero) throw new ArgumentNullException(nameof(handle), "Schema target points to null.");
+
+        // Fast path: blittable value types (int/float/bool/enums/blittable
+        // structs/IntPtr) are read straight from the cached offset, skipping the
+        // per-call string marshal + native schema lookup. Mirrors how the
+        // generated .g.cs accessors read primitives via GetRef<T>. Reference
+        // types (string, ...) still need the native marshalling path.
+        if (!RuntimeHelpers.IsReferenceOrContainsReferences<T>())
+        {
+            var offset = GetSchemaOffsetCore(className, propertyName);
+            return Unsafe.Read<T>((void*)(handle + offset));
+        }
 
         return NativeAPI.GetSchemaValueByName<T>(handle, (int)typeof(T).ToDataType(), className, propertyName);
     }

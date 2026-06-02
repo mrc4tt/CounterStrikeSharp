@@ -185,8 +185,19 @@ public class PluginManager : IPluginManager
     {
         var plugin = new PluginContext(_serviceProvider, _commandManager, _scriptHostConfiguration, path,
             _loadedPluginContexts.Select(x => x.PluginId).DefaultIfEmpty(0).Max() + 1);
+        plugin.OnRequestRemoval = () => RemovePlugin(plugin);
         _loadedPluginContexts.Add(plugin);
         plugin.Load();
+    }
+
+    public void RemovePlugin(IPluginContext plugin)
+    {
+        // Dispose (full teardown: ALC, ServiceProvider, file watcher) and drop
+        // the reference so the context is actually collectable. Without the
+        // Remove, _loadedPluginContexts roots every plugin ever loaded.
+        if (plugin is not PluginContext ctx) return;
+        ctx.Dispose();
+        _loadedPluginContexts.Remove(ctx);
     }
 
     private static bool TryResolveReflectionAssemblyPath(out string? assemblyName, out string? assemblyPath)

@@ -433,7 +433,7 @@ void CPlayer::Initialize(const char* name, const char* ip, CPlayerSlot slot)
 
 IPlayerInfo* CPlayer::GetPlayerInfo() const { return m_info; }
 
-const char* CPlayer::GetName() const { return strdup(m_name.c_str()); }
+const char* CPlayer::GetName() const { return m_name.c_str(); }
 
 bool CPlayer::IsConnected() const { return m_is_connected; }
 
@@ -483,7 +483,7 @@ void CPlayer::PrintToConsole(const char* message) const
 //     globals::user_message_manager.SendCenterMessage(m_i_index, message);
 // }
 
-void CPlayer::SetName(const char* name) { m_name = strdup(name); }
+void CPlayer::SetName(const char* name) { m_name = name; }
 
 INetChannelInfo* CPlayer::GetNetInfo() const { return globals::engine->GetPlayerNetInfo(m_slot); }
 
@@ -550,7 +550,7 @@ bool CPlayer::IsInGame() const
 void CPlayer::Kick(const char* kickReason)
 {
     char buffer[255];
-    sprintf(buffer, "kickid %d %s\n", GetUserId(), kickReason);
+    snprintf(buffer, sizeof(buffer), "kickid %d %s\n", GetUserId(), kickReason);
     globals::engine->ServerCommand(buffer);
 }
 

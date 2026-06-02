@@ -6,5 +6,6 @@ public interface IPluginManager
 {
     public void Load();
     public void LoadPlugin(string path);
+    public void RemovePlugin(IPluginContext plugin);
     public IEnumerable<PluginContext> GetLoadedPlugins();
 }

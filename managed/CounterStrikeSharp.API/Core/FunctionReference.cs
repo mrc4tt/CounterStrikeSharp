@@ -16,6 +16,7 @@
 
 using System.Collections.Concurrent;
 using System.Diagnostics;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
@@ -50,12 +51,21 @@ namespace CounterStrikeSharp.API.Core
         private readonly Delegate _targetMethod;
         private readonly CallbackDelegate _nativeCallback;
 
+        // Cached once instead of reflecting on every native dispatch (this runs
+        // per-tick / per-event). GetParameters() allocates a fresh array each
+        // call, so the old code allocated 3 arrays + a LINQ pipeline per tick.
+        private readonly ParameterInfo[] _parameters;
+        private readonly bool _isManualScriptContext;
+
         private readonly TaskCompletionSource _taskCompletionSource = new();
 
         private FunctionReference(Delegate method, FunctionLifetime lifetime)
         {
             Lifetime = lifetime;
             _targetMethod = method;
+            _parameters = method.Method.GetParameters();
+            _isManualScriptContext =
+                _parameters.Length > 0 && _parameters[0].ParameterType == typeof(ScriptContext);
             _nativeCallback = CreateWrappedCallback();
         }
 
@@ -81,7 +91,7 @@ namespace CounterStrikeSharp.API.Core
                     var scriptContext = new ScriptContext(context);
 
                     // Allow for manual handling of the script context
-                    if (_targetMethod.Method.GetParameters().FirstOrDefault()?.ParameterType == typeof(ScriptContext))
+                    if (_isManualScriptContext)
                     {
                         var returnValue = _targetMethod.DynamicInvoke(scriptContext);
                         if (returnValue != null)
@@ -92,11 +102,11 @@ namespace CounterStrikeSharp.API.Core
                         return;
                     }
 
-                    var parameterList = _targetMethod.Method.GetParameters().Select((_, i) =>
+                    var parameterList = new object[_parameters.Length];
+                    for (int i = 0; i < _parameters.Length; i++)
                     {
-                        var parameter = _targetMethod.Method.GetParameters()[i];
-                        return scriptContext.GetArgument(parameter.ParameterType, i);
-                    }).ToArray();
+                        parameterList[i] = scriptContext.GetArgument(_parameters[i].ParameterType, i);
+                    }
 
                     var returnObj = _targetMethod.DynamicInvoke(parameterList);
 
