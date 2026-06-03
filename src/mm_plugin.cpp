@@ -24,10 +24,12 @@
 #include "core/global_listener.h"
 #include "core/log.h"
 #include "core/managers/entity_manager.h"
+#include "core/managers/player_manager.h"
 #include "core/tick_scheduler.h"
 #include "core/timer_system.h"
 #include "core/utils.h"
 #include "entity2/entitysystem.h"
+#include <public/eiface.h>
 #include "igameeventsystem.h"
 #include "interfaces/cs2_interfaces.h"
 #include "iserver.h"
@@ -37,6 +39,7 @@
 #include "tier0/vprof.h"
 #include "tier0/icommandline.h"
 #include "tier1/utlstringtoken.h"
+#include <convar.h>
 
 DLL_IMPORT ICommandLine* CommandLine();
 
@@ -85,6 +88,8 @@ SH_DECL_HOOK1(IEngineServiceMgr, FindService, SH_NOATTRIB, 0, IEngineService*, c
 SH_DECL_HOOK2(IGameEventManager2, LoadEventsFromFile, SH_NOATTRIB, 0, int, const char*, bool);
 
 CounterStrikeSharpMMPlugin gPlugin;
+
+static CConVar<float>* g_curtimeRewindThreshold = nullptr;
 
 #if 0
 // Currently unavailable, requires hl2sdk work!
@@ -202,6 +207,15 @@ bool CounterStrikeSharpMMPlugin::Load(PluginId id, ISmmAPI* ismm, char* error, s
     g_pCVar = globals::cvars;
     ConVar_Register(FCVAR_RELEASE | FCVAR_CLIENT_CAN_EXECUTE | FCVAR_GAMEDLL);
 
+    // curtime precision-rewind threshold (seconds). When the server is empty and
+    // curtime exceeds this, curtime is rewound to restore 32-bit float precision.
+    // 0 disables. See Hook_GameFrame.
+    g_curtimeRewindThreshold =
+        new CConVar<float>("css_curtime_rewind_threshold", FCVAR_RELEASE | FCVAR_GAMEDLL,
+                           "Rewind curtime when the server is empty and curtime exceeds this many seconds (0 = disabled). "
+                           "Mitigates long-uptime float-precision loss that causes slow animations.",
+                           3600.0f, true, 0.0f, false, 0.0f);
+
     return true;
 }
 
@@ -288,6 +302,27 @@ void CounterStrikeSharpMMPlugin::Hook_GameFrame(bool simulating, bool bFirstTick
             globals::entitySystem->AddListenerEntity(&globals::entityManager.entityListener);
             CSSHARP_CORE_WARN("entitySystem lazy-initialized from Hook_GameFrame "
                               "(Hook_StartupServer never fired -- FEX-Emu / hook failure?)");
+        }
+    }
+
+    // CS2 stores curtime as a 32-bit float in CGlobalVars. Over long uptime its
+    // precision degrades (after ~24h < half a tick, after ~48h > a full tick),
+    // desyncing animation/movement/lag-comp timing -- the "slow animation" bug.
+    // While the server is empty, rewind curtime (and tickcount) by a large offset
+    // to restore float precision; relative time relationships are preserved.
+    // Ref: github.com/SlynxCZ/SlowAnimationFix_mm
+    if (simulating && g_curtimeRewindThreshold)
+    {
+        const float threshold = g_curtimeRewindThreshold->Get();
+        CGlobalVars* vars = globals::getGlobalVars();
+        if (threshold > 0.0f && vars->curtime > threshold && globals::playerManager.NumPlayers() == 0)
+        {
+            const float offset = vars->curtime - 60.0f;
+            vars->curtime -= offset;
+            vars->tickcount -= (int)(offset / globals::engine_fixed_tick_interval);
+            // Keep CSS timer_system's universal_time monotonic across the rewind.
+            globals::timerSystem.RebaseTickedTime(offset);
+            CSSHARP_CORE_INFO("curtime rewound by {:.1f}s on empty server (float-precision fix)", offset);
         }
     }
 

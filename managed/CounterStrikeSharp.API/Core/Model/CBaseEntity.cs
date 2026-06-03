@@ -62,15 +62,21 @@ public partial class CBaseEntity
     /// <exception cref="InvalidOperationException">Entity is not valid</exception>
     public void DispatchSpawn(CEntityKeyValues? keyValues)
     {
-        Guard.IsValidEntity(this);
+        // A freshly created entity (CreateEntityByName) has no valid EHandle until it
+        // is spawned, so the handle-resolved Handle/IsValid path reports it invalid.
+        // Spawn from the raw construction pointer, which is the entity we just created.
+        if (RawHandle == IntPtr.Zero)
+            throw new InvalidOperationException("Entity is not valid");
 
-        NativeAPI.DispatchSpawn(Handle, keyValues?.Handle ?? IntPtr.Zero);
+        NativeAPI.DispatchSpawn(RawHandle, keyValues?.Handle ?? IntPtr.Zero);
     }
 
     public void DispatchSpawn()
     {
-        Guard.IsValidEntity(this);
-        NativeAPI.DispatchSpawn(Handle, IntPtr.Zero);
+        if (RawHandle == IntPtr.Zero)
+            throw new InvalidOperationException("Entity is not valid");
+
+        NativeAPI.DispatchSpawn(RawHandle, IntPtr.Zero);
     }
 
     /// <summary>

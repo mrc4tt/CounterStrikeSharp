@@ -86,6 +86,9 @@ class TimerSystem : public GlobalClass
     timers::Timer* CreateTimer(float interval, CallbackT callback, int flags);
     void KillTimer(timers::Timer* timer);
     double GetTickedTime();
+    // Shift the internal curtime baseline by delta after an external curtime
+    // rewind, so universal_time stays monotonic. See Hook_GameFrame.
+    void RebaseTickedTime(float delta) { m_last_ticked_time -= delta; }
 
   private:
     bool m_has_map_ticked = false;
