@@ -128,9 +128,20 @@ namespace CounterStrikeSharp.API.Core.Plugin
             {
                 _logger.LogInformation("Reloading plugin {Name}", Plugin.ModuleName);
                 Loader = eventargs.Loader;
-                Unload(hotReload: true);
-                Load(hotReload: true);
-                Plugin.OnAllPluginsLoaded(hotReload: true);
+                try
+                {
+                    Unload(hotReload: true);
+                    Load(hotReload: true);
+                    Plugin?.OnAllPluginsLoaded(hotReload: true);
+                }
+                catch (Exception ex)
+                {
+                    // Pre-instance failures (bad DLL, no IPlugin type, version
+                    // mismatch) throw out of Load() and would otherwise crash the
+                    // world-update tick. Catch, report, leave the plugin unloaded.
+                    _logger.LogError(ex, "Failed to hot-reload plugin from {Path}", _path);
+                    _logger.LogError("\n{Report}", BuildLoadFailureReportFromPath(ex, _path));
+                }
             });
 
             return Task.CompletedTask;
@@ -255,6 +266,7 @@ namespace CounterStrikeSharp.API.Core.Plugin
                     else
                     {
                         _logger.LogError(ex, "Failed to load plugin {Name}", Plugin.ModuleName);
+                        _logger.LogError("\n{Report}", BuildLoadFailureReport(ex, Plugin));
                         this.TerminationReason = ex.Message ?? "Unknown";
                     }
 
@@ -268,6 +280,158 @@ namespace CounterStrikeSharp.API.Core.Plugin
             }
         }
 
+
+        // Builds a human-readable blame report for a plugin load failure. Walks the
+        // exception stack to decide whether the fault lies in the plugin's own code
+        // or in CounterStrikeSharp itself, names the offending plugin frame, and
+        // suggests a fix for common failure modes. Goal: stop operators blaming the
+        // framework for crashes that originate inside third-party plugin code.
+        internal static string BuildLoadFailureReport(Exception ex, IPlugin plugin)
+        {
+            var root = ex.GetBaseException();
+            var pluginAsm = plugin.GetType().Assembly;
+            var pluginName = plugin.ModuleName;
+
+            // Find the deepest frame (closest to the throw) that belongs to the
+            // plugin's own assembly, and the deepest CSSharp frame.
+            var trace = new System.Diagnostics.StackTrace(root, true);
+            System.Diagnostics.StackFrame pluginFrame = null;
+            bool throwInsideCssharp = false;
+            bool sawPluginFrame = false;
+
+            var frames = trace.GetFrames() ?? Array.Empty<System.Diagnostics.StackFrame>();
+            for (int i = 0; i < frames.Length; i++)
+            {
+                var m = frames[i].GetMethod();
+                var asm = m?.DeclaringType?.Assembly;
+                if (asm == null) continue;
+
+                bool isCssharp = asm == typeof(PluginContext).Assembly;
+                bool isPlugin = asm == pluginAsm;
+
+                if (i == 0)
+                    throwInsideCssharp = isCssharp;
+
+                if (isPlugin)
+                {
+                    sawPluginFrame = true;
+                    if (pluginFrame == null) pluginFrame = frames[i];
+                }
+            }
+
+            // Blame logic:
+            //  - throw originates in CSSharp but plugin code called into it    -> plugin misuse
+            //  - throw originates in plugin code                              -> plugin fault
+            //  - throw in CSSharp with NO plugin frame in the chain           -> likely framework
+            bool frameworkFault = throwInsideCssharp && !sawPluginFrame;
+
+            var sb = new System.Text.StringBuilder();
+            sb.AppendLine("==================== PLUGIN LOAD FAILURE ====================");
+            sb.AppendLine("Plugin:    " + pluginName);
+            sb.AppendLine("Error:     " + root.GetType().Name + ": " + root.Message);
+
+            if (pluginFrame != null)
+            {
+                var m = pluginFrame.GetMethod();
+                var loc = m?.DeclaringType?.FullName + "." + m?.Name + "()";
+                var file = pluginFrame.GetFileName();
+                var line = pluginFrame.GetFileLineNumber();
+                sb.AppendLine("Location:  " + loc + (file != null ? " at " + file + ":" + line : ""));
+            }
+
+            if (frameworkFault)
+            {
+                sb.AppendLine("Blame:     CounterStrikeSharp (no plugin code in the call chain).");
+                sb.AppendLine("           This one may be a framework/gamedata issue. Report it with this log.");
+            }
+            else
+            {
+                sb.AppendLine("Blame:     The plugin '" + pluginName + "', NOT CounterStrikeSharp.");
+                sb.AppendLine("           CounterStrikeSharp loaded fine; this crash is inside the plugin's own code.");
+            }
+
+            var hint = FixHintFor(root);
+            if (hint != null)
+            {
+                sb.AppendLine("Fix:       " + hint);
+            }
+
+            sb.AppendLine("Action:    Disable/remove this plugin, or contact its author with the trace above.");
+            sb.Append("============================================================");
+            return sb.ToString();
+        }
+
+        // Builds a blame report for failures that happen BEFORE a plugin instance
+        // exists (bad/missing DLL, no IPlugin type, version mismatch). These throw
+        // out of Load() and are caught by PluginManager with only the file path in
+        // hand, so this variant works from the path + exception alone.
+        internal static string BuildLoadFailureReportFromPath(Exception ex, string path)
+        {
+            var root = ex.GetBaseException();
+            var name = System.IO.Path.GetFileNameWithoutExtension(path);
+
+            // Surface the deepest non-CSSharp frame if the trace has one.
+            string thirdPartyLoc = null;
+            var trace = new System.Diagnostics.StackTrace(root, true);
+            foreach (var f in trace.GetFrames() ?? Array.Empty<System.Diagnostics.StackFrame>())
+            {
+                var m = f.GetMethod();
+                var asm = m?.DeclaringType?.Assembly;
+                if (asm == null || asm == typeof(PluginContext).Assembly) continue;
+                thirdPartyLoc = m.DeclaringType.FullName + "." + m.Name + "()";
+                break;
+            }
+
+            var sb = new System.Text.StringBuilder();
+            sb.AppendLine("==================== PLUGIN LOAD FAILURE ====================");
+            sb.AppendLine("Plugin:    " + name + " (failed before it could initialize)");
+            sb.AppendLine("File:      " + path);
+            sb.AppendLine("Error:     " + root.GetType().Name + ": " + root.Message);
+            if (thirdPartyLoc != null)
+                sb.AppendLine("Location:  " + thirdPartyLoc);
+            sb.AppendLine("Blame:     The plugin file '" + name + "', NOT CounterStrikeSharp.");
+            sb.AppendLine("           CounterStrikeSharp could not turn this DLL into a working plugin.");
+
+            var hint = FixHintFor(root);
+            if (hint != null)
+                sb.AppendLine("Fix:       " + hint);
+
+            sb.AppendLine("Action:    Remove this DLL from the plugins folder, or contact its author.");
+            sb.Append("============================================================");
+            return sb.ToString();
+        }
+
+        // Maps common load-failure exceptions to a one-line remediation hint.
+        internal static string FixHintFor(Exception ex)
+        {
+            var msg = ex.Message ?? string.Empty;
+
+            if (msg.Contains("Unable to find plugin in assembly"))
+                return "This DLL has no class extending BasePlugin / implementing IPlugin, so it is NOT a plugin. "
+                     + "Most common cause: a SHARED library/dependency DLL was put in the 'plugins' folder. Shared "
+                     + "libraries belong in the 'shared' folder (addons/counterstrikesharp/shared/<Name>/<Name>.dll), "
+                     + "not 'plugins'. Move it there. (Also check the plugin DLL matches its folder name: "
+                     + "plugins/<Name>/<Name>.dll.)";
+
+            if (ex is NativeException && msg.Contains("Global Variables not initialized"))
+                return "Plugin calls server/player API (e.g. MaxPlayers, GetPlayers) during Load() before the "
+                     + "server is ready. Move that logic into OnMapStart / a Listener / OnAllPluginsLoaded.";
+
+            if (msg.Contains("requires a newer version of CounterStrikeSharp"))
+                return "Update CounterStrikeSharp to the version this plugin needs (see version numbers above).";
+
+            if (ex is System.IO.FileNotFoundException || ex is System.IO.FileLoadException
+                || ex is BadImageFormatException || msg.Contains("Could not load file or assembly"))
+                return "A dependency DLL is missing or mismatched. Ship the plugin's required libraries next to its .dll.";
+
+            if (ex is TypeInitializationException && (msg.Contains("GameData") || msg.Contains("Signature")))
+                return "A gamedata signature is missing/outdated. Update gamedata.json — this can be a CS2 update issue.";
+
+            if (ex is System.IO.DirectoryNotFoundException || msg.Contains("config") || msg.Contains("Config"))
+                return "A config/file path the plugin expects is missing. Check the plugin's config files exist.";
+
+            return null;
+        }
 
         public void Unload(bool hotReload = false)
         {

@@ -108,6 +108,7 @@ public class PluginManager : IPluginManager
                 catch (Exception e)
                 {
                     _logger.LogError(e, "Failed to load plugin from {Path}", path);
+                    _logger.LogError("\n{Report}", PluginContext.BuildLoadFailureReportFromPath(e, path));
                 }
             }
         }
@@ -121,8 +122,53 @@ public class PluginManager : IPluginManager
             catch (Exception e)
             {
                 _logger.LogError(e, "OnAllPluginsLoaded failed");
+                if (plugin.Plugin != null)
+                    _logger.LogError("\n{Report}", PluginContext.BuildLoadFailureReport(e, plugin.Plugin));
             }
         }
+
+        LogPluginSummary();
+    }
+
+    // One-shot startup snapshot: a table of every plugin context with its version
+    // and OK/FAILED status, plus loaded/failed counts and the API version. Gives
+    // operators a single "what's running" reference next to any crash blame above.
+    private void LogPluginSummary()
+    {
+        var rows = _loadedPluginContexts
+            .OrderBy(c => c.PluginId)
+            .ToList();
+        if (rows.Count == 0) return;
+
+        int loaded = 0, failed = 0;
+        var sb = new System.Text.StringBuilder();
+        sb.AppendLine();
+        sb.AppendLine("============== COUNTERSTRIKESHARP PLUGINS LOADED ==============");
+        sb.AppendLine(string.Format("  {0,-2} {1,-30} {2,-12} {3}", "#", "Plugin", "Version", "Status"));
+
+        foreach (var c in rows)
+        {
+            bool ok = c.State == PluginState.Loaded;
+            if (ok) loaded++; else failed++;
+
+            var name = c.Plugin?.ModuleName
+                       ?? System.IO.Path.GetFileNameWithoutExtension(c.FilePath);
+            var version = c.Plugin?.ModuleVersion ?? "-";
+            var status = ok ? "OK" : "FAILED (see log above)";
+            if (name.Length > 30) name = name.Substring(0, 29) + "~";
+
+            sb.AppendLine(string.Format("  {0,-2} {1,-30} {2,-12} {3}", c.PluginId, name, version, status));
+        }
+
+        sb.AppendLine("--------------------------------------------------------------");
+        sb.AppendLine(string.Format("  {0} loaded, {1} failed  |  CSSharp API v{2}",
+            loaded, failed, Api.GetVersion()));
+        sb.Append("==============================================================");
+
+        if (failed > 0)
+            _logger.LogWarning("{Summary}", sb.ToString());
+        else
+            _logger.LogInformation("{Summary}", sb.ToString());
     }
 
     private bool TryLoadExternalLibrary(AssemblyName assemblyName, out Assembly? assembly)

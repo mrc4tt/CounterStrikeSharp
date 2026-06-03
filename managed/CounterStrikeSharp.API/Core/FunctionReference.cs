@@ -123,6 +123,7 @@ namespace CounterStrikeSharp.API.Core
                     }
 
                     Application.Instance.Logger.LogError(e, "Error invoking callback");
+                    Application.Instance.Logger.LogError("\n{Report}", BuildCallbackErrorReport(e, _targetMethod));
                 }
                 finally
                 {
@@ -134,6 +135,44 @@ namespace CounterStrikeSharp.API.Core
                     _taskCompletionSource.TrySetResult();
                 }
             };
+        }
+
+        // Names the plugin that owns the crashing handler so a runtime exception in
+        // third-party plugin code isn't mistaken for a CounterStrikeSharp bug. The
+        // server keeps running (this exception was caught); the report just makes the
+        // culprit obvious in the log.
+        private static string BuildCallbackErrorReport(Exception ex, Delegate target)
+        {
+            var root = ex.GetBaseException();
+            var handler = target.Method;
+            var owner = handler.DeclaringType?.Assembly.GetName().Name ?? "unknown";
+
+            // Deepest frame inside the owning plugin assembly -> file:line of the bug.
+            string loc = null;
+            var pluginAsm = handler.DeclaringType?.Assembly;
+            foreach (var f in new StackTrace(root, true).GetFrames() ?? Array.Empty<StackFrame>())
+            {
+                var m = f.GetMethod();
+                if (m?.DeclaringType?.Assembly != pluginAsm) continue;
+                var file = f.GetFileName();
+                loc = m.DeclaringType.FullName + "." + m.Name + "()"
+                    + (file != null ? " at " + file + ":" + f.GetFileLineNumber() : "");
+                break;
+            }
+
+            var sb = new System.Text.StringBuilder();
+            sb.AppendLine("==================== PLUGIN RUNTIME ERROR ====================");
+            sb.AppendLine("Plugin:    " + owner);
+            sb.AppendLine("Handler:   " + (handler.DeclaringType?.FullName + "." + handler.Name + "()"));
+            sb.AppendLine("Error:     " + root.GetType().Name + ": " + root.Message);
+            if (loc != null)
+                sb.AppendLine("Location:  " + loc);
+            sb.AppendLine("Blame:     The plugin '" + owner + "', NOT CounterStrikeSharp.");
+            sb.AppendLine("           This exception came from inside the plugin's own handler. The server");
+            sb.AppendLine("           kept running, but that plugin's action did not complete.");
+            sb.AppendLine("Action:    Report this trace to the plugin author; disable the plugin if it spams.");
+            sb.Append("=============================================================");
+            return sb.ToString();
         }
 
         public static FunctionReference Create(Delegate method, FunctionLifetime lifetime = FunctionLifetime.Permanent)

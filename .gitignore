@@ -1,5 +1,3 @@
-.env
-
 .ccls-cache/
 .cmake/
 cmake-build-*/
