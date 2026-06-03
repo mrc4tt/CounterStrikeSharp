@@ -87,7 +87,7 @@ class TimerSystem : public GlobalClass
     void KillTimer(timers::Timer* timer);
     double GetTickedTime();
     // Shift the internal curtime baseline by delta after an external curtime
-    // rewind, so universal_time stays monotonic. See Hook_GameFrame.
+    // rewind, so universal_time stays monotonic. See Hook_GameFramePre.
     void RebaseTickedTime(float delta) { m_last_ticked_time -= delta; }
 
   private:
