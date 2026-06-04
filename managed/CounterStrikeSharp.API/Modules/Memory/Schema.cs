@@ -194,7 +194,11 @@ public class Schema
     // Used to write to the char[] specified at the schema location, i.e. char m_iszPlayerName[128]; 
     internal unsafe static void SetStringBytes(IntPtr pointer, string className, string memberName, string value, int maxLength)
     {
-        var handle = GetSchemaValue<IntPtr>(pointer, className, memberName);
+        // Inline char[] buffer: the field IS the storage, so we need its address
+        // (pointer + offset), not a deref. GetSchemaValue<IntPtr> hits the blittable
+        // fast path which Unsafe.Read's the field (deref) and returns the zero'd
+        // buffer bytes => null handle => NRE on write. Compute the address directly.
+        var handle = pointer + GetSchemaOffset(className, memberName);
 
         var bytes = Encoding.UTF8.GetBytes(value);
         if (bytes.Length > maxLength)
