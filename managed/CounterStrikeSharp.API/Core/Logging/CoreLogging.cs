@@ -3,6 +3,7 @@ using System.IO;
 using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Core;
+using Serilog.Events;
 using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace CounterStrikeSharp.API.Core.Logging;
@@ -28,6 +29,14 @@ public static class CoreLogging
                     "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u4}] (cssharp:{SourceContext}) {Message:lj}{NewLine}{Exception}")
                 .WriteTo.File(Path.Join(new[] { contentRoot, "logs", $"log-all.txt" }),
                     rollingInterval: RollingInterval.Day, shared: true,
+                    outputTemplate:
+                    "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u4}] (cssharp:{SourceContext}) {Message:lj}{NewLine}{Exception}")
+                // Errors-only sink: isolates crashes/load failures (incl. plugin blame
+                // reports) into one file that can be handed to a plugin author without
+                // wading through the full info-level log.
+                .WriteTo.File(Path.Join(new[] { contentRoot, "logs", $"log-errors.txt" }),
+                    rollingInterval: RollingInterval.Day, shared: true,
+                    restrictedToMinimumLevel: LogEventLevel.Error,
                     outputTemplate:
                     "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u4}] (cssharp:{SourceContext}) {Message:lj}{NewLine}{Exception}")
                 .CreateLogger();

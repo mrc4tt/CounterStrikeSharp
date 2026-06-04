@@ -165,8 +165,10 @@ public class PluginManager : IPluginManager
             loaded, failed, Api.GetVersion()));
         sb.Append("==============================================================");
 
+        // Use Error level when any plugin failed so the summary also lands in
+        // log-errors.txt alongside the individual crash reports.
         if (failed > 0)
-            _logger.LogWarning("{Summary}", sb.ToString());
+            _logger.LogError("{Summary}", sb.ToString());
         else
             _logger.LogInformation("{Summary}", sb.ToString());
     }
