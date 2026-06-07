@@ -10,7 +10,7 @@ CounterStrikeSharp is a server-side modding framework for Counter-Strike 2. This
 - Added support for CommandLine API (GetCommandLineString) `CommandLine.GetCommandLineString`
 - (**Do not use this version, as I won't provide support**)
 
-### This repo will be archived later this year and moved to a private repo.
+### This repo has been archived.
 
 ## Install
 
