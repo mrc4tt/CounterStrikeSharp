@@ -1,3 +1,23 @@
+## What's Changed in v1.0.385
+* patcheZ ([6fc27ed](https://github.com/mrc4tt/CounterStrikeSharp/commit/6fc27ed229366d4b3736ba3bfbb3e5d6c72c0d8e))
+* Update README.md ([5dd0928](https://github.com/mrc4tt/CounterStrikeSharp/commit/5dd0928d1ecdbe1b631c2a6bf7df276c64f3b7e7))
+* Update README.md ([1f58e4d](https://github.com/mrc4tt/CounterStrikeSharp/commit/1f58e4d1e07bb0d7af82be8395b0be282c03e0e1))
+* fix some menu by some plugins wont popup. ([7e895f4](https://github.com/mrc4tt/CounterStrikeSharp/commit/7e895f4f9fe8d8e3dff102d0e6f4a333a37125d7))
+* Add log-errors.txt ([01dea32](https://github.com/mrc4tt/CounterStrikeSharp/commit/01dea32ecbf9f46ddf00c24f8f26b4ea171280aa))
+* Feat: plugins/shared information, if server crash due plugin error ([dadcd8f](https://github.com/mrc4tt/CounterStrikeSharp/commit/dadcd8fe7234118004d6cf57042f709a8a703ec0))
+* small patchz ([0d78577](https://github.com/mrc4tt/CounterStrikeSharp/commit/0d78577837ca0856c84df0d65de68c721e2adf51))
+* Update README.md ([88095af](https://github.com/mrc4tt/CounterStrikeSharp/commit/88095afc9a39fec26b72fc2b79c8acd95a789594))
+* small patchEZ. ([3c25572](https://github.com/mrc4tt/CounterStrikeSharp/commit/3c2557291eae4f51d0314b09d4b6e1bf75460be9))
+* Feat: MOOOOREE patches. ([128dce6](https://github.com/mrc4tt/CounterStrikeSharp/commit/128dce6c7396cc19baa179cf2ff2c9520152a6f2))
+* fix MaxEdictBits ([35471da](https://github.com/mrc4tt/CounterStrikeSharp/commit/35471da607d093a7d06e34ffc911f094b2c531fa))
+* word fix ([b101f0e](https://github.com/mrc4tt/CounterStrikeSharp/commit/b101f0e41dcdb63ce0acc37c53f6e69383a1592e))
+* merge: chat trim to avoid OOB ([daeca28](https://github.com/mrc4tt/CounterStrikeSharp/commit/daeca28111e2fa3d119475735cd056926ad5d5fc))
+* chore: update schema definitions to 1.41.6.5 ([82c7300](https://github.com/mrc4tt/CounterStrikeSharp/commit/82c7300b293a6e8bffd67f70ffce327e043403e4))
+* Merge branch 'feat/dotnet10' ([ed7a869](https://github.com/mrc4tt/CounterStrikeSharp/commit/ed7a869f2478a95a7ecfd86b68d36ba9d4f5101c))
+* .NET10 ([e406167](https://github.com/mrc4tt/CounterStrikeSharp/commit/e406167c6d7b3ec64e3e272dba14586df0a40fe6))
+* Update README.md ([75c8934](https://github.com/mrc4tt/CounterStrikeSharp/commit/75c8934cb118b5327338a376c762ae952d336d8e))
+* soz ARM.. ([f5d2b78](https://github.com/mrc4tt/CounterStrikeSharp/commit/f5d2b781c75551182a937b3614279deeb3f8d0a1))
+
 ## What's Changed in v1.0.384
 * test. ([983c38f](https://github.com/mrc4tt/CounterStrikeSharp/commit/983c38f7a2538e9d24ac0345dafe4ed63abffebd))
 * update for c47b3f6 ([2e520bb](https://github.com/mrc4tt/CounterStrikeSharp/commit/2e520bbd88209ff5ab2103fbb02e1285ab3c6caa))
