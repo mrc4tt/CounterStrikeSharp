@@ -122,8 +122,21 @@ namespace CounterStrikeSharp.API.Core
                         return;
                     }
 
-                    Application.Instance.Logger.LogError(e, "Error invoking callback");
-                    Application.Instance.Logger.LogError("\n{Report}", BuildCallbackErrorReport(e, _targetMethod));
+                    var owner = _targetMethod.Method.DeclaringType?.Assembly.GetName().Name ?? "unknown";
+                    var throttleKey = owner + "|" + _targetMethod.Method.Name + "|" + e.GetBaseException().GetType().Name;
+                    var decision = Diagnostics.PluginDiagnostics.RecordError(owner, throttleKey);
+
+                    if (decision.LogFull)
+                    {
+                        Application.Instance.Logger.LogError(e, "Error invoking callback");
+                        Application.Instance.Logger.LogError("\n{Report}", BuildCallbackErrorReport(e, _targetMethod));
+                    }
+                    else if (decision.LogSuppressionNotice)
+                    {
+                        Application.Instance.Logger.LogError(
+                            "Plugin '{Owner}' handler '{Handler}' still throwing {Error} ({Count}x total). Report suppressed; see earlier blame report.",
+                            owner, _targetMethod.Method.Name, e.GetBaseException().GetType().Name, decision.TimesSeen);
+                    }
                 }
                 finally
                 {

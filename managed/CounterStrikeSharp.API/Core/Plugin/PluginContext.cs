@@ -252,6 +252,7 @@ namespace CounterStrikeSharp.API.Core.Plugin
                 }
 
                 this.TerminationReason = string.Empty;
+                var loadTimer = System.Diagnostics.Stopwatch.StartNew();
                 try
                 {
                     Plugin.Load(hotReload);
@@ -274,7 +275,8 @@ namespace CounterStrikeSharp.API.Core.Plugin
                     return;
                 }
 
-                _logger.LogInformation("Finished loading plugin {Name}", Plugin.ModuleName);
+                loadTimer.Stop();
+                _logger.LogInformation("Finished loading plugin {Name} in {Ms}ms", Plugin.ModuleName, loadTimer.ElapsedMilliseconds);
 
                 State = PluginState.Loaded;
             }
@@ -422,7 +424,22 @@ namespace CounterStrikeSharp.API.Core.Plugin
 
             if (ex is System.IO.FileNotFoundException || ex is System.IO.FileLoadException
                 || ex is BadImageFormatException || msg.Contains("Could not load file or assembly"))
-                return "A dependency DLL is missing or mismatched. Ship the plugin's required libraries next to its .dll.";
+            {
+                // Pull the missing assembly's simple name out of the exception so the
+                // hint can name it and detect shared libraries (".Shared" convention).
+                var missing = (ex as System.IO.FileNotFoundException)?.FileName
+                              ?? (ex as System.IO.FileLoadException)?.FileName;
+                var simpleName = missing?.Split(',')[0];
+
+                if (simpleName != null && simpleName.IndexOf("Shared", StringComparison.OrdinalIgnoreCase) >= 0)
+                    return "Missing SHARED dependency '" + simpleName + "'. Shared libraries must be installed in "
+                         + "the 'shared' folder (addons/counterstrikesharp/shared/" + simpleName + "/" + simpleName
+                         + ".dll). Install the plugin/library that provides it.";
+
+                return "A dependency DLL is missing or mismatched"
+                     + (simpleName != null ? " ('" + simpleName + "')" : "")
+                     + ". Ship the plugin's required libraries next to its .dll, or install the shared library it needs.";
+            }
 
             if (ex is TypeInitializationException && (msg.Contains("GameData") || msg.Contains("Signature")))
                 return "A gamedata signature is missing/outdated. Update gamedata.json — this can be a CS2 update issue.";

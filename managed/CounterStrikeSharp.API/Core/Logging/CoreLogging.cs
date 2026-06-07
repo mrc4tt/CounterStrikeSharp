@@ -24,10 +24,6 @@ public static class CoreLogging
                     outputTemplate:
                     "{Timestamp:HH:mm:ss} [{Level:u4}] (cssharp:{SourceContext}) {Message:lj}{NewLine}{Exception}")
                 .WriteTo.File(Path.Join(new[] { contentRoot, "logs", $"log-cssharp.txt" }),
-                    rollingInterval: RollingInterval.Day,
-                    outputTemplate:
-                    "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u4}] (cssharp:{SourceContext}) {Message:lj}{NewLine}{Exception}")
-                .WriteTo.File(Path.Join(new[] { contentRoot, "logs", $"log-all.txt" }),
                     rollingInterval: RollingInterval.Day, shared: true,
                     outputTemplate:
                     "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u4}] (cssharp:{SourceContext}) {Message:lj}{NewLine}{Exception}")

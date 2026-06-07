@@ -75,13 +75,61 @@ public sealed class GameDataProvider : IStartupService
                     _logger.LogWarning("Unable to load game data entries from {Path}, game data file is empty", filePath);
                 }
             }
+
+            ValidateCurrentPlatformEntries();
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Failed to load game data");
         }
     }
-} 
+
+    // Fork-only: after loading, warn about entries that are missing a signature/offset
+    // for the CURRENT platform. Consuming such a key (e.g. via VirtualFunctions) throws
+    // at type-init time and takes down every plugin that touches that class, so surfacing
+    // it here — early, by name — turns a cryptic TypeInitializationException cascade into
+    // an actionable startup warning.
+    private void ValidateCurrentPlatformEntries()
+    {
+        if (Methods == null || Methods.Count == 0)
+        {
+            _logger.LogError(
+                "No game data entries loaded. Every plugin using engine functions (VirtualFunctions) will fail. " +
+                "Check that gamedata.json exists in {Path}.", _gameDataDirectoryPath);
+            return;
+        }
+
+        bool linux = RuntimeInformation.IsOSPlatform(OSPlatform.Linux);
+        var broken = new List<string>();
+
+        foreach (var kv in Methods)
+        {
+            var data = kv.Value;
+            var sig = data.Signatures;
+            var off = data.Offsets;
+
+            // An entry is usable if it has a non-empty signature OR an offset for this platform.
+            bool hasSig = sig != null && !string.IsNullOrWhiteSpace(linux ? sig.Linux : sig.Windows);
+            bool hasOff = off != null && (linux ? off.Linux : off.Windows) != 0;
+
+            if (!hasSig && !hasOff)
+                broken.Add(kv.Key);
+        }
+
+        if (broken.Count > 0)
+        {
+            _logger.LogWarning(
+                "{Count} game data entr{Suffix} have no {Platform} signature/offset and will throw if used: {Keys}",
+                broken.Count, broken.Count == 1 ? "y" : "ies", linux ? "Linux" : "Windows",
+                string.Join(", ", broken));
+        }
+        else
+        {
+            _logger.LogInformation("Game data validated: all {Count} entries have a {Platform} signature/offset.",
+                Methods.Count, linux ? "Linux" : "Windows");
+        }
+    }
+}
 
 public static class GameData
 {

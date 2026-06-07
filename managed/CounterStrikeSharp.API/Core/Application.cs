@@ -158,6 +158,15 @@ namespace CounterStrikeSharp.API.Core
                             plugin.Plugin?.ModuleVersion ?? "Unknown");
                         if (!string.IsNullOrEmpty(plugin.Plugin?.ModuleAuthor))
                             sb.AppendFormat(" by {0}", plugin.Plugin.ModuleAuthor);
+
+                        // Fork-only: surface accumulated runtime errors so a misbehaving
+                        // plugin is obvious from `css_plugins list`.
+                        var asmName = plugin.Plugin?.GetType().Assembly.GetName().Name;
+                        var errCount = asmName != null
+                            ? CounterStrikeSharp.API.Core.Diagnostics.PluginDiagnostics.GetErrorCount(asmName)
+                            : 0;
+                        if (errCount > 0)
+                            sb.AppendFormat(" [{0} runtime error{1}]", errCount, errCount == 1 ? "" : "s");
                         if (!string.IsNullOrEmpty(plugin.Plugin?.ModuleDescription))
                         {
                             sb.Append("\n");
@@ -211,6 +220,15 @@ namespace CounterStrikeSharp.API.Core
                         {
                             info.ReplyToCommand($"Could not load plugin \"{path}\"");
                             Logger.LogError(e, "Could not load plugin \"{Path}\"", path);
+
+                            // Blame report: if a plugin instance exists (e.g. it threw
+                            // from OnAllPluginsLoaded) name it directly; otherwise the
+                            // failure was pre-instance, so report from the path.
+                            var failedCtx = _pluginContextQueryHandler.FindPluginByModulePath(path);
+                            if (failedCtx?.Plugin != null)
+                                Logger.LogError("\n{Report}", PluginContext.BuildLoadFailureReport(e, failedCtx.Plugin));
+                            else
+                                Logger.LogError("\n{Report}", PluginContext.BuildLoadFailureReportFromPath(e, path));
                         }
                     }
                     else
