@@ -27,6 +27,8 @@ on:
 
 jobs:
   setup:
+    permissions:
+      contents: read
     runs-on: ubuntu-latest
     outputs:
       gitversion_semver: ${{ steps.gitversion.outputs.semVer }}
@@ -51,6 +53,8 @@ jobs:
 
   build_linux:
     needs: setup
+    permissions:
+      contents: read
     runs-on: ubuntu-latest
     container:
       image: registry.gitlab.steamos.cloud/steamrt/sniper/sdk:latest
@@ -105,6 +109,8 @@ jobs:
     # need a C++17 compiler + Catch2 (consumed via the libraries/Catch2
     # submodule's amalgamated single-source).
     needs: setup
+    permissions:
+      contents: read
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

@@ -13,6 +13,8 @@ on:
 
 jobs:
   setup:
+    permissions:
+      contents: read
     runs-on: ubuntu-latest
     outputs:
       gitversion_semver: ${{ steps.gitversion.outputs.semVer }}
@@ -37,6 +39,8 @@ jobs:
 
   build_windows:
     needs: setup
+    permissions:
+      contents: read
     runs-on: windows-latest
     steps:
       - name: Prepare env
@@ -83,6 +87,8 @@ jobs:
 
   build_managed:
     needs: setup
+    permissions:
+      contents: read
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
