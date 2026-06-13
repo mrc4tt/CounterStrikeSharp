@@ -23,6 +23,7 @@
 #include <public/worldsize.h>
 
 #include "mm_plugin.h"
+#include "core/fatal_reporter.h"
 #include "core/timer_system.h"
 #include "core/utils.h"
 #include "scripting/autonative.h"
@@ -271,7 +272,13 @@ void ClientPrint(ScriptContext& scriptContext)
     delete data;
 }
 
+// Records the plugin most likely to cause an imminent garbage-collected-delegate
+// FailFast (the last plugin that failed to load), so the native fatal handler can
+// name it as the last console line if the process aborts. See fatal_reporter.
+void SetFatalSuspectPlugin(ScriptContext& script_context) { fatal::SetSuspectPlugin(script_context.GetArgument<const char*>(0)); }
+
 REGISTER_NATIVES(engine, {
+    ScriptEngine::RegisterNativeHandler("SET_FATAL_SUSPECT_PLUGIN", SetFatalSuspectPlugin);
     ScriptEngine::RegisterNativeHandler("GET_GAME_DIRECTORY", GetGameDirectory);
     ScriptEngine::RegisterNativeHandler("GET_MAP_NAME", GetMapName);
     ScriptEngine::RegisterNativeHandler("IS_MAP_VALID", IsMapValid);

@@ -71,6 +71,24 @@ namespace CounterStrikeSharp.API.Core
 
         [JsonPropertyName("MaximumFrameTasksExecutedPerTick")]
         public int MaximumFrameTasksExecutedPerTick { get; set; } = 1024;
+
+        [JsonPropertyName("UpdateWatcherEnabled")]
+        public bool UpdateWatcherEnabled { get; set; } = true;
+
+        [JsonPropertyName("UpdateWatcherAutoRestart")]
+        public bool UpdateWatcherAutoRestart { get; set; } = false;
+
+        [JsonPropertyName("UpdateWatcherRestartOnMapChange")]
+        public bool UpdateWatcherRestartOnMapChange { get; set; } = true;
+
+        [JsonPropertyName("UpdateWatcherRestartWhenEmpty")]
+        public bool UpdateWatcherRestartWhenEmpty { get; set; } = true;
+
+        [JsonPropertyName("UpdateWatcherDebounceSeconds")]
+        public int UpdateWatcherDebounceSeconds { get; set; } = 10;
+
+        [JsonPropertyName("UpdateWatcherRestartCommand")]
+        public string UpdateWatcherRestartCommand { get; set; } = "quit";
     }
 
     /// <summary>
@@ -128,6 +146,59 @@ namespace CounterStrikeSharp.API.Core
         public static bool UnlockConVars => _coreConfig.UnlockConVars;
 
         public static int MaximumFrameTasksExecutedPerTick => _coreConfig.MaximumFrameTasksExecutedPerTick;
+
+        /// <summary>
+        /// When enabled, CounterStrikeSharp watches its own native/managed binaries for
+        /// on-disk changes (i.e. a framework update applied while the server is live) and
+        /// schedules a clean server restart at a safe point instead of risking a mid-match
+        /// crash. Requires the update to be applied atomically (write + rename) so the live
+        /// process keeps running its old binary until the restart fires.
+        /// </summary>
+        public static bool UpdateWatcherEnabled => _coreConfig.UpdateWatcherEnabled;
+
+        /// <summary>
+        /// <para>
+        /// When <c>false</c> (default), a detected update is only announced in the log and the
+        /// running server is left alone — safe on every host, because the live process keeps
+        /// running the old binary and the operator restarts when convenient.
+        /// </para>
+        /// <para>
+        /// When <c>true</c>, the watcher additionally issues <see cref="UpdateWatcherRestartCommand"/>
+        /// at the next safe point (map change / empty server). Enable this ONLY if you know your
+        /// supervisor relaunches the process after it exits (systemd <c>Restart=always</c>, docker
+        /// <c>--restart unless-stopped</c>, a panel with crash-restart, a bash loop). On a plain
+        /// Docker/Pterodactyl setup a clean exit leaves the server OFFLINE, so leave this off there.
+        /// </para>
+        /// </summary>
+        public static bool UpdateWatcherAutoRestart => _coreConfig.UpdateWatcherAutoRestart;
+
+        /// <summary>
+        /// When an update is pending and <see cref="UpdateWatcherAutoRestart"/> is enabled,
+        /// restart the server on the next map change (OnMapEnd).
+        /// </summary>
+        public static bool UpdateWatcherRestartOnMapChange => _coreConfig.UpdateWatcherRestartOnMapChange;
+
+        /// <summary>
+        /// When an update is pending, restart the server as soon as it is empty (0 players),
+        /// without waiting for the map to end.
+        /// </summary>
+        public static bool UpdateWatcherRestartWhenEmpty => _coreConfig.UpdateWatcherRestartWhenEmpty;
+
+        /// <summary>
+        /// Seconds to wait after the last detected file change before treating an update as
+        /// complete. An update touches many files; this debounce avoids restarting halfway
+        /// through the copy.
+        /// </summary>
+        public static int UpdateWatcherDebounceSeconds => _coreConfig.UpdateWatcherDebounceSeconds;
+
+        /// <summary>
+        /// Server command issued to perform the restart. Defaults to <c>quit</c>: CS2 has no
+        /// in-process binary reload, so the process must exit and an external supervisor
+        /// (systemd <c>Restart=always</c> / docker <c>--restart</c> / a bash <c>while</c> loop)
+        /// relaunches it with the new binary. Override only if your supervisor expects a
+        /// different shutdown command.
+        /// </summary>
+        public static string UpdateWatcherRestartCommand => _coreConfig.UpdateWatcherRestartCommand;
     }
 
     public partial class CoreConfig : IStartupService

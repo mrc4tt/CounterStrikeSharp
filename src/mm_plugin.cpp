@@ -15,8 +15,11 @@
 #include "mm_plugin.h"
 
 #include <cstdio>
+#include <mutex>
+#include <unordered_set>
 
 #include "core/detours.h"
+#include "core/fatal_reporter.h"
 #include "core/coreconfig.h"
 #include "core/game_system.h"
 #include "core/gameconfig.h"
@@ -65,7 +68,19 @@ DLL_EXPORT void InvokeNative(counterstrikesharp::fxNativeContext& context)
         counterstrikesharp::ScriptContextRaw scriptContext(context);
         scriptContext.ThrowNativeError("Invoked on a non-main thread");
 
-        CSSHARP_CORE_CRITICAL("Native {:x} was invoked on a non-main thread", context.nativeIdentifier);
+        // Log once per offending native id. The throwing plugin gets the native
+        // error on every call (that's the real signal); the core log only needs the
+        // first occurrence -- a misbehaving plugin would otherwise flood the log.
+        static std::mutex s_warnMutex;
+        static std::unordered_set<uint64_t> s_warnedNatives;
+        {
+            std::lock_guard<std::mutex> lock(s_warnMutex);
+            if (s_warnedNatives.insert(context.nativeIdentifier).second)
+            {
+                CSSHARP_CORE_CRITICAL("Native {:x} was invoked on a non-main thread (further occurrences suppressed)",
+                                      context.nativeIdentifier);
+            }
+        }
         return;
     }
 
@@ -88,8 +103,6 @@ SH_DECL_HOOK1(IEngineServiceMgr, FindService, SH_NOATTRIB, 0, IEngineService*, c
 SH_DECL_HOOK2(IGameEventManager2, LoadEventsFromFile, SH_NOATTRIB, 0, int, const char*, bool);
 
 CounterStrikeSharpMMPlugin gPlugin;
-
-static CConVar<float>* g_curtimeRewindThreshold = nullptr;
 
 #if 0
 // Currently unavailable, requires hl2sdk work!
@@ -176,9 +189,6 @@ bool CounterStrikeSharpMMPlugin::Load(PluginId id, ISmmAPI* ismm, char* error, s
     on_metamod_all_plugins_loaded_callback = globals::callbackManager.CreateCallback("OnMetamodAllPluginsLoaded");
 
     SH_ADD_HOOK_MEMFUNC(IServerGameDLL, GameFrame, globals::server, this, &CounterStrikeSharpMMPlugin::Hook_GameFrame, true);
-    // PRE GameFrame: curtime precision-rewind (must run before the frame body
-    // consumes curtime). Matches SlowAnimationFix_mm hook timing.
-    SH_ADD_HOOK_MEMFUNC(IServerGameDLL, GameFrame, globals::server, this, &CounterStrikeSharpMMPlugin::Hook_GameFramePre, false);
     SH_ADD_HOOK_MEMFUNC(INetworkServerService, StartupServer, globals::networkServerService, this,
                         &CounterStrikeSharpMMPlugin::Hook_StartupServer, true);
     SH_ADD_HOOK_MEMFUNC(IEngineServiceMgr, RegisterLoopMode, globals::engineServiceManager, this,
@@ -204,20 +214,17 @@ bool CounterStrikeSharpMMPlugin::Load(PluginId id, ISmmAPI* ismm, char* error, s
         CSSHARP_CORE_ERROR("Failed to initialize .NET runtime");
     }
 
+    // Install AFTER the .NET runtime so our SIGABRT handler runs first (prints the
+    // culprit) then chains to the CLR's handler (keeps its crash dump). Lets a
+    // garbage-collected-delegate FailFast name the suspect plugin as the LAST
+    // console line instead of an anonymous "Process terminated".
+    fatal::InstallHandler();
+
     CSSHARP_CORE_INFO("Hooks added.");
 
     // Used by Metamod Console Commands
     g_pCVar = globals::cvars;
     ConVar_Register(FCVAR_RELEASE | FCVAR_CLIENT_CAN_EXECUTE | FCVAR_GAMEDLL);
-
-    // curtime precision-rewind threshold (seconds). When the server is empty and
-    // curtime exceeds this, curtime is rewound to restore 32-bit float precision.
-    // 0 disables. See Hook_GameFramePre.
-    g_curtimeRewindThreshold =
-        new CConVar<float>("css_curtime_rewind_threshold", FCVAR_RELEASE | FCVAR_GAMEDLL,
-                           "Rewind curtime when the server is empty and curtime exceeds this many seconds (0 = disabled). "
-                           "Mitigates long-uptime float-precision loss that causes slow animations.",
-                           3600.0f, true, 0.0f, false, 0.0f);
 
     return true;
 }
@@ -254,7 +261,6 @@ void CounterStrikeSharpMMPlugin::Hook_StartupServer(const GameSessionConfigurati
 bool CounterStrikeSharpMMPlugin::Unload(char* error, size_t maxlen)
 {
     SH_REMOVE_HOOK_MEMFUNC(IServerGameDLL, GameFrame, globals::server, this, &CounterStrikeSharpMMPlugin::Hook_GameFrame, true);
-    SH_REMOVE_HOOK_MEMFUNC(IServerGameDLL, GameFrame, globals::server, this, &CounterStrikeSharpMMPlugin::Hook_GameFramePre, false);
     SH_REMOVE_HOOK_MEMFUNC(INetworkServerService, StartupServer, globals::networkServerService, this,
                            &CounterStrikeSharpMMPlugin::Hook_StartupServer, true);
     SH_REMOVE_HOOK_ID(g_iLoadEventsFromFileId);
@@ -322,41 +328,6 @@ void CounterStrikeSharpMMPlugin::Hook_GameFrame(bool simulating, bool bFirstTick
             callback();
         }
     }
-}
-
-// PRE GameFrame: mitigate the CS2 long-uptime "slow animation" bug. curtime is a
-// 32-bit float in CGlobalVars; after ~24-48h its precision drops below a tick,
-// desyncing animation/movement/lag-comp timing. While the server is empty, rewind
-// curtime (and tickcount) to restore precision. Relative time is preserved.
-// Writes the ENGINE globals (IVEngineServer2::GetServerGlobals) -- the authoritative
-// struct the original SlowAnimationFix_mm patches, NOT INetworkGameServer::GetGlobals
-// (which may be a mirror the engine re-syncs every frame). Ref: github.com/SlynxCZ/SlowAnimationFix_mm
-void CounterStrikeSharpMMPlugin::Hook_GameFramePre(bool simulating, bool bFirstTick, bool bLastTick)
-{
-    if (!simulating || !g_curtimeRewindThreshold || !globals::engineServer2) return;
-
-    const float threshold = g_curtimeRewindThreshold->Get();
-    if (threshold <= 0.0f) return;
-
-    CGlobalVars* g = globals::engineServer2->GetServerGlobals();
-    if (!g || g->curtime <= threshold) return;
-    if (globals::playerManager.NumPlayers() != 0) return;
-
-    const float baseline = 60.0f;
-    const float offset = g->curtime - baseline;
-    // Tickrate-agnostic interval-per-tick derived from current state (avoids the
-    // build-specific +0x54 raw offset the upstream MM plugin hardcodes).
-    const float ipt = (g->tickcount > 0) ? (g->curtime / (float)g->tickcount) : globals::engine_fixed_tick_interval;
-
-    g->curtime = baseline;
-    g->tickcount = (int)(baseline / ipt);
-
-    // Keep CSS timer_system's universal_time monotonic ONLY if it observes this same
-    // globals struct; if getGlobalVars() returns a different (mirror) struct, the
-    // timer system never saw the rewind and must not be rebased.
-    if (globals::getGlobalVars() == g) globals::timerSystem.RebaseTickedTime(offset);
-
-    CSSHARP_CORE_INFO("curtime rewound by {:.1f}s on empty server (float-precision fix)", offset);
 }
 
 // Potentially might not work

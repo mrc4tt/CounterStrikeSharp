@@ -47,7 +47,6 @@ class CounterStrikeSharpMMPlugin : public ISmmPlugin, public IMetamodListener
                      bool background) override;
     void OnLevelShutdown() override;
     void Hook_GameFrame(bool simulating, bool bFirstTick, bool bLastTick);
-    void Hook_GameFramePre(bool simulating, bool bFirstTick, bool bLastTick);
     void Hook_StartupServer(const GameSessionConfiguration_t& config, ISource2WorldSession*, const char*);
 
     void Hook_RegisterLoopMode(const char* pszLoopModeName, ILoopModeFactory* pLoopModeFactory, void** ppGlobalPointer);

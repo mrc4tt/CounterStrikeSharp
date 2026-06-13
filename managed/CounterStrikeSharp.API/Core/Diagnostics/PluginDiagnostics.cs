@@ -11,6 +11,12 @@ namespace CounterStrikeSharp.API.Core.Diagnostics;
 /// </summary>
 public static class PluginDiagnostics
 {
+    /// <summary>
+    /// Single place to edit the support line printed on every blame banner. Put a
+    /// Discord/Forgejo/issue URL here later if wanted; it shows up everywhere at once.
+    /// </summary>
+    public const string SupportContact = "Stuck? Contact us so we can guide you.";
+
     // assembly name -> total runtime errors observed
     private static readonly ConcurrentDictionary<string, int> _errorCounts = new();
 

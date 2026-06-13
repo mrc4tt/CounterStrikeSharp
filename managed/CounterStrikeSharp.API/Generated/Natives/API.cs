@@ -886,6 +886,19 @@ namespace CounterStrikeSharp.API.Core
 			}
 		}
 
+        // Records the suspect plugin natively so the SIGABRT fatal handler can name it
+        // as the last console line if a garbage-collected-delegate FailFast terminates
+        // the process. Identifier = hash_string("SET_FATAL_SUSPECT_PLUGIN").
+        public static void SetFatalSuspectPlugin(string pluginName){
+			lock (ScriptContext.GlobalScriptContext.Lock) {
+			ScriptContext.GlobalScriptContext.Reset();
+			ScriptContext.GlobalScriptContext.PushString(pluginName);
+			ScriptContext.GlobalScriptContext.SetIdentifier(0x6C433298);
+			ScriptContext.GlobalScriptContext.Invoke();
+			ScriptContext.GlobalScriptContext.CheckErrors();
+			}
+		}
+
         public static void DisconnectClient(int slot, int reason){
 			lock (ScriptContext.GlobalScriptContext.Lock) {
 			ScriptContext.GlobalScriptContext.Reset();

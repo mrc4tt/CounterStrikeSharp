@@ -52,6 +52,8 @@ set(SOURCE_FILES
     src/core/gameconfig_updater.cpp
     src/core/log.h
     src/core/log.cpp
+    src/core/fatal_reporter.h
+    src/core/fatal_reporter.cpp
     src/scripting/script_engine.h
     src/scripting/script_engine.cpp
     src/core/global_listener.h

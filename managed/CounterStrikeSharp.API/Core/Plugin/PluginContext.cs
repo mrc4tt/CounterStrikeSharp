@@ -30,6 +30,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using Serilog;
+using Serilog.Sinks.SystemConsole.Themes;
 using ILogger = Microsoft.Extensions.Logging.ILogger;
 using System.Threading;
 using System;
@@ -175,9 +176,15 @@ namespace CounterStrikeSharp.API.Core.Plugin
                     builder.AddSerilog(new LoggerConfiguration()
                         .Enrich.FromLogContext()
                         .Enrich.With(new PluginNameEnricher(this))
+                        // Same ANSI treatment as the core logger (CoreLogging.cs): a theme
+                        // colors the level (INFO/WARN/EROR) so it survives docker/screen
+                        // pipes, and the (plugin:...) prefix is magenta to set plugin output
+                        // apart from the cyan (cssharp:...) framework lines. Console sink
+                        // only; the file sinks below stay plain text.
                         .WriteTo.Console(
+                            theme: AnsiConsoleTheme.Code,
                             outputTemplate:
-                            "{Timestamp:HH:mm:ss} [{Level:u4}] (plugin:{PluginName}) {Message:lj}{NewLine}{Exception}")
+                            "{Timestamp:HH:mm:ss} [{Level:u4}] \x1b[35m(plugin:{PluginName})\x1b[0m {Message:lj}{NewLine}{Exception}")
                         .WriteTo.File(
                             Path.Join(new[]
                             {
@@ -253,6 +260,11 @@ namespace CounterStrikeSharp.API.Core.Plugin
 
                 this.TerminationReason = string.Empty;
                 var loadTimer = System.Diagnostics.Stopwatch.StartNew();
+                // Mark this plugin as the prime suspect for the native fatal handler.
+                // If OnLoad (or a hook/timer it schedules) triggers a garbage-collected-
+                // delegate FailFast, the SIGABRT handler names this plugin as the last
+                // console line instead of an anonymous "Process terminated".
+                NativeAPI.SetFatalSuspectPlugin(Plugin.ModuleName ?? Plugin.GetType().Assembly.GetName().Name ?? "unknown");
                 try
                 {
                     Plugin.Load(hotReload);
@@ -266,9 +278,19 @@ namespace CounterStrikeSharp.API.Core.Plugin
                     }
                     else
                     {
+                        var report = BuildLoadFailureReport(ex, Plugin);
                         _logger.LogError(ex, "Failed to load plugin {Name}", Plugin.ModuleName);
-                        _logger.LogError("\n{Report}", BuildLoadFailureReport(ex, Plugin));
+                        _logger.LogError("\n{Report}", report);
                         this.TerminationReason = ex.Message ?? "Unknown";
+
+                        // Stash the rendered banner keyed by assembly name. If this plugin
+                        // leaks a callback after the failed load, the runtime dead-callback
+                        // path re-pastes THIS exact banner (capped) so an operator who missed
+                        // it the first time still gets the full, actionable report.
+                        FunctionReference.RecordLoadFailure(
+                            Plugin.GetType().Assembly.GetName().Name,
+                            Plugin.ModuleName,
+                            report);
                     }
 
                     Unload(hotReload);
@@ -276,6 +298,10 @@ namespace CounterStrikeSharp.API.Core.Plugin
                 }
 
                 loadTimer.Stop();
+                // Loaded cleanly: clear the suspect so a later unrelated fatal does not
+                // blame this plugin. A failed load deliberately leaves it set, because
+                // that is exactly when the leftover-callback crash fires (next frame).
+                NativeAPI.SetFatalSuspectPlugin(string.Empty);
                 _logger.LogInformation("Finished loading plugin {Name} in {Ms}ms", Plugin.ModuleName, loadTimer.ElapsedMilliseconds);
 
                 State = PluginState.Loaded;
@@ -330,7 +356,8 @@ namespace CounterStrikeSharp.API.Core.Plugin
             var sb = new System.Text.StringBuilder();
             sb.AppendLine("==================== PLUGIN LOAD FAILURE ====================");
             sb.AppendLine("Plugin:    " + pluginName);
-            sb.AppendLine("Error:     " + root.GetType().Name + ": " + root.Message);
+            // No "Error:" line — the full exception + message is already logged right above
+            // this banner as the raw stack trace, so repeating it here is duplication.
 
             if (pluginFrame != null)
             {
@@ -348,8 +375,7 @@ namespace CounterStrikeSharp.API.Core.Plugin
             }
             else
             {
-                sb.AppendLine("Blame:     The plugin '" + pluginName + "', NOT CounterStrikeSharp.");
-                sb.AppendLine("           CounterStrikeSharp loaded fine; this crash is inside the plugin's own code.");
+                sb.AppendLine("Blame:     Plugin '" + pluginName + "' — the failure is in the plugin's own code.");
             }
 
             var hint = FixHintFor(root);
@@ -359,6 +385,7 @@ namespace CounterStrikeSharp.API.Core.Plugin
             }
 
             sb.AppendLine("Action:    Disable/remove this plugin, or contact its author with the trace above.");
+            sb.AppendLine("Support:   " + Diagnostics.PluginDiagnostics.SupportContact);
             sb.Append("============================================================");
             return sb.ToString();
         }
@@ -388,17 +415,17 @@ namespace CounterStrikeSharp.API.Core.Plugin
             sb.AppendLine("==================== PLUGIN LOAD FAILURE ====================");
             sb.AppendLine("Plugin:    " + name + " (failed before it could initialize)");
             sb.AppendLine("File:      " + path);
-            sb.AppendLine("Error:     " + root.GetType().Name + ": " + root.Message);
+            // No "Error:" line — the exception is already logged right above as a raw trace.
             if (thirdPartyLoc != null)
                 sb.AppendLine("Location:  " + thirdPartyLoc);
-            sb.AppendLine("Blame:     The plugin file '" + name + "', NOT CounterStrikeSharp.");
-            sb.AppendLine("           CounterStrikeSharp could not turn this DLL into a working plugin.");
+            sb.AppendLine("Blame:     Plugin file '" + name + "' — CounterStrikeSharp could not turn this DLL into a working plugin.");
 
             var hint = FixHintFor(root);
             if (hint != null)
                 sb.AppendLine("Fix:       " + hint);
 
             sb.AppendLine("Action:    Remove this DLL from the plugins folder, or contact its author.");
+            sb.AppendLine("Support:   " + Diagnostics.PluginDiagnostics.SupportContact);
             sb.Append("============================================================");
             return sb.ToString();
         }
@@ -440,6 +467,11 @@ namespace CounterStrikeSharp.API.Core.Plugin
                      + (simpleName != null ? " ('" + simpleName + "')" : "")
                      + ". Ship the plugin's required libraries next to its .dll, or install the shared library it needs.";
             }
+
+            if (msg.Contains("Gamedata key") || msg.Contains("gamedata.json"))
+                return "Ship/update the missing signature. If plugin-specific: drop the plugin's own "
+                     + "'<PluginName>.gamedata.json' into the gamedata folder (or update it). If core: add the key "
+                     + "to gamedata.json — a CS2 update may have renamed/removed it.";
 
             if (ex is TypeInitializationException && (msg.Contains("GameData") || msg.Contains("Signature")))
                 return "A gamedata signature is missing/outdated. Update gamedata.json — this can be a CS2 update issue.";

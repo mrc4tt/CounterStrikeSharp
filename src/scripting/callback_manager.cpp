@@ -18,6 +18,7 @@
 
 #include <algorithm>
 
+#include "core/fatal_reporter.h"
 #include "core/log.h"
 #include "vprof.h"
 
@@ -71,6 +72,11 @@ void ScriptCallback::Execute(bool bResetContext)
     {
         if (auto fnMethodToCall = m_functions[nI])
         {
+            // Record which native->managed call we are about to make. If that call
+            // FailFasts on a garbage-collected delegate (abort() -> SIGABRT), the
+            // fatal handler prints this as the last console line so the culprit is
+            // named instead of an anonymous "Process terminated".
+            fatal::SetCallbackBreadcrumb(m_name.c_str(), (int)nI);
             try
             {
                 fnMethodToCall(&ScriptContextStruct());
@@ -87,6 +93,8 @@ void ScriptCallback::Execute(bool bResetContext)
             CSSHARP_CORE_ERROR("Null function pointer in callback '{}', index {}", m_name, nI);
         }
     }
+
+    fatal::ClearCallbackBreadcrumb();
 
     if (bResetContext)
     {
