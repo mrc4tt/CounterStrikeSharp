@@ -129,8 +129,20 @@ void EntityManager::OnAllInitialized()
     auto m_hook = funchook_create();
     funchook_prepare(m_hook, (void**)&m_pFireOutputInternal, (void*)&DetourFireOutputInternal);
     funchook_install(m_hook, 0);
+    m_fireOutputHook = m_hook;
 
     // Listener is added in ServerStartup as entity system is not initialised at this stage.
+}
+
+void EntityManager::RemoveDetours()
+{
+    if (m_fireOutputHook)
+    {
+        auto* hook = reinterpret_cast<funchook_t*>(m_fireOutputHook);
+        funchook_uninstall(hook, 0);
+        funchook_destroy(hook);
+        m_fireOutputHook = nullptr;
+    }
 }
 
 void EntityManager::OnShutdown()
@@ -247,13 +259,14 @@ void EntityManager::CheckTransmit(CCheckTransmitInfoHack** ppInfoList,
 
     if (callback && callback->GetFunctionCount())
     {
-        CCheckTransmitInfoList* infoList = new CCheckTransmitInfoList(ppInfoList, nInfoCount);
+        // Stack-allocate: the wrapper only lives for the synchronous Execute() call below
+        // (managed side uses the pointer during Execute, never retains it). Avoids a
+        // heap new/delete per client per frame when a CheckTransmit hook is active.
+        CCheckTransmitInfoList infoList(ppInfoList, nInfoCount);
 
         callback->ScriptContext().Reset();
-        callback->ScriptContext().Push(infoList);
+        callback->ScriptContext().Push(&infoList);
         callback->Execute();
-
-        delete infoList;
     }
 }
 
@@ -385,12 +398,25 @@ void DetourFireOutputInternal(CEntityIOOutput* const pThis,
         return;
     }
 
+    // Entity I/O fires constantly (every map is full of outputs); most servers register
+    // zero output hooks. Skip building the search-key / callback vectors (each allocating
+    // std::string pairs) when there is nothing to match against — just pass through.
+    auto& hookMap = globals::entityManager.m_pHookMap;
+    if (hookMap.empty())
+    {
+        m_pFireOutputInternal(pThis, pActivator, pCaller, value, flDelay, unk1, unk2);
+        return;
+    }
+
     std::vector vecSearchKeys{ OutputKey_t("*", pThis->m_pDesc->m_pName), OutputKey_t("*", "*") };
 
     if (pCaller)
     {
         vecSearchKeys.push_back(OutputKey_t(pCaller->GetClassname(), pThis->m_pDesc->m_pName));
-        OutputKey_t(pCaller->GetClassname(), "*");
+        // Was a discarded temporary (constructed then dropped) — the (caller-class, "*")
+        // wildcard-output key was never searched, so hooks registered as
+        // HookEntityOutput("<class>", "*", ...) silently never fired. Push it like the rest.
+        vecSearchKeys.push_back(OutputKey_t(pCaller->GetClassname(), "*"));
     }
 
     std::vector<CallbackPair*> vecCallbackPairs;
@@ -398,8 +424,6 @@ void DetourFireOutputInternal(CEntityIOOutput* const pThis,
     if (pCaller)
     {
         CSSHARP_CORE_TRACE("[EntityManager][FireOutputHook] - {}, {}", pThis->m_pDesc->m_pName, pCaller->GetClassname());
-
-        auto& hookMap = globals::entityManager.m_pHookMap;
 
         for (auto& searchKey : vecSearchKeys)
         {

@@ -235,7 +235,21 @@ public class PluginManager : IPluginManager
             _loadedPluginContexts.Select(x => x.PluginId).DefaultIfEmpty(0).Max() + 1);
         plugin.OnRequestRemoval = () => RemovePlugin(plugin);
         _loadedPluginContexts.Add(plugin);
-        plugin.Load();
+
+        try
+        {
+            plugin.Load();
+        }
+        catch
+        {
+            // Load() threw before producing a usable plugin (pre-instance failure:
+            // dep resolve, GetExportedTypes, version mismatch...). Leaving the
+            // half-built context in the list makes it a "zombie" with Plugin == null
+            // that poisons every later css_plugins query via NRE. Tear it down and
+            // drop it, then rethrow so the caller still logs the real failure.
+            RemovePlugin(plugin);
+            throw;
+        }
     }
 
     public void RemovePlugin(IPluginContext plugin)

@@ -372,13 +372,15 @@ bool ConCommandManager::RemoveValveCommand(const char* name)
 
     globals::cvars->UnregisterConCommandCallbacks(hFoundCommand);
 
-    auto pInfo = m_cmd_lookup[std::string(name)];
-    if (!pInfo)
+    // find, not operator[]: operator[] inserts a default null entry for any name not
+    // already present, growing the map unbounded with every command name the server sees.
+    auto it = m_cmd_lookup.find(name);
+    if (it == m_cmd_lookup.end() || !it->second)
     {
         return true;
     }
 
-    pInfo->command = nullptr;
+    it->second->command = nullptr;
 
     return true;
 }
@@ -387,7 +389,13 @@ HookResult ConCommandManager::ExecuteCommandCallbacks(
     const char* name, const CCommandContext& ctx, const CCommand& args, HookMode mode, CommandCallingContext callingContext)
 {
     CSSHARP_CORE_TRACE("[ConCommandManager::ExecuteCommandCallbacks][{}]: {}", mode == Pre ? "Pre" : "Post", name);
-    ConCommandInfo* pInfo = m_cmd_lookup[std::string(name)];
+    // find, not operator[]: this runs for EVERY command the server executes. operator[]
+    // inserts a null entry for each unknown command name, growing the map without bound.
+    ConCommandInfo* pInfo = nullptr;
+    if (auto it = m_cmd_lookup.find(name); it != m_cmd_lookup.end())
+    {
+        pInfo = it->second;
+    }
 
     HookResult result = HookResult::Continue;
 

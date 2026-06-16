@@ -218,6 +218,12 @@ bool EventManager::OnFireEvent(IGameEvent* pEvent, bool bDontBroadcast)
         auto pEventHook = I->second;
         m_EventStack.push(pEventHook);
         auto* pCallback = pEventHook->m_pPreHook;
+        // A duplicate is only ever consumed by the post hook (OnFireEventPost reads
+        // m_EventCopies.top() iff m_pPostHook is set). Previously the copy was pushed
+        // unconditionally but popped/freed only when a post hook existed, so any event
+        // with a pre-hook but no post-hook leaked one IGameEvent per fire. Gate the
+        // duplicate on the post hook: fixes the leak and skips the alloc when unused.
+        const bool bHasPostHook = pEventHook->m_pPostHook != nullptr;
 
         if (pCallback)
         {
@@ -239,13 +245,18 @@ bool EventManager::OnFireEvent(IGameEvent* pEvent, bool bDontBroadcast)
 
                 if (result >= HookResult::Handled)
                 {
-                    m_EventCopies.push(globals::gameEventManager->DuplicateEvent(pEvent));
+                    // Keep m_EventCopies symmetric with the non-null m_EventStack frame
+                    // pushed above: push exactly one entry (the duplicate only when a post
+                    // hook will consume it, else nullptr). OnFireEventPost pops one entry
+                    // per non-null frame, so push/pop always balance regardless of whether
+                    // a post hook is added mid-fire.
+                    m_EventCopies.push(bHasPostHook ? globals::gameEventManager->DuplicateEvent(pEvent) : nullptr);
                     globals::gameEventManager->FreeEvent(pEvent);
                     RETURN_META_VALUE(MRES_SUPERCEDE, false);
                 }
             }
         }
-        m_EventCopies.push(globals::gameEventManager->DuplicateEvent(pEvent));
+        m_EventCopies.push(bHasPostHook ? globals::gameEventManager->DuplicateEvent(pEvent) : nullptr);
     }
     else
     {
@@ -271,13 +282,18 @@ bool EventManager::OnFireEventPost(IGameEvent* pEvent, bool bDontBroadcast)
 
     if (pHook)
     {
+        // One m_EventCopies entry was pushed for this frame in OnFireEvent (nullptr when
+        // no post hook existed). Pop it unconditionally so the stack never desyncs, then
+        // run the post callback / free the copy only if there is one.
+        IGameEvent* pEventCopy = m_EventCopies.top();
+        m_EventCopies.pop();
+
         auto* pCallback = pHook->m_pPostHook;
 
-        if (pCallback)
+        if (pCallback && pEventCopy)
         {
             // VPROF_BUDGET("CS#::OnFireEventPost", "CS# Event Hooks");
 
-            auto pEventCopy = m_EventCopies.top();
             CSSHARP_CORE_TRACE("Pushing event `{}` pointer: {}, dont broadcast: {}, post: {}", pEventCopy->GetName(), (void*)pEventCopy,
                                bDontBroadcast, true);
             EventOverride override = { bDontBroadcast };
@@ -285,16 +301,11 @@ bool EventManager::OnFireEventPost(IGameEvent* pEvent, bool bDontBroadcast)
             pCallback->ScriptContext().Push(pEventCopy);
             pCallback->ScriptContext().Push(&override);
             pCallback->Execute();
+        }
 
-            if (pEventCopy)
-            {
-                globals::gameEventManager->FreeEvent(pEventCopy);
-                m_EventCopies.pop();
-            }
-            else
-            {
-                CSSHARP_CORE_WARN("OnFireEventPost: pEventCopy is nullptr, cannot free event");
-            }
+        if (pEventCopy)
+        {
+            globals::gameEventManager->FreeEvent(pEventCopy);
         }
     }
 

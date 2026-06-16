@@ -332,6 +332,18 @@ void PlayerManager::RunThink() const
 {
     // VPROF_BUDGET("CS#::PlayerManager::RunThink", "CS# On Frame");
 
+    // Each slot below needs a chain of schema dereferences (pawn -> movement services ->
+    // button states) just to compute the button delta. Skip the entire per-frame sweep
+    // when no plugin listens for OnPlayerButtonsChanged. m_buttonState is used only inside
+    // this function, so not updating it while idle is fine. (If a listener is registered at
+    // runtime, the first frame after may emit one spurious release delta — listeners
+    // normally register at load, before input matters.)
+    auto thinkCallback = m_on_player_buttons_changed_callback;
+    if (!thinkCallback || thinkCallback->GetFunctionCount() == 0)
+    {
+        return;
+    }
+
     for (int i = 0; i <= MaxClients(); i++)
     {
         auto player = GetPlayerBySlot(i);

@@ -303,5 +303,11 @@
       "windows": "44 89 4C 24 20 44 88 44 24 18 55 53 56 57 41 54 41 56 48 8D AC 24 78 FE FF FF 48 81 EC 88 02 00 00 8B 82 38 04 00 00 4C 8D 35 ? ? ? ? 41 0F B6 F0 48 8B DA 4C 8B E1 85 C0",
       "linux": "55 48 89 E5 41 57 49 89 F7 41 56 41 55 41 54 4D 89 C4"
     }
+  },
+  "CCSNavArea_IsValidNavMesh": {
+    "signatures": {
+      "library": "server",
+      "windows": "48 83 3D ? ? ? ? ? 0F 95 C0 C3 CC CC CC CC C2",
+      "linux": "48 8D 05 ? ? ? ? 48 83 38 ? 0F 95 C0 C3"
   }
 }

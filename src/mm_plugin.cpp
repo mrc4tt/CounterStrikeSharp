@@ -27,6 +27,7 @@
 #include "core/global_listener.h"
 #include "core/log.h"
 #include "core/managers/entity_manager.h"
+#include "core/managers/chat_manager.h"
 #include "core/managers/player_manager.h"
 #include "core/tick_scheduler.h"
 #include "core/timer_system.h"
@@ -267,6 +268,14 @@ bool CounterStrikeSharpMMPlugin::Unload(char* error, size_t maxlen)
 
     globals::callbackManager.ReleaseCallback(on_activate_callback);
     globals::callbackManager.ReleaseCallback(on_metamod_all_plugins_loaded_callback);
+
+    // Uninstall funchook detours before our .so is unloaded. They redirect engine
+    // functions (FireOutputInternal, Host_Say, CGameEventManager::Init) into trampolines
+    // that live in THIS module; leaving them installed means the next call after unload
+    // jumps into freed code and crashes the server on Metamod reload.
+    globals::entityManager.RemoveDetours();
+    globals::chatManager.RemoveDetours();
+    globals::RemoveDetours();
 
     return true;
 }

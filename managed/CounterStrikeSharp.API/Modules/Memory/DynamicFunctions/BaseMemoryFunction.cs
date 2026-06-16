@@ -1,10 +1,23 @@
-﻿namespace CounterStrikeSharp.API.Modules.Memory.DynamicFunctions;
+﻿using System.Reflection;
+
+namespace CounterStrikeSharp.API.Modules.Memory.DynamicFunctions;
 
 public abstract class BaseMemoryFunction : NativeObject
 {
     private static Dictionary<string, IntPtr> _createdFunctions = new();
 
     internal static Dictionary<string, IntPtr> _createdOffsetFunctions = new();
+
+    // Active dynamic-function hooks, tracked so a plugin unload can remove the ones a
+    // plugin forgot to Unhook. Memory functions (e.g. VirtualFunctions.*) are static and
+    // shared across all plugins, so neither the function object nor BasePlugin tracks the
+    // hook. Without this the handler delegate stays rooted in FunctionReference's maps and
+    // pins the plugin's AssemblyLoadContext permanently — one dead ALC per reload. Cleanup
+    // is therefore keyed by the handler's owning assembly.
+    private readonly record struct HookRegistration(IntPtr Handle, Func<DynamicHook, HookResult> Handler, bool Post, int ReferenceId);
+
+    private static readonly List<HookRegistration> _activeHooks = new();
+    private static readonly object _hooksLock = new();
 
     private static IntPtr CreateValveFunctionBySignature(string signature, DataType returnType,
         DataType[] argumentTypes)
@@ -138,12 +151,64 @@ public abstract class BaseMemoryFunction : NativeObject
 
     public void Hook(Func<DynamicHook, HookResult> handler, HookMode mode)
     {
-        NativeAPI.HookFunction(Handle, handler, mode == HookMode.Post);
+        bool post = mode == HookMode.Post;
+
+        // Create the reference explicitly so we own its identifier for later cleanup.
+        // (NativeAPI.HookFunction would otherwise create the same reference implicitly.)
+        var reference = FunctionReference.Create(handler);
+        NativeAPI.HookFunction(Handle, reference, post);
+
+        lock (_hooksLock)
+            _activeHooks.Add(new HookRegistration(Handle, handler, post, reference.Identifier));
     }
 
     public void Unhook(Func<DynamicHook, HookResult> handler, HookMode mode)
     {
-        NativeAPI.UnhookFunction(Handle, handler, mode == HookMode.Post);
+        bool post = mode == HookMode.Post;
+
+        NativeAPI.UnhookFunction(Handle, handler, post);
+
+        int referenceId;
+        lock (_hooksLock)
+        {
+            int idx = _activeHooks.FindIndex(h => h.Handle == Handle && h.Handler == handler && h.Post == post);
+            if (idx < 0) return;
+
+            referenceId = _activeHooks[idx].ReferenceId;
+            _activeHooks.RemoveAt(idx);
+        }
+
+        // Drop the managed reference so the handler delegate (and the plugin ALC it
+        // captures) is no longer rooted. Previously Unhook left it pinned forever.
+        FunctionReference.Remove(referenceId);
+    }
+
+    /// <summary>
+    /// Removes every dynamic-function hook installed by handlers belonging to
+    /// <paramref name="assembly"/>. Called on plugin unload so hooks the plugin did not
+    /// explicitly <see cref="Unhook"/> do not keep its AssemblyLoadContext alive.
+    /// </summary>
+    internal static void RemoveHooksForAssembly(Assembly assembly)
+    {
+        List<HookRegistration> toRemove;
+        lock (_hooksLock)
+        {
+            toRemove = _activeHooks.Where(h => h.Handler.Method.DeclaringType?.Assembly == assembly).ToList();
+            if (toRemove.Count == 0) return;
+
+            _activeHooks.RemoveAll(h => h.Handler.Method.DeclaringType?.Assembly == assembly);
+        }
+
+        foreach (var h in toRemove)
+        {
+            // The target function (server binary) is still loaded at unload time, so the
+            // native unhook is safe. Guard anyway: even if it fails we must still drop the
+            // managed reference, which is what actually releases the ALC.
+            try { NativeAPI.UnhookFunction(h.Handle, h.Handler, h.Post); }
+            catch { /* ignore — still remove the managed reference below */ }
+
+            FunctionReference.Remove(h.ReferenceId);
+        }
     }
 
     protected T InvokeInternal<T>(bool bypass, params object[] args)

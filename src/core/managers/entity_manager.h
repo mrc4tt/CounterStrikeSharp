@@ -78,6 +78,10 @@ class EntityManager : public GlobalClass
     ~EntityManager();
     void OnAllInitialized() override;
     void OnShutdown() override;
+    // Uninstalls the FireOutputInternal funchook detour. Must be called on Metamod unload
+    // BEFORE this plugin's .so is unloaded, otherwise the detour keeps pointing at our
+    // freed code and the next entity-output fire jumps into unmapped memory (crash).
+    void RemoveDetours();
     void HookEntityOutput(const char* szClassname, const char* szOutput, CallbackT fnCallback, HookMode mode);
     void UnhookEntityOutput(const char* szClassname, const char* szOutput, CallbackT fnCallback, HookMode mode);
     CEntityListener entityListener;
@@ -106,6 +110,10 @@ class EntityManager : public GlobalClass
     ScriptCallback* check_transmit;
 
     std::string m_profile_name;
+
+    // funchook_t* for the FireOutputInternal detour. Stored as void* so this header does
+    // not need to include <funchook.h>. Uninstalled + destroyed in RemoveDetours().
+    void* m_fireOutputHook = nullptr;
 };
 
 enum EntityIOTargetType_t

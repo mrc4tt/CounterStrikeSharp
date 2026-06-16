@@ -29,14 +29,28 @@ namespace CounterStrikeSharp.API.Modules.Timers
 
     public class Timer : NativeObject
     {
+        // Identifier of the callback's FunctionReference. KillTimer stops native from
+        // calling the pointer again, but the managed FunctionReference (which holds the
+        // plugin callback delegate) must also be removed or it pins the plugin's
+        // AssemblyLoadContext forever and leaks one keep-alive stub per timer across reloads.
+        private readonly int _functionReferenceIdentifier;
+        private bool _killed;
+
         public Timer(float interval, Action callback, TimerFlags? flags = null) : base(IntPtr.Zero)
         {
-            Handle = NativeAPI.CreateTimer(interval, callback, (int)(flags ?? 0));
+            // Create the reference explicitly so we own its identifier for cleanup in Kill.
+            var functionReference = FunctionReference.Create(callback);
+            _functionReferenceIdentifier = functionReference.Identifier;
+            Handle = NativeAPI.CreateTimer(interval, functionReference, (int)(flags ?? 0));
         }
 
         public void Kill()
         {
+            if (_killed) return;
+            _killed = true;
+
             NativeAPI.KillTimer(Handle);
+            FunctionReference.Remove(_functionReferenceIdentifier);
         }
     }
 }

@@ -292,6 +292,13 @@ namespace CounterStrikeSharp.API.Core
             Application.Instance.Logger.LogDebug("Registering listener for {ListenerName} with {ParameterCount} parameters",
                 listenerName, parameterTypes.Length);
 
+            // Compiled invoker for the plugin's listener delegate, built once at
+            // registration (cached by MethodInfo). Replaces handler.DynamicInvoke(args) on
+            // the per-tick path — OnTick etc. fire every frame. Null for unsupported shapes,
+            // in which case we keep the DynamicInvoke fallback.
+            var handlerInvoker = FunctionReference.GetCompiledInvoker(handler);
+            var handlerTarget = handler.Target;
+
             var wrappedHandler = new Func<ScriptContext, HookResult>(context =>
             {
                 // Reuse the empty-array singleton for zero-arg listeners (OnTick
@@ -312,7 +319,10 @@ namespace CounterStrikeSharp.API.Core
                     }
                 }
 
-                var result = handler.DynamicInvoke(args);
+                var result = handlerInvoker != null
+                    ? handlerInvoker(handlerTarget!, args)
+                    : handler.DynamicInvoke(args);
+
                 if (result is HookResult hookResult)
                 {
                     return hookResult;
@@ -713,6 +723,12 @@ namespace CounterStrikeSharp.API.Core
             // delegates live in static Providers dictionaries and would
             // otherwise pin this plugin's AssemblyLoadContext forever.
             Capabilities.Capabilities.RemoveProvidersForAssembly(GetType().Assembly);
+
+            // Remove any dynamic-function hooks the plugin installed via
+            // MemoryFunction*.Hook but never explicitly Unhooked. These are not tracked
+            // per-plugin (the function objects are static/shared), so their handler
+            // delegates would otherwise pin this plugin's AssemblyLoadContext forever.
+            Modules.Memory.DynamicFunctions.BaseMemoryFunction.RemoveHooksForAssembly(GetType().Assembly);
 
             _disposed = true;
         }

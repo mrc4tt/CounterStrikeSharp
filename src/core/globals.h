@@ -132,6 +132,10 @@ inline NetworkStateChanged_t* NetworkStateChanged = nullptr;
 extern std::thread::id gameThreadId;
 
 void Initialize();
+// Uninstalls funchook detours installed by Initialize() (currently the
+// CGameEventManager::Init detour) before the plugin .so is unloaded on Metamod unload,
+// so the detour does not point at freed code afterwards.
+void RemoveDetours();
 // Should only be called within the active game loop (i e map should be loaded
 // and active) otherwise that'll be nullptr!
 CGlobalVars* getGlobalVars();

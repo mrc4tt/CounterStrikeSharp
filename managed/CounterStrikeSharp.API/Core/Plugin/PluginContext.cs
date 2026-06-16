@@ -486,6 +486,15 @@ namespace CounterStrikeSharp.API.Core.Plugin
         {
             if (State == PluginState.Unloaded) return;
 
+            // A context whose Load() threw before building the instance has a null
+            // Plugin (State still Unregistered). Nothing to tear down — just mark it
+            // unloaded so Dispose() can release the ALC without an NRE.
+            if (Plugin == null)
+            {
+                State = PluginState.Unloaded;
+                return;
+            }
+
             State = PluginState.Unloaded;
             var cachedName = Plugin.ModuleName;
 

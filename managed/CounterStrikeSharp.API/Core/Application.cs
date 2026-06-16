@@ -219,7 +219,14 @@ namespace CounterStrikeSharp.API.Core
                         {
                             _pluginManager.LoadPlugin(path);
                             plugin = _pluginContextQueryHandler.FindPluginByModulePath(path);
-                            plugin.Plugin.OnAllPluginsLoaded(false);
+
+                            // A graceful inner-load failure (Plugin.Load threw and was
+                            // caught) leaves the context Unloaded with a disposed Plugin,
+                            // so only fire OnAllPluginsLoaded when it actually loaded.
+                            if (plugin?.State == PluginState.Loaded)
+                                plugin.Plugin?.OnAllPluginsLoaded(false);
+                            else
+                                info.ReplyToCommand($"Plugin \"{path}\" did not load (see log).");
                         }
                         catch (Exception e)
                         {
@@ -239,7 +246,10 @@ namespace CounterStrikeSharp.API.Core
                     else
                     {
                         plugin.Load(false);
-                        plugin.Plugin.OnAllPluginsLoaded(false);
+                        if (plugin.State == PluginState.Loaded)
+                            plugin.Plugin?.OnAllPluginsLoaded(false);
+                        else
+                            info.ReplyToCommand($"Plugin \"{path}\" did not load (see log).");
                     }
 
                     break;
@@ -294,7 +304,10 @@ namespace CounterStrikeSharp.API.Core
 
                     plugin.Unload(true);
                     plugin.Load(true);
-                    plugin.Plugin.OnAllPluginsLoaded(true);
+                    if (plugin.State == PluginState.Loaded)
+                        plugin.Plugin?.OnAllPluginsLoaded(true);
+                    else
+                        info.ReplyToCommand($"Plugin \"{pluginIdentifier}\" failed to reload (see log).");
                     break;
                 }
 

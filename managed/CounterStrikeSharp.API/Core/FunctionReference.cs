@@ -16,6 +16,7 @@
 
 using System.Collections.Concurrent;
 using System.Diagnostics;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
@@ -109,6 +110,59 @@ namespace CounterStrikeSharp.API.Core
         private readonly Delegate _targetMethod;
         private CallbackDelegate _nativeCallback;
 
+        // Compiled (target, args[]) -> result invoker, cached by MethodInfo. Replaces
+        // Delegate.DynamicInvoke on the per-tick / per-event dispatch path, which is
+        // ~50-100x slower than a direct compiled call. Keyed by MethodInfo (NOT per
+        // FunctionReference) so single-use callbacks (NextFrame/timer create a fresh
+        // reference every frame) reuse one compiled invoker instead of compiling each time.
+        // A null entry means "this method shape is unsupported (multicast/ref/compile
+        // failure) -> fall back to DynamicInvoke" and is cached so we never retry the compile.
+        private static readonly ConcurrentDictionary<MethodInfo, Func<object, object[], object>?> InvokerCache = new();
+
+        private readonly Func<object, object[], object>? _invoker;
+        private readonly object? _invokerTarget;
+
+        // Returns a compiled invoker for the delegate's method, or null if the shape is not
+        // safely compilable (multicast delegates must call every target; ref/out/pointer
+        // params can't be marshalled through object[]). Callers fall back to DynamicInvoke.
+        internal static Func<object, object[], object>? GetCompiledInvoker(Delegate method)
+        {
+            if (method.GetInvocationList().Length > 1) return null;
+            return InvokerCache.GetOrAdd(method.Method, BuildInvokerForMethod);
+        }
+
+        private static Func<object, object[], object>? BuildInvokerForMethod(MethodInfo mi)
+        {
+            try
+            {
+                var targetParam = Expression.Parameter(typeof(object), "target");
+                var argsParam = Expression.Parameter(typeof(object[]), "args");
+
+                var ps = mi.GetParameters();
+                var callArgs = new Expression[ps.Length];
+                for (int i = 0; i < ps.Length; i++)
+                {
+                    // (Tn)args[i] — unboxes value types, same conversion DynamicInvoke does.
+                    callArgs[i] = Expression.Convert(
+                        Expression.ArrayIndex(argsParam, Expression.Constant(i)), ps[i].ParameterType);
+                }
+
+                Expression? instance = mi.IsStatic ? null : Expression.Convert(targetParam, mi.DeclaringType!);
+                Expression call = Expression.Call(instance, mi, callArgs);
+
+                Expression body = mi.ReturnType == typeof(void)
+                    ? Expression.Block(call, Expression.Constant(null, typeof(object)))
+                    : Expression.Convert(call, typeof(object));
+
+                return Expression.Lambda<Func<object, object[], object>>(body, targetParam, argsParam).Compile();
+            }
+            catch
+            {
+                // Unsupported shape (e.g. by-ref/pointer params). Cache null -> DynamicInvoke.
+                return null;
+            }
+        }
+
         // Plugin assembly that owns the handler. Captured once at creation so a native
         // call into an already-removed reference can be blamed on the right plugin.
         private readonly string _ownerName;
@@ -125,6 +179,8 @@ namespace CounterStrikeSharp.API.Core
         {
             Lifetime = lifetime;
             _targetMethod = method;
+            _invoker = GetCompiledInvoker(method);
+            _invokerTarget = method.Target;
             _ownerName = method.Method.DeclaringType?.Assembly.GetName().Name ?? "unknown";
             _parameters = method.Method.GetParameters();
             _isManualScriptContext =
@@ -220,7 +276,23 @@ namespace CounterStrikeSharp.API.Core
                     // Allow for manual handling of the script context
                     if (_isManualScriptContext)
                     {
-                        var returnValue = _targetMethod.DynamicInvoke(scriptContext);
+                        object? returnValue;
+                        // Fast path: every plugin listener wraps to this exact delegate type
+                        // (see BasePlugin.RegisterListener), so a direct typed call avoids
+                        // both DynamicInvoke and the 1-element object[] the invoker needs.
+                        if (_targetMethod is Func<ScriptContext, HookResult> typedHandler)
+                        {
+                            returnValue = typedHandler(scriptContext);
+                        }
+                        else if (_invoker != null)
+                        {
+                            returnValue = _invoker(_invokerTarget!, new object[] { scriptContext });
+                        }
+                        else
+                        {
+                            returnValue = _targetMethod.DynamicInvoke(scriptContext);
+                        }
+
                         if (returnValue != null)
                         {
                             scriptContext.SetResult(returnValue, context);
@@ -235,7 +307,9 @@ namespace CounterStrikeSharp.API.Core
                         parameterList[i] = scriptContext.GetArgument(_parameters[i].ParameterType, i);
                     }
 
-                    var returnObj = _targetMethod.DynamicInvoke(parameterList);
+                    var returnObj = _invoker != null
+                        ? _invoker(_invokerTarget!, parameterList)
+                        : _targetMethod.DynamicInvoke(parameterList);
 
                     if (returnObj != null)
                     {
