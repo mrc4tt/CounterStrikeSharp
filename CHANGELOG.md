@@ -1,4 +1,11 @@
-## What's Changed in v1.0.385
+## What's Changed in v1.0.387
+* . ([cb6b930](https://github.com/mrc4tt/CounterStrikeSharp/commit/cb6b9304412f30bea9bef47cf0a30bf8d912e654))
+* CCSNavArea update and some stuff revert I think.... lol ([09a80dd](https://github.com/mrc4tt/CounterStrikeSharp/commit/09a80dd7dab91c3e549a539d6fe388b2b0592a36))
+* update packages from examples ([a72f7fd](https://github.com/mrc4tt/CounterStrikeSharp/commit/a72f7fd9158051e40fe652c4c7ddc45cdfea63bf))
+* update permisison ([ceb474d](https://github.com/mrc4tt/CounterStrikeSharp/commit/ceb474defa17ebb5b1ac5d840c599890166b4622))
+* update ([395e7b5](https://github.com/mrc4tt/CounterStrikeSharp/commit/395e7b5cbe284799e3eb5589e0c7172f3d40e8df))
+
+## What's Changed in v1.0.386
 * patcheZ ([6fc27ed](https://github.com/mrc4tt/CounterStrikeSharp/commit/6fc27ed229366d4b3736ba3bfbb3e5d6c72c0d8e))
 * Update README.md ([5dd0928](https://github.com/mrc4tt/CounterStrikeSharp/commit/5dd0928d1ecdbe1b631c2a6bf7df276c64f3b7e7))
 * Update README.md ([1f58e4d](https://github.com/mrc4tt/CounterStrikeSharp/commit/1f58e4d1e07bb0d7af82be8395b0be282c03e0e1))
