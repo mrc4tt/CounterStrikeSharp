@@ -1,3 +1,7 @@
+## What's Changed in v1.0.388
+* fix gamedata ([2803cdf](https://github.com/mrc4tt/CounterStrikeSharp/commit/2803cdf3e3eab2982c52456735f0f4133dd3c78b))
+* ops ([35158bc](https://github.com/mrc4tt/CounterStrikeSharp/commit/35158bc2caa32cff8185ddfc909f823b7b8c6dd2))
+
 ## What's Changed in v1.0.387
 * . ([cb6b930](https://github.com/mrc4tt/CounterStrikeSharp/commit/cb6b9304412f30bea9bef47cf0a30bf8d912e654))
 * CCSNavArea update and some stuff revert I think.... lol ([09a80dd](https://github.com/mrc4tt/CounterStrikeSharp/commit/09a80dd7dab91c3e549a539d6fe388b2b0592a36))
