@@ -58,7 +58,7 @@ namespace CounterStrikeSharp.API.Core
 
     public class ScriptContext
     {
-        [ThreadStatic] private static ScriptContext _globalScriptContext;
+        [ThreadStatic] private static ScriptContext _globalScriptContext = null!;
 
         public static ScriptContext GlobalScriptContext
         {
@@ -157,7 +157,7 @@ namespace CounterStrikeSharp.API.Core
         }
 
         [SecuritySafeCritical]
-        public void Push(object arg)
+        public void Push(object? arg)
         {
             PushInternal(arg);
         }
@@ -169,7 +169,7 @@ namespace CounterStrikeSharp.API.Core
         }
 
         [SecurityCritical]
-        private unsafe void PushInternal(object arg)
+        private unsafe void PushInternal(object? arg)
         {
             fixed (fxScriptContext* context = &m_extContext)
             {
@@ -199,7 +199,7 @@ namespace CounterStrikeSharp.API.Core
         }
 
         [SecurityCritical]
-        internal unsafe void Push(fxScriptContext* context, object arg)
+        internal unsafe void Push(fxScriptContext* context, object? arg)
         {
             if (arg == null)
             {
@@ -433,6 +433,9 @@ namespace CounterStrikeSharp.API.Core
         }
 
         [SecurityCritical]
+        // Returns can legitimately be null (null string ptr, type==object, unhandled
+        // size). The public GetResult/GetResult<T> contract is non-null, so the null
+        // paths are asserted with null!/! rather than widening the signature.
         internal unsafe object GetResult(Type type, byte* ptr)
         {
             if (type == typeof(string))
@@ -441,16 +444,16 @@ namespace CounterStrikeSharp.API.Core
 
                 if (nativeUtf8 == null)
                 {
-                    return null;
+                    return null!;
                 }
 
-                return Marshal.PtrToStringUTF8((IntPtr)nativeUtf8);
+                return Marshal.PtrToStringUTF8((IntPtr)nativeUtf8)!;
             }
 
             if (typeof(NativeObject).IsAssignableFrom(type))
             {
                 var pointer = (IntPtr)GetResult(typeof(IntPtr), ptr);
-                return Activator.CreateInstance(type, pointer);
+                return Activator.CreateInstance(type, pointer)!;
             }
 
             if (type == typeof(Color))
@@ -468,7 +471,7 @@ namespace CounterStrikeSharp.API.Core
 
             if (type == typeof(object))
             {
-                return null;
+                return null!;
             }
 
             if (type.IsEnum)
@@ -481,14 +484,14 @@ namespace CounterStrikeSharp.API.Core
                 return GetResultInternal(type, ptr);
             }
 
-            return null;
+            return null!;
         }
 
         [SecurityCritical]
         private unsafe object GetResultInternal(Type type, byte* ptr)
         {
             var obj = Marshal.PtrToStructure(new IntPtr(ptr), type);
-            return obj;
+            return obj!;
         }
 
         [SecurityCritical]
@@ -500,10 +503,10 @@ namespace CounterStrikeSharp.API.Core
 
                 if (nativeUtf8 == null)
                 {
-                    return null;
+                    return null!;
                 }
 
-                return Marshal.PtrToStringUTF8((IntPtr)nativeUtf8);
+                return Marshal.PtrToStringUTF8((IntPtr)nativeUtf8)!;
             }
         }
 

@@ -46,29 +46,32 @@ namespace CounterStrikeSharp.API.Core.Plugin
     public class PluginContext : IPluginContext, ISelfPluginControl, IDisposable
     {
         public PluginState State { get; set; } = PluginState.Unregistered;
-        public IPlugin Plugin { get; private set; }
+        // Assigned during Load() and asserted non-null there; treated as non-null
+        // for the lifetime a context is exposed.
+        public IPlugin Plugin { get; private set; } = null!;
 
         private bool _disposed;
 
         // Set by PluginManager. Invoked when the context wants to be fully torn
         // down (e.g. its DLL was deleted) so the manager drops + disposes it.
-        internal Action OnRequestRemoval { get; set; }
+        internal Action? OnRequestRemoval { get; set; }
 
         private PluginLoader Loader { get; set; }
 
-        private ServiceProvider ServiceProvider { get; set; }
+        private ServiceProvider? ServiceProvider { get; set; }
 
         public int PluginId { get; }
 
         private readonly ICommandManager _commandManager;
         private readonly IScriptHostConfiguration _hostConfiguration;
         private readonly string _path;
-        private readonly FileSystemWatcher _fileWatcher;
+        // Only created when hot-reload is enabled, so genuinely optional.
+        private readonly FileSystemWatcher? _fileWatcher;
 
         public string FilePath => _path;
-        private IServiceScope _serviceScope;
+        private IServiceScope _serviceScope = null!;
 
-        public string TerminationReason { get; private set; }
+        public string? TerminationReason { get; private set; }
 
         // TOOD: ServiceCollection
         private ILogger _logger = CoreLogging.Factory.CreateLogger<PluginContext>();
@@ -156,7 +159,7 @@ namespace CounterStrikeSharp.API.Core.Plugin
             {
                 var defaultAssembly = Loader.LoadDefaultAssembly();
 
-                Type pluginType = defaultAssembly.GetExportedTypes()
+                Type? pluginType = defaultAssembly.GetExportedTypes()
                     .FirstOrDefault(t => typeof(IPlugin).IsAssignableFrom(t));
 
                 if (pluginType == null) throw new Exception("Unable to find plugin in assembly");
@@ -218,7 +221,7 @@ namespace CounterStrikeSharp.API.Core.Plugin
                     foreach (var t in serviceCollectionConfiguratorTypes)
                     {
                         var pluginServiceCollection = Activator.CreateInstance(t);
-                        MethodInfo method = t.GetMethod("ConfigureServices");
+                        MethodInfo? method = t.GetMethod("ConfigureServices");
                         method?.Invoke(pluginServiceCollection, new object[] { serviceCollection });
                     }
                 }
@@ -244,11 +247,13 @@ namespace CounterStrikeSharp.API.Core.Plugin
                 // the startup summary table already cover the roster. Keeps boot output lean.
                 _logger.LogDebug("Loading plugin {Name}", pluginType.Assembly.GetName().Name);
 
-                _serviceScope = ServiceProvider.CreateScope();
+                _serviceScope = ServiceProvider!.CreateScope();
 
-                Plugin = _serviceScope.ServiceProvider.GetRequiredService(pluginType) as IPlugin;
+                var plugin = _serviceScope.ServiceProvider.GetRequiredService(pluginType) as IPlugin;
 
-                if (Plugin == null) throw new Exception("Unable to create plugin instance");
+                if (plugin == null) throw new Exception("Unable to create plugin instance");
+
+                Plugin = plugin;
 
                 State = PluginState.Loading;
 
@@ -297,7 +302,7 @@ namespace CounterStrikeSharp.API.Core.Plugin
                         // path re-pastes THIS exact banner (capped) so an operator who missed
                         // it the first time still gets the full, actionable report.
                         FunctionReference.RecordLoadFailure(
-                            Plugin.GetType().Assembly.GetName().Name,
+                            Plugin.GetType().Assembly.GetName().Name!,
                             Plugin.ModuleName,
                             report);
                     }
@@ -347,7 +352,7 @@ namespace CounterStrikeSharp.API.Core.Plugin
             // Find the deepest frame (closest to the throw) that belongs to the
             // plugin's own assembly, and the deepest CSSharp frame.
             var trace = new System.Diagnostics.StackTrace(root, true);
-            System.Diagnostics.StackFrame pluginFrame = null;
+            System.Diagnostics.StackFrame? pluginFrame = null;
             bool throwInsideCssharp = false;
             bool sawPluginFrame = false;
 
@@ -423,14 +428,14 @@ namespace CounterStrikeSharp.API.Core.Plugin
             var name = System.IO.Path.GetFileNameWithoutExtension(path);
 
             // Surface the deepest non-CSSharp frame if the trace has one.
-            string thirdPartyLoc = null;
+            string? thirdPartyLoc = null;
             var trace = new System.Diagnostics.StackTrace(root, true);
             foreach (var f in trace.GetFrames() ?? Array.Empty<System.Diagnostics.StackFrame>())
             {
                 var m = f.GetMethod();
                 var asm = m?.DeclaringType?.Assembly;
                 if (asm == null || asm == typeof(PluginContext).Assembly) continue;
-                thirdPartyLoc = m.DeclaringType.FullName + "." + m.Name + "()";
+                thirdPartyLoc = m!.DeclaringType!.FullName + "." + m.Name + "()";
                 break;
             }
 
@@ -475,7 +480,7 @@ namespace CounterStrikeSharp.API.Core.Plugin
         }
 
         // Maps common load-failure exceptions to a one-line remediation hint.
-        internal static string FixHintFor(Exception ex)
+        internal static string? FixHintFor(Exception ex)
         {
             var msg = ex.Message ?? string.Empty;
 
