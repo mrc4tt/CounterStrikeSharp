@@ -4,7 +4,7 @@ namespace CounterStrikeSharp.API.Core.Plugin
 {
     public class PluginTerminationException : Exception
     {
-        public string PluginName { get; }
+        public string? PluginName { get; }
         public string TerminationReason { get; }
 
         public PluginTerminationException(string reason) : base($"Plugin terminated: {reason}")

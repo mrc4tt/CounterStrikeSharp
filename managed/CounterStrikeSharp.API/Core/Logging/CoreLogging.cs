@@ -11,7 +11,7 @@ namespace CounterStrikeSharp.API.Core.Logging;
 
 public static class CoreLogging
 {
-    public static ILoggerFactory Factory { get; private set; }
+    public static ILoggerFactory Factory { get; private set; } = null!;
     private static Logger? SerilogLogger { get; set; }
 
     // Live minimum-level control. Defaults to Information so the demoted boot/init

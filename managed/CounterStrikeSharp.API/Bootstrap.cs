@@ -29,7 +29,9 @@ public static class Bootstrap
         try
         {
             // Path to /game/csgo/addons/counterstrikesharp
-            var contentRoot = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory.Parent.FullName;
+            // Assembly lives at <addons>/counterstrikesharp/api/<dll>; Directory and Parent
+            // are always present, so the null-forgiving derefs are safe.
+            var contentRoot = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory!.Parent!.FullName;
 
             using var host = Host.CreateDefaultBuilder()
                 .UseContentRoot(contentRoot)

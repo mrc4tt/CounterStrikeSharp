@@ -36,7 +36,7 @@ public class Offsets
 public sealed class GameDataProvider : IStartupService
 {
     private readonly string _gameDataDirectoryPath;
-    public Dictionary<string,LoadedGameData> Methods;
+    public Dictionary<string,LoadedGameData> Methods = new();
     // File names (not full paths) of every gamedata JSON merged into Methods. Lets a
     // missing-key error name WHERE the operator can add the key, and show that the key
     // was searched across all files, not only gamedata.json.

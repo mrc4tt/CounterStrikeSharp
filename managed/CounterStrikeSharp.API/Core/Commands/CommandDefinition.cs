@@ -1,9 +1,11 @@
+using System.Diagnostics.CodeAnalysis;
 using CounterStrikeSharp.API.Modules.Commands;
 
 namespace CounterStrikeSharp.API.Core.Commands;
 
 public class CommandDefinition
 {
+    [SetsRequiredMembers]
     public CommandDefinition(string name, string description, CommandInfo.CommandCallback callback)
     {
         Name = name;
@@ -15,9 +17,9 @@ public class CommandDefinition
     {
     }
 
-    public string Name { get; init; }
-    public string Description { get; init; }
-    public CommandInfo.CommandCallback Callback { get; init; }
+    public required string Name { get; init; }
+    public required string Description { get; init; }
+    public required CommandInfo.CommandCallback Callback { get; init; }
 
     public CommandUsage ExecutableBy { get; init; } = CommandUsage.CLIENT_AND_SERVER;
 
