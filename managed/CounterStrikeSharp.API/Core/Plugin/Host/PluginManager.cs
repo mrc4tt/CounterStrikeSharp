@@ -41,14 +41,14 @@ public class PluginManager : IPluginManager
         {
             foreach (var assemblyName in assembly.GetReferencedAssemblies())
             {
-                if (TryLoadDependency(path, assembly.GetName().Name, assemblyName, out var dependency))
+                if (TryLoadDependency(path, assembly.GetName().Name!, assemblyName, out var dependency))
                 {
-                    _sharedAssemblies.TryAdd(dependency.GetName().Name, dependency);
+                    _sharedAssemblies.TryAdd(dependency!.GetName().Name!, dependency);
                 }
             }
         }
 
-        _sharedAssemblies[assembly.GetName().Name] = assembly;
+        _sharedAssemblies[assembly.GetName().Name!] = assembly;
     }
 
     private void LoadSharedLibraries()
@@ -94,7 +94,7 @@ public class PluginManager : IPluginManager
                 _loadedSharedLibs = true;
             }
 
-            if (!_sharedAssemblies.TryGetValue(name.Name, out var assembly))
+            if (!_sharedAssemblies.TryGetValue(name.Name!, out var assembly))
             {
                 if (CoreConfig.PluginResolveNugetPackages && TryLoadExternalLibrary(name, out assembly))
                 {
@@ -193,7 +193,7 @@ public class PluginManager : IPluginManager
             return false;
         }
 
-        if (!TryLoadDependency(pluginPath, pluginName, assemblyName, out assembly))
+        if (!TryLoadDependency(pluginPath!, pluginName!, assemblyName, out assembly))
         {
             return false;
         }

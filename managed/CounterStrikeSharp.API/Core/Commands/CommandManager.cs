@@ -96,7 +96,7 @@ public class CommandManager : ICommandManager
                         if (data != null)
                         {
                             var attrType = (data.CheckType == "all") ? typeof(RequiresPermissions) : typeof(RequiresPermissionsOr);
-                            var attr = (BaseRequiresPermissions)Activator.CreateInstance(attrType, args: AdminManager.GetPermissionOverrides(name));
+                            var attr = (BaseRequiresPermissions?)Activator.CreateInstance(attrType, args: AdminManager.GetPermissionOverrides(name));
 
                             if (attr != null) permissionsToCheck.Add(attr);
                         }
