@@ -1,5 +1,6 @@
 ﻿using CounterStrikeSharp.API.Core;
 using CounterStrikeSharp.API.Modules.Entities;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -27,7 +28,7 @@ namespace CounterStrikeSharp.API.Modules.Admin
             {
                 if (!File.Exists(overridePath))
                 {
-                    Console.WriteLine("Admin command overrides file not found. Skipping admin command overrides load.");
+                    _logger.LogDebug("Admin command overrides file not found. Skipping admin command overrides load.");
                     return;
                 }
 
@@ -46,11 +47,11 @@ namespace CounterStrikeSharp.API.Modules.Admin
                     }
                 }
 
-                Console.WriteLine($"Loaded {CommandOverrides.Count} admin command overrides.");
+                _logger.LogInformation("Loaded {Count} admin command overrides.", CommandOverrides.Count);
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Failed to load admin command overrides: {ex}");
+                _logger.LogError(ex, "Failed to load admin command overrides");
             }
         }
 

@@ -124,16 +124,16 @@ bool load_hostfxr()
         const fs::path preferred_path = fxr_root / preferred_version;
         if (fs::exists(preferred_path) && fs::is_directory(preferred_path))
         {
-            CSSHARP_CORE_INFO("Using preferred hostfxr version {0}", preferred_version.c_str());
+            CSSHARP_CORE_DEBUG("Using preferred hostfxr version {0}", preferred_version.c_str());
 
 #if _WIN32
             const fs::path fxr_path = preferred_path / "hostfxr.dll";
             std::wstring buffer = css::widen(fxr_path.string());
-            CSSHARP_CORE_INFO("Loading hostfxr from {0}", css::narrow(buffer).c_str());
+            CSSHARP_CORE_DEBUG("Loading hostfxr from {0}", css::narrow(buffer).c_str());
 #else
             const fs::path fxr_path = preferred_path / "libhostfxr.so";
             std::string buffer = fxr_path.string();
-            CSSHARP_CORE_INFO("Loading hostfxr from {0}", buffer.c_str());
+            CSSHARP_CORE_DEBUG("Loading hostfxr from {0}", buffer.c_str());
 #endif
 
             void* lib = load_library(buffer.c_str());
@@ -147,7 +147,7 @@ bool load_hostfxr()
                 return false;
             }
 
-            CSSHARP_CORE_INFO("Successfully loaded hostfxr library, getting function exports...");
+            CSSHARP_CORE_DEBUG("Successfully loaded hostfxr library, getting function exports...");
 
             init_fptr = (hostfxr_initialize_for_runtime_config_fn)get_export(lib, "hostfxr_initialize_for_runtime_config");
             if (init_fptr == nullptr)
@@ -228,21 +228,21 @@ bool CDotNetManager::Initialize()
 {
     const std::string base_dir = counterstrikesharp::utils::GetRootDirectory();
 
-    CSSHARP_CORE_INFO("Loading .NET runtime...");
+    CSSHARP_CORE_DEBUG("Loading .NET runtime...");
 
     if (!load_hostfxr())
     {
         CSSHARP_CORE_ERROR("Failed to initialize .NET runtime.");
         return false;
     }
-    CSSHARP_CORE_INFO(".NET Runtime Initialised.");
+    CSSHARP_CORE_DEBUG(".NET Runtime Initialised.");
     namespace css = counterstrikesharp;
 #if _WIN32
     const auto wide_str = std::wstring(css::widen(base_dir) + L"\\api\\CounterStrikeSharp.API.runtimeconfig.json");
-    CSSHARP_CORE_INFO("Loading CSS API, Runtime config: {}", counterstrikesharp::narrow(wide_str).c_str());
+    CSSHARP_CORE_DEBUG("Loading CSS API, Runtime config: {}", counterstrikesharp::narrow(wide_str).c_str());
 #else
     std::string wide_str = std::string((base_dir + "/api/CounterStrikeSharp.API.runtimeconfig.json").c_str());
-    CSSHARP_CORE_INFO("Loading CSS API, Runtime Config: {}", wide_str);
+    CSSHARP_CORE_DEBUG("Loading CSS API, Runtime Config: {}", wide_str);
 #endif
 
     const auto load_assembly_and_get_function_pointer = get_dotnet_load_assembly(wide_str.c_str());
@@ -254,7 +254,7 @@ bool CDotNetManager::Initialize()
 
 #if _WIN32
     const auto dotnetlib_path = std::wstring(css::widen(base_dir) + L"\\api\\CounterStrikeSharp.API.dll");
-    CSSHARP_CORE_INFO("CSS API DLL: {}", counterstrikesharp::narrow(dotnetlib_path));
+    CSSHARP_CORE_DEBUG("CSS API DLL: {}", counterstrikesharp::narrow(dotnetlib_path));
 #else
     const std::string dotnetlib_path = std::string((base_dir + "/api/CounterStrikeSharp.API.dll").c_str());
 #endif

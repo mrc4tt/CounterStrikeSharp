@@ -95,16 +95,19 @@ namespace CounterStrikeSharp.API.Core
             _coreConfig.Load();
             _gameDataProvider.Load();
 
+            // Admin source paths are Debug — the result counts (e.g. "Loaded admin data
+            // with N admins.") are the INFO-level signal; the paths only matter when
+            // debugging why a file wasn't picked up.
             var adminPath = Path.Combine(_scriptHostConfiguration.RootPath, "configs", "admins.json");
-            Logger.LogInformation("Loading Admins from {Path}", adminPath);
+            Logger.LogDebug("Loading Admins from {Path}", adminPath);
             AdminManager.LoadAdminData(adminPath);
 
             var adminGroupsPath = Path.Combine(_scriptHostConfiguration.RootPath, "configs", "admin_groups.json");
-            Logger.LogInformation("Loading Admin Groups from {Path}", adminGroupsPath);
+            Logger.LogDebug("Loading Admin Groups from {Path}", adminGroupsPath);
             AdminManager.LoadAdminGroups(adminGroupsPath);
 
             var overridePath = Path.Combine(_scriptHostConfiguration.RootPath, "configs", "admin_overrides.json");
-            Logger.LogInformation("Loading Admin Command Overrides from {Path}", overridePath);
+            Logger.LogDebug("Loading Admin Command Overrides from {Path}", overridePath);
             AdminManager.LoadCommandOverrides(overridePath);
 
             AdminManager.MergeGroupPermsIntoAdmins();

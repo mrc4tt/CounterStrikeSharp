@@ -170,7 +170,7 @@ CModule::CModule(std::string_view path, std::uint64_t base)
             {
                 if (auto bytes = GetOriginalBytes(disk_data, start - m_baseAddress, size))
                 {
-                    CSSHARP_CORE_INFO("Copying bytes from disk for {}", m_pszPath);
+                    CSSHARP_CORE_DEBUG("Copying bytes from disk for {}", m_pszPath);
                     segment.bytes = bytes.value();
                     continue;
                 }
@@ -347,7 +347,7 @@ CModule::CModule(std::string_view path, dl_phdr_info* info)
         {
             if (auto bytes = GetOriginalBytes(disk_data, address - m_baseAddress, size))
             {
-                CSSHARP_CORE_INFO("Copying bytes from disk for {}", m_pszPath);
+                CSSHARP_CORE_DEBUG("Copying bytes from disk for {}", m_pszPath);
                 segment.bytes = bytes.value();
                 continue;
             }

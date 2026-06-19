@@ -118,7 +118,7 @@ bool CounterStrikeSharpMMPlugin::Load(PluginId id, ISmmAPI* ismm, char* error, s
 
     Log::Init();
 
-    CSSHARP_CORE_INFO("Initializing with command line: {}", CommandLine()->GetCmdLine());
+    CSSHARP_CORE_DEBUG("Initializing with command line: {}", CommandLine()->GetCmdLine());
     const char* basePath = CommandLine()->ParmValue(MakeStringToken("+css_basepath"), "/addons/counterstrikesharp");
 
     GET_V_IFACE_CURRENT(GetEngineFactory, globals::engineServer2, IVEngineServer2, SOURCE2ENGINETOSERVER_INTERFACE_VERSION);
@@ -136,14 +136,14 @@ bool CounterStrikeSharpMMPlugin::Load(PluginId id, ISmmAPI* ismm, char* error, s
     g_pCVar = globals::cvars;
     g_pSource2GameEntities = globals::gameEntities;
     interfaces::pGameResourceServiceServer = (CGameResourceService*)g_pGameResourceServiceServer;
-    CSSHARP_CORE_INFO("pGameResourceServiceServer resolved: {}", (void*)interfaces::pGameResourceServiceServer);
+    CSSHARP_CORE_DEBUG("pGameResourceServiceServer resolved: {}", (void*)interfaces::pGameResourceServiceServer);
 
     if (utils::RelativeDirectory(std::string(basePath)) == "NotFound")
     {
         CSSHARP_CORE_ERROR("Invalid base path: {}", basePath);
         return false;
     }
-    CSSHARP_CORE_INFO("Current root directory: {}", utils::GetRootDirectory());
+    CSSHARP_CORE_DEBUG("Current root directory: {}", utils::GetRootDirectory());
 
     auto coreconfig_path = std::string(utils::ConfigsDirectory() + "/core");
     globals::coreConfig = new CCoreConfig(coreconfig_path);
@@ -155,7 +155,12 @@ bool CounterStrikeSharpMMPlugin::Load(PluginId id, ISmmAPI* ismm, char* error, s
         return false;
     }
 
-    CSSHARP_CORE_INFO("CoreConfig loaded.");
+    // Apply configured verbosity now that core.json is parsed. The earliest lines
+    // (cmdline, root dir) already printed at the default info level; everything from
+    // here on honors LogVerbosity. SPDLOG_LEVEL env still overrides if set.
+    Log::SetLevelFromString(globals::coreConfig->LogVerbosity);
+
+    CSSHARP_CORE_DEBUG("CoreConfig loaded.");
 
     if (globals::coreConfig->AutoUpdateEnabled)
     {
@@ -181,7 +186,7 @@ bool CounterStrikeSharpMMPlugin::Load(PluginId id, ISmmAPI* ismm, char* error, s
 
     globals::Initialize();
 
-    CSSHARP_CORE_INFO("Globals loaded.");
+    CSSHARP_CORE_DEBUG("Globals loaded.");
     globals::mmPlugin = &gPlugin;
 
     CALL_GLOBAL_LISTENER(OnAllInitialized());
@@ -208,7 +213,7 @@ bool CounterStrikeSharpMMPlugin::Load(PluginId id, ISmmAPI* ismm, char* error, s
         return false;
     }
 
-    CSSHARP_CORE_INFO("Initialized GameSystem.");
+    CSSHARP_CORE_DEBUG("Initialized GameSystem.");
 
     if (!globals::dotnetManager.Initialize())
     {
@@ -221,7 +226,7 @@ bool CounterStrikeSharpMMPlugin::Load(PluginId id, ISmmAPI* ismm, char* error, s
     // console line instead of an anonymous "Process terminated".
     fatal::InstallHandler();
 
-    CSSHARP_CORE_INFO("Hooks added.");
+    CSSHARP_CORE_DEBUG("Hooks added.");
 
     // Used by Metamod Console Commands
     g_pCVar = globals::cvars;
@@ -234,7 +239,7 @@ static bool s_bLevelShutdownOccurred = false;
 
 void CounterStrikeSharpMMPlugin::Hook_StartupServer(const GameSessionConfiguration_t& config, ISource2WorldSession*, const char*)
 {
-    CSSHARP_CORE_INFO("Hook_StartupServer fired (pGameResourceServiceServer={})", (void*)interfaces::pGameResourceServiceServer);
+    CSSHARP_CORE_DEBUG("Hook_StartupServer fired (pGameResourceServiceServer={})", (void*)interfaces::pGameResourceServiceServer);
     globals::entitySystem = interfaces::pGameResourceServiceServer->GetGameEntitySystem();
     // Remove before adding to prevent double-registration when workshop addon changes
     // trigger a second StartupServer within the same map session (ss_dead cycle).
@@ -261,6 +266,14 @@ void CounterStrikeSharpMMPlugin::Hook_StartupServer(const GameSessionConfigurati
 }
 bool CounterStrikeSharpMMPlugin::Unload(char* error, size_t maxlen)
 {
+    // Fire OnShutdown on every registered manager — the mirror of the
+    // CALL_GLOBAL_LISTENER(OnAllInitialized()) done in Load(). Without this the
+    // managers' teardown (SourceHook SH_REMOVE_HOOK calls + callback releases in
+    // each manager's OnShutdown) never ran, leaking hooks and script callbacks on
+    // every Metamod unload/reload. Run before removing our own hooks/detours below
+    // so teardown happens in reverse order of init.
+    CALL_GLOBAL_LISTENER(OnShutdown());
+
     SH_REMOVE_HOOK_MEMFUNC(IServerGameDLL, GameFrame, globals::server, this, &CounterStrikeSharpMMPlugin::Hook_GameFrame, true);
     SH_REMOVE_HOOK_MEMFUNC(INetworkServerService, StartupServer, globals::networkServerService, this,
                            &CounterStrikeSharpMMPlugin::Hook_StartupServer, true);

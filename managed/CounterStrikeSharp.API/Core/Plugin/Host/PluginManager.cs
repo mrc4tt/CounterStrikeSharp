@@ -76,6 +76,16 @@ public class PluginManager : IPluginManager
     {
         var pluginAssemblyPaths = GetPluginsAssemblyPaths();
 
+        // Preload shared libraries up front so a plugin's dependency on a shared lib
+        // resolves regardless of load order (otherwise the lib only becomes available
+        // after some earlier plugin happened to trigger the Resolving handler). The
+        // handler below still guards lazily as a fallback for libs added later.
+        if (!_loadedSharedLibs)
+        {
+            LoadSharedLibraries();
+            _loadedSharedLibs = true;
+        }
+
         AssemblyLoadContext.Default.Resolving += (context, name) =>
         {
             if (!_loadedSharedLibs)
@@ -165,12 +175,14 @@ public class PluginManager : IPluginManager
             loaded, failed, Api.GetVersion()));
         sb.Append("==============================================================");
 
-        // Use Error level when any plugin failed so the summary also lands in
-        // log-errors.txt alongside the individual crash reports.
+        // The table itself is informational — log it at Info so the level tag
+        // isn't misleading. When any plugin failed, emit a separate one-line
+        // Error afterwards so the failure still lands in log-errors.txt next to
+        // the individual crash reports.
+        _logger.LogInformation("{Summary}", sb.ToString());
         if (failed > 0)
-            _logger.LogError("{Summary}", sb.ToString());
-        else
-            _logger.LogInformation("{Summary}", sb.ToString());
+            _logger.LogError("{Failed} of {Total} plugin(s) failed to load — see crash reports above.",
+                failed, loaded + failed);
     }
 
     private bool TryLoadExternalLibrary(AssemblyName assemblyName, out Assembly? assembly)
@@ -311,9 +323,17 @@ public class PluginManager : IPluginManager
                     continue;
                 }
 
-                // Add subdirectories to stack for further scanning
+                // Add subdirectories to stack for further scanning. Skip a nested
+                // 'addons' tree: that's a full release bundle extracted into the
+                // plugins folder (plugins/<x>/addons/counterstrikesharp/{plugins,shared}/...),
+                // not a plugin. Descending into it picks up its shared libs as plugins
+                // ("Unable to find plugin in assembly") and duplicate plugin copies.
                 foreach (var child in Directory.GetDirectories(currentDir))
+                {
+                    if (Path.GetFileName(child).Equals("addons", StringComparison.OrdinalIgnoreCase))
+                        continue;
                     stack.Push(child);
+                }
             }
         }
 

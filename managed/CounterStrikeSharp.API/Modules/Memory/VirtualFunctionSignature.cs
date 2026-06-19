@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using CounterStrikeSharp.API.Core;
+using Microsoft.Extensions.Logging;
 
 namespace CounterStrikeSharp.API.Modules.Memory;
 
@@ -39,8 +40,10 @@ public partial class VirtualFunction
                     argumentTypes.Count(), (int)returnType, arguments);
                 _createdFunctions[signature] = function;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Application.Instance.Logger.LogError(ex,
+                    "Failed to resolve native function for signature \"{Signature}\"", signature);
             }
         }
 
@@ -59,8 +62,10 @@ public partial class VirtualFunction
                     argumentTypes.Count(), (int)returnType, arguments);
                 _createdFunctions[signature] = function;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Application.Instance.Logger.LogError(ex,
+                    "Failed to resolve native function for signature \"{Signature}\" in {Binary}", signature, binarypath);
             }
         }
 

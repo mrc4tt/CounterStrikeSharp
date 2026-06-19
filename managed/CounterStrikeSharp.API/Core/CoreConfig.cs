@@ -45,6 +45,9 @@ namespace CounterStrikeSharp.API.Core
         [JsonPropertyName("SilentChatTrigger")]
         public IEnumerable<string> SilentChatTrigger { get; set; } = new HashSet<string>() { "/" };
 
+        [JsonPropertyName("LogVerbosity")]
+        public string LogVerbosity { get; set; } = "information";
+
         [JsonPropertyName("FollowCS2ServerGuidelines")]
         public bool FollowCS2ServerGuidelines { get; set; } = true;
 
@@ -105,6 +108,13 @@ namespace CounterStrikeSharp.API.Core
         /// List of characters to use for silent chat triggers.
         /// </summary>
         public static IEnumerable<string> SilentChatTrigger => _coreConfig.SilentChatTrigger;
+
+        /// <summary>
+        /// Minimum log level for CounterStrikeSharp's own output. One of:
+        /// verbose/trace, debug, information, warning, error, fatal. Default "information".
+        /// Lower to "debug" to see the per-step boot/init lines hidden at the default level.
+        /// </summary>
+        public static string LogVerbosity => _coreConfig.LogVerbosity;
 
         /// <summary>
         /// <para>
@@ -281,6 +291,10 @@ namespace CounterStrikeSharp.API.Core
             CultureInfo.DefaultThreadCurrentCulture = serverCulture;
             CultureInfo.CurrentUICulture = serverCulture;
             CultureInfo.CurrentCulture = serverCulture;
+
+            // Apply configured verbosity to the live Serilog level switch. Hot-reloadable
+            // via css_core_reload — lowering to "debug" surfaces the demoted boot lines.
+            CoreLogging.SetVerbosity(LogVerbosity);
 
             _logger.LogInformation("Successfully loaded core configuration");
         }
