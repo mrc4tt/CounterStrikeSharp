@@ -145,6 +145,10 @@ bool CounterStrikeSharpMMPlugin::Load(PluginId id, ISmmAPI* ismm, char* error, s
     }
     CSSHARP_CORE_DEBUG("Current root directory: {}", utils::GetRootDirectory());
 
+    // Now that the addons root is known, attach the file sink under a path the
+    // server user owns (<root>/logs) instead of the engine's working directory.
+    Log::AttachFileSink(utils::GetRootDirectory() + "/logs");
+
     auto coreconfig_path = std::string(utils::ConfigsDirectory() + "/core");
     globals::coreConfig = new CCoreConfig(coreconfig_path);
     char coreconfig_error[255] = "";
