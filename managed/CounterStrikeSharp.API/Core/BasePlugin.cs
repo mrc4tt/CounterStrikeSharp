@@ -54,20 +54,23 @@ namespace CounterStrikeSharp.API.Core
         public abstract string ModuleName { get; }
         public abstract string ModuleVersion { get; }
 
-        public virtual string ModuleAuthor { get; }
+        public virtual string ModuleAuthor { get; } = "";
 
-        public virtual string ModuleDescription { get; }
+        public virtual string ModuleDescription { get; } = "";
 
-        public string ModulePath { get; set; }
+        // Set by the host right after construction.
+        public string ModulePath { get; set; } = "";
 
-        public string ModuleDirectory => Path.GetDirectoryName(ModulePath);
-        public ILogger Logger { get; set; }
+        public string ModuleDirectory => Path.GetDirectoryName(ModulePath)!;
+        // Logger/CommandManager/Localizer/SelfControl are injected by the host
+        // immediately after construction, so they are non-null in plugin code.
+        public ILogger Logger { get; set; } = null!;
 
-        public ICommandManager CommandManager { get; set; }
+        public ICommandManager CommandManager { get; set; } = null!;
 
-        public IStringLocalizer Localizer { get; set; }
+        public IStringLocalizer Localizer { get; set; } = null!;
 
-        internal Plugin.ISelfPluginControl SelfControl { get; set; }
+        internal Plugin.ISelfPluginControl SelfControl { get; set; } = null!;
 
         public void TerminateSelf(string reason)
         {

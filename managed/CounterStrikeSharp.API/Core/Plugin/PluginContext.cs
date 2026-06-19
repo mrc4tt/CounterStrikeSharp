@@ -101,7 +101,7 @@ namespace CounterStrikeSharp.API.Core.Plugin
             {
                 _fileWatcher = new FileSystemWatcher
                 {
-                    Path = Path.GetDirectoryName(path)
+                    Path = Path.GetDirectoryName(path)!
                 };
 
                 _fileWatcher.Deleted += async (s, e) =>
@@ -303,7 +303,7 @@ namespace CounterStrikeSharp.API.Core.Plugin
                         // it the first time still gets the full, actionable report.
                         FunctionReference.RecordLoadFailure(
                             Plugin.GetType().Assembly.GetName().Name!,
-                            Plugin.ModuleName,
+                            Plugin.ModuleName!,
                             report);
                     }
 

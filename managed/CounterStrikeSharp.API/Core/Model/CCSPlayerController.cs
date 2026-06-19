@@ -226,7 +226,7 @@ public partial class CCSPlayerController
     /// <summary>
     /// Gets the active pawns button state. Will work even if the player is dead or observing.
     /// </summary>
-    public PlayerButtons Buttons => (PlayerButtons)Pawn.Value.MovementServices!.Buttons.ButtonStates[0];
+    public PlayerButtons Buttons => (PlayerButtons)Pawn.Value!.MovementServices!.Buttons.ButtonStates[0];
 
     /// <summary>
     /// Issue the specified command to the specified client (mimics that client typing the command at the console).
