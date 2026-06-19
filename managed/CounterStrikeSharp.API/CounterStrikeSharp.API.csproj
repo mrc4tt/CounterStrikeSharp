@@ -7,10 +7,34 @@
         <RollForward>Major</RollForward>
         <TargetLatestRuntimePatch>false</TargetLatestRuntimePatch>
         <EnableDynamicLoading>true</EnableDynamicLoading>
+        <!--
+          GC / JIT tuning for high player counts. These flow into the generated
+          CounterStrikeSharp.API.runtimeconfig.json, which is what the native host loads
+          (src/scripting/dotnet_host.cpp -> hostfxr_initialize_for_runtime_config).
+
+          Server GC: multiple heaps + background GC threads => far higher allocation
+          throughput than the default Workstation GC when many events fire per tick.
+          DATAS (default-on with Server GC in .NET 8+) adapts heap count to load so a box
+          running several CS2 instances doesn't oversubscribe cores.
+
+          TRADEOFF: Server GC favours throughput; individual GC pauses can be larger than
+          Workstation+Concurrent, which can show up as p99 frame-time jitter. MEASURE frame
+          time (not just CPU%) after enabling. To revert, set ServerGarbageCollection=false.
+        -->
+        <ServerGarbageCollection>true</ServerGarbageCollection>
+        <ConcurrentGarbageCollection>true</ConcurrentGarbageCollection>
+        <TieredCompilation>true</TieredCompilation>
+        <TieredPGO>true</TieredPGO>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
-        <GenerateCompatibilitySuppressionFile>true</GenerateCompatibilitySuppressionFile>
+        <!-- Off by default: this regenerates the 800-line suppressions file on EVERY
+             build, churning the working tree. It is a one-shot tool — set it to true,
+             build once to refresh CompatibilitySuppressions.xml, then set back to false. -->
+        <GenerateCompatibilitySuppressionFile>false</GenerateCompatibilitySuppressionFile>
         <EnablePackageValidation>true</EnablePackageValidation>
-        <NoWarn>$(NoWarn);CS1591;CP0003</NoWarn>
+        <!-- CS1591: missing XML doc. CP0003: ApiCompat. CS15xx/CS0419: cosmetic XML
+             doc-comment param/cref mismatches (no runtime impact). Nullable (CS8xxx)
+             warnings are deliberately NOT suppressed — they are the null-deref radar. -->
+        <NoWarn>$(NoWarn);CS1591;CP0003;CS1573;CS1574;CS1572;CS1711;CS0419</NoWarn>
         <Nullable>enable</Nullable>
         <Authors>Roflmuffin</Authors>
         <Description>Official server side runtime assembly for CounterStrikeSharp</Description>

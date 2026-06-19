@@ -145,8 +145,10 @@ namespace CounterStrikeSharp.API.Core
         private void RegisterEventHandlerInternal<T>(string name, GameEventHandler<T> handler, bool post)
             where T : GameEvent
         {
+#pragma warning disable CS0618 // intentional internal use of the non-generic deregister
             var subscriber = new CallbackSubscriber(handler, handler,
                 () => DeregisterEventHandler(name, handler, post));
+#pragma warning restore CS0618
 
             NativeAPI.HookEvent(name, subscriber.GetInputArgument(), post);
             Handlers[handler] = subscriber;
@@ -331,8 +333,10 @@ namespace CounterStrikeSharp.API.Core
                 return HookResult.Continue;
             });
 
+#pragma warning disable CS0618 // intentional internal use of the non-generic RemoveListener
             var subscriber =
                 new CallbackSubscriber(handler, wrappedHandler, () => { RemoveListener(listenerName, handler); });
+#pragma warning restore CS0618
 
             NativeAPI.AddListener(listenerName, subscriber.GetInputArgument());
             Listeners[handler] = subscriber;

@@ -133,6 +133,8 @@ public class CenterHtmlMenuInstance : BaseMenuInstance
     private void RemoveOnTickListener()
     {
         var onTick = new Core.Listeners.OnTick(Display);
+#pragma warning disable CS0618 // intentional internal use of the non-generic RemoveListener
         _plugin.RemoveListener("OnTick", onTick);
+#pragma warning restore CS0618
     }
 }

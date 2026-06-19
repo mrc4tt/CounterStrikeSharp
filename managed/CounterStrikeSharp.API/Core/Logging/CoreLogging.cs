@@ -24,9 +24,15 @@ public static class CoreLogging
     /// and spdlog spellings (verbose/trace, debug, information/info, warning/warn,
     /// error, fatal/critical). Unknown values fall back to Information.
     /// </summary>
-    public static void SetVerbosity(string? level)
-    {
-        LevelSwitch.MinimumLevel = (level?.Trim().ToLowerInvariant()) switch
+    public static void SetVerbosity(string? level) => LevelSwitch.MinimumLevel = ParseVerbosity(level);
+
+    /// <summary>
+    /// Maps a config verbosity string to a Serilog level. Accepts Serilog and spdlog
+    /// spellings (verbose/trace, debug, information/info, warning/warn, error,
+    /// fatal/critical); null/blank/unknown fall back to Information. Pure — no side effects.
+    /// </summary>
+    public static LogEventLevel ParseVerbosity(string? level) =>
+        (level?.Trim().ToLowerInvariant()) switch
         {
             "verbose" or "trace" => LogEventLevel.Verbose,
             "debug" => LogEventLevel.Debug,
@@ -36,7 +42,6 @@ public static class CoreLogging
             "fatal" or "critical" => LogEventLevel.Fatal,
             _ => LogEventLevel.Information,
         };
-    }
 
     public static void AddCoreLogging(this ILoggingBuilder builder, string contentRoot)
     {

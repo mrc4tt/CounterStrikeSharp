@@ -64,7 +64,6 @@ namespace CounterStrikeSharp.API.Core.Plugin
         private readonly IScriptHostConfiguration _hostConfiguration;
         private readonly string _path;
         private readonly FileSystemWatcher _fileWatcher;
-        private readonly IServiceProvider _applicationServiceProvider;
 
         public string FilePath => _path;
         private IServiceScope _serviceScope;
