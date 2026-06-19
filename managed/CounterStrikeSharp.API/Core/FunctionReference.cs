@@ -109,7 +109,9 @@ namespace CounterStrikeSharp.API.Core
         private static int _referenceCounter;
 
         private readonly Delegate _targetMethod;
-        private CallbackDelegate _nativeCallback;
+        // Assigned in the Create factory (a stub is always wired before GetFunctionPointer
+        // is ever called), so the constructor legitimately leaves it unset.
+        private CallbackDelegate _nativeCallback = null!;
 
         // Compiled (target, args[]) -> result invoker, cached by MethodInfo. Replaces
         // Delegate.DynamicInvoke on the per-tick / per-event dispatch path, which is
@@ -310,7 +312,7 @@ namespace CounterStrikeSharp.API.Core
                     // DynamicInvoke is excluded: it requires an EXACT-length argument array and
                     // throws on an oversized one. It is already the rare fallback for shapes the
                     // compiled invoker cannot handle, so keeping its exact alloc costs nothing hot.
-                    object returnObj;
+                    object? returnObj;
                     if (_invoker != null)
                     {
                         var parameterList = ArrayPool<object>.Shared.Rent(_parameters.Length);
@@ -394,14 +396,14 @@ namespace CounterStrikeSharp.API.Core
             var owner = handler.DeclaringType?.Assembly.GetName().Name ?? "unknown";
 
             // Deepest frame inside the owning plugin assembly -> file:line of the bug.
-            string loc = null;
+            string? loc = null;
             var pluginAsm = handler.DeclaringType?.Assembly;
             foreach (var f in new StackTrace(root, true).GetFrames() ?? Array.Empty<StackFrame>())
             {
                 var m = f.GetMethod();
                 if (m?.DeclaringType?.Assembly != pluginAsm) continue;
                 var file = f.GetFileName();
-                loc = m.DeclaringType.FullName + "." + m.Name + "()"
+                loc = m!.DeclaringType!.FullName + "." + m.Name + "()"
                     + (file != null ? " at " + file + ":" + f.GetFileLineNumber() : "");
                 break;
             }

@@ -101,7 +101,7 @@ public class Schema
             return Unsafe.Read<T>((void*)(handle + offset));
         }
 
-        return NativeAPI.GetSchemaValueByName<T>(handle, (int)typeof(T).ToDataType(), className, propertyName);
+        return NativeAPI.GetSchemaValueByName<T>(handle, (int)typeof(T).ToDataType()!, className, propertyName);
     }
 
     public static void SetSchemaValue<T>(IntPtr handle, string className, string propertyName, T value)
@@ -113,7 +113,7 @@ public class Schema
             throw new Exception($"Cannot set or get '{className}::{propertyName}' with \"FollowCS2ServerGuidelines\" option enabled.");
         }
 
-        NativeAPI.SetSchemaValueByName<T>(handle, (int)typeof(T).ToDataType(), className, propertyName, value);
+        NativeAPI.SetSchemaValueByName<T>(handle, (int)typeof(T).ToDataType()!, className, propertyName, value);
     }
 
     public static T GetDeclaredClass<T>(IntPtr pointer, string className, string memberName)
