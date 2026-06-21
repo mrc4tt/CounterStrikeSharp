@@ -77,17 +77,17 @@ jobs:
           # Strip C0 control chars (except \t \n \r) that CS2 dump_schema sometimes emits inside string values.
           python3 -c "import re,sys,pathlib; p=pathlib.Path('$SCHEMA'); d=p.read_bytes().decode('utf-8','replace'); p.write_text(re.sub(r'[\x00-\x08\x0b\x0c\x0e-\x1f]','',d), encoding='utf-8')"
           PATCH_VERSION=$(jq -r ".game_info.PatchVersion" "$SCHEMA")
-          echo "patch_version=$PATCH_VERSION" >> $GITHUB_OUTPUT
+          echo "patch_version=$PATCH_VERSION" >> "$GITHUB_OUTPUT"
 
       - name: Check for changes
         id: changes
         run: |
           if [[ -n $(git status --porcelain managed/CounterStrikeSharp.API/Generated/) ]]; then
-            echo "has_changes=true" >> $GITHUB_OUTPUT
+            echo "has_changes=true" >> "$GITHUB_OUTPUT"
             echo "Changes detected in Generated folder:"
             git status --porcelain managed/CounterStrikeSharp.API/Generated/
           else
-            echo "has_changes=false" >> $GITHUB_OUTPUT
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Create Pull Request

@@ -72,8 +72,8 @@ jobs:
       - name: Prepare env
         shell: bash
         run: |
-          echo "GITHUB_SHA_SHORT=${GITHUB_SHA::7}" >> $GITHUB_ENV
-          echo "SEMVER=${{ needs.setup.outputs.gitversion_semver }}" >> $GITHUB_ENV
+          echo "GITHUB_SHA_SHORT=${GITHUB_SHA::7}" >> "$GITHUB_ENV"
+          echo "SEMVER=${{ needs.setup.outputs.gitversion_semver }}" >> "$GITHUB_ENV"
 
       - uses: actions/checkout@v4
         with:
@@ -140,7 +140,7 @@ jobs:
     steps:
       - name: Prepare env
         shell: bash
-        run: echo "GITHUB_SHA_SHORT=${GITHUB_SHA::7}" >> $GITHUB_ENV
+        run: echo "GITHUB_SHA_SHORT=${GITHUB_SHA::7}" >> "$GITHUB_ENV"
 
       # We don't need expensive submodules for the managed side.
       - uses: actions/checkout@v4
@@ -200,7 +200,7 @@ jobs:
     steps:
       - name: Prepare env
         shell: bash
-        run: echo "GITHUB_SHA_SHORT=${GITHUB_SHA::7}" >> $GITHUB_ENV
+        run: echo "GITHUB_SHA_SHORT=${GITHUB_SHA::7}" >> "$GITHUB_ENV"
 
       - name: Checkout
         uses: actions/checkout@v4
@@ -223,7 +223,7 @@ jobs:
           cp -r build/api/net10.0/publish/* build/linux/addons/counterstrikesharp/api
 
       - name: Zip Linux (runtimeless)
-        run: (cd build/linux && zip -qq -r ../../counterstrikesharp-linux-${{ needs.setup.outputs.gitversion_semver }}.zip *)
+        run: (cd build/linux && zip -qq -r ../../counterstrikesharp-linux-${{ needs.setup.outputs.gitversion_semver }}.zip ./*)
 
       - name: Add dotnet runtime
         run: |
@@ -232,7 +232,7 @@ jobs:
           | tar xvz -C build/linux/addons/counterstrikesharp/dotnet
 
       - name: Zip Linux (with runtime)
-        run: (cd build/linux && zip -qq -r ../../counterstrikesharp-with-runtime-linux-${{ needs.setup.outputs.gitversion_semver }}.zip *)
+        run: (cd build/linux && zip -qq -r ../../counterstrikesharp-with-runtime-linux-${{ needs.setup.outputs.gitversion_semver }}.zip ./*)
 
       - name: Generate a changelog
         uses: orhun/git-cliff-action@v4
