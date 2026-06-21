@@ -41,7 +41,7 @@ namespace CounterStrikeSharp.API.Modules.Admin
         private static void ReloadAdminsCommand(CCSPlayerController? player, CommandInfo command)
         {
             Admins.Clear();
-            var rootDir = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory.Parent;
+            var rootDir = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory!.Parent!;
             LoadAdminData(Path.Combine(rootDir.FullName, "configs", "admins.json"));
             MergeGroupPermsIntoAdmins();
         }
@@ -65,7 +65,7 @@ namespace CounterStrikeSharp.API.Modules.Admin
         private static void ReloadAdminGroupsCommand(CCSPlayerController? player, CommandInfo command)
         {
             Groups.Clear();
-            var rootDir = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory.Parent;
+            var rootDir = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory!.Parent!;
             LoadAdminGroups(Path.Combine(rootDir.FullName, "configs", "admin_groups.json"));
             MergeGroupPermsIntoAdmins();
         }
@@ -85,7 +85,7 @@ namespace CounterStrikeSharp.API.Modules.Admin
         private static void ReloadAdminOverridesCommand(CCSPlayerController? player, CommandInfo command)
         {
             CommandOverrides.Clear();
-            var rootDir = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory.Parent;
+            var rootDir = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory!.Parent!;
             LoadCommandOverrides(Path.Combine(rootDir.FullName, "configs", "admin_overrides.json"));
         }
 

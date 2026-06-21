@@ -11,7 +11,7 @@ internal class StringLocalizer : IStringLocalizer
     public StringLocalizer(IStringLocalizerFactory factory)
     {
         var type = typeof(StringLocalizer);
-        var assemblyName = new AssemblyName(type.GetTypeInfo().Assembly.FullName);
+        var assemblyName = new AssemblyName(type.GetTypeInfo().Assembly.FullName!);
         _localizer = factory.Create(string.Empty, assemblyName.FullName);
     }
 

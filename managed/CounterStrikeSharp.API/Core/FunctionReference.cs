@@ -14,6 +14,7 @@
  *  along with CounterStrikeSharp.  If not, see <https://www.gnu.org/licenses/>. *
  */
 
+using System.Buffers;
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Linq.Expressions;
@@ -108,7 +109,9 @@ namespace CounterStrikeSharp.API.Core
         private static int _referenceCounter;
 
         private readonly Delegate _targetMethod;
-        private CallbackDelegate _nativeCallback;
+        // Assigned in the Create factory (a stub is always wired before GetFunctionPointer
+        // is ever called), so the constructor legitimately leaves it unset.
+        private CallbackDelegate _nativeCallback = null!;
 
         // Compiled (target, args[]) -> result invoker, cached by MethodInfo. Replaces
         // Delegate.DynamicInvoke on the per-tick / per-event dispatch path, which is
@@ -301,15 +304,46 @@ namespace CounterStrikeSharp.API.Core
                         return;
                     }
 
-                    var parameterList = new object[_parameters.Length];
-                    for (int i = 0; i < _parameters.Length; i++)
+                    // Hot path: game-event / typed callbacks land here per-event, and at high
+                    // player counts that is thousands of dispatches/sec. The compiled invoker
+                    // only reads indices [0.._parameters.Length), so a pooled (possibly larger)
+                    // buffer is safe and removes the per-dispatch Gen0 array allocation.
+                    //
+                    // DynamicInvoke is excluded: it requires an EXACT-length argument array and
+                    // throws on an oversized one. It is already the rare fallback for shapes the
+                    // compiled invoker cannot handle, so keeping its exact alloc costs nothing hot.
+                    object? returnObj;
+                    if (_invoker != null)
                     {
-                        parameterList[i] = scriptContext.GetArgument(_parameters[i].ParameterType, i);
-                    }
+                        var parameterList = ArrayPool<object>.Shared.Rent(_parameters.Length);
+                        try
+                        {
+                            for (int i = 0; i < _parameters.Length; i++)
+                            {
+                                parameterList[i] = scriptContext.GetArgument(_parameters[i].ParameterType, i);
+                            }
 
-                    var returnObj = _invoker != null
-                        ? _invoker(_invokerTarget!, parameterList)
-                        : _targetMethod.DynamicInvoke(parameterList);
+                            // Compiled invoker indexes only [0.._parameters.Length); an
+                            // oversized pooled buffer is therefore safe.
+                            returnObj = _invoker(_invokerTarget!, parameterList);
+                        }
+                        finally
+                        {
+                            // clearArray:true so pooled slots don't root GameEvent wrappers /
+                            // captured objects until the next rent overwrites them.
+                            ArrayPool<object>.Shared.Return(parameterList, clearArray: true);
+                        }
+                    }
+                    else
+                    {
+                        var parameterList = new object[_parameters.Length];
+                        for (int i = 0; i < _parameters.Length; i++)
+                        {
+                            parameterList[i] = scriptContext.GetArgument(_parameters[i].ParameterType, i);
+                        }
+
+                        returnObj = _targetMethod.DynamicInvoke(parameterList);
+                    }
 
                     if (returnObj != null)
                     {
@@ -362,14 +396,14 @@ namespace CounterStrikeSharp.API.Core
             var owner = handler.DeclaringType?.Assembly.GetName().Name ?? "unknown";
 
             // Deepest frame inside the owning plugin assembly -> file:line of the bug.
-            string loc = null;
+            string? loc = null;
             var pluginAsm = handler.DeclaringType?.Assembly;
             foreach (var f in new StackTrace(root, true).GetFrames() ?? Array.Empty<StackFrame>())
             {
                 var m = f.GetMethod();
                 if (m?.DeclaringType?.Assembly != pluginAsm) continue;
                 var file = f.GetFileName();
-                loc = m.DeclaringType.FullName + "." + m.Name + "()"
+                loc = m!.DeclaringType!.FullName + "." + m.Name + "()"
                     + (file != null ? " at " + file + ":" + f.GetFileLineNumber() : "");
                 break;
             }
@@ -384,7 +418,6 @@ namespace CounterStrikeSharp.API.Core
             sb.AppendLine("Blame:     Plugin '" + owner + "' — this exception came from inside its own handler.");
             sb.AppendLine("           The server kept running, but that plugin's action did not complete.");
             sb.AppendLine("Action:    Report this trace to the plugin author; disable the plugin if it spams.");
-            sb.AppendLine("Support:   " + Diagnostics.PluginDiagnostics.SupportContact);
             sb.Append("=============================================================");
             return sb.ToString();
         }

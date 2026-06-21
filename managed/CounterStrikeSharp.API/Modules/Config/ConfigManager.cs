@@ -49,8 +49,10 @@ namespace CounterStrikeSharp.API.Modules.Config
 
         static ConfigManager()
         {
-            _rootDir = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory.Parent;
-            _pluginConfigsFolderPath = Path.Combine(_rootDir.FullName, "configs", "plugins");
+            // Assembly location always resolves to <addons>/counterstrikesharp/api/<dll>,
+            // so Directory and its Parent are never null here.
+            _rootDir = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory!.Parent;
+            _pluginConfigsFolderPath = Path.Combine(_rootDir!.FullName, "configs", "plugins");
         }
 
         public static T Load<T>(string pluginName) where T : class, IBasePluginConfig, new()

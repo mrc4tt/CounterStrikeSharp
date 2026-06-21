@@ -1,4 +1,7 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
+using CounterStrikeSharp.API.Core;
+using Microsoft.Extensions.Logging;
 
 namespace CounterStrikeSharp.API.Modules.Memory.DynamicFunctions;
 
@@ -30,8 +33,13 @@ public abstract class BaseMemoryFunction : NativeObject
                     argumentTypes.Length, (int)returnType, argumentTypes.Cast<object>().ToArray());
                 _createdFunctions[signature] = function;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                // Don't swallow silently: a failed resolution leaves `function` at
+                // IntPtr.Zero, and invoking that later jumps to address 0 and crashes
+                // with no clue why. Log so the bad signature is diagnosable.
+                Application.Instance.Logger.LogError(ex,
+                    "Failed to resolve native function for signature \"{Signature}\"", signature);
             }
         }
 
@@ -49,8 +57,10 @@ public abstract class BaseMemoryFunction : NativeObject
                     argumentTypes.Length, (int)returnType, argumentTypes.Cast<object>().ToArray());
                 _createdFunctions[signature] = function;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Application.Instance.Logger.LogError(ex,
+                    "Failed to resolve native function for signature \"{Signature}\" in {Binary}", signature, binarypath);
             }
         }
 
@@ -69,8 +79,10 @@ public abstract class BaseMemoryFunction : NativeObject
                 function = nativeCaller();
                 _createdOffsetFunctions[constructKey] = function;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Application.Instance.Logger.LogError(ex,
+                    "Failed to resolve native function by offset \"{Key}\"", constructKey);
             }
         }
 

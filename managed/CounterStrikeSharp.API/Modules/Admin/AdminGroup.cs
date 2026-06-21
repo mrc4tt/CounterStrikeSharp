@@ -10,6 +10,7 @@ using System.Text.Json.Serialization;
 using CounterStrikeSharp.API.Core;
 using CounterStrikeSharp.API.Modules.Entities;
 using CounterStrikeSharp.API.Modules.Utils;
+using Microsoft.Extensions.Logging;
 
 namespace CounterStrikeSharp.API.Modules.Admin
 {
@@ -34,7 +35,7 @@ namespace CounterStrikeSharp.API.Modules.Admin
             {
                 if (!File.Exists(adminGroupsPath))
                 {
-                    Console.WriteLine("Admin groups file not found. Skipping admin groups load.");
+                    _logger.LogDebug("Admin groups file not found. Skipping admin groups load.");
                     return;
                 }
 
@@ -56,11 +57,11 @@ namespace CounterStrikeSharp.API.Modules.Admin
                     }
                 }
 
-                Console.WriteLine($"Loaded {Groups.Count} admin groups.");
+                _logger.LogInformation("Loaded {Count} admin groups.", Groups.Count);
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Failed to load admin groups: {ex}");
+                _logger.LogError(ex, "Failed to load admin groups");
             }
 
             // Loop over each of the admins. If one of our admins is in a group,

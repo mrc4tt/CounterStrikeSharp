@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <string>
 
 #include <spdlog/fmt/ostr.h>
 #include <spdlog/spdlog.h>
@@ -11,6 +12,16 @@ class Log
   public:
     static void Init();
     static void Close();
+
+    // Attaches a file sink writing to <logDirectory>/counterstrikesharp.log. Safe to
+    // call after the addons root is resolved; on any failure (e.g. permissions) it
+    // logs a warning and leaves the logger console-only instead of throwing.
+    static void AttachFileSink(const std::string& logDirectory);
+
+    // Sets the core logger level from a config string. Accepts spdlog and Serilog
+    // spellings (verbose/trace, debug, information/info, warning/warn, error,
+    // critical/fatal, off). Unknown values fall back to info.
+    static void SetLevelFromString(const std::string& level);
 
     static std::shared_ptr<spdlog::logger>& GetCoreLogger() { return m_core_logger; }
 

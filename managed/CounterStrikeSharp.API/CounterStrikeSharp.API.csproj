@@ -7,10 +7,40 @@
         <RollForward>Major</RollForward>
         <TargetLatestRuntimePatch>false</TargetLatestRuntimePatch>
         <EnableDynamicLoading>true</EnableDynamicLoading>
+        <!--
+          GC / JIT tuning for high player counts. These flow into the generated
+          CounterStrikeSharp.API.runtimeconfig.json, which is what the native host loads
+          (src/scripting/dotnet_host.cpp -> hostfxr_initialize_for_runtime_config).
+
+          Server GC: multiple heaps + background GC threads => far higher allocation
+          throughput than the default Workstation GC when many events fire per tick.
+          DATAS (default-on with Server GC in .NET 8+) adapts heap count to load so a box
+          running several CS2 instances doesn't oversubscribe cores.
+
+          TRADEOFF: Server GC favours throughput; individual GC pauses can be larger than
+          Workstation+Concurrent, which can show up as p99 frame-time jitter. MEASURE frame
+          time (not just CPU%) after enabling. To revert, set ServerGarbageCollection=false.
+        -->
+        <ServerGarbageCollection>true</ServerGarbageCollection>
+        <ConcurrentGarbageCollection>true</ConcurrentGarbageCollection>
+        <TieredCompilation>true</TieredCompilation>
+        <TieredPGO>true</TieredPGO>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
-        <GenerateCompatibilitySuppressionFile>true</GenerateCompatibilitySuppressionFile>
-        <EnablePackageValidation>true</EnablePackageValidation>
-        <NoWarn>$(NoWarn);CS1591;CP0003</NoWarn>
+        <!-- Package/assembly API-compat validation is OFF. It compared this assembly
+             against a frozen upstream baseline (ApiCompat/v202.dll); this hard fork has
+             diverged by 1600+ members and the schema-sync workflow keeps adding/removing
+             schema members on every run, so the check produced thousands of CP00xx errors
+             and forced CompatibilitySuppressions.xml to be regenerated (churning the tree)
+             on every build just to stay green. Validating against an obsolete upstream
+             baseline provides no signal for a fork. To re-enable real API-stability
+             checks, re-baseline ApiCompatContractAssembly to a recent FORK release and
+             flip these back on. -->
+        <GenerateCompatibilitySuppressionFile>false</GenerateCompatibilitySuppressionFile>
+        <EnablePackageValidation>false</EnablePackageValidation>
+        <!-- CS1591: missing XML doc. CP0003: ApiCompat. CS15xx/CS0419: cosmetic XML
+             doc-comment param/cref mismatches (no runtime impact). Nullable (CS8xxx)
+             warnings are deliberately NOT suppressed — they are the null-deref radar. -->
+        <NoWarn>$(NoWarn);CS1591;CP0003;CS1573;CS1574;CS1572;CS1711;CS0419</NoWarn>
         <Nullable>enable</Nullable>
         <Authors>Roflmuffin</Authors>
         <Description>Official server side runtime assembly for CounterStrikeSharp</Description>
@@ -25,7 +55,9 @@
         <!-- <GenerateCompatibilitySuppressionFile>true</GenerateCompatibilitySuppressionFile> -->
     </PropertyGroup>
     <PropertyGroup>
-        <ApiCompatValidateAssemblies>true</ApiCompatValidateAssemblies>
+        <!-- Disabled: see the package-validation note above. v202.dll is an upstream
+             baseline this fork intentionally no longer matches. -->
+        <ApiCompatValidateAssemblies>false</ApiCompatValidateAssemblies>
         <ApiCompatContractAssembly>.\ApiCompat\v202.dll</ApiCompatContractAssembly>
     </PropertyGroup>
     <ItemGroup>

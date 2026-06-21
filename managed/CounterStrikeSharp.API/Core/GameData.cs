@@ -36,7 +36,7 @@ public class Offsets
 public sealed class GameDataProvider : IStartupService
 {
     private readonly string _gameDataDirectoryPath;
-    public Dictionary<string,LoadedGameData> Methods;
+    public Dictionary<string,LoadedGameData> Methods = new();
     // File names (not full paths) of every gamedata JSON merged into Methods. Lets a
     // missing-key error name WHERE the operator can add the key, and show that the key
     // was searched across all files, not only gamedata.json.
@@ -56,10 +56,14 @@ public sealed class GameDataProvider : IStartupService
         {
             Methods = new Dictionary<string, LoadedGameData>();
             var loadedFiles = new List<string>();
+            // Per-file breakdown collected for ONE combined summary line instead of
+            // N "Successfully loaded …" lines (one per gamedata file) at boot.
+            var fileBreakdown = new List<string>();
 
             foreach (string filePath in Directory.EnumerateFiles(_gameDataDirectoryPath, "*.json"))
             {
-                loadedFiles.Add(Path.GetFileName(filePath));
+                var fileName = Path.GetFileName(filePath);
+                loadedFiles.Add(fileName);
                 string jsonContent = File.ReadAllText(filePath, Encoding.UTF8);
                 Dictionary<string, LoadedGameData> loadedMethods = JsonSerializer.Deserialize<Dictionary<string, LoadedGameData>>(jsonContent)!;
 
@@ -69,13 +73,14 @@ public sealed class GameDataProvider : IStartupService
                     {
                         _logger.LogWarning("GameData Method \"{Key}\" loaded a duplicate entry from {filePath}.", loadedMethod.Key, filePath);
                     }
-                    
+
                     Methods[loadedMethod.Key] = loadedMethod.Value;
                 }
-                
+
                 if (loadedMethods != null)
                 {
-                    _logger.LogInformation("Successfully loaded {Count} game data entries from {Path}", loadedMethods.Count, filePath);
+                    _logger.LogDebug("Loaded {Count} game data entries from {Path}", loadedMethods.Count, filePath);
+                    fileBreakdown.Add($"{fileName} ({loadedMethods.Count})");
                 }
                 else
                 {
@@ -84,6 +89,10 @@ public sealed class GameDataProvider : IStartupService
             }
 
             LoadedFiles = loadedFiles;
+
+            if (fileBreakdown.Count > 0)
+                _logger.LogInformation("Loaded {Total} game data entries from {Files} file(s): {Breakdown}",
+                    Methods.Count, fileBreakdown.Count, string.Join(", ", fileBreakdown));
 
             ValidateCurrentPlatformEntries();
         }

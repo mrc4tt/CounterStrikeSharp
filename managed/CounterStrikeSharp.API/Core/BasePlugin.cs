@@ -54,20 +54,23 @@ namespace CounterStrikeSharp.API.Core
         public abstract string ModuleName { get; }
         public abstract string ModuleVersion { get; }
 
-        public virtual string ModuleAuthor { get; }
+        public virtual string ModuleAuthor { get; } = "";
 
-        public virtual string ModuleDescription { get; }
+        public virtual string ModuleDescription { get; } = "";
 
-        public string ModulePath { get; set; }
+        // Set by the host right after construction.
+        public string ModulePath { get; set; } = "";
 
-        public string ModuleDirectory => Path.GetDirectoryName(ModulePath);
-        public ILogger Logger { get; set; }
+        public string ModuleDirectory => Path.GetDirectoryName(ModulePath)!;
+        // Logger/CommandManager/Localizer/SelfControl are injected by the host
+        // immediately after construction, so they are non-null in plugin code.
+        public ILogger Logger { get; set; } = null!;
 
-        public ICommandManager CommandManager { get; set; }
+        public ICommandManager CommandManager { get; set; } = null!;
 
-        public IStringLocalizer Localizer { get; set; }
+        public IStringLocalizer Localizer { get; set; } = null!;
 
-        internal Plugin.ISelfPluginControl SelfControl { get; set; }
+        internal Plugin.ISelfPluginControl SelfControl { get; set; } = null!;
 
         public void TerminateSelf(string reason)
         {
@@ -145,8 +148,10 @@ namespace CounterStrikeSharp.API.Core
         private void RegisterEventHandlerInternal<T>(string name, GameEventHandler<T> handler, bool post)
             where T : GameEvent
         {
+#pragma warning disable CS0618 // intentional internal use of the non-generic deregister
             var subscriber = new CallbackSubscriber(handler, handler,
                 () => DeregisterEventHandler(name, handler, post));
+#pragma warning restore CS0618
 
             NativeAPI.HookEvent(name, subscriber.GetInputArgument(), post);
             Handlers[handler] = subscriber;
@@ -331,8 +336,10 @@ namespace CounterStrikeSharp.API.Core
                 return HookResult.Continue;
             });
 
+#pragma warning disable CS0618 // intentional internal use of the non-generic RemoveListener
             var subscriber =
                 new CallbackSubscriber(handler, wrappedHandler, () => { RemoveListener(listenerName, handler); });
+#pragma warning restore CS0618
 
             NativeAPI.AddListener(listenerName, subscriber.GetInputArgument());
             Listeners[handler] = subscriber;

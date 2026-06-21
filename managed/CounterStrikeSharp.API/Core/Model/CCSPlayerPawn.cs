@@ -14,7 +14,7 @@ public partial class CCSPlayerPawn
 	public void Respawn()
 	{
 		if (!Controller.IsValid) return;
-		if (!Controller.Value.IsValid) return;
+		if (!Controller.Value!.IsValid) return;
 
 		Application.Instance.Logger.LogWarning("CCSPawn.Respawn is deprecated and does nothing, use CCSPlayerController.Respawn instead");
 	}

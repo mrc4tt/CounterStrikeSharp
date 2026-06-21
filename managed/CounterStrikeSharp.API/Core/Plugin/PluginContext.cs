@@ -14,6 +14,7 @@
  *  along with CounterStrikeSharp.  If not, see <https://www.gnu.org/licenses/>. *
  */
 
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -45,30 +46,32 @@ namespace CounterStrikeSharp.API.Core.Plugin
     public class PluginContext : IPluginContext, ISelfPluginControl, IDisposable
     {
         public PluginState State { get; set; } = PluginState.Unregistered;
-        public IPlugin Plugin { get; private set; }
+        // Assigned during Load() and asserted non-null there; treated as non-null
+        // for the lifetime a context is exposed.
+        public IPlugin Plugin { get; private set; } = null!;
 
         private bool _disposed;
 
         // Set by PluginManager. Invoked when the context wants to be fully torn
         // down (e.g. its DLL was deleted) so the manager drops + disposes it.
-        internal Action OnRequestRemoval { get; set; }
+        internal Action? OnRequestRemoval { get; set; }
 
         private PluginLoader Loader { get; set; }
 
-        private ServiceProvider ServiceProvider { get; set; }
+        private ServiceProvider? ServiceProvider { get; set; }
 
         public int PluginId { get; }
 
         private readonly ICommandManager _commandManager;
         private readonly IScriptHostConfiguration _hostConfiguration;
         private readonly string _path;
-        private readonly FileSystemWatcher _fileWatcher;
-        private readonly IServiceProvider _applicationServiceProvider;
+        // Only created when hot-reload is enabled, so genuinely optional.
+        private readonly FileSystemWatcher? _fileWatcher;
 
         public string FilePath => _path;
-        private IServiceScope _serviceScope;
+        private IServiceScope _serviceScope = null!;
 
-        public string TerminationReason { get; private set; }
+        public string? TerminationReason { get; private set; }
 
         // TOOD: ServiceCollection
         private ILogger _logger = CoreLogging.Factory.CreateLogger<PluginContext>();
@@ -98,7 +101,7 @@ namespace CounterStrikeSharp.API.Core.Plugin
             {
                 _fileWatcher = new FileSystemWatcher
                 {
-                    Path = Path.GetDirectoryName(path)
+                    Path = Path.GetDirectoryName(path)!
                 };
 
                 _fileWatcher.Deleted += async (s, e) =>
@@ -156,7 +159,7 @@ namespace CounterStrikeSharp.API.Core.Plugin
             {
                 var defaultAssembly = Loader.LoadDefaultAssembly();
 
-                Type pluginType = defaultAssembly.GetExportedTypes()
+                Type? pluginType = defaultAssembly.GetExportedTypes()
                     .FirstOrDefault(t => typeof(IPlugin).IsAssignableFrom(t));
 
                 if (pluginType == null) throw new Exception("Unable to find plugin in assembly");
@@ -201,8 +204,15 @@ namespace CounterStrikeSharp.API.Core.Plugin
                 });
 
                 Type interfaceType = typeof(IPluginServiceCollection<>).MakeGenericType(pluginType);
+                // GetLoadableTypes, NOT assembly.GetTypes(): a failed/leaked plugin ALC
+                // can leave an assembly in the AppDomain whose own dependency (e.g. a
+                // missing 'shared' lib) won't resolve. Raw GetTypes() then throws
+                // ReflectionTypeLoadException for that ONE dead assembly and aborts the
+                // whole scan, so every later plugin fails the load with the unrelated
+                // assembly's missing-dependency error. Swallowing per-assembly keeps the
+                // blame on the plugin that actually needs the missing shared library.
                 Type[] serviceCollectionConfiguratorTypes = AppDomain.CurrentDomain.GetAssemblies()
-                    .SelectMany(assembly => assembly.GetTypes())
+                    .SelectMany(GetLoadableTypes)
                     .Where(type => interfaceType.IsAssignableFrom(type) && !type.IsInterface && !type.IsAbstract)
                     .ToArray();
 
@@ -211,7 +221,7 @@ namespace CounterStrikeSharp.API.Core.Plugin
                     foreach (var t in serviceCollectionConfiguratorTypes)
                     {
                         var pluginServiceCollection = Activator.CreateInstance(t);
-                        MethodInfo method = t.GetMethod("ConfigureServices");
+                        MethodInfo? method = t.GetMethod("ConfigureServices");
                         method?.Invoke(pluginServiceCollection, new object[] { serviceCollection });
                     }
                 }
@@ -233,13 +243,17 @@ namespace CounterStrikeSharp.API.Core.Plugin
                     throw new Exception(
                         $"Plugin \"{Path.GetFileName(_path)}\" requires a newer version of CounterStrikeSharp. The plugin expects version [{minimumApiVersion}] but the current version is [{currentVersion}].");
 
-                _logger.LogInformation("Loading plugin {Name}", pluginType.Assembly.GetName().Name);
+                // Pre-load line is Debug — the "Finished loading … in Nms" line below plus
+                // the startup summary table already cover the roster. Keeps boot output lean.
+                _logger.LogDebug("Loading plugin {Name}", pluginType.Assembly.GetName().Name);
 
-                _serviceScope = ServiceProvider.CreateScope();
+                _serviceScope = ServiceProvider!.CreateScope();
 
-                Plugin = _serviceScope.ServiceProvider.GetRequiredService(pluginType) as IPlugin;
+                var plugin = _serviceScope.ServiceProvider.GetRequiredService(pluginType) as IPlugin;
 
-                if (Plugin == null) throw new Exception("Unable to create plugin instance");
+                if (plugin == null) throw new Exception("Unable to create plugin instance");
+
+                Plugin = plugin;
 
                 State = PluginState.Loading;
 
@@ -288,8 +302,8 @@ namespace CounterStrikeSharp.API.Core.Plugin
                         // path re-pastes THIS exact banner (capped) so an operator who missed
                         // it the first time still gets the full, actionable report.
                         FunctionReference.RecordLoadFailure(
-                            Plugin.GetType().Assembly.GetName().Name,
-                            Plugin.ModuleName,
+                            Plugin.GetType().Assembly.GetName().Name!,
+                            Plugin.ModuleName!,
                             report);
                     }
 
@@ -309,6 +323,21 @@ namespace CounterStrikeSharp.API.Core.Plugin
         }
 
 
+        // Domain-wide reflection must tolerate assemblies whose dependencies don't
+        // resolve (leaked dead ALCs, a plugin missing its 'shared' lib). Return the
+        // types that DID resolve instead of throwing and killing the whole scan.
+        private static IEnumerable<Type> GetLoadableTypes(Assembly assembly)
+        {
+            try
+            {
+                return assembly.GetTypes();
+            }
+            catch (ReflectionTypeLoadException ex)
+            {
+                return ex.Types.Where(t => t != null)!;
+            }
+        }
+
         // Builds a human-readable blame report for a plugin load failure. Walks the
         // exception stack to decide whether the fault lies in the plugin's own code
         // or in CounterStrikeSharp itself, names the offending plugin frame, and
@@ -323,7 +352,7 @@ namespace CounterStrikeSharp.API.Core.Plugin
             // Find the deepest frame (closest to the throw) that belongs to the
             // plugin's own assembly, and the deepest CSSharp frame.
             var trace = new System.Diagnostics.StackTrace(root, true);
-            System.Diagnostics.StackFrame pluginFrame = null;
+            System.Diagnostics.StackFrame? pluginFrame = null;
             bool throwInsideCssharp = false;
             bool sawPluginFrame = false;
 
@@ -385,7 +414,6 @@ namespace CounterStrikeSharp.API.Core.Plugin
             }
 
             sb.AppendLine("Action:    Disable/remove this plugin, or contact its author with the trace above.");
-            sb.AppendLine("Support:   " + Diagnostics.PluginDiagnostics.SupportContact);
             sb.Append("============================================================");
             return sb.ToString();
         }
@@ -400,14 +428,14 @@ namespace CounterStrikeSharp.API.Core.Plugin
             var name = System.IO.Path.GetFileNameWithoutExtension(path);
 
             // Surface the deepest non-CSSharp frame if the trace has one.
-            string thirdPartyLoc = null;
+            string? thirdPartyLoc = null;
             var trace = new System.Diagnostics.StackTrace(root, true);
             foreach (var f in trace.GetFrames() ?? Array.Empty<System.Diagnostics.StackFrame>())
             {
                 var m = f.GetMethod();
                 var asm = m?.DeclaringType?.Assembly;
                 if (asm == null || asm == typeof(PluginContext).Assembly) continue;
-                thirdPartyLoc = m.DeclaringType.FullName + "." + m.Name + "()";
+                thirdPartyLoc = m!.DeclaringType!.FullName + "." + m.Name + "()";
                 break;
             }
 
@@ -418,22 +446,50 @@ namespace CounterStrikeSharp.API.Core.Plugin
             // No "Error:" line — the exception is already logged right above as a raw trace.
             if (thirdPartyLoc != null)
                 sb.AppendLine("Location:  " + thirdPartyLoc);
-            sb.AppendLine("Blame:     Plugin file '" + name + "' — CounterStrikeSharp could not turn this DLL into a working plugin.");
+            // Dependency-resolution failures (missing .deps.json, incomplete upload,
+            // file locked/missing at load) are INSTALL problems — the plugin itself is
+            // usually fine. Don't tell the operator to delete a working plugin.
+            bool dependencyIssue = IsDependencyResolutionFailure(root);
+
+            if (dependencyIssue)
+                sb.AppendLine("Blame:     Install/dependency issue — NOT necessarily a broken plugin. '" + name +
+                              "' could not have its dependencies resolved by the .NET host.");
+            else
+                sb.AppendLine("Blame:     Plugin file '" + name + "' — CounterStrikeSharp could not turn this DLL into a working plugin.");
 
             var hint = FixHintFor(root);
             if (hint != null)
                 sb.AppendLine("Fix:       " + hint);
 
-            sb.AppendLine("Action:    Remove this DLL from the plugins folder, or contact its author.");
-            sb.AppendLine("Support:   " + Diagnostics.PluginDiagnostics.SupportContact);
+            if (dependencyIssue)
+                sb.AppendLine("Action:    Re-upload the plugin's COMPLETE file set, then reload. Do NOT delete it unless the author confirms it's broken.");
+            else
+                sb.AppendLine("Action:    Remove this DLL from the plugins folder, or contact its author.");
             sb.Append("============================================================");
             return sb.ToString();
         }
 
-        // Maps common load-failure exceptions to a one-line remediation hint.
-        internal static string FixHintFor(Exception ex)
+        // True when the load died inside .NET host dependency resolution (McMaster's
+        // AssemblyDependencyResolver ctor). Means the runtime couldn't read this DLL's
+        // dependency metadata — an install/packaging fault, not bad plugin code.
+        internal static bool IsDependencyResolutionFailure(Exception ex)
         {
             var msg = ex.Message ?? string.Empty;
+            return msg.Contains("Dependency resolution failed")
+                   || msg.Contains("Failed to locate managed application");
+        }
+
+        // Maps common load-failure exceptions to a one-line remediation hint.
+        internal static string? FixHintFor(Exception ex)
+        {
+            var msg = ex.Message ?? string.Empty;
+
+            if (IsDependencyResolutionFailure(ex))
+                return "The .NET host could not initialize dependency resolution for this DLL. Usually an INSTALL "
+                     + "problem, not a broken plugin: a missing/corrupt '<PluginName>.deps.json', an incomplete "
+                     + "upload (only the .dll copied without its companion files), or the file was missing/locked "
+                     + "when load ran. Re-upload the plugin's complete release (all files, intact folder structure), "
+                     + "then load it again.";
 
             if (msg.Contains("Unable to find plugin in assembly"))
                 return "This DLL has no class extending BasePlugin / implementing IPlugin, so it is NOT a plugin. "
@@ -458,14 +514,14 @@ namespace CounterStrikeSharp.API.Core.Plugin
                               ?? (ex as System.IO.FileLoadException)?.FileName;
                 var simpleName = missing?.Split(',')[0];
 
-                if (simpleName != null && simpleName.IndexOf("Shared", StringComparison.OrdinalIgnoreCase) >= 0)
-                    return "Missing SHARED dependency '" + simpleName + "'. Shared libraries must be installed in "
-                         + "the 'shared' folder (addons/counterstrikesharp/shared/" + simpleName + "/" + simpleName
-                         + ".dll). Install the plugin/library that provides it.";
+                if (simpleName != null)
+                    return "Missing dependency '" + simpleName + "'. If it's a SHARED library (an API other plugins "
+                         + "use), install it in the 'shared' folder (addons/counterstrikesharp/shared/" + simpleName
+                         + "/" + simpleName + ".dll). Otherwise ship it next to the plugin's own .dll. Install the "
+                         + "plugin/library that provides '" + simpleName + "'.";
 
-                return "A dependency DLL is missing or mismatched"
-                     + (simpleName != null ? " ('" + simpleName + "')" : "")
-                     + ". Ship the plugin's required libraries next to its .dll, or install the shared library it needs.";
+                return "A dependency DLL is missing or mismatched. If it's a SHARED library, install it in "
+                     + "addons/counterstrikesharp/shared/<Name>/<Name>.dll; otherwise ship it next to the plugin's .dll.";
             }
 
             if (msg.Contains("Gamedata key") || msg.Contains("gamedata.json"))
