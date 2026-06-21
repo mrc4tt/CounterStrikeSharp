@@ -35,8 +35,7 @@ void Log::Init()
 
 void Log::AttachFileSink(const std::string& logDirectory)
 {
-    if (!m_core_logger)
-        return;
+    if (!m_core_logger) return;
 
     // A failure to open the log file must NOT take down the server. Degrade to
     // console-only logging and warn, rather than letting spdlog's exception
@@ -54,8 +53,7 @@ void Log::AttachFileSink(const std::string& logDirectory)
     }
     catch (const std::exception& ex)
     {
-        CSSHARP_CORE_WARN("Could not open log file in '{}' ({}). Continuing with console logging only.",
-                          logDirectory, ex.what());
+        CSSHARP_CORE_WARN("Could not open log file in '{}' ({}). Continuing with console logging only.", logDirectory, ex.what());
     }
 }
 
