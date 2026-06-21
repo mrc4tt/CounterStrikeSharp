@@ -79,7 +79,6 @@ namespace CounterStrikeSharp.API.Core
 
             if (dirs.Length == 0)
             {
-                logger.LogWarning("UpdateWatcher enabled but no binary directories found under {Root}; disabling.", rootPath);
                 return null;
             }
 
@@ -145,15 +144,6 @@ namespace CounterStrikeSharp.API.Core
 
                 _pending = true;
             }
-
-            _logger.LogWarning(
-                "==================== COUNTERSTRIKESHARP UPDATE DETECTED ====================");
-            _logger.LogWarning(
-                "On-disk change to a framework binary (e.g. {File}).", _firstChangedFile ?? "<unknown>");
-            _logger.LogWarning(
-                "The running server is STILL on the OLD binary and will keep running this match.");
-            _logger.LogWarning(
-                "A full process restart is required to load the new version (CS2 cannot hot-swap it).");
 
             if (CoreConfig.UpdateWatcherAutoRestart)
             {

@@ -20,20 +20,34 @@ namespace CounterStrikeSharp.API.Modules.Memory;
 // then later unhook still operate on one object.
 public static class VirtualFunctions
 {
-    private static readonly Lazy<MemoryFunctionVoid<IntPtr, HudDestination, string, IntPtr, IntPtr, IntPtr, IntPtr>> _clientPrintFunc =
-        new(() => new(GameData.GetSignature("ClientPrint")));
-    public static MemoryFunctionVoid<IntPtr, HudDestination, string, IntPtr, IntPtr, IntPtr, IntPtr> ClientPrintFunc => _clientPrintFunc.Value;
-    public static Action<IntPtr, HudDestination, string, IntPtr, IntPtr, IntPtr, IntPtr> ClientPrint => ClientPrintFunc.Invoke;
+    // Kept as eager public static FIELDS (not Lazy-backed properties like the rest of this class)
+    // for binary compatibility with plugins compiled against upstream CounterStrikeSharp.API
+    // (e.g. NuGet 1.0.369), where ClientPrint / ClientPrintFunc / ClientPrintAll / ClientPrintAllFunc
+    // are all public static FIELDS. Those plugins emit `ldsfld ClientPrintAll`; a property only
+    // exposes get_ClientPrintAll + a private backing field, so the ldsfld fails at load with
+    // MissingFieldException. Field signatures here match the NuGet metadata exactly (Action/
+    // MemoryFunctionVoid arg shapes verified against the 1.0.369 assembly). Eager resolution means a
+    // missing "ClientPrint"/"UTIL_ClientPrintAll" key throws TypeInitializationException for the whole
+    // class — acceptable since these are core sigs that are always present.
+    // Func fields must be declared AFTER their backing *Func field (static field init is textual order).
+    public static readonly MemoryFunctionVoid<IntPtr, HudDestination, string, IntPtr, IntPtr, IntPtr, IntPtr> ClientPrintFunc =
+        new(GameData.GetSignature("ClientPrint"));
+    public static readonly Action<IntPtr, HudDestination, string, IntPtr, IntPtr, IntPtr, IntPtr> ClientPrint = ClientPrintFunc.Invoke;
 
-    private static readonly Lazy<MemoryFunctionVoid<HudDestination, string, IntPtr, IntPtr, IntPtr, IntPtr, IntPtr>> _clientPrintAllFunc =
-        new(() => new(GameData.GetSignature("UTIL_ClientPrintAll")));
-    public static MemoryFunctionVoid<HudDestination, string, IntPtr, IntPtr, IntPtr, IntPtr, IntPtr> ClientPrintAllFunc => _clientPrintAllFunc.Value;
-    public static Action<HudDestination, string, IntPtr, IntPtr, IntPtr, IntPtr, IntPtr> ClientPrintAll => ClientPrintAllFunc.Invoke;
+    public static readonly MemoryFunctionVoid<HudDestination, string, IntPtr, IntPtr, IntPtr, IntPtr, IntPtr> ClientPrintAllFunc =
+        new(GameData.GetSignature("UTIL_ClientPrintAll"));
+    public static readonly Action<HudDestination, string, IntPtr, IntPtr, IntPtr, IntPtr, IntPtr> ClientPrintAll = ClientPrintAllFunc.Invoke;
 
     // void (*FnGiveNamedItem)(void* itemService,const char* pchName, void* iSubType,void* pScriptItem, void* a5,void* a6) = nullptr;
-    private static readonly Lazy<MemoryFunctionWithReturn<IntPtr, string, IntPtr, IntPtr, IntPtr, IntPtr, IntPtr>> _giveNamedItemFunc =
-        new(() => new(GameData.GetSignature("GiveNamedItem")));
-    public static MemoryFunctionWithReturn<IntPtr, string, IntPtr, IntPtr, IntPtr, IntPtr, IntPtr> GiveNamedItemFunc => _giveNamedItemFunc.Value;
+    // NOTE: kept as an eager public static FIELD (not a Lazy-backed property like the others)
+    // for binary compatibility with plugins compiled against upstream CounterStrikeSharp.API
+    // (e.g. NuGet 1.0.369), where this is a field. Those plugins emit `ldsfld GiveNamedItemFunc`;
+    // a property only exposes get_GiveNamedItemFunc + a `_giveNamedItemFunc` backing field, so the
+    // ldsfld fails at load with MissingFieldException. Eager resolution means a missing "GiveNamedItem"
+    // gamedata key throws TypeInitializationException for the whole class — acceptable here since the
+    // sig is required and present.
+    public static readonly MemoryFunctionWithReturn<IntPtr, string, IntPtr, IntPtr, IntPtr, IntPtr, IntPtr> GiveNamedItemFunc =
+        new(GameData.GetSignature("GiveNamedItem"));
     public static Func<IntPtr, string, IntPtr, IntPtr, IntPtr, IntPtr, IntPtr> GiveNamedItem => GiveNamedItemFunc.Invoke;
 
     private static readonly Lazy<MemoryFunctionVoid<IntPtr, byte>> _switchTeamFunc =
