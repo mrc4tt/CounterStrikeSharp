@@ -1,11 +1,6 @@
 name: Code format checks
 
 on:
-  pull_request:
-    paths:
-      - '.github/workflows/**'
-      - 'src/**'
-      - '.clang-format'
   push:
     paths:
       - '.github/workflows/**'

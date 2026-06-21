@@ -8,16 +8,10 @@ env:
 permissions: {}
 
 # Windows native builds live in build-windows.yml (GitHub-only, on tags).
-# This workflow runs on GitHub for CI validation (push/PR) and is the one
-# driven locally via `act` to cut the actual Linux release.
+# This workflow does NOT auto-run on GitHub — no push/PR trigger.
+# It is driven entirely locally via `act` to validate + cut the Linux release.
+# Run locally: `act workflow_dispatch --input confirm_local=LOCAL`
 on:
-  push:
-    paths-ignore:
-      - "docfx/**"
-      - "README.md"
-    branches: ["main"]
-  pull_request:
-    branches: ["main"]
   workflow_dispatch:
     inputs:
       confirm_local:
