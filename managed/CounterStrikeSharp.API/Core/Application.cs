@@ -141,7 +141,9 @@ namespace CounterStrikeSharp.API.Core
             var versionString = $"v{Api.GetVersion()} ({Api.GetVersionString()})";
 
             info.ReplyToCommand(
-                "  CounterStrikeSharp was created and is maintained by Michael \"roflmuffin\" Wilson.\n" +
+                "  CounterStrikeSharp is a custom-focused fork by Miksen\n" +
+                "  Based on CounterStrikeSharp, originally created by Michael \"roflmuffin\" Wilson.\n" +
+                "  This is not an official upstream CounterStrikeSharp release.\n" +
                 "  Counter-Strike Sharp uses code borrowed from SourceMod, Source.Python, FiveM, Saul Rennison, source2gen and CS2Fixes.\n" +
                 "  See ACKNOWLEDGEMENTS.md for more information.\n" +
                 "  Current API Version: " + versionString);

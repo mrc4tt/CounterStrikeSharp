@@ -42,8 +42,8 @@
              warnings are deliberately NOT suppressed — they are the null-deref radar. -->
         <NoWarn>$(NoWarn);CS1591;CP0003;CS1573;CS1574;CS1572;CS1711;CS0419</NoWarn>
         <Nullable>enable</Nullable>
-        <Authors>Roflmuffin</Authors>
-        <Description>Official server side runtime assembly for CounterStrikeSharp</Description>
+        <Authors>Miksen</Authors>
+        <Description>Forked server side runtime assembly for CounterStrikeSharp</Description>
         <PackageProjectUrl>http://docs.cssharp.dev/</PackageProjectUrl>
         <RepositoryUrl>https://github.com/roflmuffin/CounterStrikeSharp</RepositoryUrl>
         <PackageLicenseExpression>GPL-3.0-only</PackageLicenseExpression>

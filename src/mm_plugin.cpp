@@ -405,9 +405,9 @@ const char* CounterStrikeSharpMMPlugin::GetDate() { return BUILD_TIMESTAMP; }
 
 const char* CounterStrikeSharpMMPlugin::GetLogTag() { return "CSSHARP"; }
 
-const char* CounterStrikeSharpMMPlugin::GetAuthor() { return "Roflmuffin (forked by Miksen)"; }
+const char* CounterStrikeSharpMMPlugin::GetAuthor() { return "Miksen"; }
 
-const char* CounterStrikeSharpMMPlugin::GetDescription() { return "Counter Strike .NET Scripting Runtime"; }
+const char* CounterStrikeSharpMMPlugin::GetDescription() { return "Counter Strike .NET Scripting Runtime forked"; }
 
 const char* CounterStrikeSharpMMPlugin::GetName() { return "CounterStrikeSharp"; }
 
