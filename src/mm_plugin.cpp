@@ -326,7 +326,7 @@ namespace {
 //   >0    -> explicit budget in milliseconds
 // Warnings are throttled to at most once per 250ms so a spike storm can't itself
 // flood logging and make things worse.
-double g_frame_warn_ms = -1.0;       // <0 = not yet initialized
+double g_frame_warn_ms = -1.0; // <0 = not yet initialized
 double g_frame_warn_last_log_s = 0.0; // steady seconds of last emitted warning
 
 double ResolveFrameWarnBudgetMs()
@@ -340,7 +340,7 @@ double ResolveFrameWarnBudgetMs()
     }
 
     double tick = counterstrikesharp::globals::engine_fixed_tick_interval; // seconds
-    if (tick <= 0.0) tick = 1.0 / 64.0;                                    // pre-init fallback
+    if (tick <= 0.0) tick = 1.0 / 64.0; // pre-init fallback
     // 3x tick (~46.9ms @ 64t): only flag frames well past budget so transient
     // single-frame bursts (round start, map event, plugin timer coalescing)
     // don't spam. Override with CSSHARP_FRAME_WARN_MS.

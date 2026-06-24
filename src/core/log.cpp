@@ -38,8 +38,8 @@ void Log::Init()
     // stall we are removing, so we trade (rare, only-under-flood) lost log lines
     // for a game thread that never waits on logging.
     spdlog::init_thread_pool(8192, 1);
-    m_core_logger = std::make_shared<spdlog::async_logger>("CSSharp", color_sink, spdlog::thread_pool(),
-                                                           spdlog::async_overflow_policy::overrun_oldest);
+    m_core_logger =
+        std::make_shared<spdlog::async_logger>("CSSharp", color_sink, spdlog::thread_pool(), spdlog::async_overflow_policy::overrun_oldest);
     spdlog::register_logger(m_core_logger);
     m_core_logger->set_level(spdlog::level::info);
     // Flush only on warn+ instead of every info line. Combined with the periodic
