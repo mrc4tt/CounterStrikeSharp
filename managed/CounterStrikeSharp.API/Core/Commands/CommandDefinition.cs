@@ -27,6 +27,13 @@ public class CommandDefinition
 
     public int? MinArgs { get; init; }
 
+    /// <summary>
+    /// Owning plugin's <c>ModuleName</c>, set when a plugin registers the command.
+    /// Used by the slow-frame profiler to attribute the callback's cost. Null for
+    /// commands registered by the core itself.
+    /// </summary>
+    public string? PluginName { get; init; }
+
     public override string ToString()
     {
         return $"Name: {Name}, Description: {Description}, ExecutableBy: {ExecutableBy}, " +

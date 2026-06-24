@@ -86,6 +86,13 @@ public class MemoryFunctionWithReturn<T1, T2, TResult> : BaseMemoryFunction
     {
     }
 
+    // Deferred-signature: store the function in a static FIELD without resolving the
+    // gamedata sig until first Invoke. See BaseMemoryFunction deferred ctor.
+    public MemoryFunctionWithReturn(Func<string> signatureFactory) : base(signatureFactory, typeof(TResult).ToValidDataType(),
+        new[] { typeof(T1).ToValidDataType(), typeof(T2).ToValidDataType() })
+    {
+    }
+
     internal MemoryFunctionWithReturn(IntPtr objectPtr, int offset) : base(objectPtr, typeof(T1).Name, offset,
         typeof(TResult).ToValidDataType(),
         new[] { typeof(T1).ToValidDataType(), typeof(T2).ToValidDataType() })
@@ -178,6 +185,17 @@ public class MemoryFunctionWithReturn<T1, T2, T3, T4, TResult> : BaseMemoryFunct
     }
 
     public MemoryFunctionWithReturn(string signature, string binarypath) : base(signature, binarypath, typeof(TResult).ToValidDataType(),
+        new[]
+        {
+            typeof(T1).ToValidDataType(), typeof(T2).ToValidDataType(), typeof(T3).ToValidDataType(),
+            typeof(T4).ToValidDataType()
+        })
+    {
+    }
+
+    // Deferred-signature: store the function in a static FIELD without resolving the
+    // gamedata sig until first Invoke. See BaseMemoryFunction deferred ctor.
+    public MemoryFunctionWithReturn(Func<string> signatureFactory) : base(signatureFactory, typeof(TResult).ToValidDataType(),
         new[]
         {
             typeof(T1).ToValidDataType(), typeof(T2).ToValidDataType(), typeof(T3).ToValidDataType(),

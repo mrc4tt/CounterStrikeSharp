@@ -14,7 +14,9 @@
 
 #include "mm_plugin.h"
 
+#include <chrono>
 #include <cstdio>
+#include <cstdlib>
 #include <mutex>
 #include <unordered_set>
 
@@ -311,8 +313,44 @@ void CounterStrikeSharpMMPlugin::AllPluginsLoaded()
     }
 }
 
+namespace {
+// Frame-time watchdog. Measures how long the per-tick work below takes and logs
+// a WARN when a single frame blows past its budget, so "the server feels laggy"
+// becomes "tick N took X ms". Off the hot path when frames are healthy: one
+// steady_clock read at each end plus a compare.
+//
+// Threshold (ms) comes from env CSSHARP_FRAME_WARN_MS:
+//   unset -> default to 2x the engine tick interval (silent on normal frames,
+//            warns only on real spikes)
+//   0     -> disabled
+//   >0    -> explicit budget in milliseconds
+// Warnings are throttled to at most once per 250ms so a spike storm can't itself
+// flood logging and make things worse.
+double g_frame_warn_ms = -1.0;       // <0 = not yet initialized
+double g_frame_warn_last_log_s = 0.0; // steady seconds of last emitted warning
+
+double ResolveFrameWarnBudgetMs()
+{
+    const char* env = std::getenv("CSSHARP_FRAME_WARN_MS");
+    if (env != nullptr && env[0] != '\0')
+    {
+        char* end = nullptr;
+        double v = std::strtod(env, &end);
+        if (end != env && v >= 0.0) return v; // 0 => disabled
+    }
+
+    double tick = counterstrikesharp::globals::engine_fixed_tick_interval; // seconds
+    if (tick <= 0.0) tick = 1.0 / 64.0;                                    // pre-init fallback
+    // 3x tick (~46.9ms @ 64t): only flag frames well past budget so transient
+    // single-frame bursts (round start, map event, plugin timer coalescing)
+    // don't spam. Override with CSSHARP_FRAME_WARN_MS.
+    return tick * 1000.0 * 3.0;
+}
+} // namespace
+
 void CounterStrikeSharpMMPlugin::Hook_GameFrame(bool simulating, bool bFirstTick, bool bLastTick)
 {
+    const auto _wd_frame_start = std::chrono::steady_clock::now();
     /**
      * simulating:
      * ***********
@@ -352,6 +390,31 @@ void CounterStrikeSharpMMPlugin::Hook_GameFrame(bool simulating, bool bFirstTick
         for (auto& callback : callbacks)
         {
             callback();
+        }
+    }
+
+    if (g_frame_warn_ms < 0.0) g_frame_warn_ms = ResolveFrameWarnBudgetMs();
+    // Warmup grace: the first seconds after load are dominated by one-off
+    // cold-start cost -- JIT-compiling managed/plugin code paths on first call
+    // and startup GC. These produce unavoidable, non-actionable frame spikes
+    // (e.g. 100+ ms on tick ~70). Suppress the watchdog until the engine has
+    // ticked past the warmup window so the warning only flags steady-state
+    // regressions. R2R reduces but does not eliminate cold-start JIT.
+    const int kFrameWarnWarmupTicks = 640; // ~10s at 64 tick
+    if (g_frame_warn_ms > 0.0 && globals::getGlobalVars()->tickcount > kFrameWarnWarmupTicks)
+    {
+        const auto _wd_now = std::chrono::steady_clock::now();
+        const double frame_ms = std::chrono::duration<double, std::milli>(_wd_now - _wd_frame_start).count();
+        if (frame_ms > g_frame_warn_ms)
+        {
+            const double now_s = std::chrono::duration<double>(_wd_now.time_since_epoch()).count();
+            if (now_s - g_frame_warn_last_log_s >= 0.25)
+            {
+                g_frame_warn_last_log_s = now_s;
+                CSSHARP_CORE_WARN("Slow CS# frame: {:.2f} ms (budget {:.2f} ms) on tick {}. "
+                                  "Likely a plugin OnTick/timer/event handler or a GC pause.",
+                                  frame_ms, g_frame_warn_ms, globals::getGlobalVars()->tickcount);
+            }
         }
     }
 }

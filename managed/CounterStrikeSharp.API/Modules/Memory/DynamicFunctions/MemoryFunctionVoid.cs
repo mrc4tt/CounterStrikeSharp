@@ -39,6 +39,12 @@ public class MemoryFunctionVoid<T1> : BaseMemoryFunction
     {
     }
 
+    // Deferred-signature: store in a static FIELD, resolve sig on first Invoke. See BaseMemoryFunction.
+    public MemoryFunctionVoid(Func<string> signatureFactory) : base(signatureFactory, DataType.DATA_TYPE_VOID,
+        new[] { typeof(T1).ToValidDataType() })
+    {
+    }
+
     internal MemoryFunctionVoid(IntPtr objectPtr, int offset) : base(objectPtr, typeof(T1).Name, offset, DataType.DATA_TYPE_VOID,
         new[] { typeof(T1).ToValidDataType() })
     {
@@ -79,6 +85,12 @@ public class MemoryFunctionVoid<T1, T2> : BaseMemoryFunction
     }
 
     public MemoryFunctionVoid(string signature, string binarypath) : base(signature, binarypath, DataType.DATA_TYPE_VOID,
+        new[] { typeof(T1).ToValidDataType(), typeof(T2).ToValidDataType() })
+    {
+    }
+
+    // Deferred-signature: store in a static FIELD, resolve sig on first Invoke. See BaseMemoryFunction.
+    public MemoryFunctionVoid(Func<string> signatureFactory) : base(signatureFactory, DataType.DATA_TYPE_VOID,
         new[] { typeof(T1).ToValidDataType(), typeof(T2).ToValidDataType() })
     {
     }
@@ -127,6 +139,12 @@ public class MemoryFunctionVoid<T1, T2, T3> : BaseMemoryFunction
     {
     }
 
+    // Deferred-signature: store in a static FIELD, resolve sig on first Invoke. See BaseMemoryFunction.
+    public MemoryFunctionVoid(Func<string> signatureFactory) : base(signatureFactory, DataType.DATA_TYPE_VOID,
+        new[] { typeof(T1).ToValidDataType(), typeof(T2).ToValidDataType(), typeof(T3).ToValidDataType() })
+    {
+    }
+
     internal MemoryFunctionVoid(IntPtr objectPtr, int offset) : base(objectPtr, typeof(T1).Name, offset, DataType.DATA_TYPE_VOID,
         new[] { typeof(T1).ToValidDataType(), typeof(T2).ToValidDataType(), typeof(T3).ToValidDataType() })
     {
@@ -171,6 +189,16 @@ public class MemoryFunctionVoid<T1, T2, T3, T4> : BaseMemoryFunction
     }
 
     public MemoryFunctionVoid(string signature, string binarypath) : base(signature, binarypath, DataType.DATA_TYPE_VOID,
+        new[]
+        {
+            typeof(T1).ToValidDataType(), typeof(T2).ToValidDataType(),
+            typeof(T3).ToValidDataType(), typeof(T4).ToValidDataType()
+        })
+    {
+    }
+
+    // Deferred-signature: store in a static FIELD, resolve sig on first Invoke. See BaseMemoryFunction.
+    public MemoryFunctionVoid(Func<string> signatureFactory) : base(signatureFactory, DataType.DATA_TYPE_VOID,
         new[]
         {
             typeof(T1).ToValidDataType(), typeof(T2).ToValidDataType(),
@@ -240,6 +268,17 @@ public class MemoryFunctionVoid<T1, T2, T3, T4, T5> : BaseMemoryFunction
     }
 
     public MemoryFunctionVoid(string signature, string binarypath) : base(signature, binarypath, DataType.DATA_TYPE_VOID,
+        new[]
+        {
+            typeof(T1).ToValidDataType(), typeof(T2).ToValidDataType(),
+            typeof(T3).ToValidDataType(), typeof(T4).ToValidDataType(),
+            typeof(T5).ToValidDataType()
+        })
+    {
+    }
+
+    // Deferred-signature: store in a static FIELD, resolve sig on first Invoke. See BaseMemoryFunction.
+    public MemoryFunctionVoid(Func<string> signatureFactory) : base(signatureFactory, DataType.DATA_TYPE_VOID,
         new[]
         {
             typeof(T1).ToValidDataType(), typeof(T2).ToValidDataType(),

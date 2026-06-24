@@ -92,6 +92,28 @@ namespace CounterStrikeSharp.API.Core
 
         [JsonPropertyName("UpdateWatcherRestartCommand")]
         public string UpdateWatcherRestartCommand { get; set; } = "quit";
+
+        [JsonPropertyName("SlowFrameDetectionEnabled")]
+        public bool SlowFrameDetectionEnabled { get; set; } = true;
+
+        // 0 => auto: 2x the engine tick interval (~31ms at 64 tick).
+        [JsonPropertyName("SlowFrameBudgetMs")]
+        public double SlowFrameBudgetMs { get; set; } = 0;
+
+        [JsonPropertyName("SlowFrameLogFile")]
+        public string SlowFrameLogFile { get; set; } = "logs/slowframes.log";
+
+        [JsonPropertyName("SlowFrameTopN")]
+        public int SlowFrameTopN { get; set; } = 5;
+
+        // Leave empty in the committed default (private fork: set it in the server's
+        // own core.json, or via the CSSHARP_SLOWFRAME_WEBHOOK env var which overrides
+        // this). The env var is preferred so the secret never lives in a tracked file.
+        [JsonPropertyName("SlowFrameDiscordWebhookUrl")]
+        public string SlowFrameDiscordWebhookUrl { get; set; } = "";
+
+        [JsonPropertyName("SlowFrameDiscordCooldownSeconds")]
+        public int SlowFrameDiscordCooldownSeconds { get; set; } = 300;
     }
 
     /// <summary>
@@ -209,6 +231,32 @@ namespace CounterStrikeSharp.API.Core
         /// different shutdown command.
         /// </summary>
         public static string UpdateWatcherRestartCommand => _coreConfig.UpdateWatcherRestartCommand;
+
+        /// <summary>
+        /// When enabled, CounterStrikeSharp times each plugin's per-tick handlers and,
+        /// when a frame exceeds <see cref="SlowFrameBudgetMs"/>, writes a report naming
+        /// the dominant plugin(s) to <see cref="SlowFrameLogFile"/> and optionally a
+        /// Discord webhook. Designed to answer "which plugin is lagging my server".
+        /// </summary>
+        public static bool SlowFrameDetectionEnabled => _coreConfig.SlowFrameDetectionEnabled;
+
+        /// <summary>Per-frame budget in ms. 0 = auto (2x the engine tick interval).</summary>
+        public static double SlowFrameBudgetMs => _coreConfig.SlowFrameBudgetMs;
+
+        /// <summary>Report log file. Relative paths resolve against the addons root.</summary>
+        public static string SlowFrameLogFile => _coreConfig.SlowFrameLogFile;
+
+        /// <summary>How many plugins to list per report.</summary>
+        public static int SlowFrameTopN => _coreConfig.SlowFrameTopN;
+
+        /// <summary>
+        /// Discord webhook for slow-frame reports. Empty = file only. Overridden by the
+        /// CSSHARP_SLOWFRAME_WEBHOOK environment variable when that is set.
+        /// </summary>
+        public static string SlowFrameDiscordWebhookUrl => _coreConfig.SlowFrameDiscordWebhookUrl;
+
+        /// <summary>Minimum seconds between Discord posts (anti-spam / rate-limit guard).</summary>
+        public static int SlowFrameDiscordCooldownSeconds => _coreConfig.SlowFrameDiscordCooldownSeconds;
     }
 
     public partial class CoreConfig : IStartupService
@@ -219,6 +267,7 @@ namespace CounterStrikeSharp.API.Core
         private readonly ILogger<CoreConfig> _logger;
 
         private readonly string _coreConfigPath;
+        private readonly string _rootPath;
         private bool _commandsRegistered = false;
 
         public CoreConfig(IScriptHostConfiguration scriptHostConfiguration, ICommandManager commandManager, ILogger<CoreConfig> logger)
@@ -226,6 +275,7 @@ namespace CounterStrikeSharp.API.Core
             _commandManager = commandManager;
             _logger = logger;
             _coreConfigPath = Path.Join(scriptHostConfiguration.ConfigsPath, "core.json");
+            _rootPath = scriptHostConfiguration.RootPath;
         }
 
         [RequiresPermissions("@css/config")]
@@ -296,7 +346,33 @@ namespace CounterStrikeSharp.API.Core
             // via css_core_reload — lowering to "debug" surfaces the demoted boot lines.
             CoreLogging.SetVerbosity(LogVerbosity);
 
+            ConfigureSlowFrameDetection();
+
             _logger.LogInformation("Successfully loaded core configuration");
+        }
+
+        private void ConfigureSlowFrameDetection()
+        {
+            // Webhook precedence: env var (preferred — keeps the secret out of any
+            // tracked file) overrides the core.json value. Empty => file-only.
+            string webhook = Environment.GetEnvironmentVariable("CSSHARP_SLOWFRAME_WEBHOOK");
+            if (string.IsNullOrEmpty(webhook)) webhook = SlowFrameDiscordWebhookUrl;
+
+            // 0 => auto: 2x the engine tick interval. CS2 runs a fixed 64-tick sim
+            // (0.015625s), matching the native side's engine_fixed_tick_interval.
+            double budget = SlowFrameBudgetMs > 0 ? SlowFrameBudgetMs : (1000.0 / 64.0) * 2.0;
+
+            Profiling.PluginProfiler.Configure(SlowFrameDetectionEnabled, budget);
+            Profiling.SlowFrameReporter.Configure(SlowFrameDetectionEnabled, _rootPath, SlowFrameLogFile, webhook,
+                SlowFrameTopN, SlowFrameDiscordCooldownSeconds);
+
+            if (SlowFrameDetectionEnabled)
+            {
+                _logger.LogInformation(
+                    "Slow-frame detection on (budget {Budget:F1}ms, report -> {Log}{Discord}).",
+                    budget, SlowFrameLogFile,
+                    string.IsNullOrEmpty(webhook) ? "" : " + Discord");
+            }
         }
     }
 }

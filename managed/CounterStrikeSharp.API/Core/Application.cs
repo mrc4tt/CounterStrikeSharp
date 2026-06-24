@@ -160,7 +160,10 @@ namespace CounterStrikeSharp.API.Core
                     info.ReplyToCommand(
                         $"  List of all plugins currently loaded by CounterStrikeSharp: {_pluginManager.GetLoadedPlugins().Count()} plugins loaded.");
 
-                    foreach (var plugin in _pluginManager.GetLoadedPlugins())
+                    // Order by PluginId so a reloaded plugin (which is re-appended to the backing
+                    // list on unload+load) shows in its numeric slot instead of jumping to the end.
+                    // With gap-filled ids this keeps #N and list position stable across reloads.
+                    foreach (var plugin in _pluginManager.GetLoadedPlugins().OrderBy(p => p.PluginId))
                     {
                         var sb = new StringBuilder();
                         sb.AppendFormat("  [#{0}:{1}]: \"{2}\" ({3})", plugin.PluginId,

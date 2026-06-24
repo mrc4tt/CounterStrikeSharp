@@ -1,8 +1,10 @@
 #include "core/log.h"
 
 #include <cctype>
+#include <chrono>
 #include <filesystem>
 
+#include <spdlog/async.h>
 #include <spdlog/sinks/basic_file_sink.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <spdlog/cfg/env.h>
@@ -25,10 +27,25 @@ void Log::Init()
 #endif
     color_sink->set_pattern("%^[%T.%e] [%l] %n: %v%$");
 
-    m_core_logger = std::make_shared<spdlog::logger>("CSSharp", color_sink);
+    // Async logging so disk/console IO never runs on the caller (game) thread.
+    // A synchronous logger with flush_on(info) wrote+fsync'd on whatever thread
+    // logged -- any info-level line on the per-tick path stalled the game thread
+    // for the duration of the write => frame spikes. The async_logger hands the
+    // formatted message to a background worker instead.
+    //
+    // overrun_oldest: if the queue ever fills, drop the OLDEST queued message
+    // rather than block the producer. Blocking here would reintroduce the exact
+    // stall we are removing, so we trade (rare, only-under-flood) lost log lines
+    // for a game thread that never waits on logging.
+    spdlog::init_thread_pool(8192, 1);
+    m_core_logger = std::make_shared<spdlog::async_logger>("CSSharp", color_sink, spdlog::thread_pool(),
+                                                           spdlog::async_overflow_policy::overrun_oldest);
     spdlog::register_logger(m_core_logger);
     m_core_logger->set_level(spdlog::level::info);
-    m_core_logger->flush_on(spdlog::level::info);
+    // Flush only on warn+ instead of every info line. Combined with the periodic
+    // flush below, info still reaches disk within ~2s without an fsync per line.
+    m_core_logger->flush_on(spdlog::level::warn);
+    spdlog::flush_every(std::chrono::seconds(2));
 
     spdlog::cfg::load_env_levels();
 }
@@ -84,12 +101,20 @@ void Log::SetLevelFromString(const std::string& level)
         parsed = spdlog::level::info;
 
     m_core_logger->set_level(parsed);
-    m_core_logger->flush_on(parsed);
+    // Keep flush trigger at warn+ regardless of verbosity. flush_on(parsed) at
+    // info/debug/trace would fsync on (almost) every line, defeating the async
+    // logger. The periodic flush_every set in Init() still drains lower levels.
+    m_core_logger->flush_on(parsed < spdlog::level::warn ? spdlog::level::warn : parsed);
 }
 
 void Log::Close()
 {
-    spdlog::drop("CSSharp");
+    // Flush the async queue and join the worker thread BEFORE dropping the
+    // logger. Otherwise the background worker could still be writing into sinks
+    // that are being torn down on unload -> use-after-free. shutdown() drains
+    // the thread pool and stops the worker.
+    if (m_core_logger) m_core_logger->flush();
+    spdlog::shutdown();
     m_core_logger = nullptr;
 }
 } // namespace counterstrikesharp

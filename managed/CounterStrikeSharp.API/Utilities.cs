@@ -232,10 +232,20 @@ namespace CounterStrikeSharp.API
         {
             Guard.IsValidEntity(entity);
 
+            // Skip non-networked fields BEFORE forwarding on either path (matches upstream).
+            // A field with no send-table entry cannot be resolved by the engine; forwarding it
+            // — direct OR via the chain entity — makes the engine spam "Couldn't resolve offset
+            // <N> in <Class>" on EVERY call (seen with plugins that SetStateChanged inventory/
+            // weapon-slot sub-fields on CCSPlayerController, e.g. offset 3920). The previous fork
+            // behaviour forwarded anyway (commit 727c6f98, no rationale) which caused the spam.
+            // Mark the correct networked parent (the pointer/handle field) instead.
             if (!Schema.IsSchemaFieldNetworked(className, fieldName))
             {
                 Application.Instance.Logger.LogDebug(
-                    "Field {ClassName}:{FieldName} is not flagged networked; forwarding SetStateChanged anyway (sub-component / chain field).", className, fieldName);
+                    "Field {ClassName}:{FieldName} is not send-table networked; skipping SetStateChanged "
+                    + "(the engine cannot resolve a non-networked offset). Mark the networked parent instead.",
+                    className, fieldName);
+                return;
             }
 
             int offset = Schema.GetSchemaOffset(className, fieldName);

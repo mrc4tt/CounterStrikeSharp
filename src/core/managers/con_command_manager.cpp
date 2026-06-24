@@ -259,6 +259,13 @@ void ConCommandManager::OnShutdown()
 
     globals::callbackManager.ReleaseCallback(m_global_cmd.callback_pre);
     globals::callbackManager.ReleaseCallback(m_global_cmd.callback_post);
+    // Null the pointers so ~ConCommandInfo() does not ReleaseCallback (=
+    // delete) the same callbacks a second time. m_global_cmd is a value member
+    // of this manager: OnShutdown runs on Unload, then the member's destructor
+    // runs at object/static teardown and would double-free -> "double free or
+    // corruption (out)" on shutdown. ReleaseCallback(nullptr) is a safe no-op.
+    m_global_cmd.callback_pre = nullptr;
+    m_global_cmd.callback_post = nullptr;
 }
 
 void CommandCallback(const CCommandContext& context, const CCommand& command)

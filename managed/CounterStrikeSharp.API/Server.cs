@@ -35,15 +35,22 @@ namespace CounterStrikeSharp.API
 
         internal static void OnTick()
         {
-            ExecuteTickTasks(_onTickTaskQueue);
+            // Per-frame boundary for the plugin profiler: finalizes the frame whose
+            // handlers ran since the last tick and emits a slow-frame report once a
+            // second when warranted. Registered before plugins load (Server.Initialize
+            // runs at startup), so it bounds a full tick of plugin activity. No-op when
+            // profiling is disabled.
+            Core.Profiling.PluginProfiler.OnFrameBoundary();
+
+            ExecuteTickTasks(_onTickTaskQueue, "core:nextframe");
         }
 
         internal static void OnWorldUpdate()
         {
-            ExecuteTickTasks(_onWorldUpdateTaskQueue);
+            ExecuteTickTasks(_onWorldUpdateTaskQueue, "core:worldupdate");
         }
 
-        private static void ExecuteTickTasks(ConcurrentQueue<Action> taskQueue)
+        private static void ExecuteTickTasks(ConcurrentQueue<Action> taskQueue, string profilerBucket)
         {
             int count = Math.Min(taskQueue.Count, CoreConfig.MaximumFrameTasksExecutedPerTick);
             for (int i = 0; i < count; i++)
@@ -51,6 +58,11 @@ namespace CounterStrikeSharp.API
                 if (!taskQueue.TryDequeue(out var task))
                     break;
 
+                // Server.NextFrame / RunOnTick callbacks (heavily used by plugins) ran unprofiled here,
+                // so their cost was invisible to the slow-frame report. Attribute it to a dedicated bucket.
+                // The closures carry no plugin identity, so we cannot split per-plugin; Begin/End are a
+                // no-op when profiling is disabled.
+                var pf = Core.Profiling.PluginProfiler.Begin();
                 try
                 {
                     task();
@@ -58,6 +70,10 @@ namespace CounterStrikeSharp.API
                 catch (Exception e)
                 {
                     Application.Instance.Logger.LogError(e, "Error invoking callback");
+                }
+                finally
+                {
+                    Core.Profiling.PluginProfiler.End(profilerBucket, pf);
                 }
             }
         }

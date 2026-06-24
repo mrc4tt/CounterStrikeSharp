@@ -25,6 +25,22 @@
         <ConcurrentGarbageCollection>true</ConcurrentGarbageCollection>
         <TieredCompilation>true</TieredCompilation>
         <TieredPGO>true</TieredPGO>
+        <!--
+          ReadyToRun: precompile this assembly's IL to native at publish time so
+          its methods don't JIT on FIRST call. Without R2R the JIT runs on the
+          game thread the first time each code path executes (map change, first
+          kill, first round, first time a plugin path is hit) => visible one-off
+          frame hitches. R2R images still tier up under TieredPGO afterwards, so
+          steady-state perf is unchanged; this only removes the cold-start stutter.
+          NOTE: only takes effect on `dotnet publish` with a RuntimeIdentifier
+          (the build/publish pipeline passes linux-x64 / win-x64). It precompiles
+          CSSharp core only; plugin assemblies must opt into R2R themselves.
+
+          Gated on RuntimeIdentifier: R2R needs a RID-specific crossgen runtime
+          package. A plain `dotnet build`/`publish` with no RID would otherwise
+          fail with NETSDK1094 ("a valid runtime package was not found").
+        -->
+        <PublishReadyToRun Condition="'$(RuntimeIdentifier)' != ''">true</PublishReadyToRun>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <!-- Package/assembly API-compat validation is OFF. It compared this assembly
              against a frozen upstream baseline (ApiCompat/v202.dll); this hard fork has

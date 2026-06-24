@@ -42,7 +42,12 @@ class CGameSystem : public CBaseGameSystem
     void Shutdown() override
     {
         CSSHARP_CORE_INFO("CGameSystem::Shutdown");
-        delete sm_Factory;
+        // Do NOT delete sm_Factory here. This Shutdown() is invoked through
+        // CGameSystemStaticFactory::Shutdown() (m_pActualGlobal->Shutdown()),
+        // so deleting the factory frees the very object whose method is still
+        // executing, and the freed node remains linked in the engine's
+        // sm_pFirst game-system list -> heap corruption / double free on
+        // shutdown. The process is exiting, so let the OS reclaim it.
     }
 
     void SetGameSystemGlobalPtrs(void* pValue) override

@@ -241,10 +241,23 @@ public class PluginManager : IPluginManager
         return _loadedPluginContexts;
     }
 
+    // Lowest unused positive plugin id (gap-fill). Using max+1 instead meant an unload+load
+    // (or file-watcher hot-reload) never reused the freed slot — the id kept climbing, so a
+    // reloaded plugin showed up as e.g. #12 instead of its original #6 and jumped position in
+    // `css_plugins list`. Gap-fill returns it to the lowest free id, keeping ids stable across
+    // reloads. O(n^2) worst case, but n = plugin count (tens), so trivial.
+    private int NextFreePluginId()
+    {
+        var used = new HashSet<int>(_loadedPluginContexts.Select(x => x.PluginId));
+        int id = 1;
+        while (used.Contains(id)) id++;
+        return id;
+    }
+
     public void LoadPlugin(string path)
     {
         var plugin = new PluginContext(_serviceProvider, _commandManager, _scriptHostConfiguration, path,
-            _loadedPluginContexts.Select(x => x.PluginId).DefaultIfEmpty(0).Max() + 1);
+            NextFreePluginId());
         plugin.OnRequestRemoval = () => RemovePlugin(plugin);
         _loadedPluginContexts.Add(plugin);
 

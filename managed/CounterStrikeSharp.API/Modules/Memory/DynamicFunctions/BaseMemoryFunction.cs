@@ -124,6 +124,33 @@ public abstract class BaseMemoryFunction : NativeObject
     {
     }
 
+    // ── Deferred signature resolution ──
+    // Lets a MemoryFunction be stored in an eager `static readonly` FIELD (so plugins
+    // compiled against the field-based API resolve it via `ldsfld` — no MissingFieldException)
+    // while NOT resolving the gamedata signature until the function is first invoked. The
+    // signature is pulled from `signatureFactory` inside EnsureNativeHandle(), which the base
+    // NativeObject.Handle getter calls lazily when the handle is still IntPtr.Zero.
+    //
+    // This gives the same isolation a Lazy<T> property gave — a missing gamedata key throws
+    // only when THAT function is actually used, not for the whole VirtualFunctions class via
+    // the static constructor — without breaking field ABI.
+    private readonly Func<string>? _deferredSignature;
+    private readonly DataType _deferredReturnType;
+    private readonly DataType[]? _deferredParameters;
+
+    protected BaseMemoryFunction(Func<string> signatureFactory, DataType returnType, DataType[] parameters) : base(IntPtr.Zero)
+    {
+        _deferredSignature = signatureFactory;
+        _deferredReturnType = returnType;
+        _deferredParameters = parameters;
+    }
+
+    protected override void EnsureNativeHandle()
+    {
+        if (_deferredSignature is null) return;
+        SetHandle(CreateValveFunctionBySignature(_deferredSignature(), _deferredReturnType, _deferredParameters!));
+    }
+
     public BaseMemoryFunction(string signature, string binarypath, DataType returnType, DataType[] parameters) : base(
         CreateValveFunctionBySignature(signature, binarypath, returnType, parameters))
     {

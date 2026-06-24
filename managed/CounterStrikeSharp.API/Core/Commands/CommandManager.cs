@@ -162,7 +162,19 @@ public class CommandManager : ICommandManager
                     }
                 }
 
-                command.Callback?.Invoke(caller, info);
+                // Attribute the command callback's cost to the owning plugin for the
+                // slow-frame profiler. No-op branch when profiling is off.
+                var _pf = Profiling.PluginProfiler.Begin();
+                try
+                {
+                    command.Callback?.Invoke(caller, info);
+                }
+                finally
+                {
+                    // No owning plugin => core-internal command. Tag with the command name so the
+                    // slow-frame report names the actual culprit instead of a faceless "core".
+                    Profiling.PluginProfiler.End(command.PluginName ?? ("core:" + command.Name), _pf);
+                }
             }
         }
     }
