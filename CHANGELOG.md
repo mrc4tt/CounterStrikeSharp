@@ -1,3 +1,6 @@
+## What's Changed in v1.0.390
+* fix: Correct the trigger timing of the C# OnMapEnd listener ([a6068d9](https://github.com/mrc4tt/CounterStrikeSharp/commit/a6068d938a2a2fed88cc7cca24cb9ba5dbbfb04b))
+
 ## What's Changed in v1.0.389
 * ups ([4e0ca46](https://github.com/mrc4tt/CounterStrikeSharp/commit/4e0ca4611d603830700526012e75efdf1dfe789e))
 * feat: Profiler and SlowFrameReporter ([9daac98](https://github.com/mrc4tt/CounterStrikeSharp/commit/9daac985d7d116ad5fcd065d1a86f34f897e88fb))
