@@ -1,3 +1,6 @@
+## What's Changed in v1.0.391
+* Gamedata(update): CCSPlayer_WeaponServices_SelectItem ([7c90a68](https://github.com/mrc4tt/CounterStrikeSharp/commit/7c90a6883b795462decad4de95c2fbe06692f313))
+
 ## What's Changed in v1.0.390
 * fix: Correct the trigger timing of the C# OnMapEnd listener ([a6068d9](https://github.com/mrc4tt/CounterStrikeSharp/commit/a6068d938a2a2fed88cc7cca24cb9ba5dbbfb04b))
 
