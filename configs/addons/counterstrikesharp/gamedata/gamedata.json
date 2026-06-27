@@ -81,6 +81,12 @@
       "linux": "55 48 8D 15 ? ? ? ? 48 89 E5 41 55 41 54 49 89 FC 53 48 89 F3 48 83 EC 08 48 8B 07"
     }
   },
+  "CCSPlayer_WeaponServices_SelectItem": {
+    "offsets": {
+      "windows": 27,
+      "linux": 28
+    }
+  },
   "CCSPlayer_ItemServices_CanAcquire": {
     "signatures": {
       "library": "server",
