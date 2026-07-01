@@ -6,9 +6,42 @@ on:
   workflow_dispatch:
 
 jobs:
-  update-schema:
+  gate:
     runs-on: ubuntu-latest
     if: github.repository == 'mrc4tt/CounterStrikeSharp'
+    outputs:
+      should_run: ${{ steps.check.outputs.should_run }}
+    permissions:
+      actions: read
+    steps:
+      - name: Skip scheduled run if a manual run happened in the last 24h
+        id: check
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Manual dispatch always runs.
+          if [ "${{ github.event_name }}" != "schedule" ]; then
+            echo "should_run=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          # Cutoff = now - 24h (ISO-8601 UTC).
+          CUTOFF=$(date -u -d '24 hours ago' '+%Y-%m-%dT%H:%M:%SZ')
+          # Count successful/in-progress workflow_dispatch runs of THIS workflow created since cutoff.
+          COUNT=$(gh api \
+            "repos/${{ github.repository }}/actions/workflows/sync-schema.yaml/runs?event=workflow_dispatch&created=>=$CUTOFF" \
+            --jq '[.workflow_runs[] | select(.conclusion == "success" or .status == "in_progress" or .status == "queued")] | length')
+          echo "Manual runs in last 24h: $COUNT (cutoff $CUTOFF)"
+          if [ "$COUNT" -gt 0 ]; then
+            echo "::notice::Manual run detected in last 24h — skipping scheduled run."
+            echo "should_run=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "should_run=true" >> "$GITHUB_OUTPUT"
+          fi
+
+  update-schema:
+    runs-on: ubuntu-latest
+    needs: gate
+    if: needs.gate.outputs.should_run == 'true'
     permissions:
       contents: write
       pull-requests: write
