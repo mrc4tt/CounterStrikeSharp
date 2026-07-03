@@ -188,18 +188,25 @@ namespace CounterStrikeSharp.API.Core.Plugin
                             theme: AnsiConsoleTheme.Code,
                             outputTemplate:
                             "{Timestamp:HH:mm:ss} [{Level:u4}] \x1b[35m(plugin:{PluginName})\x1b[0m {Message:lj}{NewLine}{Exception}")
-                        .WriteTo.File(
-                            Path.Join(new[]
-                            {
-                                _hostConfiguration.RootPath, "logs",
-                                $"log-{pluginType.Assembly.GetName().Name}.txt"
-                            }), rollingInterval: RollingInterval.Day,
-                            outputTemplate:
-                            "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u4}] plugin:{PluginName} {Message:lj}{NewLine}{Exception}")
-                        .WriteTo.File(Path.Join(new[] { _hostConfiguration.RootPath, "logs", $"log-all.txt" }),
-                            rollingInterval: RollingInterval.Day, shared: true,
-                            outputTemplate:
-                            "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u4}] plugin:{PluginName} {Message:lj}{NewLine}{Exception}")
+                        // File sinks run through Async so file rolls + Serilog's retention
+                        // scan run off the game thread instead of stalling the tick (a
+                        // synchronous roll was measured at ~469ms on the game thread). One
+                        // Async wrapper = one shared background queue/thread per plugin.
+                        .WriteTo.Async(a =>
+                        {
+                            a.File(
+                                Path.Join(new[]
+                                {
+                                    _hostConfiguration.RootPath, "logs",
+                                    $"log-{pluginType.Assembly.GetName().Name}.txt"
+                                }), rollingInterval: RollingInterval.Day,
+                                outputTemplate:
+                                "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u4}] plugin:{PluginName} {Message:lj}{NewLine}{Exception}");
+                            a.File(Path.Join(new[] { _hostConfiguration.RootPath, "logs", $"log-all.txt" }),
+                                rollingInterval: RollingInterval.Day, shared: true,
+                                outputTemplate:
+                                "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u4}] plugin:{PluginName} {Message:lj}{NewLine}{Exception}");
+                        })
                         .CreateLogger());
                 });
 

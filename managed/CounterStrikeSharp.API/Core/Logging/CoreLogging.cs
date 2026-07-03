@@ -61,18 +61,25 @@ public static class CoreLogging
                     theme: AnsiConsoleTheme.Code,
                     outputTemplate:
                     "{Timestamp:HH:mm:ss.fff} [{Level:u5}] \x1b[36m(cssharp:{SourceContext})\x1b[0m {Message:lj}{NewLine}{Exception}")
-                .WriteTo.File(Path.Join(new[] { contentRoot, "logs", $"log-cssharp.txt" }),
-                    rollingInterval: RollingInterval.Day, shared: true,
-                    outputTemplate:
-                    "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u5}] (cssharp:{SourceContext}) {Message:lj}{NewLine}{Exception}")
-                // Errors-only sink: isolates crashes/load failures (incl. plugin blame
-                // reports) into one file that can be handed to a plugin author without
-                // wading through the full info-level log.
-                .WriteTo.File(Path.Join(new[] { contentRoot, "logs", $"log-errors.txt" }),
-                    rollingInterval: RollingInterval.Day, shared: true,
-                    restrictedToMinimumLevel: LogEventLevel.Error,
-                    outputTemplate:
-                    "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u5}] (cssharp:{SourceContext}) {Message:lj}{NewLine}{Exception}")
+                // File sinks run through Async so file rolls + Serilog's retention scan
+                // (PathRoller regex over the log dir) happen on a background thread instead
+                // of stalling the game tick — a synchronous roll was measured at ~469ms on
+                // the game thread. One Async wrapper = one shared background queue/thread.
+                .WriteTo.Async(a =>
+                {
+                    a.File(Path.Join(new[] { contentRoot, "logs", $"log-cssharp.txt" }),
+                        rollingInterval: RollingInterval.Day, shared: true,
+                        outputTemplate:
+                        "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u5}] (cssharp:{SourceContext}) {Message:lj}{NewLine}{Exception}");
+                    // Errors-only sink: isolates crashes/load failures (incl. plugin blame
+                    // reports) into one file that can be handed to a plugin author without
+                    // wading through the full info-level log.
+                    a.File(Path.Join(new[] { contentRoot, "logs", $"log-errors.txt" }),
+                        rollingInterval: RollingInterval.Day, shared: true,
+                        restrictedToMinimumLevel: LogEventLevel.Error,
+                        outputTemplate:
+                        "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u5}] (cssharp:{SourceContext}) {Message:lj}{NewLine}{Exception}");
+                })
                 .CreateLogger();
 
             Factory =
