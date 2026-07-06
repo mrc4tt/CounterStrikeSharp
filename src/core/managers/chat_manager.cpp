@@ -79,31 +79,39 @@ void DetourHostSay(CEntityInstance* pController, CCommand& args, bool teamonly, 
 
     if (bCommand)
     {
-        char* pszMessage = (char*)(args.ArgS() + prefix.length() + 1);
-
-        // Trailing slashes are only removed if Host_Say has been called.
-        if (bSilent)
+        // Messagemode (typing in the chat box) wraps the whole message in
+        // surrounding quotes, but `say`/`say_team` invoked from a key bind
+        // (e.g. bind c "say !throw") does not. The old code assumed the quote
+        // via a hardcoded `+ 1`, so the bind path lost its first real char
+        // (`!throw` -> `hrow` -> css_hrow, an invalid command that silently
+        // no-ops). Strip an optional leading/trailing quote instead so both
+        // paths parse identically.
+        std::string message = args.ArgS();
+        if (!message.empty() && message.front() == '"')
         {
-            const auto len = V_strlen(pszMessage);
-            if (len > 0)
-            {
-                pszMessage[len - 1] = 0;
-            }
+            message.erase(0, 1);
+        }
+        if (!message.empty() && message.back() == '"')
+        {
+            message.pop_back();
         }
 
-        CCommand args;
-        args.Tokenize(pszMessage);
+        // Drop the trigger prefix (e.g. "!" or "/").
+        message.erase(0, prefix.length());
 
-        auto prefixedPhrase = std::string("css_") + args.Arg(0);
+        CCommand cmd;
+        cmd.Tokenize(message.c_str());
+
+        auto prefixedPhrase = std::string("css_") + cmd.Arg(0);
         auto bValidWithPrefix = globals::conCommandManager.IsValidValveCommand(prefixedPhrase.c_str());
 
         if (bValidWithPrefix)
         {
             // Re-tokenize with a `css_` prefix if we have found that its a valid command.
-            args.Tokenize(("css_" + std::string(pszMessage)).c_str());
+            cmd.Tokenize(("css_" + message).c_str());
         }
 
-        globals::chatManager.OnSayCommandPost(pController, args);
+        globals::chatManager.OnSayCommandPost(pController, cmd);
     }
 
     if (pController)
