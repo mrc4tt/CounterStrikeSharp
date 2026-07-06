@@ -1,3 +1,9 @@
+## What's Changed in v1.0.392
+* fix: parse say-from-bind chat triggers (bind "say !cmd") ([94d3705](https://github.com/mrc4tt/CounterStrikeSharp/commit/94d3705913ac3a09974cfcec08b9dc3554198cd7))
+* fix. m_rank typed Span<MedalRank_t> (enum 0-4) ([7682052](https://github.com/mrc4tt/CounterStrikeSharp/commit/768205226d0eb0a00b619004ee4b800ed008bfce))
+* Update Asyncfix ([f35fab4](https://github.com/mrc4tt/CounterStrikeSharp/commit/f35fab4463dcc495c7832419c6abe6c50ea55925))
+* update sync-schema ([943771f](https://github.com/mrc4tt/CounterStrikeSharp/commit/943771fd1b6e7ca6a00d0b33f8572ce1df697be7))
+
 ## What's Changed in v1.0.391
 * Gamedata(update): CCSPlayer_WeaponServices_SelectItem ([7c90a68](https://github.com/mrc4tt/CounterStrikeSharp/commit/7c90a6883b795462decad4de95c2fbe06692f313))
 
