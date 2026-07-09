@@ -1,3 +1,9 @@
+## What's Changed in v1.0.394
+* patch gamedata.json for linux/win ([d268122](https://github.com/mrc4tt/CounterStrikeSharp/commit/d268122aae1a9b0bcae133bde15ee939e0fe988d))
+* windows sig included ([1456389](https://github.com/mrc4tt/CounterStrikeSharp/commit/145638990be4083cc5078b3c78a3a31ccdeabece))
+* windows(gamedata) and small fix maybe ([63e0bee](https://github.com/mrc4tt/CounterStrikeSharp/commit/63e0beec6e5c4e526341ab014592b51ec95eb2e1))
+* test ([6a8068c](https://github.com/mrc4tt/CounterStrikeSharp/commit/6a8068c663327f86a76164f83a6a2665760b3216))
+
 ## What's Changed in v1.0.393
 * gamedata 14168 update ([811fbc0](https://github.com/mrc4tt/CounterStrikeSharp/commit/811fbc069e24845e5be3578f60a939c363a55344))
 * Merge pull request #7 from mrc4tt/fix/schema-cgamesoundeventname-cutldict ([d681962](https://github.com/mrc4tt/CounterStrikeSharp/commit/d681962600cfe35ea39147ced07e31f0bdeb577f))
