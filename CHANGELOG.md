@@ -1,3 +1,10 @@
+## What's Changed in v1.0.393
+* gamedata 14168 update ([811fbc0](https://github.com/mrc4tt/CounterStrikeSharp/commit/811fbc069e24845e5be3578f60a939c363a55344))
+* Merge pull request #7 from mrc4tt/fix/schema-cgamesoundeventname-cutldict ([d681962](https://github.com/mrc4tt/CounterStrikeSharp/commit/d681962600cfe35ea39147ced07e31f0bdeb577f))
+* fix(schema): map CGameSoundEventName to string, skip CUtlDict ([03bcc62](https://github.com/mrc4tt/CounterStrikeSharp/commit/03bcc6242b507e6dcf3e6f5c989b1b000eabbe31))
+* Merge pull request #6 from mrc4tt/chore/automated/schema-update ([5cdca7c](https://github.com/mrc4tt/CounterStrikeSharp/commit/5cdca7c1e8c61142ad46a87725a033f6dea3ad7b))
+* chore: update schema definitions to 1.41.6.8 ([8ad4d45](https://github.com/mrc4tt/CounterStrikeSharp/commit/8ad4d4598338b62be9a376806fb48dff0e05f420))
+
 ## What's Changed in v1.0.392
 * fix: parse say-from-bind chat triggers (bind "say !cmd") ([94d3705](https://github.com/mrc4tt/CounterStrikeSharp/commit/94d3705913ac3a09974cfcec08b9dc3554198cd7))
 * fix. m_rank typed Span<MedalRank_t> (enum 0-4) ([7682052](https://github.com/mrc4tt/CounterStrikeSharp/commit/768205226d0eb0a00b619004ee4b800ed008bfce))
