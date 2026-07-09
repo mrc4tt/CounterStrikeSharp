@@ -32,19 +32,11 @@ public partial class CFuncMoveLinear : CBaseToggle
 
 	// m_soundStart
 	[SchemaMember("CFuncMoveLinear", "m_soundStart")]
-	public string SoundStart
-	{
-		get { return Schema.GetUtf8String(this.Handle, "CFuncMoveLinear", "m_soundStart"); }
-		set { Schema.SetString(this.Handle, "CFuncMoveLinear", "m_soundStart", value); }
-	}
+	public CGameSoundEventName SoundStart => Schema.GetDeclaredClass<CGameSoundEventName>(this.Handle, "CFuncMoveLinear", "m_soundStart");
 
 	// m_soundStop
 	[SchemaMember("CFuncMoveLinear", "m_soundStop")]
-	public string SoundStop
-	{
-		get { return Schema.GetUtf8String(this.Handle, "CFuncMoveLinear", "m_soundStop"); }
-		set { Schema.SetString(this.Handle, "CFuncMoveLinear", "m_soundStop", value); }
-	}
+	public CGameSoundEventName SoundStop => Schema.GetDeclaredClass<CGameSoundEventName>(this.Handle, "CFuncMoveLinear", "m_soundStop");
 
 	// m_currentSound
 	[SchemaMember("CFuncMoveLinear", "m_currentSound")]
@@ -69,6 +61,10 @@ public partial class CFuncMoveLinear : CBaseToggle
 	// m_OnFullyClosed
 	[SchemaMember("CFuncMoveLinear", "m_OnFullyClosed")]
 	public CEntityIOOutput OnFullyClosed => Schema.GetDeclaredClass<CEntityIOOutput>(this.Handle, "CFuncMoveLinear", "m_OnFullyClosed");
+
+	// m_flSpeed
+	[SchemaMember("CFuncMoveLinear", "m_flSpeed")]
+	public ref float Speed => ref Schema.GetRef<float>(this.Handle, "CFuncMoveLinear", "m_flSpeed");
 
 	// m_bCreateMovableNavMesh
 	[SchemaMember("CFuncMoveLinear", "m_bCreateMovableNavMesh")]

@@ -20,19 +20,11 @@ public partial class CBasePlatTrain : CBaseToggle
 
 	// m_NoiseMoving
 	[SchemaMember("CBasePlatTrain", "m_NoiseMoving")]
-	public string NoiseMoving
-	{
-		get { return Schema.GetUtf8String(this.Handle, "CBasePlatTrain", "m_NoiseMoving"); }
-		set { Schema.SetString(this.Handle, "CBasePlatTrain", "m_NoiseMoving", value); }
-	}
+	public CGameSoundEventName NoiseMoving => Schema.GetDeclaredClass<CGameSoundEventName>(this.Handle, "CBasePlatTrain", "m_NoiseMoving");
 
 	// m_NoiseArrived
 	[SchemaMember("CBasePlatTrain", "m_NoiseArrived")]
-	public string NoiseArrived
-	{
-		get { return Schema.GetUtf8String(this.Handle, "CBasePlatTrain", "m_NoiseArrived"); }
-		set { Schema.SetString(this.Handle, "CBasePlatTrain", "m_NoiseArrived", value); }
-	}
+	public CGameSoundEventName NoiseArrived => Schema.GetDeclaredClass<CGameSoundEventName>(this.Handle, "CBasePlatTrain", "m_NoiseArrived");
 
 	// m_volume
 	[SchemaMember("CBasePlatTrain", "m_volume")]

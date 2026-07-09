@@ -28,11 +28,7 @@ public partial class CEnvSoundscape : CBaseEntity
 
 	// m_soundEventName
 	[SchemaMember("CEnvSoundscape", "m_soundEventName")]
-	public string SoundEventName
-	{
-		get { return Schema.GetUtf8String(this.Handle, "CEnvSoundscape", "m_soundEventName"); }
-		set { Schema.SetString(this.Handle, "CEnvSoundscape", "m_soundEventName", value); }
-	}
+	public CGameSoundEventName SoundEventName => Schema.GetDeclaredClass<CGameSoundEventName>(this.Handle, "CEnvSoundscape", "m_soundEventName");
 
 	// m_bOverrideWithEvent
 	[SchemaMember("CEnvSoundscape", "m_bOverrideWithEvent")]

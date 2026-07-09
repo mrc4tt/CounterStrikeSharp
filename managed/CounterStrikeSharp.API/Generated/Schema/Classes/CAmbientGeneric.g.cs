@@ -44,11 +44,7 @@ public partial class CAmbientGeneric : CPointEntity
 
 	// m_iszSound
 	[SchemaMember("CAmbientGeneric", "m_iszSound")]
-	public string Sound
-	{
-		get { return Schema.GetUtf8String(this.Handle, "CAmbientGeneric", "m_iszSound"); }
-		set { Schema.SetString(this.Handle, "CAmbientGeneric", "m_iszSound", value); }
-	}
+	public CGameSoundEventName Sound => Schema.GetDeclaredClass<CGameSoundEventName>(this.Handle, "CAmbientGeneric", "m_iszSound");
 
 	// m_sSourceEntName
 	[SchemaMember("CAmbientGeneric", "m_sSourceEntName")]
