@@ -36,27 +36,15 @@ public partial class CBaseButton : CBaseToggle
 
 	// m_sUseSound
 	[SchemaMember("CBaseButton", "m_sUseSound")]
-	public string UseSound
-	{
-		get { return Schema.GetUtf8String(this.Handle, "CBaseButton", "m_sUseSound"); }
-		set { Schema.SetString(this.Handle, "CBaseButton", "m_sUseSound", value); }
-	}
+	public CGameSoundEventName UseSound => Schema.GetDeclaredClass<CGameSoundEventName>(this.Handle, "CBaseButton", "m_sUseSound");
 
 	// m_sLockedSound
 	[SchemaMember("CBaseButton", "m_sLockedSound")]
-	public string LockedSound
-	{
-		get { return Schema.GetUtf8String(this.Handle, "CBaseButton", "m_sLockedSound"); }
-		set { Schema.SetString(this.Handle, "CBaseButton", "m_sLockedSound", value); }
-	}
+	public CGameSoundEventName LockedSound => Schema.GetDeclaredClass<CGameSoundEventName>(this.Handle, "CBaseButton", "m_sLockedSound");
 
 	// m_sUnlockedSound
 	[SchemaMember("CBaseButton", "m_sUnlockedSound")]
-	public string UnlockedSound
-	{
-		get { return Schema.GetUtf8String(this.Handle, "CBaseButton", "m_sUnlockedSound"); }
-		set { Schema.SetString(this.Handle, "CBaseButton", "m_sUnlockedSound", value); }
-	}
+	public CGameSoundEventName UnlockedSound => Schema.GetDeclaredClass<CGameSoundEventName>(this.Handle, "CBaseButton", "m_sUnlockedSound");
 
 	// m_sOverrideAnticipationName
 	[SchemaMember("CBaseButton", "m_sOverrideAnticipationName")]
@@ -73,6 +61,10 @@ public partial class CBaseButton : CBaseToggle
 	// m_bDisabled
 	[SchemaMember("CBaseButton", "m_bDisabled")]
 	public ref bool Disabled => ref Schema.GetRef<bool>(this.Handle, "CBaseButton", "m_bDisabled");
+
+	// m_flSpeed
+	[SchemaMember("CBaseButton", "m_flSpeed")]
+	public ref float Speed => ref Schema.GetRef<float>(this.Handle, "CBaseButton", "m_flSpeed");
 
 	// m_flUseLockedTime
 	[SchemaMember("CBaseButton", "m_flUseLockedTime")]

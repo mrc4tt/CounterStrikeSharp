@@ -78,77 +78,45 @@ public partial class CBasePropDoor : CDynamicProp
 	[SchemaMember("CBasePropDoor", "m_hActivator")]
 	public CHandle<CBaseEntity> Activator => Schema.GetDeclaredClass<CHandle<CBaseEntity>>(this.Handle, "CBasePropDoor", "m_hActivator");
 
+	// m_flSpeed
+	[SchemaMember("CBasePropDoor", "m_flSpeed")]
+	public ref float Speed => ref Schema.GetRef<float>(this.Handle, "CBasePropDoor", "m_flSpeed");
+
 	// m_SoundMoving
 	[SchemaMember("CBasePropDoor", "m_SoundMoving")]
-	public string SoundMoving
-	{
-		get { return Schema.GetUtf8String(this.Handle, "CBasePropDoor", "m_SoundMoving"); }
-		set { Schema.SetString(this.Handle, "CBasePropDoor", "m_SoundMoving", value); }
-	}
+	public CGameSoundEventName SoundMoving => Schema.GetDeclaredClass<CGameSoundEventName>(this.Handle, "CBasePropDoor", "m_SoundMoving");
 
 	// m_SoundOpen
 	[SchemaMember("CBasePropDoor", "m_SoundOpen")]
-	public string SoundOpen
-	{
-		get { return Schema.GetUtf8String(this.Handle, "CBasePropDoor", "m_SoundOpen"); }
-		set { Schema.SetString(this.Handle, "CBasePropDoor", "m_SoundOpen", value); }
-	}
+	public CGameSoundEventName SoundOpen => Schema.GetDeclaredClass<CGameSoundEventName>(this.Handle, "CBasePropDoor", "m_SoundOpen");
 
 	// m_SoundClose
 	[SchemaMember("CBasePropDoor", "m_SoundClose")]
-	public string SoundClose
-	{
-		get { return Schema.GetUtf8String(this.Handle, "CBasePropDoor", "m_SoundClose"); }
-		set { Schema.SetString(this.Handle, "CBasePropDoor", "m_SoundClose", value); }
-	}
+	public CGameSoundEventName SoundClose => Schema.GetDeclaredClass<CGameSoundEventName>(this.Handle, "CBasePropDoor", "m_SoundClose");
 
 	// m_SoundLock
 	[SchemaMember("CBasePropDoor", "m_SoundLock")]
-	public string SoundLock
-	{
-		get { return Schema.GetUtf8String(this.Handle, "CBasePropDoor", "m_SoundLock"); }
-		set { Schema.SetString(this.Handle, "CBasePropDoor", "m_SoundLock", value); }
-	}
+	public CGameSoundEventName SoundLock => Schema.GetDeclaredClass<CGameSoundEventName>(this.Handle, "CBasePropDoor", "m_SoundLock");
 
 	// m_SoundUnlock
 	[SchemaMember("CBasePropDoor", "m_SoundUnlock")]
-	public string SoundUnlock
-	{
-		get { return Schema.GetUtf8String(this.Handle, "CBasePropDoor", "m_SoundUnlock"); }
-		set { Schema.SetString(this.Handle, "CBasePropDoor", "m_SoundUnlock", value); }
-	}
+	public CGameSoundEventName SoundUnlock => Schema.GetDeclaredClass<CGameSoundEventName>(this.Handle, "CBasePropDoor", "m_SoundUnlock");
 
 	// m_SoundLatch
 	[SchemaMember("CBasePropDoor", "m_SoundLatch")]
-	public string SoundLatch
-	{
-		get { return Schema.GetUtf8String(this.Handle, "CBasePropDoor", "m_SoundLatch"); }
-		set { Schema.SetString(this.Handle, "CBasePropDoor", "m_SoundLatch", value); }
-	}
+	public CGameSoundEventName SoundLatch => Schema.GetDeclaredClass<CGameSoundEventName>(this.Handle, "CBasePropDoor", "m_SoundLatch");
 
 	// m_SoundPound
 	[SchemaMember("CBasePropDoor", "m_SoundPound")]
-	public string SoundPound
-	{
-		get { return Schema.GetUtf8String(this.Handle, "CBasePropDoor", "m_SoundPound"); }
-		set { Schema.SetString(this.Handle, "CBasePropDoor", "m_SoundPound", value); }
-	}
+	public CGameSoundEventName SoundPound => Schema.GetDeclaredClass<CGameSoundEventName>(this.Handle, "CBasePropDoor", "m_SoundPound");
 
 	// m_SoundJiggle
 	[SchemaMember("CBasePropDoor", "m_SoundJiggle")]
-	public string SoundJiggle
-	{
-		get { return Schema.GetUtf8String(this.Handle, "CBasePropDoor", "m_SoundJiggle"); }
-		set { Schema.SetString(this.Handle, "CBasePropDoor", "m_SoundJiggle", value); }
-	}
+	public CGameSoundEventName SoundJiggle => Schema.GetDeclaredClass<CGameSoundEventName>(this.Handle, "CBasePropDoor", "m_SoundJiggle");
 
 	// m_SoundLockedAnim
 	[SchemaMember("CBasePropDoor", "m_SoundLockedAnim")]
-	public string SoundLockedAnim
-	{
-		get { return Schema.GetUtf8String(this.Handle, "CBasePropDoor", "m_SoundLockedAnim"); }
-		set { Schema.SetString(this.Handle, "CBasePropDoor", "m_SoundLockedAnim", value); }
-	}
+	public CGameSoundEventName SoundLockedAnim => Schema.GetDeclaredClass<CGameSoundEventName>(this.Handle, "CBasePropDoor", "m_SoundLockedAnim");
 
 	// m_numCloseAttempts
 	[SchemaMember("CBasePropDoor", "m_numCloseAttempts")]
