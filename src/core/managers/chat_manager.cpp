@@ -86,7 +86,12 @@ void DetourHostSay(CEntityInstance* pController, CCommand& args, bool teamonly, 
         // (`!throw` -> `hrow` -> css_hrow, an invalid command that silently
         // no-ops). Strip an optional leading/trailing quote instead so both
         // paths parse identically.
-        std::string message = args.ArgS();
+        //
+        // ArgS() can return nullptr on a malformed/empty say; constructing a
+        // std::string from nullptr is UB (segfault). Guard it — the old raw
+        // pointer-arithmetic path tolerated a null here, so preserve that.
+        const char* argS = args.ArgS();
+        std::string message = argS ? argS : "";
         if (!message.empty() && message.front() == '"')
         {
             message.erase(0, 1);

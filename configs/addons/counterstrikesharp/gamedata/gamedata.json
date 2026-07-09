@@ -42,7 +42,7 @@
   "CCSPlayerPawnBase_PostThink": {
     "signatures": {
       "library": "server",
-      "windows": "40 55 53 56 57 41 54 48 8D 6C 24 ? 48 81 EC ? ? ? ? 4C 89 AC 24 ? ? ? ?",
+      "windows": "40 55 56 41 54 48 8B EC",
       "linux": "55 48 89 E5 41 56 41 55 41 54 53 48 89 FB 48 83 EC ? E8 ? ? ? ? 80 BB"
     }
   },
@@ -70,14 +70,14 @@
   "CBaseModelEntity_SetModel": {
     "signatures": {
       "library": "server",
-      "windows": "40 53 48 83 EC ? 48 8B D9 4C 8B C2 48 8B 0D ? ? ? ? 48 8D 54 24 ? 48 8B 01 FF 50 ? 48 8B 54 24 ? 48 8B CB E8 ? ? ? ? 48 83 C4 ? 5B C3 CC CC CC CC CC CC CC CC CC CC CC CC CC CC CC 48 89 5C 24 ?",
+      "windows": "40 53 48 83 EC ? 48 8B D9 4C 8B C2 48 8B 0D ? ? ? ? 48 8D 54 24 ? 48 8B 01 FF 50 ? 48 8B 54 24 ? 48 8B CB E8 ? ? ? ? 48 83 C4 ? 5B C3 CC CC CC CC CC CC CC CC CC CC CC CC CC CC CC 48 8B 01",
       "linux": "55 48 89 E5 53 48 89 FB 48 83 EC ? 48 8D 05 ? ? ? ? 48 8B 38 48 8B 07 FF 50 ? 48 89 DF 48 8B 5D ? C9 48 89 C6 E9 ? ? ? ? CC CC CC CC 55"
     }
   },
   "CCSPlayer_WeaponServices_CanUse": {
     "signatures": {
       "library": "server",
-      "windows": "48 89 5C 24 ? 48 89 6C 24 ? 48 89 74 24 ? 57 41 54 41 55 41 56 41 57 48 83 EC ? 48 8B 01 48 8B FA",
+      "windows": "48 89 5C 24 ? 48 89 6C 24 ? 56 57 41 54 41 56 41 57 48 83 EC ? 48 8B 01 48 8B FA",
       "linux": "55 48 8D 15 ? ? ? ? 48 89 E5 41 55 41 54 49 89 FC 53 48 89 F3 48 83 EC ? 48 8B 07 48 8B 80"
     }
   },
@@ -128,7 +128,7 @@
   "CCSGameRules_TerminateRound": {
     "signatures": {
       "library": "server",
-      "windows": "48 8B C4 4C 89 48 ? 48 89 48 ? 55 56 41 56",
+      "windows": "48 8B C4 4C 89 48 ? 48 89 48 ? 55 41 54",
       "linux": "55 48 89 E5 41 57 41 89 F7 41 56 48 8D 35"
     }
   },
@@ -188,7 +188,7 @@
   "LegacyGameEventListener": {
     "signatures": {
       "library": "server",
-      "windows": "48 8B 15 ? ? ? ? 48 85 D2 74 14 83 F9 3F 77 0F 48 63 C1 48 83 C0 04 48 C1 E0 04 48 03 C2 C3 33 C0 C3",
+      "windows": "48 8B 15 ? ? ? ? 48 85 D2 74 ? 85 C9",
       "linux": "48 8B 05 ? ? ? ? 48 85 C0 74 ? 83 FF 3F 77 ? 48 63 FF 48 C1 E7 04 48 8D 44 38"
     }
   },
