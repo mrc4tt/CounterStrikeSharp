@@ -84,23 +84,43 @@ public partial class CFuncTrackTrain : CBaseModelEntity
 
 	// m_iszSoundMove
 	[SchemaMember("CFuncTrackTrain", "m_iszSoundMove")]
-	public CGameSoundEventName SoundMove => Schema.GetDeclaredClass<CGameSoundEventName>(this.Handle, "CFuncTrackTrain", "m_iszSoundMove");
+	public string SoundMove
+	{
+		get { return Schema.GetUtf8String(this.Handle, "CFuncTrackTrain", "m_iszSoundMove"); }
+		set { Schema.SetString(this.Handle, "CFuncTrackTrain", "m_iszSoundMove", value); }
+	}
 
 	// m_iszSoundMovePing
 	[SchemaMember("CFuncTrackTrain", "m_iszSoundMovePing")]
-	public CGameSoundEventName SoundMovePing => Schema.GetDeclaredClass<CGameSoundEventName>(this.Handle, "CFuncTrackTrain", "m_iszSoundMovePing");
+	public string SoundMovePing
+	{
+		get { return Schema.GetUtf8String(this.Handle, "CFuncTrackTrain", "m_iszSoundMovePing"); }
+		set { Schema.SetString(this.Handle, "CFuncTrackTrain", "m_iszSoundMovePing", value); }
+	}
 
 	// m_iszSoundStart
 	[SchemaMember("CFuncTrackTrain", "m_iszSoundStart")]
-	public CGameSoundEventName SoundStart => Schema.GetDeclaredClass<CGameSoundEventName>(this.Handle, "CFuncTrackTrain", "m_iszSoundStart");
+	public string SoundStart
+	{
+		get { return Schema.GetUtf8String(this.Handle, "CFuncTrackTrain", "m_iszSoundStart"); }
+		set { Schema.SetString(this.Handle, "CFuncTrackTrain", "m_iszSoundStart", value); }
+	}
 
 	// m_iszSoundStop
 	[SchemaMember("CFuncTrackTrain", "m_iszSoundStop")]
-	public CGameSoundEventName SoundStop => Schema.GetDeclaredClass<CGameSoundEventName>(this.Handle, "CFuncTrackTrain", "m_iszSoundStop");
+	public string SoundStop
+	{
+		get { return Schema.GetUtf8String(this.Handle, "CFuncTrackTrain", "m_iszSoundStop"); }
+		set { Schema.SetString(this.Handle, "CFuncTrackTrain", "m_iszSoundStop", value); }
+	}
 
 	// m_strPathTarget
 	[SchemaMember("CFuncTrackTrain", "m_strPathTarget")]
-	public CGameSoundEventName StrPathTarget => Schema.GetDeclaredClass<CGameSoundEventName>(this.Handle, "CFuncTrackTrain", "m_strPathTarget");
+	public string StrPathTarget
+	{
+		get { return Schema.GetUtf8String(this.Handle, "CFuncTrackTrain", "m_strPathTarget"); }
+		set { Schema.SetString(this.Handle, "CFuncTrackTrain", "m_strPathTarget", value); }
+	}
 
 	// m_flMoveSoundMinDuration
 	[SchemaMember("CFuncTrackTrain", "m_flMoveSoundMinDuration")]

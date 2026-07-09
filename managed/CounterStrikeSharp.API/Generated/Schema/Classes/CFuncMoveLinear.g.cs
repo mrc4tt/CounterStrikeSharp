@@ -32,11 +32,19 @@ public partial class CFuncMoveLinear : CBaseToggle
 
 	// m_soundStart
 	[SchemaMember("CFuncMoveLinear", "m_soundStart")]
-	public CGameSoundEventName SoundStart => Schema.GetDeclaredClass<CGameSoundEventName>(this.Handle, "CFuncMoveLinear", "m_soundStart");
+	public string SoundStart
+	{
+		get { return Schema.GetUtf8String(this.Handle, "CFuncMoveLinear", "m_soundStart"); }
+		set { Schema.SetString(this.Handle, "CFuncMoveLinear", "m_soundStart", value); }
+	}
 
 	// m_soundStop
 	[SchemaMember("CFuncMoveLinear", "m_soundStop")]
-	public CGameSoundEventName SoundStop => Schema.GetDeclaredClass<CGameSoundEventName>(this.Handle, "CFuncMoveLinear", "m_soundStop");
+	public string SoundStop
+	{
+		get { return Schema.GetUtf8String(this.Handle, "CFuncMoveLinear", "m_soundStop"); }
+		set { Schema.SetString(this.Handle, "CFuncMoveLinear", "m_soundStop", value); }
+	}
 
 	// m_currentSound
 	[SchemaMember("CFuncMoveLinear", "m_currentSound")]

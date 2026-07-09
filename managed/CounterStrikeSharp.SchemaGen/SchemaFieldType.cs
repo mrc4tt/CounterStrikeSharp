@@ -95,7 +95,7 @@ public record SchemaFieldType
         {
             SchemaAtomicCategory.Basic => name switch
             {
-                "CUtlString" or "CUtlSymbolLarge" or "CGlobalSymbol" or "CEntityNameString" => "string",
+                "CUtlString" or "CUtlSymbolLarge" or "CGlobalSymbol" or "CEntityNameString" or "CGameSoundEventName" => "string",
                 "CEntityHandle" => "CHandle<CEntityInstance>",
                 "CNetworkedQuantizedFloat" => "float",
                 "RotationVector" => "Vector",

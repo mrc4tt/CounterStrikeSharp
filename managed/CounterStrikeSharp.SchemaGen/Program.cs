@@ -46,6 +46,7 @@ internal static partial class Program
         "CUtlOrderedMap",
         "CAnimGraph2ParamOptionalRef",
         "CUtlHashtable",
+        "CUtlDict",
         "CSmartPtr",
         "CUtlLeanVector",
         "CUtlBinaryBlock",

@@ -18,14 +18,6 @@ public partial class CAI_Expresser : NativeObject
 {
     public CAI_Expresser (IntPtr pointer) : base(pointer) {}
 
-	// m_conceptCooldowns
-	[SchemaMember("CAI_Expresser", "m_conceptCooldowns")]
-	public CUtlDict<GameTime_t> ConceptCooldowns => Schema.GetDeclaredClass<CUtlDict<GameTime_t>>(this.Handle, "CAI_Expresser", "m_conceptCooldowns");
-
-	// m_ruleCooldowns
-	[SchemaMember("CAI_Expresser", "m_ruleCooldowns")]
-	public CUtlDict<GameTime_t> RuleCooldowns => Schema.GetDeclaredClass<CUtlDict<GameTime_t>>(this.Handle, "CAI_Expresser", "m_ruleCooldowns");
-
 	// m_flStopTalkTime
 	[SchemaMember("CAI_Expresser", "m_flStopTalkTime")]
 	public ref float StopTalkTime => ref Schema.GetRef<float>(this.Handle, "CAI_Expresser", "m_flStopTalkTime");

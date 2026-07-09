@@ -64,7 +64,11 @@ public partial class CPhysConstraint : CLogicalEntity
 
 	// m_breakSound
 	[SchemaMember("CPhysConstraint", "m_breakSound")]
-	public CGameSoundEventName BreakSound => Schema.GetDeclaredClass<CGameSoundEventName>(this.Handle, "CPhysConstraint", "m_breakSound");
+	public string BreakSound
+	{
+		get { return Schema.GetUtf8String(this.Handle, "CPhysConstraint", "m_breakSound"); }
+		set { Schema.SetString(this.Handle, "CPhysConstraint", "m_breakSound", value); }
+	}
 
 	// m_forceLimit
 	[SchemaMember("CPhysConstraint", "m_forceLimit")]
