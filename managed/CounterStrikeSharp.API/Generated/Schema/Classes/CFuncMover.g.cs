@@ -148,31 +148,59 @@ public partial class CFuncMover : CBaseModelEntity
 
 	// m_iszStartForwardSound
 	[SchemaMember("CFuncMover", "m_iszStartForwardSound")]
-	public CGameSoundEventName StartForwardSound => Schema.GetDeclaredClass<CGameSoundEventName>(this.Handle, "CFuncMover", "m_iszStartForwardSound");
+	public string StartForwardSound
+	{
+		get { return Schema.GetUtf8String(this.Handle, "CFuncMover", "m_iszStartForwardSound"); }
+		set { Schema.SetString(this.Handle, "CFuncMover", "m_iszStartForwardSound", value); }
+	}
 
 	// m_iszLoopForwardSound
 	[SchemaMember("CFuncMover", "m_iszLoopForwardSound")]
-	public CGameSoundEventName LoopForwardSound => Schema.GetDeclaredClass<CGameSoundEventName>(this.Handle, "CFuncMover", "m_iszLoopForwardSound");
+	public string LoopForwardSound
+	{
+		get { return Schema.GetUtf8String(this.Handle, "CFuncMover", "m_iszLoopForwardSound"); }
+		set { Schema.SetString(this.Handle, "CFuncMover", "m_iszLoopForwardSound", value); }
+	}
 
 	// m_iszStopForwardSound
 	[SchemaMember("CFuncMover", "m_iszStopForwardSound")]
-	public CGameSoundEventName StopForwardSound => Schema.GetDeclaredClass<CGameSoundEventName>(this.Handle, "CFuncMover", "m_iszStopForwardSound");
+	public string StopForwardSound
+	{
+		get { return Schema.GetUtf8String(this.Handle, "CFuncMover", "m_iszStopForwardSound"); }
+		set { Schema.SetString(this.Handle, "CFuncMover", "m_iszStopForwardSound", value); }
+	}
 
 	// m_iszStartReverseSound
 	[SchemaMember("CFuncMover", "m_iszStartReverseSound")]
-	public CGameSoundEventName StartReverseSound => Schema.GetDeclaredClass<CGameSoundEventName>(this.Handle, "CFuncMover", "m_iszStartReverseSound");
+	public string StartReverseSound
+	{
+		get { return Schema.GetUtf8String(this.Handle, "CFuncMover", "m_iszStartReverseSound"); }
+		set { Schema.SetString(this.Handle, "CFuncMover", "m_iszStartReverseSound", value); }
+	}
 
 	// m_iszLoopReverseSound
 	[SchemaMember("CFuncMover", "m_iszLoopReverseSound")]
-	public CGameSoundEventName LoopReverseSound => Schema.GetDeclaredClass<CGameSoundEventName>(this.Handle, "CFuncMover", "m_iszLoopReverseSound");
+	public string LoopReverseSound
+	{
+		get { return Schema.GetUtf8String(this.Handle, "CFuncMover", "m_iszLoopReverseSound"); }
+		set { Schema.SetString(this.Handle, "CFuncMover", "m_iszLoopReverseSound", value); }
+	}
 
 	// m_iszStopReverseSound
 	[SchemaMember("CFuncMover", "m_iszStopReverseSound")]
-	public CGameSoundEventName StopReverseSound => Schema.GetDeclaredClass<CGameSoundEventName>(this.Handle, "CFuncMover", "m_iszStopReverseSound");
+	public string StopReverseSound
+	{
+		get { return Schema.GetUtf8String(this.Handle, "CFuncMover", "m_iszStopReverseSound"); }
+		set { Schema.SetString(this.Handle, "CFuncMover", "m_iszStopReverseSound", value); }
+	}
 
 	// m_iszArriveAtDestinationSound
 	[SchemaMember("CFuncMover", "m_iszArriveAtDestinationSound")]
-	public CGameSoundEventName ArriveAtDestinationSound => Schema.GetDeclaredClass<CGameSoundEventName>(this.Handle, "CFuncMover", "m_iszArriveAtDestinationSound");
+	public string ArriveAtDestinationSound
+	{
+		get { return Schema.GetUtf8String(this.Handle, "CFuncMover", "m_iszArriveAtDestinationSound"); }
+		set { Schema.SetString(this.Handle, "CFuncMover", "m_iszArriveAtDestinationSound", value); }
+	}
 
 	// m_OnMovementEnd
 	[SchemaMember("CFuncMover", "m_OnMovementEnd")]

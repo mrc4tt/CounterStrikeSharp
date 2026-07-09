@@ -148,15 +148,27 @@ public partial class CFuncRotator : CBaseModelEntity
 
 	// m_iszStartSound
 	[SchemaMember("CFuncRotator", "m_iszStartSound")]
-	public CGameSoundEventName StartSound => Schema.GetDeclaredClass<CGameSoundEventName>(this.Handle, "CFuncRotator", "m_iszStartSound");
+	public string StartSound
+	{
+		get { return Schema.GetUtf8String(this.Handle, "CFuncRotator", "m_iszStartSound"); }
+		set { Schema.SetString(this.Handle, "CFuncRotator", "m_iszStartSound", value); }
+	}
 
 	// m_iszLoopSound
 	[SchemaMember("CFuncRotator", "m_iszLoopSound")]
-	public CGameSoundEventName LoopSound => Schema.GetDeclaredClass<CGameSoundEventName>(this.Handle, "CFuncRotator", "m_iszLoopSound");
+	public string LoopSound
+	{
+		get { return Schema.GetUtf8String(this.Handle, "CFuncRotator", "m_iszLoopSound"); }
+		set { Schema.SetString(this.Handle, "CFuncRotator", "m_iszLoopSound", value); }
+	}
 
 	// m_iszStopSound
 	[SchemaMember("CFuncRotator", "m_iszStopSound")]
-	public CGameSoundEventName StopSound => Schema.GetDeclaredClass<CGameSoundEventName>(this.Handle, "CFuncRotator", "m_iszStopSound");
+	public string StopSound
+	{
+		get { return Schema.GetUtf8String(this.Handle, "CFuncRotator", "m_iszStopSound"); }
+		set { Schema.SetString(this.Handle, "CFuncRotator", "m_iszStopSound", value); }
+	}
 
 	// m_flTargetAngle
 	[SchemaMember("CFuncRotator", "m_flTargetAngle")]

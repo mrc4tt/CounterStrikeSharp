@@ -64,7 +64,11 @@ public partial class CFuncRotating : CBaseModelEntity
 
 	// m_NoiseRunning
 	[SchemaMember("CFuncRotating", "m_NoiseRunning")]
-	public CGameSoundEventName NoiseRunning => Schema.GetDeclaredClass<CGameSoundEventName>(this.Handle, "CFuncRotating", "m_NoiseRunning");
+	public string NoiseRunning
+	{
+		get { return Schema.GetUtf8String(this.Handle, "CFuncRotating", "m_NoiseRunning"); }
+		set { Schema.SetString(this.Handle, "CFuncRotating", "m_NoiseRunning", value); }
+	}
 
 	// m_bReversed
 	[SchemaMember("CFuncRotating", "m_bReversed")]

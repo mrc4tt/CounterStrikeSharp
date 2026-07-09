@@ -60,19 +60,35 @@ public partial class CBaseDoor : CBaseToggle
 
 	// m_NoiseMoving
 	[SchemaMember("CBaseDoor", "m_NoiseMoving")]
-	public CGameSoundEventName NoiseMoving => Schema.GetDeclaredClass<CGameSoundEventName>(this.Handle, "CBaseDoor", "m_NoiseMoving");
+	public string NoiseMoving
+	{
+		get { return Schema.GetUtf8String(this.Handle, "CBaseDoor", "m_NoiseMoving"); }
+		set { Schema.SetString(this.Handle, "CBaseDoor", "m_NoiseMoving", value); }
+	}
 
 	// m_NoiseArrived
 	[SchemaMember("CBaseDoor", "m_NoiseArrived")]
-	public CGameSoundEventName NoiseArrived => Schema.GetDeclaredClass<CGameSoundEventName>(this.Handle, "CBaseDoor", "m_NoiseArrived");
+	public string NoiseArrived
+	{
+		get { return Schema.GetUtf8String(this.Handle, "CBaseDoor", "m_NoiseArrived"); }
+		set { Schema.SetString(this.Handle, "CBaseDoor", "m_NoiseArrived", value); }
+	}
 
 	// m_NoiseMovingClosed
 	[SchemaMember("CBaseDoor", "m_NoiseMovingClosed")]
-	public CGameSoundEventName NoiseMovingClosed => Schema.GetDeclaredClass<CGameSoundEventName>(this.Handle, "CBaseDoor", "m_NoiseMovingClosed");
+	public string NoiseMovingClosed
+	{
+		get { return Schema.GetUtf8String(this.Handle, "CBaseDoor", "m_NoiseMovingClosed"); }
+		set { Schema.SetString(this.Handle, "CBaseDoor", "m_NoiseMovingClosed", value); }
+	}
 
 	// m_NoiseArrivedClosed
 	[SchemaMember("CBaseDoor", "m_NoiseArrivedClosed")]
-	public CGameSoundEventName NoiseArrivedClosed => Schema.GetDeclaredClass<CGameSoundEventName>(this.Handle, "CBaseDoor", "m_NoiseArrivedClosed");
+	public string NoiseArrivedClosed
+	{
+		get { return Schema.GetUtf8String(this.Handle, "CBaseDoor", "m_NoiseArrivedClosed"); }
+		set { Schema.SetString(this.Handle, "CBaseDoor", "m_NoiseArrivedClosed", value); }
+	}
 
 	// m_ChainTarget
 	[SchemaMember("CBaseDoor", "m_ChainTarget")]

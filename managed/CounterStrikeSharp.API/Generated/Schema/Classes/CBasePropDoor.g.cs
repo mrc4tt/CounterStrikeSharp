@@ -84,39 +84,75 @@ public partial class CBasePropDoor : CDynamicProp
 
 	// m_SoundMoving
 	[SchemaMember("CBasePropDoor", "m_SoundMoving")]
-	public CGameSoundEventName SoundMoving => Schema.GetDeclaredClass<CGameSoundEventName>(this.Handle, "CBasePropDoor", "m_SoundMoving");
+	public string SoundMoving
+	{
+		get { return Schema.GetUtf8String(this.Handle, "CBasePropDoor", "m_SoundMoving"); }
+		set { Schema.SetString(this.Handle, "CBasePropDoor", "m_SoundMoving", value); }
+	}
 
 	// m_SoundOpen
 	[SchemaMember("CBasePropDoor", "m_SoundOpen")]
-	public CGameSoundEventName SoundOpen => Schema.GetDeclaredClass<CGameSoundEventName>(this.Handle, "CBasePropDoor", "m_SoundOpen");
+	public string SoundOpen
+	{
+		get { return Schema.GetUtf8String(this.Handle, "CBasePropDoor", "m_SoundOpen"); }
+		set { Schema.SetString(this.Handle, "CBasePropDoor", "m_SoundOpen", value); }
+	}
 
 	// m_SoundClose
 	[SchemaMember("CBasePropDoor", "m_SoundClose")]
-	public CGameSoundEventName SoundClose => Schema.GetDeclaredClass<CGameSoundEventName>(this.Handle, "CBasePropDoor", "m_SoundClose");
+	public string SoundClose
+	{
+		get { return Schema.GetUtf8String(this.Handle, "CBasePropDoor", "m_SoundClose"); }
+		set { Schema.SetString(this.Handle, "CBasePropDoor", "m_SoundClose", value); }
+	}
 
 	// m_SoundLock
 	[SchemaMember("CBasePropDoor", "m_SoundLock")]
-	public CGameSoundEventName SoundLock => Schema.GetDeclaredClass<CGameSoundEventName>(this.Handle, "CBasePropDoor", "m_SoundLock");
+	public string SoundLock
+	{
+		get { return Schema.GetUtf8String(this.Handle, "CBasePropDoor", "m_SoundLock"); }
+		set { Schema.SetString(this.Handle, "CBasePropDoor", "m_SoundLock", value); }
+	}
 
 	// m_SoundUnlock
 	[SchemaMember("CBasePropDoor", "m_SoundUnlock")]
-	public CGameSoundEventName SoundUnlock => Schema.GetDeclaredClass<CGameSoundEventName>(this.Handle, "CBasePropDoor", "m_SoundUnlock");
+	public string SoundUnlock
+	{
+		get { return Schema.GetUtf8String(this.Handle, "CBasePropDoor", "m_SoundUnlock"); }
+		set { Schema.SetString(this.Handle, "CBasePropDoor", "m_SoundUnlock", value); }
+	}
 
 	// m_SoundLatch
 	[SchemaMember("CBasePropDoor", "m_SoundLatch")]
-	public CGameSoundEventName SoundLatch => Schema.GetDeclaredClass<CGameSoundEventName>(this.Handle, "CBasePropDoor", "m_SoundLatch");
+	public string SoundLatch
+	{
+		get { return Schema.GetUtf8String(this.Handle, "CBasePropDoor", "m_SoundLatch"); }
+		set { Schema.SetString(this.Handle, "CBasePropDoor", "m_SoundLatch", value); }
+	}
 
 	// m_SoundPound
 	[SchemaMember("CBasePropDoor", "m_SoundPound")]
-	public CGameSoundEventName SoundPound => Schema.GetDeclaredClass<CGameSoundEventName>(this.Handle, "CBasePropDoor", "m_SoundPound");
+	public string SoundPound
+	{
+		get { return Schema.GetUtf8String(this.Handle, "CBasePropDoor", "m_SoundPound"); }
+		set { Schema.SetString(this.Handle, "CBasePropDoor", "m_SoundPound", value); }
+	}
 
 	// m_SoundJiggle
 	[SchemaMember("CBasePropDoor", "m_SoundJiggle")]
-	public CGameSoundEventName SoundJiggle => Schema.GetDeclaredClass<CGameSoundEventName>(this.Handle, "CBasePropDoor", "m_SoundJiggle");
+	public string SoundJiggle
+	{
+		get { return Schema.GetUtf8String(this.Handle, "CBasePropDoor", "m_SoundJiggle"); }
+		set { Schema.SetString(this.Handle, "CBasePropDoor", "m_SoundJiggle", value); }
+	}
 
 	// m_SoundLockedAnim
 	[SchemaMember("CBasePropDoor", "m_SoundLockedAnim")]
-	public CGameSoundEventName SoundLockedAnim => Schema.GetDeclaredClass<CGameSoundEventName>(this.Handle, "CBasePropDoor", "m_SoundLockedAnim");
+	public string SoundLockedAnim
+	{
+		get { return Schema.GetUtf8String(this.Handle, "CBasePropDoor", "m_SoundLockedAnim"); }
+		set { Schema.SetString(this.Handle, "CBasePropDoor", "m_SoundLockedAnim", value); }
+	}
 
 	// m_numCloseAttempts
 	[SchemaMember("CBasePropDoor", "m_numCloseAttempts")]

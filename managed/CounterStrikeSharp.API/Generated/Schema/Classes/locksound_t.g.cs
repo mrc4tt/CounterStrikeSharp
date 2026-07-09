@@ -20,11 +20,19 @@ public partial class locksound_t : NativeObject
 
 	// sLockedSound
 	[SchemaMember("locksound_t", "sLockedSound")]
-	public CGameSoundEventName SLockedSound => Schema.GetDeclaredClass<CGameSoundEventName>(this.Handle, "locksound_t", "sLockedSound");
+	public string SLockedSound
+	{
+		get { return Schema.GetUtf8String(this.Handle, "locksound_t", "sLockedSound"); }
+		set { Schema.SetString(this.Handle, "locksound_t", "sLockedSound", value); }
+	}
 
 	// sUnlockedSound
 	[SchemaMember("locksound_t", "sUnlockedSound")]
-	public CGameSoundEventName SUnlockedSound => Schema.GetDeclaredClass<CGameSoundEventName>(this.Handle, "locksound_t", "sUnlockedSound");
+	public string SUnlockedSound
+	{
+		get { return Schema.GetUtf8String(this.Handle, "locksound_t", "sUnlockedSound"); }
+		set { Schema.SetString(this.Handle, "locksound_t", "sUnlockedSound", value); }
+	}
 
 	// flwaitSound
 	[SchemaMember("locksound_t", "flwaitSound")]

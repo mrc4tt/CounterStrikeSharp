@@ -40,7 +40,11 @@ public partial class CMessage : CPointEntity
 
 	// m_sNoise
 	[SchemaMember("CMessage", "m_sNoise")]
-	public CGameSoundEventName Noise => Schema.GetDeclaredClass<CGameSoundEventName>(this.Handle, "CMessage", "m_sNoise");
+	public string Noise
+	{
+		get { return Schema.GetUtf8String(this.Handle, "CMessage", "m_sNoise"); }
+		set { Schema.SetString(this.Handle, "CMessage", "m_sNoise", value); }
+	}
 
 	// m_OnShowMessage
 	[SchemaMember("CMessage", "m_OnShowMessage")]
