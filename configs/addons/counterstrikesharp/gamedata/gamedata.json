@@ -56,7 +56,7 @@
   "GiveNamedItem": {
     "signatures": {
       "library": "server",
-      "windows": "48 89 5C 24 08 48 89 74 24 10 48 89 7C 24 20 44 89 44 24 18 55 41 54 41 55 41 56 41 57 48 8D AC 24 40 FF FF FF 48 81 EC C0 01 00 00 4D 8B E1 45 8B E8 4C 8B F2 4C 8B F9 48 85 D2 74 ? 80 3A 00",
+      "windows": "48 89 5C 24 ? 48 89 74 24 ? 48 89 7C 24 ? 44 89 44 24",
       "linux": "55 48 89 E5 41 57 41 56 41 55 41 54 53 48 81 EC ? ? ? ? 48 89 BD ? ? ? ? 89 95 ? ? ? ? 48 89 8D ? ? ? ? 44 89 85 ? ? ? ?"
     }
   },
@@ -228,7 +228,7 @@
   "CBaseTrigger_EndTouch": {
     "signatures": {
       "library": "server",
-      "windows": "48 85 D2 0F 84 ? ? ? ? 53 55 48 83 EC 28 4C 8B 42 10 48 8B EA 48 8B D9 4D 85 C0 74 ?",
+      "windows": "48 85 D2 0F 84 ? ? ? ? 53 41 57 48 83 EC ? 4C 8B 42",
       "linux": "55 BA FF FF FF FF 48 89 E5 41 57 41 56 41 55 49 89 F5 41"
     }
   },
