@@ -1,3 +1,6 @@
+## What's Changed in v1.0.395
+* fix respawn ([4411d6a](https://github.com/mrc4tt/CounterStrikeSharp/commit/4411d6a31183dae1873ff5b2c354cafa315a7958))
+
 ## What's Changed in v1.0.394
 * patch gamedata.json for linux/win ([d268122](https://github.com/mrc4tt/CounterStrikeSharp/commit/d268122aae1a9b0bcae133bde15ee939e0fe988d))
 * windows sig included ([1456389](https://github.com/mrc4tt/CounterStrikeSharp/commit/145638990be4083cc5078b3c78a3a31ccdeabece))
