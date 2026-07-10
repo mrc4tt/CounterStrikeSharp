@@ -136,7 +136,14 @@ public partial class CCSPlayerController
         if (PlayerPawn.Value == null) return;
 
         // The Call To Arms update appears to have invalidated the need for CCSPlayerPawn_Respawn.
-        SetPawn(PlayerPawn.Value);
+        // Only reattach the pawn while it is still alive. Calling SetPawn on a dead pawn triggers the
+        // engine's network state code on newer builds and crashes the server. The Respawn vfunc below
+        // recreates the pawn regardless, so the reattach is unnecessary when the player is dead.
+        if (PlayerPawn.Value is { IsValid: true, Health: > 0 })
+        {
+            SetPawn(PlayerPawn.Value);
+        }
+
         VirtualFunction.CreateVoid<IntPtr>(Handle, GameData.GetOffset("CCSPlayerController_Respawn"))(Handle);
     }
 
