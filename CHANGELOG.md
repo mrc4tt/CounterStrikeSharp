@@ -1,3 +1,7 @@
+## What's Changed in v1.0.396
+* Merge pull request #8 from mrc4tt/fix/spdlog-symbol-isolation ([1d8ee94](https://github.com/mrc4tt/CounterStrikeSharp/commit/1d8ee94379f12ed9f0a48d294491e31dd20be29a))
+* fix: isolate spdlog symbols to stop RayTrace logger crash ([c4ec11f](https://github.com/mrc4tt/CounterStrikeSharp/commit/c4ec11fea049f1c508ff95b2dc4932bc52418783))
+
 ## What's Changed in v1.0.395
 * fix respawn ([4411d6a](https://github.com/mrc4tt/CounterStrikeSharp/commit/4411d6a31183dae1873ff5b2c354cafa315a7958))
 
