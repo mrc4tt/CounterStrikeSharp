@@ -5,6 +5,12 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <RootNamespace>WarcraftPlugin</RootNamespace>
+    <!-- NU1903: SQLitePCLRaw.lib.e_sqlite3 <=2.1.11 is flagged for CVE-2025-6965 (SQLite
+         < 3.50.2). We do NOT ship that native: OverridePatchedSqliteNative below replaces it
+         in build/publish output with eng/native/linux-x64/libe_sqlite3.so, our own SQLite
+         3.50.2 build (CVE patched, GLIBC_2.14 so it loads on old game containers). The flag is
+         on the transitive package version, not the binary we deploy. -->
+    <NoWarn>$(NoWarn);NU1903</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -16,6 +22,10 @@
     <PackageReference Include="Dapper" Version="2.0.78" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Microsoft.Data.Sqlite" Version="5.0.2" />
+    <!-- Pin the managed SQLitePCLRaw glue to 2.1.x (core/provider/Batteries_V2 ABI). Its
+         bundled native is OVERRIDDEN below by our patched SQLite 3.50.2 build. Do NOT bump to
+         3.x expecting it to "just work" on the container (3.x native = GLIBC_2.33+). -->
+    <PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="2.1.11" />
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
   </ItemGroup>
   <ItemGroup>
@@ -24,4 +34,16 @@
   <ItemGroup>
     <ProjectReference Include="..\..\managed\CounterStrikeSharp.API\CounterStrikeSharp.API.csproj" />
   </ItemGroup>
+
+  <!-- Replace SQLitePCLRaw's bundled (vulnerable / glibc-too-new) libe_sqlite3.so in build &
+       publish output with our patched SQLite 3.50.2 build. See eng/build-sqlite-native.sh.
+       Runs after the package's native is copied, so ours wins. -->
+  <Target Name="OverridePatchedSqliteNative" AfterTargets="Build;Publish">
+    <PropertyGroup>
+      <_PatchedSqlite>$(MSBuildProjectDirectory)/../../eng/native/linux-x64/libe_sqlite3.so</_PatchedSqlite>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(_PatchedSqlite)')" Text="Patched libe_sqlite3.so missing at $(_PatchedSqlite). Run ./eng/build-sqlite-native.sh." />
+    <Copy Condition="Exists('$(OutDir)runtimes/linux-x64/native/libe_sqlite3.so')" SourceFiles="$(_PatchedSqlite)" DestinationFiles="$(OutDir)runtimes/linux-x64/native/libe_sqlite3.so" OverwriteReadOnlyFiles="true" SkipUnchangedFiles="false" />
+    <Copy Condition="'$(PublishDir)' != '' And Exists('$(PublishDir)runtimes/linux-x64/native/libe_sqlite3.so')" SourceFiles="$(_PatchedSqlite)" DestinationFiles="$(PublishDir)runtimes/linux-x64/native/libe_sqlite3.so" OverwriteReadOnlyFiles="true" SkipUnchangedFiles="false" />
+  </Target>
 </Project>

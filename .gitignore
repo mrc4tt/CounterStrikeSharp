@@ -561,3 +561,7 @@ _NCrunch*
 docfx/_site/
 docfx/api/
 docfx/_exported_templates/
+
+# Patched SQLite native (CVE-2025-6965) intentionally committed — see eng/build-sqlite-native.sh
+!eng/native/linux-x64/libe_sqlite3.so
+!eng/build-sqlite-native.sh
