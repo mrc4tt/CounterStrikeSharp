@@ -76,7 +76,7 @@ public partial class CEntityInstance : IEquatable<CEntityInstance>
     /// <param name="activator">Entity which initiated the action, <see langword="null"/> for no entity</param>
     /// <param name="caller">Entity that is sending the event, <see langword="null"/> for no entity</param>
     /// <param name="value">String variant value to send with the event</param>
-    /// <param name="outputId">Unknown, defaults to 0</param>
+    /// <param name="outputId">Removed from the current CS2 game ABI</param>
     /// <exception cref="InvalidOperationException">Entity is not valid</exception>
     public void AcceptInput(string inputName, CEntityInstance? activator = null, CEntityInstance? caller = null, string value = "", int outputId = 0)
     {
