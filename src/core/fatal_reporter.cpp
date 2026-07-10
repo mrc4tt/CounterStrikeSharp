@@ -57,7 +57,8 @@ static void safe_write(const char* s)
     size_t n = 0;
     while (s[n] != '\0' && n < 8192)
         n++;
-    ssize_t r = write(STDERR_FILENO, s, n);
+    // auto: ssize_t on POSIX, int on MSVC (_write). ssize_t is not declared by MSVC.
+    auto r = write(STDERR_FILENO, s, n);
     (void)r;
 }
 
@@ -80,7 +81,7 @@ static void safe_write_int(int v)
         }
     }
     if (neg && i > 0) buf[--i] = '-';
-    ssize_t r = write(STDERR_FILENO, buf + i, sizeof(buf) - (size_t)i);
+    auto r = write(STDERR_FILENO, buf + i, sizeof(buf) - (size_t)i);
     (void)r;
 }
 
