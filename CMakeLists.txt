@@ -138,6 +138,16 @@ if(LINUX)
                           PREFIX ""
                           LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/addons/counterstrikesharp/bin/linuxsteamrt64"
     )
+
+    # Localize every symbol except the two the outside world resolves by name.
+    # spdlog is header-only and compiles a global logger-registry singleton into
+    # this .so; with default ELF visibility that singleton is exported and the
+    # dynamic linker merges it with the CS2 server's own spdlog registry. The
+    # engine then re-registers its "RayTrace" logger into our already-populated
+    # registry -> spdlog_ex "logger ... already exists" -> std::terminate.
+    # The version script keeps our spdlog (and dyncall/protobuf/sdk) private.
+    target_link_options(${PROJECT_NAME} PRIVATE
+                        "-Wl,--version-script=${CMAKE_CURRENT_SOURCE_DIR}/makefiles/exports.ver")
 elseif(WIN32)
     include("makefiles/windows.base.cmake")
     set_target_properties(${PROJECT_NAME} PROPERTIES

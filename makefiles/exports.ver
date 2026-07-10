@@ -1,0 +1,22 @@
+# Linker version script for counterstrikesharp.so (ELF / Linux).
+#
+# Without this, every symbol compiled into the .so keeps default visibility and
+# lands in the dynamic symbol table (4000+ symbols: spdlog, dyncall, protobuf,
+# sdk, ...). The dynamic linker then interposes those globals against the CS2
+# server's OWN copies of the same libraries. spdlog is header-only, so its
+# global logger registry singleton gets merged with the engine's -- the engine
+# registers its "RayTrace" logger into a registry we already populated, spdlog
+# throws `spdlog_ex("logger with name 'RayTrace' already exists")`, and the
+# uncaught exception aborts the server via std::terminate.
+#
+# Exporting ONLY the two symbols the outside world resolves by name keeps our
+# spdlog (and everything else) private, so no registry is ever shared:
+#   CreateInterface -- Metamod's plugin entry point.
+#   InvokeNative    -- managed P/Invoke target ([DllImport EntryPoint="InvokeNative"]).
+{
+    global:
+        CreateInterface;
+        InvokeNative;
+    local:
+        *;
+};
