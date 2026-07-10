@@ -1,3 +1,6 @@
+## What's Changed in v1.0.397
+* Update AddEntityIOEvent for the current CS2 ABI ([ed3bcd4](https://github.com/mrc4tt/CounterStrikeSharp/commit/ed3bcd44521e10ac389e9368d914c5a23b745b16))
+
 ## What's Changed in v1.0.396
 * Merge pull request #8 from mrc4tt/fix/spdlog-symbol-isolation ([1d8ee94](https://github.com/mrc4tt/CounterStrikeSharp/commit/1d8ee94379f12ed9f0a48d294491e31dd20be29a))
 * fix: isolate spdlog symbols to stop RayTrace logger crash ([c4ec11f](https://github.com/mrc4tt/CounterStrikeSharp/commit/c4ec11fea049f1c508ff95b2dc4932bc52418783))
