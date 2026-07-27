@@ -1,3 +1,12 @@
+## What's Changed in v1.0.398
+* feat(transmit): native-side entity hide table for CheckTransmit ([c8a4eb0](https://github.com/mrc4tt/CounterStrikeSharp/commit/c8a4eb0ffe33799db3190432abe712aa9f42ceb6))
+* claude update ([b6caa88](https://github.com/mrc4tt/CounterStrikeSharp/commit/b6caa889e88353f2fdafcc175fb3e7594290cf58))
+* chore(gamedata): drop MatchZy sigs (now shipped in MatchZy's own gamedata) ([50a4f8c](https://github.com/mrc4tt/CounterStrikeSharp/commit/50a4f8c802c8e4d2917c7a8aebd13d978ecc4cc0))
+* feat(gamedata): add MatchZy fork sigs (CCSGameRules_PostCleanUp + grenade Create) ([bf49926](https://github.com/mrc4tt/CounterStrikeSharp/commit/bf49926c3dcec63934d8b942d02fbda70b4387d7))
+* chore: modules update ([7fa81b3](https://github.com/mrc4tt/CounterStrikeSharp/commit/7fa81b34b9737836efbc75762a5a9b539406ca14))
+* fix(win): use auto for write() return type in fatal_reporter ([b7e23e0](https://github.com/mrc4tt/CounterStrikeSharp/commit/b7e23e0dec66e473631057817cf1e6b2e6d8edf5))
+* fix(deps): resolve NU1903 high-severity advisories ([8201961](https://github.com/mrc4tt/CounterStrikeSharp/commit/82019617dd7760758ab96851e76360b07711a2ae))
+
 ## What's Changed in v1.0.397
 * Update AddEntityIOEvent for the current CS2 ABI ([ed3bcd4](https://github.com/mrc4tt/CounterStrikeSharp/commit/ed3bcd44521e10ac389e9368d914c5a23b745b16))
 
