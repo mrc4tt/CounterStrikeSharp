@@ -185,6 +185,13 @@ void CEntityListener::OnEntityCreated(CEntityInstance* pEntity)
 }
 void CEntityListener::OnEntityDeleted(CEntityInstance* pEntity)
 {
+    // Entity indices recycle; drop any transmit hide rules for this index so a new
+    // entity spawning into the same slot doesn't inherit stale invisibility.
+    if (pEntity)
+    {
+        globals::entityManager.transmitFilter.ClearEntity(pEntity->GetEntityIndex().Get());
+    }
+
     auto callback = globals::entityManager.on_entity_deleted_callback;
 
     if (callback && callback->GetFunctionCount())
@@ -245,6 +252,95 @@ void EntityManager::UnhookEntityOutput(const char* szClassname, const char* szOu
     }
 }
 
+void TransmitFilter::SetHidden(int entityIndex, int playerSlot, bool bHidden)
+{
+    if (!ValidEntity(entityIndex) || !ValidSlot(playerSlot)) return;
+
+    uint32& word = m_masks[playerSlot][entityIndex >> 5];
+    const uint32 bit = 1u << (entityIndex & 31);
+
+    if (bHidden)
+    {
+        if (word & bit) return;
+        word |= bit;
+        m_hiddenCounts[playerSlot]++;
+        m_totalHidden++;
+    }
+    else
+    {
+        if (!(word & bit)) return;
+        word &= ~bit;
+        m_hiddenCounts[playerSlot]--;
+        m_totalHidden--;
+    }
+}
+
+void TransmitFilter::SetHiddenAll(int entityIndex, bool bHidden)
+{
+    for (int slot = 0; slot < kMaxPlayers; slot++)
+    {
+        SetHidden(entityIndex, slot, bHidden);
+    }
+}
+
+void TransmitFilter::ClearEntity(int entityIndex)
+{
+    if (!ValidEntity(entityIndex)) return;
+
+    for (int slot = 0; slot < kMaxPlayers; slot++)
+    {
+        SetHidden(entityIndex, slot, false);
+    }
+}
+
+void TransmitFilter::ClearPlayer(int playerSlot)
+{
+    if (!ValidSlot(playerSlot) || m_hiddenCounts[playerSlot] == 0) return;
+
+    memset(m_masks[playerSlot], 0, sizeof(m_masks[playerSlot]));
+    m_totalHidden -= m_hiddenCounts[playerSlot];
+    m_hiddenCounts[playerSlot] = 0;
+}
+
+void TransmitFilter::ClearAll()
+{
+    if (m_totalHidden == 0) return;
+
+    memset(m_masks, 0, sizeof(m_masks));
+    memset(m_hiddenCounts, 0, sizeof(m_hiddenCounts));
+    m_totalHidden = 0;
+}
+
+bool TransmitFilter::IsHidden(int entityIndex, int playerSlot) const
+{
+    if (!ValidEntity(entityIndex) || !ValidSlot(playerSlot)) return false;
+
+    return (m_masks[playerSlot][entityIndex >> 5] & (1u << (entityIndex & 31))) != 0;
+}
+
+void TransmitFilter::Apply(CCheckTransmitInfoHack** ppInfoList, uint32_t nInfoCount) const
+{
+    if (m_totalHidden == 0) return;
+
+    for (uint32_t i = 0; i < nInfoCount; i++)
+    {
+        CCheckTransmitInfoHack* pInfo = ppInfoList[i];
+        if (!pInfo || !pInfo->m_pTransmitEntity) continue;
+
+        const int slot = pInfo->m_nPlayerSlot;
+        if (!ValidSlot(slot) || m_hiddenCounts[slot] == 0) continue;
+
+        // Word-wise AND-NOT over the engine's transmit bit vector: 2KB per player,
+        // vectorized by the compiler — microseconds, no managed transition.
+        uint32* bits = pInfo->m_pTransmitEntity->Base();
+        const uint32* mask = m_masks[slot];
+        for (int w = 0; w < kWords; w++)
+        {
+            bits[w] &= ~mask[w];
+        }
+    }
+}
+
 void EntityManager::CheckTransmit(CCheckTransmitInfoHack** ppInfoList,
                                   uint32_t nInfoCount,
                                   CBitVec<16384>& unionTransmitEdicts1,
@@ -268,6 +364,10 @@ void EntityManager::CheckTransmit(CCheckTransmitInfoHack** ppInfoList,
         callback->ScriptContext().Push(&infoList);
         callback->Execute();
     }
+
+    // Native transmit rules run AFTER the managed listener so rule-based hides are
+    // authoritative, and they run even when no managed listener is registered.
+    globals::entityManager.transmitFilter.Apply(ppInfoList, nInfoCount);
 }
 
 int64 DetourCBaseEntity_TakeDamageOld(CBaseEntity* pThis, CTakeDamageInfo* pInfo, CTakeDamageResult* pResult)

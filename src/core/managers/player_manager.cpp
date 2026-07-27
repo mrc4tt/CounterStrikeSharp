@@ -31,6 +31,7 @@
 
 #include "core/managers/player_manager.h"
 #include "core/managers/con_command_manager.h"
+#include "core/managers/entity_manager.h"
 #include "core/managers/voice_manager.h"
 
 #include <public/eiface.h>
@@ -262,6 +263,10 @@ void PlayerManager::OnClientDisconnect_Post(
     }
 
     InvalidatePlayer(pPlayer);
+
+    // Slots recycle; drop this slot's transmit hide rules so the next player in the
+    // slot doesn't inherit them.
+    globals::entityManager.transmitFilter.ClearPlayer(client);
 
     m_on_client_disconnect_post_callback->ScriptContext().Reset();
     m_on_client_disconnect_post_callback->ScriptContext().Push(pPlayer->m_slot.Get());

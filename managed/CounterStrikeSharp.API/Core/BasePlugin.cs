@@ -311,6 +311,26 @@ namespace CounterStrikeSharp.API.Core
                 .Select(p => p.GetCustomAttribute<CastFromAttribute>()?.Type)
                 .ToArray();
 
+            // Compiled wrapper constructors for [CastFrom] parameters, built once at
+            // registration. Replaces per-dispatch Activator.CreateInstance — CheckTransmit
+            // and friends construct their wrapper (e.g. CCheckTransmitInfoList) every
+            // tick, and reflection ctor invocation there was measurable frame cost.
+            var casters = new Func<object, object>?[parameterTypes.Length];
+            for (int i = 0; i < parameterTypes.Length; i++)
+            {
+                if (castedParameterTypes[i] == null) continue;
+
+                var ctor = parameterTypes[i].GetConstructor(new[] { castedParameterTypes[i]! });
+                if (ctor == null) continue; // fall back to Activator at dispatch time
+
+                var arg = System.Linq.Expressions.Expression.Parameter(typeof(object), "arg");
+                casters[i] = System.Linq.Expressions.Expression.Lambda<Func<object, object>>(
+                        System.Linq.Expressions.Expression.New(ctor,
+                            System.Linq.Expressions.Expression.Convert(arg, castedParameterTypes[i]!)),
+                        arg)
+                    .Compile();
+            }
+
             Application.Instance.Logger.LogDebug("Registering listener for {ListenerName} with {ParameterCount} parameters",
                 listenerName, parameterTypes.Length);
 
@@ -337,7 +357,9 @@ namespace CounterStrikeSharp.API.Core
                     {
                         args[i] = context.GetArgument(castedParameterTypes[i] ?? parameterTypes[i], i);
                         if (castedParameterTypes[i] != null)
-                            args[i] = Activator.CreateInstance(parameterTypes[i], new[] { args[i] });
+                            args[i] = casters[i] != null
+                                ? casters[i]!(args[i])
+                                : Activator.CreateInstance(parameterTypes[i], new[] { args[i] });
                     }
                 }
 

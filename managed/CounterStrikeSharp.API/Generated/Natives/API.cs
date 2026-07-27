@@ -1020,6 +1020,70 @@ namespace CounterStrikeSharp.API.Core
 			}
 		}
 
+        public static void TransmitSetHidden(int entityindex, int playerslot, bool hidden){
+			lock (ScriptContext.GlobalScriptContext.Lock) {
+			ScriptContext.GlobalScriptContext.Reset();
+			ScriptContext.GlobalScriptContext.PushPrimitive(entityindex);
+			ScriptContext.GlobalScriptContext.PushPrimitive(playerslot);
+			ScriptContext.GlobalScriptContext.PushPrimitive(hidden);
+			ScriptContext.GlobalScriptContext.SetIdentifier(0x6648C4C7);
+			ScriptContext.GlobalScriptContext.Invoke();
+			ScriptContext.GlobalScriptContext.CheckErrors();
+			}
+		}
+
+        public static void TransmitSetHiddenAll(int entityindex, bool hidden){
+			lock (ScriptContext.GlobalScriptContext.Lock) {
+			ScriptContext.GlobalScriptContext.Reset();
+			ScriptContext.GlobalScriptContext.PushPrimitive(entityindex);
+			ScriptContext.GlobalScriptContext.PushPrimitive(hidden);
+			ScriptContext.GlobalScriptContext.SetIdentifier(0x33472679);
+			ScriptContext.GlobalScriptContext.Invoke();
+			ScriptContext.GlobalScriptContext.CheckErrors();
+			}
+		}
+
+        public static void TransmitClearEntity(int entityindex){
+			lock (ScriptContext.GlobalScriptContext.Lock) {
+			ScriptContext.GlobalScriptContext.Reset();
+			ScriptContext.GlobalScriptContext.PushPrimitive(entityindex);
+			ScriptContext.GlobalScriptContext.SetIdentifier(0x57F9A9ED);
+			ScriptContext.GlobalScriptContext.Invoke();
+			ScriptContext.GlobalScriptContext.CheckErrors();
+			}
+		}
+
+        public static void TransmitClearPlayer(int playerslot){
+			lock (ScriptContext.GlobalScriptContext.Lock) {
+			ScriptContext.GlobalScriptContext.Reset();
+			ScriptContext.GlobalScriptContext.PushPrimitive(playerslot);
+			ScriptContext.GlobalScriptContext.SetIdentifier(0x3943AC45);
+			ScriptContext.GlobalScriptContext.Invoke();
+			ScriptContext.GlobalScriptContext.CheckErrors();
+			}
+		}
+
+        public static void TransmitClearAll(){
+			lock (ScriptContext.GlobalScriptContext.Lock) {
+			ScriptContext.GlobalScriptContext.Reset();
+			ScriptContext.GlobalScriptContext.SetIdentifier(0xAA93A6D7);
+			ScriptContext.GlobalScriptContext.Invoke();
+			ScriptContext.GlobalScriptContext.CheckErrors();
+			}
+		}
+
+        public static bool TransmitIsHidden(int entityindex, int playerslot){
+			lock (ScriptContext.GlobalScriptContext.Lock) {
+			ScriptContext.GlobalScriptContext.Reset();
+			ScriptContext.GlobalScriptContext.PushPrimitive(entityindex);
+			ScriptContext.GlobalScriptContext.PushPrimitive(playerslot);
+			ScriptContext.GlobalScriptContext.SetIdentifier(0x4342479F);
+			ScriptContext.GlobalScriptContext.Invoke();
+			ScriptContext.GlobalScriptContext.CheckErrors();
+			return ScriptContext.GlobalScriptContext.GetResultPrimitive<bool>();
+			}
+		}
+
         public static IntPtr GetFirstActiveEntity(){
 			lock (ScriptContext.GlobalScriptContext.Lock) {
 			ScriptContext.GlobalScriptContext.Reset();

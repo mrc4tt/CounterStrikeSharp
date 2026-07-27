@@ -69,6 +69,39 @@ class CCheckTransmitInfoList
     int infoCount;
 };
 
+// Native-side transmit hide table. Plugins register "hide entity E from player slot S"
+// rules via the TRANSMIT_* natives; the rules live here and are applied word-wise to
+// the engine's transmit bit vectors inside EntityManager::CheckTransmit every tick
+// with ZERO native->managed transitions. This is the fast path for entity hiding —
+// the managed CheckTransmit listener still exists for arbitrary per-tick logic, but
+// rule-based hiding should use this table and only call the natives when a rule
+// actually changes.
+class TransmitFilter
+{
+  public:
+    static constexpr int kMaxPlayers = 64;
+    static constexpr int kMaxEdicts = 16384;
+    // CBitVec<16384> stores uint32 words; mirror that layout so Apply can AND-NOT
+    // straight over the engine's transmit bits.
+    static constexpr int kWords = kMaxEdicts / 32;
+
+    void SetHidden(int entityIndex, int playerSlot, bool bHidden);
+    void SetHiddenAll(int entityIndex, bool bHidden);
+    void ClearEntity(int entityIndex);
+    void ClearPlayer(int playerSlot);
+    void ClearAll();
+    bool IsHidden(int entityIndex, int playerSlot) const;
+    void Apply(CCheckTransmitInfoHack** ppInfoList, uint32_t nInfoCount) const;
+
+  private:
+    static bool ValidEntity(int entityIndex) { return entityIndex > 0 && entityIndex < kMaxEdicts; }
+    static bool ValidSlot(int playerSlot) { return playerSlot >= 0 && playerSlot < kMaxPlayers; }
+
+    uint32 m_masks[kMaxPlayers][kWords] = {};
+    int m_hiddenCounts[kMaxPlayers] = {};
+    int m_totalHidden = 0;
+};
+
 class EntityManager : public GlobalClass
 {
     friend CEntityListener;
@@ -89,6 +122,7 @@ class EntityManager : public GlobalClass
     bool Hook_OnTakeDamage_Alive_Pre(CBaseEntity* entity, CTakeDamageInfo* info, CTakeDamageResult* pResult);
     void Hook_OnTakeDamage_Alive_Post(CBaseEntity* entity, CTakeDamageInfo* info, CTakeDamageResult* pResult);
     ValveFunction* Func_OnTakeDamage;
+    TransmitFilter transmitFilter;
 
   private:
     void CheckTransmit(CCheckTransmitInfoHack** ppInfoList,

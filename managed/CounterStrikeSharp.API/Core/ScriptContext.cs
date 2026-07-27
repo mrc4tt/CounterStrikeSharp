@@ -82,7 +82,11 @@ namespace CounterStrikeSharp.API.Core
             m_extContext = *context;
         }
 
-        private readonly ConcurrentQueue<IntPtr> ms_finalizers = new ConcurrentQueue<IntPtr>();
+        // Lazily allocated: only string pushes/results need finalizer tracking, but a
+        // ScriptContext is constructed on EVERY native->managed dispatch (per tick, per
+        // event, per listener). Allocating the queue eagerly cost one ConcurrentQueue +
+        // its initial segment per dispatch even when no string was ever marshalled.
+        private ConcurrentQueue<IntPtr>? ms_finalizers;
 
         private readonly object ms_lock = new object();
 
@@ -198,6 +202,69 @@ namespace CounterStrikeSharp.API.Core
             }
         }
 
+        /// <summary>
+        /// Cached per-Type reflection metadata used by the boxed Push/GetResult paths.
+        /// These run on every native dispatch argument, so repeated Marshal.SizeOf /
+        /// IsAssignableFrom / Activator.CreateInstance calls were pure per-tick overhead.
+        /// </summary>
+        private sealed class TypeMeta
+        {
+            public bool IsNativeObject;
+            public bool IsEnum;
+            public Type? EnumUnderlying;
+            public int MarshalSize; // -1 => Marshal.SizeOf(type) throws for this type
+            public Func<IntPtr, object>? NativeObjectFactory;
+        }
+
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<Type, TypeMeta> TypeMetaCache = new();
+
+        private static TypeMeta GetTypeMeta(Type type)
+        {
+            return TypeMetaCache.GetOrAdd(type, static t =>
+            {
+                var meta = new TypeMeta
+                {
+                    IsNativeObject = typeof(NativeObject).IsAssignableFrom(t),
+                    IsEnum = t.IsEnum,
+                    EnumUnderlying = t.IsEnum ? t.GetEnumUnderlyingType() : null,
+                };
+
+                try
+                {
+                    meta.MarshalSize = Marshal.SizeOf(t);
+                }
+                catch
+                {
+                    meta.MarshalSize = -1;
+                }
+
+                if (meta.IsNativeObject)
+                {
+                    // Compiled (IntPtr) constructor — replaces Activator.CreateInstance
+                    // on the argument-materialization path.
+                    var ctor = t.GetConstructor(new[] { typeof(IntPtr) });
+                    if (ctor != null)
+                    {
+                        var p = System.Linq.Expressions.Expression.Parameter(typeof(IntPtr), "ptr");
+                        meta.NativeObjectFactory = System.Linq.Expressions.Expression
+                            .Lambda<Func<IntPtr, object>>(System.Linq.Expressions.Expression.New(ctor, p), p)
+                            .Compile();
+                    }
+                }
+
+                return meta;
+            });
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static unsafe void PushRaw<T>(fxScriptContext* cxt, T value) where T : unmanaged
+        {
+            byte* slot = &cxt->functionData[8 * cxt->numArguments];
+            *(long*)slot = 0;
+            *(T*)slot = value;
+            cxt->numArguments++;
+        }
+
         [SecurityCritical]
         internal unsafe void Push(fxScriptContext* context, object? arg)
         {
@@ -206,50 +273,72 @@ namespace CounterStrikeSharp.API.Core
                 arg = 0;
             }
 
-            if (arg.GetType().IsEnum)
+            // Fast paths for boxed primitives — covers nearly all real native traffic
+            // without Marshal.SizeOf/StructureToPtr reflection. Semantics match the
+            // fallback: slot is zeroed, then the value's bytes are written.
+            switch (arg)
             {
-                arg = Convert.ChangeType(arg, arg.GetType().GetEnumUnderlyingType());
+                case int v: PushRaw(context, v); return;
+                case uint v: PushRaw(context, v); return;
+                case long v: PushRaw(context, v); return;
+                case ulong v: PushRaw(context, v); return;
+                case IntPtr v: PushRaw(context, v); return;
+                case UIntPtr v: PushRaw(context, v); return;
+                case float v: PushRaw(context, v); return;
+                case double v: PushRaw(context, v); return;
+                case bool v: PushRaw(context, v ? (byte)1 : (byte)0); return;
+                case byte v: PushRaw(context, v); return;
+                case sbyte v: PushRaw(context, v); return;
+                case short v: PushRaw(context, v); return;
+                case ushort v: PushRaw(context, v); return;
+                case string str:
+                    PushString(context, str);
+                    return;
+                case InputArgument ia:
+                    Push(context, ia.Value);
+                    return;
+                case IMarshalToNative marshalToNative:
+                    foreach (var value in marshalToNative.GetNativeObject())
+                    {
+                        Push(context, value);
+                    }
+
+                    return;
+                // Handle pushed directly — skips the InputArgument wrapper allocation
+                // the implicit conversion used to create per call. Also covers
+                // NativeEntity, which derives from NativeObject.
+                case NativeObject nativeObject:
+                    PushRaw(context, nativeObject.Handle);
+                    return;
             }
 
-            if (arg is string)
-            {
-                var str = (string)Convert.ChangeType(arg, typeof(string));
-                PushString(context, str);
+            var meta = GetTypeMeta(arg.GetType());
 
-                return;
-            }
-            else if (arg is InputArgument ia)
+            if (meta.IsEnum)
             {
-                Push(context, ia.Value);
-
-                return;
-            }
-            else if (arg is IMarshalToNative marshalToNative)
-            {
-                foreach (var value in marshalToNative.GetNativeObject())
-                {
-                    Push(context, value);
-                }
-
-                return;
-            }
-            else if (arg is NativeObject nativeObject)
-            {
-                Push(context, (InputArgument)nativeObject);
-                return;
-            }
-            else if (arg is NativeEntity nativeValue)
-            {
-                Push(context, (InputArgument)nativeValue);
+                Push(context, Convert.ChangeType(arg, meta.EnumUnderlying!));
                 return;
             }
 
-            if (Marshal.SizeOf(arg.GetType()) <= 8)
+            if (meta.MarshalSize == -1)
+            {
+                // Preserve the original behavior: Marshal.SizeOf throws for this type.
+                Marshal.SizeOf(arg.GetType());
+            }
+
+            if (meta.MarshalSize <= 8)
             {
                 PushUnsafe(context, arg);
             }
 
             context->numArguments++;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static unsafe void SetResultRaw<T>(fxScriptContext* cxt, T value) where T : unmanaged
+        {
+            *(long*)(&cxt->result[0]) = 0;
+            *(T*)(&cxt->result[0]) = value;
         }
 
         [SecurityCritical]
@@ -260,26 +349,46 @@ namespace CounterStrikeSharp.API.Core
                 arg = 0;
             }
 
-            if (arg.GetType().IsEnum)
+            // Primitive fast paths — hook results (e.g. HookResult) land here on every
+            // dispatch, so the Marshal.SizeOf/StructureToPtr fallback was per-tick cost.
+            switch (arg)
             {
-                arg = Convert.ChangeType(arg, arg.GetType().GetEnumUnderlyingType());
+                case int v: SetResultRaw(context, v); return;
+                case uint v: SetResultRaw(context, v); return;
+                case long v: SetResultRaw(context, v); return;
+                case ulong v: SetResultRaw(context, v); return;
+                case IntPtr v: SetResultRaw(context, v); return;
+                case UIntPtr v: SetResultRaw(context, v); return;
+                case float v: SetResultRaw(context, v); return;
+                case double v: SetResultRaw(context, v); return;
+                case bool v: SetResultRaw(context, v ? (byte)1 : (byte)0); return;
+                case byte v: SetResultRaw(context, v); return;
+                case sbyte v: SetResultRaw(context, v); return;
+                case short v: SetResultRaw(context, v); return;
+                case ushort v: SetResultRaw(context, v); return;
+                case string str:
+                    SetResultString(context, str);
+                    return;
+                case InputArgument ia:
+                    SetResultInternal(context, ia.Value);
+                    return;
             }
 
-            if (arg is string)
-            {
-                var str = (string)Convert.ChangeType(arg, typeof(string));
-                SetResultString(context, str);
+            var meta = GetTypeMeta(arg.GetType());
 
+            if (meta.IsEnum)
+            {
+                SetResultInternal(context, Convert.ChangeType(arg, meta.EnumUnderlying!));
                 return;
             }
-            else if (arg is InputArgument ia)
-            {
-                SetResultInternal(context, ia.Value);
 
-                return;
+            if (meta.MarshalSize == -1)
+            {
+                // Preserve the original behavior: Marshal.SizeOf throws for this type.
+                Marshal.SizeOf(arg.GetType());
             }
 
-            if (Marshal.SizeOf(arg.GetType()) <= 8)
+            if (meta.MarshalSize <= 8)
             {
                 SetResultUnsafe(context, arg);
             }
@@ -340,7 +449,7 @@ namespace CounterStrikeSharp.API.Core
             int written = Encoding.UTF8.GetBytes(str, dest);
             dest[written] = 0;
 
-            ms_finalizers.Enqueue(ptr);
+            (ms_finalizers ??= new ConcurrentQueue<IntPtr>()).Enqueue(ptr);
 
             *(IntPtr*)(&cxt->functionData[8 * cxt->numArguments]) = ptr;
             cxt->numArguments++;
@@ -362,7 +471,7 @@ namespace CounterStrikeSharp.API.Core
             int written = Encoding.UTF8.GetBytes(str, dest);
             dest[written] = 0;
 
-            ms_finalizers.Enqueue(ptr);
+            (ms_finalizers ??= new ConcurrentQueue<IntPtr>()).Enqueue(ptr);
             *(IntPtr*)(&cxt->result[8]) = ptr;
         }
 
@@ -438,6 +547,23 @@ namespace CounterStrikeSharp.API.Core
         // paths are asserted with null!/! rather than widening the signature.
         internal unsafe object GetResult(Type type, byte* ptr)
         {
+            // Fast paths for the common primitive shapes — avoids the Marshal.SizeOf +
+            // Marshal.PtrToStructure reflection this method used to pay per argument.
+            // Boxing is inherent to the object-typed contract and unavoidable here.
+            if (type == typeof(IntPtr)) return *(IntPtr*)ptr;
+            if (type == typeof(int)) return *(int*)ptr;
+            if (type == typeof(uint)) return *(uint*)ptr;
+            if (type == typeof(long)) return *(long*)ptr;
+            if (type == typeof(ulong)) return *(ulong*)ptr;
+            if (type == typeof(float)) return *(float*)ptr;
+            if (type == typeof(double)) return *(double*)ptr;
+            if (type == typeof(bool)) return *(byte*)ptr != 0;
+            if (type == typeof(byte)) return *ptr;
+            if (type == typeof(sbyte)) return *(sbyte*)ptr;
+            if (type == typeof(short)) return *(short*)ptr;
+            if (type == typeof(ushort)) return *(ushort*)ptr;
+            if (type == typeof(UIntPtr)) return *(UIntPtr*)ptr;
+
             if (type == typeof(string))
             {
                 var nativeUtf8 = *(byte**)ptr;
@@ -450,15 +576,9 @@ namespace CounterStrikeSharp.API.Core
                 return Marshal.PtrToStringUTF8((IntPtr)nativeUtf8)!;
             }
 
-            if (typeof(NativeObject).IsAssignableFrom(type))
-            {
-                var pointer = (IntPtr)GetResult(typeof(IntPtr), ptr);
-                return Activator.CreateInstance(type, pointer)!;
-            }
-
             if (type == typeof(Color))
             {
-                var pointer = (IntPtr)GetResult(typeof(IntPtr), ptr);
+                var pointer = *(IntPtr*)ptr;
                 return Marshaling.ColorMarshaler.NativeToManaged(pointer);
             }
 
@@ -466,7 +586,7 @@ namespace CounterStrikeSharp.API.Core
             // maybe do this with a marshaler?!
             if (type == typeof(CEntityHandle))
             {
-                return new CEntityHandle((uint)GetResult(typeof(uint), ptr));
+                return new CEntityHandle(*(uint*)ptr);
             }
 
             if (type == typeof(object))
@@ -474,12 +594,28 @@ namespace CounterStrikeSharp.API.Core
                 return null!;
             }
 
-            if (type.IsEnum)
+            var meta = GetTypeMeta(type);
+
+            if (meta.IsNativeObject)
             {
-                return Enum.ToObject(type, GetResult(type.GetEnumUnderlyingType(), ptr));
+                var pointer = *(IntPtr*)ptr;
+                return meta.NativeObjectFactory != null
+                    ? meta.NativeObjectFactory(pointer)
+                    : Activator.CreateInstance(type, pointer)!;
             }
 
-            if (Marshal.SizeOf(type) <= 8)
+            if (meta.IsEnum)
+            {
+                return Enum.ToObject(type, GetResult(meta.EnumUnderlying!, ptr));
+            }
+
+            if (meta.MarshalSize == -1)
+            {
+                // Preserve the original behavior: Marshal.SizeOf throws for this type.
+                Marshal.SizeOf(type);
+            }
+
+            if (meta.MarshalSize <= 8)
             {
                 return GetResultInternal(type, ptr);
             }
@@ -560,7 +696,7 @@ namespace CounterStrikeSharp.API.Core
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal void GlobalCleanUp()
         {
-            if (!ms_finalizers.IsEmpty)
+            if (ms_finalizers is { IsEmpty: false })
             {
                 GlobalCleanUpSlow();
             }
@@ -571,7 +707,7 @@ namespace CounterStrikeSharp.API.Core
         {
             lock (ms_lock)
             {
-                while (ms_finalizers.TryDequeue(out var ptr))
+                while (ms_finalizers!.TryDequeue(out var ptr))
                 {
                     Marshal.FreeHGlobal(ptr);
                 }

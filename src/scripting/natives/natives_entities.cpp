@@ -588,6 +588,50 @@ SoundEventGuid_t EmitSoundFilter(ScriptContext& script_context)
     return ret.m_nGuid;
 }
 
+// --- Native transmit filter (see TransmitFilter in entity_manager.h) ---
+// Called only when a rule CHANGES; the per-tick application is fully native.
+
+void TransmitSetHidden(ScriptContext& script_context)
+{
+    auto entityIndex = script_context.GetArgument<int>(0);
+    auto playerSlot = script_context.GetArgument<int>(1);
+    auto hidden = script_context.GetArgument<bool>(2);
+
+    globals::entityManager.transmitFilter.SetHidden(entityIndex, playerSlot, hidden);
+}
+
+void TransmitSetHiddenAll(ScriptContext& script_context)
+{
+    auto entityIndex = script_context.GetArgument<int>(0);
+    auto hidden = script_context.GetArgument<bool>(1);
+
+    globals::entityManager.transmitFilter.SetHiddenAll(entityIndex, hidden);
+}
+
+void TransmitClearEntity(ScriptContext& script_context)
+{
+    auto entityIndex = script_context.GetArgument<int>(0);
+
+    globals::entityManager.transmitFilter.ClearEntity(entityIndex);
+}
+
+void TransmitClearPlayer(ScriptContext& script_context)
+{
+    auto playerSlot = script_context.GetArgument<int>(0);
+
+    globals::entityManager.transmitFilter.ClearPlayer(playerSlot);
+}
+
+void TransmitClearAll(ScriptContext& script_context) { globals::entityManager.transmitFilter.ClearAll(); }
+
+bool TransmitIsHidden(ScriptContext& script_context)
+{
+    auto entityIndex = script_context.GetArgument<int>(0);
+    auto playerSlot = script_context.GetArgument<int>(1);
+
+    return globals::entityManager.transmitFilter.IsHidden(entityIndex, playerSlot);
+}
+
 REGISTER_NATIVES(entities, {
     ScriptEngine::RegisterNativeHandler("GET_ENTITY_FROM_INDEX", GetEntityFromIndex);
     ScriptEngine::RegisterNativeHandler("GET_USERID_FROM_INDEX", GetUserIdFromIndex);
@@ -612,5 +656,11 @@ REGISTER_NATIVES(entities, {
     ScriptEngine::RegisterNativeHandler("ENTITY_KEY_VALUES_SET_VALUE", EntityKeyValuesSetValue);
     ScriptEngine::RegisterNativeHandler("ENTITY_KEY_VALUES_HAS_VALUE", EntityKeyValuesHasValue);
     ScriptEngine::RegisterNativeHandler("EMIT_SOUND_FILTER", EmitSoundFilter);
+    ScriptEngine::RegisterNativeHandler("TRANSMIT_SET_HIDDEN", TransmitSetHidden);
+    ScriptEngine::RegisterNativeHandler("TRANSMIT_SET_HIDDEN_ALL", TransmitSetHiddenAll);
+    ScriptEngine::RegisterNativeHandler("TRANSMIT_CLEAR_ENTITY", TransmitClearEntity);
+    ScriptEngine::RegisterNativeHandler("TRANSMIT_CLEAR_PLAYER", TransmitClearPlayer);
+    ScriptEngine::RegisterNativeHandler("TRANSMIT_CLEAR_ALL", TransmitClearAll);
+    ScriptEngine::RegisterNativeHandler("TRANSMIT_IS_HIDDEN", TransmitIsHidden);
 })
 } // namespace counterstrikesharp
