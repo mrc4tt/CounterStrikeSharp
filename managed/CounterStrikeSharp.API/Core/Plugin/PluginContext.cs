@@ -179,15 +179,18 @@ namespace CounterStrikeSharp.API.Core.Plugin
                     builder.AddSerilog(new LoggerConfiguration()
                         .Enrich.FromLogContext()
                         .Enrich.With(new PluginNameEnricher(this))
-                        // Same ANSI treatment as the core logger (CoreLogging.cs): a theme
-                        // colors the level (INFO/WARN/EROR) so it survives docker/screen
-                        // pipes, and the (plugin:...) prefix is magenta to set plugin output
-                        // apart from the cyan (cssharp:...) framework lines. Console sink
-                        // only; the file sinks below stay plain text.
+                        // Same ANSI treatment as the core logger (CoreLogging.cs): the shared
+                        // theme colors the level (INF/WRN/ERR) so it survives docker/screen
+                        // pipes, and PluginTag arrives pre-colored magenta to set plugin
+                        // output apart from the cyan (cssharp:...) framework lines. Timestamp
+                        // format, level width and tag padding are deliberately identical to
+                        // the core logger's so both streams share one aligned column. Console
+                        // sink only; the file sinks below stay plain text.
                         .WriteTo.Console(
-                            theme: AnsiConsoleTheme.Code,
+                            theme: CoreLogging.ConsoleTheme,
                             outputTemplate:
-                            "{Timestamp:HH:mm:ss} [{Level:u4}] \x1b[35m(plugin:{PluginName})\x1b[0m {Message:lj}{NewLine}{Exception}")
+                            "{Timestamp:HH:mm:ss.fff} [" + CoreLogging.LevelToken +
+                            "] {PluginTag:l} {Message:lj}{NewLine}{Exception}")
                         // File sinks run through Async so file rolls + Serilog's retention
                         // scan run off the game thread instead of stalling the tick (a
                         // synchronous roll was measured at ~469ms on the game thread). One
@@ -201,11 +204,13 @@ namespace CounterStrikeSharp.API.Core.Plugin
                                     $"log-{pluginType.Assembly.GetName().Name}.txt"
                                 }), rollingInterval: RollingInterval.Day,
                                 outputTemplate:
-                                "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u4}] plugin:{PluginName} {Message:lj}{NewLine}{Exception}");
+                                "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [" + CoreLogging.LevelToken +
+                                "] plugin:{PluginName} {Message:lj}{NewLine}{Exception}");
                             a.File(Path.Join(new[] { _hostConfiguration.RootPath, "logs", $"log-all.txt" }),
                                 rollingInterval: RollingInterval.Day, shared: true,
                                 outputTemplate:
-                                "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u4}] plugin:{PluginName} {Message:lj}{NewLine}{Exception}");
+                                "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [" + CoreLogging.LevelToken +
+                                "] plugin:{PluginName} {Message:lj}{NewLine}{Exception}");
                         })
                         .CreateLogger());
                 });
@@ -323,7 +328,14 @@ namespace CounterStrikeSharp.API.Core.Plugin
                 // blame this plugin. A failed load deliberately leaves it set, because
                 // that is exactly when the leftover-callback crash fires (next frame).
                 NativeAPI.SetFatalSuspectPlugin(string.Empty);
-                _logger.LogInformation("Finished loading plugin {Name} in {Ms}ms", Plugin.ModuleName, loadTimer.ElapsedMilliseconds);
+                // Boot-time per-plugin lines are Debug: the startup summary table already
+                // lists every plugin, so at Info this was N duplicate lines interleaved
+                // with plugin stdout. A hot reload has no summary table after it, so that
+                // one stays at Info.
+                if (hotReload)
+                    _logger.LogInformation("Reloaded plugin {Name} in {Ms}ms", Plugin.ModuleName, loadTimer.ElapsedMilliseconds);
+                else
+                    _logger.LogDebug("Finished loading plugin {Name} in {Ms}ms", Plugin.ModuleName, loadTimer.ElapsedMilliseconds);
 
                 State = PluginState.Loaded;
             }

@@ -32,7 +32,12 @@ class TickScheduler
     };
 
     void schedule(int tick, std::function<void()> callback);
-    std::vector<std::function<void()>> getCallbacks(int currentTick);
+
+    // Fills `out` with the tasks due at or before `currentTick` (clearing it first).
+    // Caller-owned buffer on purpose: this runs every single game frame, and returning
+    // a fresh std::vector meant a heap allocation + free on every frame that had any
+    // NextFrame work queued. A buffer the caller keeps alive reuses its capacity.
+    void getCallbacks(int currentTick, std::vector<std::function<void()>>& out);
 
   private:
     std::priority_queue<std::pair<int, std::function<void()>>, std::vector<std::pair<int, std::function<void()>>>, TaskComparator>

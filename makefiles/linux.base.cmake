@@ -12,7 +12,24 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-invalid-offsetof -Wno-reorder")
 
 # Others
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mfpmath=sse -msse -fno-strict-aliasing")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-threadsafe-statics -v -fvisibility=default")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-threadsafe-statics -fvisibility=default")
+
+# `-v` (dump the full cc1plus/as invocation, include search list and spec dump for
+# EVERY translation unit) used to be unconditional here. It buried real compiler
+# errors under ~120 lines of noise per file, which made a failing build effectively
+# unreadable -- the one "error:" line was thousands of lines up the scrollback.
+# Opt in only when actually debugging include paths or toolchain selection:
+#   cmake -DCSSHARP_VERBOSE_COMPILE=ON ..
+option(CSSHARP_VERBOSE_COMPILE "Pass -v to the compiler (dumps toolchain/include search per file)" OFF)
+if(CSSHARP_VERBOSE_COMPILE)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -v")
+endif()
+
+# Cap the error spew per file. Without this a single bad type produces a cascade of
+# follow-on parse errors ("expected primary-expression before '>'") from every later
+# line that used the failed type -- the FIRST error is the real one, the rest are
+# noise. Colour makes the error lines findable when scrolling.
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fmax-errors=5 -fdiagnostics-color=always")
 
 # Fix executable stack requirement for Debian 13+ compatibility
 # Apply noexecstack to both compilation and linking stages

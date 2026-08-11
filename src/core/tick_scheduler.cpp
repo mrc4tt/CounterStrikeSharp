@@ -24,24 +24,24 @@ void TickScheduler::schedule(int tick, std::function<void()> callback)
     scheduledTasks.push(std::make_pair(tick, callback));
 }
 
-std::vector<std::function<void()>> TickScheduler::getCallbacks(int currentTick)
+void TickScheduler::getCallbacks(int currentTick, std::vector<std::function<void()>>& out)
 {
-    std::vector<std::function<void()>> callbacksToRun;
+    out.clear();
 
     std::lock_guard<std::mutex> lock(taskMutex);
 
-    if (scheduledTasks.empty())
-    {
-        return callbacksToRun;
-    }
-
-    // Process tasks due for the current tick
+    // Process tasks due for the current tick.
+    //
+    // const_cast + move: priority_queue::top() hands back a const reference because
+    // mutating a live element would break the heap invariant. Moving out of the element
+    // we are about to pop() cannot -- the comparator only looks at .first (the tick),
+    // which we leave alone, and the element is destroyed immediately after. This turns
+    // a std::function COPY per due task (which allocates for any callback whose captured
+    // state exceeds the small-buffer optimisation) into a pointer steal.
     while (!scheduledTasks.empty() && scheduledTasks.top().first <= currentTick)
     {
-        callbacksToRun.push_back(scheduledTasks.top().second);
+        out.push_back(std::move(const_cast<std::function<void()>&>(scheduledTasks.top().second)));
         scheduledTasks.pop();
     }
-
-    return callbacksToRun;
 }
 } // namespace counterstrikesharp

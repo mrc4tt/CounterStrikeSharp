@@ -40,6 +40,7 @@ class CUtlString;
 #include <mutex>
 #include <stack>
 #include <string>
+#include <string_view>
 
 #include "core/global_listener.h"
 #include "core/globals.h"
@@ -99,7 +100,22 @@ class EventManager : public IGameEventListener2, public GlobalClass
     bool OnFireEvent(IGameEvent* pEvent, bool bDontBroadcast);
     bool OnFireEventPost(IGameEvent* pEvent, bool bDontBroadcast);
 
-    std::map<std::string, EventHook*> m_hooksMap;
+    // Transparent comparator (std::less<>): OnFireEvent runs for EVERY game event
+    // the engine fires -- bullet_impact, player_footstep, weapon_fire, ... -- many
+    // times per tick, and it only ever has a `const char*` name in hand. With the
+    // default std::less<std::string> every one of those lookups materialised a
+    // temporary std::string first, which heap-allocates once the name exceeds the
+    // 15-char SSO buffer (most CS2 event names do). is_transparent lets
+    // find(std::string_view) compare in place: no temporary, no allocation.
+    //
+    // std::map and NOT std::unordered_map on purpose: heterogeneous lookup for the
+    // unordered containers is C++20 (P0919) and libstdc++ only implements it from
+    // GCC 11. The release build runs in the Steam Runtime sniper image, which ships
+    // GCC 10.3 -- an unordered_map + is_transparent hash compiles locally on a newer
+    // toolchain and then fails the Docker build with "no matching function for call
+    // to ... find(std::string_view)". Transparent comparators on the ordered
+    // containers are C++14 and work everywhere we build.
+    std::map<std::string, EventHook*, std::less<>> m_hooksMap;
 
     std::stack<EventHook*> m_EventStack;
     std::stack<IGameEvent*> m_EventCopies;

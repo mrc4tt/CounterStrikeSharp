@@ -142,38 +142,70 @@ public class PluginManager : IPluginManager
 
     // One-shot startup snapshot: a table of every plugin context with its version
     // and OK/FAILED status, plus loaded/failed counts and the API version. Gives
-    // operators a single "what's running" reference next to any crash blame above.
+    // operators a single "what's running" reference next to any crash blame above,
+    // and is the reason the per-plugin "Finished loading" lines are Debug.
+    //
+    // Column widths are measured from the actual rows (capped) rather than fixed —
+    // a plugin with a long version string ("3.4a (Build 72)") used to overflow the
+    // hardcoded 12-char Version column and shove Status out of alignment.
     private void LogPluginSummary()
     {
+        const int NameCap = 34;
+        const int VersionCap = 20;
+
         var rows = _loadedPluginContexts
             .OrderBy(c => c.PluginId)
+            .Select(c =>
+            {
+                var name = c.Plugin?.ModuleName
+                           ?? System.IO.Path.GetFileNameWithoutExtension(c.FilePath);
+                if (name.Length > NameCap) name = name.Substring(0, NameCap - 1) + "~";
+
+                var version = c.Plugin?.ModuleVersion ?? "-";
+                if (version.Length > VersionCap) version = version.Substring(0, VersionCap - 1) + "~";
+
+                return new
+                {
+                    c.PluginId,
+                    Name = name,
+                    Version = version,
+                    Ok = c.State == PluginState.Loaded,
+                };
+            })
             .ToList();
         if (rows.Count == 0) return;
 
-        int loaded = 0, failed = 0;
+        int loaded = rows.Count(r => r.Ok);
+        int failed = rows.Count - loaded;
+
+        int idW = Math.Max(1, rows.Max(r => r.PluginId.ToString().Length));
+        int nameW = Math.Max("Plugin".Length, rows.Max(r => r.Name.Length));
+        int versionW = Math.Max("Version".Length, rows.Max(r => r.Version.Length));
+
+        var format = "  {0,-" + idW + "}  {1,-" + nameW + "}  {2,-" + versionW + "}  {3}";
+
+        var header = string.Format(format, "#", "Plugin", "Version", "Status");
+        // Rule width tracks the header so the banner never looks ragged, with a floor
+        // that keeps the title readable on narrow tables.
+        int ruleW = Math.Max(header.Length, 62);
+        var title = " COUNTERSTRIKESHARP PLUGINS LOADED ";
+        int pad = Math.Max(0, ruleW - title.Length);
+
         var sb = new System.Text.StringBuilder();
         sb.AppendLine();
-        sb.AppendLine("============== COUNTERSTRIKESHARP PLUGINS LOADED ==============");
-        sb.AppendLine(string.Format("  {0,-2} {1,-30} {2,-12} {3}", "#", "Plugin", "Version", "Status"));
+        sb.AppendLine(new string('=', pad / 2) + title + new string('=', pad - pad / 2));
+        sb.AppendLine(header);
 
-        foreach (var c in rows)
+        foreach (var r in rows)
         {
-            bool ok = c.State == PluginState.Loaded;
-            if (ok) loaded++; else failed++;
-
-            var name = c.Plugin?.ModuleName
-                       ?? System.IO.Path.GetFileNameWithoutExtension(c.FilePath);
-            var version = c.Plugin?.ModuleVersion ?? "-";
-            var status = ok ? "OK" : "FAILED (see log above)";
-            if (name.Length > 30) name = name.Substring(0, 29) + "~";
-
-            sb.AppendLine(string.Format("  {0,-2} {1,-30} {2,-12} {3}", c.PluginId, name, version, status));
+            sb.AppendLine(string.Format(format, r.PluginId, r.Name, r.Version,
+                r.Ok ? "OK" : "FAILED (see log above)"));
         }
 
-        sb.AppendLine("--------------------------------------------------------------");
+        sb.AppendLine(new string('-', ruleW));
         sb.AppendLine(string.Format("  {0} loaded, {1} failed  |  CSSharp API v{2}",
             loaded, failed, Api.GetVersion()));
-        sb.Append("==============================================================");
+        sb.Append(new string('=', ruleW));
 
         // The table itself is informational — log it at Info so the level tag
         // isn't misleading. When any plugin failed, emit a separate one-line

@@ -154,9 +154,13 @@ namespace CounterStrikeSharp.API
         /// </summary>
         public static List<CCSPlayerController> GetPlayers()
         {
-            List<CCSPlayerController> players = new();
+            // Pre-sized: plugins call this every tick, and a default-capacity List grows
+            // 0 -> 4 -> 8 -> 16 -> 32 -> 64, discarding every intermediate array as Gen0
+            // garbage on each call.
+            var maxPlayers = Server.MaxPlayers;
+            List<CCSPlayerController> players = new(maxPlayers);
 
-            for (int i = 0; i < Server.MaxPlayers; i++)
+            for (int i = 0; i < maxPlayers; i++)
             {
                 var controller = GetPlayerFromSlot(i);
 

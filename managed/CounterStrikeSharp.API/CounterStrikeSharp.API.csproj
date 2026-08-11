@@ -8,20 +8,36 @@
         <TargetLatestRuntimePatch>false</TargetLatestRuntimePatch>
         <EnableDynamicLoading>true</EnableDynamicLoading>
         <!--
-          GC / JIT tuning for high player counts. These flow into the generated
+          GC / JIT tuning. These flow into the generated
           CounterStrikeSharp.API.runtimeconfig.json, which is what the native host loads
           (src/scripting/dotnet_host.cpp -> hostfxr_initialize_for_runtime_config).
+          Extra knobs with no MSBuild property live in runtimeconfig.template.json.
 
-          Server GC: multiple heaps + background GC threads => far higher allocation
-          throughput than the default Workstation GC when many events fire per tick.
-          DATAS (default-on with Server GC in .NET 8+) adapts heap count to load so a box
-          running several CS2 instances doesn't oversubscribe cores.
+          WORKSTATION + background GC, deliberately, NOT Server GC.
 
-          TRADEOFF: Server GC favours throughput; individual GC pauses can be larger than
-          Workstation+Concurrent, which can show up as p99 frame-time jitter. MEASURE frame
-          time (not just CPU%) after enabling. To revert, set ServerGarbageCollection=false.
+          CSSharp's managed work is overwhelmingly single-threaded: it runs on the CS2
+          game thread inside GameFrame. Server GC optimises for the opposite shape (many
+          allocating threads, throughput over latency) and pays for it with one GC heap
+          AND one GC thread per core. Every blocking gen0/gen1 then has to schedule N
+          threads before the process can resume.
+
+          On a box hosting several CS2 instances that oversubscribes the CPU, and the
+          threads that lose the race include the ones the game does not own — which is
+          exactly what surfaces as:
+            [SteamNetSockets] SteamNetworkingSockets lock held for 5.9ms.
+            This is usually a symptom of a general performance problem such as thread
+            starvation.
+          Workstation GC collects gen0/gen1 on the allocating thread (short, frequent,
+          predictable) and keeps gen2 concurrent on a single background thread, so the
+          runnable-thread count stays near 1 instead of near core-count.
+
+          To A/B this on a live server WITHOUT rebuilding, set the env var before launch:
+            DOTNET_gcServer=1     # force Server GC back on
+            DOTNET_gcConcurrent=0 # disable background gen2
+            DOTNET_GCgen0size=2000000   # hex bytes; larger gen0 => fewer, slightly longer GCs
+          Measure FRAME TIME (the "Slow CS# frame" warning + css_profiler), not CPU%.
         -->
-        <ServerGarbageCollection>true</ServerGarbageCollection>
+        <ServerGarbageCollection>false</ServerGarbageCollection>
         <ConcurrentGarbageCollection>true</ConcurrentGarbageCollection>
         <TieredCompilation>true</TieredCompilation>
         <TieredPGO>true</TieredPGO>

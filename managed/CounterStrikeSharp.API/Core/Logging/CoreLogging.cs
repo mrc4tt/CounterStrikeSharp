@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using Microsoft.Extensions.Logging;
 using Serilog;
@@ -11,6 +12,70 @@ namespace CounterStrikeSharp.API.Core.Logging;
 
 public static class CoreLogging
 {
+    /// <summary>
+    /// Width the "(cssharp:Foo)" / "(plugin:Foo)" tag is padded to in console output so
+    /// messages start in the same column across framework and plugin lines. 26 fits the
+    /// longest framework source ("(cssharp:GameDataProvider)"); longer plugin names simply
+    /// overflow rather than being truncated.
+    /// </summary>
+    public const int SourceTagWidth = 26;
+
+    /// <summary>Cyan — the framework's own "(cssharp:...)" tag.</summary>
+    public const string TagColorCore = "\x1b[36m";
+
+    /// <summary>Magenta — a plugin's "(plugin:...)" tag.</summary>
+    public const string TagColorPlugin = "\x1b[35m";
+
+    /// <summary>
+    /// Renders a console source tag: pads to <see cref="SourceTagWidth"/> and *then* wraps
+    /// the result in ANSI color.
+    ///
+    /// Both halves have to happen here rather than in the output template. Serilog's themed
+    /// console sink emits its own style-set + reset around every token, so a raw \x1b[36m
+    /// written into the template is cancelled by the sink's reset before the property is
+    /// even printed (the tag came out theme-grey). And padding via the template's alignment
+    /// ({Tag,-26}) has to run on the uncolored text, otherwise the escape bytes count toward
+    /// the width and the column goes ragged. Escapes are always emitted — panels like
+    /// pterodactyl read the pipe and render them; a plain terminal shows them as color too.
+    /// </summary>
+    public static string FormatSourceTag(string tag, string color) =>
+        color + tag.PadRight(SourceTagWidth) + "\x1b[0m";
+
+    /// <summary>
+    /// Level token as it appears in console + file output: three upper-case chars
+    /// (VRB/DBG/INF/WRN/ERR/FTL). Fixed width, unlike the u4/u5 forms which produced
+    /// ragged, half-truncated words ("INFOR", "WARNI", "EROR").
+    /// </summary>
+    public const string LevelToken = "{Level:u3}";
+
+    /// <summary>
+    /// Shared console theme. Serilog's built-in themes leave Information uncoloured and
+    /// Debug/Verbose the same grey as ordinary text, which makes a warning easy to miss in
+    /// a wall of boot output. Written as raw ANSI (not <see cref="SystemConsoleTheme"/>) so
+    /// the colors survive docker / screen / pterodactyl pipes, where the Windows console
+    /// API path emits nothing.
+    /// </summary>
+    public static readonly AnsiConsoleTheme ConsoleTheme = new(
+        new Dictionary<ConsoleThemeStyle, string>
+        {
+            [ConsoleThemeStyle.Text] = "\x1b[0m",
+            [ConsoleThemeStyle.SecondaryText] = "\x1b[90m",
+            [ConsoleThemeStyle.TertiaryText] = "\x1b[90m",
+            [ConsoleThemeStyle.Invalid] = "\x1b[33m",
+            [ConsoleThemeStyle.Null] = "\x1b[94m",
+            [ConsoleThemeStyle.Name] = "\x1b[37m",
+            [ConsoleThemeStyle.String] = "\x1b[96m",
+            [ConsoleThemeStyle.Number] = "\x1b[95m",
+            [ConsoleThemeStyle.Boolean] = "\x1b[94m",
+            [ConsoleThemeStyle.Scalar] = "\x1b[96m",
+            [ConsoleThemeStyle.LevelVerbose] = "\x1b[90m",
+            [ConsoleThemeStyle.LevelDebug] = "\x1b[90m",
+            [ConsoleThemeStyle.LevelInformation] = "\x1b[32m",
+            [ConsoleThemeStyle.LevelWarning] = "\x1b[33m",
+            [ConsoleThemeStyle.LevelError] = "\x1b[91m",
+            [ConsoleThemeStyle.LevelFatal] = "\x1b[97;41m",
+        });
+
     public static ILoggerFactory Factory { get; private set; } = null!;
     private static Logger? SerilogLogger { get; set; }
 
@@ -53,14 +118,15 @@ public static class CoreLogging
                 .Enrich.With<SourceContextEnricher>()
                 // ANSI theme (raw \x1b[..m escapes) so colors survive docker/screen/
                 // pterodactyl pipes — unlike SystemConsoleTheme which uses the Windows
-                // console API and produces no color when redirected. The (cssharp:...)
-                // prefix is wrapped in cyan (\x1b[36m ... \x1b[0m) directly in the template
-                // so the framework's own lines stand out from game-engine output. Only the
-                // console sink carries escapes; the file sinks below stay plain text.
+                // console API and produces no color when redirected. SourceTag arrives
+                // already colored cyan and already padded (see FormatSourceTag) so the
+                // framework's own lines stand out from game-engine output and messages
+                // line up in one column. Only the console sink carries escapes; the file
+                // sinks below stay plain text and use the raw SourceContext instead.
                 .WriteTo.Console(
-                    theme: AnsiConsoleTheme.Code,
+                    theme: ConsoleTheme,
                     outputTemplate:
-                    "{Timestamp:HH:mm:ss.fff} [{Level:u5}] \x1b[36m(cssharp:{SourceContext})\x1b[0m {Message:lj}{NewLine}{Exception}")
+                    "{Timestamp:HH:mm:ss.fff} [" + LevelToken + "] {SourceTag:l} {Message:lj}{NewLine}{Exception}")
                 // File sinks run through Async so file rolls + Serilog's retention scan
                 // (PathRoller regex over the log dir) happen on a background thread instead
                 // of stalling the game tick — a synchronous roll was measured at ~469ms on
@@ -70,7 +136,8 @@ public static class CoreLogging
                     a.File(Path.Join(new[] { contentRoot, "logs", $"log-cssharp.txt" }),
                         rollingInterval: RollingInterval.Day, shared: true,
                         outputTemplate:
-                        "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u5}] (cssharp:{SourceContext}) {Message:lj}{NewLine}{Exception}");
+                        "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [" + LevelToken +
+                        "] (cssharp:{SourceContext}) {Message:lj}{NewLine}{Exception}");
                     // Errors-only sink: isolates crashes/load failures (incl. plugin blame
                     // reports) into one file that can be handed to a plugin author without
                     // wading through the full info-level log.
@@ -78,7 +145,8 @@ public static class CoreLogging
                         rollingInterval: RollingInterval.Day, shared: true,
                         restrictedToMinimumLevel: LogEventLevel.Error,
                         outputTemplate:
-                        "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u5}] (cssharp:{SourceContext}) {Message:lj}{NewLine}{Exception}");
+                        "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [" + LevelToken +
+                        "] (cssharp:{SourceContext}) {Message:lj}{NewLine}{Exception}");
                 })
                 .CreateLogger();
 

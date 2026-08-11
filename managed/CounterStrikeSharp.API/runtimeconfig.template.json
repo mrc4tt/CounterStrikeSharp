@@ -1,0 +1,40 @@
+{
+  "//": [
+    "Runtime knobs that have no MSBuild property. These are merged into",
+    "CounterStrikeSharp.API.runtimeconfig.json at build/publish time, which is the",
+    "config the native host hands to hostfxr (src/scripting/dotnet_host.cpp).",
+    "",
+    "Everything here is overridable at launch with a DOTNET_* env var, so an operator",
+    "can A/B a value on a live server without rebuilding CSSharp.",
+    "",
+    "GC mode itself (Workstation vs Server) is set from the csproj -- see the long",
+    "comment there for why this fork runs Workstation + background GC."
+  ],
+
+  "configProperties": {
+    "//System.GC.RetainVM": [
+      "Keep freed GC segments mapped instead of releasing them back to the OS.",
+      "A CS2 server allocates in waves (round start, map load) and would otherwise",
+      "munmap/mmap the same memory every cycle, paying page faults and kernel time on",
+      "the game thread to re-fault it in. Costs a little RSS, removes that churn."
+    ],
+    "System.GC.RetainVM": true,
+
+    "//System.GC.DynamicAdaptationMode": [
+      "DATAS. Only meaningful under Server GC (it tunes heap count at runtime); it is",
+      "explicitly off so that a DOTNET_gcServer=1 experiment gets a fixed, predictable",
+      "heap count rather than a heap count that drifts under load. If you do switch to",
+      "Server GC, also pin System.GC.HeapCount (e.g. 2-4) and set System.GC.NoAffinitize",
+      "to true so GC threads are not hard-bound to cores the engine's own threads need."
+    ],
+    "System.GC.DynamicAdaptationMode": 0,
+
+    "//System.Runtime.TieredCompilation.QuickJitForLoops": [
+      "Tier-0 compile methods containing loops too, instead of going straight to the",
+      "optimising JIT. Startup and first-hit paths (map change, first round, a plugin's",
+      "first command) stop stalling the game thread on full JIT; TieredPGO still",
+      "re-compiles anything hot to fully optimised code afterwards."
+    ],
+    "System.Runtime.TieredCompilation.QuickJitForLoops": true
+  }
+}

@@ -109,7 +109,7 @@ bool EventManager::HookEvent(const char* szName, CallbackT fnCallback, bool bPos
         globals::gameEventManager->AddListener(this, szName, true);
     }
 
-    auto search = m_hooksMap.find(szName);
+    auto search = m_hooksMap.find(std::string_view(szName));
     // If hook struct is not found
     if (search == m_hooksMap.end())
     {
@@ -164,7 +164,7 @@ bool EventManager::UnhookEvent(const char* szName, CallbackT fnCallback, bool bP
     EventHook* pHook;
     ScriptCallback* pCallback;
 
-    auto search = m_hooksMap.find(szName);
+    auto search = m_hooksMap.find(std::string_view(szName));
     if (search == m_hooksMap.end())
     {
         return false;
@@ -211,7 +211,7 @@ bool EventManager::OnFireEvent(IGameEvent* pEvent, bool bDontBroadcast)
 
     const char* szName = pEvent->GetName();
     bool bLocalDontBroadcast = bDontBroadcast;
-    auto I = m_hooksMap.find(szName);
+    auto I = m_hooksMap.find(std::string_view(szName));
 
     if (I != m_hooksMap.end())
     {

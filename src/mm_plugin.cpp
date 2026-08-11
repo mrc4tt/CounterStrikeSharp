@@ -385,16 +385,24 @@ void CounterStrikeSharpMMPlugin::Hook_GameFrame(bool simulating, bool bFirstTick
 
     globals::timerSystem.OnGameFrame(simulating);
 
-    auto callbacks = globals::tickScheduler.getCallbacks(globals::getGlobalVars()->tickcount);
-    if (callbacks.size() > 0)
-    {
-        CSSHARP_CORE_TRACE("Executing frame specific tasks of size: {0} on tick number {1}", callbacks.size(),
-                           globals::getGlobalVars()->tickcount);
+    // Reused across frames so the scheduler drain does not allocate a vector per
+    // frame. Function-local static: Hook_GameFrame only ever runs on the game thread.
+    static std::vector<std::function<void()>> s_frameCallbacks;
 
-        for (auto& callback : callbacks)
+    const int tickcount = globals::getGlobalVars()->tickcount;
+    globals::tickScheduler.getCallbacks(tickcount, s_frameCallbacks);
+    if (!s_frameCallbacks.empty())
+    {
+        CSSHARP_CORE_TRACE("Executing frame specific tasks of size: {0} on tick number {1}", s_frameCallbacks.size(), tickcount);
+
+        for (auto& callback : s_frameCallbacks)
         {
             callback();
         }
+
+        // Release the callables (and anything they captured) now rather than holding
+        // them rooted until the next frame overwrites the slot. Capacity is kept.
+        s_frameCallbacks.clear();
     }
 
     if (g_frame_warn_ms < 0.0) g_frame_warn_ms = ResolveFrameWarnBudgetMs();

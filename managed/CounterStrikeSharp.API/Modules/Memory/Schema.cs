@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Reflection.Metadata;
@@ -12,10 +13,57 @@ namespace CounterStrikeSharp.API.Modules.Memory;
 
 public class Schema
 {
-    // Struct (ValueTuple) key instead of a record class: GetSchemaOffset runs on
-    // every schema property read (entity.Health, .AbsOrigin, ...). A record key
-    // heap-allocated on each lookup; a tuple key is stack-only.
-    private static Dictionary<(string ClassName, string PropertyName), short> _schemaOffsets = new();
+    /// <summary>
+    /// Everything resolved once per (class, property) pair: the byte offset, plus
+    /// whether the property is on the CS2 server-guidelines blocklist. Folding the
+    /// blocklist answer in here removes a second string hash (the
+    /// <c>_cs2BadList.Contains</c> probe) from every schema property read.
+    /// </summary>
+    private readonly struct SchemaEntry
+    {
+        public readonly short Offset;
+        public readonly bool Blocked;
+
+        public SchemaEntry(short offset, bool blocked)
+        {
+            Offset = offset;
+            Blocked = blocked;
+        }
+    }
+
+    /// <summary>
+    /// Compares (class, property) keys by REFERENCE, not by content. The generated
+    /// schema accessors (and virtually all plugin code) pass string literals, which
+    /// the runtime interns — so the same call site hands us the same two string
+    /// objects forever. Hashing their object identity is a couple of loads; hashing
+    /// their contents was two randomized Marvin passes over ~20 characters plus an
+    /// ordinal compare, paid on EVERY property read (entity.Health, .AbsOrigin, ...).
+    /// </summary>
+    private sealed class RefPairComparer : IEqualityComparer<(string ClassName, string PropertyName)>
+    {
+        public static readonly RefPairComparer Instance = new();
+
+        public bool Equals((string ClassName, string PropertyName) x, (string ClassName, string PropertyName) y)
+            => ReferenceEquals(x.ClassName, y.ClassName) && ReferenceEquals(x.PropertyName, y.PropertyName);
+
+        public int GetHashCode((string ClassName, string PropertyName) key)
+            => (RuntimeHelpers.GetHashCode(key.ClassName) * 397) ^ RuntimeHelpers.GetHashCode(key.PropertyName);
+    }
+
+    // Fast path. Only interned (literal) keys are admitted, so its key space is
+    // bounded by the string literal pool rather than growing with every runtime-built
+    // name a plugin passes in.
+    private static readonly ConcurrentDictionary<(string ClassName, string PropertyName), SchemaEntry> _offsetsByRef
+        = new(RefPairComparer.Instance);
+
+    // Correctness path: content-keyed, so a runtime-built string still resolves (and
+    // still only costs one native lookup ever).
+    //
+    // Both are ConcurrentDictionary rather than Dictionary: the old cache was a plain
+    // Dictionary mutated with no synchronisation, so a schema read from a worker
+    // thread racing the game thread could observe a half-resized table.
+    private static readonly ConcurrentDictionary<(string ClassName, string PropertyName), SchemaEntry> _offsetsByValue
+        = new();
 
     private static HashSet<string> _cs2BadList = new HashSet<string>()
     {
@@ -61,24 +109,48 @@ public class Schema
 
     public static short GetSchemaOffset(string className, string propertyName)
     {
-        if (CoreConfig.FollowCS2ServerGuidelines && _cs2BadList.Contains(propertyName))
+        var entry = Resolve(className, propertyName);
+
+        if (entry.Blocked && CoreConfig.FollowCS2ServerGuidelines)
         {
             throw new Exception($"Cannot set or get '{className}::{propertyName}' with \"FollowCS2ServerGuidelines\" option enabled.");
         }
 
-        return GetSchemaOffsetCore(className, propertyName);
+        return entry.Offset;
     }
 
-    private static short GetSchemaOffsetCore(string className, string propertyName)
+    private static short GetSchemaOffsetCore(string className, string propertyName) => Resolve(className, propertyName).Offset;
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static SchemaEntry Resolve(string className, string propertyName)
+    {
+        return _offsetsByRef.TryGetValue((className, propertyName), out var entry)
+            ? entry
+            : ResolveSlow(className, propertyName);
+    }
+
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    private static SchemaEntry ResolveSlow(string className, string propertyName)
     {
         var key = (className, propertyName);
-        if (!_schemaOffsets.TryGetValue(key, out var offset))
+
+        if (!_offsetsByValue.TryGetValue(key, out var entry))
         {
-            offset = NativeAPI.GetSchemaOffset(className, propertyName);
-            _schemaOffsets.Add(key, offset);
+            entry = new SchemaEntry(NativeAPI.GetSchemaOffset(className, propertyName), _cs2BadList.Contains(propertyName));
+            _offsetsByValue[key] = entry;
         }
 
-        return offset;
+        // Admit to the reference-keyed cache only when both halves ARE the interned
+        // instance. A literal always is; a runtime-built name (string.Concat, config
+        // value, ...) generally is not, and admitting those would let the fast cache
+        // grow without bound while never producing a hit.
+        if (ReferenceEquals(string.IsInterned(className), className) &&
+            ReferenceEquals(string.IsInterned(propertyName), propertyName))
+        {
+            _offsetsByRef[key] = entry;
+        }
+
+        return entry;
     }
 
     public static bool IsSchemaFieldNetworked(string className, string propertyName)
