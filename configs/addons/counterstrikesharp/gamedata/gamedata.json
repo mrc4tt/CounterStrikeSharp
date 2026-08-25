@@ -129,7 +129,7 @@
     "signatures": {
       "library": "server",
       "windows": "48 8B C4 4C 89 48 ? 48 89 48 ? 55 41 54",
-      "linux": "55 48 89 E5 41 57 41 89 F7 41 56 48 8D 35 ? ? ? ?"
+      "linux": "55 48 89 E5 41 57 41 ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? 48 89 FB 48 81 EC C8"
     }
   },
   "CCSGameRules_FindPickerEntity": {
