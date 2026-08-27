@@ -1,20 +1,20 @@
 {
 	"game_info":
 	{
-		"ClientVersion": "2000888\r",
-		"ServerVersion": "2000888\r",
-		"PatchVersion": "1.41.7.7\r",
+		"ClientVersion": "2000897\r",
+		"ServerVersion": "2000897\r",
+		"PatchVersion": "1.41.7.8\r",
 		"ProductName": "cs2\r",
 		"appID": "730\r",
 		"ServerAppID": "2347773\r",
-		"SourceRevision": "10936007\r",
-		"VersionDate": "Aug 24 2026\r",
-		"VersionTime": "16:07:10\r"
+		"SourceRevision": "10942762\r",
+		"VersionDate": "Aug 26 2026\r",
+		"VersionTime": "13:51:37\r"
 	},
 	"dumper_info":
 	{
 		"version": "1.0.16.4674870",
-		"dump_date": "2026-08-25T08:38:51Z",
+		"dump_date": "2026-08-27T18:49:38Z",
 		"dump_format_version": 1
 	},
 	"dump_flags":
@@ -3871,7 +3871,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_fldbGain = -0.0015457682\n\tm_fldbNoiseGateThreshold = 0.000000000000000000000000000000000000000045915\n\tm_fldbCompressionThreshold = -7115555000000000000000000.0\n\tm_fldbLimiterThreshold = 0.000000000000000000000000000000000000000045765\n\tm_fldbKneeWidth = -7124031000000000000000000.0\n\tm_flRatio = 0.000000000000000000000000000000000000000045765\n\tm_flLimiterRatio = 0.0\n\tm_flAttackTimeMS = 0.0\n\tm_flReleaseTimeMS = 0.0\n\tm_flRMSTimeMS = 0.0\n\tm_flWetMix = 0.0\n\tm_bPeakMode = false\n}"
+						"value": "{\n\tm_fldbGain = 26311968.0\n\tm_fldbNoiseGateThreshold = 0.000000000000000000000000000000000000000045916\n\tm_fldbCompressionThreshold = -17457701000000000000000000000000.0\n\tm_fldbLimiterThreshold = 0.000000000000000000000000000000000000000045902\n\tm_fldbKneeWidth = -17475477000000000000000000000000.0\n\tm_flRatio = 0.000000000000000000000000000000000000000045902\n\tm_flLimiterRatio = 0.0\n\tm_flAttackTimeMS = 0.0\n\tm_flReleaseTimeMS = 0.0\n\tm_flRMSTimeMS = 0.0\n\tm_flWetMix = 0.0\n\tm_bPeakMode = false\n}"
 					}
 				],
 				"members":
@@ -4509,7 +4509,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_bPhaseInvert = false\n\tm_flGlideTime = 0.000000000000000000000000000000000000000001473\n\tm_flDelay = 0.000000000000000000000000000000000000000000057\n\tm_flOutputGain = 0.0\n\tm_flFeedbackGain = 0.00000000000000000000000000000000000000000001\n\tm_flFeedforwardGain = 0.00000008632089\n\tm_flModRate = -31230060000000000000000000.0\n\tm_flModDepth = 0.000000000000000000000000000000000000000045765\n\tm_bApplyAntialiasing = true\n}"
+						"value": "{\n\tm_bPhaseInvert = false\n\tm_flGlideTime = 0.000000000000000000000000000000000000000001481\n\tm_flDelay = 0.000000000000000000000000000000000000000000057\n\tm_flOutputGain = 0.0\n\tm_flFeedbackGain = 0.00000000000000000000000000000000000000000001\n\tm_flFeedforwardGain = 0.00000008632089\n\tm_flModRate = -65494185000000000000000000000000.0\n\tm_flModDepth = 0.000000000000000000000000000000000000000045902\n\tm_bApplyAntialiasing = true\n}"
 					}
 				],
 				"members":
@@ -7814,7 +7814,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_searchDB = \n\t{\n\t\tm_rootNode = \n\t\t{\n\t\t\tm_children = [  ]\n\t\t\tm_quantizer = \n\t\t\t{\n\t\t\t\tm_centroidVectors = [  ]\n\t\t\t\tm_nCentroids = -1161126496\n\t\t\t\tm_nDimensions = 32766\n\t\t\t}\n\t\t\tm_sampleCodes = [  ]\n\t\t\tm_sampleIndices = [  ]\n\t\t\tm_selectableSamples = [  ]\n\t\t}\n\t\tm_residualQuantizer = \n\t\t{\n\t\t\tm_subQuantizers = [  ]\n\t\t\tm_nDimensions = -391222598\n\t\t}\n\t\tm_codeIndices = [  ]\n\t}\n\tm_motionGraphs = [  ]\n\tm_motionGraphConfigs = [  ]\n\tm_sampleToConfig = [  ]\n\tm_hIsActiveScript = \n\t{\n\t\tm_id = 4294967295\n\t}\n}"
+						"value": "{\n\tm_searchDB = \n\t{\n\t\tm_rootNode = \n\t\t{\n\t\t\tm_children = [  ]\n\t\t\tm_quantizer = \n\t\t\t{\n\t\t\t\tm_centroidVectors = [  ]\n\t\t\t\tm_nCentroids = 1271447760\n\t\t\t\tm_nDimensions = 32767\n\t\t\t}\n\t\t\tm_sampleCodes = [  ]\n\t\t\tm_sampleIndices = [  ]\n\t\t\tm_selectableSamples = [  ]\n\t\t}\n\t\tm_residualQuantizer = \n\t\t{\n\t\t\tm_subQuantizers = [  ]\n\t\t\tm_nDimensions = -212964678\n\t\t}\n\t\tm_codeIndices = [  ]\n\t}\n\tm_motionGraphs = [  ]\n\tm_motionGraphConfigs = [  ]\n\tm_sampleToConfig = [  ]\n\tm_hIsActiveScript = \n\t{\n\t\tm_id = 4294967295\n\t}\n}"
 					}
 				],
 				"members":
@@ -7936,7 +7936,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_rootNode = \n\t{\n\t\tm_children = [  ]\n\t\tm_quantizer = \n\t\t{\n\t\t\tm_centroidVectors = [  ]\n\t\t\tm_nCentroids = -1161127408\n\t\t\tm_nDimensions = 32766\n\t\t}\n\t\tm_sampleCodes = [  ]\n\t\tm_sampleIndices = [  ]\n\t\tm_selectableSamples = [  ]\n\t}\n\tm_residualQuantizer = \n\t{\n\t\tm_subQuantizers = [  ]\n\t\tm_nDimensions = 0\n\t}\n\tm_codeIndices = [  ]\n}"
+						"value": "{\n\tm_rootNode = \n\t{\n\t\tm_children = [  ]\n\t\tm_quantizer = \n\t\t{\n\t\t\tm_centroidVectors = [  ]\n\t\t\tm_nCentroids = 1271446848\n\t\t\tm_nDimensions = 32767\n\t\t}\n\t\tm_sampleCodes = [  ]\n\t\tm_sampleIndices = [  ]\n\t\tm_selectableSamples = [  ]\n\t}\n\tm_residualQuantizer = \n\t{\n\t\tm_subQuantizers = [  ]\n\t\tm_nDimensions = 0\n\t}\n\tm_codeIndices = [  ]\n}"
 					}
 				],
 				"members":
@@ -8007,7 +8007,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_children = [  ]\n\tm_quantizer = \n\t{\n\t\tm_centroidVectors = [  ]\n\t\tm_nCentroids = -1161127584\n\t\tm_nDimensions = 32766\n\t}\n\tm_sampleCodes = [  ]\n\tm_sampleIndices = [  ]\n\tm_selectableSamples = [  ]\n}"
+						"value": "{\n\tm_children = [  ]\n\tm_quantizer = \n\t{\n\t\tm_centroidVectors = [  ]\n\t\tm_nCentroids = 1271446672\n\t\tm_nDimensions = 32767\n\t}\n\tm_sampleCodes = [  ]\n\tm_sampleIndices = [  ]\n\tm_selectableSamples = [  ]\n}"
 					}
 				],
 				"members":
@@ -8151,7 +8151,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_centroidVectors = [  ]\n\tm_nCentroids = -1161127008\n\tm_nDimensions = 32766\n}"
+						"value": "{\n\tm_centroidVectors = [  ]\n\tm_nCentroids = 1271447248\n\tm_nDimensions = 32767\n}"
 					}
 				],
 				"members":
@@ -8913,7 +8913,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_paramValues = [ -0.0015457328, 0.000000000000000000000000000000000000000045915, -6697068000000000000000000.0, 0.000000000000000000000000000000000000000045765 ]\n\tm_flDuration = 0.0\n\tm_nMotionIndex = \n\t{\n\t\tm_nGroup = 65535\n\t\tm_nMotion = 65535\n\t}\n\tm_nSampleStart = -1\n\tm_nSampleCount = 0\n}"
+						"value": "{\n\tm_paramValues = [ 26311360.0, 0.000000000000000000000000000000000000000045916, -16580071000000000000000000000000.0, 0.000000000000000000000000000000000000000045902 ]\n\tm_flDuration = 0.0\n\tm_nMotionIndex = \n\t{\n\t\tm_nGroup = 65535\n\t\tm_nMotion = 65535\n\t}\n\tm_nSampleStart = -1\n\tm_nSampleCount = 0\n}"
 					}
 				],
 				"members":
@@ -22624,7 +22624,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\t_class = \"CVMixBoxverb2ProcessorDesc\"\n\tm_name = \"\"\n\tm_nChannels = -1\n\tm_flxfade = 0.1\n\tm_desc = \n\t{\n\t\tm_flSizeMax = 0.000000000000000000000000000000000000000000011\n\t\tm_flSizeMin = -0.0015457682\n\t\tm_flComplexity = 0.000000000000000000000000000000000000000045915\n\t\tm_flDiffusion = 0.0\n\t\tm_flModDepth = 0.0\n\t\tm_flModRate = 0.000000000000000000000000000000000000000000001\n\t\tm_bParallel = false\n\t\tm_filterType = \n\t\t{\n\t\t\tm_nFilterType = \"FILTER_UNKNOWN\"\n\t\t\tm_nFilterSlope = \"FILTER_SLOPE_12dB\"\n\t\t\tm_bEnabled = true\n\t\t\tm_fldbGain = 0.0\n\t\t\tm_flCutoffFreq = 1000.0\n\t\t\tm_flQ = 0.70710677\n\t\t}\n\t\tm_flWidth = nan\n\t\tm_flHeight = 0.000000000000000000000000000000000000000000001\n\t\tm_flDepth = 0.0\n\t\tm_flFeedbackScale = -2.0000305\n\t\tm_flFeedbackWidth = 0.0\n\t\tm_flFeedbackHeight = 0.0\n\t\tm_flFeedbackDepth = 4544818000000000000000000000000.0\n\t\tm_flOutputGain = 68901250000000000000000.0\n\t\tm_flTaps = 71449480000000000000000000000000.0\n\t}\n}"
+						"value": "{\n\t_class = \"CVMixBoxverb2ProcessorDesc\"\n\tm_name = \"\"\n\tm_nChannels = -1\n\tm_flxfade = 0.1\n\tm_desc = \n\t{\n\t\tm_flSizeMax = 0.000000000000000000000000000000000000000000011\n\t\tm_flSizeMin = 26311968.0\n\t\tm_flComplexity = 0.000000000000000000000000000000000000000045916\n\t\tm_flDiffusion = 0.0\n\t\tm_flModDepth = 0.0\n\t\tm_flModRate = 0.000000000000000000000000000000000000000000001\n\t\tm_bParallel = false\n\t\tm_filterType = \n\t\t{\n\t\t\tm_nFilterType = \"FILTER_UNKNOWN\"\n\t\t\tm_nFilterSlope = \"FILTER_SLOPE_12dB\"\n\t\t\tm_bEnabled = true\n\t\t\tm_fldbGain = 0.0\n\t\t\tm_flCutoffFreq = 1000.0\n\t\t\tm_flQ = 0.70710677\n\t\t}\n\t\tm_flWidth = nan\n\t\tm_flHeight = 0.000000000000000000000000000000000000000000001\n\t\tm_flDepth = 0.0\n\t\tm_flFeedbackScale = -2.0000305\n\t\tm_flFeedbackWidth = 0.0\n\t\tm_flFeedbackHeight = 0.0\n\t\tm_flFeedbackDepth = 4544818000000000000000000000000.0\n\t\tm_flOutputGain = 68901250000000000000000.0\n\t\tm_flTaps = 71449480000000000000000000000000.0\n\t}\n}"
 					}
 				],
 				"multi_depth": 2,
@@ -22672,7 +22672,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_flSizeMax = -0.0015457384\n\tm_flSizeMin = 0.000000000000000000000000000000000000000045915\n\tm_flComplexity = -27242205000000000000000000.0\n\tm_flDiffusion = 0.000000000000000000000000000000000000000045765\n\tm_flModDepth = -41277264000000000000000000000000000.0\n\tm_flModRate = nan\n\tm_bParallel = true\n\tm_filterType = \n\t{\n\t\tm_nFilterType = \"FILTER_UNKNOWN\"\n\t\tm_nFilterSlope = \"FILTER_SLOPE_12dB\"\n\t\tm_bEnabled = true\n\t\tm_fldbGain = 0.0\n\t\tm_flCutoffFreq = 1000.0\n\t\tm_flQ = 0.70710677\n\t}\n\tm_flWidth = 0.0\n\tm_flHeight = -0.0015457477\n\tm_flDepth = 0.000000000000000000000000000000000000000045915\n\tm_flFeedbackScale = -27242774000000000000000000.0\n\tm_flFeedbackWidth = 0.000000000000000000000000000000000000000045765\n\tm_flFeedbackHeight = -0.0015457515\n\tm_flFeedbackDepth = 0.000000000000000000000000000000000000000045915\n\tm_flOutputGain = -0.0015458353\n\tm_flTaps = 0.000000000000000000000000000000000000000045915\n}"
+						"value": "{\n\tm_flSizeMax = 26311456.0\n\tm_flSizeMin = 0.000000000000000000000000000000000000000045916\n\tm_flComplexity = -57131044000000000000000000000000.0\n\tm_flDiffusion = 0.000000000000000000000000000000000000000045902\n\tm_flModDepth = -41277264000000000000000000000000000.0\n\tm_flModRate = nan\n\tm_bParallel = true\n\tm_filterType = \n\t{\n\t\tm_nFilterType = \"FILTER_UNKNOWN\"\n\t\tm_nFilterSlope = \"FILTER_SLOPE_12dB\"\n\t\tm_bEnabled = true\n\t\tm_fldbGain = 0.0\n\t\tm_flCutoffFreq = 1000.0\n\t\tm_flQ = 0.70710677\n\t}\n\tm_flWidth = 0.0\n\tm_flHeight = 26311616.0\n\tm_flDepth = 0.000000000000000000000000000000000000000045916\n\tm_flFeedbackScale = -57132240000000000000000000000000.0\n\tm_flFeedbackWidth = 0.000000000000000000000000000000000000000045902\n\tm_flFeedbackHeight = 26311680.0\n\tm_flFeedbackDepth = 0.000000000000000000000000000000000000000045916\n\tm_flOutputGain = 26313120.0\n\tm_flTaps = 0.000000000000000000000000000000000000000045916\n}"
 					}
 				],
 				"members":
@@ -22984,7 +22984,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\t_class = \"CTargetWarpUpdateNode\"\n\tm_nodePath = \n\t{\n\t\tm_path = \n\t\t[\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t]\n\t\tm_nCount = 0\n\t}\n\tm_networkMode = \"ServerAuthoritative\"\n\tm_name = \"\"\n\tm_pChildNode = \n\t{\n\t\tm_nodeIndex = -1\n\t}\n\tm_eAngleMode = \"eFacingHeading\"\n\tm_hTargetPositionParameter = \n\t{\n\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\tm_index = 255\n\t}\n\tm_hTargetUpVectorParameter = \n\t{\n\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\tm_index = 255\n\t}\n\tm_hTargetFacePositionParameter = \n\t{\n\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\tm_index = 255\n\t}\n\tm_hMoveHeadingParameter = \n\t{\n\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\tm_index = 255\n\t}\n\tm_hDesiredMoveHeadingParameter = \n\t{\n\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\tm_index = 255\n\t}\n\tm_eCorrectionMethod = 32659\n\tm_eTargetWarpTimingMethod = -1519246864\n\tm_bTargetFacePositionIsWorldSpace = true\n\tm_bTargetPositionIsWorldSpace = true\n\tm_bOnlyWarpWhenTagIsFound = false\n\tm_bWarpOrientationDuringTranslation = false\n\tm_bWarpAroundCenter = false\n\tm_flMaxAngle = 180.0\n}"
+						"value": "{\n\t_class = \"CTargetWarpUpdateNode\"\n\tm_nodePath = \n\t{\n\t\tm_path = \n\t\t[\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t]\n\t\tm_nCount = 0\n\t}\n\tm_networkMode = \"ServerAuthoritative\"\n\tm_name = \"\"\n\tm_pChildNode = \n\t{\n\t\tm_nodeIndex = -1\n\t}\n\tm_eAngleMode = \"eFacingHeading\"\n\tm_hTargetPositionParameter = \n\t{\n\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\tm_index = 255\n\t}\n\tm_hTargetUpVectorParameter = \n\t{\n\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\tm_index = 255\n\t}\n\tm_hTargetFacePositionParameter = \n\t{\n\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\tm_index = 255\n\t}\n\tm_hMoveHeadingParameter = \n\t{\n\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\tm_index = 255\n\t}\n\tm_hDesiredMoveHeadingParameter = \n\t{\n\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\tm_index = 255\n\t}\n\tm_eCorrectionMethod = 32757\n\tm_eTargetWarpTimingMethod = -405659152\n\tm_bTargetFacePositionIsWorldSpace = true\n\tm_bTargetPositionIsWorldSpace = true\n\tm_bOnlyWarpWhenTagIsFound = false\n\tm_bWarpOrientationDuringTranslation = false\n\tm_bWarpAroundCenter = false\n\tm_flMaxAngle = 180.0\n}"
 					}
 				],
 				"multi_depth": 3,
@@ -24204,7 +24204,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_flMassInv = 0.000000000000000000000000000000000000000045915\n}"
+						"value": "{\n\tm_flMassInv = 0.000000000000000000000000000000000000000045916\n}"
 					}
 				],
 				"members":
@@ -24244,7 +24244,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_nParticle = [ 39776, 47818 ]\n\tm_flLength = 0.000000000000000000000000000000000000000045915\n}"
+						"value": "{\n\tm_nParticle = [ 48784, 19400 ]\n\tm_flLength = 0.000000000000000000000000000000000000000045916\n}"
 					}
 				],
 				"members":
@@ -24302,7 +24302,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_vCenter = \n\t[\n\t\t[ 0.0, -2.0000305, 0.0 ],\n\t\t[ 0.0, 0.000000000000000000000000000000000000000037471, 0.000000000000000000000000000000000000000045915 ],\n\t]\n\tm_flRadius = -0.0015457682\n\tm_nParticle = [ 32766, 0 ]\n}"
+						"value": "{\n\tm_vCenter = \n\t[\n\t\t[ 0.0, -2.0000305, 0.0 ],\n\t\t[ 0.0, 0.000000000000000000000000000000000000000037471, 0.000000000000000000000000000000000000000045916 ],\n\t]\n\tm_flRadius = 26311968.0\n\tm_nParticle = [ 32767, 0 ]\n}"
 					}
 				],
 				"members":
@@ -25297,7 +25297,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_nBaseClusterCount = 0\n\tm_nPVSBytesPerCluster = 0\n\tm_vMinBounds = [ 0.0, 0.0, 0.0 ]\n\tm_vMaxBounds = [ 0.0, 0.0, 0.0 ]\n\tm_flGridSize = 0.0\n\tm_nSkyVisibilityCluster = 0\n\tm_nSunVisibilityCluster = 0\n\tm_NodeBlock = \n\t{\n\t\tm_nOffset = 1051\n\t\tm_nElementCount = 1451527120\n\t}\n\tm_RegionBlock = \n\t{\n\t\tm_nOffset = 1051\n\t\tm_nElementCount = 1451527133\n\t}\n\tm_EnclosedClusterListBlock = \n\t{\n\t\tm_nOffset = 1051\n\t\tm_nElementCount = 78\n\t}\n\tm_EnclosedClustersBlock = \n\t{\n\t\tm_nOffset = 32766\n\t\tm_nElementCount = 3922635208\n\t}\n\tm_MasksBlock = \n\t{\n\t\tm_nOffset = 32659\n\t\tm_nElementCount = 3133844992\n\t}\n\tm_nVisBlocks = \n\t{\n\t\tm_nOffset = 32766\n\t\tm_nElementCount = 16\n\t}\n}"
+						"value": "{\n\tm_nBaseClusterCount = 0\n\tm_nPVSBytesPerCluster = 0\n\tm_vMinBounds = [ 0.0, 0.0, 0.0 ]\n\tm_vMaxBounds = [ 0.0, 0.0, 0.0 ]\n\tm_flGridSize = 0.0\n\tm_nSkyVisibilityCluster = 0\n\tm_nSunVisibilityCluster = 0\n\tm_NodeBlock = \n\t{\n\t\tm_nOffset = 1057\n\t\tm_nElementCount = 1271455824\n\t}\n\tm_RegionBlock = \n\t{\n\t\tm_nOffset = 32767\n\t\tm_nElementCount = 16\n\t}\n\tm_EnclosedClusterListBlock = \n\t{\n\t\tm_nOffset = 0\n\t\tm_nElementCount = 1271452568\n\t}\n\tm_EnclosedClustersBlock = \n\t{\n\t\tm_nOffset = 32767\n\t\tm_nElementCount = 4098795976\n\t}\n\tm_MasksBlock = \n\t{\n\t\tm_nOffset = 32757\n\t\tm_nElementCount = 1271452000\n\t}\n\tm_nVisBlocks = \n\t{\n\t\tm_nOffset = 32767\n\t\tm_nElementCount = 16\n\t}\n}"
 					}
 				],
 				"members":
@@ -25485,7 +25485,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_nOffset = 2795951008\n\tm_nElementCount = 32659\n}"
+						"value": "{\n\tm_nOffset = 3978744736\n\tm_nElementCount = 32757\n}"
 					}
 				],
 				"members":
@@ -28237,7 +28237,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_nFirstIndex = 544326336\n\tm_nIndexCount = 1051\n\tm_nVBByteOffset = 3133841528\n\tm_nBaseVertex = 32766\n\tm_nVertexCount = 39424\n\tm_albedoFormat = 202\n\tm_boundLs = \n\t{\n\t\tm_vMinBounds = [ 0.000000000000000000000000000000000000000045915, -29239143000000000000000000.0, 0.000000000000000000000000000000000000000045765 ]\n\t\tm_vMaxBounds = [ -0.00000000000000020622108, 0.000000000000000000000000000000000000000045765, 0.00000000000000000000000000000000000000000018 ]\n\t}\n\tm_vVertexOriginLs = [ 0.0, 0.0000019263098, 0.000000000000000000000000000000000000000001473 ]\n\tm_vVertexExtentLs = [ 0.0, 0.0, 0.00000000000000000000000000000000000000000009 ]\n}"
+						"value": "{\n\tm_nFirstIndex = 1953088192\n\tm_nIndexCount = 1057\n\tm_nVBByteOffset = 1271448488\n\tm_nBaseVertex = 32767\n\tm_nVertexCount = 48432\n\tm_albedoFormat = 200\n\tm_boundLs = \n\t{\n\t\tm_vMinBounds = [ 0.000000000000000000000000000000000000000045916, -61318927000000000000000000000000.0, 0.000000000000000000000000000000000000000045902 ]\n\t\tm_vMaxBounds = [ -1943317200000000000000000.0, 0.000000000000000000000000000000000000000045902, 0.0 ]\n\t}\n\tm_vVertexOriginLs = [ 0.0, 0.0, 0.0 ]\n\tm_vVertexExtentLs = [ -3204701800000000000000000000.0, 0.000000000000000000000000000000000000000045902, 26311456.0 ]\n}"
 					}
 				],
 				"members":
@@ -28453,7 +28453,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_nFlags = \"\"\n\tm_albedoFormat = \"VERTEX_ALBEDO_NONE\"\n\tm_emissiveFormat = \"VERTEX_ALBEDO_NONE\"\n\tm_nBLASCount = 0\n\tm_nBLASIndex = 0\n\tm_nVertexAlbedoByteOffset = 0\n\tm_nVertexEmissiveByteOffset = 0\n\tm_fEmissiveFactor = 0.0\n\tm_mWorldFromLocal = \n\t[\n\t\t-0.0000000000000011506409, 0.000000000000000000000000000000000000000045765, -0.00000000000000020622108, 0.000000000000000000000000000000000000000045765,\n\t\t0.00000000000000000000000000000000000000000018, 0.0, 0.0, -2.0000305,\n\t\t0.0, 0.0, 78680335000000000000000000000000.0, 64076180.0,\n\t]\n}"
+						"value": "{\n\tm_nFlags = \"\"\n\tm_albedoFormat = \"VERTEX_ALBEDO_NONE\"\n\tm_emissiveFormat = \"VERTEX_ALBEDO_NONE\"\n\tm_nBLASCount = 0\n\tm_nBLASIndex = 0\n\tm_nVertexAlbedoByteOffset = 0\n\tm_nVertexEmissiveByteOffset = 0\n\tm_fEmissiveFactor = 0.0\n\tm_mWorldFromLocal = \n\t[\n\t\t-3207518700000000000000000000.0, 0.000000000000000000000000000000000000000045902, -1943317200000000000000000.0, 0.000000000000000000000000000000000000000045902,\n\t\t0.0, 0.0, 0.0, -2.0000305,\n\t\t0.0, 0.0, 78680335000000000000000000000000.0, 64076180.0,\n\t]\n}"
 					}
 				],
 				"members":
@@ -28616,7 +28616,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tpreset = -1161127104\n\tpitchrun = 32766\n\tpitchstart = -372283333\n\tspinup = 32659\n\tspindown = -1499242064\n\tvolrun = 32659\n\tvolstart = 1\n\tfadein = 0\n\tfadeout = 0\n\tlfotype = -1073741816\n\tlforate = 0\n\tlfomodpitch = 0\n\tlfomodvol = -1502185906\n\tcspinup = 32659\n\tcspincount = 0\n\tpitch = 32659\n\tspinupsav = -1161127072\n\tspindownsav = 32766\n\tpitchfrac = 16\n\tvol = -2147483648\n\tfadeinsav = 0\n\tfadeoutsav = -1073741696\n\tvolfrac = 0\n\tlfofrac = 0\n\tlfomult = 1833264483\n}"
+						"value": "{\n\tpreset = 1271447152\n\tpitchrun = 32767\n\tpitchstart = -196122565\n\tspinup = 32757\n\tspindown = -316448336\n\tvolrun = 32757\n\tvolstart = 0\n\tfadein = 0\n\tfadeout = 504\n\tlfotype = 0\n\tlforate = 0\n\tlfomodpitch = 0\n\tlfomodvol = 1271447248\n\tcspinup = 32767\n\tcspincount = -196121897\n\tpitch = 32757\n\tspinupsav = 1271447184\n\tspindownsav = 32767\n\tpitchfrac = 16\n\tvol = -2147483648\n\tfadeinsav = 0\n\tfadeoutsav = -1073741696\n\tvolfrac = 0\n\tlfofrac = 0\n\tlfomult = 1833264483\n}"
 					}
 				],
 				"multi_depth": 2,
@@ -28653,7 +28653,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tpreset = -1161126496\n\tpitchrun = 32766\n\tpitchstart = -1161127072\n\tspinup = 32766\n\tspindown = 541643062\n\tvolrun = 1051\n\tvolstart = 0\n\tfadein = 0\n\tfadeout = -1161126496\n\tlfotype = 32766\n\tlforate = 24\n\tlfomodpitch = 0\n\tlfomodvol = -1161127184\n\tcspinup = 32766\n\tcspincount = 1\n\tpitch = 0\n\tspinupsav = -1161127184\n\tspindownsav = 32766\n\tpitchfrac = -1749448168\n\tvol = 32659\n\tfadeinsav = -1161127184\n\tfadeoutsav = 32766\n\tvolfrac = -372849762\n\tlfofrac = 32659\n\tlfomult = -1749448168\n}"
+						"value": "{\n\tpreset = 1271447760\n\tpitchrun = 32767\n\tpitchstart = 1271447184\n\tspinup = 32767\n\tspindown = -1948798666\n\tvolrun = 1057\n\tvolstart = 0\n\tfadein = 0\n\tfadeout = 1271447760\n\tlfotype = 32767\n\tlforate = 24\n\tlfomodpitch = 0\n\tlfomodvol = 1271447072\n\tcspinup = 32767\n\tcspincount = 1\n\tpitch = 0\n\tspinupsav = 1271447072\n\tspindownsav = 32767\n\tpitchfrac = -944141416\n\tvol = 32757\n\tfadeinsav = 1271447072\n\tfadeoutsav = 32767\n\tvolfrac = -196688994\n\tlfofrac = 32757\n\tlfomult = -944141416\n}"
 					}
 				],
 				"members":
@@ -29204,7 +29204,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_feedbackFilter = \n\t{\n\t\tm_nFilterType = \"FILTER_UNKNOWN\"\n\t\tm_nFilterSlope = \"FILTER_SLOPE_12dB\"\n\t\tm_bEnabled = true\n\t\tm_fldbGain = 0.0\n\t\tm_flCutoffFreq = 1000.0\n\t\tm_flQ = 0.70710677\n\t}\n\tm_bEnableFilter = true\n\tm_flDelay = 0.000000000000000000000000000000000000000045915\n\tm_flDirectGain = -27242774000000000000000000.0\n\tm_flDelayGain = 0.000000000000000000000000000000000000000045765\n\tm_flFeedbackGain = -0.0015457477\n\tm_flWidth = 0.000000000000000000000000000000000000000045915\n}"
+						"value": "{\n\tm_feedbackFilter = \n\t{\n\t\tm_nFilterType = \"FILTER_UNKNOWN\"\n\t\tm_nFilterSlope = \"FILTER_SLOPE_12dB\"\n\t\tm_bEnabled = true\n\t\tm_fldbGain = 0.0\n\t\tm_flCutoffFreq = 1000.0\n\t\tm_flQ = 0.70710677\n\t}\n\tm_bEnableFilter = true\n\tm_flDelay = 0.000000000000000000000000000000000000000045916\n\tm_flDirectGain = -57132240000000000000000000000000.0\n\tm_flDelayGain = 0.000000000000000000000000000000000000000045902\n\tm_flFeedbackGain = 26311616.0\n\tm_flWidth = 0.000000000000000000000000000000000000000045916\n}"
 					}
 				],
 				"members":
@@ -30346,7 +30346,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_attachment = \n\t{\n\t\tm_influenceRotations = \n\t\t[\n\t\t\t[ 0.00000000000000000000000004911786, 0.000000000000000000000000000000000000000001473, 0.0, 0.0 ],\n\t\t\t[ -0.0015458353, 0.000000000000000000000000000000000000000045915, 0.000000000000000000000000000000000000000000007, 0.0 ],\n\t\t\t[ -0.0015457552, 0.000000000000000000000000000000000000000045915, 0.000000000000000000000000000000000000000000001, 0.0 ],\n\t\t]\n\t\tm_influenceOffsets = \n\t\t[\n\t\t\t[ -0.0015457552, 0.000000000000000000000000000000000000000045915, -0.0000000000000002322181 ],\n\t\t\t[ -0.0015457552, 0.000000000000000000000000000000000000000045915, -30036386000000000000000000.0 ],\n\t\t\t[ -0.0000000000000002322181, 0.000000000000000000000000000000000000000045765, 0.0 ],\n\t\t]\n\t\tm_influenceIndices = [ -1161126512, 32766, -373509388 ]\n\t\tm_influenceWeights = [ 0.000000000000000000000000000000000000000045765, -0.00000000000000023220985, 0.000000000000000000000000000000000000000045765 ]\n\t\tm_numInfluences = 0\n\t}\n\tm_damping = \n\t{\n\t\t_class = \"CAnimInputDamping\"\n\t\tm_speedFunction = \"NoDamping\"\n\t\tm_fSpeedScale = 1.0\n\t\tm_fFallingSpeedScale = 1.0\n\t}\n\tm_poseCacheHandles = \n\t[\n\t\t{\n\t\t\tm_nIndex = 65535\n\t\t\tm_eType = \"POSETYPE_INVALID\"\n\t\t},\n\t\t{\n\t\t\tm_nIndex = 65535\n\t\t\tm_eType = \"POSETYPE_INVALID\"\n\t\t},\n\t\t{\n\t\t\tm_nIndex = 65535\n\t\t\tm_eType = \"POSETYPE_INVALID\"\n\t\t},\n\t\t{\n\t\t\tm_nIndex = 65535\n\t\t\tm_eType = \"POSETYPE_INVALID\"\n\t\t},\n\t\t{\n\t\t\tm_nIndex = 65535\n\t\t\tm_eType = \"POSETYPE_INVALID\"\n\t\t},\n\t\t{\n\t\t\tm_nIndex = 65535\n\t\t\tm_eType = \"POSETYPE_INVALID\"\n\t\t},\n\t\t{\n\t\t\tm_nIndex = 65535\n\t\t\tm_eType = \"POSETYPE_INVALID\"\n\t\t},\n\t\t{\n\t\t\tm_nIndex = 65535\n\t\t\tm_eType = \"POSETYPE_INVALID\"\n\t\t},\n\t\t{\n\t\t\tm_nIndex = 65535\n\t\t\tm_eType = \"POSETYPE_INVALID\"\n\t\t},\n\t\t{\n\t\t\tm_nIndex = 65535\n\t\t\tm_eType = \"POSETYPE_INVALID\"\n\t\t},\n\t]\n\tm_eBlendMode = \"AimMatrixBlendMode_None\"\n\tm_flMaxYawAngle = 45.0\n\tm_flMaxPitchAngle = 45.0\n\tm_nSequenceMaxFrame = 0\n\tm_nBoneMaskIndex = -1\n\tm_bTargetIsPosition = true\n\tm_bUseBiasAndClamp = false\n\tm_flBiasAndClampYawOffset = 1.0\n\tm_flBiasAndClampPitchOffset = 1.0\n\tm_biasAndClampBlendCurve = \n\t{\n\t\tm_flControlPoint1 = 0.0\n\t\tm_flControlPoint2 = 1.0\n\t}\n}"
+						"value": "{\n\tm_attachment = \n\t{\n\t\tm_influenceRotations = \n\t\t[\n\t\t\t[ -0.00000000000000000000000000000009055525, 0.000000000000000000000000000000000000000001481, 0.0, 0.0 ],\n\t\t\t[ 26313120.0, 0.000000000000000000000000000000000000000045916, 0.000000000000000000000000000000000000000000007, 0.0 ],\n\t\t\t[ 26311744.0, 0.000000000000000000000000000000000000000045916, 0.000000000000000000000000000000000000000000001, 0.0 ],\n\t\t]\n\t\tm_influenceOffsets = \n\t\t[\n\t\t\t[ 26311744.0, 0.000000000000000000000000000000000000000045916, -2171010000000000000000000.0 ],\n\t\t\t[ 26311744.0, 0.000000000000000000000000000000000000000045916, -62990867000000000000000000000000.0 ],\n\t\t\t[ -2171010000000000000000000.0, 0.000000000000000000000000000000000000000045902, 0.0 ],\n\t\t]\n\t\tm_influenceIndices = [ 1271447744, 32767, -197348620 ]\n\t\tm_influenceWeights = [ 0.000000000000000000000000000000000000000045902, -2170965000000000000000000.0, 0.000000000000000000000000000000000000000045902 ]\n\t\tm_numInfluences = 0\n\t}\n\tm_damping = \n\t{\n\t\t_class = \"CAnimInputDamping\"\n\t\tm_speedFunction = \"NoDamping\"\n\t\tm_fSpeedScale = 1.0\n\t\tm_fFallingSpeedScale = 1.0\n\t}\n\tm_poseCacheHandles = \n\t[\n\t\t{\n\t\t\tm_nIndex = 65535\n\t\t\tm_eType = \"POSETYPE_INVALID\"\n\t\t},\n\t\t{\n\t\t\tm_nIndex = 65535\n\t\t\tm_eType = \"POSETYPE_INVALID\"\n\t\t},\n\t\t{\n\t\t\tm_nIndex = 65535\n\t\t\tm_eType = \"POSETYPE_INVALID\"\n\t\t},\n\t\t{\n\t\t\tm_nIndex = 65535\n\t\t\tm_eType = \"POSETYPE_INVALID\"\n\t\t},\n\t\t{\n\t\t\tm_nIndex = 65535\n\t\t\tm_eType = \"POSETYPE_INVALID\"\n\t\t},\n\t\t{\n\t\t\tm_nIndex = 65535\n\t\t\tm_eType = \"POSETYPE_INVALID\"\n\t\t},\n\t\t{\n\t\t\tm_nIndex = 65535\n\t\t\tm_eType = \"POSETYPE_INVALID\"\n\t\t},\n\t\t{\n\t\t\tm_nIndex = 65535\n\t\t\tm_eType = \"POSETYPE_INVALID\"\n\t\t},\n\t\t{\n\t\t\tm_nIndex = 65535\n\t\t\tm_eType = \"POSETYPE_INVALID\"\n\t\t},\n\t\t{\n\t\t\tm_nIndex = 65535\n\t\t\tm_eType = \"POSETYPE_INVALID\"\n\t\t},\n\t]\n\tm_eBlendMode = \"AimMatrixBlendMode_None\"\n\tm_flMaxYawAngle = 45.0\n\tm_flMaxPitchAngle = 45.0\n\tm_nSequenceMaxFrame = 0\n\tm_nBoneMaskIndex = -1\n\tm_bTargetIsPosition = true\n\tm_bUseBiasAndClamp = false\n\tm_flBiasAndClampYawOffset = 1.0\n\tm_flBiasAndClampPitchOffset = 1.0\n\tm_biasAndClampBlendCurve = \n\t{\n\t\tm_flControlPoint1 = 0.0\n\t\tm_flControlPoint2 = 1.0\n\t}\n}"
 					}
 				],
 				"members":
@@ -30535,7 +30535,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_influenceRotations = \n\t[\n\t\t[ -0.0015457328, 0.000000000000000000000000000000000000000045915, -0.0015457682, 0.000000000000000000000000000000000000000045915 ],\n\t\t[ -0.001545751, 0.000000000000000000000000000000000000000045915, 0.0, 0.0 ],\n\t\t[ -0.001545751, 0.000000000000000000000000000000000000000045915, 0.000000000000000000000000000000000000000000034, 0.0 ],\n\t]\n\tm_influenceOffsets = \n\t[\n\t\t[ -0.0015457384, 0.000000000000000000000000000000000000000045915, -27242205000000000000000000.0 ],\n\t\t[ -0.0015457422, 0.000000000000000000000000000000000000000045915, -0.0015457692 ],\n\t\t[ 0.000000000000000000000000000000000000000000034, 0.0, 0.0 ],\n\t]\n\tm_influenceIndices = [ -1161127248, 32766, -374061298 ]\n\tm_influenceWeights = [ 0.000000000000000000000000000000000000000045765, -0.00000000000000023893783, 0.000000000000000000000000000000000000000045765 ]\n\tm_numInfluences = 0\n}"
+						"value": "{\n\tm_influenceRotations = \n\t[\n\t\t[ 26311360.0, 0.000000000000000000000000000000000000000045916, 26311968.0, 0.000000000000000000000000000000000000000045916 ],\n\t\t[ 26311672.0, 0.000000000000000000000000000000000000000045916, 0.0, 0.0 ],\n\t\t[ 26311672.0, 0.000000000000000000000000000000000000000045916, 0.000000000000000000000000000000000000000000034, 0.0 ],\n\t]\n\tm_influenceOffsets = \n\t[\n\t\t[ 26311456.0, 0.000000000000000000000000000000000000000045916, -57131044000000000000000000000000.0 ],\n\t\t[ 26311520.0, 0.000000000000000000000000000000000000000045916, 26311984.0 ],\n\t\t[ 0.000000000000000000000000000000000000000000034, 0.0, 0.0 ],\n\t]\n\tm_influenceIndices = [ 1271447008, 32767, -197900530 ]\n\tm_influenceWeights = [ 0.000000000000000000000000000000000000000045902, -2207595700000000000000000.0, 0.000000000000000000000000000000000000000045902 ]\n\tm_numInfluences = 0\n}"
 					}
 				],
 				"members":
@@ -33481,7 +33481,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_vNormal = [ 0.000000000000000000000000000000000000000000359, 0.0, -0.0015456658 ]\n\tm_flOffset = 0.000000000000000000000000000000000000000045915\n}"
+						"value": "{\n\tm_vNormal = [ 0.000000000000000000000000000000000000000000359, 0.0, 26310208.0 ]\n\tm_flOffset = 0.000000000000000000000000000000000000000045916\n}"
 					}
 				],
 				"members":
@@ -34941,7 +34941,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\t_class = \"CTwoBoneIKUpdateNode\"\n\tm_nodePath = \n\t{\n\t\tm_path = \n\t\t[\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t]\n\t\tm_nCount = 0\n\t}\n\tm_networkMode = \"ServerAuthoritative\"\n\tm_name = \"\"\n\tm_pChildNode = \n\t{\n\t\tm_nodeIndex = -1\n\t}\n\tm_opFixedData = \n\t{\n\t\tm_endEffectorType = \"IkEndEffector_Bone\"\n\t\tm_endEffectorAttachment = \n\t\t{\n\t\t\tm_influenceRotations = \n\t\t\t[\n\t\t\t\t[ 0.000000000000000000000000000000000000000000013, 0.0, 0.000000000000000000000000000000000015290636, 0.000000000000000000000000000000000000000045674 ],\n\t\t\t\t[ -0.001545962, 0.000000000000000000000000000000000000000045915, -0.0015458171, 0.000000000000000000000000000000000000000045915 ],\n\t\t\t\t[ -0.0015458148, 0.000000000000000000000000000000000000000045915, 0.000000000000000000000000000000000013383728, 0.000000000000000000000000000000000000000045674 ],\n\t\t\t]\n\t\t\tm_influenceOffsets = \n\t\t\t[\n\t\t\t\t[ -0.0015464639, 0.000000000000000000000000000000000000000045915, 0.000000000000000000000000000000000015290636 ],\n\t\t\t\t[ 0.000000000000000000000000000000000000000000013, 0.00000000000000036138142, -0.0015464639 ],\n\t\t\t\t[ -0.0015458148, 7.306532, nan ],\n\t\t\t]\n\t\t\tm_influenceIndices = [ 94542098, 32594, -1161125408 ]\n\t\t\tm_influenceWeights = [ 0.000000000000000000000000000000000000000045915, 0.00000000000000000018408216, 0.000000000000000000000000000000000000000001473 ]\n\t\t\tm_numInfluences = 0\n\t\t}\n\t\tm_targetType = \"IkTarget_Bone\"\n\t\tm_targetAttachment = \n\t\t{\n\t\t\tm_influenceRotations = \n\t\t\t[\n\t\t\t\t[ 0.0, 0.000000000000000000000000000000000000000000028, -0.0015458474, 0.000000000000000000000000000000000000000045915 ],\n\t\t\t\t[ 0.00000000000000000018408216, 0.000000000000000000000000000000000000000001473, 0.0000000000000000000000000496832, 0.000000000000000000000000000000000000000001473 ],\n\t\t\t\t[ 0.000000000000000000000000000000000000000000004, 0.0, 0.000000000000000000000000000000000013418033, 0.000000000000000000000000000000000000000045674 ],\n\t\t\t]\n\t\t\tm_influenceOffsets = \n\t\t\t[\n\t\t\t\t[ -0.0015458353, 0.000000000000000000000000000000000000000045915, -0.0015464639 ],\n\t\t\t\t[ 0.000000000000000000000000000000000015290609, 0.000000000000000000000000000000000000000045674, 0.0 ],\n\t\t\t\t[ 192526940000.0, 0.000000000000000000000000000000000000000001473, 0.000000000000000000000000000000000000000000057 ],\n\t\t\t]\n\t\t\tm_influenceIndices = [ 7, 867786601, -1161121096 ]\n\t\t\tm_influenceWeights = [ 0.000000000000000000000000000000000000000045915, 0.00000000000000000000000000000000000000000001, 0.0 ]\n\t\t\tm_numInfluences = 0\n\t\t}\n\t\tm_targetBoneIndex = -1\n\t\tm_hPositionParam = \n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t}\n\t\tm_hRotationParam = \n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t}\n\t\tm_bAlwaysUseFallbackHinge = false\n\t\tm_vLsFallbackHingeAxis = [ 0.0, 1.0, 0.0 ]\n\t\tm_nFixedBoneIndex = -1\n\t\tm_nMiddleBoneIndex = -1\n\t\tm_nEndBoneIndex = -1\n\t\tm_bMatchTargetOrientation = false\n\t\tm_bConstrainTwist = false\n\t\tm_flMaxTwist = 15.0\n\t}\n}"
+						"value": "{\n\t_class = \"CTwoBoneIKUpdateNode\"\n\tm_nodePath = \n\t{\n\t\tm_path = \n\t\t[\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t]\n\t\tm_nCount = 0\n\t}\n\tm_networkMode = \"ServerAuthoritative\"\n\tm_name = \"\"\n\tm_pChildNode = \n\t{\n\t\tm_nodeIndex = -1\n\t}\n\tm_opFixedData = \n\t{\n\t\tm_endEffectorType = \"IkEndEffector_Bone\"\n\t\tm_endEffectorAttachment = \n\t\t{\n\t\t\tm_influenceRotations = \n\t\t\t[\n\t\t\t\t[ 0.000000000000000000000000000000000000000000013, 0.0, 127563295000000000.0, 0.00000000000000000000000000000000000000004581 ],\n\t\t\t\t[ 26315296.0, 0.000000000000000000000000000000000000000045916, 26312808.0, 0.000000000000000000000000000000000000000045916 ],\n\t\t\t\t[ 26312768.0, 0.000000000000000000000000000000000000000045916, 116147950000000000.0, 0.00000000000000000000000000000000000000004581 ],\n\t\t\t]\n\t\t\tm_influenceOffsets = \n\t\t\t[\n\t\t\t\t[ 26323920.0, 0.000000000000000000000000000000000000000045916, 127563295000000000.0 ],\n\t\t\t\t[ 0.000000000000000000000000000000000000000000013, 0.00000000000000036138142, 26323920.0 ],\n\t\t\t\t[ 26312768.0, 7.306532, nan ],\n\t\t\t]\n\t\t\tm_influenceIndices = [ 1541576978, 32691, 1271448848 ]\n\t\t\tm_influenceWeights = [ 0.000000000000000000000000000000000000000045916, -0.00000000000000000000000000000009293126, 0.000000000000000000000000000000000000000001481 ]\n\t\t\tm_numInfluences = 0\n\t\t}\n\t\tm_targetType = \"IkTarget_Bone\"\n\t\tm_targetAttachment = \n\t\t{\n\t\t\tm_influenceRotations = \n\t\t\t[\n\t\t\t\t[ 0.0, 0.000000000000000000000000000000000000000000028, 26313328.0, 0.000000000000000000000000000000000000000045916 ],\n\t\t\t\t[ -0.00000000000000000000000000000009293126, 0.000000000000000000000000000000000000000001481, -0.000000000000000000000000000000090453914, 0.000000000000000000000000000000000000000001481 ],\n\t\t\t\t[ 0.000000000000000000000000000000000000000000004, 0.0, 116353310000000000.0, 0.00000000000000000000000000000000000000004581 ],\n\t\t\t]\n\t\t\tm_influenceOffsets = \n\t\t\t[\n\t\t\t\t[ 26313120.0, 0.000000000000000000000000000000000000000045916, 26323920.0 ],\n\t\t\t\t[ 127563130000000000.0, 0.00000000000000000000000000000000000000004581, 0.0 ],\n\t\t\t\t[ -0.00000000000090183416, 0.000000000000000000000000000000000000000001481, 0.000000000000000000000000000000000000000000057 ],\n\t\t\t]\n\t\t\tm_influenceIndices = [ 7, 867786601, 1271453160 ]\n\t\t\tm_influenceWeights = [ 0.000000000000000000000000000000000000000045916, 0.00000000000000000000000000000000000000000001, 0.0 ]\n\t\t\tm_numInfluences = 0\n\t\t}\n\t\tm_targetBoneIndex = -1\n\t\tm_hPositionParam = \n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t}\n\t\tm_hRotationParam = \n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t}\n\t\tm_bAlwaysUseFallbackHinge = false\n\t\tm_vLsFallbackHingeAxis = [ 0.0, 1.0, 0.0 ]\n\t\tm_nFixedBoneIndex = -1\n\t\tm_nMiddleBoneIndex = -1\n\t\tm_nEndBoneIndex = -1\n\t\tm_bMatchTargetOrientation = false\n\t\tm_bConstrainTwist = false\n\t\tm_flMaxTwist = 15.0\n\t}\n}"
 					}
 				],
 				"multi_depth": 3,
@@ -34989,7 +34989,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_endEffectorType = \"IkEndEffector_Bone\"\n\tm_endEffectorAttachment = \n\t{\n\t\tm_influenceRotations = \n\t\t[\n\t\t\t[ -0.0015457813, 0.000000000000000000000000000000000000000045915, -6697068000000000000000000.0, 0.000000000000000000000000000000000000000045765 ],\n\t\t\t[ -0.0015464639, 0.000000000000000000000000000000000000000045915, 0.0, 0.0 ],\n\t\t\t[ 0.000000000000000000000000000000000000000000036, 0.0, 0.0, 0.0 ],\n\t\t]\n\t\tm_influenceOffsets = \n\t\t[\n\t\t\t[ 0.0, 0.0, 0.0 ],\n\t\t\t[ 0.00000000000000000000000004988352, 0.000000000000000000000000000000000000000001473, 0.000000000000000000000000000000000000000000001 ],\n\t\t\t[ 0.0, 0.0, -31390160000000000000000000.0 ],\n\t\t]\n\t\tm_influenceIndices = [ -1520583584, 32659, -1520583224 ]\n\t\tm_influenceWeights = [ 0.000000000000000000000000000000000000000045765, 0.0, nan ]\n\t\tm_numInfluences = 0\n\t}\n\tm_targetType = \"IkTarget_Bone\"\n\tm_targetAttachment = \n\t{\n\t\tm_influenceRotations = \n\t\t[\n\t\t\t[ nan, nan, nan, nan ],\n\t\t\t[ 0.0, 0.0, nan, 0.000000000000000000000000000000000000000045915 ],\n\t\t\t[ 0.0, 0.0, -0.00000000000000019529922, 0.000000000000000000000000000000000000000045765 ],\n\t\t]\n\t\tm_influenceOffsets = \n\t\t[\n\t\t\t[ 0.0, 0.0, nan ],\n\t\t\t[ 0.000000000000000000000000000000000000000000001, 7.306532, -0.0015464639 ],\n\t\t\t[ 0.000000000000000000000000000000000000000000013, 0.0, -35690170000000000000000000.0 ],\n\t\t]\n\t\tm_influenceIndices = [ -1161126736, 32766, -372283333 ]\n\t\tm_influenceWeights = [ 0.000000000000000000000000000000000000000045765, -0.0015458148, 0.000000000000000000000000000000000000000045915 ]\n\t\tm_numInfluences = 0\n\t}\n\tm_targetBoneIndex = -1\n\tm_hPositionParam = \n\t{\n\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\tm_index = 255\n\t}\n\tm_hRotationParam = \n\t{\n\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\tm_index = 255\n\t}\n\tm_bAlwaysUseFallbackHinge = false\n\tm_vLsFallbackHingeAxis = [ 0.0, 1.0, 0.0 ]\n\tm_nFixedBoneIndex = -1\n\tm_nMiddleBoneIndex = -1\n\tm_nEndBoneIndex = -1\n\tm_bMatchTargetOrientation = false\n\tm_bConstrainTwist = false\n\tm_flMaxTwist = 15.0\n}"
+						"value": "{\n\tm_endEffectorType = \"IkEndEffector_Bone\"\n\tm_endEffectorAttachment = \n\t{\n\t\tm_influenceRotations = \n\t\t[\n\t\t\t[ 26312160.0, 0.000000000000000000000000000000000000000045916, -65729950000000000000000000000000.0, 0.000000000000000000000000000000000000000045902 ],\n\t\t\t[ 26323920.0, 0.000000000000000000000000000000000000000045916, 0.0, 0.0 ],\n\t\t\t[ 0.000000000000000000000000000000000000000000055, 0.0, 0.0, 0.0 ],\n\t\t]\n\t\tm_influenceOffsets = \n\t\t[\n\t\t\t[ 0.0, 0.0, 0.0 ],\n\t\t\t[ -0.000000000000000000000000000000091023324, 0.000000000000000000000000000000000000000001481, -16576328000000000000000000000000.0 ],\n\t\t\t[ 0.0, 0.0, 26312704.0 ],\n\t\t]\n\t\tm_influenceIndices = [ -406995872, 32757, -406995512 ]\n\t\tm_influenceWeights = [ 0.000000000000000000000000000000000000000045902, 0.0, nan ]\n\t\tm_numInfluences = 0\n\t}\n\tm_targetType = \"IkTarget_Bone\"\n\tm_targetAttachment = \n\t{\n\t\tm_influenceRotations = \n\t\t[\n\t\t\t[ nan, nan, nan, nan ],\n\t\t\t[ 0.0, 0.0, nan, 0.000000000000000000000000000000000000000045916 ],\n\t\t\t[ 0.0, 0.0, -1824388800000000000000000.0, 0.000000000000000000000000000000000000000045902 ],\n\t\t]\n\t\tm_influenceOffsets = \n\t\t[\n\t\t\t[ 0.0, 0.0, nan ],\n\t\t\t[ 0.000000000000000000000000000000000000000000001, 7.306532, 26323920.0 ],\n\t\t\t[ 0.000000000000000000000000000000000000000000013, 0.0, -74847710000000000000000000000000.0 ],\n\t\t]\n\t\tm_influenceIndices = [ 1271447520, 32767, -196122565 ]\n\t\tm_influenceWeights = [ 0.000000000000000000000000000000000000000045902, 26312768.0, 0.000000000000000000000000000000000000000045916 ]\n\t\tm_numInfluences = 0\n\t}\n\tm_targetBoneIndex = -1\n\tm_hPositionParam = \n\t{\n\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\tm_index = 255\n\t}\n\tm_hRotationParam = \n\t{\n\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\tm_index = 255\n\t}\n\tm_bAlwaysUseFallbackHinge = false\n\tm_vLsFallbackHingeAxis = [ 0.0, 1.0, 0.0 ]\n\tm_nFixedBoneIndex = -1\n\tm_nMiddleBoneIndex = -1\n\tm_nEndBoneIndex = -1\n\tm_bMatchTargetOrientation = false\n\tm_bConstrainTwist = false\n\tm_flMaxTwist = 15.0\n}"
 					}
 				],
 				"members":
@@ -36069,7 +36069,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_pChild = null\n\tm_flKeyValue = -0.0015457682\n}"
+						"value": "{\n\tm_pChild = null\n\tm_flKeyValue = 26311968.0\n}"
 					}
 				],
 				"members":
@@ -37880,7 +37880,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_tags = [  ]\n\tm_nFootIndex = -1\n\tm_triggerPhase = 32766\n}"
+						"value": "{\n\tm_tags = [  ]\n\tm_nFootIndex = -1\n\tm_triggerPhase = 32767\n}"
 					}
 				],
 				"members":
@@ -38178,7 +38178,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_nBandCount = -1161126400\n\tm_flBandwidth = 0.000000000000000000000000000000000000000045915\n\tm_fldBModGain = -0.000000000000000000040329966\n\tm_flFreqRangeStart = 0.000000000000000000000000000000000000000045765\n\tm_flFreqRangeEnd = 0.0\n\tm_fldBUnvoicedGain = -2.0000305\n\tm_flAttackTimeMS = 0.0\n\tm_flReleaseTimeMS = 0.0\n\tm_nDebugBand = 1902473798\n\tm_bPeakMode = false\n}"
+						"value": "{\n\tm_nBandCount = 1271447856\n\tm_flBandwidth = 0.000000000000000000000000000000000000000045916\n\tm_fldBModGain = -187068140000000000000000.0\n\tm_flFreqRangeStart = 0.000000000000000000000000000000000000000045902\n\tm_flFreqRangeEnd = 0.0\n\tm_fldBUnvoicedGain = -2.0000305\n\tm_flAttackTimeMS = 0.0\n\tm_flReleaseTimeMS = 0.0\n\tm_nDebugBand = 1902473798\n\tm_bPeakMode = false\n}"
 					}
 				],
 				"members":
@@ -39125,7 +39125,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\t_class = \"CDirectionalBlendUpdateNode\"\n\tm_nodePath = \n\t{\n\t\tm_path = \n\t\t[\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t]\n\t\tm_nCount = 0\n\t}\n\tm_networkMode = \"ServerAuthoritative\"\n\tm_name = \"\"\n\tm_hSequences = \n\t[\n\t\t-1, -1, -1, -1,\n\t\t-1, -1, -1, -1,\n\t]\n\tm_damping = \n\t{\n\t\t_class = \"CAnimInputDamping\"\n\t\tm_speedFunction = \"NoDamping\"\n\t\tm_fSpeedScale = 1.0\n\t\tm_fFallingSpeedScale = 1.0\n\t}\n\tm_blendValueSource = -1161127089\n\tm_paramIndex = \n\t{\n\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\tm_index = 255\n\t}\n\tm_playbackSpeed = 0.0\n\tm_duration = -2.0000305\n\tm_bLoop = false\n\tm_bLockBlendOnReset = false\n}"
+						"value": "{\n\t_class = \"CDirectionalBlendUpdateNode\"\n\tm_nodePath = \n\t{\n\t\tm_path = \n\t\t[\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t]\n\t\tm_nCount = 0\n\t}\n\tm_networkMode = \"ServerAuthoritative\"\n\tm_name = \"\"\n\tm_hSequences = \n\t[\n\t\t-1, -1, -1, -1,\n\t\t-1, -1, -1, -1,\n\t]\n\tm_damping = \n\t{\n\t\t_class = \"CAnimInputDamping\"\n\t\tm_speedFunction = \"NoDamping\"\n\t\tm_fSpeedScale = 1.0\n\t\tm_fFallingSpeedScale = 1.0\n\t}\n\tm_blendValueSource = 1271447167\n\tm_paramIndex = \n\t{\n\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\tm_index = 255\n\t}\n\tm_playbackSpeed = 0.0\n\tm_duration = -2.0000305\n\tm_bLoop = false\n\tm_bLockBlendOnReset = false\n}"
 					}
 				],
 				"multi_depth": 3,
@@ -42226,7 +42226,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_nEntityIndex = -1161127456\n\tm_modelName = \"\"\n\tm_poseParams = [  ]\n\tm_decodeOps = [  ]\n\tm_internalOps = [  ]\n\tm_decodedAnims = [  ]\n}"
+						"value": "{\n\tm_nEntityIndex = 1271446800\n\tm_modelName = \"\"\n\tm_poseParams = [  ]\n\tm_decodeOps = [  ]\n\tm_internalOps = [  ]\n\tm_decodedAnims = [  ]\n}"
 					}
 				],
 				"members":
@@ -42804,7 +42804,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_vDiag = \n\t[\n\t\t-0.0015458949, 0.000000000000000000000000000000000000000045915, -6589532000000000000000000.0, 0.000000000000000000000000000000000000000000004,\n\t\t-0.0015457682, 0.000000000000000000000000000000000000000045915, 0.0, 0.0,\n\t\t0.000000000000000000000000000000000000000000001, 0.000000000000000000000000000000000000000045765, -0.00000000000000020871199, 0.000000000000000000000000000000000000000045765,\n\t]\n\tm_flXY = [ -0.00000000000000021726141, 0.000000000000000000000000000000000000000045765, -0.0000000000000002172612, 0.000000000000000000000000000000000000000045765 ]\n\tm_flXZ = [ 0.0, -2.0000305, 0.0, 0.0 ]\n\tm_flYZ = [ 805.6789, 0.0, 0.0, 0.0 ]\n}"
+						"value": "{\n\tm_vDiag = \n\t[\n\t\t26314144.0, 0.000000000000000000000000000000000000000045916, -16354552000000000000000000000000.0, 0.000000000000000000000000000000000000000000004,\n\t\t26311968.0, 0.000000000000000000000000000000000000000045916, 0.0, 0.0,\n\t\t0.000000000000000000000000000000000000000000001, 0.000000000000000000000000000000000000000045902, -1970440800000000000000000.0, 0.000000000000000000000000000000000000000045902,\n\t]\n\tm_flXY = [ -2063535800000000000000000.0, 0.000000000000000000000000000000000000000045902, -2063533500000000000000000.0, 0.000000000000000000000000000000000000000045902 ]\n\tm_flXZ = [ 0.0, -2.0000305, 0.0, 0.0 ]\n\tm_flYZ = [ 805.6789, 0.0, 0.0, 0.0 ]\n}"
 					}
 				],
 				"members":
@@ -49061,7 +49061,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_transforms = [  ]\n\tm_nNumFrames = 0\n\tm_flAverageLinearVelocity = 0.0\n\tm_flAverageAngularVelocityRadians = 0.0\n\tm_totalDelta = \n\t[\n\t\t-30563156000000000000000000.0, 0.000000000000000000000000000000000000000001471, -0.0015468188, 0.000000000000000000000000000000000000000045915,\n\t\t0.000000000000000000000000000000000000000000001, 0.0, -30563156000000000000000000.0, 0.000000000000000000000000000000000000000001471,\n\t]\n}"
+						"value": "{\n\tm_transforms = [  ]\n\tm_nNumFrames = 0\n\tm_flAverageLinearVelocity = 0.0\n\tm_flAverageAngularVelocityRadians = 0.0\n\tm_totalDelta = \n\t[\n\t\t0.0987587, 0.000000000000000000000000000000000000000001481, 26330016.0, 0.000000000000000000000000000000000000000045916,\n\t\t0.000000000000000000000000000000000000000000001, 0.0, 0.0987587, 0.000000000000000000000000000000000000000001481,\n\t]\n}"
 					}
 				],
 				"members":
@@ -54393,7 +54393,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\t_class = \"CStaticPoseCache\"\n\tm_poses = [  ]\n\tm_nBoneCount = -372849762\n\tm_nMorphCount = 32659\n}"
+						"value": "{\n\t_class = \"CStaticPoseCache\"\n\tm_poses = [  ]\n\tm_nBoneCount = -196688994\n\tm_nMorphCount = 32757\n}"
 					}
 				],
 				"members":
@@ -57517,7 +57517,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_nViewId = 140732032260816\n\tm_nFrameCount = 140732032261536\n}"
+						"value": "{\n\tm_nViewId = 140734464835040\n\tm_nFrameCount = 140734464835792\n}"
 					}
 				],
 				"members":
@@ -63794,7 +63794,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_nBoneIndex = 914606128\n\tm_flSpringStrength = 0.000000000000000000000000000000000000000001473\n\tm_flMaxTimeStep = -0.00000000000000023981472\n\tm_flDamping = 0.000000000000000000000000000000000000025070785\n\tm_vBoundsMaxLS = [ -0.0015457422, 0.000000000000000000000000000000000000000045915, 0.0 ]\n\tm_vBoundsMinLS = [ 0.0, 0.000000000000000000000000000000000000000012959, 0.0 ]\n\tm_eSimSpace = -1161127072\n}"
+						"value": "{\n\tm_nBoneIndex = -2040530896\n\tm_flSpringStrength = 0.000000000000000000000000000000000000000001481\n\tm_flMaxTimeStep = -2212369900000000000000000.0\n\tm_flDamping = 0.00000000000000000000000000000000000002507106\n\tm_vBoundsMaxLS = [ 26311520.0, 0.000000000000000000000000000000000000000045916, 0.0 ]\n\tm_vBoundsMinLS = [ 0.0, 0.000000000000000000000000000000000000000012959, 0.0 ]\n\tm_eSimSpace = 1271447184\n}"
 					}
 				],
 				"members":
@@ -64169,7 +64169,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_flPrefilter = -0.0015457477\n\tm_flInputDiffusion1 = 0.000000000000000000000000000000000000000045915\n\tm_flInputDiffusion2 = -27242774000000000000000000.0\n\tm_flDecay = 0.000000000000000000000000000000000000000045765\n\tm_flDamp = -41277264000000000000000000000000000.0\n\tm_flFeedbackDiffusion1 = nan\n\tm_flFeedbackDiffusion2 = -0.0015458353\n}"
+						"value": "{\n\tm_flPrefilter = 26311616.0\n\tm_flInputDiffusion1 = 0.000000000000000000000000000000000000000045916\n\tm_flInputDiffusion2 = -57132240000000000000000000000000.0\n\tm_flDecay = 0.000000000000000000000000000000000000000045902\n\tm_flDamp = -41277264000000000000000000000000000.0\n\tm_flFeedbackDiffusion1 = nan\n\tm_flFeedbackDiffusion2 = 26313120.0\n}"
 					}
 				],
 				"members":
@@ -67034,7 +67034,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_name = \"\"\n\tm_nameToken = \"\"\n\tm_nParamCount = 1849753600\n\tm_nIndex = 65535\n\tm_bIsPure = false\n}"
+						"value": "{\n\tm_name = \"\"\n\tm_nameToken = \"\"\n\tm_nParamCount = 1057\n\tm_nIndex = 65535\n\tm_bIsPure = true\n}"
 					}
 				],
 				"members":
@@ -72777,7 +72777,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_translationRangeX = \n\t{\n\t\tm_flRangeStart = 0.0\n\t\tm_flRangeLength = -1.0\n\t}\n\tm_translationRangeY = \n\t{\n\t\tm_flRangeStart = 0.0\n\t\tm_flRangeLength = -1.0\n\t}\n\tm_translationRangeZ = \n\t{\n\t\tm_flRangeStart = 0.0\n\t\tm_flRangeLength = -1.0\n\t}\n\tm_scaleRange = \n\t{\n\t\tm_flRangeStart = 0.0\n\t\tm_flRangeLength = -1.0\n\t}\n\tm_nTrackReadOffset = 0\n\tm_constantRotation = [ -0.0015467945, 0.000000000000000000000000000000000000000045915, -0.0015468607, 0.000000000000000000000000000000000000000045915 ]\n\tm_bIsRotationStatic = false\n\tm_bIsTranslationStatic = false\n\tm_bIsScaleStatic = false\n}"
+						"value": "{\n\tm_translationRangeX = \n\t{\n\t\tm_flRangeStart = 0.0\n\t\tm_flRangeLength = -1.0\n\t}\n\tm_translationRangeY = \n\t{\n\t\tm_flRangeStart = 0.0\n\t\tm_flRangeLength = -1.0\n\t}\n\tm_translationRangeZ = \n\t{\n\t\tm_flRangeStart = 0.0\n\t\tm_flRangeLength = -1.0\n\t}\n\tm_scaleRange = \n\t{\n\t\tm_flRangeStart = 0.0\n\t\tm_flRangeLength = -1.0\n\t}\n\tm_nTrackReadOffset = 0\n\tm_constantRotation = [ 26329600.0, 0.000000000000000000000000000000000000000045916, 26330736.0, 0.0 ]\n\tm_bIsRotationStatic = false\n\tm_bIsTranslationStatic = false\n\tm_bIsScaleStatic = false\n}"
 					}
 				],
 				"members":
@@ -75532,7 +75532,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_nParent = 32659\n\tm_nChild = 0\n}"
+						"value": "{\n\tm_nParent = 32757\n\tm_nChild = 0\n}"
 					}
 				],
 				"members":
@@ -76989,7 +76989,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_attachment = \n\t{\n\t\tm_influenceRotations = \n\t\t[\n\t\t\t[ -0.0015457552, 0.000000000000000000000000000000000000000045915, 0.000000000000000000000000000000000000000000001, 0.0 ],\n\t\t\t[ -0.0015457552, 0.000000000000000000000000000000000000000045915, -0.00000000000000000004923547, 0.000000000000000000000000000000000000000045765 ],\n\t\t\t[ -0.0015457552, 0.000000000000000000000000000000000000000045915, -30036386000000000000000000.0, 0.000000000000000000000000000000000000000045765 ],\n\t\t]\n\t\tm_influenceOffsets = \n\t\t[\n\t\t\t[ -0.00000000000000000004923547, 0.000000000000000000000000000000000000000045765, 0.0 ],\n\t\t\t[ -0.0015458334, 0.000000000000000000000000000000000000000045915, -28515392000000000000000000.0 ],\n\t\t\t[ -0.0015457645, 0.000000000000000000000000000000000000000045915, -6589532000000000000000000.0 ],\n\t\t]\n\t\tm_influenceIndices = [ -1621038528, 32659, -1620540920 ]\n\t\tm_influenceWeights = [ 0.000000000000000000000000000000000000000045765, -0.0015458949, 0.000000000000000000000000000000000000000045915 ]\n\t\tm_numInfluences = 0\n\t}\n\tm_damping = \n\t{\n\t\t_class = \"CAnimInputDamping\"\n\t\tm_speedFunction = \"NoDamping\"\n\t\tm_fSpeedScale = 1.0\n\t\tm_fFallingSpeedScale = 1.0\n\t}\n\tm_bones = [  ]\n\tm_flYawLimit = 45.0\n\tm_flPitchLimit = 45.0\n\tm_flHysteresisInnerAngle = 1.0\n\tm_flHysteresisOuterAngle = 20.0\n\tm_bRotateYawForward = true\n\tm_bMaintainUpDirection = false\n\tm_bTargetIsPosition = true\n\tm_bUseHysteresis = false\n}"
+						"value": "{\n\tm_attachment = \n\t{\n\t\tm_influenceRotations = \n\t\t[\n\t\t\t[ 26311744.0, 0.000000000000000000000000000000000000000045916, 0.000000000000000000000000000000000000000000001, 0.0 ],\n\t\t\t[ 26311744.0, 0.000000000000000000000000000000000000000045916, -236717990000000000000000.0, 0.000000000000000000000000000000000000000045902 ],\n\t\t\t[ 26311744.0, 0.000000000000000000000000000000000000000045916, -62990867000000000000000000000000.0, 0.000000000000000000000000000000000000000045902 ],\n\t\t]\n\t\tm_influenceOffsets = \n\t\t[\n\t\t\t[ -236717990000000000000000.0, 0.000000000000000000000000000000000000000045902, 0.0 ],\n\t\t\t[ 26313088.0, 0.000000000000000000000000000000000000000045916, -59801110000000000000000000000000.0 ],\n\t\t\t[ 26312032.0, 0.000000000000000000000000000000000000000045916, -108779020000000000000000000000000.0 ],\n\t\t]\n\t\tm_influenceIndices = [ 4100, 0, 4104 ]\n\t\tm_influenceWeights = [ 0.0, 0.000000000000000000000000000000000000000005762, 0.0 ]\n\t\tm_numInfluences = 0\n\t}\n\tm_damping = \n\t{\n\t\t_class = \"CAnimInputDamping\"\n\t\tm_speedFunction = \"NoDamping\"\n\t\tm_fSpeedScale = 1.0\n\t\tm_fFallingSpeedScale = 1.0\n\t}\n\tm_bones = [  ]\n\tm_flYawLimit = 45.0\n\tm_flPitchLimit = 45.0\n\tm_flHysteresisInnerAngle = 1.0\n\tm_flHysteresisOuterAngle = 20.0\n\tm_bRotateYawForward = true\n\tm_bMaintainUpDirection = false\n\tm_bTargetIsPosition = true\n\tm_bUseHysteresis = false\n}"
 					}
 				],
 				"members":
@@ -78239,7 +78239,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_flSupport = \n\t[\n\t\t0.000000000000000000000000000000000000000091834, 0.0, -0.0000000000000002564551, 0.000000000000000000000000000000000000000045765,\n\t\t-0.0015458949, 0.000000000000000000000000000000000000000045915, 0.0, 0.000000000000000000000000000000000000000000007,\n\t\t-0.0015457682, 0.000000000000000000000000000000000000000045915, 0.0, 0.0,\n\t\t0.000000000000000000000000000000000000000000001, -2.0000076, -0.000000000000000256453, 0.000000000000000000000000000000000000000045765,\n\t\tnan, 0.0, 0.0, 0.000000000000000000000000000000000000000000004,\n\t\t0.0, -2.0000305, 0.0, 0.0,\n\t\t57.09511, 18879041000000000000000000000000.0,\n\t]\n}"
+						"value": "{\n\tm_flSupport = \n\t[\n\t\t0.000000000000000000000000000000000000000091834, 0.0, -2302968800000000000000000.0, 0.000000000000000000000000000000000000000045902,\n\t\t26314144.0, 0.000000000000000000000000000000000000000045916, 0.0, 0.000000000000000000000000000000000000000000007,\n\t\t26311968.0, 0.000000000000000000000000000000000000000045916, 0.0, 0.0,\n\t\t0.000000000000000000000000000000000000000000001, -2.0000076, -2302957200000000000000000.0, 0.000000000000000000000000000000000000000045902,\n\t\tnan, 0.0, 0.0, 0.000000000000000000000000000000000000000000004,\n\t\t0.0, -2.0000305, 0.0, 0.0,\n\t\t57.09511, 18879041000000000000000000000000.0,\n\t]\n}"
 					}
 				],
 				"members":
@@ -78285,7 +78285,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\t_class = \"CVMixVocoderProcessorDesc\"\n\tm_name = \"\"\n\tm_nChannels = -1\n\tm_flxfade = 0.1\n\tm_desc = \n\t{\n\t\tm_nBandCount = 32659\n\t\tm_flBandwidth = nan\n\t\tm_fldBModGain = 0.0\n\t\tm_flFreqRangeStart = 0.0\n\t\tm_flFreqRangeEnd = 0.000000000000000000000000000000000000000000004\n\t\tm_fldBUnvoicedGain = 0.0\n\t\tm_flAttackTimeMS = -2.0000305\n\t\tm_flReleaseTimeMS = 0.0\n\t\tm_nDebugBand = 0\n\t\tm_bPeakMode = true\n\t}\n}"
+						"value": "{\n\t_class = \"CVMixVocoderProcessorDesc\"\n\tm_name = \"\"\n\tm_nChannels = -1\n\tm_flxfade = 0.1\n\tm_desc = \n\t{\n\t\tm_nBandCount = 32757\n\t\tm_flBandwidth = nan\n\t\tm_fldBModGain = 0.0\n\t\tm_flFreqRangeStart = 0.0\n\t\tm_flFreqRangeEnd = 0.000000000000000000000000000000000000000000004\n\t\tm_fldBUnvoicedGain = 0.0\n\t\tm_flAttackTimeMS = -2.0000305\n\t\tm_flReleaseTimeMS = 0.0\n\t\tm_nDebugBand = 0\n\t\tm_bPeakMode = true\n\t}\n}"
 					}
 				],
 				"multi_depth": 2,
@@ -78629,7 +78629,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\t_class = \"CConstantForceController\"\n\tm_linear = [ 0.000000000000000000000000000000000000000045765, -0.0000000000000000000000011493356, 0.000000000000000000000000000000000000000045765 ]\n\tm_angular = [ -0.0000000000000000000000011493341, 0.000000000000000000000000000000000000000045765, 0.0 ]\n\tm_linearSave = [ -2.0000305, 0.0, 0.0 ]\n\tm_angularSave = [ 279315150000000000000.0, 4061265000000000000000000.0, 1015313400000.0 ]\n}"
+						"value": "{\n\t_class = \"CConstantForceController\"\n\tm_linear = [ 0.000000000000000000000000000000000000000045902, -91062.75, 0.000000000000000000000000000000000000000045902 ]\n\tm_angular = [ -91062.625, 0.000000000000000000000000000000000000000045902, 0.0 ]\n\tm_linearSave = [ -2.0000305, 0.0, 0.0 ]\n\tm_angularSave = [ 279315150000000000000.0, 4061265000000000000000000.0, 1015313400000.0 ]\n}"
 					}
 				],
 				"members":
@@ -79982,7 +79982,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_viewId = \n\t{\n\t\tm_nViewId = 140273261491584\n\t\tm_nFrameCount = 4096\n\t}\n\tm_ViewName = \"\"\n\tm_Targets = [  ]\n}"
+						"value": "{\n\tm_viewId = \n\t{\n\t\tm_nViewId = 4542031599616\n\t\tm_nFrameCount = 140694326630624\n\t}\n\tm_ViewName = \"\"\n\tm_Targets = [  ]\n}"
 					}
 				],
 				"members":
@@ -80055,7 +80055,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_Name = \"\"\n\tm_TextureId = 140732032261392\n\tm_nWidth = -1161126640\n\tm_nHeight = 32766\n\tm_nRequestedWidth = 12336\n\tm_nRequestedHeight = -1\n\tm_nNumMipLevels = 6273742\n\tm_nDepth = -1\n\tm_nMultisampleNumSamples = -1161127072\n\tm_nFormat = 32766\n}"
+						"value": "{\n\tm_Name = \"\"\n\tm_TextureId = 140734464835648\n\tm_nWidth = 1271447616\n\tm_nHeight = 32767\n\tm_nRequestedWidth = 12336\n\tm_nRequestedHeight = -1\n\tm_nNumMipLevels = 6273742\n\tm_nDepth = -1\n\tm_nMultisampleNumSamples = 1271447184\n\tm_nFormat = 32767\n}"
 					}
 				],
 				"members":
@@ -82496,7 +82496,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_OpCode = -1161127072\n\tm_Data = 32766\n}"
+						"value": "{\n\tm_OpCode = 1271447184\n\tm_Data = 32767\n}"
 					}
 				],
 				"members":
@@ -85800,7 +85800,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tid = -1161127072\n\tedictindex = -1\n\tsaveentityindex = -1\n\tbWasSaved = true\n\tflags = \"FENTTABLE_PLAYER|FENTTABLE_MOVEABLE|LEVELMASK_BIT_3|LEVELMASK_BIT_5|LEVELMASK_BIT_7|LEVELMASK_BIT_8|LEVELMASK_BIT_11|LEVELMASK_BIT_12\"\n\tclassname = \"\"\n\tglobalname = \"\"\n\tentityname = \"\"\n\tlandmarkModelSpace = [ 0.0, 0.0, 75879873000000000000000000000000.0 ]\n\tm_pPrecacheEntityKeys = null\n}"
+						"value": "{\n\tid = 1271447184\n\tedictindex = -1\n\tsaveentityindex = -1\n\tbWasSaved = true\n\tflags = \"FENTTABLE_PLAYER|FENTTABLE_REMOVED|FENTTABLE_MOVEABLE|LEVELMASK_BIT_3|LEVELMASK_BIT_5|LEVELMASK_BIT_7|LEVELMASK_BIT_8|LEVELMASK_BIT_11|LEVELMASK_BIT_12\"\n\tclassname = \"\"\n\tglobalname = \"\"\n\tentityname = \"\"\n\tlandmarkModelSpace = [ 0.0, 0.0, 75879873000000000000000000000000.0 ]\n\tm_pPrecacheEntityKeys = null\n}"
 					}
 				],
 				"members":
@@ -86216,7 +86216,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_viewId = \n\t{\n\t\tm_nViewId = 140732032261632\n\t\tm_nFrameCount = 140272103577007\n\t}\n\tm_ViewName = \"\"\n\tm_nLayerId = 0\n\tm_LayerName = \"\"\n\tm_displayText = \"\"\n}"
+						"value": "{\n\tm_viewId = \n\t{\n\t\tm_nViewId = 140734464835888\n\t\tm_nFrameCount = 140694123959727\n\t}\n\tm_ViewName = \"\"\n\tm_nLayerId = 0\n\tm_LayerName = \"\"\n\tm_displayText = \"\"\n}"
 					}
 				],
 				"multi_depth": 2,
@@ -86251,7 +86251,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_viewId = \n\t{\n\t\tm_nViewId = 140732032260848\n\t\tm_nFrameCount = 140271999024216\n\t}\n\tm_ViewName = \"\"\n\tm_nLayerId = 140273259037598\n\tm_LayerName = \"\"\n\tm_displayText = \"\"\n}"
+						"value": "{\n\tm_viewId = \n\t{\n\t\tm_nViewId = 140734464835104\n\t\tm_nFrameCount = 140694094904408\n\t}\n\tm_ViewName = \"\"\n\tm_nLayerId = 140694341993374\n\tm_LayerName = \"\"\n\tm_displayText = \"\"\n}"
 					}
 				],
 				"members":
@@ -86345,7 +86345,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_flAttackTimeMS = 0.000000000000000000000000000000000000000000163\n\tm_flHoldTimeMS = 0.0\n\tm_flReleaseTimeMS = 0.0\n}"
+						"value": "{\n\tm_flAttackTimeMS = 0.0\n\tm_flHoldTimeMS = 0.000000000000000000000000000000000000000005785\n\tm_flReleaseTimeMS = 0.0\n}"
 					}
 				],
 				"members":
@@ -86565,7 +86565,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\t_class = \"CAnimationGraphVisualizerAxis\"\n\tm_Type = \"ANIMATIONGRAPHVISUALIZERPRIMITIVETYPE_Axis\"\n\tm_OwningAnimNodePaths = \n\t[\n\t\t{\n\t\t\tm_id = 4294967295\n\t\t},\n\t\t{\n\t\t\tm_id = 4294967295\n\t\t},\n\t\t{\n\t\t\tm_id = 4294967295\n\t\t},\n\t\t{\n\t\t\tm_id = 4294967295\n\t\t},\n\t\t{\n\t\t\tm_id = 4294967295\n\t\t},\n\t\t{\n\t\t\tm_id = 4294967295\n\t\t},\n\t\t{\n\t\t\tm_id = 4294967295\n\t\t},\n\t\t{\n\t\t\tm_id = 4294967295\n\t\t},\n\t\t{\n\t\t\tm_id = 4294967295\n\t\t},\n\t\t{\n\t\t\tm_id = 4294967295\n\t\t},\n\t\t{\n\t\t\tm_id = 4294967295\n\t\t},\n\t]\n\tm_nOwningAnimNodePathCount = 0\n\tm_xWsTransform = \n\t[\n\t\t-0.0015458465, 0.000000000000000000000000000000000000000045915, -0.000000000000000000073313696, 0.000000000000000000000000000000000000000045765,\n\t\t0.0, -2.0000305, 0.0, 0.0,\n\t]\n\tm_flAxisSize = 17591639000000000000000.0\n}"
+						"value": "{\n\t_class = \"CAnimationGraphVisualizerAxis\"\n\tm_Type = \"ANIMATIONGRAPHVISUALIZERPRIMITIVETYPE_Axis\"\n\tm_OwningAnimNodePaths = \n\t[\n\t\t{\n\t\t\tm_id = 4294967295\n\t\t},\n\t\t{\n\t\t\tm_id = 4294967295\n\t\t},\n\t\t{\n\t\t\tm_id = 4294967295\n\t\t},\n\t\t{\n\t\t\tm_id = 4294967295\n\t\t},\n\t\t{\n\t\t\tm_id = 4294967295\n\t\t},\n\t\t{\n\t\t\tm_id = 4294967295\n\t\t},\n\t\t{\n\t\t\tm_id = 4294967295\n\t\t},\n\t\t{\n\t\t\tm_id = 4294967295\n\t\t},\n\t\t{\n\t\t\tm_id = 4294967295\n\t\t},\n\t\t{\n\t\t\tm_id = 4294967295\n\t\t},\n\t\t{\n\t\t\tm_id = 4294967295\n\t\t},\n\t]\n\tm_nOwningAnimNodePathCount = 0\n\tm_xWsTransform = \n\t[\n\t\t26313312.0, 0.000000000000000000000000000000000000000045916, -333179650000000000000000.0, 0.000000000000000000000000000000000000000045902,\n\t\t0.0, -2.0000305, 0.0, 0.0,\n\t]\n\tm_flAxisSize = 17591639000000000000000.0\n}"
 					}
 				],
 				"multi_depth": 2,
@@ -88177,7 +88177,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_PackedAABB = \n\t{\n\t\tm_nMin = 3133839568\n\t\tm_nMax = 32766\n\t}\n\tm_CullingData = \n\t{\n\t\tm_ConeAxis = [ -126, 99, -49 ]\n\t\tm_ConeCutoff = -23\n\t}\n\tm_nVertexOffset = 0\n\tm_nTriangleOffset = 0\n\tm_nVertexCount = 0\n\tm_nTriangleCount = 0\n}"
+						"value": "{\n\tm_PackedAABB = \n\t{\n\t\tm_nMin = 0\n\t\tm_nMax = 3221225600\n\t}\n\tm_CullingData = \n\t{\n\t\tm_ConeAxis = [ 0, 0, 0 ]\n\t\tm_ConeCutoff = 0\n\t}\n\tm_nVertexOffset = 0\n\tm_nTriangleOffset = 0\n\tm_nVertexCount = 0\n\tm_nTriangleCount = 0\n}"
 					}
 				],
 				"members":
@@ -88321,7 +88321,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_ConeAxis = [ -109, 127, 0 ]\n\tm_ConeCutoff = 0\n}"
+						"value": "{\n\tm_ConeAxis = [ -1, 127, 0 ]\n\tm_ConeCutoff = 0\n}"
 					}
 				],
 				"members":
@@ -88378,7 +88378,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_materialGroupToken = 0\n\tm_nSrcDrawIndex = -1\n\tm_drawDesc = \n\t{\n\t\tm_flUvDensity = 0.0\n\t\tm_vTintColor = [ 1.0, 1.0, 1.0 ]\n\t\tm_flAlpha = 1.0\n\t\tm_nNumMeshlets = 0\n\t\tm_nFirstMeshlet = 0\n\t\tm_nAppliedIndexOffset = 0\n\t\tm_nDepthVertexBufferIndex = 255\n\t\tm_nMeshletPackedIVBIndex = 255\n\t\tm_rigidMeshParts = [  ]\n\t\tm_rootBvhNodes = [  ]\n\t\tm_nPrimitiveType = \"RENDER_PRIM_TRIANGLES\"\n\t\tm_nBaseVertex = 0\n\t\tm_nVertexCount = 0\n\t\tm_nStartIndex = 0\n\t\tm_nIndexCount = 0\n\t\tm_indexBuffer = \n\t\t{\n\t\t\tm_hBuffer = 0\n\t\t\tm_nBindOffsetBytes = 0\n\t\t}\n\t\tm_meshletPackedIVB = \n\t\t{\n\t\t\tm_hBuffer = 0\n\t\t\tm_nBindOffsetBytes = 0\n\t\t}\n\t\tm_material = resource:\"\"\n\t\tm_vertexBuffers = [  ]\n\t}\n\tm_mWorldFromLocal = \n\t[\n\t\t-0.001545962, 0.000000000000000000000000000000000000000045915, -0.00000000000000021869374, 0.000000000000000000000000000000000000000091835,\n\t\t-0.0015457608, 0.000000000000000000000000000000000000000045915, -6589284000000000000000000.0, 0.000000000000000000000000000000000000000045765,\n\t\t-0.0015464639, 0.000000000000000000000000000000000000000045915, -0.00000000000000021869374, 0.000000000000000000000000000000000000000045765,\n\t]\n\tm_nVertexAlbedoFormat = \"VERTEX_ALBEDO_NONE\"\n\tm_nVertexAlbedoVB = -1\n\tm_nVertexAlbedoOffset = 0\n\tm_nVertexAlbedoStride = 0\n\tm_nVertexEmissiveFormat = \"VERTEX_ALBEDO_NONE\"\n\tm_nVertexEmissiveVB = -1\n\tm_nVertexEmissiveOffset = 0\n\tm_nVertexEmissiveStride = 0\n\tm_fEmissiveFactor = 0.0\n}"
+						"value": "{\n\tm_materialGroupToken = 0\n\tm_nSrcDrawIndex = -1\n\tm_drawDesc = \n\t{\n\t\tm_flUvDensity = 0.0\n\t\tm_vTintColor = [ 1.0, 1.0, 1.0 ]\n\t\tm_flAlpha = 1.0\n\t\tm_nNumMeshlets = 0\n\t\tm_nFirstMeshlet = 0\n\t\tm_nAppliedIndexOffset = 0\n\t\tm_nDepthVertexBufferIndex = 255\n\t\tm_nMeshletPackedIVBIndex = 255\n\t\tm_rigidMeshParts = [  ]\n\t\tm_rootBvhNodes = [  ]\n\t\tm_nPrimitiveType = \"RENDER_PRIM_TRIANGLES\"\n\t\tm_nBaseVertex = 0\n\t\tm_nVertexCount = 0\n\t\tm_nStartIndex = 0\n\t\tm_nIndexCount = 0\n\t\tm_indexBuffer = \n\t\t{\n\t\t\tm_hBuffer = 0\n\t\t\tm_nBindOffsetBytes = 0\n\t\t}\n\t\tm_meshletPackedIVB = \n\t\t{\n\t\t\tm_hBuffer = 0\n\t\t\tm_nBindOffsetBytes = 0\n\t\t}\n\t\tm_material = resource:\"\"\n\t\tm_vertexBuffers = [  ]\n\t}\n\tm_mWorldFromLocal = \n\t[\n\t\t26315296.0, 0.000000000000000000000000000000000000000045916, -2079132500000000000000000.0, 0.000000000000000000000000000000000000000091835,\n\t\t26311840.0, 0.000000000000000000000000000000000000000045916, -16354032000000000000000000000000.0, 0.000000000000000000000000000000000000000045902,\n\t\t26323920.0, 0.000000000000000000000000000000000000000045916, -2079132500000000000000000.0, 0.000000000000000000000000000000000000000045902,\n\t]\n\tm_nVertexAlbedoFormat = \"VERTEX_ALBEDO_NONE\"\n\tm_nVertexAlbedoVB = -1\n\tm_nVertexAlbedoOffset = 0\n\tm_nVertexAlbedoStride = 0\n\tm_nVertexEmissiveFormat = \"VERTEX_ALBEDO_NONE\"\n\tm_nVertexEmissiveVB = -1\n\tm_nVertexEmissiveOffset = 0\n\tm_nVertexEmissiveStride = 0\n\tm_fEmissiveFactor = 0.0\n}"
 					}
 				],
 				"members":
@@ -90822,7 +90822,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_Name = \"\"\n\tm_BindPose = \n\t[\n\t\t0.0, 0.0, 0.00000000000000000000000000000000000000000013, 0.000000000000000000000000000000000000000000167,\n\t\t0.000000000000000000000000000000000000000000003, 0.0, 0.0, 0.0,\n\t]\n\tm_nParent = -1\n}"
+						"value": "{\n\tm_Name = \"\"\n\tm_BindPose = \n\t[\n\t\t26310432.0, 0.000000000000000000000000000000000000000045916, -65733180000000000000000000000000.0, 0.000000000000000000000000000000000000000045902,\n\t\t0.00000000000000000000000000000000000000000287, 0.000000000000000000000000000000000000000045916, 0.0, 0.0,\n\t]\n\tm_nParent = -1\n}"
 					}
 				],
 				"members":
@@ -90889,7 +90889,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_flTime = -0.0015456565\n\tm_Stamp = \n\t{\n\t\tm_flTime = 0.0\n\t\tm_flEntitySimTime = 0.0\n\t\tm_bTeleportTick = false\n\t\tm_bPredicted = false\n\t\tm_flCurTime = 0.0\n\t\tm_flRealTime = 0.0\n\t\tm_nFrameCount = 0\n\t\tm_nTickCount = 0\n\t}\n\tm_Transform = \n\t[\n\t\t-0.00000000000000022162437, 0.000000000000000000000000000000000000000045765, 0.0, 0.0,\n\t\t-0.0015457347, 0.000000000000000000000000000000000000000045915, -28515392000000000000000000.0, 0.000000000000000000000000000000000000000045765,\n\t]\n\tm_bTeleport = false\n\tm_CompositeBones = [  ]\n\tm_SimStateBones = [  ]\n\tm_FeModelAnims = [  ]\n\tm_FeModelPos = [  ]\n\tm_FlexControllerWeights = [  ]\n}"
+						"value": "{\n\tm_flTime = 26310048.0\n\tm_Stamp = \n\t{\n\t\tm_flTime = 0.0\n\t\tm_flEntitySimTime = 0.0\n\t\tm_bTeleportTick = false\n\t\tm_bPredicted = false\n\t\tm_flCurTime = 0.0\n\t\tm_flRealTime = 0.0\n\t\tm_nFrameCount = 0\n\t\tm_nTickCount = 0\n\t}\n\tm_Transform = \n\t[\n\t\t-2111044200000000000000000.0, 0.000000000000000000000000000000000000000045902, 0.0, 0.0,\n\t\t26311392.0, 0.000000000000000000000000000000000000000045916, -59801110000000000000000000000000.0, 0.000000000000000000000000000000000000000045902,\n\t]\n\tm_bTeleport = false\n\tm_CompositeBones = [  ]\n\tm_SimStateBones = [  ]\n\tm_FeModelAnims = [  ]\n\tm_FeModelPos = [  ]\n\tm_FlexControllerWeights = [  ]\n}"
 					}
 				],
 				"members":
@@ -91367,7 +91367,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\t_class = \"CVMixPannerProcessorDesc\"\n\tm_name = \"\"\n\tm_nChannels = -1\n\tm_flxfade = 0.1\n\tm_desc = \n\t{\n\t\tm_type = 32594\n\t\tm_flStrength = -0.0015464639\n\t}\n}"
+						"value": "{\n\t_class = \"CVMixPannerProcessorDesc\"\n\tm_name = \"\"\n\tm_nChannels = -1\n\tm_flxfade = 0.1\n\tm_desc = \n\t{\n\t\tm_type = 32691\n\t\tm_flStrength = 26323920.0\n\t}\n}"
 					}
 				],
 				"multi_depth": 2,
@@ -91416,7 +91416,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_type = -372860947\n\tm_flStrength = 0.000000000000000000000000000000000000000045765\n}"
+						"value": "{\n\tm_type = -196700179\n\tm_flStrength = 0.000000000000000000000000000000000000000045902\n}"
 					}
 				],
 				"members":
@@ -93433,7 +93433,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\t_class = \"CMotionMatchingUpdateNode\"\n\tm_nodePath = \n\t{\n\t\tm_path = \n\t\t[\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t]\n\t\tm_nCount = 0\n\t}\n\tm_networkMode = \"ServerAuthoritative\"\n\tm_name = \"\"\n\tm_dataSet = \n\t{\n\t\tm_groups = [  ]\n\t\tm_nDimensionCount = 0\n\t}\n\tm_metrics = [  ]\n\tm_weights = [  ]\n\tm_bSearchEveryTick = false\n\tm_flSearchInterval = 0.1\n\tm_bSearchWhenClipEnds = true\n\tm_bSearchWhenGoalChanges = true\n\tm_blendCurve = \n\t{\n\t\tm_flControlPoint1 = 0.0\n\t\tm_flControlPoint2 = 1.0\n\t}\n\tm_flSampleRate = 0.1\n\tm_flBlendTime = 0.3\n\tm_bLockClipWhenWaning = false\n\tm_flSelectionThreshold = nan\n\tm_flReselectionTimeWindow = 0.3\n\tm_bEnableRotationCorrection = true\n\tm_bGoalAssist = true\n\tm_flGoalAssistDistance = 0.000000000000000000000000000000000000000045915\n\tm_flGoalAssistTolerance = 0.0\n\tm_distanceScale_Damping = \n\t{\n\t\t_class = \"CAnimInputDamping\"\n\t\tm_speedFunction = \"NoDamping\"\n\t\tm_fSpeedScale = 1.0\n\t\tm_fFallingSpeedScale = 1.0\n\t}\n\tm_flDistanceScale_OuterRadius = nan\n\tm_flDistanceScale_InnerRadius = 0.0\n\tm_flDistanceScale_MaxScale = -31340006000000000000000000.0\n\tm_flDistanceScale_MinScale = 0.000000000000000000000000000000000000000045765\n\tm_bEnableDistanceScaling = false\n}"
+						"value": "{\n\t_class = \"CMotionMatchingUpdateNode\"\n\tm_nodePath = \n\t{\n\t\tm_path = \n\t\t[\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t]\n\t\tm_nCount = 0\n\t}\n\tm_networkMode = \"ServerAuthoritative\"\n\tm_name = \"\"\n\tm_dataSet = \n\t{\n\t\tm_groups = [  ]\n\t\tm_nDimensionCount = 1\n\t}\n\tm_metrics = [  ]\n\tm_weights = [  ]\n\tm_bSearchEveryTick = false\n\tm_flSearchInterval = 0.1\n\tm_bSearchWhenClipEnds = true\n\tm_bSearchWhenGoalChanges = true\n\tm_blendCurve = \n\t{\n\t\tm_flControlPoint1 = 0.0\n\t\tm_flControlPoint2 = 1.0\n\t}\n\tm_flSampleRate = 0.1\n\tm_flBlendTime = 0.3\n\tm_bLockClipWhenWaning = true\n\tm_flSelectionThreshold = nan\n\tm_flReselectionTimeWindow = 0.3\n\tm_bEnableRotationCorrection = true\n\tm_bGoalAssist = true\n\tm_flGoalAssistDistance = 0.0\n\tm_flGoalAssistTolerance = 0.0\n\tm_distanceScale_Damping = \n\t{\n\t\t_class = \"CAnimInputDamping\"\n\t\tm_speedFunction = \"NoDamping\"\n\t\tm_fSpeedScale = 1.0\n\t\tm_fFallingSpeedScale = 1.0\n\t}\n\tm_flDistanceScale_OuterRadius = 26312640.0\n\tm_flDistanceScale_InnerRadius = 0.000000000000000000000000000000000000000045916\n\tm_flDistanceScale_MaxScale = -65728480000000000000000000000000.0\n\tm_flDistanceScale_MinScale = 0.000000000000000000000000000000000000000045902\n\tm_bEnableDistanceScaling = false\n}"
 					}
 				],
 				"multi_depth": 3,
@@ -93771,7 +93771,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_groups = [  ]\n\tm_nDimensionCount = -372860947\n}"
+						"value": "{\n\tm_groups = [  ]\n\tm_nDimensionCount = -196700179\n}"
 					}
 				],
 				"members":
@@ -94150,7 +94150,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_name = \"\"\n\tm_effectName = \"\"\n\tm_subgraphs = [  ]\n\tm_interpolationMode = -374061298\n\tm_bOnlyTailsOnFadeOut = true\n\tm_flInterpolationTime = -0.0015457515\n}"
+						"value": "{\n\tm_name = \"\"\n\tm_effectName = \"\"\n\tm_subgraphs = [  ]\n\tm_interpolationMode = -197900530\n\tm_bOnlyTailsOnFadeOut = true\n\tm_flInterpolationTime = 26311680.0\n}"
 					}
 				],
 				"members":
@@ -97351,7 +97351,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\toriginParentSpace = [ -0.00000000000000000000000000000031436187, nan, -0.000000000000000000000000085602465 ]\n\tparentIndex = -1161127376\n\tm_flRadius = 0.000000000000000000000000000000000000000045915\n\tm_nHeight = -1161127072\n}"
+						"value": "{\n\toriginParentSpace = [ -0.00000000000000000000000000000031436187, nan, -6782.0986 ]\n\tparentIndex = 1271446880\n\tm_flRadius = 0.000000000000000000000000000000000000000045916\n\tm_nHeight = 1271447184\n}"
 					}
 				],
 				"members":
@@ -97479,7 +97479,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_skeleton = resource:\"\"\n\tm_nNumFrames = 0\n\tm_flDuration = 0.0\n\tm_compressedPoseData = #[  ]\n\tm_trackCompressionSettings = [  ]\n\tm_compressedPoseOffsets = [  ]\n\tm_secondaryAnimations = [  ]\n\tm_floatChannelData = [  ]\n\tm_syncTrack = \n\t{\n\t\tm_syncEvents = \n\t\t[\n\t\t\t{\n\t\t\t\tm_ID = \"\"\n\t\t\t\tm_startTime = \n\t\t\t\t{\n\t\t\t\t\tm_flValue = 0.0\n\t\t\t\t}\n\t\t\t\tm_duration = \n\t\t\t\t{\n\t\t\t\t\tm_flValue = 1.0\n\t\t\t\t}\n\t\t\t},\n\t\t]\n\t\tm_nStartEventOffset = 0\n\t}\n\tm_rootMotion = \n\t{\n\t\tm_transforms = [  ]\n\t\tm_nNumFrames = 0\n\t\tm_flAverageLinearVelocity = 0.0\n\t\tm_flAverageAngularVelocityRadians = 0.0\n\t\tm_totalDelta = \n\t\t[\n\t\t\t-0.0015468905, 0.000000000000000000000000000000000000000045915, 0.0, 0.0,\n\t\t\t-0.0015469647, 0.000000000000000000000000000000000000000045915, 0.000000000000000000000000000000000000000000001, 0.000000000000000000000000000000000000000000003,\n\t\t]\n\t}\n\tm_bIsAdditive = false\n\tm_modelSpaceSamplingChain = [  ]\n\tm_modelSpaceBoneSamplingIndices = [  ]\n\tm_events = [  ]\n}"
+						"value": "{\n\tm_skeleton = resource:\"\"\n\tm_nNumFrames = 0\n\tm_flDuration = 0.0\n\tm_compressedPoseData = #[  ]\n\tm_trackCompressionSettings = [  ]\n\tm_compressedPoseOffsets = [  ]\n\tm_secondaryAnimations = [  ]\n\tm_floatChannelData = [  ]\n\tm_syncTrack = \n\t{\n\t\tm_syncEvents = \n\t\t[\n\t\t\t{\n\t\t\t\tm_ID = \"\"\n\t\t\t\tm_startTime = \n\t\t\t\t{\n\t\t\t\t\tm_flValue = 0.0\n\t\t\t\t}\n\t\t\t\tm_duration = \n\t\t\t\t{\n\t\t\t\t\tm_flValue = 1.0\n\t\t\t\t}\n\t\t\t},\n\t\t]\n\t\tm_nStartEventOffset = 0\n\t}\n\tm_rootMotion = \n\t{\n\t\tm_transforms = [  ]\n\t\tm_nNumFrames = 0\n\t\tm_flAverageLinearVelocity = 0.0\n\t\tm_flAverageAngularVelocityRadians = 0.0\n\t\tm_totalDelta = \n\t\t[\n\t\t\t26331248.0, 0.000000000000000000000000000000000000000045916, 0.0, 0.0,\n\t\t\t26332494.0, 0.000000000000000000000000000000000000000045916, 0.000000000000000000000000000000000000000000001, 0.000000000000000000000000000000000000000000003,\n\t\t]\n\t}\n\tm_bIsAdditive = false\n\tm_modelSpaceSamplingChain = [  ]\n\tm_modelSpaceBoneSamplingIndices = [  ]\n\tm_events = [  ]\n}"
 					}
 				],
 				"members":
@@ -98735,7 +98735,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\t_class = \"CTurnHelperUpdateNode\"\n\tm_nodePath = \n\t{\n\t\tm_path = \n\t\t[\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t]\n\t\tm_nCount = 0\n\t}\n\tm_networkMode = \"ServerAuthoritative\"\n\tm_name = \"\"\n\tm_pChildNode = \n\t{\n\t\tm_nodeIndex = -1\n\t}\n\tm_facingTarget = 32766\n\tm_turnStartTimeOffset = 0.0\n\tm_turnDuration = 1.0\n\tm_bMatchChildDuration = true\n\tm_manualTurnOffset = 0.0\n\tm_bUseManualTurnOffset = false\n}"
+						"value": "{\n\t_class = \"CTurnHelperUpdateNode\"\n\tm_nodePath = \n\t{\n\t\tm_path = \n\t\t[\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t]\n\t\tm_nCount = 0\n\t}\n\tm_networkMode = \"ServerAuthoritative\"\n\tm_name = \"\"\n\tm_pChildNode = \n\t{\n\t\tm_nodeIndex = -1\n\t}\n\tm_facingTarget = 32767\n\tm_turnStartTimeOffset = 0.0\n\tm_turnDuration = 1.0\n\tm_bMatchChildDuration = true\n\tm_manualTurnOffset = 0.0\n\tm_bUseManualTurnOffset = false\n}"
 					}
 				],
 				"multi_depth": 3,
@@ -99665,7 +99665,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_name = \"\"\n\tm_flValue = -0.00000000000000000005744605\n}"
+						"value": "{\n\tm_name = \"\"\n\tm_flValue = -273473020000000000000000.0\n}"
 					}
 				],
 				"multi_depth": 2,
@@ -105430,7 +105430,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_flRoomSize = -0.0015457477\n\tm_flDamp = 0.000000000000000000000000000000000000000045915\n\tm_flWidth = -30010595000000000000000000.0\n\tm_flLateReflections = 0.000000000000000000000000000000000000000045765\n}"
+						"value": "{\n\tm_flRoomSize = 26311616.0\n\tm_flDamp = 0.000000000000000000000000000000000000000045916\n\tm_flWidth = -62936780000000000000000000000000.0\n\tm_flLateReflections = 0.000000000000000000000000000000000000000045902\n}"
 					}
 				],
 				"members":
@@ -106229,7 +106229,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_flULeftSrc = -0.0015456788\n\tm_flVTopSrc = 0.000000000000000000000000000000000000000045915\n\tm_offsets = [  ]\n\tm_ranges = [  ]\n}"
+						"value": "{\n\tm_flULeftSrc = 26310432.0\n\tm_flVTopSrc = 0.000000000000000000000000000000000000000045916\n\tm_offsets = [  ]\n\tm_ranges = [  ]\n}"
 					}
 				],
 				"members":
@@ -107922,7 +107922,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_Name = \"\"\n\tm_nNameHash = 3921457908\n\tm_Nodes = [  ]\n\tm_InitPos = [  ]\n\tm_Gravity = [  ]\n\tm_GoalStrength = [  ]\n\tm_GoalDamping = [  ]\n\tm_nFlags = 0\n}"
+						"value": "{\n\tm_Name = \"\"\n\tm_nNameHash = 4097618676\n\tm_Nodes = [  ]\n\tm_InitPos = [  ]\n\tm_Gravity = [  ]\n\tm_GoalStrength = [  ]\n\tm_GoalDamping = [  ]\n\tm_nFlags = 0\n}"
 					}
 				],
 				"members":
@@ -112687,7 +112687,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_name = \"\"\n\tm_nValue = -1161119600\n}"
+						"value": "{\n\tm_name = \"\"\n\tm_nValue = 1271454656\n}"
 					}
 				],
 				"multi_depth": 2,
@@ -112734,7 +112734,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_name = \"\"\n\tm_value = [ -0.00154691, 0.000000000000000000000000000000000000000045915, 0.0, 0.0 ]\n}"
+						"value": "{\n\tm_name = \"\"\n\tm_value = [ 26331584.0, 0.000000000000000000000000000000000000000045916, 0.0, 0.0 ]\n}"
 					}
 				],
 				"multi_depth": 2,
@@ -115561,7 +115561,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\t_class = \"CMovementStatsProperty\"\n\tm_nUseCounter = 0\n\tm_emaMovementDirection = \n\t{\n\t\tm_nSampleCount = 0\n\t\tm_nMaxSampleCount = 32766\n\t\tm_previousSample = [ 0.0, 0.0, 0.0 ]\n\t\tm_average = [ 0.0, 0.0, 0.0 ]\n\t\tm_averageDelta = [ 0.0, 0.0, 0.0 ]\n\t}\n}"
+						"value": "{\n\t_class = \"CMovementStatsProperty\"\n\tm_nUseCounter = 0\n\tm_emaMovementDirection = \n\t{\n\t\tm_nSampleCount = 0\n\t\tm_nMaxSampleCount = 32767\n\t\tm_previousSample = [ 0.0, 0.0, 0.0 ]\n\t\tm_average = [ 0.0, 0.0, 0.0 ]\n\t\tm_averageDelta = [ 0.0, 0.0, 0.0 ]\n\t}\n}"
 					}
 				],
 				"members":
@@ -119141,7 +119141,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\titemType = -1161121096\n\titemName = \"\"\n\titemTypeName = \"\"\n\titemKVString = \"\"\n\titemPos = [ -0.0015464639, 0.000000000000000000000000000000000000000045915 ]\n}"
+						"value": "{\n\titemType = 1271453160\n\titemName = \"\"\n\titemTypeName = \"\"\n\titemKVString = \"\"\n\titemPos = [ 26323920.0, 0.000000000000000000000000000000000000000045916 ]\n}"
 					}
 				],
 				"members":
@@ -127071,7 +127071,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tsName = \"\"\n\tnNameHash = 2682066592\n\tnType = 32659\n\tm_Params = null\n}"
+						"value": "{\n\tsName = \"\"\n\tnNameHash = 3871151776\n\tnType = 32757\n\tm_Params = null\n}"
 					}
 				],
 				"members":
@@ -132252,7 +132252,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tradius = 0.000000000000000000000000000000000000000045915\n}"
+						"value": "{\n\tradius = 0.000000000000000000000000000000000000000045916\n}"
 					}
 				],
 				"members":
@@ -132363,7 +132363,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\t_class = \"CMovementComponentUpdater\"\n\tm_name = \"\"\n\tm_id = \n\t{\n\t\tm_id = 4294967295\n\t}\n\tm_networkMode = \"ServerAuthoritative\"\n\tm_bStartEnabled = false\n\tm_motors = [  ]\n\tm_facingDamping = \n\t{\n\t\t_class = \"CAnimInputDamping\"\n\t\tm_speedFunction = \"NoDamping\"\n\t\tm_fSpeedScale = 1.0\n\t\tm_fFallingSpeedScale = 1.0\n\t}\n\tm_nDefaultMotorIndex = -1518647416\n\tm_flDefaultRunSpeed = 0.0\n\tm_bMoveVarsDisabled = true\n\tm_bNetworkPath = true\n\tm_bNetworkFacing = true\n\tm_paramHandles = \n\t[\n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t},\n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t},\n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t},\n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t},\n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t},\n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t},\n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t},\n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t},\n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t},\n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t},\n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t},\n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t},\n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t},\n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t},\n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t},\n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t},\n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t},\n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t},\n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t},\n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t},\n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t},\n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t},\n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t},\n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t},\n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t},\n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t},\n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t},\n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t},\n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t},\n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t},\n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t},\n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t},\n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t},\n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t},\n\t]\n}"
+						"value": "{\n\t_class = \"CMovementComponentUpdater\"\n\tm_name = \"\"\n\tm_id = \n\t{\n\t\tm_id = 4294967295\n\t}\n\tm_networkMode = \"ServerAuthoritative\"\n\tm_bStartEnabled = false\n\tm_motors = [  ]\n\tm_facingDamping = \n\t{\n\t\t_class = \"CAnimInputDamping\"\n\t\tm_speedFunction = \"NoDamping\"\n\t\tm_fSpeedScale = 1.0\n\t\tm_fFallingSpeedScale = 1.0\n\t}\n\tm_nDefaultMotorIndex = -405059704\n\tm_flDefaultRunSpeed = 0.0\n\tm_bMoveVarsDisabled = true\n\tm_bNetworkPath = true\n\tm_bNetworkFacing = true\n\tm_paramHandles = \n\t[\n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t},\n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t},\n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t},\n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t},\n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t},\n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t},\n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t},\n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t},\n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t},\n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t},\n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t},\n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t},\n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t},\n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t},\n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t},\n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t},\n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t},\n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t},\n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t},\n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t},\n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t},\n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t},\n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t},\n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t},\n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t},\n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t},\n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t},\n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t},\n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t},\n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t},\n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t},\n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t},\n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t},\n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t},\n\t]\n}"
 					}
 				],
 				"multi_depth": 2,
@@ -134699,7 +134699,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\t_class = \"CFollowAttachmentUpdateNode\"\n\tm_nodePath = \n\t{\n\t\tm_path = \n\t\t[\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t]\n\t\tm_nCount = 0\n\t}\n\tm_networkMode = \"ServerAuthoritative\"\n\tm_name = \"\"\n\tm_pChildNode = \n\t{\n\t\tm_nodeIndex = -1\n\t}\n\tm_opFixedData = \n\t{\n\t\tm_attachment = \n\t\t{\n\t\t\tm_influenceRotations = \n\t\t\t[\n\t\t\t\t[ 0.0, 0.0, 0.0, 0.0 ],\n\t\t\t\t[ 0.0, 0.0, 0.0, 0.0 ],\n\t\t\t\t[ 0.0, 0.0, 0.0, 0.0 ],\n\t\t\t]\n\t\t\tm_influenceOffsets = \n\t\t\t[\n\t\t\t\t[ -0.000000000000000000000000000018803516, 0.000000000000000000000000000000000000000045765, 1.0 ],\n\t\t\t\t[ 0.0, 0.0, 0.0 ],\n\t\t\t\t[ -0.0015457943, 0.000000000000000000000000000000000000000045915, 0.0 ],\n\t\t\t]\n\t\t\tm_influenceIndices = [ 0, 0, 0 ]\n\t\t\tm_influenceWeights = [ 0.0, 0.000000000000000000000000000000000000000000008, 0.0 ]\n\t\t\tm_numInfluences = 0\n\t\t}\n\t\tm_boneIndex = -1\n\t\tm_attachmentHandle = 0\n\t\tm_bMatchTranslation = false\n\t\tm_bMatchRotation = false\n\t}\n}"
+						"value": "{\n\t_class = \"CFollowAttachmentUpdateNode\"\n\tm_nodePath = \n\t{\n\t\tm_path = \n\t\t[\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t]\n\t\tm_nCount = 0\n\t}\n\tm_networkMode = \"ServerAuthoritative\"\n\tm_name = \"\"\n\tm_pChildNode = \n\t{\n\t\tm_nodeIndex = -1\n\t}\n\tm_opFixedData = \n\t{\n\t\tm_attachment = \n\t\t{\n\t\t\tm_influenceRotations = \n\t\t\t[\n\t\t\t\t[ 0.0, 0.0, 0.0, 0.0 ],\n\t\t\t\t[ 0.0, 0.0, 0.0, 0.0 ],\n\t\t\t\t[ 0.0, 0.0, 0.0, 0.0 ],\n\t\t\t]\n\t\t\tm_influenceOffsets = \n\t\t\t[\n\t\t\t\t[ -2037.5225, 0.000000000000000000000000000000000000000045902, 1.0 ],\n\t\t\t\t[ 0.0, 0.0, 0.0 ],\n\t\t\t\t[ 26312416.0, 0.000000000000000000000000000000000000000045916, 0.0 ],\n\t\t\t]\n\t\t\tm_influenceIndices = [ 0, 0, 0 ]\n\t\t\tm_influenceWeights = [ 0.0, 0.000000000000000000000000000000000000000000008, 0.0 ]\n\t\t\tm_numInfluences = 0\n\t\t}\n\t\tm_boneIndex = -1\n\t\tm_attachmentHandle = 0\n\t\tm_bMatchTranslation = false\n\t\tm_bMatchRotation = false\n\t}\n}"
 					}
 				],
 				"multi_depth": 3,
@@ -134747,7 +134747,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_attachment = \n\t{\n\t\tm_influenceRotations = \n\t\t[\n\t\t\t[ -0.0015457366, 0.000000000000000000000000000000000000000045915, 0.000000000000000000000000000000000000000000001, 0.000000000000000000000000000000000000000000003 ],\n\t\t\t[ -0.0015457366, 0.000000000000000000000000000000000000000045915, -0.0015457682, 0.000000000000000000000000000000000000000045915 ],\n\t\t\t[ -0.001545751, 0.000000000000000000000000000000000000000045915, 0.0, 0.0 ],\n\t\t]\n\t\tm_influenceOffsets = \n\t\t[\n\t\t\t[ -0.001545751, 0.000000000000000000000000000000000000000045915, 0.000000000000000000000000000000000000000000018 ],\n\t\t\t[ -0.0015457384, 0.000000000000000000000000000000000000000045915, -27242205000000000000000000.0 ],\n\t\t\t[ -0.00000000000000024635869, 0.000000000000000000000000000000000000000045765, -0.0015457692 ],\n\t\t]\n\t\tm_influenceIndices = [ 13, 0, 0 ]\n\t\tm_influenceWeights = [ 0.0, -0.0015457477, 0.000000000000000000000000000000000000000045915 ]\n\t\tm_numInfluences = 0\n\t}\n\tm_boneIndex = -1\n\tm_attachmentHandle = 0\n\tm_bMatchTranslation = false\n\tm_bMatchRotation = false\n}"
+						"value": "{\n\tm_attachment = \n\t{\n\t\tm_influenceRotations = \n\t\t[\n\t\t\t[ 26311424.0, 0.000000000000000000000000000000000000000045916, 0.000000000000000000000000000000000000000000001, 0.000000000000000000000000000000000000000000003 ],\n\t\t\t[ 26311424.0, 0.000000000000000000000000000000000000000045916, 26311968.0, 0.000000000000000000000000000000000000000045916 ],\n\t\t\t[ 26311672.0, 0.000000000000000000000000000000000000000045916, 0.0, 0.0 ],\n\t\t]\n\t\tm_influenceOffsets = \n\t\t[\n\t\t\t[ 26311672.0, 0.000000000000000000000000000000000000000045916, 0.000000000000000000000000000000000000000000018 ],\n\t\t\t[ 26311456.0, 0.000000000000000000000000000000000000000045916, -57131044000000000000000000000000.0 ],\n\t\t\t[ -2247998600000000000000000.0, 0.000000000000000000000000000000000000000045902, 26311984.0 ],\n\t\t]\n\t\tm_influenceIndices = [ 13, 0, 0 ]\n\t\tm_influenceWeights = [ 0.0, 26311616.0, 0.000000000000000000000000000000000000000045916 ]\n\t\tm_numInfluences = 0\n\t}\n\tm_boneIndex = -1\n\tm_attachmentHandle = 0\n\tm_bMatchTranslation = false\n\tm_bMatchRotation = false\n}"
 					}
 				],
 				"members":
@@ -135704,7 +135704,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_Bounds = \n\t{\n\t\tm_vMinBounds = [ -0.0015457124, 0.000000000000000000000000000000000000000045915, -30036386000000000000000000.0 ]\n\t\tm_vMaxBounds = [ 0.000000000000000000000000000000000000000045765, -0.0000000000000011511576, 0.000000000000000000000000000000000000000045765 ]\n\t}\n\tm_flags = \"OBJECT_TYPE_NONE\"\n\tm_nLayer = 0\n\tm_instancePositions = [  ]\n\tm_instanceScales = [  ]\n\tm_instanceTintSrgb = [  ]\n\tm_tiles = [  ]\n\tm_renderableModel = resource:\"\"\n\tm_materialGroup = \"\"\n\tm_flBeginCullSize = 0.02\n\tm_flEndCullSize = 0.0125\n\tm_InstanceOrientations32 = [  ]\n}"
+						"value": "{\n\tm_Bounds = \n\t{\n\t\tm_vMinBounds = [ 26311008.0, 0.000000000000000000000000000000000000000045916, -62990867000000000000000000000000.0 ]\n\t\tm_vMaxBounds = [ 0.000000000000000000000000000000000000000045902, -3208959000000000000000000000.0, 0.000000000000000000000000000000000000000045902 ]\n\t}\n\tm_flags = \"OBJECT_TYPE_NONE\"\n\tm_nLayer = 0\n\tm_instancePositions = [  ]\n\tm_instanceScales = [  ]\n\tm_instanceTintSrgb = [  ]\n\tm_tiles = [  ]\n\tm_renderableModel = resource:\"\"\n\tm_materialGroup = \"\"\n\tm_flBeginCullSize = 0.02\n\tm_flEndCullSize = 0.0125\n\tm_InstanceOrientations32 = [  ]\n}"
 					}
 				],
 				"members":
@@ -135914,7 +135914,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_nFirstInstance = 0\n\tm_nLastInstance = 0\n\tm_BoundsWs = \n\t{\n\t\tm_vMinBounds = [ 0.0, 0.0, 18481333000000000000000000000000.0 ]\n\t\tm_vMaxBounds = [ 4397347300000000000000.0, -0.0015457254, 0.000000000000000000000000000000000000000045915 ]\n\t}\n}"
+						"value": "{\n\tm_nFirstInstance = 0\n\tm_nLastInstance = 0\n\tm_BoundsWs = \n\t{\n\t\tm_vMinBounds = [ 0.0, 0.0, 18481333000000000000000000000000.0 ]\n\t\tm_vMaxBounds = [ 4397347300000000000000.0, 26311232.0, 0.000000000000000000000000000000000000000045916 ]\n\t}\n}"
 					}
 				],
 				"members":
@@ -138811,7 +138811,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_flMinSpringFrequency = 0.000000000000000000000000000000000000000000001\n\tm_flMaxSpringFrequency = 0.0\n\tm_flMaxStretch = -0.000000000000000000000000000020863611\n\tm_bSolidCollisionAtZeroWeight = true\n\tm_bRequiresDynamicBodies = true\n\tm_bIgnoreTeleport = false\n\tm_vLinearVelocityAccumulator = [ 1.0, 0.1, 0.0 ]\n\tm_vAngularVelocityAccumulator = [ 0.0, 0.0, -2.0000305 ]\n\tm_vForceAccumulator = [ 0.0, 0.0, 64373360000000000000000000000.0 ]\n\tm_nBodyCount = 1316253289\n}"
+						"value": "{\n\tm_flMinSpringFrequency = 0.000000000000000000000000000000000000000000001\n\tm_flMaxSpringFrequency = 0.0\n\tm_flMaxStretch = -2361.3145\n\tm_bSolidCollisionAtZeroWeight = true\n\tm_bRequiresDynamicBodies = true\n\tm_bIgnoreTeleport = false\n\tm_vLinearVelocityAccumulator = [ 0.00000000000000000000000000000000000000000579, 0.0, 0.0 ]\n\tm_vAngularVelocityAccumulator = [ -0.0067233825, 0.0, -2.0000305 ]\n\tm_vForceAccumulator = [ 0.0, 0.0, 64373360000000000000000000000.0 ]\n\tm_nBodyCount = 1316253289\n}"
 					}
 				],
 				"members":
@@ -138963,7 +138963,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_viewId = \n\t{\n\t\tm_nViewId = 4453159313468293120\n\t\tm_nFrameCount = 0\n\t}\n\tm_ViewName = \"\"\n\tm_nLayerId = 0\n\tm_LayerName = \"\"\n\tm_displayText = \"\"\n}"
+						"value": "{\n\tm_viewId = \n\t{\n\t\tm_nViewId = 4132\n\t\tm_nFrameCount = 13536782343330594816\n\t}\n\tm_ViewName = \"\"\n\tm_nLayerId = 0\n\tm_LayerName = \"\"\n\tm_displayText = \"\"\n}"
 					}
 				],
 				"multi_depth": 2,
@@ -141510,7 +141510,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\t_class = \"CLookAtUpdateNode\"\n\tm_nodePath = \n\t{\n\t\tm_path = \n\t\t[\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t]\n\t\tm_nCount = 0\n\t}\n\tm_networkMode = \"ServerAuthoritative\"\n\tm_name = \"\"\n\tm_pChildNode = \n\t{\n\t\tm_nodeIndex = -1\n\t}\n\tm_opFixedSettings = \n\t{\n\t\tm_attachment = \n\t\t{\n\t\t\tm_influenceRotations = \n\t\t\t[\n\t\t\t\t[ 0.0, 0.0, 0.000000000000000000000000000000000000000002953, 0.0 ],\n\t\t\t\t[ -36084414000000000000000000.0, 0.000000000000000000000000000000000000000045765, -31230060000000000000000000.0, 0.000000000000000000000000000000000000000045765 ],\n\t\t\t\t[ -7115771600000000000000000.0, 0.000000000000000000000000000000000000000045765, 0.000000000000000000000000000000000000000000062, 0.0 ],\n\t\t\t]\n\t\t\tm_influenceOffsets = \n\t\t\t[\n\t\t\t\t[ -0.0015458241, 0.000000000000000000000000000000000000000045915, -29231248000000000000000000.0 ],\n\t\t\t\t[ 0.000000000000000000000000000000000000000000022, -0.0, 0.0 ],\n\t\t\t\t[ 0.0000129472755, 0.000000000000000000000000000000000000000001473, 0.000000000000000000000000000000000000000000027 ],\n\t\t\t]\n\t\t\tm_influenceIndices = [ -1161126528, 32766, -391035623 ]\n\t\t\tm_influenceWeights = [ 0.000000000000000000000000000000000000000045765, 0.000000000000000000000000000000000000000000027, 0.0 ]\n\t\t\tm_numInfluences = 0\n\t\t}\n\t\tm_damping = \n\t\t{\n\t\t\t_class = \"CAnimInputDamping\"\n\t\t\tm_speedFunction = \"NoDamping\"\n\t\t\tm_fSpeedScale = 1.0\n\t\t\tm_fFallingSpeedScale = 1.0\n\t\t}\n\t\tm_bones = [  ]\n\t\tm_flYawLimit = 45.0\n\t\tm_flPitchLimit = 45.0\n\t\tm_flHysteresisInnerAngle = 1.0\n\t\tm_flHysteresisOuterAngle = 20.0\n\t\tm_bRotateYawForward = true\n\t\tm_bMaintainUpDirection = false\n\t\tm_bTargetIsPosition = true\n\t\tm_bUseHysteresis = false\n\t}\n\tm_target = -391222598\n\tm_paramIndex = \n\t{\n\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\tm_index = 255\n\t}\n\tm_weightParamIndex = \n\t{\n\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\tm_index = 255\n\t}\n\tm_bResetChild = true\n\tm_bLockWhenWaning = true\n}"
+						"value": "{\n\t_class = \"CLookAtUpdateNode\"\n\tm_nodePath = \n\t{\n\t\tm_path = \n\t\t[\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t]\n\t\tm_nCount = 0\n\t}\n\tm_networkMode = \"ServerAuthoritative\"\n\tm_name = \"\"\n\tm_pChildNode = \n\t{\n\t\tm_nodeIndex = -1\n\t}\n\tm_opFixedSettings = \n\t{\n\t\tm_attachment = \n\t\t{\n\t\t\tm_influenceRotations = \n\t\t\t[\n\t\t\t\t[ 0.0, 0.0, 0.000000000000000000000000000000000000000002953, 0.0 ],\n\t\t\t\t[ -75674500000000000000000000000000.0, 0.000000000000000000000000000000000000000045902, -65494185000000000000000000000000.0, 0.000000000000000000000000000000000000000045902 ],\n\t\t\t\t[ -17458156000000000000000000000000.0, 0.000000000000000000000000000000000000000045902, 0.000000000000000000000000000000000000000000062, 0.0 ],\n\t\t\t]\n\t\t\tm_influenceOffsets = \n\t\t\t[\n\t\t\t\t[ 26312928.0, 0.000000000000000000000000000000000000000045916, -61302370000000000000000000000000.0 ],\n\t\t\t\t[ 0.000000000000000000000000000000000000000000022, -0.0, 0.0 ],\n\t\t\t\t[ -0.0000000000000000000000000000000001127964, 0.000000000000000000000000000000000000000001481, 0.000000000000000000000000000000000000000000027 ],\n\t\t\t]\n\t\t\tm_influenceIndices = [ 1271447728, 32767, -212777703 ]\n\t\t\tm_influenceWeights = [ 0.000000000000000000000000000000000000000045902, 0.000000000000000000000000000000000000000000027, 0.0 ]\n\t\t\tm_numInfluences = 0\n\t\t}\n\t\tm_damping = \n\t\t{\n\t\t\t_class = \"CAnimInputDamping\"\n\t\t\tm_speedFunction = \"NoDamping\"\n\t\t\tm_fSpeedScale = 1.0\n\t\t\tm_fFallingSpeedScale = 1.0\n\t\t}\n\t\tm_bones = [  ]\n\t\tm_flYawLimit = 45.0\n\t\tm_flPitchLimit = 45.0\n\t\tm_flHysteresisInnerAngle = 1.0\n\t\tm_flHysteresisOuterAngle = 20.0\n\t\tm_bRotateYawForward = true\n\t\tm_bMaintainUpDirection = false\n\t\tm_bTargetIsPosition = true\n\t\tm_bUseHysteresis = false\n\t}\n\tm_target = -212964678\n\tm_paramIndex = \n\t{\n\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\tm_index = 255\n\t}\n\tm_weightParamIndex = \n\t{\n\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\tm_index = 255\n\t}\n\tm_bResetChild = true\n\tm_bLockWhenWaning = true\n}"
 					}
 				],
 				"multi_depth": 3,
@@ -141832,7 +141832,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\t_class = \"CHitReactUpdateNode\"\n\tm_nodePath = \n\t{\n\t\tm_path = \n\t\t[\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t]\n\t\tm_nCount = 0\n\t}\n\tm_networkMode = \"ServerAuthoritative\"\n\tm_name = \"\"\n\tm_pChildNode = \n\t{\n\t\tm_nodeIndex = -1\n\t}\n\tm_opFixedSettings = \n\t{\n\t\tm_nWeightListIndex = -1161127072\n\t\tm_nEffectedBoneCount = 32766\n\t\tm_flMaxImpactForce = -0.00000000000000024850867\n\t\tm_flMinImpactForce = 0.000000000000000000000000000000000000000045765\n\t\tm_flWhipImpactScale = -0.0015458949\n\t\tm_flCounterRotationScale = 0.000000000000000000000000000000000000000045915\n\t\tm_flDistanceFadeScale = 0.000000000000000000000000000000000000000000001\n\t\tm_flPropagationScale = 0.000000000000000000000000000000000000000000015\n\t\tm_flWhipDelay = -0.0015457682\n\t\tm_flSpringStrength = 0.000000000000000000000000000000000000000045915\n\t\tm_flWhipSpringStrength = 0.0\n\t\tm_flMaxAngleRadians = 0.0\n\t\tm_nHipBoneIndex = 1\n\t\tm_flHipBoneTranslationScale = 0.000000000000000000000000000000000000000045765\n\t\tm_flHipDipSpringStrength = -0.00000000000000024848071\n\t\tm_flHipDipImpactScale = 0.000000000000000000000000000000000000000045765\n\t\tm_flHipDipDelay = -0.0015457682\n\t}\n\tm_triggerParam = \n\t{\n\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\tm_index = 255\n\t}\n\tm_hitBoneParam = \n\t{\n\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\tm_index = 255\n\t}\n\tm_hitOffsetParam = \n\t{\n\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\tm_index = 255\n\t}\n\tm_hitDirectionParam = \n\t{\n\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\tm_index = 255\n\t}\n\tm_hitStrengthParam = \n\t{\n\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\tm_index = 255\n\t}\n\tm_flMinDelayBetweenHits = 0.0\n\tm_bResetChild = false\n}"
+						"value": "{\n\t_class = \"CHitReactUpdateNode\"\n\tm_nodePath = \n\t{\n\t\tm_path = \n\t\t[\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t]\n\t\tm_nCount = 0\n\t}\n\tm_networkMode = \"ServerAuthoritative\"\n\tm_name = \"\"\n\tm_pChildNode = \n\t{\n\t\tm_nodeIndex = -1\n\t}\n\tm_opFixedSettings = \n\t{\n\t\tm_nWeightListIndex = 1271447184\n\t\tm_nEffectedBoneCount = 32767\n\t\tm_flMaxImpactForce = -2259704200000000000000000.0\n\t\tm_flMinImpactForce = 0.000000000000000000000000000000000000000045902\n\t\tm_flWhipImpactScale = 26314144.0\n\t\tm_flCounterRotationScale = 0.000000000000000000000000000000000000000045916\n\t\tm_flDistanceFadeScale = 0.000000000000000000000000000000000000000000001\n\t\tm_flPropagationScale = 0.000000000000000000000000000000000000000000015\n\t\tm_flWhipDelay = 26311968.0\n\t\tm_flSpringStrength = 0.000000000000000000000000000000000000000045916\n\t\tm_flWhipSpringStrength = 0.0\n\t\tm_flMaxAngleRadians = 0.0\n\t\tm_nHipBoneIndex = 1\n\t\tm_flHipBoneTranslationScale = 0.000000000000000000000000000000000000000045902\n\t\tm_flHipDipSpringStrength = -2259552000000000000000000.0\n\t\tm_flHipDipImpactScale = 0.000000000000000000000000000000000000000045902\n\t\tm_flHipDipDelay = 26311968.0\n\t}\n\tm_triggerParam = \n\t{\n\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\tm_index = 255\n\t}\n\tm_hitBoneParam = \n\t{\n\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\tm_index = 255\n\t}\n\tm_hitOffsetParam = \n\t{\n\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\tm_index = 255\n\t}\n\tm_hitDirectionParam = \n\t{\n\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\tm_index = 255\n\t}\n\tm_hitStrengthParam = \n\t{\n\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\tm_index = 255\n\t}\n\tm_flMinDelayBetweenHits = 0.0\n\tm_bResetChild = false\n}"
 					}
 				],
 				"multi_depth": 3,
@@ -141965,7 +141965,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_nWeightListIndex = -1161127328\n\tm_nEffectedBoneCount = 32766\n\tm_flMaxImpactForce = -27242205000000000000000000.0\n\tm_flMinImpactForce = 0.000000000000000000000000000000000000000045765\n\tm_flWhipImpactScale = -0.001545744\n\tm_flCounterRotationScale = 0.000000000000000000000000000000000000000045915\n\tm_flDistanceFadeScale = -0.0015457692\n\tm_flPropagationScale = 0.000000000000000000000000000000000000000045915\n\tm_flWhipDelay = 0.000000000000000000000000000000000000000000018\n\tm_flSpringStrength = 0.0\n\tm_flWhipSpringStrength = 0.0\n\tm_flMaxAngleRadians = 0.0\n\tm_nHipBoneIndex = -1161127248\n\tm_flHipBoneTranslationScale = 0.000000000000000000000000000000000000000045915\n\tm_flHipDipSpringStrength = -27242774000000000000000000.0\n\tm_flHipDipImpactScale = 0.000000000000000000000000000000000000000045765\n\tm_flHipDipDelay = -0.00000000000000024772876\n}"
+						"value": "{\n\tm_nWeightListIndex = 1271446928\n\tm_nEffectedBoneCount = 32767\n\tm_flMaxImpactForce = -57131044000000000000000000000000.0\n\tm_flMinImpactForce = 0.000000000000000000000000000000000000000045902\n\tm_flWhipImpactScale = 26311552.0\n\tm_flCounterRotationScale = 0.000000000000000000000000000000000000000045916\n\tm_flDistanceFadeScale = 26311984.0\n\tm_flPropagationScale = 0.000000000000000000000000000000000000000045916\n\tm_flWhipDelay = 0.000000000000000000000000000000000000000000018\n\tm_flSpringStrength = 0.0\n\tm_flWhipSpringStrength = 0.0\n\tm_flMaxAngleRadians = 0.0\n\tm_nHipBoneIndex = 1271447008\n\tm_flHipBoneTranslationScale = 0.000000000000000000000000000000000000000045916\n\tm_flHipDipSpringStrength = -57132240000000000000000000000000.0\n\tm_flHipDipImpactScale = 0.000000000000000000000000000000000000000045902\n\tm_flHipDipDelay = -2255458000000000000000000.0\n}"
 					}
 				],
 				"members":
@@ -142827,7 +142827,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tnCursorID = -1\n\tnEditorID = -1\n\tflExecTime = -0.00000000000000017464305\n\tunFlags = 32659\n\ttagName = \"\"\n}"
+						"value": "{\n\tnCursorID = -1\n\tnEditorID = -1\n\tflExecTime = -1599463000000000000000000.0\n\tunFlags = 32757\n\ttagName = \"\"\n}"
 					}
 				],
 				"members":
@@ -145172,7 +145172,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\t_class = \"CAimMatrixUpdateNode\"\n\tm_nodePath = \n\t{\n\t\tm_path = \n\t\t[\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t]\n\t\tm_nCount = 0\n\t}\n\tm_networkMode = \"ServerAuthoritative\"\n\tm_name = \"\"\n\tm_pChildNode = \n\t{\n\t\tm_nodeIndex = -1\n\t}\n\tm_opFixedSettings = \n\t{\n\t\tm_attachment = \n\t\t{\n\t\t\tm_influenceRotations = \n\t\t\t[\n\t\t\t\t[ 0.0, 0.0, 1.0, 0.5 ],\n\t\t\t\t[ 1.0, 0.000000000000000000000000000000000000000000001, 0.0, 0.0 ],\n\t\t\t\t[ 0.0, 0.0, 0.000000000000000000000000000000000000000002933, 0.0 ],\n\t\t\t]\n\t\t\tm_influenceOffsets = \n\t\t\t[\n\t\t\t\t[ -36084414000000000000000000.0, 0.000000000000000000000000000000000000000045765, -36323318000000000000000000.0 ],\n\t\t\t\t[ -7115771600000000000000000.0, 0.000000000000000000000000000000000000000045765, -0.00154592 ],\n\t\t\t\t[ -0.0015458241, 0.000000000000000000000000000000000000000045915, -29231248000000000000000000.0 ],\n\t\t\t]\n\t\t\tm_influenceIndices = [ 0, 0, 0 ]\n\t\t\tm_influenceWeights = [ 0.0, 0.000013823621, 0.000000000000000000000000000000000000000001473 ]\n\t\t\tm_numInfluences = 0\n\t\t}\n\t\tm_damping = \n\t\t{\n\t\t\t_class = \"CAnimInputDamping\"\n\t\t\tm_speedFunction = \"NoDamping\"\n\t\t\tm_fSpeedScale = 1.0\n\t\t\tm_fFallingSpeedScale = 1.0\n\t\t}\n\t\tm_poseCacheHandles = \n\t\t[\n\t\t\t{\n\t\t\t\tm_nIndex = 65535\n\t\t\t\tm_eType = \"POSETYPE_INVALID\"\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_nIndex = 65535\n\t\t\t\tm_eType = \"POSETYPE_INVALID\"\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_nIndex = 65535\n\t\t\t\tm_eType = \"POSETYPE_INVALID\"\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_nIndex = 65535\n\t\t\t\tm_eType = \"POSETYPE_INVALID\"\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_nIndex = 65535\n\t\t\t\tm_eType = \"POSETYPE_INVALID\"\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_nIndex = 65535\n\t\t\t\tm_eType = \"POSETYPE_INVALID\"\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_nIndex = 65535\n\t\t\t\tm_eType = \"POSETYPE_INVALID\"\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_nIndex = 65535\n\t\t\t\tm_eType = \"POSETYPE_INVALID\"\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_nIndex = 65535\n\t\t\t\tm_eType = \"POSETYPE_INVALID\"\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_nIndex = 65535\n\t\t\t\tm_eType = \"POSETYPE_INVALID\"\n\t\t\t},\n\t\t]\n\t\tm_eBlendMode = \"AimMatrixBlendMode_None\"\n\t\tm_flMaxYawAngle = 45.0\n\t\tm_flMaxPitchAngle = 45.0\n\t\tm_nSequenceMaxFrame = 0\n\t\tm_nBoneMaskIndex = -1\n\t\tm_bTargetIsPosition = true\n\t\tm_bUseBiasAndClamp = false\n\t\tm_flBiasAndClampYawOffset = 1.0\n\t\tm_flBiasAndClampPitchOffset = 1.0\n\t\tm_biasAndClampBlendCurve = \n\t\t{\n\t\t\tm_flControlPoint1 = 0.0\n\t\t\tm_flControlPoint2 = 1.0\n\t\t}\n\t}\n\tm_target = -391222598\n\tm_paramIndex = \n\t{\n\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\tm_index = 255\n\t}\n\tm_hSequence = -1\n\tm_bResetChild = true\n\tm_bLockWhenWaning = true\n}"
+						"value": "{\n\t_class = \"CAimMatrixUpdateNode\"\n\tm_nodePath = \n\t{\n\t\tm_path = \n\t\t[\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t]\n\t\tm_nCount = 0\n\t}\n\tm_networkMode = \"ServerAuthoritative\"\n\tm_name = \"\"\n\tm_pChildNode = \n\t{\n\t\tm_nodeIndex = -1\n\t}\n\tm_opFixedSettings = \n\t{\n\t\tm_attachment = \n\t\t{\n\t\t\tm_influenceRotations = \n\t\t\t[\n\t\t\t\t[ 0.0, 0.0, 1.0, 0.5 ],\n\t\t\t\t[ 1.0, 0.000000000000000000000000000000000000000000001, 0.0, 0.0 ],\n\t\t\t\t[ 0.0, 0.0, 0.000000000000000000000000000000000000000002933, 0.0 ],\n\t\t\t]\n\t\t\tm_influenceOffsets = \n\t\t\t[\n\t\t\t\t[ -75674500000000000000000000000000.0, 0.000000000000000000000000000000000000000045902, -76175520000000000000000000000000.0 ],\n\t\t\t\t[ -17458156000000000000000000000000.0, 0.000000000000000000000000000000000000000045902, 26314576.0 ],\n\t\t\t\t[ 26312928.0, 0.000000000000000000000000000000000000000045916, -61302370000000000000000000000000.0 ],\n\t\t\t]\n\t\t\tm_influenceIndices = [ 0, 0, 0 ]\n\t\t\tm_influenceWeights = [ 0.0, -0.00000000000000000000000000000000014195858, 0.000000000000000000000000000000000000000001481 ]\n\t\t\tm_numInfluences = 0\n\t\t}\n\t\tm_damping = \n\t\t{\n\t\t\t_class = \"CAnimInputDamping\"\n\t\t\tm_speedFunction = \"NoDamping\"\n\t\t\tm_fSpeedScale = 1.0\n\t\t\tm_fFallingSpeedScale = 1.0\n\t\t}\n\t\tm_poseCacheHandles = \n\t\t[\n\t\t\t{\n\t\t\t\tm_nIndex = 65535\n\t\t\t\tm_eType = \"POSETYPE_INVALID\"\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_nIndex = 65535\n\t\t\t\tm_eType = \"POSETYPE_INVALID\"\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_nIndex = 65535\n\t\t\t\tm_eType = \"POSETYPE_INVALID\"\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_nIndex = 65535\n\t\t\t\tm_eType = \"POSETYPE_INVALID\"\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_nIndex = 65535\n\t\t\t\tm_eType = \"POSETYPE_INVALID\"\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_nIndex = 65535\n\t\t\t\tm_eType = \"POSETYPE_INVALID\"\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_nIndex = 65535\n\t\t\t\tm_eType = \"POSETYPE_INVALID\"\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_nIndex = 65535\n\t\t\t\tm_eType = \"POSETYPE_INVALID\"\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_nIndex = 65535\n\t\t\t\tm_eType = \"POSETYPE_INVALID\"\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_nIndex = 65535\n\t\t\t\tm_eType = \"POSETYPE_INVALID\"\n\t\t\t},\n\t\t]\n\t\tm_eBlendMode = \"AimMatrixBlendMode_None\"\n\t\tm_flMaxYawAngle = 45.0\n\t\tm_flMaxPitchAngle = 45.0\n\t\tm_nSequenceMaxFrame = 0\n\t\tm_nBoneMaskIndex = -1\n\t\tm_bTargetIsPosition = true\n\t\tm_bUseBiasAndClamp = false\n\t\tm_flBiasAndClampYawOffset = 1.0\n\t\tm_flBiasAndClampPitchOffset = 1.0\n\t\tm_biasAndClampBlendCurve = \n\t\t{\n\t\t\tm_flControlPoint1 = 0.0\n\t\t\tm_flControlPoint2 = 1.0\n\t\t}\n\t}\n\tm_target = -212964678\n\tm_paramIndex = \n\t{\n\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\tm_index = 255\n\t}\n\tm_hSequence = -1\n\tm_bResetChild = true\n\tm_bLockWhenWaning = true\n}"
 					}
 				],
 				"multi_depth": 3,
@@ -145615,7 +145615,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_curve = \n\t{\n\t\tm_flControlPoint1 = 0.0\n\t\tm_flControlPoint2 = 1.0\n\t}\n\tm_blendDuration = \n\t{\n\t\tm_constValue = -28515392000000000000000000.0\n\t\tm_hParam = \n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t}\n\t}\n\tm_resetCycleValue = \n\t{\n\t\tm_constValue = -0.0015457328\n\t\tm_hParam = \n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t}\n\t}\n\tm_bReset = 0\n\tm_resetCycleOption = 0\n}"
+						"value": "{\n\tm_curve = \n\t{\n\t\tm_flControlPoint1 = 0.0\n\t\tm_flControlPoint2 = 1.0\n\t}\n\tm_blendDuration = \n\t{\n\t\tm_constValue = -59801110000000000000000000000000.0\n\t\tm_hParam = \n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t}\n\t}\n\tm_resetCycleValue = \n\t{\n\t\tm_constValue = 26311360.0\n\t\tm_hParam = \n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t}\n\t}\n\tm_bReset = 0\n\tm_resetCycleOption = 0\n}"
 					}
 				],
 				"members":
@@ -147965,7 +147965,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_Transform = \n\t[\n\t\t-0.0015457254, 0.000000000000000000000000000000000000000045915, -30036386000000000000000000.0, 0.000000000000000000000000000000000000000045765,\n\t\t-0.0000000000000002170794, 0.000000000000000000000000000000000000000045765, 0.0, 0.0,\n\t]\n\tm_Name = \"\"\n\tm_nParent = 0\n\tm_refModel = resource:\"\"\n}"
+						"value": "{\n\tm_Transform = \n\t[\n\t\t26311232.0, 0.000000000000000000000000000000000000000045916, -62990867000000000000000000000000.0, 0.000000000000000000000000000000000000000045902,\n\t\t-2061554000000000000000000.0, 0.000000000000000000000000000000000000000045902, 0.0, 0.0,\n\t]\n\tm_Name = \"\"\n\tm_nParent = 0\n\tm_refModel = resource:\"\"\n}"
 					}
 				],
 				"members":
@@ -150802,7 +150802,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\t_class = \"CFootPositionMetricEvaluator\"\n\tm_means = [  ]\n\tm_standardDeviations = [  ]\n\tm_flWeight = -0.0000000000000035449023\n\tm_nDimensionStartIndex = -1\n\tm_footIndices = [  ]\n\tm_bIgnoreSlope = false\n}"
+						"value": "{\n\t_class = \"CFootPositionMetricEvaluator\"\n\tm_means = [  ]\n\tm_standardDeviations = [  ]\n\tm_flWeight = -16504227000000000000000000000.0\n\tm_nDimensionStartIndex = -1\n\tm_footIndices = [  ]\n\tm_bIgnoreSlope = false\n}"
 					}
 				],
 				"multi_depth": 2,
@@ -150920,7 +150920,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_feedbackFilter = \n\t{\n\t\tm_nFilterType = \"FILTER_UNKNOWN\"\n\t\tm_nFilterSlope = \"FILTER_SLOPE_12dB\"\n\t\tm_bEnabled = true\n\t\tm_fldbGain = 0.0\n\t\tm_flCutoffFreq = 1000.0\n\t\tm_flQ = 0.70710677\n\t}\n\tm_bPhaseInvert = true\n\tm_flGlideTime = 0.000000000000000000000000000000000000000045915\n\tm_flDelay = -27242774000000000000000000.0\n\tm_flOutputGain = 0.000000000000000000000000000000000000000045765\n\tm_flFeedbackGain = -0.0000000000000000000000002977516\n\tm_flModRate = nan\n\tm_flModDepth = -0.0015458353\n\tm_bApplyAntialiasing = true\n}"
+						"value": "{\n\tm_feedbackFilter = \n\t{\n\t\tm_nFilterType = \"FILTER_UNKNOWN\"\n\t\tm_nFilterSlope = \"FILTER_SLOPE_12dB\"\n\t\tm_bEnabled = true\n\t\tm_fldbGain = 0.0\n\t\tm_flCutoffFreq = 1000.0\n\t\tm_flQ = 0.70710677\n\t}\n\tm_bPhaseInvert = true\n\tm_flGlideTime = 0.000000000000000000000000000000000000000045916\n\tm_flDelay = -57132240000000000000000000000000.0\n\tm_flOutputGain = 0.000000000000000000000000000000000000000045902\n\tm_flFeedbackGain = -0.0000000000000000000000002977516\n\tm_flModRate = nan\n\tm_flModDepth = 26313120.0\n\tm_bApplyAntialiasing = true\n}"
 					}
 				],
 				"members":
@@ -151967,7 +151967,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\t_class = \"CNmParticleEvent\"\n\tm_flStartTime = \n\t{\n\t\tm_flValue = 0.0\n\t}\n\tm_flDuration = \n\t{\n\t\tm_flValue = 0.0\n\t}\n\tm_syncID = \"\"\n\tm_relevance = \"ClientAndServer\"\n\tm_type = \"Create\"\n\tm_target = \"Self\"\n\tm_hParticleSystem = resource:\"\"\n\tm_tags = \"\"\n\tm_bStopImmediately = false\n\tm_bDetachFromOwner = false\n\tm_bPlayEndCap = false\n\tm_attachmentPoint0 = \"\"\n\tm_attachmentType0 = \"PATTACH_ABSORIGIN\"\n\tm_attachmentPoint1 = \"\"\n\tm_attachmentType1 = \"PATTACH_ABSORIGIN\"\n\tm_config = \"preview\"\n\tm_effectForConfig = \"\"\n}"
+						"value": "{\n\t_class = \"CNmParticleEvent\"\n\tm_flStartTime = \n\t{\n\t\tm_flValue = 0.0\n\t}\n\tm_flDuration = \n\t{\n\t\tm_flValue = 0.0\n\t}\n\tm_syncID = \"\"\n\tm_relevance = \"ClientAndServer\"\n\tm_type = \"Create\"\n\tm_target = \"Self\"\n\tm_hParticleSystem = resource:\"\"\n\tm_tags = \"\"\n\tm_bStopImmediately = false\n\tm_bDetachFromOwner = false\n\tm_bPlayEndCap = false\n\tm_attachmentPoint0 = \"\"\n\tm_attachmentType0 = \"PATTACH_CUSTOMORIGIN\"\n\tm_attachmentPoint1 = \"\"\n\tm_attachmentType1 = \"PATTACH_ABSORIGIN\"\n\tm_config = \"preview\"\n\tm_effectForConfig = \"\"\n}"
 					}
 				],
 				"multi_depth": 2,
@@ -153419,7 +153419,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\t_class = \"CCommentarySystem\"\n\tm_bCommentaryEnabledMidGame = true\n\tm_flNextTeleportTime = null\n\tm_iTeleportStage = -1519289200\n\tm_bCheatState = true\n\tm_bIsFirstSpawnGroupToLoad = false\n\tm_ModifiedConvars = [  ]\n\tm_hCurrentNode = null\n\tm_hActiveCommentaryNode = null\n\tm_hLastCommentaryNode = null\n\tm_vecNodes = [  ]\n}"
+						"value": "{\n\t_class = \"CCommentarySystem\"\n\tm_bCommentaryEnabledMidGame = true\n\tm_flNextTeleportTime = null\n\tm_iTeleportStage = -405701488\n\tm_bCheatState = true\n\tm_bIsFirstSpawnGroupToLoad = false\n\tm_ModifiedConvars = [  ]\n\tm_hCurrentNode = null\n\tm_hActiveCommentaryNode = null\n\tm_hLastCommentaryNode = null\n\tm_vecNodes = [  ]\n}"
 					}
 				],
 				"members":
@@ -156073,7 +156073,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\t_class = \"CBoneVelocityMetricEvaluator\"\n\tm_means = [  ]\n\tm_standardDeviations = [  ]\n\tm_flWeight = -0.000000000000000000040343915\n\tm_nDimensionStartIndex = -1\n\tm_nBoneIndex = -1\n}"
+						"value": "{\n\t_class = \"CBoneVelocityMetricEvaluator\"\n\tm_means = [  ]\n\tm_standardDeviations = [  ]\n\tm_flWeight = -187145910000000000000000.0\n\tm_nDimensionStartIndex = -1\n\tm_nBoneIndex = -1\n}"
 					}
 				],
 				"multi_depth": 2,
@@ -156945,7 +156945,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\t_class = \"CJumpHelperUpdateNode\"\n\tm_nodePath = \n\t{\n\t\tm_path = \n\t\t[\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t]\n\t\tm_nCount = 0\n\t}\n\tm_networkMode = \"ServerAuthoritative\"\n\tm_name = \"\"\n\tm_playbackSpeed = 1.0\n\tm_bLoop = false\n\tm_hSequence = -1\n\tm_duration = 0.0\n\tm_paramSpans = \n\t{\n\t\tm_spans = [  ]\n\t}\n\tm_tags = [  ]\n\tm_hTargetParam = \n\t{\n\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\tm_index = 255\n\t}\n\tm_flOriginalJumpMovement = [ 0.000000000000000000000000000000000000000000001, -0.00000000000000021033067, 0.000000000000000000000000000000000000000045765 ]\n\tm_flOriginalJumpDuration = -12.0\n\tm_flJumpStartCycle = 0.7\n\tm_flJumpEndCycle = 180.0\n\tm_eCorrectionMethod = 1056964608\n\tm_bTranslationAxis = [ false, false, false ]\n\tm_bScaleSpeed = false\n}"
+						"value": "{\n\t_class = \"CJumpHelperUpdateNode\"\n\tm_nodePath = \n\t{\n\t\tm_path = \n\t\t[\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t]\n\t\tm_nCount = 0\n\t}\n\tm_networkMode = \"ServerAuthoritative\"\n\tm_name = \"\"\n\tm_playbackSpeed = 1.0\n\tm_bLoop = false\n\tm_hSequence = -1\n\tm_duration = 0.0\n\tm_paramSpans = \n\t{\n\t\tm_spans = [  ]\n\t}\n\tm_tags = [  ]\n\tm_hTargetParam = \n\t{\n\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\tm_index = 255\n\t}\n\tm_flOriginalJumpMovement = [ 0.000000000000000000000000000000000000000000001, -1988066700000000000000000.0, 0.000000000000000000000000000000000000000045902 ]\n\tm_flOriginalJumpDuration = -12.0\n\tm_flJumpStartCycle = 0.7\n\tm_flJumpEndCycle = 180.0\n\tm_eCorrectionMethod = 1056964608\n\tm_bTranslationAxis = [ false, false, false ]\n\tm_bScaleSpeed = false\n}"
 					}
 				],
 				"multi_depth": 5,
@@ -157505,7 +157505,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\t_class = \"CFootLockUpdateNode\"\n\tm_nodePath = \n\t{\n\t\tm_path = \n\t\t[\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t]\n\t\tm_nCount = 0\n\t}\n\tm_networkMode = \"ServerAuthoritative\"\n\tm_name = \"\"\n\tm_pChildNode = \n\t{\n\t\tm_nodeIndex = -1\n\t}\n\tm_opFixedSettings = \n\t{\n\t\tm_footInfo = [  ]\n\t\tm_hipDampingSettings = \n\t\t{\n\t\t\t_class = \"CAnimInputDamping\"\n\t\t\tm_speedFunction = \"NoDamping\"\n\t\t\tm_fSpeedScale = 1.0\n\t\t\tm_fFallingSpeedScale = 1.0\n\t\t}\n\t\tm_nHipBoneIndex = -1\n\t\tm_ikSolverType = \"IKSOLVER_TwoBone\"\n\t\tm_bApplyTilt = false\n\t\tm_bApplyHipDrop = false\n\t\tm_bAlwaysUseFallbackHinge = false\n\t\tm_bApplyFootRotationLimits = false\n\t\tm_bApplyLegTwistLimits = false\n\t\tm_flMaxFootHeight = -12.0\n\t\tm_flExtensionScale = 0.7\n\t\tm_flMaxLegTwist = 180.0\n\t\tm_bEnableLockBreaking = false\n\t\tm_flLockBreakTolerance = 0.2\n\t\tm_flLockBlendTime = 0.2\n\t\tm_bEnableStretching = false\n\t\tm_flMaxStretchAmount = 2.0\n\t\tm_flStretchExtensionScale = 0.998\n\t}\n\tm_footSettings = [  ]\n\tm_hipShiftDamping = \n\t{\n\t\t_class = \"CAnimInputDamping\"\n\t\tm_speedFunction = \"NoDamping\"\n\t\tm_fSpeedScale = 1.0\n\t\tm_fFallingSpeedScale = 1.0\n\t}\n\tm_rootHeightDamping = \n\t{\n\t\t_class = \"CAnimInputDamping\"\n\t\tm_speedFunction = \"NoDamping\"\n\t\tm_fSpeedScale = 1.0\n\t\tm_fFallingSpeedScale = 1.0\n\t}\n\tm_flStrideCurveScale = 0.000000000000000000000000000000000000000000001\n\tm_flStrideCurveLimitScale = 0.000000000000000000000000000000000000000000003\n\tm_flStepHeightIncreaseScale = 0.0\n\tm_flStepHeightDecreaseScale = 0.0\n\tm_flHipShiftScale = -0.0000000000000002469804\n\tm_flBlendTime = 0.000000000000000000000000000000000000000091835\n\tm_flMaxRootHeightOffset = -0.0015458465\n\tm_flMinRootHeightOffset = 0.000000000000000000000000000000000000000045915\n\tm_flTiltPlanePitchSpringStrength = -6589284000000000000000000.0\n\tm_flTiltPlaneRollSpringStrength = 0.000000000000000000000000000000000000000045765\n\tm_bApplyFootRotationLimits = true\n\tm_bApplyHipShift = true\n\tm_bModulateStepHeight = true\n\tm_bResetChild = true\n\tm_bEnableVerticalCurvedPaths = true\n\tm_bEnableRootHeightDamping = true\n}"
+						"value": "{\n\t_class = \"CFootLockUpdateNode\"\n\tm_nodePath = \n\t{\n\t\tm_path = \n\t\t[\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t]\n\t\tm_nCount = 0\n\t}\n\tm_networkMode = \"ServerAuthoritative\"\n\tm_name = \"\"\n\tm_pChildNode = \n\t{\n\t\tm_nodeIndex = -1\n\t}\n\tm_opFixedSettings = \n\t{\n\t\tm_footInfo = [  ]\n\t\tm_hipDampingSettings = \n\t\t{\n\t\t\t_class = \"CAnimInputDamping\"\n\t\t\tm_speedFunction = \"NoDamping\"\n\t\t\tm_fSpeedScale = 1.0\n\t\t\tm_fFallingSpeedScale = 1.0\n\t\t}\n\t\tm_nHipBoneIndex = -1\n\t\tm_ikSolverType = \"IKSOLVER_TwoBone\"\n\t\tm_bApplyTilt = false\n\t\tm_bApplyHipDrop = false\n\t\tm_bAlwaysUseFallbackHinge = false\n\t\tm_bApplyFootRotationLimits = false\n\t\tm_bApplyLegTwistLimits = false\n\t\tm_flMaxFootHeight = -12.0\n\t\tm_flExtensionScale = 0.7\n\t\tm_flMaxLegTwist = 180.0\n\t\tm_bEnableLockBreaking = false\n\t\tm_flLockBreakTolerance = 0.2\n\t\tm_flLockBlendTime = 0.2\n\t\tm_bEnableStretching = false\n\t\tm_flMaxStretchAmount = 2.0\n\t\tm_flStretchExtensionScale = 0.998\n\t}\n\tm_footSettings = [  ]\n\tm_hipShiftDamping = \n\t{\n\t\t_class = \"CAnimInputDamping\"\n\t\tm_speedFunction = \"NoDamping\"\n\t\tm_fSpeedScale = 1.0\n\t\tm_fFallingSpeedScale = 1.0\n\t}\n\tm_rootHeightDamping = \n\t{\n\t\t_class = \"CAnimInputDamping\"\n\t\tm_speedFunction = \"NoDamping\"\n\t\tm_fSpeedScale = 1.0\n\t\tm_fFallingSpeedScale = 1.0\n\t}\n\tm_flStrideCurveScale = 0.000000000000000000000000000000000000000000001\n\tm_flStrideCurveLimitScale = 0.000000000000000000000000000000000000000000003\n\tm_flStepHeightIncreaseScale = 0.0\n\tm_flStepHeightDecreaseScale = 0.0\n\tm_flHipShiftScale = -2251383600000000000000000.0\n\tm_flBlendTime = 0.000000000000000000000000000000000000000091835\n\tm_flMaxRootHeightOffset = 26313312.0\n\tm_flMinRootHeightOffset = 0.000000000000000000000000000000000000000045916\n\tm_flTiltPlanePitchSpringStrength = -16354032000000000000000000000000.0\n\tm_flTiltPlaneRollSpringStrength = 0.000000000000000000000000000000000000000045902\n\tm_bApplyFootRotationLimits = true\n\tm_bApplyHipShift = true\n\tm_bModulateStepHeight = true\n\tm_bResetChild = true\n\tm_bEnableVerticalCurvedPaths = true\n\tm_bEnableRootHeightDamping = true\n}"
 					}
 				],
 				"multi_depth": 3,
@@ -160466,7 +160466,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_vOriginLS = [ -0.0015457682, 0.000000000000000000000000000000000000000045915, 0.0 ]\n\tm_qAnglesLS = [ 0.000000000000000000000000000000000000000000001, 0.0, -0.0000000000000002345809, 0.000000000000000000000000000000000000000045765 ]\n\tm_vExtentsMin = [ 0.0, -20.0, 0.0 ]\n\tm_vExtentsMax = [ 0.0, 20.0, 0.0 ]\n\tm_flRadius = 12.0\n\tm_bOnlyWarpPosition = false\n\tm_hParent = null\n\tm_nShapeType = 25966\n}"
+						"value": "{\n\tm_vOriginLS = [ 26311968.0, 0.000000000000000000000000000000000000000045916, 0.0 ]\n\tm_qAnglesLS = [ 0.000000000000000000000000000000000000000000001, 0.0, -2183874300000000000000000.0, 0.000000000000000000000000000000000000000045902 ]\n\tm_vExtentsMin = [ 0.0, -20.0, 0.0 ]\n\tm_vExtentsMax = [ 0.0, 20.0, 0.0 ]\n\tm_flRadius = 12.0\n\tm_bOnlyWarpPosition = false\n\tm_hParent = null\n\tm_nShapeType = 25966\n}"
 					}
 				],
 				"members":
@@ -161266,7 +161266,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\t_class = \"CSelectorUpdateNode\"\n\tm_nodePath = \n\t{\n\t\tm_path = \n\t\t[\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t]\n\t\tm_nCount = 0\n\t}\n\tm_networkMode = \"ServerAuthoritative\"\n\tm_name = \"\"\n\tm_children = [  ]\n\tm_tags = [  ]\n\tm_blendCurve = \n\t{\n\t\tm_flControlPoint1 = 0.0\n\t\tm_flControlPoint2 = 1.0\n\t}\n\tm_flBlendTime = \n\t{\n\t\tm_constValue = 0.0\n\t\tm_hParam = \n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t}\n\t}\n\tm_hParameter = \n\t{\n\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\tm_index = 255\n\t}\n\tm_nTagIndex = -1\n\tm_eTagBehavior = 32659\n\tm_bResetOnChange = false\n\tm_bLockWhenWaning = false\n\tm_bSyncCyclesOnChange = false\n}"
+						"value": "{\n\t_class = \"CSelectorUpdateNode\"\n\tm_nodePath = \n\t{\n\t\tm_path = \n\t\t[\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t]\n\t\tm_nCount = 0\n\t}\n\tm_networkMode = \"ServerAuthoritative\"\n\tm_name = \"\"\n\tm_children = [  ]\n\tm_tags = [  ]\n\tm_blendCurve = \n\t{\n\t\tm_flControlPoint1 = 0.0\n\t\tm_flControlPoint2 = 1.0\n\t}\n\tm_flBlendTime = \n\t{\n\t\tm_constValue = 0.0\n\t\tm_hParam = \n\t\t{\n\t\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\t\tm_index = 255\n\t\t}\n\t}\n\tm_hParameter = \n\t{\n\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\tm_index = 255\n\t}\n\tm_nTagIndex = -1\n\tm_eTagBehavior = -1143189548\n\tm_bResetOnChange = false\n\tm_bLockWhenWaning = false\n\tm_bSyncCyclesOnChange = false\n}"
 					}
 				],
 				"multi_depth": 2,
@@ -162613,7 +162613,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_flRealTime = 17034883000000000000000000.0\n\tm_rootToWorld = \n\t[\n\t\t63886894000000000000000000000.0, 0.00071104453, 270670280000000000000000.0, 73977330000000000000000000000000.0,\n\t\t0.000000000000000000000000000000000000010141871, 0.00000000000000000000000000000000000001050563, -0.0015457785, 0.000000000000000000000000000000000000000045915,\n\t\t0.000000000000000000000000000000000000000000011, -0.0, 0.000000000000000000000000000000000000000000001, 0.000000000000000000000000000000000000000000006,\n\t]\n\tm_bBonesInWorldSpace = false\n\tm_boneSetupMask = [  ]\n\tm_boneTransforms = [  ]\n\tm_flexControllers = [  ]\n\tm_SnapshotType = 545142298\n\tm_bHasDecodeDump = true\n\tm_DecodeDump = \n\t{\n\t\tm_nEntityIndex = 0\n\t\tm_modelName = \"\"\n\t\tm_poseParams = [  ]\n\t\tm_decodeOps = [  ]\n\t\tm_internalOps = [  ]\n\t\tm_decodedAnims = [  ]\n\t}\n}"
+						"value": "{\n\tm_flRealTime = 17034883000000000000000000.0\n\tm_rootToWorld = \n\t[\n\t\t63886894000000000000000000000.0, 0.00071104453, 270670280000000000000000.0, 73977330000000000000000000000000.0,\n\t\t0.000000000000000000000000000000000000010141871, 0.00000000000000000000000000000000000001050563, 26312144.0, 0.000000000000000000000000000000000000000045916,\n\t\t0.000000000000000000000000000000000000000000011, -0.0, 26312224.0, 0.000000000000000000000000000000000000000045916,\n\t]\n\tm_bBonesInWorldSpace = false\n\tm_boneSetupMask = [  ]\n\tm_boneTransforms = [  ]\n\tm_flexControllers = [  ]\n\tm_SnapshotType = 1959146748\n\tm_bHasDecodeDump = true\n\tm_DecodeDump = \n\t{\n\t\tm_nEntityIndex = 0\n\t\tm_modelName = \"\"\n\t\tm_poseParams = [  ]\n\t\tm_decodeOps = [  ]\n\t\tm_internalOps = [  ]\n\t\tm_decodedAnims = [  ]\n\t}\n}"
 					}
 				],
 				"members":
@@ -165481,7 +165481,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\t_class = \"CVMixDynamicsProcessorDesc\"\n\tm_name = \"\"\n\tm_nChannels = -1\n\tm_flxfade = 0.1\n\tm_desc = \n\t{\n\t\tm_fldbGain = 0.000000000000000000000000000000000000000045765\n\t\tm_fldbNoiseGateThreshold = -0.0015458036\n\t\tm_fldbCompressionThreshold = 0.000000000000000000000000000000000000000045915\n\t\tm_fldbLimiterThreshold = -0.00000000000000000009506332\n\t\tm_fldbKneeWidth = 0.000000000000000000000000000000000000000045765\n\t\tm_flRatio = 0.0\n\t\tm_flLimiterRatio = -2.0000305\n\t\tm_flAttackTimeMS = 0.0\n\t\tm_flReleaseTimeMS = 0.0\n\t\tm_flRMSTimeMS = 0.000000000000000000000000000000000000000041777\n\t\tm_flWetMix = 71305835000000000000000000000000.0\n\t\tm_bPeakMode = true\n\t}\n}"
+						"value": "{\n\t_class = \"CVMixDynamicsProcessorDesc\"\n\tm_name = \"\"\n\tm_nChannels = -1\n\tm_flxfade = 0.1\n\tm_desc = \n\t{\n\t\tm_fldbGain = 0.000000000000000000000000000000000000000045902\n\t\tm_fldbNoiseGateThreshold = 26312576.0\n\t\tm_fldbCompressionThreshold = 0.000000000000000000000000000000000000000045916\n\t\tm_fldbLimiterThreshold = -454437850000000000000000.0\n\t\tm_fldbKneeWidth = 0.000000000000000000000000000000000000000045902\n\t\tm_flRatio = 0.0\n\t\tm_flLimiterRatio = -2.0000305\n\t\tm_flAttackTimeMS = 0.0\n\t\tm_flReleaseTimeMS = 0.0\n\t\tm_flRMSTimeMS = 0.000000000000000000000000000000000000000041777\n\t\tm_flWetMix = 71305835000000000000000000000000.0\n\t\tm_bPeakMode = true\n\t}\n}"
 					}
 				],
 				"multi_depth": 2,
@@ -168064,7 +168064,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_Spheres = [  ]\n\tm_Capsules = [  ]\n\tm_Hulls = [  ]\n\tm_Meshes = [  ]\n\tm_Bounds = \n\t{\n\t\tm_vMinBounds = [ -0.0015457682, 0.000000000000000000000000000000000000000045915, 0.000000000000000000000000000000000000000000022 ]\n\t\tm_vMaxBounds = [ -0.0, 0.0, -2.0000305 ]\n\t}\n\tm_vOrthographicAreas = [ 0.0, 0.0, 0.0 ]\n\tm_flSurfaceArea = 0.0\n\tm_flVolume = 0.0\n}"
+						"value": "{\n\tm_Spheres = [  ]\n\tm_Capsules = [  ]\n\tm_Hulls = [  ]\n\tm_Meshes = [  ]\n\tm_Bounds = \n\t{\n\t\tm_vMinBounds = [ 26311968.0, 0.000000000000000000000000000000000000000045916, 0.000000000000000000000000000000000000000000022 ]\n\t\tm_vMaxBounds = [ -0.0, 0.0, -2.0000305 ]\n\t}\n\tm_vOrthographicAreas = [ 0.0, 0.0, 0.0 ]\n\tm_flSurfaceArea = 0.0\n\tm_flVolume = 0.0\n}"
 					}
 				],
 				"members":
@@ -171375,7 +171375,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\t_class = \"CLeanMatrixUpdateNode\"\n\tm_nodePath = \n\t{\n\t\tm_path = \n\t\t[\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t]\n\t\tm_nCount = 0\n\t}\n\tm_networkMode = \"ServerAuthoritative\"\n\tm_name = \"\"\n\tm_frameCorners = \n\t[\n\t\t[ 32659, -1881995240, 32659 ],\n\t\t[ 0, 0, -1161126512 ],\n\t\t[ 32766, -373509388, 32659 ],\n\t]\n\tm_poses = \n\t[\n\t\t{\n\t\t\tm_nIndex = 65535\n\t\t\tm_eType = \"POSETYPE_INVALID\"\n\t\t},\n\t\t{\n\t\t\tm_nIndex = 65535\n\t\t\tm_eType = \"POSETYPE_INVALID\"\n\t\t},\n\t\t{\n\t\t\tm_nIndex = 65535\n\t\t\tm_eType = \"POSETYPE_INVALID\"\n\t\t},\n\t\t{\n\t\t\tm_nIndex = 65535\n\t\t\tm_eType = \"POSETYPE_INVALID\"\n\t\t},\n\t\t{\n\t\t\tm_nIndex = 65535\n\t\t\tm_eType = \"POSETYPE_INVALID\"\n\t\t},\n\t\t{\n\t\t\tm_nIndex = 65535\n\t\t\tm_eType = \"POSETYPE_INVALID\"\n\t\t},\n\t\t{\n\t\t\tm_nIndex = 65535\n\t\t\tm_eType = \"POSETYPE_INVALID\"\n\t\t},\n\t\t{\n\t\t\tm_nIndex = 65535\n\t\t\tm_eType = \"POSETYPE_INVALID\"\n\t\t},\n\t\t{\n\t\t\tm_nIndex = 65535\n\t\t\tm_eType = \"POSETYPE_INVALID\"\n\t\t},\n\t]\n\tm_damping = \n\t{\n\t\t_class = \"CAnimInputDamping\"\n\t\tm_speedFunction = \"NoDamping\"\n\t\tm_fSpeedScale = 1.0\n\t\tm_fFallingSpeedScale = 1.0\n\t}\n\tm_blendSource = \"FacingPosition\"\n\tm_paramIndex = \n\t{\n\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\tm_index = 255\n\t}\n\tm_verticalAxis = [ -0.000000000000000000000000000020806989, 0.000000000000000000000000000000000000000045765, 0.0 ]\n\tm_horizontalAxis = [ 0.0, 0.0, 0.0 ]\n\tm_hSequence = -1\n\tm_flMaxValue = -2.0000305\n\tm_nSequenceMaxFrame = 0\n}"
+						"value": "{\n\t_class = \"CLeanMatrixUpdateNode\"\n\tm_nodePath = \n\t{\n\t\tm_path = \n\t\t[\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t]\n\t\tm_nCount = 0\n\t}\n\tm_networkMode = \"ServerAuthoritative\"\n\tm_name = \"\"\n\tm_frameCorners = \n\t[\n\t\t[ 32757, -988608488, 32757 ],\n\t\t[ 0, 0, 1271447744 ],\n\t\t[ 32767, -197348620, 32757 ],\n\t]\n\tm_poses = \n\t[\n\t\t{\n\t\t\tm_nIndex = 65535\n\t\t\tm_eType = \"POSETYPE_INVALID\"\n\t\t},\n\t\t{\n\t\t\tm_nIndex = 65535\n\t\t\tm_eType = \"POSETYPE_INVALID\"\n\t\t},\n\t\t{\n\t\t\tm_nIndex = 65535\n\t\t\tm_eType = \"POSETYPE_INVALID\"\n\t\t},\n\t\t{\n\t\t\tm_nIndex = 65535\n\t\t\tm_eType = \"POSETYPE_INVALID\"\n\t\t},\n\t\t{\n\t\t\tm_nIndex = 65535\n\t\t\tm_eType = \"POSETYPE_INVALID\"\n\t\t},\n\t\t{\n\t\t\tm_nIndex = 65535\n\t\t\tm_eType = \"POSETYPE_INVALID\"\n\t\t},\n\t\t{\n\t\t\tm_nIndex = 65535\n\t\t\tm_eType = \"POSETYPE_INVALID\"\n\t\t},\n\t\t{\n\t\t\tm_nIndex = 65535\n\t\t\tm_eType = \"POSETYPE_INVALID\"\n\t\t},\n\t\t{\n\t\t\tm_nIndex = 65535\n\t\t\tm_eType = \"POSETYPE_INVALID\"\n\t\t},\n\t]\n\tm_damping = \n\t{\n\t\t_class = \"CAnimInputDamping\"\n\t\tm_speedFunction = \"NoDamping\"\n\t\tm_fSpeedScale = 1.0\n\t\tm_fFallingSpeedScale = 1.0\n\t}\n\tm_blendSource = \"FacingPosition\"\n\tm_paramIndex = \n\t{\n\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\tm_index = 255\n\t}\n\tm_verticalAxis = [ -2352.127, 0.000000000000000000000000000000000000000045902, 0.0 ]\n\tm_horizontalAxis = [ 0.0, 0.0, 0.0 ]\n\tm_hSequence = -1\n\tm_flMaxValue = -2.0000305\n\tm_nSequenceMaxFrame = 0\n}"
 					}
 				],
 				"multi_depth": 3,
@@ -175405,7 +175405,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\t_class = \"CBlend2DUpdateNode\"\n\tm_nodePath = \n\t{\n\t\tm_path = \n\t\t[\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t]\n\t\tm_nCount = 0\n\t}\n\tm_networkMode = \"ServerAuthoritative\"\n\tm_name = \"\"\n\tm_items = [  ]\n\tm_tags = [  ]\n\tm_paramSpans = \n\t{\n\t\tm_spans = [  ]\n\t}\n\tm_nodeItemIndices = [  ]\n\tm_damping = \n\t{\n\t\t_class = \"CAnimInputDamping\"\n\t\tm_speedFunction = \"NoDamping\"\n\t\tm_fSpeedScale = 1.0\n\t\tm_fFallingSpeedScale = 1.0\n\t}\n\tm_blendSourceX = -1518983224\n\tm_paramX = \n\t{\n\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\tm_index = 255\n\t}\n\tm_blendSourceY = -1161126400\n\tm_paramY = \n\t{\n\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\tm_index = 255\n\t}\n\tm_eBlendMode = -1528838033\n\tm_playbackSpeed = 0.000000000000000000000000000000000000000045765\n\tm_bLoop = false\n\tm_bLockBlendOnReset = false\n\tm_bLockWhenWaning = false\n\tm_bAnimEventsAndTagsOnMostWeightedOnly = false\n}"
+						"value": "{\n\t_class = \"CBlend2DUpdateNode\"\n\tm_nodePath = \n\t{\n\t\tm_path = \n\t\t[\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t]\n\t\tm_nCount = 0\n\t}\n\tm_networkMode = \"ServerAuthoritative\"\n\tm_name = \"\"\n\tm_items = [  ]\n\tm_tags = [  ]\n\tm_paramSpans = \n\t{\n\t\tm_spans = [  ]\n\t}\n\tm_nodeItemIndices = [  ]\n\tm_damping = \n\t{\n\t\t_class = \"CAnimInputDamping\"\n\t\tm_speedFunction = \"NoDamping\"\n\t\tm_fSpeedScale = 1.0\n\t\tm_fFallingSpeedScale = 1.0\n\t}\n\tm_blendSourceX = -405395512\n\tm_paramX = \n\t{\n\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\tm_index = 255\n\t}\n\tm_blendSourceY = 1271447856\n\tm_paramY = \n\t{\n\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\tm_index = 255\n\t}\n\tm_eBlendMode = -415250321\n\tm_playbackSpeed = 0.000000000000000000000000000000000000000045902\n\tm_bLoop = false\n\tm_bLockBlendOnReset = false\n\tm_bLockWhenWaning = false\n\tm_bAnimEventsAndTagsOnMostWeightedOnly = false\n}"
 					}
 				],
 				"multi_depth": 2,
@@ -175647,7 +175647,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_tags = [  ]\n\tm_pChild = \n\t{\n\t\tm_nodeIndex = -1\n\t}\n\tm_hSequence = -1\n\tm_vPos = [ 0.0, -0.0015457328 ]\n\tm_flDuration = 0.000000000000000000000000000000000000000045915\n\tm_bUseCustomDuration = true\n}"
+						"value": "{\n\tm_tags = [  ]\n\tm_pChild = \n\t{\n\t\tm_nodeIndex = -1\n\t}\n\tm_hSequence = -1\n\tm_vPos = [ 0.0, 26311360.0 ]\n\tm_flDuration = 0.000000000000000000000000000000000000000045916\n\tm_bUseCustomDuration = true\n}"
 					}
 				],
 				"members":
@@ -176326,7 +176326,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\t_class = \"ConstraintSoundInfo\"\n\tm_soundProfile = \n\t{\n\t\t_class = \"SimpleConstraintSoundProfile\"\n\t\tm_flKeyPointMinSoundThreshold = -28515392000000000000000000.0\n\t\tm_flKeyPointMaxSoundThreshold = 0.000000000000000000000000000000000000000045765\n\t\tm_reversalSoundThresholdSmall = 0.0\n\t\tm_reversalSoundThresholdMedium = 0.0\n\t\tm_reversalSoundThresholdLarge = 0.0\n\t}\n\tm_iszTravelSoundFwd = \"\"\n\tm_iszTravelSoundBack = \"\"\n\tm_iszReversalSoundSmall = \"\"\n\tm_iszReversalSoundMedium = \"\"\n\tm_iszReversalSoundLarge = \"\"\n}"
+						"value": "{\n\t_class = \"ConstraintSoundInfo\"\n\tm_soundProfile = \n\t{\n\t\t_class = \"SimpleConstraintSoundProfile\"\n\t\tm_flKeyPointMinSoundThreshold = -59801110000000000000000000000000.0\n\t\tm_flKeyPointMaxSoundThreshold = 0.000000000000000000000000000000000000000045902\n\t\tm_reversalSoundThresholdSmall = 0.0\n\t\tm_reversalSoundThresholdMedium = 0.0\n\t\tm_reversalSoundThresholdLarge = 0.0\n\t}\n\tm_iszTravelSoundFwd = \"\"\n\tm_iszTravelSoundBack = \"\"\n\tm_iszReversalSoundSmall = \"\"\n\tm_iszReversalSoundMedium = \"\"\n\tm_iszReversalSoundLarge = \"\"\n}"
 					}
 				],
 				"members":
@@ -176511,7 +176511,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\t_class = \"SimpleConstraintSoundProfile\"\n\tm_flKeyPointMinSoundThreshold = -27242774000000000000000000.0\n\tm_flKeyPointMaxSoundThreshold = 0.000000000000000000000000000000000000000045765\n\tm_reversalSoundThresholdSmall = -0.0015457496\n\tm_reversalSoundThresholdMedium = 0.000000000000000000000000000000000000000045915\n\tm_reversalSoundThresholdLarge = -0.0015458353\n}"
+						"value": "{\n\t_class = \"SimpleConstraintSoundProfile\"\n\tm_flKeyPointMinSoundThreshold = 0.000000000000000000000000000000000000000000719\n\tm_flKeyPointMaxSoundThreshold = 0.0\n\tm_reversalSoundThresholdSmall = 26311616.0\n\tm_reversalSoundThresholdMedium = 0.000000000000000000000000000000000000000045916\n\tm_reversalSoundThresholdLarge = -62936780000000000000000000000000.0\n}"
 					}
 				],
 				"members":
@@ -177901,7 +177901,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_Name = \"\"\n\tm_nNameHash = 3921457908\n\tm_Nodes = [  ]\n\tm_InitPos = [  ]\n\tm_Gravity = [  ]\n\tm_GoalStrength = [  ]\n\tm_GoalDamping = [  ]\n}"
+						"value": "{\n\tm_Name = \"\"\n\tm_nNameHash = 4097618676\n\tm_Nodes = [  ]\n\tm_InitPos = [  ]\n\tm_Gravity = [  ]\n\tm_GoalStrength = [  ]\n\tm_GoalDamping = [  ]\n}"
 					}
 				],
 				"members":
@@ -180534,7 +180534,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_name = \"\"\n\tm_nameToken = \"\"\n\tm_flValue = 0.000000000000000000000000000000000000000045915\n}"
+						"value": "{\n\tm_name = \"\"\n\tm_nameToken = \"\"\n\tm_flValue = 0.000000000000000000000000000000000000000045916\n}"
 					}
 				],
 				"members":
@@ -182337,7 +182337,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_sGroupName = \"\"\n\tm_sEntityLumpName = \"\"\n\tm_vecWorldOffset = \n\t[\n\t\t0.000000000000000000000000000000000000000000001, 0.0, -0.000000000000000000000000000021587135, 0.000000000000000000000000000000000000000045765,\n\t\tnan, nan, 0.0, 0.0,\n\t\t0.0, -2.0000305, 0.0, 0.0,\n\t]\n\tm_bClientSpawnGroup = false\n\tm_bSuppressAllEntities = false\n}"
+						"value": "{\n\tm_sGroupName = \"\"\n\tm_sEntityLumpName = \"\"\n\tm_vecWorldOffset = \n\t[\n\t\t0.000000000000000000000000000000000000000000001, 0.0, -2478.713, 0.000000000000000000000000000000000000000045902,\n\t\tnan, nan, 0.0, 0.0,\n\t\t0.0, -2.0000305, 0.0, 0.0,\n\t]\n\tm_bClientSpawnGroup = false\n\tm_bSuppressAllEntities = false\n}"
 					}
 				],
 				"members":
@@ -185407,7 +185407,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_fldbGainOutput = -0.0015458334\n\tm_flRMSTimeMS = 0.000000000000000000000000000000000000000045915\n\tm_fldbKneeWidth = -28515392000000000000000000.0\n\tm_flDepth = 0.000000000000000000000000000000000000000045765\n\tm_flWetMix = 0.0\n\tm_flTimeScale = 0.0\n\tm_flLowCutoffFreq = 0.0\n\tm_flHighCutoffFreq = 0.0\n\tm_bPeakMode = false\n\tm_bandDesc = \n\t[\n\t\t{\n\t\t\tm_fldbGainInput = 0.0\n\t\t\tm_fldbGainOutput = 0.0\n\t\t\tm_fldbThresholdBelow = -40.0\n\t\t\tm_fldbThresholdAbove = -30.0\n\t\t\tm_flRatioBelow = 12.0\n\t\t\tm_flRatioAbove = 4.0\n\t\t\tm_flAttackTimeMS = 50.0\n\t\t\tm_flReleaseTimeMS = 200.0\n\t\t\tm_bEnable = false\n\t\t\tm_bSolo = false\n\t\t},\n\t\t{\n\t\t\tm_fldbGainInput = 0.0\n\t\t\tm_fldbGainOutput = 0.0\n\t\t\tm_fldbThresholdBelow = -40.0\n\t\t\tm_fldbThresholdAbove = -30.0\n\t\t\tm_flRatioBelow = 12.0\n\t\t\tm_flRatioAbove = 4.0\n\t\t\tm_flAttackTimeMS = 50.0\n\t\t\tm_flReleaseTimeMS = 200.0\n\t\t\tm_bEnable = false\n\t\t\tm_bSolo = false\n\t\t},\n\t\t{\n\t\t\tm_fldbGainInput = 0.0\n\t\t\tm_fldbGainOutput = 0.0\n\t\t\tm_fldbThresholdBelow = -40.0\n\t\t\tm_fldbThresholdAbove = -30.0\n\t\t\tm_flRatioBelow = 12.0\n\t\t\tm_flRatioAbove = 4.0\n\t\t\tm_flAttackTimeMS = 50.0\n\t\t\tm_flReleaseTimeMS = 200.0\n\t\t\tm_bEnable = false\n\t\t\tm_bSolo = false\n\t\t},\n\t]\n}"
+						"value": "{\n\tm_fldbGainOutput = 26313088.0\n\tm_flRMSTimeMS = 0.000000000000000000000000000000000000000045916\n\tm_fldbKneeWidth = -59801110000000000000000000000000.0\n\tm_flDepth = 0.000000000000000000000000000000000000000045902\n\tm_flWetMix = 0.0\n\tm_flTimeScale = 0.0\n\tm_flLowCutoffFreq = 0.0\n\tm_flHighCutoffFreq = 0.0\n\tm_bPeakMode = false\n\tm_bandDesc = \n\t[\n\t\t{\n\t\t\tm_fldbGainInput = 0.0\n\t\t\tm_fldbGainOutput = 0.0\n\t\t\tm_fldbThresholdBelow = -40.0\n\t\t\tm_fldbThresholdAbove = -30.0\n\t\t\tm_flRatioBelow = 12.0\n\t\t\tm_flRatioAbove = 4.0\n\t\t\tm_flAttackTimeMS = 50.0\n\t\t\tm_flReleaseTimeMS = 200.0\n\t\t\tm_bEnable = false\n\t\t\tm_bSolo = false\n\t\t},\n\t\t{\n\t\t\tm_fldbGainInput = 0.0\n\t\t\tm_fldbGainOutput = 0.0\n\t\t\tm_fldbThresholdBelow = -40.0\n\t\t\tm_fldbThresholdAbove = -30.0\n\t\t\tm_flRatioBelow = 12.0\n\t\t\tm_flRatioAbove = 4.0\n\t\t\tm_flAttackTimeMS = 50.0\n\t\t\tm_flReleaseTimeMS = 200.0\n\t\t\tm_bEnable = false\n\t\t\tm_bSolo = false\n\t\t},\n\t\t{\n\t\t\tm_fldbGainInput = 0.0\n\t\t\tm_fldbGainOutput = 0.0\n\t\t\tm_fldbThresholdBelow = -40.0\n\t\t\tm_fldbThresholdAbove = -30.0\n\t\t\tm_flRatioBelow = 12.0\n\t\t\tm_flRatioAbove = 4.0\n\t\t\tm_flAttackTimeMS = 50.0\n\t\t\tm_flReleaseTimeMS = 200.0\n\t\t\tm_bEnable = false\n\t\t\tm_bSolo = false\n\t\t},\n\t]\n}"
 					}
 				],
 				"members":
@@ -185561,7 +185561,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\t_class = \"CFootCycleMetricEvaluator\"\n\tm_means = [  ]\n\tm_standardDeviations = [  ]\n\tm_flWeight = -0.000000000000000000050498058\n\tm_nDimensionStartIndex = -1\n\tm_footIndices = [  ]\n}"
+						"value": "{\n\t_class = \"CFootCycleMetricEvaluator\"\n\tm_means = [  ]\n\tm_standardDeviations = [  ]\n\tm_flWeight = -243757150000000000000000.0\n\tm_nDimensionStartIndex = -1\n\tm_footIndices = [  ]\n}"
 					}
 				],
 				"multi_depth": 2,
@@ -186644,7 +186644,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\t_class = \"CSndSeqInstMidiSampler\"\n\tm_nType = \"eSndSeqInstMidiSampler\"\n\tm_bStopCurrentEvents = false\n\tm_flBPM = 120.0\n\tm_flBPMFactor = 2.0\n\tm_flBPMInvFactor = 0.5\n\tm_bIsSoundEvent = false\n\tm_bStopPrevious = true\n\tm_nMinNote = 0\n\tm_nMaxNote = 0\n\tm_flMinVelocityAtten = -0.0015457552\n\tm_flMaxVelocityAtten = 0.000000000000000000000000000000000000000045915\n\tm_flAttack = 0.0\n\tm_flRelease = 0.0\n\tm_bBeatEnvelopes = true\n\tm_nNextVoiceSlot = 0\n\tm_hSoundEventHash = 0\n}"
+						"value": "{\n\t_class = \"CSndSeqInstMidiSampler\"\n\tm_nType = \"eSndSeqInstMidiSampler\"\n\tm_bStopCurrentEvents = false\n\tm_flBPM = 120.0\n\tm_flBPMFactor = 2.0\n\tm_flBPMInvFactor = 0.5\n\tm_bIsSoundEvent = false\n\tm_bStopPrevious = true\n\tm_nMinNote = 0\n\tm_nMaxNote = 0\n\tm_flMinVelocityAtten = 26311744.0\n\tm_flMaxVelocityAtten = 0.000000000000000000000000000000000000000045916\n\tm_flAttack = 0.0\n\tm_flRelease = 0.0\n\tm_bBeatEnvelopes = true\n\tm_nNextVoiceSlot = 0\n\tm_hSoundEventHash = 0\n}"
 					},
 					{
 						"name": "MPropertyFriendlyName",
@@ -187610,7 +187610,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\t_class = \"CStepsRemainingMetricEvaluator\"\n\tm_means = [  ]\n\tm_standardDeviations = [  ]\n\tm_flWeight = -0.00000000000000020808942\n\tm_nDimensionStartIndex = -1\n\tm_footIndices = [  ]\n\tm_flMinStepsRemaining = 0.0\n}"
+						"value": "{\n\t_class = \"CStepsRemainingMetricEvaluator\"\n\tm_means = [  ]\n\tm_standardDeviations = [  ]\n\tm_flWeight = -1963661700000000000000000.0\n\tm_nDimensionStartIndex = -1\n\tm_footIndices = [  ]\n\tm_flMinStepsRemaining = 0.0\n}"
 					}
 				],
 				"multi_depth": 2,
@@ -189192,7 +189192,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_vAccumulatedRootMotion = [ 0.0, 0.0, 0.0 ]\n\tm_angAccumulatedRootMotionRotation = [ 0.0, 0.0, 0.0 ]\n\tm_vSrc = null\n\tm_angSrc = [ 0.0, 0.000000000000000000000000000000000015290609, 0.000000000000000000000000000000000000000045674 ]\n\tm_angCurrent = [ -0.001545962, 0.000000000000000000000000000000000000000045915, -0.001545778 ]\n\tm_flLockedSpeed = -1.0\n\tm_flAngRate = 0.0\n\tm_flDuration = 0.0\n\tm_flStartTime = null\n\tm_bActive = false\n\tm_bTeleportOnEnd = false\n\tm_bIgnoreRotation = false\n\tm_bSuccess = true\n\tm_nForcedCrouchState = \"FORCEDCROUCH_NONE\"\n\tm_bIgnoreCollisions = false\n\tm_vDest = [ 0.000000000000000000000000000000000015290609, 0.000000000000000000000000000000000000000045674, 0.00000000000000000000000000000000000000000001 ]\n\tm_angDst = [ 0.000000000000000000000000000000000000000045674, -0.0015464639, 0.000000000000000000000000000000000000000045915 ]\n\tm_hDestEntity = null\n}"
+						"value": "{\n\tm_vAccumulatedRootMotion = [ 0.0, 0.0, 0.0 ]\n\tm_angAccumulatedRootMotionRotation = [ 0.0, 0.0, 0.0 ]\n\tm_vSrc = null\n\tm_angSrc = [ 0.0, 127563130000000000.0, 0.00000000000000000000000000000000000000004581 ]\n\tm_angCurrent = [ 26315296.0, 0.000000000000000000000000000000000000000045916, 26312136.0 ]\n\tm_flLockedSpeed = -1.0\n\tm_flAngRate = 0.0\n\tm_flDuration = 0.0\n\tm_flStartTime = null\n\tm_bActive = false\n\tm_bTeleportOnEnd = false\n\tm_bIgnoreRotation = false\n\tm_bSuccess = true\n\tm_nForcedCrouchState = \"FORCEDCROUCH_NONE\"\n\tm_bIgnoreCollisions = false\n\tm_vDest = [ 127563130000000000.0, 0.00000000000000000000000000000000000000004581, 0.00000000000000000000000000000000000000000001 ]\n\tm_angDst = [ 0.00000000000000000000000000000000000000004581, 26323920.0, 0.000000000000000000000000000000000000000045916 ]\n\tm_hDestEntity = null\n}"
 					}
 				],
 				"members":
@@ -189646,7 +189646,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\t_class = \"CFootAdjustmentUpdateNode\"\n\tm_nodePath = \n\t{\n\t\tm_path = \n\t\t[\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t]\n\t\tm_nCount = 0\n\t}\n\tm_networkMode = \"ServerAuthoritative\"\n\tm_name = \"\"\n\tm_pChildNode = \n\t{\n\t\tm_nodeIndex = -1\n\t}\n\tm_clips = [  ]\n\tm_hBasePoseCacheHandle = \n\t{\n\t\tm_nIndex = 65535\n\t\tm_eType = \"POSETYPE_INVALID\"\n\t}\n\tm_facingTarget = \n\t{\n\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\tm_index = 255\n\t}\n\tm_flTurnTimeMin = nan\n\tm_flTurnTimeMax = 0.000000000000000000000000000000000000000045765\n\tm_flStepHeightMax = 0.0\n\tm_flStepHeightMaxAngle = -2.0000305\n\tm_bResetChild = false\n\tm_bAnimationDriven = false\n}"
+						"value": "{\n\t_class = \"CFootAdjustmentUpdateNode\"\n\tm_nodePath = \n\t{\n\t\tm_path = \n\t\t[\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t]\n\t\tm_nCount = 0\n\t}\n\tm_networkMode = \"ServerAuthoritative\"\n\tm_name = \"\"\n\tm_pChildNode = \n\t{\n\t\tm_nodeIndex = -1\n\t}\n\tm_clips = [  ]\n\tm_hBasePoseCacheHandle = \n\t{\n\t\tm_nIndex = 65535\n\t\tm_eType = \"POSETYPE_INVALID\"\n\t}\n\tm_facingTarget = \n\t{\n\t\tm_type = \"ANIMPARAM_UNKNOWN\"\n\t\tm_index = 255\n\t}\n\tm_flTurnTimeMin = nan\n\tm_flTurnTimeMax = 0.000000000000000000000000000000000000000045902\n\tm_flStepHeightMax = 0.0\n\tm_flStepHeightMaxAngle = -2.0000305\n\tm_bResetChild = false\n\tm_bAnimationDriven = false\n}"
 					}
 				],
 				"multi_depth": 3,
@@ -189800,7 +189800,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\t_class = \"CVMixDynamics3BandProcessorDesc\"\n\tm_name = \"\"\n\tm_nChannels = -1\n\tm_flxfade = 0.1\n\tm_desc = \n\t{\n\t\tm_fldbGainOutput = 0.0\n\t\tm_flRMSTimeMS = -0.0015458334\n\t\tm_fldbKneeWidth = 0.000000000000000000000000000000000000000045915\n\t\tm_flDepth = -28515392000000000000000000.0\n\t\tm_flWetMix = 0.000000000000000000000000000000000000000045765\n\t\tm_flTimeScale = 0.0\n\t\tm_flLowCutoffFreq = 0.0\n\t\tm_flHighCutoffFreq = nan\n\t\tm_bPeakMode = true\n\t\tm_bandDesc = \n\t\t[\n\t\t\t{\n\t\t\t\tm_fldbGainInput = 0.0\n\t\t\t\tm_fldbGainOutput = 0.0\n\t\t\t\tm_fldbThresholdBelow = -40.0\n\t\t\t\tm_fldbThresholdAbove = -30.0\n\t\t\t\tm_flRatioBelow = 12.0\n\t\t\t\tm_flRatioAbove = 4.0\n\t\t\t\tm_flAttackTimeMS = 50.0\n\t\t\t\tm_flReleaseTimeMS = 200.0\n\t\t\t\tm_bEnable = false\n\t\t\t\tm_bSolo = false\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_fldbGainInput = 0.0\n\t\t\t\tm_fldbGainOutput = 0.0\n\t\t\t\tm_fldbThresholdBelow = -40.0\n\t\t\t\tm_fldbThresholdAbove = -30.0\n\t\t\t\tm_flRatioBelow = 12.0\n\t\t\t\tm_flRatioAbove = 4.0\n\t\t\t\tm_flAttackTimeMS = 50.0\n\t\t\t\tm_flReleaseTimeMS = 200.0\n\t\t\t\tm_bEnable = false\n\t\t\t\tm_bSolo = false\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_fldbGainInput = 0.0\n\t\t\t\tm_fldbGainOutput = 0.0\n\t\t\t\tm_fldbThresholdBelow = -40.0\n\t\t\t\tm_fldbThresholdAbove = -30.0\n\t\t\t\tm_flRatioBelow = 12.0\n\t\t\t\tm_flRatioAbove = 4.0\n\t\t\t\tm_flAttackTimeMS = 50.0\n\t\t\t\tm_flReleaseTimeMS = 200.0\n\t\t\t\tm_bEnable = false\n\t\t\t\tm_bSolo = false\n\t\t\t},\n\t\t]\n\t}\n}"
+						"value": "{\n\t_class = \"CVMixDynamics3BandProcessorDesc\"\n\tm_name = \"\"\n\tm_nChannels = -1\n\tm_flxfade = 0.1\n\tm_desc = \n\t{\n\t\tm_fldbGainOutput = 0.0\n\t\tm_flRMSTimeMS = 26313088.0\n\t\tm_fldbKneeWidth = 0.000000000000000000000000000000000000000045916\n\t\tm_flDepth = -59801110000000000000000000000000.0\n\t\tm_flWetMix = 0.000000000000000000000000000000000000000045902\n\t\tm_flTimeScale = 0.0\n\t\tm_flLowCutoffFreq = 0.0\n\t\tm_flHighCutoffFreq = nan\n\t\tm_bPeakMode = true\n\t\tm_bandDesc = \n\t\t[\n\t\t\t{\n\t\t\t\tm_fldbGainInput = 0.0\n\t\t\t\tm_fldbGainOutput = 0.0\n\t\t\t\tm_fldbThresholdBelow = -40.0\n\t\t\t\tm_fldbThresholdAbove = -30.0\n\t\t\t\tm_flRatioBelow = 12.0\n\t\t\t\tm_flRatioAbove = 4.0\n\t\t\t\tm_flAttackTimeMS = 50.0\n\t\t\t\tm_flReleaseTimeMS = 200.0\n\t\t\t\tm_bEnable = false\n\t\t\t\tm_bSolo = false\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_fldbGainInput = 0.0\n\t\t\t\tm_fldbGainOutput = 0.0\n\t\t\t\tm_fldbThresholdBelow = -40.0\n\t\t\t\tm_fldbThresholdAbove = -30.0\n\t\t\t\tm_flRatioBelow = 12.0\n\t\t\t\tm_flRatioAbove = 4.0\n\t\t\t\tm_flAttackTimeMS = 50.0\n\t\t\t\tm_flReleaseTimeMS = 200.0\n\t\t\t\tm_bEnable = false\n\t\t\t\tm_bSolo = false\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_fldbGainInput = 0.0\n\t\t\t\tm_fldbGainOutput = 0.0\n\t\t\t\tm_fldbThresholdBelow = -40.0\n\t\t\t\tm_fldbThresholdAbove = -30.0\n\t\t\t\tm_flRatioBelow = 12.0\n\t\t\t\tm_flRatioAbove = 4.0\n\t\t\t\tm_flAttackTimeMS = 50.0\n\t\t\t\tm_flReleaseTimeMS = 200.0\n\t\t\t\tm_bEnable = false\n\t\t\t\tm_bSolo = false\n\t\t\t},\n\t\t]\n\t}\n}"
 					}
 				],
 				"multi_depth": 2,
@@ -193117,7 +193117,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\t_class = \"CStopAtGoalUpdateNode\"\n\tm_nodePath = \n\t{\n\t\tm_path = \n\t\t[\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t]\n\t\tm_nCount = 0\n\t}\n\tm_networkMode = \"ServerAuthoritative\"\n\tm_name = \"\"\n\tm_pChildNode = \n\t{\n\t\tm_nodeIndex = -1\n\t}\n\tm_flOuterRadius = 0.000000000000000000000000000000000000000045765\n\tm_flInnerRadius = -0.000000000000000000000000000021558824\n\tm_flMaxScale = 0.000000000000000000000000000000000000000045765\n\tm_flMinScale = -0.0015458465\n\tm_damping = \n\t{\n\t\t_class = \"CAnimInputDamping\"\n\t\tm_speedFunction = \"NoDamping\"\n\t\tm_fSpeedScale = 1.0\n\t\tm_fFallingSpeedScale = 1.0\n\t}\n}"
+						"value": "{\n\t_class = \"CStopAtGoalUpdateNode\"\n\tm_nodePath = \n\t{\n\t\tm_path = \n\t\t[\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t]\n\t\tm_nCount = 0\n\t}\n\tm_networkMode = \"ServerAuthoritative\"\n\tm_name = \"\"\n\tm_pChildNode = \n\t{\n\t\tm_nodeIndex = -1\n\t}\n\tm_flOuterRadius = 0.0\n\tm_flInnerRadius = 0.000000000000000000000000000000000000000005785\n\tm_flMaxScale = 0.0\n\tm_flMinScale = 0.00000000000000000000000000000000000000000579\n\tm_damping = \n\t{\n\t\t_class = \"CAnimInputDamping\"\n\t\tm_speedFunction = \"NoDamping\"\n\t\tm_fSpeedScale = 1.0\n\t\tm_fFallingSpeedScale = 1.0\n\t}\n}"
 					}
 				],
 				"multi_depth": 3,
@@ -194074,7 +194074,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_strParentBone = \"\"\n\tm_transform = \n\t[\n\t\t-0.0015457552, 0.000000000000000000000000000000000000000045915, 0.000030237774, 0.000000000000000000000000000000000000000001473,\n\t\t-0.0015457552, 0.000000000000000000000000000000000000000045915, -30036386000000000000000000.0, 0.000000000000000000000000000000000000000045765,\n\t]\n\tm_nJiggleParent = 939370272\n\tm_jiggleBone = \n\t{\n\t\tm_nFlags = 0\n\t\tm_flLength = 1.0\n\t\tm_flTipMass = 0.0\n\t\tm_flYawStiffness = 0.0\n\t\tm_flYawDamping = 0.0\n\t\tm_flPitchStiffness = 0.0\n\t\tm_flPitchDamping = 0.0\n\t\tm_flAlongStiffness = 0.0\n\t\tm_flAlongDamping = 0.0\n\t\tm_flAngleLimit = 0.0\n\t\tm_flMinYaw = 0.0\n\t\tm_flMaxYaw = 0.0\n\t\tm_flYawFriction = 0.0\n\t\tm_flYawBounce = 0.0\n\t\tm_flMinPitch = 0.0\n\t\tm_flMaxPitch = 0.0\n\t\tm_flPitchFriction = 0.0\n\t\tm_flPitchBounce = 0.0\n\t\tm_flBaseMass = 0.0\n\t\tm_flBaseStiffness = 0.0\n\t\tm_flBaseDamping = 0.0\n\t\tm_flBaseMinLeft = 0.0\n\t\tm_flBaseMaxLeft = 0.0\n\t\tm_flBaseLeftFriction = 0.0\n\t\tm_flBaseMinUp = 0.0\n\t\tm_flBaseMaxUp = 0.0\n\t\tm_flBaseUpFriction = 0.0\n\t\tm_flBaseMinForward = 0.0\n\t\tm_flBaseMaxForward = 0.0\n\t\tm_flBaseForwardFriction = 0.0\n\t\tm_flRadius0 = 1.0\n\t\tm_flRadius1 = 1.0\n\t\tm_vPoint0 = [ 0.0, 0.0, 0.0 ]\n\t\tm_vPoint1 = [ 10.0, 0.0, 0.0 ]\n\t\tm_nCollisionMask = 65535\n\t}\n}"
+						"value": "{\n\tm_strParentBone = \"\"\n\tm_transform = \n\t[\n\t\t26311744.0, 0.000000000000000000000000000000000000000045916, -0.00000000000000000000000000000000031977634, 0.000000000000000000000000000000000000000001481,\n\t\t26311744.0, 0.000000000000000000000000000000000000000045916, -62990867000000000000000000000000.0, 0.000000000000000000000000000000000000000045902,\n\t]\n\tm_nJiggleParent = 2278852384\n\tm_jiggleBone = \n\t{\n\t\tm_nFlags = 0\n\t\tm_flLength = 1.0\n\t\tm_flTipMass = 0.0\n\t\tm_flYawStiffness = 0.0\n\t\tm_flYawDamping = 0.0\n\t\tm_flPitchStiffness = 0.0\n\t\tm_flPitchDamping = 0.0\n\t\tm_flAlongStiffness = 0.0\n\t\tm_flAlongDamping = 0.0\n\t\tm_flAngleLimit = 0.0\n\t\tm_flMinYaw = 0.0\n\t\tm_flMaxYaw = 0.0\n\t\tm_flYawFriction = 0.0\n\t\tm_flYawBounce = 0.0\n\t\tm_flMinPitch = 0.0\n\t\tm_flMaxPitch = 0.0\n\t\tm_flPitchFriction = 0.0\n\t\tm_flPitchBounce = 0.0\n\t\tm_flBaseMass = 0.0\n\t\tm_flBaseStiffness = 0.0\n\t\tm_flBaseDamping = 0.0\n\t\tm_flBaseMinLeft = 0.0\n\t\tm_flBaseMaxLeft = 0.0\n\t\tm_flBaseLeftFriction = 0.0\n\t\tm_flBaseMinUp = 0.0\n\t\tm_flBaseMaxUp = 0.0\n\t\tm_flBaseUpFriction = 0.0\n\t\tm_flBaseMinForward = 0.0\n\t\tm_flBaseMaxForward = 0.0\n\t\tm_flBaseForwardFriction = 0.0\n\t\tm_flRadius0 = 1.0\n\t\tm_flRadius1 = 1.0\n\t\tm_vPoint0 = [ 0.0, 0.0, 0.0 ]\n\t\tm_vPoint1 = [ 10.0, 0.0, 0.0 ]\n\t\tm_nCollisionMask = 65535\n\t}\n}"
 					}
 				],
 				"members":
@@ -198228,7 +198228,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_flFireTime = null\n\tm_targetType = -1518595384\n\tm_pTarget = \"\"\n\tm_pTargetInput = \"\"\n\tm_hActivator = null\n\tm_hCaller = null\n\tm_hEntTarget = null\n}"
+						"value": "{\n\tm_flFireTime = null\n\tm_targetType = -405007672\n\tm_pTarget = \"\"\n\tm_pTargetInput = \"\"\n\tm_hActivator = null\n\tm_hCaller = null\n\tm_hEntTarget = null\n}"
 					}
 				],
 				"members":
@@ -198411,7 +198411,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\t_class = \"CVMixBoxverbProcessorDesc\"\n\tm_name = \"\"\n\tm_nChannels = -1\n\tm_flxfade = 0.1\n\tm_desc = \n\t{\n\t\tm_flSizeMax = 0.00000000000000000000000000000000000000000001\n\t\tm_flSizeMin = -0.0015457682\n\t\tm_flComplexity = 0.000000000000000000000000000000000000000045915\n\t\tm_flDiffusion = 0.0\n\t\tm_flModDepth = 0.0\n\t\tm_flModRate = 0.000000000000000000000000000000000000000000001\n\t\tm_bParallel = false\n\t\tm_filterType = \n\t\t{\n\t\t\tm_nFilterType = \"FILTER_UNKNOWN\"\n\t\t\tm_nFilterSlope = \"FILTER_SLOPE_12dB\"\n\t\t\tm_bEnabled = true\n\t\t\tm_fldbGain = 0.0\n\t\t\tm_flCutoffFreq = 1000.0\n\t\t\tm_flQ = 0.70710677\n\t\t}\n\t\tm_flWidth = 0.000000000000000000000000000000000000000012921\n\t\tm_flHeight = 0.0\n\t\tm_flDepth = 0.0\n\t\tm_flFeedbackScale = -2.0000305\n\t\tm_flFeedbackWidth = 0.0\n\t\tm_flFeedbackHeight = 0.0\n\t\tm_flFeedbackDepth = 72701056000000000000000000000000.0\n\t\tm_flOutputGain = 39754317000000000000000000000.0\n\t\tm_flTaps = 17408662000000000000000000000.0\n\t}\n}"
+						"value": "{\n\t_class = \"CVMixBoxverbProcessorDesc\"\n\tm_name = \"\"\n\tm_nChannels = -1\n\tm_flxfade = 0.1\n\tm_desc = \n\t{\n\t\tm_flSizeMax = 0.00000000000000000000000000000000000000000001\n\t\tm_flSizeMin = 26311968.0\n\t\tm_flComplexity = 0.000000000000000000000000000000000000000045916\n\t\tm_flDiffusion = 0.0\n\t\tm_flModDepth = 0.0\n\t\tm_flModRate = 0.000000000000000000000000000000000000000000001\n\t\tm_bParallel = false\n\t\tm_filterType = \n\t\t{\n\t\t\tm_nFilterType = \"FILTER_UNKNOWN\"\n\t\t\tm_nFilterSlope = \"FILTER_SLOPE_12dB\"\n\t\t\tm_bEnabled = true\n\t\t\tm_fldbGain = 0.0\n\t\t\tm_flCutoffFreq = 1000.0\n\t\t\tm_flQ = 0.70710677\n\t\t}\n\t\tm_flWidth = 0.000000000000000000000000000000000000000012921\n\t\tm_flHeight = 0.0\n\t\tm_flDepth = 0.0\n\t\tm_flFeedbackScale = -2.0000305\n\t\tm_flFeedbackWidth = 0.0\n\t\tm_flFeedbackHeight = 0.0\n\t\tm_flFeedbackDepth = 72701056000000000000000000000000.0\n\t\tm_flOutputGain = 39754317000000000000000000000.0\n\t\tm_flTaps = 17408662000000000000000000000.0\n\t}\n}"
 					}
 				],
 				"multi_depth": 2,
@@ -198725,7 +198725,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\t_class = \"CFootPinningUpdateNode\"\n\tm_nodePath = \n\t{\n\t\tm_path = \n\t\t[\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t]\n\t\tm_nCount = 0\n\t}\n\tm_networkMode = \"ServerAuthoritative\"\n\tm_name = \"\"\n\tm_pChildNode = \n\t{\n\t\tm_nodeIndex = -1\n\t}\n\tm_poseOpFixedData = \n\t{\n\t\tm_footInfo = [  ]\n\t\tm_flBlendTime = -0.0015457682\n\t\tm_flLockBreakDistance = 0.000000000000000000000000000000000000000045915\n\t\tm_flMaxLegTwist = 25.0\n\t\tm_nHipBoneIndex = -1\n\t\tm_bApplyLegTwistLimits = false\n\t\tm_bApplyFootRotationLimits = false\n\t}\n\tm_eTimingSource = -1882579000\n\tm_params = [  ]\n\tm_bResetChild = false\n}"
+						"value": "{\n\t_class = \"CFootPinningUpdateNode\"\n\tm_nodePath = \n\t{\n\t\tm_path = \n\t\t[\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t\t{\n\t\t\t\tm_id = 4294967295\n\t\t\t},\n\t\t]\n\t\tm_nCount = 0\n\t}\n\tm_networkMode = \"ServerAuthoritative\"\n\tm_name = \"\"\n\tm_pChildNode = \n\t{\n\t\tm_nodeIndex = -1\n\t}\n\tm_poseOpFixedData = \n\t{\n\t\tm_footInfo = [  ]\n\t\tm_flBlendTime = 26311968.0\n\t\tm_flLockBreakDistance = 0.000000000000000000000000000000000000000045916\n\t\tm_flMaxLegTwist = 25.0\n\t\tm_nHipBoneIndex = -1\n\t\tm_bApplyLegTwistLimits = false\n\t\tm_bApplyFootRotationLimits = false\n\t}\n\tm_eTimingSource = -989192248\n\tm_params = [  ]\n\tm_bResetChild = false\n}"
 					}
 				],
 				"multi_depth": 3,
@@ -199974,7 +199974,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\t_class = \"CBlockSelectionMetricEvaluator\"\n\tm_means = [ 0.008602291 ]\n\tm_standardDeviations = [ 0.008602321 ]\n\tm_flWeight = 0.0\n\tm_nDimensionStartIndex = -1\n}"
+						"value": "{\n\t_class = \"CBlockSelectionMetricEvaluator\"\n\tm_means = [ -0.00000000000000000000000000000000033653962 ]\n\tm_standardDeviations = [ -0.00000000000000000000000000000000033654036 ]\n\tm_flWeight = 0.0\n\tm_nDimensionStartIndex = -1\n}"
 					}
 				],
 				"multi_depth": 2,
@@ -206015,7 +206015,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_vTargetPosition = [ 0.0, 0.0, 0.0 ]\n\tm_flTargetFacing = 0.0\n\tm_flInterpEndTime = -1.0\n\tm_weights = [ 0.000000000000000000000000000000000000000045915, 0.0, 0.0, 0.0 ]\n\tm_sequences = \n\t[\n\t\t{\n\t\t\tm_hSequence = -1\n\t\t\tm_cycle = \n\t\t\t{\n\t\t\t\tm_flCycleUnclamped = 0.0\n\t\t\t\tm_flPrevCycleUnclamped = 0.0\n\t\t\t\tm_flCyclesPerSecond = 1.0\n\t\t\t\tm_flCycleZeroTime = 0.0\n\t\t\t\tm_resetCount = 0\n\t\t\t}\n\t\t},\n\t\t{\n\t\t\tm_hSequence = -1\n\t\t\tm_cycle = \n\t\t\t{\n\t\t\t\tm_flCycleUnclamped = 0.0\n\t\t\t\tm_flPrevCycleUnclamped = 0.0\n\t\t\t\tm_flCyclesPerSecond = 1.0\n\t\t\t\tm_flCycleZeroTime = 0.0\n\t\t\t\tm_resetCount = 0\n\t\t\t}\n\t\t},\n\t\t{\n\t\t\tm_hSequence = -1\n\t\t\tm_cycle = \n\t\t\t{\n\t\t\t\tm_flCycleUnclamped = 0.0\n\t\t\t\tm_flPrevCycleUnclamped = 0.0\n\t\t\t\tm_flCyclesPerSecond = 1.0\n\t\t\t\tm_flCycleZeroTime = 0.0\n\t\t\t\tm_resetCount = 0\n\t\t\t}\n\t\t},\n\t\t{\n\t\t\tm_hSequence = -1\n\t\t\tm_cycle = \n\t\t\t{\n\t\t\t\tm_flCycleUnclamped = 0.0\n\t\t\t\tm_flPrevCycleUnclamped = 0.0\n\t\t\t\tm_flCyclesPerSecond = 1.0\n\t\t\t\tm_flCycleZeroTime = 0.0\n\t\t\t\tm_resetCount = 0\n\t\t\t}\n\t\t},\n\t]\n\tm_currentSequenceIndex = 0\n\tm_currentSequenceData = 0\n\tm_flFadeInTime = 0.2\n\tm_flFadeOutTime = 0.2\n\tm_flForcedCycle = -1.0\n\tm_bResetPending = false\n\tm_SequenceCycleZeroTime = 0.0\n}"
+						"value": "{\n\tm_vTargetPosition = [ 0.0, 0.0, 0.0 ]\n\tm_flTargetFacing = 0.0\n\tm_flInterpEndTime = -1.0\n\tm_weights = [ 0.000000000000000000000000000000000000000045916, 0.0, 0.0, 0.0 ]\n\tm_sequences = \n\t[\n\t\t{\n\t\t\tm_hSequence = -1\n\t\t\tm_cycle = \n\t\t\t{\n\t\t\t\tm_flCycleUnclamped = 0.0\n\t\t\t\tm_flPrevCycleUnclamped = 0.0\n\t\t\t\tm_flCyclesPerSecond = 1.0\n\t\t\t\tm_flCycleZeroTime = 0.0\n\t\t\t\tm_resetCount = 0\n\t\t\t}\n\t\t},\n\t\t{\n\t\t\tm_hSequence = -1\n\t\t\tm_cycle = \n\t\t\t{\n\t\t\t\tm_flCycleUnclamped = 0.0\n\t\t\t\tm_flPrevCycleUnclamped = 0.0\n\t\t\t\tm_flCyclesPerSecond = 1.0\n\t\t\t\tm_flCycleZeroTime = 0.0\n\t\t\t\tm_resetCount = 0\n\t\t\t}\n\t\t},\n\t\t{\n\t\t\tm_hSequence = -1\n\t\t\tm_cycle = \n\t\t\t{\n\t\t\t\tm_flCycleUnclamped = 0.0\n\t\t\t\tm_flPrevCycleUnclamped = 0.0\n\t\t\t\tm_flCyclesPerSecond = 1.0\n\t\t\t\tm_flCycleZeroTime = 0.0\n\t\t\t\tm_resetCount = 0\n\t\t\t}\n\t\t},\n\t\t{\n\t\t\tm_hSequence = -1\n\t\t\tm_cycle = \n\t\t\t{\n\t\t\t\tm_flCycleUnclamped = 0.0\n\t\t\t\tm_flPrevCycleUnclamped = 0.0\n\t\t\t\tm_flCyclesPerSecond = 1.0\n\t\t\t\tm_flCycleZeroTime = 0.0\n\t\t\t\tm_resetCount = 0\n\t\t\t}\n\t\t},\n\t]\n\tm_currentSequenceIndex = 0\n\tm_currentSequenceData = 0\n\tm_flFadeInTime = 0.2\n\tm_flFadeOutTime = 0.2\n\tm_flForcedCycle = -1.0\n\tm_bResetPending = false\n\tm_SequenceCycleZeroTime = 0.0\n}"
 					}
 				],
 				"members":
@@ -206226,7 +206226,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_saveId = 0\n\tm_version = 0\n\tm_nConnectionCount = 0\n\tm_nMapVersion = 0\n\tm_sSpawnGroupName = \"\"\n\tm_vecWorldOffset = \n\t[\n\t\t0.000000000000000000000000000000000000000000001, 0.0, -0.00000000000000024586592, 0.000000000000000000000000000000000000000045765,\n\t\t-1.0, 0.000000000000000000000000000000000000000045915, 0.0, 0.0,\n\t\t0.0, -2.0000305, 0.0, 0.0,\n\t]\n\tm_flSaveTime = 0.0\n}"
+						"value": "{\n\tm_saveId = 0\n\tm_version = 0\n\tm_nConnectionCount = 0\n\tm_nMapVersion = 0\n\tm_sSpawnGroupName = \"\"\n\tm_vecWorldOffset = \n\t[\n\t\t0.000000000000000000000000000000000000000000001, 0.0, -2245315800000000000000000.0, 0.000000000000000000000000000000000000000045902,\n\t\t-1.0, 0.000000000000000000000000000000000000000045916, 0.0, 0.0,\n\t\t0.0, -2.0000305, 0.0, 0.0,\n\t]\n\tm_flSaveTime = 0.0\n}"
 					}
 				],
 				"members":
@@ -207595,7 +207595,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_vPosition = [ -0.0015457328, 0.000000000000000000000000000000000000000045915, -0.0015457682 ]\n\tm_flDirection = 0.000000000000000000000000000000000000000045915\n}"
+						"value": "{\n\tm_vPosition = [ 26311360.0, 0.000000000000000000000000000000000000000045916, 26311968.0 ]\n\tm_flDirection = 0.000000000000000000000000000000000000000045916\n}"
 					}
 				],
 				"members":
@@ -209583,7 +209583,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_flRealTime = 1025070300.0\n\tm_rootToWorld = \n\t[\n\t\t0.0, -2.000061, 0.0, 0.0,\n\t\t0.0, 0.0, -0.000000000000000000000000000018803516, 0.000000000000000000000000000000000000000045765,\n\t\t17657569000000000000000.0, 0.0, 0.0, 0.0,\n\t]\n\tm_bBonesInWorldSpace = false\n\tm_boneSetupMask = [  ]\n\tm_boneTransforms = [  ]\n\tm_flexControllers = [  ]\n\tm_SnapshotType = \"ANIMATION_SNAPSHOT_SERVER_SIMULATION\"\n\tm_bHasDecodeDump = false\n\tm_DecodeDump = \n\t{\n\t\tm_nEntityIndex = 1065353216\n\t\tm_modelName = \"\"\n\t\tm_poseParams = [  ]\n\t\tm_decodeOps = [  ]\n\t\tm_internalOps = [  ]\n\t\tm_decodedAnims = [  ]\n\t}\n\tm_nEntIndex = -370397824\n\tm_modelName = \"\"\n}"
+						"value": "{\n\tm_flRealTime = 1025070300.0\n\tm_rootToWorld = \n\t[\n\t\t0.0, -2.000061, 0.0, 0.0,\n\t\t0.0, 0.0, -2037.5225, 0.000000000000000000000000000000000000000045902,\n\t\t0.0, 0.0, 0.0, 0.0,\n\t]\n\tm_bBonesInWorldSpace = false\n\tm_boneSetupMask = [  ]\n\tm_boneTransforms = [  ]\n\tm_flexControllers = [  ]\n\tm_SnapshotType = \"ANIMATION_SNAPSHOT_SERVER_SIMULATION\"\n\tm_bHasDecodeDump = false\n\tm_DecodeDump = \n\t{\n\t\tm_nEntityIndex = 1065353216\n\t\tm_modelName = \"\"\n\t\tm_poseParams = [  ]\n\t\tm_decodeOps = [  ]\n\t\tm_internalOps = [  ]\n\t\tm_decodedAnims = [  ]\n\t}\n\tm_nEntIndex = -194237056\n\tm_modelName = \"\"\n}"
 					}
 				],
 				"multi_depth": 2,
@@ -217283,7 +217283,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_nCollisionAttributeIndex = 0\n\tm_nSurfacePropertyIndex = 0\n\tm_UserFriendlyName = \"\"\n\tm_bUserFriendlyNameSealed = false\n\tm_bUserFriendlyNameLong = false\n\tm_nToolMaterialHash = 0\n\tm_Compound = \n\t{\n\t\tm_Spheres = [  ]\n\t\tm_Capsules = [  ]\n\t\tm_Hulls = [  ]\n\t\tm_Meshes = [  ]\n\t\tm_Bounds = \n\t\t{\n\t\t\tm_vMinBounds = [ -0.000000000000000000000000000020899, 0.000000000000000000000000000000000000000045765, -0.00000000000000021558005 ]\n\t\t\tm_vMaxBounds = [ 0.000000000000000000000000000000000000000045765, -0.00000000000000021557984, 0.000000000000000000000000000000000000000045765 ]\n\t\t}\n\t\tm_vOrthographicAreas = [ 0.0, 0.0, 0.0 ]\n\t\tm_flSurfaceArea = 0.0\n\t\tm_flVolume = 0.0\n\t}\n}"
+						"value": "{\n\tm_nCollisionAttributeIndex = 0\n\tm_nSurfacePropertyIndex = 0\n\tm_UserFriendlyName = \"\"\n\tm_bUserFriendlyNameSealed = false\n\tm_bUserFriendlyNameLong = false\n\tm_nToolMaterialHash = 0\n\tm_Compound = \n\t{\n\t\tm_Spheres = [  ]\n\t\tm_Capsules = [  ]\n\t\tm_Hulls = [  ]\n\t\tm_Meshes = [  ]\n\t\tm_Bounds = \n\t\t{\n\t\t\tm_vMinBounds = [ -2367.0566, 0.000000000000000000000000000000000000000045902, -2045227400000000000000000.0 ]\n\t\t\tm_vMaxBounds = [ 0.000000000000000000000000000000000000000045902, -2045225100000000000000000.0, 0.000000000000000000000000000000000000000045902 ]\n\t\t}\n\t\tm_vOrthographicAreas = [ 0.0, 0.0, 0.0 ]\n\t\tm_flSurfaceArea = 0.0\n\t\tm_flVolume = 0.0\n\t}\n}"
 					}
 				],
 				"multi_depth": 2,
@@ -243664,7 +243664,7 @@
 			"name": "CCSCustomHudLayoutState",
 			"scope": "libserver.so",
 			"project": "server",
-			"size": 416,
+			"size": 408,
 			"alignment": 255,
 			"traits":
 			{
@@ -243677,8 +243677,22 @@
 				"members":
 				[
 					{
-						"name": "m_bInputCaptureEnabled",
+						"name": "m_playerSlot",
 						"offset": 48,
+						"traits":
+						{
+							"subtype":
+							{
+								"type": "atomic",
+								"name": "CPlayerSlot",
+								"size": 4,
+								"alignment": 4
+							}
+						}
+					},
+					{
+						"name": "m_bInputCaptureEnabled",
+						"offset": 52,
 						"traits":
 						{
 							"subtype":
@@ -243727,20 +243741,6 @@
 										"ref_idx": 1616
 									}
 								]
-							}
-						}
-					},
-					{
-						"name": "m_playerSlot",
-						"offset": 408,
-						"traits":
-						{
-							"subtype":
-							{
-								"type": "atomic",
-								"name": "CPlayerSlot",
-								"size": 4,
-								"alignment": 4
 							}
 						}
 					}
@@ -271105,7 +271105,7 @@
 			"name": "CCSCustomHudLayout",
 			"scope": "libserver.so",
 			"project": "server",
-			"size": 2768,
+			"size": 2760,
 			"alignment": 8,
 			"traits":
 			{
@@ -271177,7 +271177,7 @@
 					},
 					{
 						"name": "m_vecPanelIds",
-						"offset": 2456,
+						"offset": 2448,
 						"traits":
 						{
 							"subtype":
@@ -271200,7 +271200,7 @@
 					},
 					{
 						"name": "m_vecClassNames",
-						"offset": 2480,
+						"offset": 2472,
 						"traits":
 						{
 							"subtype":
@@ -271223,7 +271223,7 @@
 					},
 					{
 						"name": "m_vecDialogVariableNames",
-						"offset": 2504,
+						"offset": 2496,
 						"traits":
 						{
 							"subtype":
@@ -298538,7 +298538,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\tm_nAnimationAlgorithm = \"eInvalid\"\n\tm_nNextExternalGraphHandle = 0\n\tm_vecSecondarySkeletonSlotIDs = [  ]\n\tm_vecSecondarySkeletons = [  ]\n\tm_nSecondarySkeletonMasterCount = 0\n\tm_flSoundSyncTime = 0.000000000000000000000000000000000000000045915\n\tm_nActiveIKChainMask = 3133839560\n\tm_hSequence = -1\n\tm_flSeqStartTime = null\n\tm_flSeqFixedCycle = 0.0\n\tm_nAnimLoopMode = \"ANIM_LOOP_MODE_USE_SEQUENCE_SETTINGS\"\n\tm_flPlaybackRate = 1.0\n\tm_nNotifyState = \"eDoNotNotify\"\n\tm_bNetworkedAnimationInputsChanged = false\n\tm_bNetworkedSequenceChanged = false\n\tm_bLastUpdateSkipped = false\n\tm_bSequenceFinished = false\n\tm_nPrevAnimUpdateTick = null\n\tm_hGraphDefinitionAG2 = resource:\"\"\n\tm_nServerGraphInstanceIteration = 0\n\tm_nServerSerializationContextIteration = 0\n\tm_primaryGraphId = 0\n\tm_vecExternalGraphIds = [  ]\n\tm_vecExternalClipIds = [  ]\n\tm_sAnimGraph2Identifier = \"\"\n\tm_pGraphInstanceAG2 = null\n\tm_vecExternalGraphs = null\n}"
+						"value": "{\n\tm_nAnimationAlgorithm = \"eInvalid\"\n\tm_nNextExternalGraphHandle = 0\n\tm_vecSecondarySkeletonSlotIDs = [  ]\n\tm_vecSecondarySkeletons = [  ]\n\tm_nSecondarySkeletonMasterCount = 0\n\tm_flSoundSyncTime = 0.000000000000000000000000000000000000000045916\n\tm_nActiveIKChainMask = 1271446520\n\tm_hSequence = -1\n\tm_flSeqStartTime = null\n\tm_flSeqFixedCycle = 0.0\n\tm_nAnimLoopMode = \"ANIM_LOOP_MODE_USE_SEQUENCE_SETTINGS\"\n\tm_flPlaybackRate = 1.0\n\tm_nNotifyState = \"eDoNotNotify\"\n\tm_bNetworkedAnimationInputsChanged = false\n\tm_bNetworkedSequenceChanged = false\n\tm_bLastUpdateSkipped = false\n\tm_bSequenceFinished = false\n\tm_nPrevAnimUpdateTick = null\n\tm_hGraphDefinitionAG2 = resource:\"\"\n\tm_nServerGraphInstanceIteration = 0\n\tm_nServerSerializationContextIteration = 0\n\tm_primaryGraphId = 0\n\tm_vecExternalGraphIds = [  ]\n\tm_vecExternalClipIds = [  ]\n\tm_sAnimGraph2Identifier = \"\"\n\tm_pGraphInstanceAG2 = null\n\tm_vecExternalGraphs = null\n}"
 					}
 				],
 				"multi_depth": 3,
@@ -301174,7 +301174,7 @@
 				[
 					{
 						"name": "MGetKV3ClassDefaults",
-						"value": "{\n\t_class = \"CBodyComponentBaseAnimGraph\"\n\tm_skeletonInstance = \n\t{\n\t\tm_hParent = \n\t\t{\n\t\t\tm_hOwner = null\n\t\t\tm_name = \"\"\n\t\t}\n\t\tm_vecOrigin = [ 0.0, 0.0, 0.0 ]\n\t\tm_angRotation = [ 0.0, 0.0, 0.0 ]\n\t\tm_flScale = 1.0\n\t\tm_vecAbsOrigin = null\n\t\tm_angAbsRotation = [ 0.0, 0.0, 0.0 ]\n\t\tm_flAbsScale = 1.0\n\t\tm_bDormant = false\n\t\tm_bForceParentToBeNetworked = false\n\t\tm_name = \"\"\n\t\tm_hierarchyAttachName = \"\"\n\t\tm_flClientLocalScale = 1.0\n\t\tm_modelState = \n\t\t{\n\t\t\tm_hModel = resource:\"\"\n\t\t\tm_ModelName = \"\"\n\t\t\tm_flRootBoneOffset_x = 0.0\n\t\t\tm_flRootBoneOffset_y = 0.0\n\t\t\tm_flRootBoneOffset_z = 0.0\n\t\t\tm_nRootBoneOffsetResetSerialNumber = 0\n\t\t\tm_bClientClothCreationSuppressed = false\n\t\t\tm_nAnimStateNoInterpSerialNumber = 0\n\t\t\tm_MeshGroupMask = 9223372036854775808\n\t\t\tm_nBodyGroupChoices = [  ]\n\t\t\tm_nIdealMotionType = 3\n\t\t\tm_nForceLOD = -1\n\t\t\tm_nClothUpdateFlags = 0\n\t\t}\n\t\tm_bDisableSolidCollisionsForHierarchy = false\n\t\tm_materialGroup = \"\"\n\t\tm_nHitboxSet = 0\n\t\tm_bForceServerConstraintsEnabled = false\n\t}\n\tm_animationController = \n\t{\n\t\tm_nAnimationAlgorithm = \"eInvalid\"\n\t\tm_nNextExternalGraphHandle = 0\n\t\tm_vecSecondarySkeletonSlotIDs = [  ]\n\t\tm_vecSecondarySkeletons = [  ]\n\t\tm_nSecondarySkeletonMasterCount = 0\n\t\tm_flSoundSyncTime = 0.000000000000000000000000000000000000000045915\n\t\tm_nActiveIKChainMask = 3922106349\n\t\tm_hSequence = -1\n\t\tm_flSeqStartTime = null\n\t\tm_flSeqFixedCycle = 0.0\n\t\tm_nAnimLoopMode = \"ANIM_LOOP_MODE_USE_SEQUENCE_SETTINGS\"\n\t\tm_flPlaybackRate = 1.0\n\t\tm_nNotifyState = \"eDoNotNotify\"\n\t\tm_bNetworkedAnimationInputsChanged = false\n\t\tm_bNetworkedSequenceChanged = false\n\t\tm_bLastUpdateSkipped = false\n\t\tm_bSequenceFinished = false\n\t\tm_nPrevAnimUpdateTick = null\n\t\tm_hGraphDefinitionAG2 = resource:\"\"\n\t\tm_nServerGraphInstanceIteration = 0\n\t\tm_nServerSerializationContextIteration = 0\n\t\tm_primaryGraphId = 0\n\t\tm_vecExternalGraphIds = [  ]\n\t\tm_vecExternalClipIds = [  ]\n\t\tm_sAnimGraph2Identifier = \"\"\n\t\tm_pGraphInstanceAG2 = null\n\t\tm_vecExternalGraphs = null\n\t}\n}"
+						"value": "{\n\t_class = \"CBodyComponentBaseAnimGraph\"\n\tm_skeletonInstance = \n\t{\n\t\tm_hParent = \n\t\t{\n\t\t\tm_hOwner = null\n\t\t\tm_name = \"\"\n\t\t}\n\t\tm_vecOrigin = [ 0.0, 0.0, 0.0 ]\n\t\tm_angRotation = [ 0.0, 0.0, 0.0 ]\n\t\tm_flScale = 1.0\n\t\tm_vecAbsOrigin = null\n\t\tm_angAbsRotation = [ 0.0, 0.0, 0.0 ]\n\t\tm_flAbsScale = 1.0\n\t\tm_bDormant = false\n\t\tm_bForceParentToBeNetworked = false\n\t\tm_name = \"\"\n\t\tm_hierarchyAttachName = \"\"\n\t\tm_flClientLocalScale = 1.0\n\t\tm_modelState = \n\t\t{\n\t\t\tm_hModel = resource:\"\"\n\t\t\tm_ModelName = \"\"\n\t\t\tm_flRootBoneOffset_x = 0.0\n\t\t\tm_flRootBoneOffset_y = 0.0\n\t\t\tm_flRootBoneOffset_z = 0.0\n\t\t\tm_nRootBoneOffsetResetSerialNumber = 0\n\t\t\tm_bClientClothCreationSuppressed = false\n\t\t\tm_nAnimStateNoInterpSerialNumber = 0\n\t\t\tm_MeshGroupMask = 9223372036854775808\n\t\t\tm_nBodyGroupChoices = [  ]\n\t\t\tm_nIdealMotionType = 3\n\t\t\tm_nForceLOD = -1\n\t\t\tm_nClothUpdateFlags = 0\n\t\t}\n\t\tm_bDisableSolidCollisionsForHierarchy = false\n\t\tm_materialGroup = \"\"\n\t\tm_nHitboxSet = 0\n\t\tm_bForceServerConstraintsEnabled = false\n\t}\n\tm_animationController = \n\t{\n\t\tm_nAnimationAlgorithm = \"eInvalid\"\n\t\tm_nNextExternalGraphHandle = 0\n\t\tm_vecSecondarySkeletonSlotIDs = [  ]\n\t\tm_vecSecondarySkeletons = [  ]\n\t\tm_nSecondarySkeletonMasterCount = 0\n\t\tm_flSoundSyncTime = 0.000000000000000000000000000000000000000045916\n\t\tm_nActiveIKChainMask = 4098267117\n\t\tm_hSequence = -1\n\t\tm_flSeqStartTime = null\n\t\tm_flSeqFixedCycle = 0.0\n\t\tm_nAnimLoopMode = \"ANIM_LOOP_MODE_USE_SEQUENCE_SETTINGS\"\n\t\tm_flPlaybackRate = 1.0\n\t\tm_nNotifyState = \"eDoNotNotify\"\n\t\tm_bNetworkedAnimationInputsChanged = false\n\t\tm_bNetworkedSequenceChanged = false\n\t\tm_bLastUpdateSkipped = false\n\t\tm_bSequenceFinished = false\n\t\tm_nPrevAnimUpdateTick = null\n\t\tm_hGraphDefinitionAG2 = resource:\"\"\n\t\tm_nServerGraphInstanceIteration = 0\n\t\tm_nServerSerializationContextIteration = 0\n\t\tm_primaryGraphId = 0\n\t\tm_vecExternalGraphIds = [  ]\n\t\tm_vecExternalClipIds = [  ]\n\t\tm_sAnimGraph2Identifier = \"\"\n\t\tm_pGraphInstanceAG2 = null\n\t\tm_vecExternalGraphs = null\n\t}\n}"
 					}
 				],
 				"multi_depth": 4,
