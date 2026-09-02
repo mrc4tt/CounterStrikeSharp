@@ -161,8 +161,8 @@
   "CBaseEntity_EmitSoundFilter": {
     "signatures": {
       "library": "server",
-      "windows": "48 89 74 24 ? 57 41 56 41 57 48 83 EC ? BE ? ? ? ?",
-      "linux": "55 48 89 E5 41 57 41 56 49 89 F6 BE ? ? ? ? 41 55 49 89 D5 41 54 53 48 89 FB 48 8D 3D ? ? ? ?"
+      "windows": "40 53 48 83 EC ? 4C 89 4C 24 ? 48 8B D9 45 8B C8",
+      "linux": "48 B8 00 00 00 00 FF FF FF FF 55 48 89 E5 41 57 41 56 41 55 41 54 53 48 89 FB 48 81 EC ? ? ? ? 48 89 07 48 8D 05 ? ? ? ? 48 C7 47 08 00 00 00 00"
     }
   },
   "CEntityInstance_AcceptInput": {
