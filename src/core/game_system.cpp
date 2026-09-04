@@ -38,13 +38,16 @@ bool InitGameSystems()
 {
     // This signature directly points to the instruction referencing sm_pFirst, and the opcode is 3
     // bytes so we skip those
-    uint8* ptr = (uint8*)counterstrikesharp::globals::gameConfig->ResolveSignature("IGameSystem_InitAllSystems_pFirst") + 3;
+    auto* pAnchor = (uint8*)counterstrikesharp::globals::gameConfig->ResolveSignature("IGameSystem_InitAllSystems_pFirst");
 
-    if (!ptr)
+    // Check the raw result: `nullptr + 3` is never null, so the old check never fired.
+    if (!pAnchor)
     {
         CSSHARP_CORE_ERROR("Failed to InitGameSystems, see warnings above.");
         return false;
     }
+
+    uint8* ptr = pAnchor + 3;
 
     // Grab the offset as 4 bytes
     uint32 offset = *(uint32*)ptr;

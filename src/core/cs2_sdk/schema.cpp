@@ -160,5 +160,19 @@ void SetStateChanged(uintptr_t pEntity, uint32_t offset, uint32_t nArrayIndex, u
     CNetworkStateChangedInfo info(offset, nArrayIndex, nPathIndex);
 
     static auto fnOffset = counterstrikesharp::globals::gameConfig->GetOffset("SetStateChanged");
+
+    if (fnOffset < 0)
+    {
+        static bool bWarned = false;
+
+        if (!bWarned)
+        {
+            bWarned = true;
+            CSSHARP_CORE_WARN("gamedata: offset 'SetStateChanged' is missing, network state updates are disabled");
+        }
+
+        return;
+    }
+
     CALL_VIRTUAL(void, fnOffset, (void*)pEntity, &info);
 }

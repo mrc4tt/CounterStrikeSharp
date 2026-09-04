@@ -191,6 +191,12 @@ class CBaseEntity : public CEntityInstance
     bool IsPawn()
     {
         static int offset = counterstrikesharp::globals::gameConfig->GetOffset("CBaseEntity_IsPlayerPawn");
+
+        if (offset < 0)
+        {
+            return false;
+        }
+
         return CALL_VIRTUAL(bool, offset, this);
     }
 };

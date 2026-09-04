@@ -330,7 +330,8 @@ void ConCommandManager::RemoveCommandListener(const char* name, CallbackT callba
     }
 
     auto strName = std::string(name);
-    ConCommandInfo* pInfo = m_cmd_lookup[strName];
+    auto itListener = m_cmd_lookup.find(strName);
+    ConCommandInfo* pInfo = itListener == m_cmd_lookup.end() ? nullptr : itListener->second;
 
     if (!pInfo)
     {
@@ -427,6 +428,8 @@ HookResult ConCommandManager::ExecuteCommandCallbacks(
             {
                 if (mode == HookMode::Pre)
                 {
+                    m_cmd_contexts.erase(&args);
+
                     return HookResult::Stop;
                 }
 
@@ -504,6 +507,11 @@ bool ConCommandManager::IsValidValveCommand(const char* name)
     return pCmd.IsValidRef();
 }
 
-CommandCallingContext ConCommandManager::GetCommandCallingContext(CCommand* args) { return m_cmd_contexts[args]; }
+CommandCallingContext ConCommandManager::GetCommandCallingContext(CCommand* args)
+{
+    auto it = m_cmd_contexts.find(args);
+
+    return it == m_cmd_contexts.end() ? CommandCallingContext::Console : it->second;
+}
 
 } // namespace counterstrikesharp

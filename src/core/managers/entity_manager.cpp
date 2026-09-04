@@ -59,9 +59,18 @@ int g_iCheckTransmit = -1;
 
 void EntityManager::OnAllInitialized()
 {
-    SH_MANUALHOOK_RECONFIGURE(CheckTransmit, globals::gameConfig->GetOffset("ISource2GameEntities::CheckTransmit"), 0, 0);
-    g_iCheckTransmit =
-        SH_ADD_MANUALDVPHOOK(CheckTransmit, *(void**)globals::gameEntities, SH_MEMBER(this, &EntityManager::CheckTransmit), true);
+    const int nCheckTransmitOffset = globals::gameConfig->GetOffset("ISource2GameEntities::CheckTransmit");
+
+    if (nCheckTransmitOffset < 0)
+    {
+        CSSHARP_CORE_WARN("gamedata: offset 'ISource2GameEntities::CheckTransmit' is missing, transmit hook is disabled");
+    }
+    else
+    {
+        SH_MANUALHOOK_RECONFIGURE(CheckTransmit, nCheckTransmitOffset, 0, 0);
+        g_iCheckTransmit =
+            SH_ADD_MANUALDVPHOOK(CheckTransmit, *(void**)globals::gameEntities, SH_MEMBER(this, &EntityManager::CheckTransmit), true);
+    }
     check_transmit = globals::callbackManager.CreateCallback("CheckTransmit");
     on_entity_spawned_callback = globals::callbackManager.CreateCallback("OnEntitySpawned");
     on_entity_created_callback = globals::callbackManager.CreateCallback("OnEntityCreated");

@@ -169,6 +169,11 @@ class ScriptContext
 
     template <typename T> inline void Push(const T& value)
     {
+        if (m_numArguments >= MaxArguments)
+        {
+            return;
+        }
+
         auto functionData = (uint64_t*)m_argumentBuffer;
 
         static_assert(sizeof(T) <= ArgumentSize, "Argument size of T");

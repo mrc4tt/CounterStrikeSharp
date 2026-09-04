@@ -423,9 +423,6 @@ void CounterStrikeSharpMMPlugin::Hook_GameFrame(bool simulating, bool bFirstTick
             if (now_s - g_frame_warn_last_log_s >= 0.25)
             {
                 g_frame_warn_last_log_s = now_s;
-                CSSHARP_CORE_WARN("Slow CS# frame: {:.2f} ms (budget {:.2f} ms) on tick {}. "
-                                  "Likely a plugin OnTick/timer/event handler or a GC pause.",
-                                  frame_ms, g_frame_warn_ms, globals::getGlobalVars()->tickcount);
             }
         }
     }

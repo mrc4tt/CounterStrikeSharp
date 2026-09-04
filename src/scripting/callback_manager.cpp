@@ -44,17 +44,19 @@ bool ScriptCallback::RemoveListener(CallbackT fnPluginFunction)
 
 bool ScriptCallback::IsContextSafe()
 {
-    try
+    // The previous try/catch around GetResult<void*>() on a POD struct cannot throw,
+    // so the compiler folded the whole check to `return true`. Check the one field
+    // that actually goes bad when a context is corrupt or reused without Reset().
+    const int nArguments = m_root_context.numArguments;
+
+    if (nArguments < 0 || nArguments > ScriptContext::MaxArguments)
     {
-        auto& Ctx = ScriptContext();
-        Ctx.GetResult<void*>();
-        return true;
-    }
-    catch (...)
-    {
-        CSSHARP_CORE_WARN("Context is invalid (exception during access)");
+        CSSHARP_CORE_WARN("Context of callback '{}' is corrupt, numArguments is {}", m_name, nArguments);
+
         return false;
     }
+
+    return true;
 }
 
 void ScriptCallback::Execute(bool bResetContext)
@@ -68,8 +70,13 @@ void ScriptCallback::Execute(bool bResetContext)
 
     // VPROF_BUDGET(m_profile_name.c_str(), "CS# Script Callbacks");
 
-    for (size_t nI = 0; nI < m_functions.size(); ++nI)
+    const size_t nCount = m_functions.size();
+
+    for (size_t nI = 0; nI < nCount; ++nI)
     {
+        // A listener may remove itself (or others) while we iterate.
+        if (nI >= m_functions.size()) break;
+
         if (auto fnMethodToCall = m_functions[nI])
         {
             // Record which native->managed call we are about to make. If that call

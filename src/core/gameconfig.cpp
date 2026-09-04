@@ -19,8 +19,6 @@ bool CGameConfig::Init(char* conf_error, int conf_error_size)
         return false;
     }
 
-    m_json = json::parse(ifs);
-
 #if _WIN32
     constexpr auto platform = "windows";
 #else
@@ -29,6 +27,10 @@ bool CGameConfig::Init(char* conf_error, int conf_error_size)
 
     try
     {
+        // Inside the try: a truncated / half-written gamedata.json (the auto-updater
+        // rewrites it in place) used to throw out of Init() and std::terminate the server.
+        m_json = json::parse(ifs);
+
         for (auto& [k, v] : m_json.items())
         {
             if (v.contains("signatures"))
@@ -259,8 +261,13 @@ std::vector<int16_t> CGameConfig::HexToByte(std::string_view src)
         const auto high = hex_char_to_byte(byte[0]);
         const auto low = hex_char_to_byte(byte[1]);
 
-        if (high == 0xFF || low == 0xFF)
+        // hex_char_to_byte returns -1 (int16) on an invalid char. The old check compared
+        // against 0xFF, which never matched, so the -1 flowed through and became a
+        // wildcard byte: a typo in gamedata silently matched the wrong address.
+        if (high < 0 || low < 0)
         {
+            CSSHARP_CORE_WARN("Signature contains an invalid byte `{0}`, discarding it", byte);
+
             return {};
         }
 

@@ -23,9 +23,11 @@
 #define CALL_VIRTUAL(retType, idx, ...) vmt::CallVirtual<retType>(idx, __VA_ARGS__)
 
 namespace vmt {
-template <typename T = void*> inline T GetVMethod(uint32 uIndex, void* pClass)
+// Index is signed on purpose: CGameConfig::GetOffset returns -1 for a missing key,
+// and as uint32 that became pVTable[0xFFFFFFFF].
+template <typename T = void*> inline T GetVMethod(int uIndex, void* pClass)
 {
-    if (!pClass)
+    if (!pClass || uIndex < 0)
     {
         return T();
     }
@@ -39,7 +41,7 @@ template <typename T = void*> inline T GetVMethod(uint32 uIndex, void* pClass)
     return reinterpret_cast<T>(pVTable[uIndex]);
 }
 
-template <typename T, typename... Args> inline T CallVirtual(uint32 uIndex, void* pClass, Args... args)
+template <typename T, typename... Args> inline T CallVirtual(int uIndex, void* pClass, Args... args)
 {
 #ifdef _WIN32
     auto pFunc = GetVMethod<T(__thiscall*)(void*, Args...)>(uIndex, pClass);
