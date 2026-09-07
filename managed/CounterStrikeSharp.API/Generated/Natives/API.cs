@@ -357,6 +357,84 @@ namespace CounterStrikeSharp.API.Core
 			_ctx.CheckErrors();
 		}
 
+        public static void SetHasClass(IntPtr customhud, string panelid, string classname, bool hasclass){
+			lock (ScriptContext.GlobalScriptContext.Lock) {
+			ScriptContext.GlobalScriptContext.Reset();
+			ScriptContext.GlobalScriptContext.PushPrimitive(customhud);
+			ScriptContext.GlobalScriptContext.PushString(panelid);
+			ScriptContext.GlobalScriptContext.PushString(classname);
+			ScriptContext.GlobalScriptContext.PushPrimitive(hasclass);
+			ScriptContext.GlobalScriptContext.SetIdentifier(0x22C79F53);
+			ScriptContext.GlobalScriptContext.Invoke();
+			ScriptContext.GlobalScriptContext.CheckErrors();
+			}
+		}
+
+        public static void SetHasClassForPlayer(IntPtr customhud, IntPtr controller, string panelid, string classname, bool hasclass){
+			lock (ScriptContext.GlobalScriptContext.Lock) {
+			ScriptContext.GlobalScriptContext.Reset();
+			ScriptContext.GlobalScriptContext.PushPrimitive(customhud);
+			ScriptContext.GlobalScriptContext.PushPrimitive(controller);
+			ScriptContext.GlobalScriptContext.PushString(panelid);
+			ScriptContext.GlobalScriptContext.PushString(classname);
+			ScriptContext.GlobalScriptContext.PushPrimitive(hasclass);
+			ScriptContext.GlobalScriptContext.SetIdentifier(0x4093B77B);
+			ScriptContext.GlobalScriptContext.Invoke();
+			ScriptContext.GlobalScriptContext.CheckErrors();
+			}
+		}
+
+        public static void SetDialogVariableString(IntPtr customhud, string panelid, string variablename, string value){
+			lock (ScriptContext.GlobalScriptContext.Lock) {
+			ScriptContext.GlobalScriptContext.Reset();
+			ScriptContext.GlobalScriptContext.PushPrimitive(customhud);
+			ScriptContext.GlobalScriptContext.PushString(panelid);
+			ScriptContext.GlobalScriptContext.PushString(variablename);
+			ScriptContext.GlobalScriptContext.PushString(value);
+			ScriptContext.GlobalScriptContext.SetIdentifier(0xB8DAC643);
+			ScriptContext.GlobalScriptContext.Invoke();
+			ScriptContext.GlobalScriptContext.CheckErrors();
+			}
+		}
+
+        public static void SetDialogVariableStringForPlayer(IntPtr customhud, IntPtr controller, string panelid, string variablename, string value){
+			lock (ScriptContext.GlobalScriptContext.Lock) {
+			ScriptContext.GlobalScriptContext.Reset();
+			ScriptContext.GlobalScriptContext.PushPrimitive(customhud);
+			ScriptContext.GlobalScriptContext.PushPrimitive(controller);
+			ScriptContext.GlobalScriptContext.PushString(panelid);
+			ScriptContext.GlobalScriptContext.PushString(variablename);
+			ScriptContext.GlobalScriptContext.PushString(value);
+			ScriptContext.GlobalScriptContext.SetIdentifier(0x80C9C06B);
+			ScriptContext.GlobalScriptContext.Invoke();
+			ScriptContext.GlobalScriptContext.CheckErrors();
+			}
+		}
+
+        public static void SetInputCaptureEnabled(IntPtr customhud, IntPtr controller, bool enable){
+			lock (ScriptContext.GlobalScriptContext.Lock) {
+			ScriptContext.GlobalScriptContext.Reset();
+			ScriptContext.GlobalScriptContext.PushPrimitive(customhud);
+			ScriptContext.GlobalScriptContext.PushPrimitive(controller);
+			ScriptContext.GlobalScriptContext.PushPrimitive(enable);
+			ScriptContext.GlobalScriptContext.SetIdentifier(0xAE78294F);
+			ScriptContext.GlobalScriptContext.Invoke();
+			ScriptContext.GlobalScriptContext.CheckErrors();
+			}
+		}
+
+        public static bool IsInputCaptureEnabled(IntPtr customhud, IntPtr controller){
+			lock (ScriptContext.GlobalScriptContext.Lock) {
+			ScriptContext.GlobalScriptContext.Reset();
+			ScriptContext.GlobalScriptContext.PushPrimitive(customhud);
+			ScriptContext.GlobalScriptContext.PushPrimitive(controller);
+			ScriptContext.GlobalScriptContext.SetIdentifier(0xB67A4877);
+			ScriptContext.GlobalScriptContext.Invoke();
+			ScriptContext.GlobalScriptContext.CheckErrors();
+			return ScriptContext.GlobalScriptContext.GetResultPrimitive<bool>();
+			}
+		}
+
         public static string GetStringFromSymbolLarge(IntPtr pointer){
 			var _ctx = ScriptContext.GlobalScriptContext;
 			_ctx.Reset();
@@ -1669,24 +1747,6 @@ namespace CounterStrikeSharp.API.Core
 			_ctx.CheckErrors();
 		}
 
-        public static IntPtr GetEconItemSystem(){
-			var _ctx = ScriptContext.GlobalScriptContext;
-			_ctx.Reset();
-			_ctx.SetIdentifier(0x981E9B5B);
-			_ctx.Invoke();
-			_ctx.CheckErrors();
-			return _ctx.GetResultPrimitive<IntPtr>();
-		}
-
-        public static bool IsServerPaused(){
-			var _ctx = ScriptContext.GlobalScriptContext;
-			_ctx.Reset();
-			_ctx.SetIdentifier(0xB216AAAC);
-			_ctx.Invoke();
-			_ctx.CheckErrors();
-			return _ctx.GetResultPrimitive<bool>();
-		}
-
         public static short GetSchemaOffset(string classname, string propname){
 			var _ctx = ScriptContext.GlobalScriptContext;
 			_ctx.Reset();
@@ -1767,6 +1827,26 @@ namespace CounterStrikeSharp.API.Core
 			_ctx.SetIdentifier(0xBBE9D700);
 			_ctx.Invoke();
 			_ctx.CheckErrors();
+		}
+
+        public static IntPtr GetEconItemSystem(){
+			lock (ScriptContext.GlobalScriptContext.Lock) {
+			ScriptContext.GlobalScriptContext.Reset();
+			ScriptContext.GlobalScriptContext.SetIdentifier(0x981E9B5B);
+			ScriptContext.GlobalScriptContext.Invoke();
+			ScriptContext.GlobalScriptContext.CheckErrors();
+			return ScriptContext.GlobalScriptContext.GetResultPrimitive<IntPtr>();
+			}
+		}
+
+        public static bool IsServerPaused(){
+			lock (ScriptContext.GlobalScriptContext.Lock) {
+			ScriptContext.GlobalScriptContext.Reset();
+			ScriptContext.GlobalScriptContext.SetIdentifier(0xB216AAAC);
+			ScriptContext.GlobalScriptContext.Invoke();
+			ScriptContext.GlobalScriptContext.CheckErrors();
+			return ScriptContext.GlobalScriptContext.GetResultPrimitive<bool>();
+			}
 		}
 
         public static IntPtr CreateTimer(float interval, InputArgument callback, int flags){

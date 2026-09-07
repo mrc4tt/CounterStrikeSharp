@@ -22,6 +22,7 @@
 #include <type_traits>
 #include <const.h>
 #include <stdint.h>
+#include "schematypes.h"
 #include "tier0/dbg.h"
 #include "utils/virtual.h"
 #include "tier1/utlvector.h"
@@ -35,6 +36,7 @@ struct SchemaKey
 {
     int32_t offset;
     bool networked;
+    SchemaCollectionManipulatorFn_t manipulator = nullptr;
 };
 
 class CBaseEntity;
@@ -193,6 +195,13 @@ SchemaKey GetOffset(const char* className, uint32_t classKey, const char* member
             ThisClass* pThisClass = (ThisClass*)((byte*)this - offset);                                               \
                                                                                                                       \
             return reinterpret_cast<std::add_pointer_t<type>>((uintptr_t)(pThisClass) + m_key.offset + extra_offset); \
+        }                                                                                                             \
+        SchemaCollectionManipulatorFn_t GetManipulator()                                                              \
+        {                                                                                                             \
+            static constexpr auto datatable_hash = hash_32_fnv1a_const(ThisClassName);                                \
+            static constexpr auto prop_hash = hash_32_fnv1a_const(#varName);                                          \
+            static const auto m_key = schema::GetOffset(ThisClassName, datatable_hash, #varName, prop_hash);          \
+            return m_key.manipulator;                                                                                 \
         }                                                                                                             \
         operator type*() { return Get(); }                                                                            \
         type* operator()() { return Get(); }                                                                          \
