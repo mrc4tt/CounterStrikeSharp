@@ -3,14 +3,14 @@
 
 set(PROTO_TARGETS
     ${PROJECT_SOURCE_DIR}/libraries/Protobufs/csgo/network_connection.proto
-    ${PROJECT_SOURCE_DIR}/libraries/Protobufs/csgo/valveextensions.proto
-    ${PROJECT_SOURCE_DIR}/libraries/Protobufs/csgo/source2_steam_stats.proto
     ${PROJECT_SOURCE_DIR}/libraries/Protobufs/csgo/networkbasetypes.proto
     ${PROJECT_SOURCE_DIR}/libraries/Protobufs/csgo/cs_gameevents.proto
     ${PROJECT_SOURCE_DIR}/libraries/Protobufs/csgo/engine_gcmessages.proto
     ${PROJECT_SOURCE_DIR}/libraries/Protobufs/csgo/gcsdk_gcmessages.proto
     ${PROJECT_SOURCE_DIR}/libraries/Protobufs/csgo/cstrike15_gcmessages.proto
     ${PROJECT_SOURCE_DIR}/libraries/Protobufs/csgo/cstrike15_usermessages.proto
+    ${PROJECT_SOURCE_DIR}/libraries/Protobufs/csgo/valveextensions.proto
+    ${PROJECT_SOURCE_DIR}/libraries/Protobufs/csgo/source2_steam_stats.proto
     ${PROJECT_SOURCE_DIR}/libraries/Protobufs/csgo/netmessages.proto
     ${PROJECT_SOURCE_DIR}/libraries/Protobufs/csgo/steammessages.proto
     ${PROJECT_SOURCE_DIR}/libraries/Protobufs/csgo/usermessages.proto
