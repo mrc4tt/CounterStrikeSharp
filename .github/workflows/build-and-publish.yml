@@ -62,9 +62,14 @@ jobs:
         run: |
           if ! command -v node >/dev/null 2>&1; then
             echo "Installing node.js for act..."
+            # The sniper SDK image is Debian 11 (bullseye), now EOL: its
+            # bullseye-security Release file is expired, so apt-get update
+            # exits 100. Same workaround as Dockerfile. Written as a global
+            # apt config so the NodeSource setup script's own update survives.
+            echo 'Acquire::Check-Valid-Until "false";' > /etc/apt/apt.conf.d/99no-check-valid-until
             apt-get update
             apt-get install -y curl ca-certificates
-            curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
+            curl -fsSL https://deb.nodesource.com/setup_24.x | bash -
             apt-get install -y nodejs
             node --version
           fi
