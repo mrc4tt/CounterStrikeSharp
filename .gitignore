@@ -565,3 +565,8 @@ docfx/_exported_templates/
 # Patched SQLite native (CVE-2025-6965) intentionally committed — see eng/build-sqlite-native.sh
 !eng/native/linux-x64/libe_sqlite3.so
 !eng/build-sqlite-native.sh
+
+# Local AI-assistant guidance. Kept out of the repo so they are not published or
+# indexed on GitHub; both files stay on disk and are still read by the tools.
+/CLAUDE.md
+/AGENTS.md

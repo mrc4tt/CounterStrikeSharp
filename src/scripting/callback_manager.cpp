@@ -65,6 +65,11 @@ void ScriptCallback::Execute(bool bResetContext)
     {
         ScriptContext().ThrowNativeError("ScriptCallback::Execute aborted due to invalid context");
         CSSHARP_CORE_WARN("ScriptCallback::Execute aborted due to invalid context (callback: '{}')", m_name);
+        // Drop this invocation, but clear the context on the way out so a single bad
+        // state does not wedge the callback for the rest of the session -- the early
+        // return used to skip the Reset() at the end of Execute(), so every later
+        // fire hit the same corrupt context and logged again, once per event.
+        Reset();
         return;
     }
 

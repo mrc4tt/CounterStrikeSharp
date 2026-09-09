@@ -97,8 +97,10 @@ class EventManager : public IGameEventListener2, public GlobalClass
     bool HookEvent(const char* szName, CallbackT fnCallback, bool bPost);
 
   private:
-    bool OnFireEvent(IGameEvent* pEvent, bool bDontBroadcast);
-    bool OnFireEventPost(IGameEvent* pEvent, bool bDontBroadcast);
+    KHook::Return<bool> OnFireEvent(IGameEventManager2* pGameEventManager, IGameEvent* pEvent, bool bDontBroadcast);
+    KHook::Return<bool> OnFireEventPost(IGameEventManager2* pGameEventManager, IGameEvent* pEvent, bool bDontBroadcast);
+
+    KHook::Virtual<IGameEventManager2, bool, IGameEvent*, bool> m_FireEvent;
 
     // Transparent comparator (std::less<>): OnFireEvent runs for EVERY game event
     // the engine fires -- bullet_impact, player_footstep, weapon_fire, ... -- many

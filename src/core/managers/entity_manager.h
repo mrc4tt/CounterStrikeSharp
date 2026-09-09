@@ -125,13 +125,27 @@ class EntityManager : public GlobalClass
     TransmitFilter transmitFilter;
 
   private:
-    void CheckTransmit(CCheckTransmitInfoHack** ppInfoList,
-                       uint32_t infoCount,
-                       CBitVec<16384>& unionTransmitEdicts1,
-                       CBitVec<16384>& unionTransmitEdicts2,
-                       const Entity2Networkable_t** pNetworkables,
-                       const uint16* pEntityIndicies,
-                       uint32_t nEntities);
+    KHook::Return<void> CheckTransmit(ISource2GameEntities* pGameEntities,
+                                      CCheckTransmitInfoHack** ppInfoList,
+                                      uint32_t infoCount,
+                                      CBitVec<16384>& unionTransmitEdicts1,
+                                      CBitVec<16384>& unionTransmitEdicts2,
+                                      const Entity2Networkable_t** pNetworkables,
+                                      const uint16* pEntityIndicies,
+                                      uint32_t nEntities);
+
+    // CheckTransmit is not declared in the SDK headers, so the hook is configured with a
+    // raw vtable index out of gamedata instead of a member function pointer.
+    KHook::Virtual<ISource2GameEntities,
+                   void,
+                   CCheckTransmitInfoHack**,
+                   uint32_t,
+                   CBitVec<16384>&,
+                   CBitVec<16384>&,
+                   const Entity2Networkable_t**,
+                   const uint16*,
+                   uint32_t>
+        m_CheckTransmit;
 
     ScriptCallback* on_entity_spawned_callback;
     ScriptCallback* on_entity_created_callback;

@@ -144,7 +144,7 @@ namespace CounterStrikeSharp.API.Core
                 "  CounterStrikeSharp is a custom-focused fork by Miksen\n" +
                 "  Based on CounterStrikeSharp, originally created by Michael \"roflmuffin\" Wilson.\n" +
                 "  This is not an official upstream CounterStrikeSharp release.\n" +
-                "  Counter-Strike Sharp uses code borrowed from SourceMod, Source.Python, FiveM, Saul Rennison, source2gen and CS2Fixes.\n" +
+                "  Counter-StrikeSharp uses code borrowed from SourceMod, Source.Python, FiveM, Saul Rennison, source2gen and CS2Fixes.\n" +
                 "  See ACKNOWLEDGEMENTS.md for more information.\n" +
                 "  Current API Version: " + versionString);
             return;
@@ -362,7 +362,7 @@ namespace CounterStrikeSharp.API.Core
 
         private void RegisterPluginCommands()
         {
-            _commandManager.RegisterCommand(new("css", "Counter-Strike Sharp options.", OnCSSCommand)
+            _commandManager.RegisterCommand(new("css", "Counter-StrikeSharp options.", OnCSSCommand)
             {
                 ExecutableBy = CommandUsage.CLIENT_AND_SERVER,
             });

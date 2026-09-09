@@ -64,6 +64,17 @@ void ScriptContext::Reset()
     m_numArguments = 0;
     *m_has_error = 0;
 
+    // Push() increments BOTH the local m_numArguments and the shared
+    // m_native_context->numArguments, so resetting only the local copy let the
+    // struct's counter grow by one per push forever. After 32 pushes it exceeds
+    // ScriptContext::MaxArguments and ScriptCallback::IsContextSafe() rejects every
+    // subsequent Execute() -- "Context of callback 'OnEntityDeleted' is corrupt,
+    // numArguments is 321" and climbing, on a callback that only ever pushes one
+    // argument. The managed side reads numArguments out of this same struct, so the
+    // drift is wrong regardless of the guard.
+    m_native_context->numArguments = 0;
+    m_native_context->numResults = 0;
+
     for (int i = 0; i < 32; i++)
     {
         m_native_context->arguments[i] = 0;
