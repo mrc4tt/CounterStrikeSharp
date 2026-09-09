@@ -1,3 +1,25 @@
+## What's Changed in v1.0.399
+* KHook + CustomHudLayout api ([d42e3f1](https://github.com/mrc4tt/CounterStrikeSharp/commit/d42e3f1c3b97a76ca62d3ce10426fead84cd5073))
+* plop ([b42bdfe](https://github.com/mrc4tt/CounterStrikeSharp/commit/b42bdfeeb64009648ebe23ee5bff9f846138e614))
+* Merge branch 'main' of github.com:mrc4tt/CounterStrikeSharp ([5930918](https://github.com/mrc4tt/CounterStrikeSharp/commit/5930918c0651ae677fa0976a1197525cf9db2aa9))
+* feat: Add `CustomHudLayout` api by [@qstage](https://github.com/qstage) ([76abee9](https://github.com/mrc4tt/CounterStrikeSharp/commit/76abee95d4c2bb76cb3cd302c4a8ae271489c4ac))
+* feat: Add `CustomHudLayout` api by [@qstage](https://github.com/qstage) ([0622c4b](https://github.com/mrc4tt/CounterStrikeSharp/commit/0622c4b881ae4126ac06f26ec1429e541b1b7654))
+* patches ([3ca622e](https://github.com/mrc4tt/CounterStrikeSharp/commit/3ca622e8db49385769c15d06d384b3b555506690))
+* Fix sigs for CBaseEntity_EmitSoundFilter ([285f16e](https://github.com/mrc4tt/CounterStrikeSharp/commit/285f16e5da13f69b292d66f1723fb779bef60d3b))
+* Merge pull request #13 from mrc4tt/chore/automated/schema-update in [#13](https://github.com/mrc4tt/CounterStrikeSharp/pull/13) ([f3d4904](https://github.com/mrc4tt/CounterStrikeSharp/commit/f3d49043576b4f1c2afd3961fdaeb9f10ba3a8fe))
+* chore: update schema definitions to 1.41.7.8 ([134ad37](https://github.com/mrc4tt/CounterStrikeSharp/commit/134ad370e761930785266a34b6abb59ef68bcce1))
+* Merge pull request #12 from mrc4tt/mrc4tt-patch-1 in [#12](https://github.com/mrc4tt/CounterStrikeSharp/pull/12) ([94057bf](https://github.com/mrc4tt/CounterStrikeSharp/commit/94057bf06ea6c7521ecd5f6162428497d3c46a73))
+* Update gamedata.json [wip] ([d4869cf](https://github.com/mrc4tt/CounterStrikeSharp/commit/d4869cf19b0aaedc3bc981b91457c3db2b4331fb))
+* Merge pull request #11 from mrc4tt/chore/automated/schema-update in [#11](https://github.com/mrc4tt/CounterStrikeSharp/pull/11) ([36d1a90](https://github.com/mrc4tt/CounterStrikeSharp/commit/36d1a90f752177e10bc1201baa1bd1691fe5c4f4))
+* chore: update schema definitions to 1.41.7.7 ([778994f](https://github.com/mrc4tt/CounterStrikeSharp/commit/778994f3c6dd9ba3c5c3295beab17151f16ade7c))
+* test new sigs setmodel ([4850b71](https://github.com/mrc4tt/CounterStrikeSharp/commit/4850b71b1ddb8227f20cc526ba86f32d5a35e5a8))
+* core update. ([8a055d8](https://github.com/mrc4tt/CounterStrikeSharp/commit/8a055d8a2536844ee415a68273b45fa4dddf7be6))
+* Merge pull request #10 from mrc4tt/chore/automated/schema-update in [#10](https://github.com/mrc4tt/CounterStrikeSharp/pull/10) ([8e7892e](https://github.com/mrc4tt/CounterStrikeSharp/commit/8e7892ed1b32cae63baf97afce549b4aa821b4ea))
+* chore: update schema definitions to 1.41.7.4 ([1cd9078](https://github.com/mrc4tt/CounterStrikeSharp/commit/1cd90783583d396b035092d7b32f5360fc6480e8))
+* Delete CONTRIBUTING.md ([e1eca8e](https://github.com/mrc4tt/CounterStrikeSharp/commit/e1eca8e99ec09f61b84df3ce96a76dacdace8ca6))
+* Merge pull request #9 from mrc4tt/chore/automated/schema-update in [#9](https://github.com/mrc4tt/CounterStrikeSharp/pull/9) ([1fc590b](https://github.com/mrc4tt/CounterStrikeSharp/commit/1fc590b9cbab1343af606bf2876f6bf4e18721c2))
+* chore: update schema definitions to 1.41.7.3 ([05a83e6](https://github.com/mrc4tt/CounterStrikeSharp/commit/05a83e64a17bcfe0ff3c54b20d97ac3d0bb0a71d))
+
 ## What's Changed in v1.0.398
 * feat(transmit): native-side entity hide table for CheckTransmit ([c8a4eb0](https://github.com/mrc4tt/CounterStrikeSharp/commit/c8a4eb0ffe33799db3190432abe712aa9f42ceb6))
 * claude update ([b6caa88](https://github.com/mrc4tt/CounterStrikeSharp/commit/b6caa889e88353f2fdafcc175fb3e7594290cf58))
@@ -11,7 +33,7 @@
 * Update AddEntityIOEvent for the current CS2 ABI ([ed3bcd4](https://github.com/mrc4tt/CounterStrikeSharp/commit/ed3bcd44521e10ac389e9368d914c5a23b745b16))
 
 ## What's Changed in v1.0.396
-* Merge pull request #8 from mrc4tt/fix/spdlog-symbol-isolation ([1d8ee94](https://github.com/mrc4tt/CounterStrikeSharp/commit/1d8ee94379f12ed9f0a48d294491e31dd20be29a))
+* Merge pull request #8 from mrc4tt/fix/spdlog-symbol-isolation in [#8](https://github.com/mrc4tt/CounterStrikeSharp/pull/8) ([1d8ee94](https://github.com/mrc4tt/CounterStrikeSharp/commit/1d8ee94379f12ed9f0a48d294491e31dd20be29a))
 * fix: isolate spdlog symbols to stop RayTrace logger crash ([c4ec11f](https://github.com/mrc4tt/CounterStrikeSharp/commit/c4ec11fea049f1c508ff95b2dc4932bc52418783))
 
 ## What's Changed in v1.0.395
@@ -25,9 +47,9 @@
 
 ## What's Changed in v1.0.393
 * gamedata 14168 update ([811fbc0](https://github.com/mrc4tt/CounterStrikeSharp/commit/811fbc069e24845e5be3578f60a939c363a55344))
-* Merge pull request #7 from mrc4tt/fix/schema-cgamesoundeventname-cutldict ([d681962](https://github.com/mrc4tt/CounterStrikeSharp/commit/d681962600cfe35ea39147ced07e31f0bdeb577f))
+* Merge pull request #7 from mrc4tt/fix/schema-cgamesoundeventname-cutldict in [#7](https://github.com/mrc4tt/CounterStrikeSharp/pull/7) ([d681962](https://github.com/mrc4tt/CounterStrikeSharp/commit/d681962600cfe35ea39147ced07e31f0bdeb577f))
 * fix(schema): map CGameSoundEventName to string, skip CUtlDict ([03bcc62](https://github.com/mrc4tt/CounterStrikeSharp/commit/03bcc6242b507e6dcf3e6f5c989b1b000eabbe31))
-* Merge pull request #6 from mrc4tt/chore/automated/schema-update ([5cdca7c](https://github.com/mrc4tt/CounterStrikeSharp/commit/5cdca7c1e8c61142ad46a87725a033f6dea3ad7b))
+* Merge pull request #6 from mrc4tt/chore/automated/schema-update in [#6](https://github.com/mrc4tt/CounterStrikeSharp/pull/6) ([5cdca7c](https://github.com/mrc4tt/CounterStrikeSharp/commit/5cdca7c1e8c61142ad46a87725a033f6dea3ad7b))
 * chore: update schema definitions to 1.41.6.8 ([8ad4d45](https://github.com/mrc4tt/CounterStrikeSharp/commit/8ad4d4598338b62be9a376806fb48dff0e05f420))
 
 ## What's Changed in v1.0.392
@@ -46,7 +68,7 @@
 * ups ([4e0ca46](https://github.com/mrc4tt/CounterStrikeSharp/commit/4e0ca4611d603830700526012e75efdf1dfe789e))
 * feat: Profiler and SlowFrameReporter ([9daac98](https://github.com/mrc4tt/CounterStrikeSharp/commit/9daac985d7d116ad5fcd065d1a86f34f897e88fb))
 * update ([a209380](https://github.com/mrc4tt/CounterStrikeSharp/commit/a20938074e5010ea2341ec9cbeccc2614bd10a01))
-* Merge pull request #5 from mrc4tt/logging-resilience-and-lazy-gamedata ([eefb551](https://github.com/mrc4tt/CounterStrikeSharp/commit/eefb551b8d256bb33ab50e3b408ca2e99d6ccf2a))
+* Merge pull request #5 from mrc4tt/logging-resilience-and-lazy-gamedata in [#5](https://github.com/mrc4tt/CounterStrikeSharp/pull/5) ([eefb551](https://github.com/mrc4tt/CounterStrikeSharp/commit/eefb551b8d256bb33ab50e3b408ca2e99d6ccf2a))
 * patch ([86445d5](https://github.com/mrc4tt/CounterStrikeSharp/commit/86445d5443135e0ae7a5f22335cd6f1dd91320ea))
 * . ([c3e2093](https://github.com/mrc4tt/CounterStrikeSharp/commit/c3e2093685f7189577cfcacc0fe8af014c5f2414))
 * fix(log): anchor log file under addons root + never crash on open failure ([c1d8bba](https://github.com/mrc4tt/CounterStrikeSharp/commit/c1d8bba0de69049da27850bf48aa634265adfc31))
@@ -313,7 +335,7 @@
 
 ## What's Changed in v1.0.346
 * chore: update server.json by [@roflmuffin](https://github.com/roflmuffin) ([52550e3](https://github.com/mrc4tt/CounterStrikeSharp/commit/52550e31bc142ba672ac50b5b9e76b1681a6f510))
-* fix: changes for 2025-11-5 Update by [@himenekocn](https://github.com/himenekocn) ([e59e9cf](https://github.com/mrc4tt/CounterStrikeSharp/commit/e59e9cf1485f6bdf26e12bce4f59f116ac68b03a))
+* fix: changes for 2025-11-5 Update by [@MatthewNeko](https://github.com/MatthewNeko) ([e59e9cf](https://github.com/mrc4tt/CounterStrikeSharp/commit/e59e9cf1485f6bdf26e12bce4f59f116ac68b03a))
 * feat: add localization for no permission error messages & spanish language support. by [@wiruwiru](https://github.com/wiruwiru) ([1568d07](https://github.com/mrc4tt/CounterStrikeSharp/commit/1568d077e8def7688069a91ed374b70841546b26))
 * feat: allow plugins to be loaded from subdirectories by [@Ravid-A](https://github.com/Ravid-A) ([55542db](https://github.com/mrc4tt/CounterStrikeSharp/commit/55542dba7c5318dfbb37b0862256f4dcde7cf0f4))
 
@@ -329,7 +351,7 @@
 ## What's Changed in v1.0.343
 * feat: add `BuyWithCtrl` to `AcquireMethod` enum by [@NockyCZ](https://github.com/NockyCZ) ([7be3294](https://github.com/mrc4tt/CounterStrikeSharp/commit/7be329466ad7d40a92608e7d6c4e2c6cd1a05a3c))
 * fix: update ConVar flag retrieval that adapts to different Source 2 SDK versions by [@Matlord93](https://github.com/Matlord93) ([a21f0b5](https://github.com/mrc4tt/CounterStrikeSharp/commit/a21f0b5277541434fa71f595d7c0c420305e9a50))
-* feat(experimental): add NuGet Dependency Resolver for Plugins by [@dxqwww](https://github.com/dxqwww) ([b4ba7d8](https://github.com/mrc4tt/CounterStrikeSharp/commit/b4ba7d8ca02bdf487ee9424f2bdb119510ab1d2c))
+* feat(experimental): add NuGet Dependency Resolver for Plugins by [@dxqshka](https://github.com/dxqshka) ([b4ba7d8](https://github.com/mrc4tt/CounterStrikeSharp/commit/b4ba7d8ca02bdf487ee9424f2bdb119510ab1d2c))
 * feat: add FindVirtualTable method by [@SlynxCZ](https://github.com/SlynxCZ) ([0eb73eb](https://github.com/mrc4tt/CounterStrikeSharp/commit/0eb73eb3487f7c0200b14c58b34aaa39b2408e29))
 * feat: use shared libgcc and libc++ by [@markus-wa](https://github.com/markus-wa) ([43c1c89](https://github.com/mrc4tt/CounterStrikeSharp/commit/43c1c8959605ccafa54f8fc155ef3e37016ed7f6))
 * feat: implement `TerminateSelf(string reason)` to allow plugins to safely terminate themselves by [@ELDment](https://github.com/ELDment) ([5399666](https://github.com/mrc4tt/CounterStrikeSharp/commit/53996666f8fbc99a989af5e79dae710912439115))
@@ -338,22 +360,22 @@
 ## New Contributors
 * [@NockyCZ](https://github.com/NockyCZ) made their first contribution
 * [@Matlord93](https://github.com/Matlord93) made their first contribution
-* [@dxqwww](https://github.com/dxqwww) made their first contribution
+* [@dxqshka](https://github.com/dxqshka) made their first contribution
 
 ## What's Changed in v1.0.342
-* fix: update Sigs & CTakeDamageResult & EmitSound_t by [@himenekocn](https://github.com/himenekocn) ([34598dd](https://github.com/mrc4tt/CounterStrikeSharp/commit/34598dd56ea2e9e18229185dc225db00a336bb5d))
+* fix: update Sigs & CTakeDamageResult & EmitSound_t by [@MatthewNeko](https://github.com/MatthewNeko) ([34598dd](https://github.com/mrc4tt/CounterStrikeSharp/commit/34598dd56ea2e9e18229185dc225db00a336bb5d))
 
 ## What's Changed in v1.0.341
 * fix: update schema for update by [@roflmuffin](https://github.com/roflmuffin) ([56e0074](https://github.com/mrc4tt/CounterStrikeSharp/commit/56e007402b49bc2d638958e34f1c783c4156ba49))
 * chore(deps): bump libraries/hl2sdk-cs2 from `bc59586` to `9310e72` by [@dependabot[bot]](https://github.com/dependabot[bot]) ([bf75d43](https://github.com/mrc4tt/CounterStrikeSharp/commit/bf75d430392f3813c9e279267bda8d64400630fc))
 * chore(deps): bump libraries/metamod-source from `3f3136d` to `4399ff0` by [@dependabot[bot]](https://github.com/dependabot[bot]) ([7572722](https://github.com/mrc4tt/CounterStrikeSharp/commit/7572722de4b33c9683a7da981a2cf12c3e5b6374))
-* fix: EmitSoundFilter Crash by [@himenekocn](https://github.com/himenekocn) ([638d744](https://github.com/mrc4tt/CounterStrikeSharp/commit/638d74470e27753da19d9e643fae833db4e89da1))
-* fix(update): update signatures and offsets for 1.41.1.3 Update by [@himenekocn](https://github.com/himenekocn) ([37951f2](https://github.com/mrc4tt/CounterStrikeSharp/commit/37951f287554832e334d258dd30cdf40dc285963))
+* fix: EmitSoundFilter Crash by [@MatthewNeko](https://github.com/MatthewNeko) ([638d744](https://github.com/mrc4tt/CounterStrikeSharp/commit/638d74470e27753da19d9e643fae833db4e89da1))
+* fix(update): update signatures and offsets for 1.41.1.3 Update by [@MatthewNeko](https://github.com/MatthewNeko) ([37951f2](https://github.com/mrc4tt/CounterStrikeSharp/commit/37951f287554832e334d258dd30cdf40dc285963))
 * feat: improve getplayers & RemoveItemByDesignerName by [@schwarper](https://github.com/schwarper) ([7b9df90](https://github.com/mrc4tt/CounterStrikeSharp/commit/7b9df9097cb50a1be928c0955ef764f9279adae9))
 * feat: Allow custom CS# directory for flexible server deployment (aka. `css_basepath`) by [@ELDment](https://github.com/ELDment) ([31cedca](https://github.com/mrc4tt/CounterStrikeSharp/commit/31cedca2b71052a977b70eb90750966d96751961))
 
 ## New Contributors
-* [@himenekocn](https://github.com/himenekocn) made their first contribution
+* [@MatthewNeko](https://github.com/MatthewNeko) made their first contribution
 
 ## What's Changed in v1.0.340
 * fix: update for CS2 09-17-25 (patch 20022951) by [@oylsister](https://github.com/oylsister) ([2c80971](https://github.com/mrc4tt/CounterStrikeSharp/commit/2c809713937675cef245b79d9ad39674b4d37fd8))
