@@ -49,10 +49,7 @@ class RecordingKHook : public KHook::IKHook
     void* originalValue = nullptr;
     void* overrideValue = nullptr;
 
-    KHook::HookID_t SetupHook(void*, void*, void*, void*, void*, void*, void*, unsigned int, bool) override
-    {
-        return KHook::INVALID_HOOK;
-    }
+    KHook::HookID_t SetupHook(void*, void*, void*, void*, void*, void*, void*, unsigned int, bool) override { return KHook::INVALID_HOOK; }
 
     KHook::HookID_t
     SetupVirtualHook(void** vtable, int index, void* context, void*, void*, void*, void*, void*, unsigned int, bool) override
