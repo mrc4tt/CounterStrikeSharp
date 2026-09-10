@@ -1,7 +1,5 @@
 #include "mm_plugin.h"
 #include "core/globals.h"
-
-#include <memory>
 #include "core/managers/player_manager.h"
 #include "core/tick_scheduler.h"
 #include "iserver.h"
@@ -27,6 +25,8 @@
 #include <public/game/server/iplayerinfo.h>
 #include <public/entity2/entitysystem.h>
 
+#include <funchook.h>
+
 namespace counterstrikesharp {
 
 namespace modules {
@@ -39,18 +39,9 @@ CModule* vscript = nullptr;
 } // namespace modules
 
 namespace globals {
-// KHook detour on CGameEventManager::Init, installed in Initialize().
-//
-// Was a raw funchook jmp patch. KHook installs a single SafetyHook inline hook per
-// address and fans out to every consumer through its own dispatcher, so other
-// Metamod plugins hooking this function are ordered against us instead of racing
-// our patch; it also keeps our detour invisible to their KHook::LookupSignature
-// scans, which compensate only for KHook-owned patches.
-//
-// Held by pointer so RemoveDetours() can destroy it (and with it, remove the hook)
-// before the plugin .so is unloaded -- KHook's dispatcher lives in Metamod and
-// would otherwise call into our freed callbacks.
-static std::unique_ptr<KHook::Function<void, IGameEventManager2*>> s_gameEventInitHook;
+// funchook handle for the CGameEventManager::Init detour installed in Initialize().
+// Kept at file scope so RemoveDetours() can uninstall it on Metamod unload.
+static funchook_t* s_gameEventInitHook = nullptr;
 IVEngineServer2* engineServer2 = nullptr;
 IVEngineServer* engine = nullptr;
 IGameEventManager2* gameEventManager = nullptr;
@@ -152,28 +143,29 @@ void Initialize()
         return;
     }
 
-    s_gameEventInitHook =
-        std::make_unique<KHook::Function<void, IGameEventManager2*>>(&OnGameEventManagerInit, &OnGameEventManagerInitPost);
-    s_gameEventInitHook->Configure((void*)GameEventManagerInit);
+    auto m_hook = funchook_create();
+    funchook_prepare(m_hook, (void**)&GameEventManagerInit, (void*)&DetourGameEventManagerInit);
+    funchook_install(m_hook, 0);
+    s_gameEventInitHook = m_hook;
 }
 
-void RemoveDetours() { s_gameEventInitHook.reset(); }
+void RemoveDetours()
+{
+    if (s_gameEventInitHook)
+    {
+        funchook_uninstall(s_gameEventInitHook, 0);
+        funchook_destroy(s_gameEventInitHook);
+        s_gameEventInitHook = nullptr;
+    }
+}
 
-// The funchook version ran as one function: stash the manager, call the original,
-// then fire OnAllInitialized_Post. KHook calls the original for us, so that splits
-// into a pre (stash) and a post (notify) callback to keep the same ordering.
-KHook::Return<void> OnGameEventManagerInit(IGameEventManager2* pGameEventManager)
+void DetourGameEventManagerInit(IGameEventManager2* pGameEventManager)
 {
     gameEventManager = pGameEventManager;
 
-    return { KHook::Action::Ignore };
-}
+    GameEventManagerInit(pGameEventManager);
 
-KHook::Return<void> OnGameEventManagerInitPost(IGameEventManager2* pGameEventManager)
-{
     eventManager.OnAllInitialized_Post();
-
-    return { KHook::Action::Ignore };
 }
 
 CGlobalVars* getGlobalVars()

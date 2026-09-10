@@ -17,7 +17,6 @@
 #pragma once
 
 #include <map>
-#include <memory>
 #include <vector>
 
 #include "core/global_listener.h"
@@ -52,8 +51,8 @@ class ChatManager : public GlobalClass
     ~ChatManager();
     void OnAllInitialized() override;
     void OnShutdown() override;
-    // Removes the Host_Say detour before this plugin's .so is unloaded on Metamod
-    // unload, so a later chat message does not reach our freed callbacks (crash).
+    // Uninstalls the Host_Say funchook detour before this plugin's .so is unloaded on
+    // Metamod unload, so a later chat message does not jump into our freed code (crash).
     void RemoveDetours();
 
     bool OnSayCommandPre(CEntityInstance* pController, CCommand& args);
@@ -67,13 +66,11 @@ class ChatManager : public GlobalClass
     std::vector<ChatCommandInfo*> m_cmd_list;
     std::map<std::string, ChatCommandInfo*> m_cmd_lookup;
 
-    // KHook detour on Host_Say. Held by pointer so RemoveDetours() can destroy it (and
-    // with it, remove the hook) on unload.
-    std::unique_ptr<KHook::Function<void, CEntityInstance*, CCommand&, bool, int, const char*>> m_hostSayHook;
+    // funchook_t* for the Host_Say detour. void* to keep <funchook.h> out of this header.
+    void* m_hostSayHook = nullptr;
 };
 
-KHook::Return<void> OnHostSay(CEntityInstance* pController, CCommand& args, bool teamonly, int unk1, const char* unk2);
-KHook::Return<void> OnHostSayPost(CEntityInstance* pController, CCommand& args, bool teamonly, int unk1, const char* unk2);
+static void DetourHostSay(CEntityInstance* pController, CCommand& args, bool teamonly, int unk1, const char* unk2);
 static HostSay m_pHostSay = nullptr;
 
 } // namespace counterstrikesharp

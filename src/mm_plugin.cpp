@@ -316,10 +316,10 @@ bool CounterStrikeSharpMMPlugin::Unload(char* error, size_t maxlen)
     globals::callbackManager.ReleaseCallback(on_map_end_callback);
     globals::callbackManager.ReleaseCallback(on_metamod_all_plugins_loaded_callback);
 
-    // Remove our inline detours before our .so is unloaded. KHook's dispatcher lives in
-    // Metamod and calls our callbacks (FireOutputInternal, Host_Say,
-    // CGameEventManager::Init) in THIS module; leaving them installed means the next
-    // call after unload jumps into freed code and crashes the server on Metamod reload.
+    // Uninstall funchook detours before our .so is unloaded. They redirect engine
+    // functions (FireOutputInternal, Host_Say, CGameEventManager::Init) into trampolines
+    // that live in THIS module; leaving them installed means the next call after unload
+    // jumps into freed code and crashes the server on Metamod reload.
     globals::entityManager.RemoveDetours();
     globals::chatManager.RemoveDetours();
     globals::RemoveDetours();

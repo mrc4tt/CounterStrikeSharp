@@ -17,7 +17,6 @@
 #pragma once
 
 #include <map>
-#include <memory>
 #include <vector>
 
 #include "core/function.h"
@@ -49,9 +48,6 @@ class CCheckTransmitInfoHack
 
 namespace counterstrikesharp {
 class ScriptCallback;
-// Defined further down in this header; forward-declared here so EntityManager can hold
-// the KHook detour on its FireOutputInternal.
-class CEntityIOOutput;
 
 typedef std::pair<std::string, std::string> OutputKey_t;
 
@@ -115,10 +111,9 @@ class EntityManager : public GlobalClass
     ~EntityManager();
     void OnAllInitialized() override;
     void OnShutdown() override;
-    // Removes the FireOutputInternal detour. Must be called on Metamod unload BEFORE
-    // this plugin's .so is unloaded, otherwise KHook's dispatcher (which lives in
-    // Metamod) keeps calling our freed callbacks and the next entity-output fire jumps
-    // into unmapped memory (crash).
+    // Uninstalls the FireOutputInternal funchook detour. Must be called on Metamod unload
+    // BEFORE this plugin's .so is unloaded, otherwise the detour keeps pointing at our
+    // freed code and the next entity-output fire jumps into unmapped memory (crash).
     void RemoveDetours();
     void HookEntityOutput(const char* szClassname, const char* szOutput, CallbackT fnCallback, HookMode mode);
     void UnhookEntityOutput(const char* szClassname, const char* szOutput, CallbackT fnCallback, HookMode mode);
@@ -164,11 +159,9 @@ class EntityManager : public GlobalClass
 
     std::string m_profile_name;
 
-    // KHook detour on CEntityIOOutput::FireOutputInternal. Held by pointer so
-    // RemoveDetours() can destroy it (and with it, remove the hook) on unload.
-    std::unique_ptr<
-        KHook::Function<void, CEntityIOOutput* const, CEntityInstance*, CEntityInstance*, const CVariant* const, float, void*, char*>>
-        m_fireOutputHook;
+    // funchook_t* for the FireOutputInternal detour. Stored as void* so this header does
+    // not need to include <funchook.h>. Uninstalled + destroyed in RemoveDetours().
+    void* m_fireOutputHook = nullptr;
 };
 
 enum EntityIOTargetType_t
@@ -219,21 +212,13 @@ class CEntityIOOutput
 typedef void (*FireOutputInternal)(
     CEntityIOOutput* const, CEntityInstance*, CEntityInstance*, const CVariant* const, float flDelay, void* unk1, char* unk2);
 
-KHook::Return<void> OnFireOutputInternal(CEntityIOOutput* const pThis,
-                                         CEntityInstance* pActivator,
-                                         CEntityInstance* pCaller,
-                                         const CVariant* const value,
-                                         float flDelay,
-                                         void* unk1,
-                                         char* unk2);
-
-KHook::Return<void> OnFireOutputInternalPost(CEntityIOOutput* const pThis,
-                                             CEntityInstance* pActivator,
-                                             CEntityInstance* pCaller,
-                                             const CVariant* const value,
-                                             float flDelay,
-                                             void* unk1,
-                                             char* unk2);
+static void DetourFireOutputInternal(CEntityIOOutput* const pThis,
+                                     CEntityInstance* pActivator,
+                                     CEntityInstance* pCaller,
+                                     const CVariant* const value,
+                                     float flDelay,
+                                     void* unk1,
+                                     char* unk2);
 
 static FireOutputInternal m_pFireOutputInternal = nullptr;
 

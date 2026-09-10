@@ -21,6 +21,7 @@
 #include "core/log.h"
 #include "core/recipientfilters.h"
 #include "core/cs2_sdk/entity/dump.h"
+#include <funchook.h>
 #include <vector>
 #include <public/eiface.h>
 #include "scripting/callback_manager.h"
@@ -122,13 +123,24 @@ void EntityManager::OnAllInitialized()
         new ValveFunction((void*)CBaseEntity_TakeDamageOld, CALL_CONV,
                           std::vector<DataType_t>{ DATA_TYPE_POINTER, DATA_TYPE_POINTER, DATA_TYPE_POINTER }, DATA_TYPE_LONG_LONG);
 
-    m_fireOutputHook = std::make_unique<decltype(m_fireOutputHook)::element_type>(&OnFireOutputInternal, &OnFireOutputInternalPost);
-    m_fireOutputHook->Configure((void*)m_pFireOutputInternal);
+    auto m_hook = funchook_create();
+    funchook_prepare(m_hook, (void**)&m_pFireOutputInternal, (void*)&DetourFireOutputInternal);
+    funchook_install(m_hook, 0);
+    m_fireOutputHook = m_hook;
 
     // Listener is added in ServerStartup as entity system is not initialised at this stage.
 }
 
-void EntityManager::RemoveDetours() { m_fireOutputHook.reset(); }
+void EntityManager::RemoveDetours()
+{
+    if (m_fireOutputHook)
+    {
+        auto* hook = reinterpret_cast<funchook_t*>(m_fireOutputHook);
+        funchook_uninstall(hook, 0);
+        funchook_destroy(hook);
+        m_fireOutputHook = nullptr;
+    }
+}
 
 void EntityManager::OnShutdown()
 {
@@ -473,41 +485,21 @@ void EntityManager::Hook_OnTakeDamage_Alive_Post(CBaseEntity* entity, CTakeDamag
     }
 }
 
-namespace {
-// Per-call state handed from the pre callback to the post callback.
-//
-// The funchook version was a single function, so the matched callback pairs were just
-// a local and the post callbacks were skipped by returning early. KHook calls the
-// original for us and always runs post — even when a pre superseded the call — so that
-// state has to be carried across the two callbacks explicitly.
-//
-// Entity I/O fires nested outputs (an output triggers an entity that fires its own),
-// so these frames stack. Every pre path pushes exactly one frame and post pops exactly
-// one, which keeps them balanced whichever path was taken.
-struct FireOutputFrame
-{
-    std::vector<CallbackPair*> callbackPairs;
-    bool ranOriginal;
-};
-
-thread_local std::vector<FireOutputFrame> s_fireOutputFrames;
-} // namespace
-
-KHook::Return<void> OnFireOutputInternal(CEntityIOOutput* const pThis,
-                                         CEntityInstance* pActivator,
-                                         CEntityInstance* pCaller,
-                                         const CVariant* const value,
-                                         float flDelay,
-                                         void* unk1,
-                                         char* unk2)
+void DetourFireOutputInternal(CEntityIOOutput* const pThis,
+                              CEntityInstance* pActivator,
+                              CEntityInstance* pCaller,
+                              const CVariant* const value,
+                              float flDelay,
+                              void* unk1,
+                              char* unk2)
 {
     // m_pDesc/m_pName are read unconditionally below on every entity I/O fire.
     // Runtime-created/malformed outputs can have a null descriptor — pass the
     // call straight through instead of segfaulting the whole server.
     if (!pThis || !pThis->m_pDesc || !pThis->m_pDesc->m_pName)
     {
-        s_fireOutputFrames.push_back({ {}, true });
-        return { KHook::Action::Ignore };
+        m_pFireOutputInternal(pThis, pActivator, pCaller, value, flDelay, unk1, unk2);
+        return;
     }
 
     // Entity I/O fires constantly (every map is full of outputs); most servers register
@@ -516,8 +508,8 @@ KHook::Return<void> OnFireOutputInternal(CEntityIOOutput* const pThis,
     auto& hookMap = globals::entityManager.m_pHookMap;
     if (hookMap.empty())
     {
-        s_fireOutputFrames.push_back({ {}, true });
-        return { KHook::Action::Ignore };
+        m_pFireOutputInternal(pThis, pActivator, pCaller, value, flDelay, unk1, unk2);
+        return;
     }
 
     std::vector vecSearchKeys{ OutputKey_t("*", pThis->m_pDesc->m_pName), OutputKey_t("*", "*") };
@@ -572,8 +564,7 @@ KHook::Return<void> OnFireOutputInternal(CEntityIOOutput* const pThis,
 
                 if (thisResult >= HookResult::Stop)
                 {
-                    s_fireOutputFrames.push_back({ {}, false });
-                    return { KHook::Action::Supersede };
+                    return;
                 }
 
                 if (thisResult > result)
@@ -586,42 +577,12 @@ KHook::Return<void> OnFireOutputInternal(CEntityIOOutput* const pThis,
 
     if (result >= HookResult::Handled)
     {
-        s_fireOutputFrames.push_back({ {}, false });
-        return { KHook::Action::Supersede };
+        return;
     }
 
-    s_fireOutputFrames.push_back({ std::move(vecCallbackPairs), true });
+    m_pFireOutputInternal(pThis, pActivator, pCaller, value, flDelay, unk1, unk2);
 
-    return { KHook::Action::Ignore };
-}
-
-KHook::Return<void> OnFireOutputInternalPost(CEntityIOOutput* const pThis,
-                                             CEntityInstance* pActivator,
-                                             CEntityInstance* pCaller,
-                                             const CVariant* const value,
-                                             float flDelay,
-                                             void* unk1,
-                                             char* unk2)
-{
-    // KHook runs post callbacks even when a pre superseded, so a frame is always here
-    // to pop. Guard anyway: popping an empty vector would be a use-after-free, and a
-    // silently dropped post is a far better failure than a crash.
-    if (s_fireOutputFrames.empty())
-    {
-        return { KHook::Action::Ignore };
-    }
-
-    const FireOutputFrame frame = std::move(s_fireOutputFrames.back());
-    s_fireOutputFrames.pop_back();
-
-    // Superseded, so the output never fired — matching the funchook version, which
-    // returned before reaching the post callbacks in that case.
-    if (!frame.ranOriginal)
-    {
-        return { KHook::Action::Ignore };
-    }
-
-    for (auto pCallbackPair : frame.callbackPairs)
+    for (auto pCallbackPair : vecCallbackPairs)
     {
         if (pCallbackPair->post->GetFunctionCount())
         {
