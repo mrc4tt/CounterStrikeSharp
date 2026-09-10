@@ -14,20 +14,8 @@ using CounterStrikeSharp.API.Core.Attributes;
 
 namespace CounterStrikeSharp.API.Core;
 
-public partial class CCSPlayerCamera : CBaseEntity
+public partial class CCSPlayerCamera : CCSCustomPlayerCamera
 {
     public CCSPlayerCamera (IntPtr pointer) : base(pointer) {}
-
-	// m_hPawn
-	[SchemaMember("CCSPlayerCamera", "m_hPawn")]
-	public CHandle<CCSPlayerPawnBase> Pawn => Schema.GetDeclaredClass<CHandle<CCSPlayerPawnBase>>(this.Handle, "CCSPlayerCamera", "m_hPawn");
-
-	// m_bEnabled
-	[SchemaMember("CCSPlayerCamera", "m_bEnabled")]
-	public ref bool Enabled => ref Schema.GetRef<bool>(this.Handle, "CCSPlayerCamera", "m_bEnabled");
-
-	// m_bIsControllingAngles
-	[SchemaMember("CCSPlayerCamera", "m_bIsControllingAngles")]
-	public ref bool IsControllingAngles => ref Schema.GetRef<bool>(this.Handle, "CCSPlayerCamera", "m_bIsControllingAngles");
 
 }
