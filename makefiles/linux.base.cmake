@@ -49,7 +49,5 @@ set(
     spdlog
     dynload_s
     dyncall_s
-    distorm
-    funchook-static
     dynohook
 )

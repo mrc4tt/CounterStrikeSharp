@@ -16,7 +16,6 @@
 
 #include "core/managers/chat_manager.h"
 
-#include <funchook.h>
 #include <igameevents.h>
 #include <public/eiface.h>
 
@@ -45,39 +44,68 @@ void ChatManager::OnAllInitialized()
         return;
     }
 
-    auto m_hook = funchook_create();
-    funchook_prepare(m_hook, (void**)&m_pHostSay, (void*)&DetourHostSay);
-    funchook_install(m_hook, 0);
-    m_hostSayHook = m_hook;
+    m_hostSayHook = std::make_unique<decltype(m_hostSayHook)::element_type>(&OnHostSay, &OnHostSayPost);
+    m_hostSayHook->Configure((void*)m_pHostSay);
 
     on_player_chat_callback = globals::callbackManager.CreateCallback("OnPlayerChat");
 }
 
 void ChatManager::OnShutdown() { globals::callbackManager.ReleaseCallback(on_player_chat_callback); }
 
-void ChatManager::RemoveDetours()
-{
-    if (m_hostSayHook)
-    {
-        auto* hook = reinterpret_cast<funchook_t*>(m_hostSayHook);
-        funchook_uninstall(hook, 0);
-        funchook_destroy(hook);
-        m_hostSayHook = nullptr;
-    }
-}
+void ChatManager::RemoveDetours() { m_hostSayHook.reset(); }
 
-void DetourHostSay(CEntityInstance* pController, CCommand& args, bool teamonly, int unk1, const char* unk2)
+namespace {
+// Trigger classification computed in the pre callback and consumed by the post
+// callback.
+//
+// The funchook version was one function: classify, conditionally call the original,
+// then do the command/chat work. KHook calls the original for us, so the "before" and
+// "after" halves are now two callbacks and the classification has to be carried
+// between them -- recomputing it in post would re-read args after the engine has had
+// them. Kept as a stack purely to stay correct if a chat message ever nests.
+struct HostSayFrame
+{
+    std::string prefix;
+    bool isCommand;
+};
+
+thread_local std::vector<HostSayFrame> s_hostSayFrames;
+} // namespace
+
+KHook::Return<void> OnHostSay(CEntityInstance* pController, CCommand& args, bool teamonly, int unk1, const char* unk2)
 {
     std::string prefix;
     bool bSilent = globals::coreConfig->IsSilentChatTrigger(args[1], prefix);
     bool bCommand = globals::coreConfig->IsPublicChatTrigger(args[1], prefix) || bSilent;
 
-    if (!bSilent)
+    s_hostSayFrames.push_back({ prefix, bCommand });
+
+    // A silent trigger must not reach the engine, or the "!command" shows up in
+    // everyone's chat. Superseding is the KHook equivalent of the funchook version
+    // simply not calling the original.
+    if (bSilent)
     {
-        m_pHostSay(pController, args, teamonly, unk1, unk2);
+        return { KHook::Action::Supersede };
     }
 
-    if (bCommand)
+    return { KHook::Action::Ignore };
+}
+
+KHook::Return<void> OnHostSayPost(CEntityInstance* pController, CCommand& args, bool teamonly, int unk1, const char* unk2)
+{
+    // Post runs even when the pre superseded, so the frame is always here to pop.
+    // Guard anyway rather than indexing an empty vector.
+    if (s_hostSayFrames.empty())
+    {
+        return { KHook::Action::Ignore };
+    }
+
+    const HostSayFrame frame = std::move(s_hostSayFrames.back());
+    s_hostSayFrames.pop_back();
+
+    const std::string& prefix = frame.prefix;
+
+    if (frame.isCommand)
     {
         // Messagemode (typing in the chat box) wraps the whole message in
         // surrounding quotes, but `say`/`say_team` invoked from a key bind
@@ -142,6 +170,8 @@ void DetourHostSay(CEntityInstance* pController, CCommand& args, bool teamonly, 
             globals::gameEventManager->FireEvent(pEvent, false);
         }
     }
+
+    return { KHook::Action::Ignore };
 }
 
 bool ChatManager::OnSayCommandPre(CEntityInstance* pController, CCommand& command) { return false; }
