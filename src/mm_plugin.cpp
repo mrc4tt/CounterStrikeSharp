@@ -477,7 +477,7 @@ KHook::Return<void> CounterStrikeSharpMMPlugin::Hook_RegisterLoopMode(IEngineSer
 
 KHook::Return<IEngineService*> CounterStrikeSharpMMPlugin::Hook_FindService(IEngineServiceMgr*, const char* serviceName)
 {
-    IEngineService* pService = KHook::GetOriginalReturn<IEngineService*>();
+    IEngineService* pService = hooks::OriginalReturnOr<IEngineService*>(nullptr);
 
     return { KHook::Action::Ignore, pService };
 }

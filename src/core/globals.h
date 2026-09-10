@@ -139,6 +139,31 @@ void RemoveDetours();
 CGlobalVars* getGlobalVars();
 } // namespace globals
 
+namespace hooks {
+// KHook only allocates the original-return storage when the original function
+// actually ran: `original_return_ptr` starts at 0 and is filled from
+// SaveReturnValue(..., original=true). If any consumer superseded the call, it
+// stays null, so KHook::GetOriginalReturn<T>() (a blind `*(T*)ptr`) dereferences
+// null and takes the server down. That is not hypothetical for us --
+// IServerGameClients::ClientConnect is exactly what a ban/queue plugin
+// supersedes to reject a player. Prefer the original value, fall back to whatever
+// the superseding hook returned, and only then to the caller's default.
+template <typename T> inline T OriginalReturnOr(const T& fallback)
+{
+    if (auto* original = static_cast<T*>(KHook::GetOriginalValuePtr()))
+    {
+        return *original;
+    }
+
+    if (auto* overridden = static_cast<T*>(KHook::GetOverrideValuePtr()))
+    {
+        return *overridden;
+    }
+
+    return fallback;
+}
+} // namespace hooks
+
 namespace modules {
 class CModule;
 

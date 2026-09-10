@@ -151,7 +151,7 @@ KHook::Return<bool> PlayerManager::OnClientConnect_Post(IServerGameClients* pGam
     CSSHARP_CORE_TRACE("[PlayerManager][OnClientConnect_Post] - {}, {}, {}", slot.Get(), pszName, pszNetworkID);
 
     int client = slot.Get();
-    bool orig_value = KHook::GetOriginalReturn<bool>();
+    bool orig_value = hooks::OriginalReturnOr<bool>(false);
     CPlayer* pPlayer = &m_players[client];
 
     if (orig_value)
