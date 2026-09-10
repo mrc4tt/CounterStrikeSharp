@@ -14,12 +14,17 @@ set(CATCH2_AMALG_DIR ${CMAKE_SOURCE_DIR}/libraries/Catch2/extras)
 
 add_executable(css_unit_tests
     test_timer_system_startup.cpp
+    test_khook_semantics.cpp
     ${CATCH2_AMALG_DIR}/catch_amalgamated.cpp
 )
 
 target_include_directories(css_unit_tests PRIVATE
     ${CATCH2_AMALG_DIR}
     ${CMAKE_SOURCE_DIR}/src
+    # khook.hpp only. Not KHOOK_STANDALONE, so every KHOOK_API entry point is an
+    # inline forwarder to KHook::__exported__khook -- the test defines that symbol
+    # and points it at a mock, so no khook/safetyhook/Zydis build is needed.
+    ${CMAKE_SOURCE_DIR}/libraries/metamod-source/third_party/khook/include
 )
 
 target_compile_features(css_unit_tests PRIVATE cxx_std_17)

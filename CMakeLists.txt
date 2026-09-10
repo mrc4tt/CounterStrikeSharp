@@ -146,6 +146,12 @@ if(LINUX)
     # The version script keeps our spdlog (and dyncall/protobuf/sdk) private.
     target_link_options(${PROJECT_NAME} PRIVATE
                         "-Wl,--version-script=${CMAKE_CURRENT_SOURCE_DIR}/makefiles/exports.ver")
+    # target_link_options alone does not make the version script a dependency of
+    # the link step: editing exports.ver would leave the previously linked .so in
+    # place and the change would only appear after an unrelated recompile (or a
+    # clean build). Declare it so a touched exports.ver relinks.
+    set_property(TARGET ${PROJECT_NAME} APPEND PROPERTY LINK_DEPENDS
+                 "${CMAKE_CURRENT_SOURCE_DIR}/makefiles/exports.ver")
 elseif(WIN32)
     include("makefiles/windows.base.cmake")
     set_target_properties(${PROJECT_NAME} PROPERTIES

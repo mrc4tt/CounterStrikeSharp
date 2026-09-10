@@ -27,6 +27,7 @@
 #include "core/gameconfig.h"
 #include "core/gameconfig_updater.h"
 #include "core/global_listener.h"
+#include "core/khook_original_return.h"
 #include "core/log.h"
 #include "core/managers/entity_manager.h"
 #include "core/managers/chat_manager.h"
@@ -305,6 +306,10 @@ bool CounterStrikeSharpMMPlugin::Unload(char* error, size_t maxlen)
     if (g_pCGameEventManagerVTable != nullptr)
     {
         m_LoadEventsFromFile.RemoveGlobal((IGameEventManager2*)&g_pCGameEventManagerVTable);
+        // The vtable was resolved out of server.so on Load. Clear it so a later
+        // Load re-resolves rather than reusing a stale address, and so a second
+        // Unload cannot RemoveGlobal a vtable that is no longer hooked.
+        g_pCGameEventManagerVTable = nullptr;
     }
 
     globals::callbackManager.ReleaseCallback(on_activate_callback);
