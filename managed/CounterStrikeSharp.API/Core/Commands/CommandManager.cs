@@ -173,7 +173,7 @@ public class CommandManager : ICommandManager
                 {
                     // No owning plugin => core-internal command. Tag with the command name so the
                     // slow-frame report names the actual culprit instead of a faceless "core".
-                    Profiling.PluginProfiler.End(command.PluginName ?? ("core:" + command.Name), _pf);
+                    Profiling.PluginProfiler.End(command.PluginName ?? ("core:" + command.Name), "command " + command.Name, _pf);
                 }
             }
         }

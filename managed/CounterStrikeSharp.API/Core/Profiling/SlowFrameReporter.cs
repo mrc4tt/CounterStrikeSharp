@@ -95,6 +95,15 @@ namespace CounterStrikeSharp.API.Core.Profiling
             AppendCpu(sb, snap);
             sb.Append('\n');
 
+            // The line that turns "which plugin" into "which handler". Empty only for
+            // cost attributed through a path that does not name one (core buckets).
+            if (snap.WorstFrameByHandler.Count > 0)
+            {
+                sb.Append("  Handlers (worst frame): ");
+                AppendHandlers(sb, snap);
+                sb.Append('\n');
+            }
+
             sb.Append("  GC this second: gen0 +").Append(snap.Gen0)
                 .Append(", gen1 +").Append(snap.Gen1)
                 .Append(", gen2 +").Append(snap.Gen2);
@@ -119,6 +128,18 @@ namespace CounterStrikeSharp.API.Core.Profiling
                 var c = snap.WorstFrameByCpu[i];
                 if (i > 0) sb.Append(" | ");
                 sb.Append(c.Plugin).Append(' ').Append(c.Ms.ToString("F1", CultureInfo.InvariantCulture)).Append("ms");
+            }
+        }
+
+        private static void AppendHandlers(StringBuilder sb, SlowFrameSnapshot snap)
+        {
+            int n = Math.Min(_topN, snap.WorstFrameByHandler.Count);
+            for (int i = 0; i < n; i++)
+            {
+                var c = snap.WorstFrameByHandler[i];
+                if (i > 0) sb.Append(" | ");
+                sb.Append(c.Plugin).Append(' ').Append(c.Ms.ToString("F1", CultureInfo.InvariantCulture)).Append("ms");
+                if (c.Bytes > 0) sb.Append(" (").Append(FormatBytes(c.Bytes)).Append(')');
             }
         }
 

@@ -49,6 +49,14 @@ namespace CounterStrikeSharp.API.Core.Profiling
         private static readonly Dictionary<string, double> _windowMs = new();  // rolling 1s
         private static readonly Dictionary<string, long> _windowBytes = new();
         private static Dictionary<string, FrameAcc> _worstSnapshot = new();    // worst frame this window
+
+        // Same data one level down: keyed "<plugin> ▸ <handler>". The per-plugin
+        // dictionaries above stay authoritative for the verdict (a plugin whose cost
+        // is spread over five handlers must still read as one dominant plugin); this
+        // only answers the follow-up question the old report could not -- WHICH
+        // handler. Populated only by the End() overload that is given a handler name.
+        private static readonly Dictionary<string, FrameAcc> _frameDetail = new();
+        private static Dictionary<string, FrameAcc> _worstDetail = new();
         private static double _worstFrameMs;
         private static long _windowStartMs;
         private static int _gc0, _gc1, _gc2;
@@ -86,17 +94,32 @@ namespace CounterStrikeSharp.API.Core.Profiling
         }
 
         /// <summary>Call immediately after the plugin handler returns.</summary>
-        public static void End(string plugin, in Sample start)
+        public static void End(string plugin, in Sample start) => End(plugin, null, start);
+
+        /// <summary>
+        /// Call immediately after the plugin handler returns, naming the handler
+        /// (event name, listener name, "timer", ...) so the report can point at it.
+        /// </summary>
+        public static void End(string plugin, string? handler, in Sample start)
         {
             // start.Ts == 0 means Begin() ran while disabled (default Sample); skip.
             if (!Enabled || start.Ts == 0) return;
 
             long dt = Stopwatch.GetTimestamp() - start.Ts;
             long db = GC.GetAllocatedBytesForCurrentThread() - start.Bytes;
+            if (db < 0) db = 0; // GC mid-call can make the delta negative; ignore those
 
-            ref var acc = ref CollectionsMarshal.GetValueRefOrAddDefault(_frame, plugin ?? "unknown", out _);
+            string name = plugin ?? "unknown";
+
+            ref var acc = ref CollectionsMarshal.GetValueRefOrAddDefault(_frame, name, out _);
             acc.Ticks += dt;
-            if (db > 0) acc.Bytes += db; // GC mid-call can make the delta negative; ignore those
+            acc.Bytes += db;
+
+            if (handler == null) return;
+
+            ref var detail = ref CollectionsMarshal.GetValueRefOrAddDefault(_frameDetail, name + " ▸ " + handler, out _);
+            detail.Ticks += dt;
+            detail.Bytes += db;
         }
 
         /// <summary>
@@ -133,9 +156,11 @@ namespace CounterStrikeSharp.API.Core.Profiling
             {
                 _worstFrameMs = frameMs;
                 _worstSnapshot = new Dictionary<string, FrameAcc>(_frame);
+                _worstDetail = new Dictionary<string, FrameAcc>(_frameDetail);
             }
 
             _frame.Clear();
+            _frameDetail.Clear();
 
             // Close the 1-second window.
             if (now - _windowStartMs >= 1000)
@@ -151,6 +176,7 @@ namespace CounterStrikeSharp.API.Core.Profiling
                 _windowMs.Clear();
                 _windowBytes.Clear();
                 _worstSnapshot = new Dictionary<string, FrameAcc>();
+                _worstDetail = new Dictionary<string, FrameAcc>();
                 _worstFrameMs = 0;
                 _windowStartMs = now;
                 SampleGcBaseline();
@@ -181,7 +207,13 @@ namespace CounterStrikeSharp.API.Core.Profiling
             }
             alloc.Sort((a, b) => b.Bytes.CompareTo(a.Bytes));
 
-            return new SlowFrameSnapshot(_worstFrameMs, _budgetMs, worst, alloc, g0, g1, g2);
+            // Worst single frame, per handler.
+            var handlers = new List<PluginCost>(_worstDetail.Count);
+            foreach (var kv in _worstDetail)
+                handlers.Add(new PluginCost(kv.Key, kv.Value.Ticks * TicksToMs, kv.Value.Bytes));
+            handlers.Sort((a, b) => b.Ms.CompareTo(a.Ms));
+
+            return new SlowFrameSnapshot(_worstFrameMs, _budgetMs, worst, alloc, g0, g1, g2, handlers);
         }
     }
 
@@ -206,13 +238,18 @@ namespace CounterStrikeSharp.API.Core.Profiling
         public double BudgetMs { get; }
         public IReadOnlyList<PluginCost> WorstFrameByCpu { get; }
         public IReadOnlyList<PluginCost> WindowByAlloc { get; }
+
+        /// <summary>Worst frame broken down per handler ("plugin ▸ handler"). May be empty.</summary>
+        public IReadOnlyList<PluginCost> WorstFrameByHandler { get; }
         public int Gen0 { get; }
         public int Gen1 { get; }
         public int Gen2 { get; }
 
         public SlowFrameSnapshot(double worstFrameMs, double budgetMs, IReadOnlyList<PluginCost> worstFrameByCpu,
-            IReadOnlyList<PluginCost> windowByAlloc, int gen0, int gen1, int gen2)
+            IReadOnlyList<PluginCost> windowByAlloc, int gen0, int gen1, int gen2,
+            IReadOnlyList<PluginCost>? worstFrameByHandler = null)
         {
+            WorstFrameByHandler = worstFrameByHandler ?? Array.Empty<PluginCost>();
             WorstFrameMs = worstFrameMs;
             BudgetMs = budgetMs;
             WorstFrameByCpu = worstFrameByCpu;

@@ -161,7 +161,9 @@ namespace CounterStrikeSharp.API.Core
                 }
                 finally
                 {
-                    Profiling.PluginProfiler.End(ModuleName, pf);
+                    // Name the event too: "MatchZy" answers which plugin, "MatchZy ▸ player_hurt"
+                    // answers which of its handlers -- the question the per-plugin report left open.
+                    Profiling.PluginProfiler.End(ModuleName, name, pf);
                 }
             };
 
@@ -375,7 +377,7 @@ namespace CounterStrikeSharp.API.Core
                 }
                 finally
                 {
-                    Profiling.PluginProfiler.End(ModuleName, _pfSample);
+                    Profiling.PluginProfiler.End(ModuleName, listenerName, _pfSample);
                 }
 
                 if (result is HookResult hookResult)
@@ -462,7 +464,7 @@ namespace CounterStrikeSharp.API.Core
                 }
                 finally
                 {
-                    Profiling.PluginProfiler.End(pluginName, pf);
+                    Profiling.PluginProfiler.End(pluginName, "timer", pf);
                 }
             };
         }
