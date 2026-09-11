@@ -16,15 +16,41 @@
 #include "catch_amalgamated.hpp"
 
 #include "core/khook_original_return.h"
+#include "core/khook_verified.h"
 
 #include <khook.hpp>
 
+#include <string>
 #include <vector>
 
 // The plugin gets this symbol from Metamod. Here the tests own it.
 namespace KHook {
 IKHook* __exported__khook = nullptr;
 }
+
+// hooks::Virtual reports through this free function instead of calling the logger
+// directly, which is what lets these tests link it without spdlog. The plugin's
+// definition lives in src/core/khook_verified.cpp; this one records instead.
+namespace counterstrikesharp {
+namespace hooks {
+
+struct RegistrationReport
+{
+    std::string name;
+    int slot;
+    bool ok;
+    std::string reason;
+};
+
+std::vector<RegistrationReport> g_reports;
+
+void ReportHookRegistration(const char* name, void**, int slot, bool ok, const char* reason)
+{
+    g_reports.push_back({ name ? name : "", slot, ok, reason ? reason : "" });
+}
+
+} // namespace hooks
+} // namespace counterstrikesharp
 
 namespace {
 
@@ -51,14 +77,22 @@ class RecordingKHook : public KHook::IKHook
 
     KHook::HookID_t SetupHook(void*, void*, void*, void*, void*, void*, void*, unsigned int, bool) override { return KHook::INVALID_HOOK; }
 
+    // Set false to make the host refuse every install, the way KHook does when
+    // safetyhook cannot patch the target.
+    bool acceptSetups = true;
+
     KHook::HookID_t
     SetupVirtualHook(void** vtable, int index, void* context, void*, void*, void*, void*, void*, unsigned int, bool) override
     {
         setups.push_back({ vtable, index, context });
+        if (!acceptSetups) return KHook::INVALID_HOOK;
         return static_cast<KHook::HookID_t>(setups.size()); // 1-based, never INVALID_HOOK
     }
 
-    void RemoveHook(KHook::HookID_t id, bool) override { removed.push_back(id); }
+    // Signature widened by khook 1e200e4 ("Add the ability to track hook removal");
+    // the extra params are the optional removal callback, which KHook::Virtual does
+    // not use.
+    void RemoveHook(KHook::HookID_t id, bool, void (*)(KHook::HookID_t, void*), void*) override { removed.push_back(id); }
 
     void* GetContextPtr() override { return nullptr; }
     void* GetOriginalFunction() override { return nullptr; }
@@ -263,5 +297,73 @@ TEST_CASE("OriginalReturnOr survives a superseded call", "[KHook][return]")
         guard.mock.overrideValue = nullptr;
         CHECK(counterstrikesharp::hooks::OriginalReturnOr<bool>(true) == true);
         CHECK(counterstrikesharp::hooks::OriginalReturnOr<void*>(nullptr) == nullptr);
+    }
+}
+
+TEST_CASE("hooks::Virtual reports whether KHook actually took the hook", "[KHook][virtual][verify]")
+{
+    // The failure this exists for: KHook::SetupHook returns INVALID_HOOK when the
+    // detour cannot be installed (safetyhook refusing the target, or an address
+    // range KHook has already patched), KHook::Virtual::_Setup swallows that and
+    // returns void, and the caller carries on believing it is hooked. The symptom
+    // arrives much later as a feature that quietly does nothing.
+    counterstrikesharp::hooks::g_reports.clear();
+
+    Listener listener;
+    FakeGameInterface object;
+
+    SECTION("install accepted -> true, reported as ok")
+    {
+        MockGuard guard;
+        guard.mock.acceptSetups = true;
+
+        counterstrikesharp::hooks::Virtual<IFakeGameInterface, void, int> hook(&IFakeGameInterface::FirstMethod, &listener, &Listener::Pre,
+                                                                               &Listener::Post);
+
+        CHECK(hook.Add(&object, "IFakeGameInterface::FirstMethod"));
+        REQUIRE(counterstrikesharp::hooks::g_reports.size() == 1);
+        CHECK(counterstrikesharp::hooks::g_reports[0].ok);
+        CHECK(counterstrikesharp::hooks::g_reports[0].slot == KHook::GetVtableIndex(&IFakeGameInterface::FirstMethod));
+    }
+
+    SECTION("install refused -> false, reported as failed")
+    {
+        MockGuard guard;
+        guard.mock.acceptSetups = false;
+
+        counterstrikesharp::hooks::Virtual<IFakeGameInterface, void, int> hook(&IFakeGameInterface::FirstMethod, &listener, &Listener::Pre,
+                                                                               &Listener::Post);
+
+        CHECK_FALSE(hook.Add(&object, "IFakeGameInterface::FirstMethod"));
+        REQUIRE(counterstrikesharp::hooks::g_reports.size() == 1);
+        CHECK_FALSE(counterstrikesharp::hooks::g_reports[0].ok);
+        CHECK(counterstrikesharp::hooks::g_reports[0].name == "IFakeGameInterface::FirstMethod");
+    }
+
+    SECTION("null interface -> false, never dereferenced")
+    {
+        MockGuard guard;
+
+        counterstrikesharp::hooks::Virtual<IFakeGameInterface, void, int> hook(&IFakeGameInterface::FirstMethod, &listener, &Listener::Pre,
+                                                                               &Listener::Post);
+
+        CHECK_FALSE(hook.Add(nullptr, "IFakeGameInterface::FirstMethod"));
+        CHECK(guard.mock.setups.empty());
+        REQUIRE(counterstrikesharp::hooks::g_reports.size() == 1);
+        CHECK_FALSE(counterstrikesharp::hooks::g_reports[0].ok);
+    }
+
+    SECTION("unconfigured vtable index -> false, no install attempted")
+    {
+        MockGuard guard;
+
+        // Default-constructed: no member pointer, no Configure() -- the shape
+        // EntityManager is in when its gamedata offset is missing.
+        counterstrikesharp::hooks::Virtual<IFakeGameInterface, void, int> hook;
+
+        CHECK_FALSE(hook.AddGlobal(&object, "ISource2GameEntities::CheckTransmit"));
+        CHECK(guard.mock.setups.empty());
+        REQUIRE(counterstrikesharp::hooks::g_reports.size() == 1);
+        CHECK_FALSE(counterstrikesharp::hooks::g_reports[0].ok);
     }
 }

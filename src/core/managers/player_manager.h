@@ -35,6 +35,7 @@
 
 #include "core/global_listener.h"
 #include "core/globals.h"
+#include "core/khook_verified.h"
 
 class CBaseEntity;
 class INetChannelInfo;
@@ -182,11 +183,11 @@ class PlayerManager : public GlobalClass
     void RunAuthChecks();
 
   private:
-    KHook::Virtual<IServerGameClients, bool, CPlayerSlot, const char*, uint64, const char*, bool, CBufferString*> m_ClientConnect;
-    KHook::Virtual<IServerGameClients, void, CPlayerSlot, char const*, int, uint64> m_ClientPutInServer;
-    KHook::Virtual<IServerGameClients, void, CPlayerSlot, ENetworkDisconnectionReason, const char*, uint64, const char*> m_ClientDisconnect;
-    KHook::Virtual<IServerGameClients, void, CPlayerSlot, const CCommand&> m_ClientCommand;
-    KHook::Virtual<IServerGameClients, void, CPlayerSlot> m_ClientVoice;
+    hooks::Virtual<IServerGameClients, bool, CPlayerSlot, const char*, uint64, const char*, bool, CBufferString*> m_ClientConnect;
+    hooks::Virtual<IServerGameClients, void, CPlayerSlot, char const*, int, uint64> m_ClientPutInServer;
+    hooks::Virtual<IServerGameClients, void, CPlayerSlot, ENetworkDisconnectionReason, const char*, uint64, const char*> m_ClientDisconnect;
+    hooks::Virtual<IServerGameClients, void, CPlayerSlot, const CCommand&> m_ClientCommand;
+    hooks::Virtual<IServerGameClients, void, CPlayerSlot> m_ClientVoice;
 
   public:
     int NumPlayers() const;

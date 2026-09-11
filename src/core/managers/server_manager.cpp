@@ -40,13 +40,13 @@ ServerManager::~ServerManager() = default;
 
 void ServerManager::OnAllInitialized()
 {
-    m_ServerHibernationUpdate.Add(globals::server);
-    m_GameServerSteamAPIActivated.Add(globals::server);
-    m_GameServerSteamAPIDeactivated.Add(globals::server);
-    m_OnHostNameChanged.Add(globals::server);
-    m_PreFatalShutdown.Add(globals::server);
-    m_UpdateWhenNotInGame.Add(globals::server);
-    m_PreWorldUpdate.Add(globals::server);
+    m_ServerHibernationUpdate.Add(globals::server, "ISource2Server::ServerHibernationUpdate");
+    m_GameServerSteamAPIActivated.Add(globals::server, "ISource2Server::GameServerSteamAPIActivated");
+    m_GameServerSteamAPIDeactivated.Add(globals::server, "ISource2Server::GameServerSteamAPIDeactivated");
+    m_OnHostNameChanged.Add(globals::server, "ISource2Server::OnHostNameChanged");
+    m_PreFatalShutdown.Add(globals::server, "ISource2Server::PreFatalShutdown");
+    m_UpdateWhenNotInGame.Add(globals::server, "ISource2Server::UpdateWhenNotInGame");
+    m_PreWorldUpdate.Add(globals::server, "ISource2Server::PreWorldUpdate");
 
     on_server_hibernation_update_callback = globals::callbackManager.CreateCallback("OnServerHibernationUpdate");
     on_server_steam_api_activated_callback = globals::callbackManager.CreateCallback("OnGameServerSteamAPIActivated");

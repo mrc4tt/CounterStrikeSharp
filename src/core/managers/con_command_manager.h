@@ -39,6 +39,7 @@
 #include "core/globals.h"
 #include "playerslot.h"
 #include "scripting/script_engine.h"
+#include "core/khook_verified.h"
 
 struct CaseInsensitiveComparator
 {
@@ -102,7 +103,7 @@ class ConCommandManager : public GlobalClass
     KHook::Return<void> Hook_DispatchConCommand(ICvar* pCvar, ConCommandRef cmd, const CCommandContext& ctx, const CCommand& args);
     KHook::Return<void> Hook_DispatchConCommand_Post(ICvar* pCvar, ConCommandRef cmd, const CCommandContext& ctx, const CCommand& args);
 
-    KHook::Virtual<ICvar, void, ConCommandRef, const CCommandContext&, const CCommand&> m_DispatchConCommand;
+    hooks::Virtual<ICvar, void, ConCommandRef, const CCommandContext&, const CCommand&> m_DispatchConCommand;
     HookResult ExecuteCommandCallbacks(
         const char* name, const CCommandContext& ctx, const CCommand& args, HookMode mode, CommandCallingContext callingContext);
 

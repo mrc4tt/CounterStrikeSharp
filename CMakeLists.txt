@@ -40,6 +40,8 @@ set(SOURCE_FILES
     src/core/utils.h
     src/core/globals.h
     src/core/globals.cpp
+    src/core/khook_verified.h
+    src/core/khook_verified.cpp
     src/core/coreconfig.h
     src/core/coreconfig.cpp
     src/core/gameconfig.h

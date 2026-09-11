@@ -54,11 +54,11 @@ void PlayerManager::OnStartup() {}
 
 void PlayerManager::OnAllInitialized()
 {
-    m_ClientConnect.Add(globals::serverGameClients);
-    m_ClientPutInServer.Add(globals::serverGameClients);
-    m_ClientDisconnect.Add(globals::serverGameClients);
-    m_ClientCommand.Add(globals::serverGameClients);
-    m_ClientVoice.Add(globals::serverGameClients);
+    m_ClientConnect.Add(globals::serverGameClients, "IServerGameClients::ClientConnect");
+    m_ClientPutInServer.Add(globals::serverGameClients, "IServerGameClients::ClientPutInServer");
+    m_ClientDisconnect.Add(globals::serverGameClients, "IServerGameClients::ClientDisconnect");
+    m_ClientCommand.Add(globals::serverGameClients, "IServerGameClients::ClientCommand");
+    m_ClientVoice.Add(globals::serverGameClients, "IServerGameClients::ClientVoice");
 
     m_on_client_connect_callback = globals::callbackManager.CreateCallback("OnClientConnect");
     m_on_client_connected_callback = globals::callbackManager.CreateCallback("OnClientConnected");

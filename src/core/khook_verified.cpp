@@ -14,28 +14,27 @@
  *  along with CounterStrikeSharp.  If not, see <https://www.gnu.org/licenses/>. *
  */
 
-#pragma once
-
-#include "core/globals.h"
-#include "core/global_listener.h"
-#include "scripting/script_engine.h"
 #include "core/khook_verified.h"
 
+#include "core/log.h"
+
 namespace counterstrikesharp {
-class ScriptCallback;
+namespace hooks {
 
-class VoiceManager : public GlobalClass
+void ReportHookRegistration(const char* name, void** vtable, int slot, bool ok, const char* reason)
 {
-  public:
-    VoiceManager();
-    ~VoiceManager();
-    void OnAllInitialized() override;
-    void OnShutdown() override;
-    KHook::Return<bool> SetClientListening(IVEngineServer2* pEngine, CPlayerSlot iReceiver, CPlayerSlot iSender, bool bListen);
-    void OnClientCommand(CPlayerSlot slot, const CCommand& args);
+    if (ok)
+    {
+        CSSHARP_CORE_TRACE("Installed hook '{}' (vtable {}, slot {})", name, (void*)vtable, slot);
+        return;
+    }
 
-  private:
-    hooks::Virtual<IVEngineServer2, bool, CPlayerSlot, CPlayerSlot, bool> m_SetClientListening;
-};
+    // ERROR, not WARN: whatever this hook backs is now silently inactive, and the
+    // symptom shows up far from here -- an event that never fires, a command that
+    // stops working -- with nothing else in the log to connect it back.
+    CSSHARP_CORE_ERROR("Failed to install hook '{}' (vtable {}, slot {}): {}", name, (void*)vtable, slot,
+                       reason != nullptr ? reason : "unknown reason");
+}
 
+} // namespace hooks
 } // namespace counterstrikesharp

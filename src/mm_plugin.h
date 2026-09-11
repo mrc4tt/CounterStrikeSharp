@@ -26,6 +26,7 @@
 #include <iplayerinfo.h>
 #include <vector>
 #include "entitysystem.h"
+#include "core/khook_verified.h"
 
 namespace counterstrikesharp {
 class ScriptCallback;
@@ -71,11 +72,11 @@ class CounterStrikeSharpMMPlugin : public ISmmPlugin, public IMetamodListener
   private:
     bool m_has_level_initialized = false;
 
-    KHook::Virtual<IServerGameDLL, void, bool, bool, bool> m_GameFrame;
-    KHook::Virtual<INetworkServerService, void, const GameSessionConfiguration_t&, ISource2WorldSession*, const char*> m_StartupServer;
-    KHook::Virtual<IEngineServiceMgr, void, const char*, ILoopModeFactory*, void**> m_RegisterLoopMode;
-    KHook::Virtual<IEngineServiceMgr, IEngineService*, const char*> m_FindService;
-    KHook::Virtual<IGameEventManager2, int, const char*, bool> m_LoadEventsFromFile;
+    hooks::Virtual<IServerGameDLL, void, bool, bool, bool> m_GameFrame;
+    hooks::Virtual<INetworkServerService, void, const GameSessionConfiguration_t&, ISource2WorldSession*, const char*> m_StartupServer;
+    hooks::Virtual<IEngineServiceMgr, void, const char*, ILoopModeFactory*, void**> m_RegisterLoopMode;
+    hooks::Virtual<IEngineServiceMgr, IEngineService*, const char*> m_FindService;
+    hooks::Virtual<IGameEventManager2, int, const char*, bool> m_LoadEventsFromFile;
 };
 
 static ScriptCallback* on_activate_callback;

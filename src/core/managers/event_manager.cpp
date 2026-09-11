@@ -67,7 +67,7 @@ void EventManager::OnGameLoopInitialized()
 
 void EventManager::OnAllInitialized() {}
 
-void EventManager::OnAllInitialized_Post() { m_FireEvent.Add(globals::gameEventManager); }
+void EventManager::OnAllInitialized_Post() { m_FireEvent.Add(globals::gameEventManager, "IGameEventManager2::FireEvent"); }
 
 void EventManager::OnShutdown()
 {

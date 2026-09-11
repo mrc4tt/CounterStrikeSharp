@@ -30,6 +30,7 @@
 #include <variant.h>
 
 #include "vprof.h"
+#include "core/khook_verified.h"
 
 class CTakeDamageResult;
 class CTakeDamageInfo;
@@ -136,7 +137,7 @@ class EntityManager : public GlobalClass
 
     // CheckTransmit is not declared in the SDK headers, so the hook is configured with a
     // raw vtable index out of gamedata instead of a member function pointer.
-    KHook::Virtual<ISource2GameEntities,
+    hooks::Virtual<ISource2GameEntities,
                    void,
                    CCheckTransmitInfoHack**,
                    uint32_t,

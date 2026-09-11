@@ -31,7 +31,7 @@ VoiceManager::VoiceManager() : m_SetClientListening(&IVEngineServer2::SetClientL
 
 VoiceManager::~VoiceManager() {}
 
-void VoiceManager::OnAllInitialized() { m_SetClientListening.Add(globals::engine); }
+void VoiceManager::OnAllInitialized() { m_SetClientListening.Add(globals::engine, "IVEngineServer2::SetClientListening"); }
 
 void VoiceManager::OnShutdown() { m_SetClientListening.Remove(globals::engine); }
 

@@ -17,7 +17,7 @@ CCSCustomHudLayout::~CCSCustomHudLayout() {}
 void CCSCustomHudLayout::OnAllInitialized()
 {
     on_custom_hud_clicked = globals::callbackManager.CreateCallback("OnCustomHudClicked");
-    m_ClientSvcUserMessage.Add(globals::serverGameClients);
+    m_ClientSvcUserMessage.Add(globals::serverGameClients, "IServerGameClients::ClientSvcUserMessage");
 }
 
 void CCSCustomHudLayout::OnShutdown() { m_ClientSvcUserMessage.Remove(globals::serverGameClients); }

@@ -21,6 +21,7 @@
 #include "inetchannel.h"
 #include "networksystem/inetworkserializer.h"
 #include "scripting/script_engine.h"
+#include "core/khook_verified.h"
 
 namespace counterstrikesharp {
 class ScriptCallback;
@@ -54,7 +55,7 @@ class UserMessageManager : public GlobalClass
                                        unsigned long nSize,
                                        NetChannelBufType_t bufType);
 
-    KHook::Virtual<IGameEventSystem,
+    hooks::Virtual<IGameEventSystem,
                    void,
                    CSplitScreenSlot,
                    bool,

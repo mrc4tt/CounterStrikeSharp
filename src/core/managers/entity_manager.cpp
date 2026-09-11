@@ -57,7 +57,7 @@ void EntityManager::OnAllInitialized()
         m_CheckTransmit.AddContext(this, nullptr, &EntityManager::CheckTransmit);
         // Hook every object sharing the ISource2GameEntities vtable, matching the DVP
         // hook this replaced.
-        m_CheckTransmit.AddGlobal(globals::gameEntities);
+        m_CheckTransmit.AddGlobal(globals::gameEntities, "ISource2GameEntities::CheckTransmit");
     }
     check_transmit = globals::callbackManager.CreateCallback("CheckTransmit");
     on_entity_spawned_callback = globals::callbackManager.CreateCallback("OnEntitySpawned");

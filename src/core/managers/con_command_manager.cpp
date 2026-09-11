@@ -203,7 +203,7 @@ ConCommandManager::~ConCommandManager() {}
 
 void ConCommandManager::OnAllInitialized()
 {
-    m_DispatchConCommand.Add(globals::cvars);
+    m_DispatchConCommand.Add(globals::cvars, "ICvar::DispatchConCommand");
 
     m_global_cmd.callback_pre = globals::callbackManager.CreateCallback("OnClientCommandGlobalPre");
     m_global_cmd.callback_post = globals::callbackManager.CreateCallback("OnClientCommandGlobalPost");

@@ -23,6 +23,7 @@
 #include "globals.h"
 #include "global_listener.h"
 #include "core/cs2_sdk/entity/dump.h"
+#include "core/khook_verified.h"
 
 namespace counterstrikesharp {
 
@@ -119,7 +120,7 @@ class CCSCustomHudLayout : public GlobalClass
   private:
     KHook::Return<void> Hook_ClientSvcUserMessage(IServerGameClients*, CPlayerSlot slot, int um_type, uint32 size, const void* buf);
 
-    KHook::Virtual<IServerGameClients, void, CPlayerSlot, int, uint32, const void*> m_ClientSvcUserMessage;
+    hooks::Virtual<IServerGameClients, void, CPlayerSlot, int, uint32, const void*> m_ClientSvcUserMessage;
 };
 
 } // namespace counterstrikesharp

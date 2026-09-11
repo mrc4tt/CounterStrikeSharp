@@ -208,10 +208,10 @@ bool CounterStrikeSharpMMPlugin::Load(PluginId id, ISmmAPI* ismm, char* error, s
     on_map_end_callback = globals::callbackManager.CreateCallback("OnMapEnd");
     on_metamod_all_plugins_loaded_callback = globals::callbackManager.CreateCallback("OnMetamodAllPluginsLoaded");
 
-    m_GameFrame.Add(globals::server);
-    m_StartupServer.Add(globals::networkServerService);
-    m_RegisterLoopMode.Add(globals::engineServiceManager);
-    m_FindService.Add(globals::engineServiceManager);
+    m_GameFrame.Add(globals::server, "IServerGameDLL::GameFrame");
+    m_StartupServer.Add(globals::networkServerService, "INetworkServerService::StartupServer");
+    m_RegisterLoopMode.Add(globals::engineServiceManager, "IEngineServiceMgr::RegisterLoopMode");
+    m_FindService.Add(globals::engineServiceManager, "IEngineServiceMgr::FindService");
 
     // CGameEventManager is instantiated by the engine after we load, so hook every
     // instance sharing the class vtable rather than a specific object (the KHook
@@ -220,7 +220,7 @@ bool CounterStrikeSharpMMPlugin::Load(PluginId id, ISmmAPI* ismm, char* error, s
     g_pCGameEventManagerVTable = modules::server->FindVirtualTable("CGameEventManager");
     if (g_pCGameEventManagerVTable != nullptr)
     {
-        m_LoadEventsFromFile.AddGlobal((IGameEventManager2*)&g_pCGameEventManagerVTable);
+        m_LoadEventsFromFile.AddGlobal((IGameEventManager2*)&g_pCGameEventManagerVTable, "IGameEventManager2::LoadEventsFromFile");
     }
     else
     {

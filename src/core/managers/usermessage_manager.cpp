@@ -45,7 +45,7 @@ UserMessageManager::UserMessageManager()
 
 UserMessageManager::~UserMessageManager() {}
 
-void UserMessageManager::OnAllInitialized() { m_PostEventAbstract.Add(globals::gameEventSystem); }
+void UserMessageManager::OnAllInitialized() { m_PostEventAbstract.Add(globals::gameEventSystem, "IGameEventSystem::PostEventAbstract"); }
 
 void UserMessageManager::OnShutdown() { m_PostEventAbstract.Remove(globals::gameEventSystem); }
 

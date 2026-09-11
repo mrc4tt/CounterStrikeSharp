@@ -21,6 +21,7 @@
 #include "scripting/script_engine.h"
 
 #include "core/game_system.h"
+#include "core/khook_verified.h"
 
 namespace counterstrikesharp {
 class ScriptCallback;
@@ -48,13 +49,13 @@ class ServerManager : public GlobalClass
     KHook::Return<void> UpdateWhenNotInGame(ISource2Server*, float flFrameTime);
     KHook::Return<void> PreWorldUpdate(ISource2Server*, bool bSimulating);
 
-    KHook::Virtual<ISource2Server, void, bool> m_ServerHibernationUpdate;
-    KHook::Virtual<ISource2Server, void> m_GameServerSteamAPIActivated;
-    KHook::Virtual<ISource2Server, void> m_GameServerSteamAPIDeactivated;
-    KHook::Virtual<ISource2Server, void, const char*> m_OnHostNameChanged;
-    KHook::Virtual<ISource2Server, void> m_PreFatalShutdown;
-    KHook::Virtual<ISource2Server, void, float> m_UpdateWhenNotInGame;
-    KHook::Virtual<ISource2Server, void, bool> m_PreWorldUpdate;
+    hooks::Virtual<ISource2Server, void, bool> m_ServerHibernationUpdate;
+    hooks::Virtual<ISource2Server, void> m_GameServerSteamAPIActivated;
+    hooks::Virtual<ISource2Server, void> m_GameServerSteamAPIDeactivated;
+    hooks::Virtual<ISource2Server, void, const char*> m_OnHostNameChanged;
+    hooks::Virtual<ISource2Server, void> m_PreFatalShutdown;
+    hooks::Virtual<ISource2Server, void, float> m_UpdateWhenNotInGame;
+    hooks::Virtual<ISource2Server, void, bool> m_PreWorldUpdate;
 
     ScriptCallback* on_server_hibernation_update_callback;
     ScriptCallback* on_server_steam_api_activated_callback;

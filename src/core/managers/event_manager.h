@@ -45,6 +45,7 @@ class CUtlString;
 #include "core/global_listener.h"
 #include "core/globals.h"
 #include "scripting/script_engine.h"
+#include "core/khook_verified.h"
 
 namespace counterstrikesharp {
 class ScriptCallback;
@@ -100,7 +101,7 @@ class EventManager : public IGameEventListener2, public GlobalClass
     KHook::Return<bool> OnFireEvent(IGameEventManager2* pGameEventManager, IGameEvent* pEvent, bool bDontBroadcast);
     KHook::Return<bool> OnFireEventPost(IGameEventManager2* pGameEventManager, IGameEvent* pEvent, bool bDontBroadcast);
 
-    KHook::Virtual<IGameEventManager2, bool, IGameEvent*, bool> m_FireEvent;
+    hooks::Virtual<IGameEventManager2, bool, IGameEvent*, bool> m_FireEvent;
 
     // Transparent comparator (std::less<>): OnFireEvent runs for EVERY game event
     // the engine fires -- bullet_impact, player_footstep, weapon_fire, ... -- many
