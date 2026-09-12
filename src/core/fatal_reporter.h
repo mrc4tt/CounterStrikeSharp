@@ -58,6 +58,16 @@ void ConfigureReporting(const char* directory, const char* serverId);
 // Current map, refreshed on level init. Shown in the report and the state file.
 void SetMap(const char* mapName);
 
+// Build identity ("v1.0.400 @ abc1234"), recorded once at startup. A crash report
+// is worth little if you cannot tell which build produced it -- across a fleet
+// mid-rollout, that is the first thing to check.
+void SetBuildVersion(const char* version);
+
+// Current tick, refreshed with the state file. Distinguishes "died during startup"
+// from "died after six hours", which the timestamps alone do not when a server is
+// restarted in a loop.
+void SetTick(int tick);
+
 // Rewrites the "last known state" file: what the server was doing, on disk,
 // BEFORE anything goes wrong. This is the only evidence that survives a crash we
 // cannot catch -- a native segfault (CoreCLR owns SIGSEGV), the OOM killer, or a

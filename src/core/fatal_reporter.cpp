@@ -18,6 +18,7 @@
 
 #include <atomic>
 #include <csignal>
+#include <ctime>
 #include <cstring>
 
 #ifndef _WIN32
@@ -51,7 +52,9 @@ static char g_suspectPlugin[256] = { 0 };
 static char g_lastCommand[128] = { 0 };
 static char g_lastCommandIssuer[64] = { 0 };
 static char g_mapName[64] = { 0 };
-static char g_serverId[64] = { 0 };
+static char g_serverId[128] = { 0 };
+static char g_buildVersion[64] = { 0 };
+static std::atomic<int> g_tick{ -1 };
 
 // Paths are built once at startup. The handler must not construct them: no
 // allocation, no snprintf with %s into a shared buffer, nothing that can fault.
@@ -163,8 +166,16 @@ static void write_report_file(int sig, const char* cb, int idx)
     if (fd < 0) return;
 
     safe_write_fd(fd, "-------- CSSHARP CRASH --------\n");
-    safe_write_fd(fd, "signal=");
+    // time() is on the async-signal-safe list, and an integer is all we can format
+    // without allocating. Unix seconds is also what a collector wants anyway.
+    safe_write_fd(fd, "time=");
+    safe_write_fd_int(fd, (long long)time(nullptr));
+    safe_write_fd(fd, "\nsignal=");
     safe_write_fd_int(fd, sig);
+    safe_write_fd(fd, "\nbuild=");
+    safe_write_fd(fd, g_buildVersion[0] ? g_buildVersion : "(unknown)");
+    safe_write_fd(fd, "\ntick=");
+    safe_write_fd_int(fd, g_tick.load(std::memory_order_relaxed));
     safe_write_fd(fd, "\nserver=");
     safe_write_fd(fd, g_serverId[0] ? g_serverId : "(unset)");
     safe_write_fd(fd, "\nmap=");
@@ -349,6 +360,16 @@ void SetMap(const char* mapName)
     g_stateSeq.fetch_add(1, std::memory_order_relaxed);
 }
 
+void SetBuildVersion(const char* version)
+{
+    if (!version) return;
+    strncpy(g_buildVersion, version, sizeof(g_buildVersion) - 1);
+    g_buildVersion[sizeof(g_buildVersion) - 1] = '\0';
+    g_stateSeq.fetch_add(1, std::memory_order_relaxed);
+}
+
+void SetTick(int tick) { g_tick.store(tick, std::memory_order_relaxed); }
+
 void ConfigureReporting(const char* directory, const char* serverId)
 {
     if (serverId)
@@ -397,7 +418,13 @@ void WriteStateFile()
 #endif
     if (fd < 0) return;
 
-    safe_write_fd(fd, "server=");
+    safe_write_fd(fd, "time=");
+    safe_write_fd_int(fd, (long long)time(nullptr));
+    safe_write_fd(fd, "\nbuild=");
+    safe_write_fd(fd, g_buildVersion[0] ? g_buildVersion : "(unknown)");
+    safe_write_fd(fd, "\ntick=");
+    safe_write_fd_int(fd, g_tick.load(std::memory_order_relaxed));
+    safe_write_fd(fd, "\nserver=");
     safe_write_fd(fd, g_serverId[0] ? g_serverId : "(unset)");
     safe_write_fd(fd, "\nmap=");
     safe_write_fd(fd, g_mapName[0] ? g_mapName : "(unknown)");

@@ -190,6 +190,7 @@ static void SetupCrashReporting()
         if (port != nullptr) serverId += std::string(":") + port;
     }
 
+    fatal::SetBuildVersion(VERSION_STRING);
     fatal::ConfigureReporting(crashDir.c_str(), serverId.c_str());
     fatal::WriteStateFile();
 
@@ -544,7 +545,11 @@ KHook::Return<void> CounterStrikeSharpMMPlugin::Hook_GameFrame(IServerGameDLL*, 
     // immediately when nothing changed, so the steady-state cost is one relaxed
     // atomic load per 256 frames.
     static int s_stateFlushCounter = 0;
-    if ((++s_stateFlushCounter & 0xFF) == 0) fatal::WriteStateFile();
+    if ((++s_stateFlushCounter & 0xFF) == 0)
+    {
+        if (auto* gv = globals::getGlobalVars()) fatal::SetTick(gv->tickcount);
+        fatal::WriteStateFile();
+    }
 
     if (g_frame_warn_ms < 0.0) g_frame_warn_ms = ResolveFrameWarnBudgetMs();
     // Warmup grace: the first seconds after load are dominated by one-off
