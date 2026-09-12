@@ -15,6 +15,7 @@
 #include "mm_plugin.h"
 
 #include <chrono>
+#include <filesystem>
 #include <cstdio>
 #include <cstdlib>
 #include <mutex>
@@ -246,6 +247,38 @@ bool CounterStrikeSharpMMPlugin::Load(PluginId id, ISmmAPI* ismm, char* error, s
     // console line instead of an anonymous "Process terminated".
     fatal::InstallHandler();
 
+    // Crash reports and the live state file land next to the .NET minidumps, so one
+    // directory per server holds everything an incident needs. The server id is what
+    // makes a report comparable across a fleet -- CSSHARP_SERVER_ID if the host sets
+    // one, otherwise the port, which is unique per server on a machine.
+    {
+        std::string crashDir = std::string(ismm->GetBaseDir()) + "/dumps";
+        std::error_code ec;
+        std::filesystem::create_directories(crashDir, ec);
+        if (ec)
+        {
+            CSSHARP_CORE_WARN("Could not create crash report directory '{}': {}", crashDir, ec.message());
+        }
+        else
+        {
+            const char* envId = std::getenv("CSSHARP_SERVER_ID");
+            std::string serverId;
+            if (envId != nullptr && envId[0] != '\0')
+            {
+                serverId = envId;
+            }
+            else
+            {
+                const char* port = CommandLine()->ParmValue("-port", (const char*)nullptr);
+                serverId = port != nullptr ? std::string("port-") + port : std::string("unknown");
+            }
+
+            fatal::ConfigureReporting(crashDir.c_str(), serverId.c_str());
+            fatal::WriteStateFile();
+            CSSHARP_CORE_INFO("Crash reporting active (id '{}', directory '{}')", serverId, crashDir);
+        }
+    }
+
     CSSHARP_CORE_DEBUG("Hooks added.");
 
     // Used by Metamod Console Commands
@@ -429,6 +462,12 @@ KHook::Return<void> CounterStrikeSharpMMPlugin::Hook_GameFrame(IServerGameDLL*, 
         s_frameCallbacks.clear();
     }
 
+    // Flush the crash state file a few times a minute. WriteStateFile returns
+    // immediately when nothing changed, so the steady-state cost is one relaxed
+    // atomic load per 256 frames.
+    static int s_stateFlushCounter = 0;
+    if ((++s_stateFlushCounter & 0xFF) == 0) fatal::WriteStateFile();
+
     if (g_frame_warn_ms < 0.0) g_frame_warn_ms = ResolveFrameWarnBudgetMs();
     // Warmup grace: the first seconds after load are dominated by one-off
     // cold-start cost -- JIT-compiling managed/plugin code paths on first call
@@ -459,6 +498,9 @@ void CounterStrikeSharpMMPlugin::OnLevelInit(
     char const* pMapName, char const* pMapEntities, char const* pOldLevel, char const* pLandmarkName, bool loadGame, bool background)
 {
     CSSHARP_CORE_TRACE("name={0},mapname={1}", "LevelInit", pMapName);
+
+    fatal::SetMap(pMapName);
+    fatal::WriteStateFile();
 
     m_has_level_initialized = true;
 }

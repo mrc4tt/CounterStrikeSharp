@@ -42,6 +42,7 @@
 #include <algorithm>
 
 #include "core/coreconfig.h"
+#include "core/fatal_reporter.h"
 #include "core/log.h"
 #include "core/memory.h"
 #include "core/utils.h"
@@ -483,6 +484,23 @@ ConCommandManager::Hook_DispatchConCommand(ICvar* pCvar, ConCommandRef cmd, cons
     const char* name = args.Arg(0);
 
     CSSHARP_CORE_TRACE("[ConCommandManager::Hook_DispatchConCommand]: {}", name);
+
+    // Crash breadcrumb: a server that dies right after css_reloadadmins, a map
+    // change or an admin command reads very differently from one that died on its
+    // own, and the console log alone rarely survives to say which it was.
+    {
+        char slot[16];
+        int playerSlot = ctx.GetPlayerSlot().Get();
+        if (playerSlot < 0)
+        {
+            fatal::SetCommandBreadcrumb(name, "console");
+        }
+        else
+        {
+            V_snprintf(slot, sizeof(slot), "slot %d", playerSlot);
+            fatal::SetCommandBreadcrumb(name, slot);
+        }
+    }
 
     auto result = ExecuteCommandCallbacks(name, ctx, args, HookMode::Pre, CommandCallingContext::Console);
     if (result >= HookResult::Handled)

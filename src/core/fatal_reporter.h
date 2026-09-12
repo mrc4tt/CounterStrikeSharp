@@ -42,4 +42,27 @@ void ClearCallbackBreadcrumb();
 // load). Copied into a fixed buffer; safe to call from managed via a native.
 void SetSuspectPlugin(const char* pluginName);
 
+// Records the console command being dispatched, and who ran it. A crash that
+// follows a command ("css_reloadadmins", a map change, an admin command) is
+// otherwise indistinguishable from a spontaneous one in the log. Fixed buffers,
+// game thread only, read from the signal handler.
+void SetCommandBreadcrumb(const char* command, const char* issuer);
+
+// Where crash reports and the live state file are written, and the identity that
+// ties a report back to one of many servers. Call once during startup, before
+// anything can crash: the signal handler cannot build paths or allocate, so it
+// needs them ready. A null or empty directory disables both files (console
+// output still happens).
+void ConfigureReporting(const char* directory, const char* serverId);
+
+// Current map, refreshed on level init. Shown in the report and the state file.
+void SetMap(const char* mapName);
+
+// Rewrites the "last known state" file: what the server was doing, on disk,
+// BEFORE anything goes wrong. This is the only evidence that survives a crash we
+// cannot catch -- a native segfault (CoreCLR owns SIGSEGV), the OOM killer, or a
+// hang with no signal at all. Cheap enough to call on a timer; it writes a few
+// hundred bytes and returns immediately if nothing changed since the last write.
+void WriteStateFile();
+
 } // namespace counterstrikesharp::fatal
