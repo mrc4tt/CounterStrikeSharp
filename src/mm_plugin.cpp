@@ -16,6 +16,9 @@
 
 #include <chrono>
 #include <filesystem>
+#ifndef _WIN32
+#include <unistd.h>
+#endif
 #include <cstdio>
 #include <cstdlib>
 #include <mutex>
@@ -117,6 +120,104 @@ CounterStrikeSharpMMPlugin::CounterStrikeSharpMMPlugin()
 // Currently unavailable, requires hl2sdk work!
 ConVar sample_cvar("sample_cvar", "42", 0);
 #endif
+
+// Keeps the newest `keep` dumps and deletes the rest. A crash loop writes one
+// multi-GB dump per restart; without this, the disk fills and the next thing the
+// host debugs is not the crash.
+static void PruneOldCrashDumps(const std::string& directory, int keep)
+{
+    if (keep <= 0) return;
+
+    std::error_code ec;
+    std::vector<std::pair<std::filesystem::file_time_type, std::filesystem::path>> dumps;
+
+    for (const auto& entry : std::filesystem::directory_iterator(directory, ec))
+    {
+        if (ec) return;
+        if (!entry.is_regular_file(ec)) continue;
+        if (entry.path().extension() != ".dmp") continue;
+
+        auto when = entry.last_write_time(ec);
+        if (ec) continue;
+        dumps.emplace_back(when, entry.path());
+    }
+
+    if ((int)dumps.size() <= keep) return;
+
+    std::sort(dumps.begin(), dumps.end(), [](const auto& a, const auto& b) {
+        return a.first > b.first;
+    });
+
+    for (size_t i = (size_t)keep; i < dumps.size(); ++i)
+    {
+        std::filesystem::remove(dumps[i].second, ec);
+        if (!ec) CSSHARP_CORE_DEBUG("Pruned old crash dump {}", dumps[i].second.string());
+    }
+}
+
+// Everything the crash evidence needs, resolved once at startup: the directory,
+// this server's identity, retention, and the runtime's dump settings.
+static void SetupCrashReporting()
+{
+    const std::string crashDir = std::string(globals::ismm->GetBaseDir()) + "/dumps";
+
+    std::error_code ec;
+    std::filesystem::create_directories(crashDir, ec);
+    if (ec)
+    {
+        CSSHARP_CORE_WARN("Could not create crash report directory '{}': {}", crashDir, ec.message());
+        return;
+    }
+
+    // Identity, in order of preference: an explicit CSSHARP_SERVER_ID, otherwise
+    // host:port, which is unique across a fleet and readable in a report without
+    // anyone having had to configure it.
+    std::string serverId;
+    if (const char* envId = std::getenv("CSSHARP_SERVER_ID"); envId != nullptr && envId[0] != '\0')
+    {
+        serverId = envId;
+    }
+    else
+    {
+        char host[128] = { 0 };
+#ifndef _WIN32
+        if (gethostname(host, sizeof(host) - 1) != 0) host[0] = '\0';
+#endif
+        const char* port = CommandLine()->ParmValue("-port", (const char*)nullptr);
+        if (port == nullptr) port = CommandLine()->ParmValue("+port", (const char*)nullptr);
+
+        serverId = (host[0] != '\0' ? std::string(host) : std::string("unknown"));
+        if (port != nullptr) serverId += std::string(":") + port;
+    }
+
+    fatal::ConfigureReporting(crashDir.c_str(), serverId.c_str());
+    fatal::WriteStateFile();
+
+    if (!globals::coreConfig->CrashDumpsEnabled)
+    {
+        CSSHARP_CORE_INFO("Crash reports active (id '{}', directory '{}'); .NET dumps disabled by config", serverId, crashDir);
+        return;
+    }
+
+    PruneOldCrashDumps(crashDir, globals::coreConfig->CrashDumpRetention);
+
+#ifndef _WIN32
+    const std::string dumpName = crashDir + "/cssharp-%p-%t.dmp";
+    const std::string dumpType = std::to_string(globals::coreConfig->CrashDumpType);
+
+    setenv("DOTNET_DbgEnableMiniDump", "1", 0);
+    setenv("DOTNET_DbgMiniDumpType", dumpType.c_str(), 0);
+    setenv("DOTNET_DbgMiniDumpName", dumpName.c_str(), 0);
+#else
+    const std::string dumpName = crashDir + "/cssharp-%p-%t.dmp";
+    _putenv_s("DOTNET_DbgEnableMiniDump", "1");
+    _putenv_s("DOTNET_DbgMiniDumpType", std::to_string(globals::coreConfig->CrashDumpType).c_str());
+    _putenv_s("DOTNET_DbgMiniDumpName", dumpName.c_str());
+#endif
+
+    CSSHARP_CORE_INFO("Crash reporting active (id '{}', directory '{}', dump type {})", serverId, crashDir,
+                      globals::coreConfig->CrashDumpType);
+}
 
 bool CounterStrikeSharpMMPlugin::Load(PluginId id, ISmmAPI* ismm, char* error, size_t maxlen, bool late)
 {
@@ -236,6 +337,15 @@ bool CounterStrikeSharpMMPlugin::Load(PluginId id, ISmmAPI* ismm, char* error, s
 
     CSSHARP_CORE_DEBUG("Initialized GameSystem.");
 
+    // Crash reporting, configured BEFORE the .NET runtime boots.
+    //
+    // The runtime reads DOTNET_DbgEnableMiniDump and friends once, while it starts,
+    // so setting them here is what makes managed crash dumps work with no launch
+    // wrapper, no env file and no per-server setup -- the whole point when the fleet
+    // is large. setenv() with overwrite=0 throughout: an operator who already set a
+    // value on the process keeps it.
+    SetupCrashReporting();
+
     if (!globals::dotnetManager.Initialize())
     {
         CSSHARP_CORE_ERROR("Failed to initialize .NET runtime");
@@ -246,38 +356,6 @@ bool CounterStrikeSharpMMPlugin::Load(PluginId id, ISmmAPI* ismm, char* error, s
     // garbage-collected-delegate FailFast name the suspect plugin as the LAST
     // console line instead of an anonymous "Process terminated".
     fatal::InstallHandler();
-
-    // Crash reports and the live state file land next to the .NET minidumps, so one
-    // directory per server holds everything an incident needs. The server id is what
-    // makes a report comparable across a fleet -- CSSHARP_SERVER_ID if the host sets
-    // one, otherwise the port, which is unique per server on a machine.
-    {
-        std::string crashDir = std::string(ismm->GetBaseDir()) + "/dumps";
-        std::error_code ec;
-        std::filesystem::create_directories(crashDir, ec);
-        if (ec)
-        {
-            CSSHARP_CORE_WARN("Could not create crash report directory '{}': {}", crashDir, ec.message());
-        }
-        else
-        {
-            const char* envId = std::getenv("CSSHARP_SERVER_ID");
-            std::string serverId;
-            if (envId != nullptr && envId[0] != '\0')
-            {
-                serverId = envId;
-            }
-            else
-            {
-                const char* port = CommandLine()->ParmValue("-port", (const char*)nullptr);
-                serverId = port != nullptr ? std::string("port-") + port : std::string("unknown");
-            }
-
-            fatal::ConfigureReporting(crashDir.c_str(), serverId.c_str());
-            fatal::WriteStateFile();
-            CSSHARP_CORE_INFO("Crash reporting active (id '{}', directory '{}')", serverId, crashDir);
-        }
-    }
 
     CSSHARP_CORE_DEBUG("Hooks added.");
 

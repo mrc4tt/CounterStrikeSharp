@@ -11,5 +11,8 @@
     "AutoUpdateEnabled": true,
     "AutoUpdateURL": "http://gamedata.cssharp.dev",
     "MaximumFrameTasksExecutedPerTick": 1024,
+    "CrashDumpsEnabled": true,
+    "CrashDumpType": 2,
+    "CrashDumpRetention": 5,
     "LogVerbosity": "information"
 }

@@ -63,6 +63,9 @@ bool CCoreConfig::Init(char* conf_error, int conf_error_size)
         AutoUpdateEnabled = m_json.value("AutoUpdateEnabled", AutoUpdateEnabled);
         AutoUpdateURL = m_json.value("AutoUpdateURL", AutoUpdateURL);
         LogVerbosity = m_json.value("LogVerbosity", LogVerbosity);
+        CrashDumpsEnabled = m_json.value("CrashDumpsEnabled", CrashDumpsEnabled);
+        CrashDumpType = m_json.value("CrashDumpType", CrashDumpType);
+        CrashDumpRetention = m_json.value("CrashDumpRetention", CrashDumpRetention);
     }
     catch (const std::exception& ex)
     {

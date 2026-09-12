@@ -39,6 +39,18 @@ class CCoreConfig
     std::string AutoUpdateURL = std::string("http://gamedata.cssharp.dev");
     std::string LogVerbosity = "information";
 
+    // Crash dumps are ON by default. The variables that drive them are set on the
+    // process before the .NET runtime boots (mm_plugin), so no launch-wrapper edit
+    // and no per-server setup is needed -- which matters when the fleet is large
+    // enough that "just set an env var everywhere" is the expensive part.
+    bool CrashDumpsEnabled = true;
+    // 1=Mini, 2=Heap, 3=Triage, 4=Full. Heap keeps `dumpheap`/`gcroot` working
+    // without the multi-GB size of a full dump of a CS2 server.
+    int CrashDumpType = 2;
+    // Dumps are large and crashes repeat. Keep the newest N and delete the rest at
+    // startup, so a crash loop cannot fill the disk. 0 disables pruning.
+    int CrashDumpRetention = 5;
+
     using json = nlohmann::json;
     CCoreConfig(const std::string& path);
     ~CCoreConfig();

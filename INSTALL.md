@@ -9,21 +9,23 @@
 4. Start the server. If everything is working correctly, you should see a message in the console that says `CounterStrikeSharp.API Loaded Successfully.`
 ## Crash reporting
 
-CounterStrikeSharp writes crash evidence to `csgo/dumps/`:
+CounterStrikeSharp writes crash evidence to `csgo/dumps/`. **No setup is
+required** — this is on by default, per server, with no launch-wrapper change.
 
 | File | Written | Contents |
 |---|---|---|
 | `last_state.txt` | continuously, before any crash | server id, map, last console command and who ran it |
 | `crashes.log` | on SIGABRT | the above plus signal, last native→managed callback, suspect plugin |
-| `cssharp-<pid>-<time>.dmp` | on managed crash, when enabled | full .NET minidump |
+| `cssharp-<pid>-<time>.dmp` | on a managed crash | full .NET minidump |
 
 `last_state.txt` is the one that survives crashes nothing can catch — a native
 segfault (CoreCLR owns SIGSEGV, so we deliberately do not hook it), the OOM
 killer, or a hang with no signal at all. It is already on disk by the time the
 server dies.
 
-Dumps are off until you enable them. Source `tools/crashdumps.env` from the
-launch wrapper, then read a dump with:
+Dumps work without installing anything: `createdump` and `libmscordaccore.so`
+ship inside the bundled runtime, and the plugin sets the runtime's dump
+variables on the process before booting it. Read one with:
 
 ```bash
 dotnet-dump analyze csgo/dumps/cssharp-1234-1699999999.dmp
@@ -32,8 +34,20 @@ dotnet-dump analyze csgo/dumps/cssharp-1234-1699999999.dmp
 > pe -lines          # the exception that killed it
 ```
 
-`createdump` and `libmscordaccore.so` ship inside the bundled runtime, so
-nothing extra needs installing on the server.
+Tuning lives in `configs/core.json`:
 
-Set `CSSHARP_SERVER_ID` per server when running a fleet — it is what lets you
-tell one recurring fault from many unrelated ones.
+| Key | Default | Meaning |
+|---|---|---|
+| `CrashDumpsEnabled` | `true` | Write .NET minidumps at all |
+| `CrashDumpType` | `2` | 1=Mini, 2=Heap, 3=Triage, 4=Full |
+| `CrashDumpRetention` | `5` | Keep the newest N dumps, delete the rest at startup |
+
+Retention matters: a crash loop writes one dump per restart, and a Heap dump of
+a CS2 server is not small. Pruning runs at startup so a repeating crash cannot
+fill the disk.
+
+The server id defaults to `hostname:port`, which is already unique across a
+fleet. Set `CSSHARP_SERVER_ID` only if you want friendlier names — it is what
+turns "a server crashed" into "these four crashed, same signature".
+`tools/crashdumps.env` holds optional per-server overrides; anything already set
+on the process wins, the plugin never overwrites it.
