@@ -155,6 +155,9 @@ bool CallbackManager::TryAddFunction(const char* szName, CallbackT fnCallable)
     if (auto* pCallback = FindCallback(szName))
     {
         pCallback->AddListener(fnCallable);
+        // The index the dispatch loop will report in a crash breadcrumb is this
+        // listener's position, so bind the pending plugin name to it now.
+        fatal::RecordCallbackOwner(szName, (int)pCallback->GetFunctionCount() - 1);
         return true;
     }
 

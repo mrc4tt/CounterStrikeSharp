@@ -68,6 +68,16 @@ void SetBuildVersion(const char* version);
 // restarted in a loop.
 void SetTick(int tick);
 
+// Records which plugin owns the listener that is about to be appended to a
+// callback. Called from managed right before AddListener, where the plugin's
+// identity is still known; the native dispatch loop only ever sees function
+// pointers. Lets a crash breadcrumb of "callback X, listener 2" be resolved to a
+// plugin name after the fact.
+void SetPendingCallbackOwner(const char* pluginName);
+
+// Binds the pending owner to (callback, index) and rewrites dumps/listeners.txt.
+void RecordCallbackOwner(const char* callbackName, int index);
+
 // Rewrites the "last known state" file: what the server was doing, on disk,
 // BEFORE anything goes wrong. This is the only evidence that survives a crash we
 // cannot catch -- a native segfault (CoreCLR owns SIGSEGV), the OOM killer, or a

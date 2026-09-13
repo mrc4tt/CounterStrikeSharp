@@ -14,14 +14,29 @@ required** — this is on by default, per server, with no launch-wrapper change.
 
 | File | Written | Contents |
 |---|---|---|
-| `last_state.txt` | continuously, before any crash | server id, map, last console command and who ran it |
+| `live_state.txt` | on every native→managed dispatch, via mmap | server id, build, map, tick, **the callback and listener index currently executing**, last console command and who ran it |
+| `listeners.txt` | on plugin load/unload | which plugin owns each listener index |
 | `crashes.log` | on SIGABRT | the above plus signal, last native→managed callback, suspect plugin |
 | `cssharp-<pid>-<time>.dmp` | on a managed crash | full .NET minidump |
 
-`last_state.txt` is the one that survives crashes nothing can catch — a native
-segfault (CoreCLR owns SIGSEGV, so we deliberately do not hook it), the OOM
-killer, or a hang with no signal at all. It is already on disk by the time the
-server dies.
+`live_state.txt` is the one that survives crashes nothing can catch — a native
+segfault, the OOM killer, `SIGKILL`, or a hang with no signal at all. It is a
+fixed-layout file mapped `MAP_SHARED`, so every update is a plain memory store
+with no syscall and the kernel owns the page: whatever was written last is on
+disk even though the process never got to run another instruction.
+
+That is what makes it possible to answer "which plugin". After a crash:
+
+```
+$ cat csgo/dumps/live_state.txt
+callback=OnClientPutInServer
+callback_index=2
+map=de_dust2
+last_command=jointeam
+
+$ grep 'OnClientPutInServer\[2\]' csgo/dumps/listeners.txt
+OnClientPutInServer[2] = cs2-retakes
+```
 
 Dumps work without installing anything: `createdump` and `libmscordaccore.so`
 ship inside the bundled runtime, and the plugin sets the runtime's dump
