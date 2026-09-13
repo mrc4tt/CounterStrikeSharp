@@ -1,4 +1,6 @@
 ## What's Changed in v1.0.400
+* Merge branch 'main' of github.com:mrc4tt/CounterStrikeSharp ([e85bd72](https://github.com/mrc4tt/CounterStrikeSharp/commit/e85bd72c5fc74dd1bb2500c5ebccce941c0e3802))
+* Update core.example.json ([5bd1346](https://github.com/mrc4tt/CounterStrikeSharp/commit/5bd13467689b5e56eabf65391cab17d5ecc7984d))
 * feat: timestamp, build and tick in crash evidence ([611a0bd](https://github.com/mrc4tt/CounterStrikeSharp/commit/611a0bdf4197a9c442f272e5bd5879295599ae3b))
 * feat: crash dumps on by default, no per-server setup ([0a6f747](https://github.com/mrc4tt/CounterStrikeSharp/commit/0a6f74761e30f5459df8f8bae2d64cbbf165e224))
 * feat: crash evidence on disk — state file, command breadcrumb, dump config ([af00ee8](https://github.com/mrc4tt/CounterStrikeSharp/commit/af00ee89de8479e4c9a0a8a656e7d0a63c590ca5))
