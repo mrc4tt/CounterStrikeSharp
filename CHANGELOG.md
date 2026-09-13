@@ -1,3 +1,31 @@
+## What's Changed in v1.0.400
+* feat: timestamp, build and tick in crash evidence ([611a0bd](https://github.com/mrc4tt/CounterStrikeSharp/commit/611a0bdf4197a9c442f272e5bd5879295599ae3b))
+* feat: crash dumps on by default, no per-server setup ([0a6f747](https://github.com/mrc4tt/CounterStrikeSharp/commit/0a6f74761e30f5459df8f8bae2d64cbbf165e224))
+* feat: crash evidence on disk — state file, command breadcrumb, dump config ([af00ee8](https://github.com/mrc4tt/CounterStrikeSharp/commit/af00ee89de8479e4c9a0a8a656e7d0a63c590ca5))
+* feat: attribute slow frames to the handler, not just the plugin ([7491703](https://github.com/mrc4tt/CounterStrikeSharp/commit/749170333e8d95a78416e42352dfda370a3311d8))
+* plop ([70fcca3](https://github.com/mrc4tt/CounterStrikeSharp/commit/70fcca32b1d0e7f3d6dbce36254d5af9aa3c0e5b))
+* feat: surface KHook hook-install failures instead of swallowing them ([19d4206](https://github.com/mrc4tt/CounterStrikeSharp/commit/19d420630f1b9d0ac7505fe5d3642fab8509cc0a))
+* gamedata: 14181 ([440ddd5](https://github.com/mrc4tt/CounterStrikeSharp/commit/440ddd55678b9d704402043e311a85052bbd1cbd))
+* gamedata upd ([0b2e806](https://github.com/mrc4tt/CounterStrikeSharp/commit/0b2e8062b0d057caf22859f74083a5bd3dbb879c))
+* Revert "refactor: move inline detours from funchook to KHook" ([c312c5c](https://github.com/mrc4tt/CounterStrikeSharp/commit/c312c5c1387248c4be6cf8490177f5a9f84a8821))
+* refactor: move inline detours from funchook to KHook ([888108e](https://github.com/mrc4tt/CounterStrikeSharp/commit/888108e06ecdfbb8567d0e7ff2e8f0bde14de0ce))
+* format fix ([915ec14](https://github.com/mrc4tt/CounterStrikeSharp/commit/915ec14d6d937982e88bcd87c467bf6a8c602d4b))
+* [test] some changes ([43244d4](https://github.com/mrc4tt/CounterStrikeSharp/commit/43244d4f8551e15cb33532be449acf3e5b48a241))
+* 14181 upd ([9147eaa](https://github.com/mrc4tt/CounterStrikeSharp/commit/9147eaa0b48e6015069de80b5968f1c305025aa1))
+* gamedata: 14181 (auto-generated from CS2_VibeSignatures) ([57f82e7](https://github.com/mrc4tt/CounterStrikeSharp/commit/57f82e7df023ab0720d3ce70b09f801cb0d08b0a))
+* Merge pull request #14 from mrc4tt/chore/automated/schema-update in [#14](https://github.com/mrc4tt/CounterStrikeSharp/pull/14) ([7e9493a](https://github.com/mrc4tt/CounterStrikeSharp/commit/7e9493a199495ce4a89701cd83cfebcc5e83a543))
+* chore: update schema definitions to 1.41.8.1 ([7e23f05](https://github.com/mrc4tt/CounterStrikeSharp/commit/7e23f05c519fe0abb4f5f2f3225177eaa7a4738e))
+* fix: null-safe original return in KHook post hooks ([6a31c74](https://github.com/mrc4tt/CounterStrikeSharp/commit/6a31c74bca15202ed74676eb78624e9108d75266))
+* gamedata: 14180 (auto-generated from CS2_VibeSignatures) ([5921d7b](https://github.com/mrc4tt/CounterStrikeSharp/commit/5921d7ba777f8d3c488c832d8d9015d3942d3672))
+* gamedata: 14180 (auto-generated from CS2_VibeSignatures) ([f4694b6](https://github.com/mrc4tt/CounterStrikeSharp/commit/f4694b6e0932b89bd906f936f469aa5c94f958ca))
+* gamedata: 14180 (auto-generated from CS2_VibeSignatures) ([43a7c78](https://github.com/mrc4tt/CounterStrikeSharp/commit/43a7c784425eaa5f7eeed34ba0b4912bb268e1c7))
+* gamedata: 14180 (auto-generated from CS2_VibeSignatures) ([1982ead](https://github.com/mrc4tt/CounterStrikeSharp/commit/1982ead12e956891656d305f870ddfe256cf5d23))
+* chore: ignore gamedata .bak files ([fee67f0](https://github.com/mrc4tt/CounterStrikeSharp/commit/fee67f07249fb8b66ff1a6c87603dd85dc571a45))
+* workflow upd ([eae428f](https://github.com/mrc4tt/CounterStrikeSharp/commit/eae428f9f4c79d09faa8ca55171f50b37ac539a0))
+
+## New Contributors
+* [@](https://github.com/) made their first contribution
+
 ## What's Changed in v1.0.399
 * KHook + CustomHudLayout api ([d42e3f1](https://github.com/mrc4tt/CounterStrikeSharp/commit/d42e3f1c3b97a76ca62d3ce10426fead84cd5073))
 * plop ([b42bdfe](https://github.com/mrc4tt/CounterStrikeSharp/commit/b42bdfeeb64009648ebe23ee5bff9f846138e614))
