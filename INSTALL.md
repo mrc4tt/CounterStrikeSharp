@@ -54,12 +54,29 @@ Tuning lives in `configs/core.json`:
 | Key | Default | Meaning |
 |---|---|---|
 | `CrashDumpsEnabled` | `true` | Write .NET minidumps at all |
-| `CrashDumpType` | `2` | 1=Mini, 2=Heap, 3=Triage, 4=Full |
+| `CrashDumpType` | `3` | 1=Mini, 2=Heap, 3=Triage, 4=Full |
 | `CrashDumpRetention` | `5` | Keep the newest N dumps, delete the rest at startup |
 
-Retention matters: a crash loop writes one dump per restart, and a Heap dump of
-a CS2 server is not small. Pruning runs at startup so a repeating crash cannot
-fill the disk.
+Dump type matters more than retention. Measured on a process with a ~2.3 GB
+footprint:
+
+| Type | Size |
+|---|---|
+| 1 Mini | 7.4 MB |
+| 2 Heap | 2.3 GB |
+| 3 Triage | 7.3 MB |
+| 4 Full | 2.4 GB |
+
+A real CS2 server is bigger still, which is how Heap dumps reach 3-8 GB. Triage
+is the default because it keeps what identifies a crash — every managed stack,
+with file and line numbers — and drops the heap, which is all of the size. The
+cost is that an exception's message shows as `<Invalid Object>` (the string is on
+the heap) and `dumpheap`/`gcroot` are unavailable. The message is in the server
+log anyway. Raise `CrashDumpType` to `2` on a single server when a heap question
+genuinely needs answering, then put it back.
+
+Retention still matters for a crash loop: pruning runs at startup so repeated
+crashes cannot fill the disk.
 
 The server id defaults to `hostname:port`, which is already unique across a
 fleet. Set `CSSHARP_SERVER_ID` only if you want friendlier names — it is what

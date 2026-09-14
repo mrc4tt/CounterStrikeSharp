@@ -44,9 +44,17 @@ class CCoreConfig
     // and no per-server setup is needed -- which matters when the fleet is large
     // enough that "just set an env var everywhere" is the expensive part.
     bool CrashDumpsEnabled = true;
-    // 1=Mini, 2=Heap, 3=Triage, 4=Full. Heap keeps `dumpheap`/`gcroot` working
-    // without the multi-GB size of a full dump of a CS2 server.
-    int CrashDumpType = 2;
+    // 1=Mini, 2=Heap, 3=Triage, 4=Full.
+    //
+    // Triage, because Heap is unaffordable here. Measured on a process with a ~2.3 GB
+    // footprint: Heap 2.3 GB, Full 2.4 GB, Triage 7.3 MB -- and a real CS2 server is
+    // bigger, which is how dumps of 3-8 GB happen. Triage still carries every managed
+    // stack with file and line numbers, which is what identifies the plugin; what it
+    // loses is the heap, so an exception's message reads as <Invalid Object> (the
+    // string lives on the heap) and dumpheap/gcroot do not work. The message is in the
+    // server log anyway. Raise to 2 temporarily on one server when a heap question
+    // actually needs answering.
+    int CrashDumpType = 3;
     // Dumps are large and crashes repeat. Keep the newest N and delete the rest at
     // startup, so a crash loop cannot fill the disk. 0 disables pruning.
     int CrashDumpRetention = 5;
