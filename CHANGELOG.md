@@ -1,3 +1,7 @@
+## What's Changed in v1.0.401
+* fix: default crash dumps to Triage, not Heap ([9b39df3](https://github.com/mrc4tt/CounterStrikeSharp/commit/9b39df325e4941843d24964353c7bdc2d62419ee))
+* feat: name the plugin that was executing when a server died ([09f1e59](https://github.com/mrc4tt/CounterStrikeSharp/commit/09f1e59a9b0d3e8ca9bde8cd73dc12852275a3eb))
+
 ## What's Changed in v1.0.400
 * Merge branch 'main' of github.com:mrc4tt/CounterStrikeSharp ([e85bd72](https://github.com/mrc4tt/CounterStrikeSharp/commit/e85bd72c5fc74dd1bb2500c5ebccce941c0e3802))
 * Update core.example.json ([5bd1346](https://github.com/mrc4tt/CounterStrikeSharp/commit/5bd13467689b5e56eabf65391cab17d5ecc7984d))
