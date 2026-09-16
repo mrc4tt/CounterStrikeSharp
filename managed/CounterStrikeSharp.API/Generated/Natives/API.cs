@@ -1029,64 +1029,6 @@ namespace CounterStrikeSharp.API.Core
 			_ctx.CheckErrors();
 		}
 
-        public static void TransmitSetHidden(int entityindex, int playerslot, bool hidden){
-			var _ctx = ScriptContext.GlobalScriptContext;
-			_ctx.Reset();
-			_ctx.PushPrimitive(entityindex);
-			_ctx.PushPrimitive(playerslot);
-			_ctx.PushPrimitive(hidden);
-			_ctx.SetIdentifier(0x6648C4C7);
-			_ctx.Invoke();
-			_ctx.CheckErrors();
-		}
-
-        public static void TransmitSetHiddenAll(int entityindex, bool hidden){
-			var _ctx = ScriptContext.GlobalScriptContext;
-			_ctx.Reset();
-			_ctx.PushPrimitive(entityindex);
-			_ctx.PushPrimitive(hidden);
-			_ctx.SetIdentifier(0x33472679);
-			_ctx.Invoke();
-			_ctx.CheckErrors();
-		}
-
-        public static void TransmitClearEntity(int entityindex){
-			var _ctx = ScriptContext.GlobalScriptContext;
-			_ctx.Reset();
-			_ctx.PushPrimitive(entityindex);
-			_ctx.SetIdentifier(0x57F9A9ED);
-			_ctx.Invoke();
-			_ctx.CheckErrors();
-		}
-
-        public static void TransmitClearPlayer(int playerslot){
-			var _ctx = ScriptContext.GlobalScriptContext;
-			_ctx.Reset();
-			_ctx.PushPrimitive(playerslot);
-			_ctx.SetIdentifier(0x3943AC45);
-			_ctx.Invoke();
-			_ctx.CheckErrors();
-		}
-
-        public static void TransmitClearAll(){
-			var _ctx = ScriptContext.GlobalScriptContext;
-			_ctx.Reset();
-			_ctx.SetIdentifier(0xAA93A6D7);
-			_ctx.Invoke();
-			_ctx.CheckErrors();
-		}
-
-        public static bool TransmitIsHidden(int entityindex, int playerslot){
-			var _ctx = ScriptContext.GlobalScriptContext;
-			_ctx.Reset();
-			_ctx.PushPrimitive(entityindex);
-			_ctx.PushPrimitive(playerslot);
-			_ctx.SetIdentifier(0x4342479F);
-			_ctx.Invoke();
-			_ctx.CheckErrors();
-			return _ctx.GetResultPrimitive<bool>();
-		}
-
         public static IntPtr GetFirstActiveEntity(){
 			var _ctx = ScriptContext.GlobalScriptContext;
 			_ctx.Reset();
