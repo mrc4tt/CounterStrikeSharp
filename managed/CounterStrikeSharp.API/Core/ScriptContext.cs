@@ -31,6 +31,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Text;
+using System.Threading;
 using CounterStrikeSharp.API.Modules.Utils;
 using FastGenericNew;
 
@@ -82,7 +83,9 @@ namespace CounterStrikeSharp.API.Core
             m_extContext = *context;
         }
 
-        private readonly ConcurrentQueue<IntPtr> ms_finalizers = new ConcurrentQueue<IntPtr>();
+        // Every native-to-managed callback creates a context, but most marshal no
+        // strings. Allocate cleanup storage only when an unmanaged string is owned.
+        private ConcurrentQueue<IntPtr>? ms_finalizers;
 
         private readonly object ms_lock = new object();
 
@@ -340,7 +343,7 @@ namespace CounterStrikeSharp.API.Core
             int written = Encoding.UTF8.GetBytes(str, dest);
             dest[written] = 0;
 
-            ms_finalizers.Enqueue(ptr);
+            LazyInitializer.EnsureInitialized(ref ms_finalizers).Enqueue(ptr);
 
             *(IntPtr*)(&cxt->functionData[8 * cxt->numArguments]) = ptr;
             cxt->numArguments++;
@@ -362,7 +365,7 @@ namespace CounterStrikeSharp.API.Core
             int written = Encoding.UTF8.GetBytes(str, dest);
             dest[written] = 0;
 
-            ms_finalizers.Enqueue(ptr);
+            LazyInitializer.EnsureInitialized(ref ms_finalizers).Enqueue(ptr);
             *(IntPtr*)(&cxt->result[8]) = ptr;
         }
 
@@ -560,18 +563,19 @@ namespace CounterStrikeSharp.API.Core
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal void GlobalCleanUp()
         {
-            if (!ms_finalizers.IsEmpty)
+            var finalizers = ms_finalizers;
+            if (finalizers != null && !finalizers.IsEmpty)
             {
-                GlobalCleanUpSlow();
+                GlobalCleanUpSlow(finalizers);
             }
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
-        private void GlobalCleanUpSlow()
+        private void GlobalCleanUpSlow(ConcurrentQueue<IntPtr> finalizers)
         {
             lock (ms_lock)
             {
-                while (ms_finalizers.TryDequeue(out var ptr))
+                while (finalizers.TryDequeue(out var ptr))
                 {
                     Marshal.FreeHGlobal(ptr);
                 }
