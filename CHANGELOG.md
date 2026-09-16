@@ -1,4 +1,5 @@
 ## What's Changed in v1.0.402
+* Revert "feat(transmit): native-side entity hide table for CheckTransmit" ([271a14b](https://github.com/mrc4tt/CounterStrikeSharp/commit/271a14b60efe550e33591006010bb037fe6229ff))
 * revert: remove crash dumps and on-disk crash evidence ([74d7394](https://github.com/mrc4tt/CounterStrikeSharp/commit/74d7394a0a3fe2948ea095f2430ee77509a03b5b))
 * gamedata: fix EmitSoundFilter and NetworkStateChanged signatures ([ef565b3](https://github.com/mrc4tt/CounterStrikeSharp/commit/ef565b3da15fb87942a6b0b0536118225825c2d9))
 * Update CODEOWNERS ([8928680](https://github.com/mrc4tt/CounterStrikeSharp/commit/8928680f60b303fda3e1e27c2c50f8842cc62cd7))
