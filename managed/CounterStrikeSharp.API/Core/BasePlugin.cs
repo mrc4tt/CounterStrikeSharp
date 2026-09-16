@@ -363,10 +363,6 @@ namespace CounterStrikeSharp.API.Core
                 new CallbackSubscriber(handler, wrappedHandler, () => { RemoveListener(listenerName, handler); });
 #pragma warning restore CS0618
 
-            // Tell the native side who this listener belongs to before it is appended:
-            // a crash breadcrumb records the listener's index, and the index alone
-            // cannot be traced back to a plugin after the fact.
-            NativeAPI.SetCallbackOwner(ModuleName);
             NativeAPI.AddListener(listenerName, subscriber.GetInputArgument());
             Listeners[handler] = subscriber;
         }

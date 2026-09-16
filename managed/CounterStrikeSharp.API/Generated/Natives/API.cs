@@ -919,19 +919,6 @@ namespace CounterStrikeSharp.API.Core
 			_ctx.CheckErrors();
 		}
 
-        // Names the plugin that owns the listener registered immediately after this
-        // call, so a crash breadcrumb of "callback X, listener 2" can be resolved to
-        // a plugin. The native dispatch loop only sees function pointers.
-        // Identifier = hash_string("SET_CALLBACK_OWNER").
-        public static void SetCallbackOwner(string pluginName){
-			var _ctx = ScriptContext.GlobalScriptContext;
-			_ctx.Reset();
-			_ctx.PushString(pluginName);
-			_ctx.SetIdentifier(0xFFC2348F);
-			_ctx.Invoke();
-			_ctx.CheckErrors();
-		}
-
         public static void DisconnectClient(int slot, int reason){
 			var _ctx = ScriptContext.GlobalScriptContext;
 			_ctx.Reset();

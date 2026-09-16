@@ -42,47 +42,4 @@ void ClearCallbackBreadcrumb();
 // load). Copied into a fixed buffer; safe to call from managed via a native.
 void SetSuspectPlugin(const char* pluginName);
 
-// Records the console command being dispatched, and who ran it. A crash that
-// follows a command ("css_reloadadmins", a map change, an admin command) is
-// otherwise indistinguishable from a spontaneous one in the log. Fixed buffers,
-// game thread only, read from the signal handler.
-void SetCommandBreadcrumb(const char* command, const char* issuer);
-
-// Where crash reports and the live state file are written, and the identity that
-// ties a report back to one of many servers. Call once during startup, before
-// anything can crash: the signal handler cannot build paths or allocate, so it
-// needs them ready. A null or empty directory disables both files (console
-// output still happens).
-void ConfigureReporting(const char* directory, const char* serverId);
-
-// Current map, refreshed on level init. Shown in the report and the state file.
-void SetMap(const char* mapName);
-
-// Build identity ("v1.0.400 @ abc1234"), recorded once at startup. A crash report
-// is worth little if you cannot tell which build produced it -- across a fleet
-// mid-rollout, that is the first thing to check.
-void SetBuildVersion(const char* version);
-
-// Current tick, refreshed with the state file. Distinguishes "died during startup"
-// from "died after six hours", which the timestamps alone do not when a server is
-// restarted in a loop.
-void SetTick(int tick);
-
-// Records which plugin owns the listener that is about to be appended to a
-// callback. Called from managed right before AddListener, where the plugin's
-// identity is still known; the native dispatch loop only ever sees function
-// pointers. Lets a crash breadcrumb of "callback X, listener 2" be resolved to a
-// plugin name after the fact.
-void SetPendingCallbackOwner(const char* pluginName);
-
-// Binds the pending owner to (callback, index) and rewrites dumps/listeners.txt.
-void RecordCallbackOwner(const char* callbackName, int index);
-
-// Rewrites the "last known state" file: what the server was doing, on disk,
-// BEFORE anything goes wrong. This is the only evidence that survives a crash we
-// cannot catch -- a native segfault (CoreCLR owns SIGSEGV), the OOM killer, or a
-// hang with no signal at all. Cheap enough to call on a timer; it writes a few
-// hundred bytes and returns immediately if nothing changed since the last write.
-void WriteStateFile();
-
 } // namespace counterstrikesharp::fatal

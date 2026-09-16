@@ -277,11 +277,8 @@ void ClientPrint(ScriptContext& scriptContext)
 // name it as the last console line if the process aborts. See fatal_reporter.
 void SetFatalSuspectPlugin(ScriptContext& script_context) { fatal::SetSuspectPlugin(script_context.GetArgument<const char*>(0)); }
 
-void SetCallbackOwner(ScriptContext& script_context) { fatal::SetPendingCallbackOwner(script_context.GetArgument<const char*>(0)); }
-
 REGISTER_NATIVES(engine, {
     ScriptEngine::RegisterNativeHandler("SET_FATAL_SUSPECT_PLUGIN", SetFatalSuspectPlugin);
-    ScriptEngine::RegisterNativeHandler("SET_CALLBACK_OWNER", SetCallbackOwner);
     ScriptEngine::RegisterNativeHandler("GET_GAME_DIRECTORY", GetGameDirectory);
     ScriptEngine::RegisterNativeHandler("GET_MAP_NAME", GetMapName);
     ScriptEngine::RegisterNativeHandler("IS_MAP_VALID", IsMapValid);
