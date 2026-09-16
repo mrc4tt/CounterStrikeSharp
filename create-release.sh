@@ -77,6 +77,22 @@ run_local_linux_build() {
         return 0
     fi
 
+    # act's actions/checkout copies the local working tree verbatim and ignores
+    # fetch-depth: 0, so a shallow local clone reaches GitVersion as shallow and
+    # it aborts ("The repository is shallow"). Unshallow every remote first -
+    # must happen before the remote stash below removes non-origin remotes.
+    if [ "$(git rev-parse --is-shallow-repository)" = "true" ]; then
+        echo "Local repository is shallow - fetching full history for GitVersion..."
+        while IFS= read -r r; do
+            [ -n "$r" ] && git fetch --unshallow "$r" 2>/dev/null || true
+        done < <(git remote)
+        if [ "$(git rev-parse --is-shallow-repository)" = "true" ]; then
+            echo "⚠️  Repository is still shallow - skipping local Linux build."
+            echo "   Fix with 'git fetch --unshallow <remote>' per remote, then run act manually."
+            return 0
+        fi
+    fi
+
     local artifact_dir
     artifact_dir=$(mktemp -d -t act-artifacts-XXXXXX)
 
