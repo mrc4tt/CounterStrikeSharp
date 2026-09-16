@@ -123,10 +123,27 @@ public static class CoreLogging
                 // framework's own lines stand out from game-engine output and messages
                 // line up in one column. Only the console sink carries escapes; the file
                 // sinks below stay plain text and use the raw SourceContext instead.
-                .WriteTo.Console(
+                // The console sink is wrapped in Async for the same reason the file sinks
+                // are, but against a different failure: Console.Out is an unbuffered
+                // write(2) to stdout, and on a real server stdout is a PIPE -- docker
+                // logs, pterodactyl's daemon, screen, systemd-journald. When the reader
+                // falls behind, the 64 KiB pipe buffer fills and the write BLOCKS the
+                // caller. Every core log line is written from the game thread, so a
+                // stalled log consumer stalls the tick: the server spike-lags because
+                // something outside it stopped reading its console. Async moves the write
+                // to a background thread, which turns that stall into queue depth.
+                //
+                // blockWhenFull: false is the point of the exercise -- when the queue
+                // fills (10k events) Serilog DROPS the event rather than applying
+                // backpressure to the game thread. Losing console lines during a log
+                // storm is strictly better than dropping ticks; the file sinks below are
+                // the durable record, and fatal_reporter.cpp writes crash breadcrumbs
+                // with a direct write(2) to stderr that does not go through Serilog.
+                .WriteTo.Async(a => a.Console(
                     theme: ConsoleTheme,
                     outputTemplate:
-                    "{Timestamp:HH:mm:ss.fff} [" + LevelToken + "] {SourceTag:l} {Message:lj}{NewLine}{Exception}")
+                    "{Timestamp:HH:mm:ss.fff} [" + LevelToken + "] {SourceTag:l} {Message:lj}{NewLine}{Exception}"),
+                    bufferSize: 10000, blockWhenFull: false)
                 // File sinks run through Async so file rolls + Serilog's retention scan
                 // (PathRoller regex over the log dir) happen on a background thread instead
                 // of stalling the game tick — a synchronous roll was measured at ~469ms on
@@ -149,6 +166,15 @@ public static class CoreLogging
                         "] (cssharp:{SourceContext}) {Message:lj}{NewLine}{Exception}");
                 })
                 .CreateLogger();
+
+            // Every sink is now behind an Async wrapper, so anything still sitting in a
+            // queue when the process ends is lost unless the logger is disposed. Nothing
+            // in the tree disposed it before (the sinks were synchronous, so there was
+            // nothing to lose); ProcessExit fires on a clean `quit` and drains both
+            // queues. A hard crash still bypasses this -- that is what the direct
+            // write(2) breadcrumb in fatal_reporter.cpp is for.
+            var logger = SerilogLogger;
+            AppDomain.CurrentDomain.ProcessExit += (_, _) => logger.Dispose();
 
             Factory =
                 LoggerFactory.Create(builder => { builder.AddSerilog(SerilogLogger); });

@@ -30,90 +30,34 @@ namespace CounterStrikeSharp.API
             NativeAPI.AddListener("OnServerPreWorldUpdate", (Delegate)((bool simulating) => OnWorldUpdate()));
         }
 
-        // The queued closure plus who queued it. NextFrame/NextWorldUpdate are called
-        // from plugin code, but by the time the queue drains, the closure carries no
-        // plugin identity -- so every one of these used to be billed to "core:nextframe"
-        // and the slow-frame report pointed at the framework for plugin work. Resolve
-        // the owner at enqueue instead, where the caller's delegate is still in hand.
-        private readonly struct QueuedTask
-        {
-            public readonly Action Action;
-            public readonly string? Owner;
-            public QueuedTask(Action action, string? owner)
-            {
-                Action = action;
-                Owner = owner;
-            }
-        }
-
-        private static readonly ConcurrentQueue<QueuedTask> _onTickTaskQueue = new();
-        private static readonly ConcurrentQueue<QueuedTask> _onWorldUpdateTaskQueue = new();
-
-        // Assembly -> display name, cached: GetName() allocates and these paths are hot.
-        private static readonly System.Collections.Concurrent.ConcurrentDictionary<System.Reflection.Assembly, string> _ownerNames = new();
-
-        /// <summary>
-        /// Best-effort plugin name for whoever queued this callback. Uses the delegate's
-        /// declaring assembly, which for a plugin lambda is the plugin assembly. Returns
-        /// null when profiling is off (so this costs nothing) or the delegate has no
-        /// usable declaring type, in which case the caller keeps the core bucket.
-        /// </summary>
-        private static string? ResolveOwner(Delegate task)
-        {
-            if (!Core.Profiling.PluginProfiler.Enabled) return null;
-
-            var assembly = task.Method.DeclaringType?.Assembly;
-            if (assembly == null || assembly == typeof(Server).Assembly) return null;
-
-            return _ownerNames.GetOrAdd(assembly, static a => a.GetName().Name ?? "unknown");
-        }
+        private static readonly ConcurrentQueue<Action> _onTickTaskQueue = new();
+        private static readonly ConcurrentQueue<Action> _onWorldUpdateTaskQueue = new();
 
         internal static void OnTick()
         {
-            // Per-frame boundary for the plugin profiler: finalizes the frame whose
-            // handlers ran since the last tick and emits a slow-frame report once a
-            // second when warranted. Registered before plugins load (Server.Initialize
-            // runs at startup), so it bounds a full tick of plugin activity. No-op when
-            // profiling is disabled.
-            Core.Profiling.PluginProfiler.OnFrameBoundary();
-
-            ExecuteTickTasks(_onTickTaskQueue, "core:nextframe");
+            ExecuteTickTasks(_onTickTaskQueue);
         }
 
         internal static void OnWorldUpdate()
         {
-            ExecuteTickTasks(_onWorldUpdateTaskQueue, "core:worldupdate");
+            ExecuteTickTasks(_onWorldUpdateTaskQueue);
         }
 
-        private static void ExecuteTickTasks(ConcurrentQueue<QueuedTask> taskQueue, string profilerBucket)
+        private static void ExecuteTickTasks(ConcurrentQueue<Action> taskQueue)
         {
             int count = Math.Min(taskQueue.Count, CoreConfig.MaximumFrameTasksExecutedPerTick);
             for (int i = 0; i < count; i++)
             {
-                if (!taskQueue.TryDequeue(out var queued))
+                if (!taskQueue.TryDequeue(out var task))
                     break;
 
-                // Server.NextFrame / RunOnTick callbacks (heavily used by plugins) ran unprofiled here,
-                // so their cost was invisible to the slow-frame report. Attribute it to a dedicated bucket.
-                // The closures carry no plugin identity, so we cannot split per-plugin; Begin/End are a
-                // no-op when profiling is disabled.
-                var pf = Core.Profiling.PluginProfiler.Begin();
                 try
                 {
-                    queued.Action();
+                    task();
                 }
                 catch (Exception e)
                 {
                     Application.Instance.Logger.LogError(e, "Error invoking callback");
-                }
-                finally
-                {
-                    // Bill the plugin that queued the work when we know it, and keep the
-                    // core bucket only for callbacks we genuinely cannot attribute.
-                    if (queued.Owner != null)
-                        Core.Profiling.PluginProfiler.End(queued.Owner, profilerBucket, pf);
-                    else
-                        Core.Profiling.PluginProfiler.End(profilerBucket, pf);
                 }
             }
         }
@@ -192,9 +136,8 @@ namespace CounterStrikeSharp.API
         public static Task NextFrameAsync(Action task)
         {
             var tcs = new TaskCompletionSource();
-            var owner = ResolveOwner(task);
 
-            _onTickTaskQueue.Enqueue(new QueuedTask(() =>
+            _onTickTaskQueue.Enqueue(() =>
             {
                 try
                 {
@@ -205,7 +148,7 @@ namespace CounterStrikeSharp.API
                 {
                     tcs.SetException(ex);
                 }
-            }, owner));
+            });
 
             return tcs.Task;
         }
@@ -217,9 +160,8 @@ namespace CounterStrikeSharp.API
         public static Task<TResult> NextFrameAsync<TResult>(Func<TResult> task)
         {
             var tcs = new TaskCompletionSource<TResult>();
-            var owner = ResolveOwner(task);
 
-            _onTickTaskQueue.Enqueue(new QueuedTask(() =>
+            _onTickTaskQueue.Enqueue(() =>
             {
                 try
                 {
@@ -230,7 +172,7 @@ namespace CounterStrikeSharp.API
                 {
                     tcs.SetException(ex);
                 }
-            }, owner));
+            });
 
             return tcs.Task;
         }
@@ -251,9 +193,8 @@ namespace CounterStrikeSharp.API
         public static Task NextWorldUpdateAsync(Action task)
         {
             var tcs = new TaskCompletionSource();
-            var owner = ResolveOwner(task);
 
-            _onWorldUpdateTaskQueue.Enqueue(new QueuedTask(() =>
+            _onWorldUpdateTaskQueue.Enqueue(() =>
             {
                 try
                 {
@@ -264,7 +205,7 @@ namespace CounterStrikeSharp.API
                 {
                     tcs.SetException(ex);
                 }
-            }, owner));
+            });
 
             return tcs.Task;
         }
@@ -276,9 +217,8 @@ namespace CounterStrikeSharp.API
         public static Task<TResult> NextWorldUpdateAsync<TResult>(Func<TResult> task)
         {
             var tcs = new TaskCompletionSource<TResult>();
-            var owner = ResolveOwner(task);
 
-            _onWorldUpdateTaskQueue.Enqueue(new QueuedTask(() =>
+            _onWorldUpdateTaskQueue.Enqueue(() =>
             {
                 try
                 {
@@ -289,7 +229,7 @@ namespace CounterStrikeSharp.API
                 {
                     tcs.SetException(ex);
                 }
-            }, owner));
+            });
 
             return tcs.Task;
         }

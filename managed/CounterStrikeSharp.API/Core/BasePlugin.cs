@@ -148,27 +148,8 @@ namespace CounterStrikeSharp.API.Core
         private void RegisterEventHandlerInternal<T>(string name, GameEventHandler<T> handler, bool post)
             where T : GameEvent
         {
-            // Profiling wrapper attributes the handler's CPU + allocations to THIS
-            // plugin (ModuleName). The original `handler` stays the subscriber KEY so
-            // removal via Handlers[handler] / DeregisterEventHandler is unchanged; only
-            // the INVOKED delegate is wrapped. No-op branch when profiling is off.
-            GameEventHandler<T> profiled = (@event, info) =>
-            {
-                var pf = Profiling.PluginProfiler.Begin();
-                try
-                {
-                    return handler(@event, info);
-                }
-                finally
-                {
-                    // Name the event too: "MatchZy" answers which plugin, "MatchZy ▸ player_hurt"
-                    // answers which of its handlers -- the question the per-plugin report left open.
-                    Profiling.PluginProfiler.End(ModuleName, name, pf);
-                }
-            };
-
 #pragma warning disable CS0618 // intentional internal use of the non-generic deregister
-            var subscriber = new CallbackSubscriber(handler, profiled,
+            var subscriber = new CallbackSubscriber(handler, handler,
                 () => DeregisterEventHandler(name, handler, post));
 #pragma warning restore CS0618
 
@@ -365,20 +346,9 @@ namespace CounterStrikeSharp.API.Core
                     }
                 }
 
-                // Profiler attributes this handler's CPU + allocations to THIS plugin
-                // (ModuleName known at registration). No-op branch when profiling off.
-                var _pfSample = Profiling.PluginProfiler.Begin();
-                object? result;
-                try
-                {
-                    result = handlerInvoker != null
-                        ? handlerInvoker(handlerTarget!, args)
-                        : handler.DynamicInvoke(args);
-                }
-                finally
-                {
-                    Profiling.PluginProfiler.End(ModuleName, listenerName, _pfSample);
-                }
+                object? result = handlerInvoker != null
+                    ? handlerInvoker(handlerTarget!, args)
+                    : handler.DynamicInvoke(args);
 
                 if (result is HookResult hookResult)
                 {
@@ -448,29 +418,9 @@ namespace CounterStrikeSharp.API.Core
         /// <returns>An instance of the <see cref="Timer"/></returns>
         public Timer AddTimer(float interval, Action callback, TimerFlags? flags = null)
         {
-            var timer = new Timer(interval, ProfiledTimerCallback(callback), flags ?? 0);
+            var timer = new Timer(interval, callback, flags ?? 0);
             Timers.Add(timer);
             return timer;
-        }
-
-        // Wraps a timer callback so its CPU + allocations are attributed to THIS
-        // plugin. ModuleName is captured at registration (the callback itself may be
-        // a closure with no plugin identity). No-op branch when profiling is off.
-        private Action ProfiledTimerCallback(Action callback)
-        {
-            var pluginName = ModuleName;
-            return () =>
-            {
-                var pf = Profiling.PluginProfiler.Begin();
-                try
-                {
-                    callback();
-                }
-                finally
-                {
-                    Profiling.PluginProfiler.End(pluginName, "timer", pf);
-                }
-            };
         }
 
         /// <summary>
@@ -483,7 +433,7 @@ namespace CounterStrikeSharp.API.Core
         /// <returns>An instance of the <see cref="Timer"/></returns>
         public Timer AddTickTimer(int tickInterval, Action callback, TimerFlags? flags = null)
         {
-            var timer = new Timer(tickInterval * Server.TickInterval, ProfiledTimerCallback(callback), flags ?? 0);
+            var timer = new Timer(tickInterval * Server.TickInterval, callback, flags ?? 0);
             Timers.Add(timer);
             return timer;
         }

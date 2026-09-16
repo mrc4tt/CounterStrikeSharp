@@ -186,11 +186,19 @@ namespace CounterStrikeSharp.API.Core.Plugin
                         // format, level width and tag padding are deliberately identical to
                         // the core logger's so both streams share one aligned column. Console
                         // sink only; the file sinks below stay plain text.
-                        .WriteTo.Console(
+                        // Async for the same reason as the core console sink (CoreLogging.cs):
+                        // stdout is a pipe on a real server, and a console write from the game
+                        // thread blocks once the pipe buffer fills. Plugins log far more often
+                        // than the framework does, so this is the sink most likely to stall a
+                        // tick. blockWhenFull: false drops events during a storm instead of
+                        // pushing backpressure onto the tick; the per-plugin file sinks below
+                        // remain the durable record.
+                        .WriteTo.Async(a => a.Console(
                             theme: CoreLogging.ConsoleTheme,
                             outputTemplate:
                             "{Timestamp:HH:mm:ss.fff} [" + CoreLogging.LevelToken +
-                            "] {PluginTag:l} {Message:lj}{NewLine}{Exception}")
+                            "] {PluginTag:l} {Message:lj}{NewLine}{Exception}"),
+                            bufferSize: 10000, blockWhenFull: false)
                         // File sinks run through Async so file rolls + Serilog's retention
                         // scan run off the game thread instead of stalling the tick (a
                         // synchronous roll was measured at ~469ms on the game thread). One
@@ -212,7 +220,15 @@ namespace CounterStrikeSharp.API.Core.Plugin
                                 "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [" + CoreLogging.LevelToken +
                                 "] plugin:{PluginName} {Message:lj}{NewLine}{Exception}");
                         })
-                        .CreateLogger());
+                        .CreateLogger(),
+                        // dispose: true is what actually makes the unload path's
+                        // ServiceProvider.Dispose() release this logger. Without it
+                        // AddSerilog defaults to dispose: false, so every reload leaked
+                        // the plugin's open log file handles AND (now that the console
+                        // sink is async too) one background sink thread per reload. On a
+                        // hot-reload server those accumulate into the thread-starvation
+                        // that shows up as "SteamNetworkingSockets lock held for N ms".
+                        dispose: true);
                 });
 
                 Type interfaceType = typeof(IPluginServiceCollection<>).MakeGenericType(pluginType);
