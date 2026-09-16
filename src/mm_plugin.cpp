@@ -240,7 +240,7 @@ bool CounterStrikeSharpMMPlugin::Load(PluginId id, ISmmAPI* ismm, char* error, s
     }
 
     // Install AFTER the .NET runtime so our SIGABRT handler runs first (prints the
-    // culprit) then chains to the CLR's handler (keeps its crash dump). Lets a
+    // culprit) then chains to the CLR's handler (its normal abort path). Lets a
     // garbage-collected-delegate FailFast name the suspect plugin as the LAST
     // console line instead of an anonymous "Process terminated".
     fatal::InstallHandler();

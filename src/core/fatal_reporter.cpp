@@ -128,7 +128,7 @@ static void handler(int sig, siginfo_t* info, void* ucontext)
 {
     report(sig);
 
-    // Chain to the previous (CLR) handler so its crash dump still runs.
+    // Chain to the previous (CLR) handler so its normal abort path still runs.
     if (g_prevAbrt.sa_flags & SA_SIGINFO)
     {
         if (g_prevAbrt.sa_sigaction)

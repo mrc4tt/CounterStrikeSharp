@@ -26,7 +26,7 @@ namespace counterstrikesharp::fatal {
 // FailFast -> abort() -> SIGABRT, and no managed code runs after it, so the
 // customer would otherwise only see the cryptic CLR line followed by "Process
 // terminated" with no plugin named. We run first, print, then chain to the CLR's
-// own handler so its crash dump still happens. Idempotent. Only SIGABRT is hooked
+// own handler so its normal abort path still runs. Idempotent. Only SIGABRT is hooked
 // (NOT SIGSEGV: CoreCLR uses SIGSEGV for normal operation e.g. null-ref handling).
 void InstallHandler();
 
