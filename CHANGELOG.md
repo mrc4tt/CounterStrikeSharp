@@ -1,3 +1,9 @@
+## What's Changed in v1.0.402
+* revert: remove crash dumps and on-disk crash evidence ([74d7394](https://github.com/mrc4tt/CounterStrikeSharp/commit/74d7394a0a3fe2948ea095f2430ee77509a03b5b))
+* gamedata: fix EmitSoundFilter and NetworkStateChanged signatures ([ef565b3](https://github.com/mrc4tt/CounterStrikeSharp/commit/ef565b3da15fb87942a6b0b0536118225825c2d9))
+* Update CODEOWNERS ([8928680](https://github.com/mrc4tt/CounterStrikeSharp/commit/8928680f60b303fda3e1e27c2c50f8842cc62cd7))
+* perf: remove slow-frame profiling and GC/JIT tuning ([0f40d41](https://github.com/mrc4tt/CounterStrikeSharp/commit/0f40d4143c46fdeaeee4533c84ac0572b216060d))
+
 ## What's Changed in v1.0.401
 * fix: default crash dumps to Triage, not Heap ([9b39df3](https://github.com/mrc4tt/CounterStrikeSharp/commit/9b39df325e4941843d24964353c7bdc2d62419ee))
 * feat: name the plugin that was executing when a server died ([09f1e59](https://github.com/mrc4tt/CounterStrikeSharp/commit/09f1e59a9b0d3e8ca9bde8cd73dc12852275a3eb))
