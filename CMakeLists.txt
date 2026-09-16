@@ -8,18 +8,10 @@ include("makefiles/shared.cmake")
 set(CMAKE_POLICY_VERSION_MINIMUM 3.5)
 set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 
-set(FUNCHOOK_BUILD_TESTS OFF CACHE BOOL "Disable building tests for funchook." FORCE)
-set(ZYDIS_BUILD_EXAMPLES OFF CACHE BOOL "Disable building examples for Zydis." FORCE)
-set(ZYDIS_BUILD_TOOLS OFF CACHE BOOL "Disable building tools for Zydis." FORCE)
-set(DYNOHOOK_BUILD_TESTS OFF CACHE BOOL "Disable building tests for funchook." FORCE)
 
 add_subdirectory(libraries/spdlog)
 add_subdirectory(libraries/dyncall)
-add_subdirectory(libraries/funchook)
-add_subdirectory(libraries/DynoHook)
 
-set_property(TARGET dynohook PROPERTY DYNO_ARCH_X86 64)
-set_property(TARGET funchook-static PROPERTY POSITION_INDEPENDENT_CODE ON)
 
 include("makefiles/protobuf.cmake")
 
@@ -35,6 +27,15 @@ set(SOURCE_FILES
     libraries/hl2sdk-cs2/entity2/entitykeyvalues.cpp
     libraries/dotnet/hostfxr.h
     libraries/dotnet/coreclr_delegates.h
+    # SourceHook, vendored from metamod-source @ a168fc2a (last commit before
+    # "Introduce KHook" deleted core/sourcehook). Metamod 2.0 / plugin API 18 no
+    # longer ships it; we host a private CSourceHookImpl in globals.cpp so SH_*
+    # hooks stay available next to KHook.
+    libraries/sourcehook/sourcehook.cpp
+    libraries/sourcehook/sourcehook_impl_chookidman.cpp
+    libraries/sourcehook/sourcehook_impl_chookmaninfo.cpp
+    libraries/sourcehook/sourcehook_impl_cvfnptr.cpp
+    libraries/sourcehook/sourcehook_impl_cproto.cpp
     src/scripting/dotnet_host.h
     src/scripting/dotnet_host.cpp
     src/core/utils.h
@@ -87,6 +88,9 @@ set(SOURCE_FILES
     src/core/cs2_sdk/interfaces/navphysicsinterface.cpp
     src/core/cs2_sdk/schema.h
     src/core/cs2_sdk/schema.cpp
+    src/core/hooks.h
+    src/core/dynamic_hook.h
+    src/core/dynamic_hook.cpp
     src/core/function.cpp
     src/core/function.h
     src/scripting/natives/natives_memory.cpp

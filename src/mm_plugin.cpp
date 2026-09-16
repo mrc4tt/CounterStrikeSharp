@@ -20,6 +20,7 @@
 #include <unordered_set>
 
 #include "core/detours.h"
+#include "core/dynamic_hook.h"
 #include "core/fatal_reporter.h"
 #include "core/coreconfig.h"
 #include "core/game_system.h"
@@ -119,139 +120,168 @@ ConVar sample_cvar("sample_cvar", "42", 0);
 bool CounterStrikeSharpMMPlugin::Load(PluginId id, ISmmAPI* ismm, char* error, size_t maxlen, bool late)
 {
     PLUGIN_SAVEVARS();
-    ismm->AddListener(this, this);
-
-    globals::ismm = ismm;
-    globals::gameThreadId = std::this_thread::get_id();
-
-    Log::Init();
-
-    CSSHARP_CORE_DEBUG("Initializing with command line: {}", CommandLine()->GetCmdLine());
-    const char* basePath = CommandLine()->ParmValue(MakeStringToken("+css_basepath"), "/addons/counterstrikesharp");
-
-    GET_V_IFACE_CURRENT(GetEngineFactory, globals::engineServer2, IVEngineServer2, SOURCE2ENGINETOSERVER_INTERFACE_VERSION);
-    GET_V_IFACE_CURRENT(GetEngineFactory, globals::engine, IVEngineServer, INTERFACEVERSION_VENGINESERVER);
-    GET_V_IFACE_CURRENT(GetEngineFactory, globals::cvars, ICvar, CVAR_INTERFACE_VERSION);
-    GET_V_IFACE_CURRENT(GetEngineFactory, g_pGameResourceServiceServer, IGameResourceService, GAMERESOURCESERVICESERVER_INTERFACE_VERSION);
-    GET_V_IFACE_ANY(GetServerFactory, globals::server, IServerGameDLL, INTERFACEVERSION_SERVERGAMEDLL);
-    GET_V_IFACE_ANY(GetServerFactory, globals::serverGameClients, IServerGameClients, INTERFACEVERSION_SERVERGAMECLIENTS);
-    GET_V_IFACE_ANY(GetEngineFactory, globals::networkServerService, INetworkServerService, NETWORKSERVERSERVICE_INTERFACE_VERSION);
-    GET_V_IFACE_ANY(GetEngineFactory, globals::schemaSystem, CSchemaSystem, SCHEMASYSTEM_INTERFACE_VERSION);
-    GET_V_IFACE_ANY(GetEngineFactory, globals::gameEventSystem, IGameEventSystem, GAMEEVENTSYSTEM_INTERFACE_VERSION);
-    GET_V_IFACE_ANY(GetEngineFactory, globals::engineServiceManager, IEngineServiceMgr, ENGINESERVICEMGR_INTERFACE_VERSION);
-    GET_V_IFACE_ANY(GetEngineFactory, globals::networkMessages, INetworkMessages, NETWORKMESSAGES_INTERFACE_VERSION);
-    GET_V_IFACE_ANY(GetServerFactory, globals::gameEntities, ISource2GameEntities, SOURCE2GAMEENTITIES_INTERFACE_VERSION);
-    g_pCVar = globals::cvars;
-    g_pSource2GameEntities = globals::gameEntities;
-    interfaces::pGameResourceServiceServer = (CGameResourceService*)g_pGameResourceServiceServer;
-    CSSHARP_CORE_DEBUG("pGameResourceServiceServer resolved: {}", (void*)interfaces::pGameResourceServiceServer);
-
-    if (utils::RelativeDirectory(std::string(basePath)) == "NotFound")
+    if (!KHook::__exported__khook)
     {
-        CSSHARP_CORE_ERROR("Invalid base path: {}", basePath);
+        snprintf(error, maxlen, "CounterStrikeSharp requires Metamod with KHook (plugin API 18)");
         return false;
     }
-    CSSHARP_CORE_DEBUG("Current root directory: {}", utils::GetRootDirectory());
-
-    // Now that the addons root is known, attach the file sink under a path the
-    // server user owns (<root>/logs) instead of the engine's working directory.
-    Log::AttachFileSink(utils::GetRootDirectory() + "/logs");
-
-    auto coreconfig_path = std::string(utils::ConfigsDirectory() + "/core");
-    globals::coreConfig = new CCoreConfig(coreconfig_path);
-    char coreconfig_error[255] = "";
-
-    if (!globals::coreConfig->Init(coreconfig_error, sizeof(coreconfig_error)))
+    // Any early return / throw below must not leave half-installed KHook patches
+    // pointing into a plugin Metamod is about to unload.
+    struct LoadGuard
     {
-        CSSHARP_CORE_ERROR("Could not read \'{}\'. Error: {}", coreconfig_path, coreconfig_error);
-        return false;
-    }
-
-    // Apply configured verbosity now that core.json is parsed. The earliest lines
-    // (cmdline, root dir) already printed at the default info level; everything from
-    // here on honors LogVerbosity. SPDLOG_LEVEL env still overrides if set.
-    Log::SetLevelFromString(globals::coreConfig->LogVerbosity);
-
-    CSSHARP_CORE_DEBUG("CoreConfig loaded.");
-
-    if (globals::coreConfig->AutoUpdateEnabled)
-    {
-#ifdef _WIN32
-        if (!update::TryUpdateGameConfig())
+        bool succeeded = false;
+        ~LoadGuard()
         {
-            CSSHARP_CORE_ERROR("Failed to update game config.");
+            if (!succeeded)
+            {
+                HookSet::ClearAll();
+                DynamicHook::ShutdownAll();
+            }
         }
+    } guard;
+    try
+    {
+        ismm->AddListener(this, this);
+
+        globals::ismm = ismm;
+        globals::gameThreadId = std::this_thread::get_id();
+
+        Log::Init();
+
+        CSSHARP_CORE_DEBUG("Initializing with command line: {}", CommandLine()->GetCmdLine());
+        const char* basePath = CommandLine()->ParmValue(MakeStringToken("+css_basepath"), "/addons/counterstrikesharp");
+
+        GET_V_IFACE_CURRENT(GetEngineFactory, globals::engineServer2, IVEngineServer2, SOURCE2ENGINETOSERVER_INTERFACE_VERSION);
+        GET_V_IFACE_CURRENT(GetEngineFactory, globals::engine, IVEngineServer, INTERFACEVERSION_VENGINESERVER);
+        GET_V_IFACE_CURRENT(GetEngineFactory, globals::cvars, ICvar, CVAR_INTERFACE_VERSION);
+        GET_V_IFACE_CURRENT(GetEngineFactory, g_pGameResourceServiceServer, IGameResourceService,
+                            GAMERESOURCESERVICESERVER_INTERFACE_VERSION);
+        GET_V_IFACE_ANY(GetServerFactory, globals::server, IServerGameDLL, INTERFACEVERSION_SERVERGAMEDLL);
+        GET_V_IFACE_ANY(GetServerFactory, globals::serverGameClients, IServerGameClients, INTERFACEVERSION_SERVERGAMECLIENTS);
+        GET_V_IFACE_ANY(GetEngineFactory, globals::networkServerService, INetworkServerService, NETWORKSERVERSERVICE_INTERFACE_VERSION);
+        GET_V_IFACE_ANY(GetEngineFactory, globals::schemaSystem, CSchemaSystem, SCHEMASYSTEM_INTERFACE_VERSION);
+        GET_V_IFACE_ANY(GetEngineFactory, globals::gameEventSystem, IGameEventSystem, GAMEEVENTSYSTEM_INTERFACE_VERSION);
+        GET_V_IFACE_ANY(GetEngineFactory, globals::engineServiceManager, IEngineServiceMgr, ENGINESERVICEMGR_INTERFACE_VERSION);
+        GET_V_IFACE_ANY(GetEngineFactory, globals::networkMessages, INetworkMessages, NETWORKMESSAGES_INTERFACE_VERSION);
+        GET_V_IFACE_ANY(GetServerFactory, globals::gameEntities, ISource2GameEntities, SOURCE2GAMEENTITIES_INTERFACE_VERSION);
+        g_pCVar = globals::cvars;
+        g_pSource2GameEntities = globals::gameEntities;
+        interfaces::pGameResourceServiceServer = (CGameResourceService*)g_pGameResourceServiceServer;
+        CSSHARP_CORE_DEBUG("pGameResourceServiceServer resolved: {}", (void*)interfaces::pGameResourceServiceServer);
+
+        if (utils::RelativeDirectory(std::string(basePath)) == "NotFound")
+        {
+            CSSHARP_CORE_ERROR("Invalid base path: {}", basePath);
+            return false;
+        }
+        CSSHARP_CORE_DEBUG("Current root directory: {}", utils::GetRootDirectory());
+
+        // Now that the addons root is known, attach the file sink under a path the
+        // server user owns (<root>/logs) instead of the engine's working directory.
+        Log::AttachFileSink(utils::GetRootDirectory() + "/logs");
+
+        auto coreconfig_path = std::string(utils::ConfigsDirectory() + "/core");
+        globals::coreConfig = new CCoreConfig(coreconfig_path);
+        char coreconfig_error[255] = "";
+
+        if (!globals::coreConfig->Init(coreconfig_error, sizeof(coreconfig_error)))
+        {
+            CSSHARP_CORE_ERROR("Could not read \'{}\'. Error: {}", coreconfig_path, coreconfig_error);
+            return false;
+        }
+
+        // Apply configured verbosity now that core.json is parsed. The earliest lines
+        // (cmdline, root dir) already printed at the default info level; everything from
+        // here on honors LogVerbosity. SPDLOG_LEVEL env still overrides if set.
+        Log::SetLevelFromString(globals::coreConfig->LogVerbosity);
+
+        CSSHARP_CORE_DEBUG("CoreConfig loaded.");
+
+        if (globals::coreConfig->AutoUpdateEnabled)
+        {
+#ifdef _WIN32
+            if (!update::TryUpdateGameConfig())
+            {
+                CSSHARP_CORE_ERROR("Failed to update game config.");
+            }
 #else
-        CSSHARP_CORE_WARN("Auto-update is not currently supported on this platform.");
+            CSSHARP_CORE_WARN("Auto-update is not currently supported on this platform.");
 #endif
+        }
+
+        auto gamedata_path = std::string(utils::GamedataDirectory() + "/gamedata.json");
+        globals::gameConfig = new CGameConfig(gamedata_path);
+        char conf_error[255] = "";
+
+        if (!globals::gameConfig->Init(conf_error, sizeof(conf_error)))
+        {
+            CSSHARP_CORE_ERROR("Could not read \'{}\'. Error: {}", gamedata_path, conf_error);
+            return false;
+        }
+
+        globals::Initialize();
+
+        CSSHARP_CORE_DEBUG("Globals loaded.");
+        globals::mmPlugin = &gPlugin;
+
+        CALL_GLOBAL_LISTENER(OnAllInitialized());
+
+        on_activate_callback = globals::callbackManager.CreateCallback("OnMapStart");
+        on_map_end_callback = globals::callbackManager.CreateCallback("OnMapEnd");
+        on_metamod_all_plugins_loaded_callback = globals::callbackManager.CreateCallback("OnMetamodAllPluginsLoaded");
+
+        m_GameFrame.Add(globals::server, "IServerGameDLL::GameFrame");
+        m_StartupServer.Add(globals::networkServerService, "INetworkServerService::StartupServer");
+        m_RegisterLoopMode.Add(globals::engineServiceManager, "IEngineServiceMgr::RegisterLoopMode");
+        m_FindService.Add(globals::engineServiceManager, "IEngineServiceMgr::FindService");
+
+        // CGameEventManager is instantiated by the engine after we load, so hook every
+        // instance sharing the class vtable rather than a specific object (the KHook
+        // equivalent of SourceHook's DVP hook). AddGlobal() dereferences its argument to
+        // get the vtable, hence the address-of on the vtable pointer.
+        g_pCGameEventManagerVTable = modules::server->FindVirtualTable("CGameEventManager");
+        if (g_pCGameEventManagerVTable != nullptr)
+        {
+            m_LoadEventsFromFile.AddGlobal((IGameEventManager2*)&g_pCGameEventManagerVTable, "IGameEventManager2::LoadEventsFromFile");
+        }
+        else
+        {
+            CSSHARP_CORE_ERROR("Failed to find the CGameEventManager vtable, game events will not be available.");
+        }
+
+        if (!InitGameSystems())
+        {
+            CSSHARP_CORE_ERROR("Failed to initialize GameSystem!");
+            return false;
+        }
+
+        CSSHARP_CORE_DEBUG("Initialized GameSystem.");
+
+        if (!globals::dotnetManager.Initialize())
+        {
+            CSSHARP_CORE_ERROR("Failed to initialize .NET runtime");
+        }
+
+        // Install AFTER the .NET runtime so our SIGABRT handler runs first (prints the
+        // culprit) then chains to the CLR's handler (keeps its crash dump). Lets a
+        // garbage-collected-delegate FailFast name the suspect plugin as the LAST
+        // console line instead of an anonymous "Process terminated".
+        fatal::InstallHandler();
+
+        CSSHARP_CORE_DEBUG("Hooks added.");
+
+        // Used by Metamod Console Commands
+        g_pCVar = globals::cvars;
+        ConVar_Register(FCVAR_RELEASE | FCVAR_CLIENT_CAN_EXECUTE | FCVAR_GAMEDLL);
+
+        guard.succeeded = true;
+        return true;
     }
-
-    auto gamedata_path = std::string(utils::GamedataDirectory() + "/gamedata.json");
-    globals::gameConfig = new CGameConfig(gamedata_path);
-    char conf_error[255] = "";
-
-    if (!globals::gameConfig->Init(conf_error, sizeof(conf_error)))
+    catch (const std::exception& exception)
     {
-        CSSHARP_CORE_ERROR("Could not read \'{}\'. Error: {}", gamedata_path, conf_error);
+        snprintf(error, maxlen, "Failed to initialize CounterStrikeSharp hooks: %s", exception.what());
         return false;
     }
-
-    globals::Initialize();
-
-    CSSHARP_CORE_DEBUG("Globals loaded.");
-    globals::mmPlugin = &gPlugin;
-
-    CALL_GLOBAL_LISTENER(OnAllInitialized());
-
-    on_activate_callback = globals::callbackManager.CreateCallback("OnMapStart");
-    on_map_end_callback = globals::callbackManager.CreateCallback("OnMapEnd");
-    on_metamod_all_plugins_loaded_callback = globals::callbackManager.CreateCallback("OnMetamodAllPluginsLoaded");
-
-    m_GameFrame.Add(globals::server, "IServerGameDLL::GameFrame");
-    m_StartupServer.Add(globals::networkServerService, "INetworkServerService::StartupServer");
-    m_RegisterLoopMode.Add(globals::engineServiceManager, "IEngineServiceMgr::RegisterLoopMode");
-    m_FindService.Add(globals::engineServiceManager, "IEngineServiceMgr::FindService");
-
-    // CGameEventManager is instantiated by the engine after we load, so hook every
-    // instance sharing the class vtable rather than a specific object (the KHook
-    // equivalent of SourceHook's DVP hook). AddGlobal() dereferences its argument to
-    // get the vtable, hence the address-of on the vtable pointer.
-    g_pCGameEventManagerVTable = modules::server->FindVirtualTable("CGameEventManager");
-    if (g_pCGameEventManagerVTable != nullptr)
-    {
-        m_LoadEventsFromFile.AddGlobal((IGameEventManager2*)&g_pCGameEventManagerVTable, "IGameEventManager2::LoadEventsFromFile");
-    }
-    else
-    {
-        CSSHARP_CORE_ERROR("Failed to find the CGameEventManager vtable, game events will not be available.");
-    }
-
-    if (!InitGameSystems())
-    {
-        CSSHARP_CORE_ERROR("Failed to initialize GameSystem!");
-        return false;
-    }
-
-    CSSHARP_CORE_DEBUG("Initialized GameSystem.");
-
-    if (!globals::dotnetManager.Initialize())
-    {
-        CSSHARP_CORE_ERROR("Failed to initialize .NET runtime");
-    }
-
-    // Install AFTER the .NET runtime so our SIGABRT handler runs first (prints the
-    // culprit) then chains to the CLR's handler (its normal abort path). Lets a
-    // garbage-collected-delegate FailFast name the suspect plugin as the LAST
-    // console line instead of an anonymous "Process terminated".
-    fatal::InstallHandler();
-
-    CSSHARP_CORE_DEBUG("Hooks added.");
-
-    // Used by Metamod Console Commands
-    g_pCVar = globals::cvars;
-    ConVar_Register(FCVAR_RELEASE | FCVAR_CLIENT_CAN_EXECUTE | FCVAR_GAMEDLL);
-
-    return true;
 }
 
 static bool s_bLevelShutdownOccurred = false;
@@ -290,11 +320,20 @@ KHook::Return<void> CounterStrikeSharpMMPlugin::Hook_StartupServer(INetworkServe
 }
 bool CounterStrikeSharpMMPlugin::Unload(char* error, size_t maxlen)
 {
+    // Tear the KHook function detours down FIRST (every manager's HookSet: Host_Say,
+    // FireOutputInternal; the CGameEventManager::Init detour; managed DynamicHooks),
+    // so no engine call path can re-enter this .so while the managers below release
+    // their script callbacks. Leaving any of them installed means the next engine
+    // call after unload jumps into freed code and crashes the server on Metamod reload.
+    HookSet::ClearAll();
+    globals::ShutdownHooks();
+    DynamicHook::ShutdownAll();
+
     // Fire OnShutdown on every registered manager — the mirror of the
     // CALL_GLOBAL_LISTENER(OnAllInitialized()) done in Load(). Without this the
     // managers' teardown (KHook Remove() calls + callback releases in
     // each manager's OnShutdown) never ran, leaking hooks and script callbacks on
-    // every Metamod unload/reload. Run before removing our own hooks/detours below
+    // every Metamod unload/reload. Run before removing our own virtual hooks below
     // so teardown happens in reverse order of init.
     CALL_GLOBAL_LISTENER(OnShutdown());
 
@@ -314,14 +353,6 @@ bool CounterStrikeSharpMMPlugin::Unload(char* error, size_t maxlen)
     globals::callbackManager.ReleaseCallback(on_activate_callback);
     globals::callbackManager.ReleaseCallback(on_map_end_callback);
     globals::callbackManager.ReleaseCallback(on_metamod_all_plugins_loaded_callback);
-
-    // Uninstall funchook detours before our .so is unloaded. They redirect engine
-    // functions (FireOutputInternal, Host_Say, CGameEventManager::Init) into trampolines
-    // that live in THIS module; leaving them installed means the next call after unload
-    // jumps into freed code and crashes the server on Metamod reload.
-    globals::entityManager.RemoveDetours();
-    globals::chatManager.RemoveDetours();
-    globals::RemoveDetours();
 
     return true;
 }
@@ -370,6 +401,8 @@ KHook::Return<void> CounterStrikeSharpMMPlugin::Hook_GameFrame(IServerGameDLL*, 
         }
     }
 
+    // Free DynamicHooks that were removed from inside a hook callback last frame.
+    DynamicHook::CollectRetired();
     globals::timerSystem.OnGameFrame(simulating);
 
     // Reused across frames so the scheduler drain does not allocate a vector per

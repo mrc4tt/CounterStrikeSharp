@@ -11,6 +11,7 @@
 #include <thread>
 
 #include "ISmmAPI.h"
+#include <sourcehook/sourcehook.h>
 #include "eiface.h"
 #include "iserver.h"
 
@@ -112,6 +113,10 @@ extern VoiceManager voiceManager;
 extern TickScheduler tickScheduler;
 
 extern HookManager hookManager;
+// Plugin-private SourceHook instance (see globals.cpp). Metamod 2.0 / plugin API 18
+// no longer provides ISourceHook itself.
+extern SourceHook::ISourceHook* source_hook;
+extern int source_hook_pluginid;
 extern IGameEventSystem* gameEventSystem;
 extern CounterStrikeSharpMMPlugin* mmPlugin;
 extern ISmmAPI* ismm;
@@ -124,18 +129,16 @@ typedef void GameEventManagerInit_t(IGameEventManager2* gameEventManager);
 typedef IGameEventListener2* GetLegacyGameEventListener_t(CPlayerSlot slot);
 typedef void* NetworkStateChanged_t(void* chainEntity, CNetworkStateChangedInfo& info);
 
-static void DetourGameEventManagerInit(IGameEventManager2* gameEventManager);
-
 extern std::atomic<bool> gameLoopInitialized;
 extern GetLegacyGameEventListener_t* GetLegacyGameEventListener;
 inline NetworkStateChanged_t* NetworkStateChanged = nullptr;
 extern std::thread::id gameThreadId;
 
 void Initialize();
-// Uninstalls funchook detours installed by Initialize() (currently the
+// Tears down the KHook hooks installed by Initialize() (currently the
 // CGameEventManager::Init detour) before the plugin .so is unloaded on Metamod unload,
-// so the detour does not point at freed code afterwards.
-void RemoveDetours();
+// so no engine call path still points at freed code afterwards.
+void ShutdownHooks();
 // Should only be called within the active game loop (i e map should be loaded
 // and active) otherwise that'll be nullptr!
 CGlobalVars* getGlobalVars();
@@ -157,3 +160,10 @@ extern CModule* vscript;
 } // namespace modules
 
 } // namespace counterstrikesharp
+
+// Route the SH_* macros at our private SourceHook instance instead of the
+// (no longer existing) Metamod-provided g_SHPtr / g_PLID globals.
+#undef SH_GLOB_SHPTR
+#define SH_GLOB_SHPTR counterstrikesharp::globals::source_hook
+#undef SH_GLOB_PLUGPTR
+#define SH_GLOB_PLUGPTR counterstrikesharp::globals::source_hook_pluginid

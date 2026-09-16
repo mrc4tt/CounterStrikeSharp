@@ -100,13 +100,6 @@ namespace CounterStrikeSharp.API.Core
 
             watcher.RegisterSafePointListeners();
 
-            // Debug, not Info: this fires on every boot and tells an operator nothing they
-            // did not already configure. The lines that matter (update staged / restart
-            // scheduled) stay at Info/Warning below.
-            logger.LogDebug(
-                "UpdateWatcher active (watching {Dirs}). AutoRestart={AutoRestart}.",
-                string.Join(", ", dirs.Select(Path.GetFileName)), CoreConfig.UpdateWatcherAutoRestart);
-
             return watcher;
         }
 

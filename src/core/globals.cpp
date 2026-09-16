@@ -25,7 +25,9 @@
 #include <public/game/server/iplayerinfo.h>
 #include <public/entity2/entitysystem.h>
 
-#include <funchook.h>
+#include "core/hooks.h"
+#include <sourcehook/sourcehook.h>
+#include <sourcehook/sourcehook_impl.h>
 
 namespace counterstrikesharp {
 
@@ -39,9 +41,6 @@ CModule* vscript = nullptr;
 } // namespace modules
 
 namespace globals {
-// funchook handle for the CGameEventManager::Init detour installed in Initialize().
-// Kept at file scope so RemoveDetours() can uninstall it on Metamod unload.
-static funchook_t* s_gameEventInitHook = nullptr;
 IVEngineServer2* engineServer2 = nullptr;
 IVEngineServer* engine = nullptr;
 IGameEventManager2* gameEventManager = nullptr;
@@ -100,6 +99,30 @@ std::thread::id gameThreadId;
 // Based on 64 fixed tick rate
 const float engine_fixed_tick_interval = 0.015625f;
 
+// Private SourceHook instance. Metamod:Source 2.0 (plugin API 18) dropped SourceHook
+// from its core in favour of KHook and no longer hands out an ISourceHook, so the
+// last SourceHook sources are vendored under libraries/sourcehook and hosted here.
+// Keeps SH_DECL_HOOK / SH_ADD_HOOK usable alongside the KHook-based HookSet.
+SourceHook::Impl::CSourceHookImpl source_hook_impl;
+SourceHook::ISourceHook* source_hook = &source_hook_impl;
+int source_hook_pluginid = 0;
+
+static HookSet initializationHooks;
+
+static KHook::Return<void> OnGameEventManagerInit(IGameEventManager2* manager)
+{
+    gameEventManager = manager;
+    return { KHook::Action::Ignore };
+}
+
+static KHook::Return<void> OnGameEventManagerInitialized(IGameEventManager2*)
+{
+    eventManager.OnAllInitialized_Post();
+    return { KHook::Action::Ignore };
+}
+
+void ShutdownHooks() { initializationHooks.Clear(); }
+
 void Initialize()
 {
     modules::Initialize();
@@ -143,29 +166,7 @@ void Initialize()
         return;
     }
 
-    auto m_hook = funchook_create();
-    funchook_prepare(m_hook, (void**)&GameEventManagerInit, (void*)&DetourGameEventManagerInit);
-    funchook_install(m_hook, 0);
-    s_gameEventInitHook = m_hook;
-}
-
-void RemoveDetours()
-{
-    if (s_gameEventInitHook)
-    {
-        funchook_uninstall(s_gameEventInitHook, 0);
-        funchook_destroy(s_gameEventInitHook);
-        s_gameEventInitHook = nullptr;
-    }
-}
-
-void DetourGameEventManagerInit(IGameEventManager2* pGameEventManager)
-{
-    gameEventManager = pGameEventManager;
-
-    GameEventManagerInit(pGameEventManager);
-
-    eventManager.OnAllInitialized_Post();
+    initializationHooks.AddFunction(reinterpret_cast<void*>(GameEventManagerInit), &OnGameEventManagerInit, &OnGameEventManagerInitialized);
 }
 
 CGlobalVars* getGlobalVars()
@@ -176,3 +177,8 @@ CGlobalVars* getGlobalVars()
 }
 } // namespace globals
 } // namespace counterstrikesharp
+
+// SourceHook's own implementation (sourcehook_impl.h) still reaches for the classic
+// g_SHPtr global (LogDebug path) instead of SH_GLOB_SHPTR, and the vendored impl .cpp
+// files are compiled without globals.h. Metamod used to define this; we do now.
+SourceHook::ISourceHook* g_SHPtr = counterstrikesharp::globals::source_hook;

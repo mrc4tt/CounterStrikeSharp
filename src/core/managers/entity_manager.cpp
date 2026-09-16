@@ -21,7 +21,6 @@
 #include "core/log.h"
 #include "core/recipientfilters.h"
 #include "core/cs2_sdk/entity/dump.h"
-#include <funchook.h>
 #include <vector>
 #include <public/eiface.h>
 #include "scripting/callback_manager.h"
@@ -123,27 +122,14 @@ void EntityManager::OnAllInitialized()
         new ValveFunction((void*)CBaseEntity_TakeDamageOld, CALL_CONV,
                           std::vector<DataType_t>{ DATA_TYPE_POINTER, DATA_TYPE_POINTER, DATA_TYPE_POINTER }, DATA_TYPE_LONG_LONG);
 
-    auto m_hook = funchook_create();
-    funchook_prepare(m_hook, (void**)&m_pFireOutputInternal, (void*)&DetourFireOutputInternal);
-    funchook_install(m_hook, 0);
-    m_fireOutputHook = m_hook;
+    m_hooks.AddFunction(reinterpret_cast<void*>(m_pFireOutputInternal), &DetourFireOutputInternal);
 
     // Listener is added in ServerStartup as entity system is not initialised at this stage.
 }
 
-void EntityManager::RemoveDetours()
-{
-    if (m_fireOutputHook)
-    {
-        auto* hook = reinterpret_cast<funchook_t*>(m_fireOutputHook);
-        funchook_uninstall(hook, 0);
-        funchook_destroy(hook);
-        m_fireOutputHook = nullptr;
-    }
-}
-
 void EntityManager::OnShutdown()
 {
+    m_hooks.Clear();
     globals::callbackManager.ReleaseCallback(on_entity_spawned_callback);
     globals::callbackManager.ReleaseCallback(on_entity_created_callback);
     globals::callbackManager.ReleaseCallback(on_entity_deleted_callback);
@@ -385,21 +371,21 @@ void EntityManager::Hook_OnTakeDamage_Alive_Post(CBaseEntity* entity, CTakeDamag
     }
 }
 
-void DetourFireOutputInternal(CEntityIOOutput* const pThis,
-                              CEntityInstance* pActivator,
-                              CEntityInstance* pCaller,
-                              const CVariant* const value,
-                              float flDelay,
-                              void* unk1,
-                              char* unk2)
+KHook::Return<void> DetourFireOutputInternal(CEntityIOOutput* const pThis,
+                                             CEntityInstance* pActivator,
+                                             CEntityInstance* pCaller,
+                                             const CVariant* const value,
+                                             float flDelay,
+                                             void* unk1,
+                                             char* unk2)
 {
     // m_pDesc/m_pName are read unconditionally below on every entity I/O fire.
     // Runtime-created/malformed outputs can have a null descriptor — pass the
     // call straight through instead of segfaulting the whole server.
     if (!pThis || !pThis->m_pDesc || !pThis->m_pDesc->m_pName)
     {
-        m_pFireOutputInternal(pThis, pActivator, pCaller, value, flDelay, unk1, unk2);
-        return;
+        // KHook pre-hook: Ignore lets KHook call the original itself.
+        return { KHook::Action::Ignore };
     }
 
     // Entity I/O fires constantly (every map is full of outputs); most servers register
@@ -408,8 +394,8 @@ void DetourFireOutputInternal(CEntityIOOutput* const pThis,
     auto& hookMap = globals::entityManager.m_pHookMap;
     if (hookMap.empty())
     {
-        m_pFireOutputInternal(pThis, pActivator, pCaller, value, flDelay, unk1, unk2);
-        return;
+        // KHook pre-hook: Ignore lets KHook call the original itself.
+        return { KHook::Action::Ignore };
     }
 
     std::vector vecSearchKeys{ OutputKey_t("*", pThis->m_pDesc->m_pName), OutputKey_t("*", "*") };
@@ -464,7 +450,7 @@ void DetourFireOutputInternal(CEntityIOOutput* const pThis,
 
                 if (thisResult >= HookResult::Stop)
                 {
-                    return;
+                    return { KHook::Action::Supersede };
                 }
 
                 if (thisResult > result)
@@ -477,10 +463,11 @@ void DetourFireOutputInternal(CEntityIOOutput* const pThis,
 
     if (result >= HookResult::Handled)
     {
-        return;
+        return { KHook::Action::Supersede };
     }
 
-    m_pFireOutputInternal(pThis, pActivator, pCaller, value, flDelay, unk1, unk2);
+    KHook::Recall(m_pFireOutputInternal, KHook::Return<void>{ KHook::Action::Ignore }, pThis, pActivator, pCaller, value, flDelay, unk1,
+                  unk2);
 
     for (auto pCallbackPair : vecCallbackPairs)
     {
@@ -496,6 +483,7 @@ void DetourFireOutputInternal(CEntityIOOutput* const pThis,
             pCallbackPair->post->Execute();
         }
     }
+    return { KHook::Action::Ignore };
 }
 
 SndOpEventGuid_t EntityEmitSoundFilter(CRecipientFilter& filter, uint32 ent, const char* pszSound, float flVolume, float flPitch)

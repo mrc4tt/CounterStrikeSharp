@@ -16,7 +16,6 @@
 
 #include "core/managers/chat_manager.h"
 
-#include <funchook.h>
 #include <igameevents.h>
 #include <public/eiface.h>
 
@@ -45,28 +44,18 @@ void ChatManager::OnAllInitialized()
         return;
     }
 
-    auto m_hook = funchook_create();
-    funchook_prepare(m_hook, (void**)&m_pHostSay, (void*)&DetourHostSay);
-    funchook_install(m_hook, 0);
-    m_hostSayHook = m_hook;
+    m_hooks.AddFunction(reinterpret_cast<void*>(m_pHostSay), &DetourHostSay);
 
     on_player_chat_callback = globals::callbackManager.CreateCallback("OnPlayerChat");
 }
 
-void ChatManager::OnShutdown() { globals::callbackManager.ReleaseCallback(on_player_chat_callback); }
-
-void ChatManager::RemoveDetours()
+void ChatManager::OnShutdown()
 {
-    if (m_hostSayHook)
-    {
-        auto* hook = reinterpret_cast<funchook_t*>(m_hostSayHook);
-        funchook_uninstall(hook, 0);
-        funchook_destroy(hook);
-        m_hostSayHook = nullptr;
-    }
+    m_hooks.Clear();
+    globals::callbackManager.ReleaseCallback(on_player_chat_callback);
 }
 
-void DetourHostSay(CEntityInstance* pController, CCommand& args, bool teamonly, int unk1, const char* unk2)
+KHook::Return<void> DetourHostSay(CEntityInstance* pController, CCommand& args, bool teamonly, int unk1, const char* unk2)
 {
     std::string prefix;
     bool bSilent = globals::coreConfig->IsSilentChatTrigger(args[1], prefix);
@@ -74,49 +63,29 @@ void DetourHostSay(CEntityInstance* pController, CCommand& args, bool teamonly, 
 
     if (!bSilent)
     {
-        m_pHostSay(pController, args, teamonly, unk1, unk2);
+        KHook::Recall(m_pHostSay, KHook::Return<void>{ KHook::Action::Ignore }, pController, args, teamonly, unk1, unk2);
     }
 
     if (bCommand)
     {
-        // Messagemode (typing in the chat box) wraps the whole message in
-        // surrounding quotes, but `say`/`say_team` invoked from a key bind
-        // (e.g. bind c "say !throw") does not. The old code assumed the quote
-        // via a hardcoded `+ 1`, so the bind path lost its first real char
-        // (`!throw` -> `hrow` -> css_hrow, an invalid command that silently
-        // no-ops). Strip an optional leading/trailing quote instead so both
-        // paths parse identically.
-        //
-        // ArgS() can return nullptr on a malformed/empty say; constructing a
-        // std::string from nullptr is UB (segfault). Guard it — the old raw
-        // pointer-arithmetic path tolerated a null here, so preserve that.
-        const char* argS = args.ArgS();
-        std::string message = argS ? argS : "";
-        if (!message.empty() && message.front() == '"')
-        {
-            message.erase(0, 1);
-        }
-        if (!message.empty() && message.back() == '"')
-        {
-            message.pop_back();
-        }
+        char* pszMessage = (char*)(args.ArgS() + prefix.length() + 1);
 
-        // Drop the trigger prefix (e.g. "!" or "/").
-        message.erase(0, prefix.length());
+        // Trailing slashes are only removed if Host_Say has been called.
+        if (bSilent) pszMessage[V_strlen(pszMessage) - 1] = 0;
 
-        CCommand cmd;
-        cmd.Tokenize(message.c_str());
+        CCommand args;
+        args.Tokenize(pszMessage);
 
-        auto prefixedPhrase = std::string("css_") + cmd.Arg(0);
+        auto prefixedPhrase = std::string("css_") + args.Arg(0);
         auto bValidWithPrefix = globals::conCommandManager.IsValidValveCommand(prefixedPhrase.c_str());
 
         if (bValidWithPrefix)
         {
             // Re-tokenize with a `css_` prefix if we have found that its a valid command.
-            cmd.Tokenize(("css_" + message).c_str());
+            args.Tokenize(("css_" + std::string(pszMessage)).c_str());
         }
 
-        globals::chatManager.OnSayCommandPost(pController, cmd);
+        globals::chatManager.OnSayCommandPost(pController, args);
     }
 
     if (pController)
@@ -142,6 +111,7 @@ void DetourHostSay(CEntityInstance* pController, CCommand& args, bool teamonly, 
             globals::gameEventManager->FireEvent(pEvent, false);
         }
     }
+    return { bSilent ? KHook::Action::Supersede : KHook::Action::Ignore };
 }
 
 bool ChatManager::OnSayCommandPre(CEntityInstance* pController, CCommand& command) { return false; }
