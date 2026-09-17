@@ -6,6 +6,8 @@ DRY_RUN=false
 BETA=false
 NO_LOCAL=false
 FORCE=false
+LINUX_ONLY=false
+ACT_STATUS=0
 
 # Parse command line arguments
 for arg in "$@"; do
@@ -23,6 +25,11 @@ for arg in "$@"; do
         --no-local|-n)
             NO_LOCAL=true
             echo "Skipping local Linux build via act - only Windows will be built (by GitHub Actions)"
+            shift
+            ;;
+        --linux-only|-l)
+            LINUX_ONLY=true
+            echo "LINUX-ONLY mode - re-running the local act build for the tag at HEAD, no new release"
             shift
             ;;
         --force|-f)
@@ -151,12 +158,38 @@ run_local_linux_build() {
         echo "✅ Linux zips appended to release $tag"
     else
         echo "⚠️  act run failed. The GitHub release exists; Windows zips will still"
-        echo "   be uploaded by the GitHub workflow. Re-run act manually to add Linux."
+        echo "   be uploaded by the GitHub workflow. Once fixed, append Linux with:"
+        echo "      ./create-release.sh --linux-only"
     fi
 
+    ACT_STATUS=$act_status
     rm -rf "$artifact_dir"
     return 0
 }
+
+# --linux-only: retry path for when the act half of a release failed. Nothing
+# is bumped, committed, tagged or pushed - it only re-runs act against the
+# release that already exists. HEAD must sit exactly on the release tag:
+# act builds the local working tree and GitVersion derives the zip version
+# from HEAD, so one commit past the tag would produce (and try to publish)
+# the *next* version. Uncommitted changes are fine - fix the workflow, re-run,
+# commit afterwards.
+if [ "$LINUX_ONLY" = true ]; then
+    HEAD_TAG=$(git tag --points-at HEAD | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+(-beta)?$' | sort -V | tail -n 1 || true)
+    if [ -z "$HEAD_TAG" ]; then
+        echo "Error: HEAD ($(git rev-parse --short HEAD)) is not on a release tag."
+        echo "Check the release out first, e.g.: git checkout $(git describe --tags --abbrev=0 2>/dev/null || echo vX.Y.Z)"
+        exit 1
+    fi
+    if command -v gh &> /dev/null && ! gh release view "$HEAD_TAG" &> /dev/null; then
+        echo "Error: no GitHub release exists for $HEAD_TAG - run a normal release instead."
+        exit 1
+    fi
+    echo "Re-running local Linux build for $HEAD_TAG..."
+    NO_LOCAL=false
+    run_local_linux_build "$HEAD_TAG"
+    exit "$ACT_STATUS"
+fi
 
 echo "Starting automated release process..."
 
