@@ -7,7 +7,7 @@ namespace CounterStrikeSharp.API.Core.Translations;
 
 public class JsonStringProvider
 {
-    private readonly ConcurrentDictionary<string, IList<string>> _resourceNamesCache = new();
+    private readonly ConcurrentDictionary<string, IList<string>?> _resourceNamesCache = new();
     private readonly JsonResourceManager _jsonResourceManager;
 
     public JsonStringProvider(JsonResourceManager jsonResourceManager)
@@ -20,7 +20,7 @@ public class JsonStringProvider
         return $"Culture={culture.Name}";
     }
 
-    public IList<string> GetAllResourceStrings(CultureInfo culture, bool throwOnMissing)
+    public IList<string>? GetAllResourceStrings(CultureInfo culture, bool throwOnMissing)
     {
         var cacheKey = GetResourceCacheKey(culture);
 

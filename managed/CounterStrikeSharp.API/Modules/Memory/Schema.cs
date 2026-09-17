@@ -202,7 +202,7 @@ public class Schema
         return ref Unsafe.AsRef<T>((void*)(pointer + GetSchemaOffset(className, memberName)));
     }
 
-    public static T GetPointer<T>(IntPtr pointer)
+    public static T? GetPointer<T>(IntPtr pointer)
     {
         var pointerTo = Marshal.ReadIntPtr(pointer);
         if (pointerTo == IntPtr.Zero)
@@ -213,7 +213,7 @@ public class Schema
         return FastNew.CreateInstance<T, IntPtr>(pointerTo);
     }
 
-    public static T GetPointer<T>(IntPtr pointer, string className, string memberName)
+    public static T? GetPointer<T>(IntPtr pointer, string className, string memberName)
     {
         if (pointer == IntPtr.Zero) throw new ArgumentNullException(nameof(pointer), "Schema target points to null.");
 

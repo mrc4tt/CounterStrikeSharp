@@ -34,7 +34,7 @@ namespace CounterStrikeSharp.API.Core
 
         public override string ToString()
         {
-            return m_value.ToString();
+            return m_value.ToString() ?? string.Empty;
         }
 
         public static implicit operator InputArgument(bool value)

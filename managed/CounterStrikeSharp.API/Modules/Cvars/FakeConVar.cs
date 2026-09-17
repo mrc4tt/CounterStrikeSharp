@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using CounterStrikeSharp.API.Modules.Commands;
 using CounterStrikeSharp.API.Modules.Cvars.Validators;
 
@@ -9,7 +10,7 @@ public class FakeConVar<T> where T : IComparable<T>
 {
     private readonly IEnumerable<IValidator<T>>? _customValidators;
 
-    public FakeConVar(string name, string description, T defaultValue = default(T), ConVarFlags flags = ConVarFlags.FCVAR_NONE,
+    public FakeConVar(string name, string description, T defaultValue = default(T)!, ConVarFlags flags = ConVarFlags.FCVAR_NONE,
         params IValidator<T>[] customValidators)
     {
         _customValidators = customValidators;
@@ -24,9 +25,11 @@ public class FakeConVar<T> where T : IComparable<T>
     public string Name { get; }
     public string Description { get; }
 
-    public event EventHandler<T> ValueChanged;
+    public event EventHandler<T>? ValueChanged;
 
-    private T _value;
+    // Assigned through Value -> SetValue in the constructor, so the default
+    // value runs the custom validators too.
+    private T _value = default!;
 
     public T Value
     {
@@ -83,14 +86,17 @@ public class FakeConVar<T> where T : IComparable<T>
             }
             
             // TODO(dotnet8): Replace with IParsable<T>
-            bool success = true;
-            T parsedValue = default(T);
+            // Starts false: a type with no string converter used to fall through
+            // as "parsed" and silently reset the convar to default(T).
+            bool success = false;
+            T? parsedValue = default;
             TypeConverter converter = TypeDescriptor.GetConverter(typeof(T));
             if (converter.CanConvertFrom(typeof(string)))
             {
                 try
                 {
-                    parsedValue = (T)converter.ConvertFromString(argString);
+                    parsedValue = (T?)converter.ConvertFromString(argString);
+                    success = parsedValue != null;
                 }
                 catch
                 {
@@ -98,7 +104,7 @@ public class FakeConVar<T> where T : IComparable<T>
                 }
             }
 
-            if (!success)
+            if (!success || parsedValue == null)
             {
                 args.ReplyToCommand($"Error: String '{args.GetArg(1)}' can't be converted to {typeof(T).Name}");
                 args.ReplyToCommand($"Failed to parse input ConVar '{Name}' from string '{args.GetArg(1)}'");
@@ -113,7 +119,7 @@ public class FakeConVar<T> where T : IComparable<T>
         }
     }
 
-    private bool TryConvertCustomBoolean(string input, out T result)
+    private bool TryConvertCustomBoolean(string input, [NotNullWhen(true)] out T? result)
     {
         input = input.Trim().ToLowerInvariant();
         if (input == "1" || input == "true")
@@ -127,7 +133,7 @@ public class FakeConVar<T> where T : IComparable<T>
             return true;
         }
 
-        result = default(T);
+        result = default;
         return false;
     }
 

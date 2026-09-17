@@ -195,7 +195,10 @@ namespace CounterStrikeSharp.API
 
                 if (nativeUtf8 == IntPtr.Zero)
                 {
-                    return null;
+                    // A null native string stays null rather than becoming "": callers
+                    // test for it. The return type stays non-nullable because every
+                    // generated schema string property is built on this.
+                    return null!;
                 }
 
                 var len = 0;

@@ -318,7 +318,7 @@ namespace CounterStrikeSharp.API.Core
         }
 
         [SecurityCritical]
-        internal unsafe void PushString(string str)
+        internal unsafe void PushString(string? str)
         {
             fixed (fxScriptContext* cxt = &m_extContext)
             {
@@ -327,7 +327,7 @@ namespace CounterStrikeSharp.API.Core
         }
 
         [SecurityCritical]
-        internal unsafe void PushString(fxScriptContext* cxt, string str)
+        internal unsafe void PushString(fxScriptContext* cxt, string? str)
         {
             if (str == null)
             {

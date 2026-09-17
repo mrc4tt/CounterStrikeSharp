@@ -6,7 +6,8 @@ namespace CounterStrikeSharp.API.Modules.UserMessages;
 
 public class UserMessage : NativeObject, IDisposable
 {
-    private RecipientFilter _recipients;
+    // Assigned through the Recipients setter in the constructor.
+    private RecipientFilter _recipients = null!;
 
     public delegate HookResult UserMessageHandler(UserMessage native);
 

@@ -88,7 +88,8 @@ public class JsonStringLocalizer : IStringLocalizer
 
         var resourceNames = includeParentCultures
             ? GetResourceNamesFromCultureHierarchy(culture)
-            : _resourceStringProvider.GetAllResourceStrings(culture, true);
+            // throwOnMissing: true throws instead of returning null.
+            : _resourceStringProvider.GetAllResourceStrings(culture, true)!;
 
         foreach (var name in resourceNames)
         {

@@ -19,11 +19,11 @@ public class LoadedGameData
 
 public class Signatures
 {
-    [JsonPropertyName("library")] public string Library { get; set; }
+    [JsonPropertyName("library")] public string? Library { get; set; }
 
-    [JsonPropertyName("windows")] public string Windows { get; set; }
+    [JsonPropertyName("windows")] public string? Windows { get; set; }
 
-    [JsonPropertyName("linux")] public string Linux { get; set; }
+    [JsonPropertyName("linux")] public string? Linux { get; set; }
 }
 
 public class Offsets

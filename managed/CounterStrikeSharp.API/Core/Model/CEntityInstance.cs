@@ -30,7 +30,9 @@ public partial class CEntityInstance : IEquatable<CEntityInstance>
     
     public uint Index => EntityHandle.Index;
     
-    public string DesignerName => IsValid ? Entity?.DesignerName : null;
+    // Null for an invalid entity. Declared non-nullable on purpose: annotating it
+    // string? would flag every plugin that reads DesignerName, so check IsValid first.
+    public string DesignerName => (IsValid ? Entity?.DesignerName : null)!;
 
     public void Remove()
     {

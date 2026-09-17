@@ -109,7 +109,10 @@ public static class VirtualFunctions
     public static readonly MemoryFunctionVoid<CEntityInstance, CTakeDamageInfo, CTakeDamageResult> CBaseEntity_TakeDamageOldFunc =
         new(() => GameData.GetSignature("CBaseEntity_TakeDamageOld"));
 
+    // Companion of the obsolete field above; referencing it here is intended.
+#pragma warning disable CS0618
     public static Action<CEntityInstance, CTakeDamageInfo, CTakeDamageResult> CBaseEntity_TakeDamageOld => CBaseEntity_TakeDamageOldFunc.Invoke;
+#pragma warning restore CS0618
 
     // Compatibility alias used by older third-party plugins (e.g. WC3) that hook the entity TakeDamage
     // via DynamicHook with two parameters (entity, info). The underlying native function is the same one

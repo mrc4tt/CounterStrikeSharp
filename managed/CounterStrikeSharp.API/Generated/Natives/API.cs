@@ -74,7 +74,7 @@ namespace CounterStrikeSharp.API.Core
 			_ctx.CheckErrors();
 		}
 
-        public static void AddCommandListener(string cmd, InputArgument callback, bool post){
+        public static void AddCommandListener(string? cmd, InputArgument callback, bool post){
 			var _ctx = ScriptContext.GlobalScriptContext;
 			_ctx.Reset();
 			_ctx.PushString(cmd);
@@ -85,7 +85,7 @@ namespace CounterStrikeSharp.API.Core
 			_ctx.CheckErrors();
 		}
 
-        public static void RemoveCommandListener(string cmd, InputArgument callback, bool post){
+        public static void RemoveCommandListener(string? cmd, InputArgument callback, bool post){
 			var _ctx = ScriptContext.GlobalScriptContext;
 			_ctx.Reset();
 			_ctx.PushString(cmd);

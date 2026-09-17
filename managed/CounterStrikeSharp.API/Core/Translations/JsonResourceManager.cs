@@ -24,15 +24,15 @@ namespace CounterStrikeSharp.API.Core.Translations
 
         public string ResourcesPath { get; }
 
-        public virtual ConcurrentDictionary<string, string> GetResourceSet(string cultureName)
+        public virtual ConcurrentDictionary<string, string>? GetResourceSet(string cultureName)
         {
             TryLoadResourceSet(cultureName);
-            _resourcesCache.TryGetValue(cultureName, out ConcurrentDictionary<string, string> resources);
+            _resourcesCache.TryGetValue(cultureName, out ConcurrentDictionary<string, string>? resources);
 
            return resources;
         }
         
-        public virtual ConcurrentDictionary<string, string> GetResourceSet(CultureInfo culture, bool tryParents)
+        public virtual ConcurrentDictionary<string, string>? GetResourceSet(CultureInfo culture, bool tryParents)
         {
             TryLoadResourceSet(culture);
 
@@ -42,7 +42,7 @@ namespace CounterStrikeSharp.API.Core.Translations
                 do
                 {
                     TryLoadResourceSet(culture);
-                    if (_resourcesCache.TryGetValue(culture.Name, out ConcurrentDictionary<string, string> resources))
+                    if (_resourcesCache.TryGetValue(culture.Name, out ConcurrentDictionary<string, string>? resources))
                     {
                         foreach (var entry in resources)
                         {
@@ -57,19 +57,19 @@ namespace CounterStrikeSharp.API.Core.Translations
             }
             else
             {
-                _resourcesCache.TryGetValue(culture.Name, out ConcurrentDictionary<string, string> resources);
+                _resourcesCache.TryGetValue(culture.Name, out ConcurrentDictionary<string, string>? resources);
 
                 return resources;
             }
         }
         
-        public string GetFallbackString(string name)
+        public string? GetFallbackString(string name)
         {
             GetResourceSet("en");
             
             if (_resourcesCache.ContainsKey("en"))
             {
-                if (_resourcesCache["en"].TryGetValue(name, out string value))
+                if (_resourcesCache["en"].TryGetValue(name, out string? value))
                 {
                     return value;
                 }
@@ -78,7 +78,7 @@ namespace CounterStrikeSharp.API.Core.Translations
             return null;
         }
 
-        public virtual string GetString(string name)
+        public virtual string? GetString(string name)
         {
             var culture = CultureInfo.CurrentUICulture;
             GetResourceSet(culture, tryParents: true);
@@ -92,7 +92,7 @@ namespace CounterStrikeSharp.API.Core.Translations
             {
                 if (_resourcesCache.ContainsKey(culture.Name))
                 {
-                    if (_resourcesCache[culture.Name].TryGetValue(name, out string value))
+                    if (_resourcesCache[culture.Name].TryGetValue(name, out string? value))
                     {
                         return value;
                     }
@@ -108,12 +108,12 @@ namespace CounterStrikeSharp.API.Core.Translations
         {
             var values = GetResourceSet(culture, tryParents: true);
             
-            if (values.Count == 0)
+            if (values == null || values.Count == 0)
             {
                 return null;
             }
 
-            return values.TryGetValue(name, out string value)
+            return values.TryGetValue(name, out string? value)
                 ? value
                 : null;
         }

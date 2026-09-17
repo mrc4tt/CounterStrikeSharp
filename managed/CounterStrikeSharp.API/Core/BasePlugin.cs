@@ -166,6 +166,11 @@ namespace CounterStrikeSharp.API.Core
         public void RegisterEventHandler<T>(GameEventHandler<T> handler, HookMode hookMode = HookMode.Post) where T : GameEvent
         {
             var name = typeof(T).GetCustomAttribute<EventNameAttribute>()?.Name;
+            if (string.IsNullOrEmpty(name))
+            {
+                throw new ArgumentException("Game event of type T is invalid and does not have a name attribute", nameof(T));
+            }
+
             RegisterEventHandlerInternal(name, handler, hookMode == HookMode.Post);
         }
 
@@ -256,7 +261,7 @@ namespace CounterStrikeSharp.API.Core
         /// Remove a command listener.
         /// </summary>
         /// <inheritdoc cref="AddCommandListener"/>
-        public void RemoveCommandListener(string name, CommandInfo.CommandListenerCallback handler, HookMode mode)
+        public void RemoveCommandListener(string? name, CommandInfo.CommandListenerCallback handler, HookMode mode)
         {
             if (CommandListeners.ContainsKey(handler))
             {
@@ -289,8 +294,10 @@ namespace CounterStrikeSharp.API.Core
                     nameof(T));
             }
 
-            var parameterTypes = typeof(T).GetMethod("Invoke").GetParameters().Select(p => p.ParameterType).ToArray();
-            var castedParameterTypes = typeof(T).GetMethod("Invoke").GetParameters()
+            // Every delegate type has an Invoke method.
+            var invokeParameters = typeof(T).GetMethod("Invoke")!.GetParameters();
+            var parameterTypes = invokeParameters.Select(p => p.ParameterType).ToArray();
+            var castedParameterTypes = invokeParameters
                 .Select(p => p.GetCustomAttribute<CastFromAttribute>()?.Type)
                 .ToArray();
 
@@ -320,7 +327,7 @@ namespace CounterStrikeSharp.API.Core
                     {
                         args[i] = context.GetArgument(castedParameterTypes[i] ?? parameterTypes[i], i);
                         if (castedParameterTypes[i] != null)
-                            args[i] = Activator.CreateInstance(parameterTypes[i], new[] { args[i] });
+                            args[i] = Activator.CreateInstance(parameterTypes[i], new[] { args[i] })!;
                     }
                 }
 
@@ -445,8 +452,10 @@ namespace CounterStrikeSharp.API.Core
                     .Invoke(null, new object[] { Path.GetFileName(ModuleDirectory) }) as IBasePluginConfig;
 
                 // we KNOW that we can do this "safely"
-                pluginType.GetRuntimeMethod("OnConfigParsed", new Type[] { genericType })
-                    .Invoke(instance, new object[] { config });
+                var onConfigParsed = pluginType.GetRuntimeMethod("OnConfigParsed", new Type[] { genericType })
+                                     ?? throw new InvalidOperationException(
+                                         $"{pluginType.FullName} implements IPluginConfig<{genericType.Name}> but has no OnConfigParsed({genericType.Name}) method");
+                onConfigParsed.Invoke(instance, new object?[] { config });
             }
         }
 
@@ -554,7 +563,7 @@ namespace CounterStrikeSharp.API.Core
             }
         }
 
-        public void RegisterFakeConVars(Type type, object instance = null)
+        public void RegisterFakeConVars(Type type, object? instance = null)
         {
             var convars = type
                 .GetFields(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static)
@@ -563,20 +572,25 @@ namespace CounterStrikeSharp.API.Core
 
             foreach (var prop in convars)
             {
-                object propValue = prop.GetValue(instance); // FakeConvar<?> instance
-                var propValueType = prop.FieldType.GenericTypeArguments[0];
-                var name = prop.FieldType.GetProperty("Name", BindingFlags.Public | BindingFlags.Instance)
-                    .GetValue(propValue);
+                object? propValue = prop.GetValue(instance); // FakeConvar<?> instance
+                // An unassigned field (or an instance field probed without an
+                // instance) has no convar to bind.
+                if (propValue == null) continue;
 
-                var description = prop.FieldType.GetProperty("Description", BindingFlags.Public | BindingFlags.Instance)
-                    .GetValue(propValue);
+                // Name, Description and ExecuteCommand are members of FakeConVar<>,
+                // which the field type is a closed instance of.
+                var name = (string)prop.FieldType.GetProperty("Name", BindingFlags.Public | BindingFlags.Instance)!
+                    .GetValue(propValue)!;
+
+                var description = (string)prop.FieldType.GetProperty("Description", BindingFlags.Public | BindingFlags.Instance)!
+                    .GetValue(propValue)!;
 
                 MethodInfo executeCommandMethod = prop.FieldType
-                    .GetMethod("ExecuteCommand", BindingFlags.Instance | BindingFlags.NonPublic);
+                    .GetMethod("ExecuteCommand", BindingFlags.Instance | BindingFlags.NonPublic)!;
 
-                this.AddCommand((string)name, (string)description, (caller, command) =>
+                this.AddCommand(name, description, (caller, command) =>
                 {
-                    executeCommandMethod.Invoke(propValue, new object[] { caller, command });
+                    executeCommandMethod.Invoke(propValue, new object?[] { caller, command });
                 });
             }
         }
