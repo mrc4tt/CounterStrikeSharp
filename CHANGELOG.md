@@ -1,3 +1,9 @@
+## What's Changed in v1.0.403
+* chore: drop funchook and DynoHook submodules (unused since e98f3398) ([e84a520](https://github.com/mrc4tt/CounterStrikeSharp/commit/e84a52040ef3dd7734a58302d534e7b3141eedf4))
+* feat: KHook function detours + DynamicHook (upstream PR 1418), keep SourceHook ([e98f339](https://github.com/mrc4tt/CounterStrikeSharp/commit/e98f33983aa8897177254f7b6cf1b7372fe9714f))
+* perf(ScriptContext): allocate string finalizer queue lazily ([2f2c08c](https://github.com/mrc4tt/CounterStrikeSharp/commit/2f2c08cf3f68038b057743943639b7792e35bd45))
+* chore: drop crash-dump wording from SIGABRT handler comments ([90c5e8e](https://github.com/mrc4tt/CounterStrikeSharp/commit/90c5e8e3176ca741130d3528613c81f150441150))
+
 ## What's Changed in v1.0.402
 * Revert "feat(transmit): native-side entity hide table for CheckTransmit" ([271a14b](https://github.com/mrc4tt/CounterStrikeSharp/commit/271a14b60efe550e33591006010bb037fe6229ff))
 * revert: remove crash dumps and on-disk crash evidence ([74d7394](https://github.com/mrc4tt/CounterStrikeSharp/commit/74d7394a0a3fe2948ea095f2430ee77509a03b5b))
