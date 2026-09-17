@@ -11,6 +11,16 @@ permissions: {}
 # This workflow does NOT auto-run on GitHub — no push/PR trigger.
 # It is driven entirely locally via `act` to validate + cut the Linux release.
 # Run locally: `act workflow_dispatch --input confirm_local=LOCAL`
+#
+# Action versions here are capped by what act can run, unlike build-windows.yml
+# which is on the full node24 majors. Tested against act 0.2.87 and 0.2.89:
+#   - upload-artifact >= v6 / download-artifact >= v7: act's artifact server
+#     answers "unauthorized"; upload-artifact v7 additionally sends a
+#     `mime_type` field it cannot decode. v5 / v6 are the newest that work.
+#   - softprops/action-gh-release v3 requires node >= 24, and act runs JS
+#     actions with the node inside catthehacker/ubuntu:full-latest (v22).
+# gittools/actions v4 needs GitVersion >= 6.2, hence versionSpec 6.x; 6.8.2
+# computes the same version as 6.0.5 on this repo.
 on:
   workflow_dispatch:
     inputs:
@@ -31,19 +41,19 @@ jobs:
       gitversion_informationalversion: ${{ steps.gitversion.outputs.informationalVersion }}
     steps:
     - name: Install GitVersion
-      uses: gittools/actions/gitversion/setup@v1
+      uses: gittools/actions/gitversion/setup@v4
       with:
-        versionSpec: 6.0.x
+        versionSpec: 6.x
 
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
       with:
         fetch-depth: 0
 
     - name: Execute GitVersion
       id: gitversion
-      uses: gittools/actions/gitversion/execute@v1
+      uses: gittools/actions/gitversion/execute@v4
       with:
-        useConfigFile: true
+        configFilePath: GitVersion.yml
 
   build_linux:
     needs: setup
@@ -86,7 +96,7 @@ jobs:
           echo "GITHUB_SHA_SHORT=${GITHUB_SHA::7}" >> "$GITHUB_ENV"
           echo "SEMVER=${{ needs.setup.outputs.gitversion_semver }}" >> "$GITHUB_ENV"
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           submodules: "recursive"
 
@@ -102,7 +112,7 @@ jobs:
           mkdir build/output/
           mv build/addons build/output
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
           name: counterstrikesharp-linux-${{ needs.setup.outputs.gitversion_semver }}
           path: build/output/
@@ -118,7 +128,7 @@ jobs:
       contents: read
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           # Only Catch2 is needed -- pulling all submodules would clone
           # hl2sdk-cs2, Protobufs, etc. unnecessarily on this lightweight job.
@@ -154,10 +164,10 @@ jobs:
         run: echo "GITHUB_SHA_SHORT=${GITHUB_SHA::7}" >> "$GITHUB_ENV"
 
       # We don't need expensive submodules for the managed side.
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Build runtime v${{ needs.setup.outputs.gitversion_semver }}
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v6
         with:
           dotnet-version: "10.0.x"
 
@@ -168,7 +178,7 @@ jobs:
         run: dotnet test --logger trx --results-directory "TestResults-${{ needs.setup.outputs.gitversion_semver }}" managed/CounterStrikeSharp.API.Tests/CounterStrikeSharp.API.Tests.csproj
 
       - name: Upload dotnet test results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: test-results-${{ needs.setup.outputs.gitversion_semver }}
           path: TestResults-${{ needs.setup.outputs.gitversion_semver }}
@@ -188,7 +198,7 @@ jobs:
           /p:InformationalVersion=${{ needs.setup.outputs.gitversion_informationalversion }} \
           managed/CounterStrikeSharp.API
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
           name: counterstrikesharp-api-${{ needs.setup.outputs.gitversion_semver }}
           path: managed/CounterStrikeSharp.API/bin/Release
@@ -214,16 +224,16 @@ jobs:
         run: echo "GITHUB_SHA_SHORT=${GITHUB_SHA::7}" >> "$GITHUB_ENV"
 
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v6
         with:
           name: counterstrikesharp-linux-${{ needs.setup.outputs.gitversion_semver }}
           path: build/linux
 
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v6
         with:
           name: counterstrikesharp-api-${{ needs.setup.outputs.gitversion_semver }}
           path: build/api
