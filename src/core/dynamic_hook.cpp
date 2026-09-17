@@ -237,9 +237,9 @@ struct DynamicHook::State
     {
         auto& cb = *static_cast<Callback*>(userdata);
         auto& state = *cb.state;
-        *result = {};
         if (cb.phase == Return)
         {
+            *result = {};
             auto* value = KHook::GetCurrentValuePtr(true);
             if (state.returnType != DATA_TYPE_VOID && value) std::memcpy(result, value, TypeSize(state.returnType));
             KHook::DestroyReturnValue();
@@ -260,6 +260,12 @@ struct DynamicHook::State
                     break; // constructor validates types
             }
         }
+        // Only clear the result once every argument is decoded. dyncallback's
+        // win64 thunk overlays DCValue on DCArgs (FRAME_DCValue_win64 ==
+        // FRAME_DCArgs_win64), so `result` aliases `args->stack_ptr`: zeroing it
+        // first leaves the four register arguments readable and then derefs null
+        // on the fifth (GiveNamedItem, 0xc0000005 in dcbArgPointer).
+        *result = {};
         if (cb.phase == Original)
         {
             *result = Call(KHook::GetOriginalFunction(), frame);
