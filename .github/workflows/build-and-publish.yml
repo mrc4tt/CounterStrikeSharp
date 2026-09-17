@@ -62,15 +62,21 @@ jobs:
         run: |
           if ! command -v node >/dev/null 2>&1; then
             echo "Installing node.js for act..."
-            # The sniper SDK image is Debian 11 (bullseye), now EOL: its
-            # bullseye-security Release file is expired, so apt-get update
-            # exits 100. Same workaround as Dockerfile. Written as a global
-            # apt config so the NodeSource setup script's own update survives.
-            echo 'Acquire::Check-Valid-Until "false";' > /etc/apt/apt.conf.d/99no-check-valid-until
-            apt-get update
-            apt-get install -y curl ca-certificates
-            curl -fsSL https://deb.nodesource.com/setup_24.x | bash -
-            apt-get install -y nodejs
+            # Deliberately no apt. The sniper SDK image is Debian 11 (bullseye),
+            # now EOL: bullseye-security's index still lists package versions
+            # whose .deb files were pruned from the pool, so any
+            # `apt-get install` that pulls an upgrade (ca-certificates did)
+            # dies with 404 / exit 100 - and the NodeSource setup script runs
+            # the same install internally. The image already ships curl, tar
+            # and xz, and the official node binaries only need glibc >= 2.28
+            # (bullseye has 2.31), so unpack the tarball straight from nodejs.org.
+            node_base=https://nodejs.org/dist/latest-v24.x
+            node_sums=$(curl -fsSL "$node_base/SHASUMS256.txt")
+            node_tarball=$(awk '/linux-x64\.tar\.xz$/ {print $2}' <<< "$node_sums")
+            curl -fsSL -o "/tmp/$node_tarball" "$node_base/$node_tarball"
+            (cd /tmp && grep " $node_tarball\$" <<< "$node_sums" | sha256sum -c -)
+            tar -xJf "/tmp/$node_tarball" -C /usr/local --strip-components=1
+            rm -f "/tmp/$node_tarball"
             node --version
           fi
 
