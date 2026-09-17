@@ -1,0 +1,8 @@
+# build-and-publish.yml never runs on GitHub: it is driven locally through act,
+# which executes JS actions with the node inside the runner image and cannot use
+# the node24 majors of the artifact / release actions (see the header comment in
+# that workflow). The node20 deprecation does not apply to it.
+paths:
+  .github/workflows/build-and-publish.yml:
+    ignore:
+      - 'runtime "node20" is deprecated'
