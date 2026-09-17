@@ -1,3 +1,13 @@
+## What's Changed in v1.0.404
+* ⠀ ([c824638](https://github.com/mrc4tt/CounterStrikeSharp/commit/c824638984a837bc394b472e50a36020945407f6))
+*  ([b212c4f](https://github.com/mrc4tt/CounterStrikeSharp/commit/b212c4ff98aed15ab5d782b9076f1545d1045079))
+*  ([f81bdf0](https://github.com/mrc4tt/CounterStrikeSharp/commit/f81bdf0524b2ce7744d64b7ec86ddff9e2df96ae))
+*  ([29920c0](https://github.com/mrc4tt/CounterStrikeSharp/commit/29920c0914f7eb24caac85bd07219b21e691b531))
+*  ([e6454a4](https://github.com/mrc4tt/CounterStrikeSharp/commit/e6454a44e52cf89904e39f7ba024f48b4c97d74e))
+* chore(release): add --linux-only to retry the local act build ([60c88ce](https://github.com/mrc4tt/CounterStrikeSharp/commit/60c88ce85716db8488ce7beb4068dfecadbda3de))
+* ci: install node for act from the nodejs.org tarball, not apt ([fe575bb](https://github.com/mrc4tt/CounterStrikeSharp/commit/fe575bb57f8879f8ea1efa844209f6eb3b0d86a4))
+* fix(DynamicHook): decode arguments before clearing the result on win64 ([fbb47b2](https://github.com/mrc4tt/CounterStrikeSharp/commit/fbb47b2ba012b6e0b339f75bcaaf48abcf5e169c))
+
 ## What's Changed in v1.0.403
 * chore: drop funchook and DynoHook submodules (unused since e98f3398) ([e84a520](https://github.com/mrc4tt/CounterStrikeSharp/commit/e84a52040ef3dd7734a58302d534e7b3141eedf4))
 * feat: KHook function detours + DynamicHook (upstream PR 1418), keep SourceHook ([e98f339](https://github.com/mrc4tt/CounterStrikeSharp/commit/e98f33983aa8897177254f7b6cf1b7372fe9714f))
