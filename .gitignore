@@ -69,6 +69,7 @@ BundleArtifacts/
 _Chutzpah*
 # Chutzpah Test files
 /CLAUDE.md
+/.claude/
 # Click-Once directory
 ClientBin/
 .cmake/
