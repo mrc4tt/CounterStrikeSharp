@@ -16,7 +16,6 @@
 #include "iserver.h"
 
 class IGameEventManager2;
-class IPlayerInfoManager;
 class IBotManager;
 class IServerPluginHelpers;
 class IUniformRandomStream;
@@ -68,7 +67,6 @@ namespace globals {
 extern IVEngineServer* engine;
 extern IVEngineServer2* engineServer2;
 extern IGameEventManager2* gameEventManager;
-extern IPlayerInfoManager* playerinfoManager;
 extern IBotManager* botManager;
 extern IServerPluginHelpers* helpers;
 extern IUniformRandomStream* randomStream;

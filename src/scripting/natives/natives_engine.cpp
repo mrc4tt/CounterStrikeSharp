@@ -16,7 +16,6 @@
 
 #include "igameeventsystem.h"
 
-#include <IEngineSound.h>
 #include <edict.h>
 #include <eiface.h>
 #include <filesystem.h>
@@ -26,6 +25,7 @@
 #include "core/fatal_reporter.h"
 #include "core/timer_system.h"
 #include "core/utils.h"
+#include "core/cs2_sdk/compat/IEngineSound.h"
 #include "scripting/autonative.h"
 #include "scripting/script_engine.h"
 #include "core/memory.h"

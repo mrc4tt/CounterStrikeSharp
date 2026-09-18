@@ -1,6 +1,7 @@
 #include "core/cs2_sdk/schema.h"
 #include "core/gameconfig.h"
 #include "core/globals.h"
+#include "public/gametrace.h"
 #include "public/variant.h"
 #include "entity2/entitysystem.h"
 #include "game/shared/ehandle.h"

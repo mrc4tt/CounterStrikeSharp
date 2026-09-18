@@ -21,7 +21,8 @@
 #include "core/globals.h"
 
 #include "gametrace.h"
-#include "cmodel.h"
+#include "ray.h"
+#include "const.h"
 #include "mathlib/mathlib.h"
 #include "entity2/entityinstance.h"
 #include "entity2/entitysystem.h"
