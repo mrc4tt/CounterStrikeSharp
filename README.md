@@ -1,6 +1,6 @@
 <div align=right>Table of Contents ↗️</div>
 
-<h1 align=center><code>CounterStrikeSharp - Forked - NOT official</code></h1>
+<h1 align=center><code>CounterStrikeSharp - Forked/NOT official</code></h1>
 <br>
 
 CounterStrikeSharp is a server-side modding framework for Counter-Strike 2. This project implements a .NET 10 scripting layer on top of a Metamod Source Plugin, allowing developers to create plugins that interact with the game server in a modern language (C#) to facilitate the creation of maintainable and testable code.
