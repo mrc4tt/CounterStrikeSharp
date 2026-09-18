@@ -18,13 +18,36 @@ if(NOT EXISTS "${XWIN_ROOT}/crt/include")
     message(FATAL_ERROR "No MSVC CRT at ${XWIN_ROOT}/crt -- run xwin splat first, or pass -DXWIN_ROOT=...")
 endif()
 
-set(CMAKE_C_COMPILER   clang-cl)
-set(CMAKE_CXX_COMPILER clang-cl)
-set(CMAKE_ASM_MASM_COMPILER llvm-ml64)
-set(CMAKE_RC_COMPILER  llvm-rc)
-set(CMAKE_AR           llvm-lib)
-set(CMAKE_LINKER       lld-link)
-set(CMAKE_MT           llvm-mt)
+# Every LLVM install carries these tools under /usr/lib/llvm-<N>/bin with plain
+# unversioned names; what varies by distro is whether /usr/bin symlinks exist for
+# them. Debian's clang/llvm packages create them, the GitHub ubuntu runner images
+# do not, so point at a bin directory rather than trusting PATH:
+#     -DLLVM_TOOLCHAIN_BIN=/usr/lib/llvm-21/bin
+# Left empty, the bare names are used and PATH decides.
+set(LLVM_TOOLCHAIN_BIN "" CACHE PATH "bin directory of the LLVM install to build with")
+
+function(_xwin_tool outputVariable toolName)
+    if(LLVM_TOOLCHAIN_BIN)
+        set(${outputVariable} "${LLVM_TOOLCHAIN_BIN}/${toolName}" PARENT_SCOPE)
+    else()
+        set(${outputVariable} "${toolName}" PARENT_SCOPE)
+    endif()
+endfunction()
+
+_xwin_tool(_xwin_clang_cl clang-cl)
+_xwin_tool(_xwin_ml64 llvm-ml64)
+_xwin_tool(_xwin_rc llvm-rc)
+_xwin_tool(_xwin_lib llvm-lib)
+_xwin_tool(_xwin_link lld-link)
+_xwin_tool(_xwin_mt llvm-mt)
+
+set(CMAKE_C_COMPILER   "${_xwin_clang_cl}")
+set(CMAKE_CXX_COMPILER "${_xwin_clang_cl}")
+set(CMAKE_ASM_MASM_COMPILER "${_xwin_ml64}")
+set(CMAKE_RC_COMPILER  "${_xwin_rc}")
+set(CMAKE_AR           "${_xwin_lib}")
+set(CMAKE_LINKER       "${_xwin_link}")
+set(CMAKE_MT           "${_xwin_mt}")
 
 # clang-cl needs the target spelled out; it defaults to the host triple otherwise.
 set(_xwin_target "--target=x86_64-pc-windows-msvc")

@@ -27,6 +27,8 @@ concurrency:
 
 env:
   XWIN_VERSION: "0.6.6"
+  # Only used when the runner image has no complete LLVM install of its own.
+  LLVM_FALLBACK_VERSION: "21"
 
 jobs:
   build_windows_cross:
@@ -41,20 +43,58 @@ jobs:
           persist-credentials: false
 
       - name: Install the LLVM cross toolchain
+        id: llvm
         run: |
+          set -euo pipefail
           sudo apt-get update
           sudo apt-get install -y clang lld llvm cmake
-          # llvm-ml64 is the MASM-compatible assembler; dyncall ships x64 MASM
-          # sources, so a missing one fails deep in the build rather than here.
-          missing=""
-          for tool in clang-cl lld-link llvm-ml64 llvm-lib llvm-rc; do
-            command -v "$tool" >/dev/null 2>&1 || missing="$missing $tool"
-          done
-          if [ -n "$missing" ]; then
-            echo "::error::LLVM toolchain is incomplete, missing:$missing"
+
+          # Every LLVM install carries these under /usr/lib/llvm-<N>/bin with
+          # plain names. Only the /usr/bin symlinks are distro-dependent, and
+          # the runner images do not create them for clang-cl or llvm-ml64, so
+          # resolve a bin directory instead of trusting PATH. llvm-ml64 is the
+          # MASM-compatible assembler dyncall's x64 sources need; without it the
+          # build fails deep instead of here.
+          TOOLS="clang-cl lld-link llvm-ml64 llvm-lib llvm-rc"
+
+          findCompleteToolchain() {
+            for dir in $(ls -d /usr/lib/llvm-*/bin 2>/dev/null | sort -V -r); do
+              complete=1
+              for tool in $TOOLS; do
+                [ -x "$dir/$tool" ] || complete=0
+              done
+              if [ "$complete" = 1 ]; then
+                echo "$dir"
+                return 0
+              fi
+            done
+            return 1
+          }
+
+          if ! binDir=$(findCompleteToolchain); then
+            echo "::notice::no complete LLVM install present, fetching ${LLVM_FALLBACK_VERSION} from apt.llvm.org"
+            curl -fsSL https://apt.llvm.org/llvm.sh -o llvm.sh
+            chmod +x llvm.sh
+            sudo ./llvm.sh "${LLVM_FALLBACK_VERSION}"
+            sudo apt-get install -y "llvm-${LLVM_FALLBACK_VERSION}" "lld-${LLVM_FALLBACK_VERSION}"
+            binDir=$(findCompleteToolchain) || true
+          fi
+
+          if [ -z "${binDir:-}" ]; then
+            echo "::error::No LLVM install has the full cross toolchain ($TOOLS)."
+            for dir in $(ls -d /usr/lib/llvm-*/bin 2>/dev/null | sort -V); do
+              missing=""
+              for tool in $TOOLS; do
+                [ -x "$dir/$tool" ] || missing="$missing $tool"
+              done
+              echo "  $dir missing:${missing:- nothing}"
+            done
             exit 1
           fi
-          clang-cl --version
+
+          echo "using $binDir"
+          "$binDir/clang-cl" --version
+          echo "binDir=$binDir" >> "$GITHUB_OUTPUT"
 
       # ~630MB splatted. Rebuilding it on every run would dominate the job.
       - name: Restore the Windows SDK
@@ -79,7 +119,8 @@ jobs:
         run: |
           cmake -S . -B build-win64 \
             -DCMAKE_TOOLCHAIN_FILE=makefiles/toolchain-win64-clang-cl.cmake \
-            -DCMAKE_BUILD_TYPE=Release
+            -DCMAKE_BUILD_TYPE=Release \
+            -DLLVM_TOOLCHAIN_BIN='${{ steps.llvm.outputs.binDir }}'
 
       - name: Build
         run: cmake --build build-win64 -j"$(nproc)"
@@ -96,7 +137,7 @@ jobs:
           # calls in through InvokeNative; if either export is gone the DLL links
           # but is useless, so fail here rather than at release.
           for symbol in CreateInterface InvokeNative; do
-            llvm-readobj --coff-exports "$dll" | grep -q "Name: $symbol\$" || {
+            "${{ steps.llvm.outputs.binDir }}/llvm-readobj" --coff-exports "$dll" | grep -q "Name: $symbol\$" || {
               echo "::error::$symbol is not exported"
               exit 1
             }
