@@ -1,0 +1,237 @@
+name: Gamedata signature check (self-hosted)
+
+# Scans every byte pattern in gamedata.json against real CS2 binaries with
+# eng/scan-gamedata-signatures.py, so a Valve update shows up as a red build
+# instead of as player reports.
+#
+# This runs on a SELF-HOSTED runner because the binary archive is ~5GB of
+# libserver.so / server.dll across builds -- far too much to fetch per run, and
+# not something a hosted runner can hold.
+#
+# Self-hosted runners execute whatever the triggering event carries, so this
+# workflow deliberately has NO pull_request trigger: a fork PR must never be
+# able to reach the machine. Only workflow_dispatch (write access required) and
+# the schedule can start it. Do not add push or pull_request triggers here --
+# put those on a hosted runner instead, the way pr-build-windows-cross.yml is.
+
+on:
+  schedule:
+    - cron: "30 9 * * *"
+  workflow_dispatch:
+    inputs:
+      build:
+        description: 'Build to scan: a directory name under the archive root, or "latest"'
+        required: false
+        default: "latest"
+        type: string
+      open_issue:
+        description: "Open a tracking issue when signatures fail"
+        required: false
+        default: true
+        type: boolean
+
+permissions: {}
+
+# The archive is one shared directory; two scans at once would still be correct
+# but there is no reason to run them.
+concurrency:
+  group: gamedata-signature-check
+  cancel-in-progress: false
+
+jobs:
+  scan:
+    # Never let a fork of this repo drive someone else's self-hosted runner.
+    if: github.repository == 'mrc4tt/CounterStrikeSharp'
+    runs-on: [self-hosted, cs2-binaries]
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    outputs:
+      build: ${{ steps.scan.outputs.build }}
+      failed: ${{ steps.scan.outputs.failed }}
+      summary: ${{ steps.scan.outputs.summary }}
+    steps:
+      # No submodules: the scanner is plain Python and reads only gamedata.json.
+      - uses: actions/checkout@v7
+        with:
+          submodules: false
+          persist-credentials: false
+
+      - name: Resolve the build to scan
+        id: resolve
+        env:
+          BINARIES_ROOT: ${{ vars.CS2_BINARIES_ROOT || '~/CS2_VibeSignatures/bin' }}
+          REQUESTED_BUILD: ${{ inputs.build || 'latest' }}
+        run: |
+          set -euo pipefail
+          root=$(eval echo "$BINARIES_ROOT")
+          if [ ! -d "$root" ]; then
+            echo "::error::binary archive not found at $root (set the CS2_BINARIES_ROOT repository variable)"
+            exit 1
+          fi
+
+          if [ "$REQUESTED_BUILD" = "latest" ]; then
+            build=$(find "$root" -mindepth 1 -maxdepth 1 -type d -printf '%f\n' | sort -V | tail -1)
+            if [ -z "$build" ]; then
+              echo "::error::no build directories under $root"
+              exit 1
+            fi
+          else
+            build="$REQUESTED_BUILD"
+          fi
+
+          buildDir="$root/$build"
+          if [ ! -d "$buildDir" ]; then
+            echo "::error::no such build: $buildDir"
+            exit 1
+          fi
+
+          echo "scanning build $build ($buildDir)"
+          echo "build=$build" >> "$GITHUB_OUTPUT"
+          echo "buildDir=$buildDir" >> "$GITHUB_OUTPUT"
+
+      - name: Scan gamedata signatures
+        id: scan
+        env:
+          BUILD: ${{ steps.resolve.outputs.build }}
+          BUILD_DIR: ${{ steps.resolve.outputs.buildDir }}
+        run: |
+          set -uo pipefail
+          mkdir -p gamedata-report
+
+          # The scanner exits non-zero on any NOT_FOUND / NOT_UNIQUE / INVALID.
+          # Capture that rather than letting it end the job here, so the report
+          # still uploads and the issue step still runs.
+          set +e
+          python3 eng/scan-gamedata-signatures.py \
+            --binaries "$BUILD_DIR" \
+            --json gamedata-report/gamedata-"$BUILD".json \
+            | tee gamedata-report/gamedata-"$BUILD".log
+          scanStatus=${PIPESTATUS[0]}
+          set -e
+
+          {
+            echo "## gamedata vs build \`$BUILD\`"
+            echo
+            echo '```'
+            grep -E "^=== |^  summary:" gamedata-report/gamedata-"$BUILD".log
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          # One summary line per platform; pair each with its "=== <platform>"
+          # header, or the two run together into an unreadable string.
+          summary=$(awk '/^=== /{platform=$2}
+                         /^  summary:/{sub(/^  summary: /,"");
+                                       printf "%s%s %s", (n++ ? " | " : ""), platform, $0}' \
+                    gamedata-report/gamedata-"$BUILD".log)
+          echo "build=$BUILD" >> "$GITHUB_OUTPUT"
+          echo "summary=$summary" >> "$GITHUB_OUTPUT"
+
+          if [ "$scanStatus" -eq 0 ]; then
+            echo "failed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "failed=true" >> "$GITHUB_OUTPUT"
+            echo "::warning::gamedata signatures do not all resolve on build $BUILD"
+            grep -E "^  \[(NOT_FOUND|NOT_UNIQUE|INVALID|SKIPPED)\]" \
+              gamedata-report/gamedata-"$BUILD".log || true
+          fi
+
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: gamedata-report-${{ steps.resolve.outputs.build }}
+          path: gamedata-report/
+          if-no-files-found: error
+
+      - name: Fail the job when signatures are broken
+        if: steps.scan.outputs.failed == 'true'
+        run: |
+          echo "::error::gamedata signature check failed for build ${{ steps.scan.outputs.build }}"
+          exit 1
+
+  report:
+    needs: scan
+    if: always() && needs.scan.result != 'skipped' && needs.scan.outputs.failed == 'true' && (inputs.open_issue == null || inputs.open_issue)
+    # Hosted runner: this step only talks to the GitHub API, so keep it off the
+    # self-hosted machine.
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - uses: actions/download-artifact@v8
+        continue-on-error: true
+        with:
+          name: gamedata-report-${{ needs.scan.outputs.build }}
+          path: gamedata-report
+
+      - uses: actions/github-script@v9
+        env:
+          BUILD: ${{ needs.scan.outputs.build }}
+          SUMMARY: ${{ needs.scan.outputs.summary }}
+        with:
+          script: |
+            const fs = require('fs');
+            const build = process.env.BUILD;
+            const title = `gamedata: signatures do not resolve on CS2 build ${build}`;
+
+            let failing = '';
+            try {
+              const log = fs.readFileSync(`gamedata-report/gamedata-${build}.log`, 'utf8');
+              failing = log
+                .split('\n')
+                .filter(line => /^\s*\[(NOT_FOUND|NOT_UNIQUE|INVALID|SKIPPED)\]/.test(line))
+                .join('\n');
+            } catch {
+              failing = '(report artifact unavailable, see the run log)';
+            }
+
+            const body = [
+              `Build \`${build}\` has gamedata entries that no longer resolve.`,
+              '',
+              '```',
+              failing || '(no per-entry detail captured)',
+              '```',
+              '',
+              `Summary: \`${process.env.SUMMARY || 'see run'}\``,
+              '',
+              `Run: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
+              '',
+              'NOT_UNIQUE is not a lesser failure than NOT_FOUND: CModule::FindSignature',
+              'returns the first match, so a pattern that matches twice binds silently',
+              'to the wrong function.',
+            ].join('\n');
+
+            // One issue per build, reopened rather than duplicated.
+            const existing = await github.rest.search.issuesAndPullRequests({
+              q: `repo:${context.repo.owner}/${context.repo.repo} is:issue in:title "${title}"`,
+            });
+            const match = existing.data.items.find(issue => issue.title === title);
+
+            if (match) {
+              await github.rest.issues.createComment({
+                ...context.repo,
+                issue_number: match.number,
+                body,
+              });
+              if (match.state === 'closed') {
+                await github.rest.issues.update({
+                  ...context.repo,
+                  issue_number: match.number,
+                  state: 'open',
+                });
+              }
+              core.notice(`updated issue #${match.number}`);
+            } else {
+              const created = await github.rest.issues.create({
+                ...context.repo,
+                title,
+                body,
+              });
+              core.notice(`opened issue #${created.data.number}`);
+            }
