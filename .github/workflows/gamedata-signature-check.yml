@@ -60,7 +60,7 @@ jobs:
       - name: Resolve the build to scan
         id: resolve
         env:
-          BINARIES_ROOT: ${{ vars.CS2_BINARIES_ROOT || '~/CS2_VibeSignatures/bin' }}
+          BINARIES_ROOT: ${{ vars.CS2_BINARIES_ROOT || '/srv/cs2-binaries' }}
           REQUESTED_BUILD: ${{ inputs.build || 'latest' }}
         run: |
           set -euo pipefail
