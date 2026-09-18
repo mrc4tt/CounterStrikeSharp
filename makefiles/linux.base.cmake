@@ -43,7 +43,6 @@ set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-z,noexecstack")
 set(
     COUNTER_STRIKE_SHARP_LINK_LIBRARIES
     ${SOURCESDK_LIB}/linux64/libtier0.so
-    ${SOURCESDK_LIB}/linux64/tier1.a
     ${SOURCESDK_LIB}/linux64/interfaces.a
     ${SOURCESDK_LIB}/linux64/mathlib.a
     spdlog

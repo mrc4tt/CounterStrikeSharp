@@ -23,7 +23,6 @@
 #include <engine/IEngineService.h>
 #include <iserver.h>
 #include <igameevents.h>
-#include <iplayerinfo.h>
 #include <vector>
 #include "entitysystem.h"
 #include "core/khook_verified.h"

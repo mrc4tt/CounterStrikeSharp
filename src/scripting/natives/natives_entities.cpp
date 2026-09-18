@@ -14,6 +14,7 @@
  *  along with CounterStrikeSharp.  If not, see <https://www.gnu.org/licenses/>. *
  */
 
+#include <public/entity2/entityinstance.h>
 #include <public/entity2/entitysystem.h>
 
 #include <ios>

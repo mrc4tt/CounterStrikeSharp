@@ -1,0 +1,150 @@
+name: PR build - Windows (cross)
+
+# Windows release artifacts come from build-windows.yml, which runs on a real
+# MSVC toolchain but only on tags. That left every PR unable to say whether it
+# broke the Windows build until release day.
+#
+# This job cross-compiles counterstrikesharp.dll on an ubuntu runner with
+# clang-cl/lld-link against an MSVC CRT and Windows SDK fetched by xwin. It is a
+# compile-and-link check, not a release build: clang-cl and MSVC differ in
+# codegen and in ABI corners, and nothing here runs the DLL. It catches the
+# common breakage -- a header, API or link change that only Windows sees --
+# minutes after a push instead of at tag time.
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions: {}
+
+# A newer push to the same PR makes the older build irrelevant.
+concurrency:
+  group: windows-cross-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  XWIN_VERSION: "0.6.6"
+  # Only used when the runner image has no complete LLVM install of its own.
+  LLVM_FALLBACK_VERSION: "21"
+
+jobs:
+  build_windows_cross:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          submodules: recursive
+          persist-credentials: false
+
+      - name: Install the LLVM cross toolchain
+        id: llvm
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install -y clang lld llvm cmake
+
+          # Every LLVM install carries these under /usr/lib/llvm-<N>/bin with
+          # plain names. Only the /usr/bin symlinks are distro-dependent, and
+          # the runner images do not create them for clang-cl or llvm-ml64, so
+          # resolve a bin directory instead of trusting PATH. llvm-ml64 is the
+          # MASM-compatible assembler dyncall's x64 sources need; without it the
+          # build fails deep instead of here.
+          TOOLS="clang-cl lld-link llvm-ml64 llvm-lib llvm-rc"
+
+          findCompleteToolchain() {
+            for dir in $(ls -d /usr/lib/llvm-*/bin 2>/dev/null | sort -V -r); do
+              complete=1
+              for tool in $TOOLS; do
+                [ -x "$dir/$tool" ] || complete=0
+              done
+              if [ "$complete" = 1 ]; then
+                echo "$dir"
+                return 0
+              fi
+            done
+            return 1
+          }
+
+          if ! binDir=$(findCompleteToolchain); then
+            echo "::notice::no complete LLVM install present, fetching ${LLVM_FALLBACK_VERSION} from apt.llvm.org"
+            curl -fsSL https://apt.llvm.org/llvm.sh -o llvm.sh
+            chmod +x llvm.sh
+            sudo ./llvm.sh "${LLVM_FALLBACK_VERSION}"
+            sudo apt-get install -y "llvm-${LLVM_FALLBACK_VERSION}" "lld-${LLVM_FALLBACK_VERSION}"
+            binDir=$(findCompleteToolchain) || true
+          fi
+
+          if [ -z "${binDir:-}" ]; then
+            echo "::error::No LLVM install has the full cross toolchain ($TOOLS)."
+            for dir in $(ls -d /usr/lib/llvm-*/bin 2>/dev/null | sort -V); do
+              missing=""
+              for tool in $TOOLS; do
+                [ -x "$dir/$tool" ] || missing="$missing $tool"
+              done
+              echo "  $dir missing:${missing:- nothing}"
+            done
+            exit 1
+          fi
+
+          echo "using $binDir"
+          "$binDir/clang-cl" --version
+          echo "binDir=$binDir" >> "$GITHUB_OUTPUT"
+
+      # ~630MB splatted. Rebuilding it on every run would dominate the job.
+      - name: Restore the Windows SDK
+        id: xwin-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.xwin
+          key: xwin-${{ runner.os }}-${{ env.XWIN_VERSION }}-v1
+
+      - name: Splat the MSVC CRT and Windows SDK
+        if: steps.xwin-cache.outputs.cache-hit != 'true'
+        run: |
+          curl -fsSL -o xwin.tar.gz \
+            "https://github.com/Jake-Shadle/xwin/releases/download/${XWIN_VERSION}/xwin-${XWIN_VERSION}-x86_64-unknown-linux-musl.tar.gz"
+          tar xzf xwin.tar.gz
+          "xwin-${XWIN_VERSION}-x86_64-unknown-linux-musl/xwin" \
+            --accept-license --arch x86_64 splat --output "$HOME/.xwin"
+          # The download cache is not worth keeping; only the splat output is.
+          rm -rf .xwin-cache xwin.tar.gz "xwin-${XWIN_VERSION}-x86_64-unknown-linux-musl"
+
+      - name: Configure
+        run: |
+          cmake -S . -B build-win64 \
+            -DCMAKE_TOOLCHAIN_FILE=makefiles/toolchain-win64-clang-cl.cmake \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DLLVM_TOOLCHAIN_BIN='${{ steps.llvm.outputs.binDir }}'
+
+      - name: Build
+        run: cmake --build build-win64 -j"$(nproc)"
+
+      - name: Check the artifact is a Windows DLL
+        run: |
+          dll=$(find build-win64 -name counterstrikesharp.dll -print -quit)
+          if [ -z "$dll" ]; then
+            echo "::error::counterstrikesharp.dll was not produced"
+            exit 1
+          fi
+          file "$dll"
+          # Metamod loads the plugin through CreateInterface and the managed host
+          # calls in through InvokeNative; if either export is gone the DLL links
+          # but is useless, so fail here rather than at release.
+          for symbol in CreateInterface InvokeNative; do
+            "${{ steps.llvm.outputs.binDir }}/llvm-readobj" --coff-exports "$dll" | grep -q "Name: $symbol\$" || {
+              echo "::error::$symbol is not exported"
+              exit 1
+            }
+          done
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: counterstrikesharp-windows-cross-${{ github.sha }}
+          path: build-win64/counterstrikesharp.dll
+          if-no-files-found: error

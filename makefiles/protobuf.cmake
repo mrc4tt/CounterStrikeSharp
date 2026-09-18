@@ -19,9 +19,13 @@ set(PROTO_TARGETS
     ${PROJECT_SOURCE_DIR}/libraries/Protobufs/csgo/te.proto
 )
 
-if(UNIX)
+# protoc runs at build time on the machine doing the building, so it is picked by
+# HOST, not by target. Plain UNIX/WIN32 describe the target and would hand a
+# cross-compile to Linux the protoc.exe it cannot execute (exit 127). On a native
+# build the host and target answers are the same.
+if(CMAKE_HOST_UNIX)
     set(PROTOC_EXECUTABLE ${PROJECT_SOURCE_DIR}/libraries/hl2sdk-cs2/devtools/bin/linux/protoc)
-elseif(WIN32)
+elseif(CMAKE_HOST_WIN32)
     set(PROTOC_EXECUTABLE ${PROJECT_SOURCE_DIR}/libraries/hl2sdk-cs2/devtools/bin/protoc.exe)
 endif()
 

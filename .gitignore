@@ -376,3 +376,7 @@ _UpgradeReport_Files/
 x64/
 x86/
 *.xsd.cs
+
+# xwin downloads the MSVC CRT/SDK archives here when splatting for the
+# win64 cross-build (makefiles/toolchain-win64-clang-cl.cmake).
+.xwin-cache/
