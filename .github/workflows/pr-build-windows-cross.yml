@@ -57,17 +57,26 @@ jobs:
           # build fails deep instead of here.
           TOOLS="clang-cl lld-link llvm-ml64 llvm-lib llvm-rc"
 
+          # find rather than ls: shellcheck SC2012, and it keeps one path per
+          # line regardless of what the names contain.
+          listLlvmBinDirs() {
+            find /usr/lib -mindepth 2 -maxdepth 2 -type d -path '/usr/lib/llvm-*/bin' \
+              2>/dev/null | sort -V
+          }
+
           findCompleteToolchain() {
-            for dir in $(ls -d /usr/lib/llvm-*/bin 2>/dev/null | sort -V -r); do
+            # Newest first, so a box with several LLVM installs uses the latest
+            # complete one.
+            while IFS= read -r dir; do
               complete=1
               for tool in $TOOLS; do
                 [ -x "$dir/$tool" ] || complete=0
               done
               if [ "$complete" = 1 ]; then
-                echo "$dir"
+                printf '%s\n' "$dir"
                 return 0
               fi
-            done
+            done < <(listLlvmBinDirs | tac)
             return 1
           }
 
@@ -82,13 +91,13 @@ jobs:
 
           if [ -z "${binDir:-}" ]; then
             echo "::error::No LLVM install has the full cross toolchain ($TOOLS)."
-            for dir in $(ls -d /usr/lib/llvm-*/bin 2>/dev/null | sort -V); do
+            while IFS= read -r dir; do
               missing=""
               for tool in $TOOLS; do
                 [ -x "$dir/$tool" ] || missing="$missing $tool"
               done
               echo "  $dir missing:${missing:- nothing}"
-            done
+            done < <(listLlvmBinDirs)
             exit 1
           fi
 
@@ -99,7 +108,7 @@ jobs:
       # ~630MB splatted. Rebuilding it on every run would dominate the job.
       - name: Restore the Windows SDK
         id: xwin-cache
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: ~/.xwin
           key: xwin-${{ runner.os }}-${{ env.XWIN_VERSION }}-v1

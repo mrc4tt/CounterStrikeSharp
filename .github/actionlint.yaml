@@ -6,3 +6,10 @@ paths:
   .github/workflows/build-and-publish.yml:
     ignore:
       - 'runtime "node20" is deprecated'
+
+# Label of the self-hosted runner that holds the CS2 binary archive, used by
+# gamedata-signature-check.yml. actionlint only knows GitHub's own labels, so
+# custom ones have to be declared here or every use is flagged as unknown.
+self-hosted-runner:
+  labels:
+    - cs2-binaries
