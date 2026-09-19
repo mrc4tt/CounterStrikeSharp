@@ -268,6 +268,16 @@ void EntityKeyValuesSetValue(ScriptContext& script_context)
     }
 }
 
+// Aggregate KeyValues results are handed to managed code as a pointer. They used to be heap-allocated per
+// read and never freed; managed code copies the value out immediately (CEntityKeyValues.GetValue), so one
+// scratch slot per type and thread is enough. The pointer is only valid until the next read of that type.
+template <typename T> static T* KeyValuesScratch(const T& value)
+{
+    thread_local T scratch;
+    scratch = value;
+    return &scratch;
+}
+
 void EntityKeyValuesGetValue(ScriptContext& script_context)
 {
     CEntityKeyValues* keyValues = script_context.GetArgument<CEntityKeyValues*>(0);
@@ -344,43 +354,43 @@ void EntityKeyValuesGetValue(ScriptContext& script_context)
 
         case counterstrikesharp::TYPE_COLOR:
         {
-            script_context.SetResult(new Color(keyValues->GetColor(key)));
+            script_context.SetResult(KeyValuesScratch(keyValues->GetColor(key)));
             break;
         }
 
         case counterstrikesharp::TYPE_VECTOR:
         {
-            script_context.SetResult(new Vector(keyValues->GetVector(key)));
+            script_context.SetResult(KeyValuesScratch(keyValues->GetVector(key)));
             break;
         }
 
         case counterstrikesharp::TYPE_VECTOR2D:
         {
-            script_context.SetResult(new Vector2D(keyValues->GetVector2D(key)));
+            script_context.SetResult(KeyValuesScratch(keyValues->GetVector2D(key)));
             break;
         }
 
         case counterstrikesharp::TYPE_VECTOR4D:
         {
-            script_context.SetResult(new Vector4D(keyValues->GetVector4D(key)));
+            script_context.SetResult(KeyValuesScratch(keyValues->GetVector4D(key)));
             break;
         }
 
         case counterstrikesharp::TYPE_QUATERNION:
         {
-            script_context.SetResult(new Quaternion(keyValues->GetQuaternion(key)));
+            script_context.SetResult(KeyValuesScratch(keyValues->GetQuaternion(key)));
             break;
         }
 
         case counterstrikesharp::TYPE_QANGLE:
         {
-            script_context.SetResult(new QAngle(keyValues->GetQAngle(key)));
+            script_context.SetResult(KeyValuesScratch(keyValues->GetQAngle(key)));
             break;
         }
 
         case counterstrikesharp::TYPE_MATRIX3X4:
         {
-            script_context.SetResult(new matrix3x4_t(keyValues->GetMatrix3x4(key)));
+            script_context.SetResult(KeyValuesScratch(keyValues->GetMatrix3x4(key)));
             break;
         }
 

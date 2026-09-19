@@ -16,6 +16,7 @@
 
 using System.Drawing;
 using System.Numerics;
+using System.Threading;
 
 namespace CounterStrikeSharp.API.Modules.Utils
 {
@@ -49,12 +50,21 @@ namespace CounterStrikeSharp.API.Modules.Utils
     /// </summary>
     public class CEntityKeyValues : NativeObject, IDisposable
     {
+        // Set for instances created through EntityKeyValuesNew, which hands us one reference. The engine
+        // takes its own reference while an entity spawns from these values, so ours is still outstanding
+        // after DispatchSpawn and the native object lives until it is released.
+        private readonly bool _ownsReference;
+        private int _released;
+
         public CEntityKeyValues() : base(NativeAPI.EntityKeyValuesNew())
         {
+            _ownsReference = true;
         }
 
         public CEntityKeyValues(nint pointer) : base(pointer)
         {
+            // Wraps a pointer somebody else owns: nothing to release, so skip the finalizer queue.
+            GC.SuppressFinalize(this);
         }
 
         public object? this[string key, KeyValuesType type]
@@ -410,7 +420,42 @@ namespace CounterStrikeSharp.API.Modules.Utils
 
         internal T? GetValue<T>(string key, KeyValuesType type, T? defaultValue)
         {
-            return NativeAPI.EntityKeyValuesGetValue<T>(Handle, key, (uint)type) ?? defaultValue;
+            var value = NativeAPI.EntityKeyValuesGetValue<T>(Handle, key, (uint)type);
+
+            if (!typeof(T).IsValueType)
+            {
+                value = (T?)DetachFromNativeScratch(value);
+            }
+
+            return value ?? defaultValue;
+        }
+
+        // Aggregate results come back as a pointer into per-type scratch storage on the native side, which
+        // the next read of the same type overwrites. Copy the values out so the caller gets an independent,
+        // managed-backed instance instead of a view over that scratch (the native side used to heap-allocate
+        // one object per read and never free it).
+        private static object? DetachFromNativeScratch(object? value)
+        {
+            switch (value)
+            {
+                case Vector v:
+                    return new Vector(v.X, v.Y, v.Z);
+                case QAngle a:
+                    return new QAngle(a.X, a.Y, a.Z);
+                case Vector2D v2:
+                    return new Vector2D(v2.X, v2.Y);
+                case Vector4D v4:
+                    return new Vector4D(v4.X, v4.Y, v4.Z, v4.W);
+                case Quaternion q:
+                    return new Quaternion(q.X, q.Y, q.Z, q.W);
+                case matrix3x4_t m:
+                    return new matrix3x4_t(
+                        m[0, 0], m[0, 1], m[0, 2], m[0, 3],
+                        m[1, 0], m[1, 1], m[1, 2], m[1, 3],
+                        m[2, 0], m[2, 1], m[2, 2], m[2, 3]);
+                default:
+                    return value;
+            }
         }
 
         internal void BadTypeHandler<T>(string key, KeyValuesType type, T value)
@@ -420,8 +465,27 @@ namespace CounterStrikeSharp.API.Modules.Utils
 
         public void Dispose()
         {
-            NativeAPI.EntityKeyValuesRelease(Handle);
             GC.SuppressFinalize(this);
+
+            if (Interlocked.Exchange(ref _released, 1) != 0)
+            {
+                return;
+            }
+
+            NativeAPI.EntityKeyValuesRelease(Handle);
+        }
+
+        ~CEntityKeyValues()
+        {
+            if (!_ownsReference || Interlocked.Exchange(ref _released, 1) != 0)
+            {
+                return;
+            }
+
+            // The native refcount is a plain int and releasing it can run the engine's destructor, so hop
+            // to the game thread instead of releasing from the finalizer thread.
+            var handle = RawHandle;
+            Server.NextFrame(() => NativeAPI.EntityKeyValuesRelease(handle));
         }
     }
 }
