@@ -176,6 +176,13 @@ bool EventManager::UnhookEvent(const char* szName, CallbackT fnCallback, bool bP
         pCallback = pHook->m_pPreHook;
     }
 
+    // Only the side that was actually hooked has a callback; unhooking the other one used to
+    // dereference null.
+    if (!pCallback)
+    {
+        return false;
+    }
+
     pCallback->RemoveListener(fnCallback);
 
     if (pCallback->GetFunctionCount() == 0)

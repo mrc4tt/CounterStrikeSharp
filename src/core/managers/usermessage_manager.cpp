@@ -125,6 +125,13 @@ void UserMessageManager::UnhookUserMessage(int messageId, CallbackT fnCallback, 
         pCallback = pHook->m_pPreHook;
     }
 
+    // Only the side that was actually hooked has a callback; unhooking the other one used to
+    // dereference null.
+    if (!pCallback)
+    {
+        return;
+    }
+
     pCallback->RemoveListener(fnCallback);
 
     if (pCallback->GetFunctionCount() == 0)
