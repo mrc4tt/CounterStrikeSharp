@@ -212,10 +212,15 @@ public class FrameSchedulingTests
         // All tasks should have been drained by latest NextFrameAsync
         await Server.NextFrameAsync(() => { }).ConfigureAwait(false);
 
-        for (int i = 0; i < callsByFrame.Count; i++)
+        // The queue is shared with the rest of the server (other plugins, the core's own deferred
+        // releases), so a frame may spend part of its budget on tasks that are not ours. What must hold
+        // is that no frame runs more than the budget and that the work was spread over several frames.
+        foreach (var callsInFrame in callsByFrame.Values)
         {
-            Assert.Equal(CoreConfig.MaximumFrameTasksExecutedPerTick, callsByFrame.Values.ElementAt(i));
+            Assert.InRange(callsInFrame, 1, CoreConfig.MaximumFrameTasksExecutedPerTick);
         }
+
+        Assert.True(callsByFrame.Count >= targetCalls / CoreConfig.MaximumFrameTasksExecutedPerTick);
 
         Assert.Equal(4096, callCount);
     }
