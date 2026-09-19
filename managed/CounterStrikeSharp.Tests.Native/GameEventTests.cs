@@ -30,7 +30,7 @@ public class GameEventTests
             // Test hooking
             NativeAPI.IssueServerCommand("bot_kick");
             NativeAPI.IssueServerCommand("bot_add");
-            await WaitOneFrame();
+            await WaitUntil(() => callCount >= 1);
 
             Assert.Equal(1, callCount);
             NativeAPI.UnhookEvent("player_connect", callback, true);
@@ -38,7 +38,7 @@ public class GameEventTests
             // Test unhooking
             NativeAPI.IssueServerCommand("bot_kick");
             NativeAPI.IssueServerCommand("bot_add");
-            await WaitOneFrame();
+            await WaitFrames(8);
             Assert.Equal(1, callCount);
         }
         finally

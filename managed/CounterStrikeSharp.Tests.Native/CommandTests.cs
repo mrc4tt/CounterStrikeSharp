@@ -24,12 +24,12 @@ public class CommandTests
     {
         NativeAPI.AddCommand("css_test_native", "description", true, (int)ConCommandFlags.FCVAR_LINKED_CONCOMMAND, _methodCallback);
         NativeAPI.IssueServerCommand("css_test_native");
-        await WaitOneFrame();
+        await WaitUntil(() => _mock.Invocations.Count >= 1);
         _mock.Verify(s => s(), Times.Once);
 
         NativeAPI.RemoveCommand("css_test_native", _methodCallback);
         NativeAPI.IssueServerCommand("css_test_native");
-        await WaitOneFrame();
+        await WaitFrames(4);
         _mock.Verify(s => s(), Times.Once);
         NativeAPI.RemoveCommand("css_test_native", _methodCallback);
     }
@@ -51,7 +51,7 @@ public class CommandTests
 
         NativeAPI.AddCommand("css_test_public_chat", "description", true, (int)ConCommandFlags.FCVAR_LINKED_CONCOMMAND, methodCallback);
         NativeAPI.IssueServerCommand("css_test_public_chat 1 2 3");
-        await WaitOneFrame();
+        await WaitUntil(() => mock.Invocations.Count >= 1);
         mock.Verify(s => s(It.IsAny<int>(), It.IsAny<IntPtr>()), Times.Once);
     }
 
@@ -59,12 +59,13 @@ public class CommandTests
     public async Task CanTriggerCommandsWithSilentChatTrigger()
     {
         NativeAPI.AddCommand("css_test_silent_chat", "description", true, (int)ConCommandFlags.FCVAR_LINKED_CONCOMMAND, _methodCallback);
+        // Issued commands run from the command buffer, which may not be processed by the next frame.
         NativeAPI.IssueServerCommand("css_test_silent_chat");
-        await WaitOneFrame();
+        await WaitUntil(() => _mock.Invocations.Count >= 1);
         _mock.Verify(s => s(), Times.Once);
 
         NativeAPI.IssueServerCommand("say \"!test_silent_chat\"");
-        await WaitOneFrame();
+        await WaitUntil(() => _mock.Invocations.Count >= 2);
         _mock.Verify(s => s(), Times.Exactly(2));
         NativeAPI.RemoveCommand("css_test_silent_chat", _methodCallback);
     }
@@ -76,7 +77,7 @@ public class CommandTests
         NativeAPI.AddCommandListener("say", FunctionReference.Create(() => { called = true; }), true);
 
         NativeAPI.IssueServerCommand("say Hello, world!");
-        await WaitOneFrame();
+        await WaitUntil(() => called);
 
         Assert.True(called, "The 'say' command handler was not called.");
     }
