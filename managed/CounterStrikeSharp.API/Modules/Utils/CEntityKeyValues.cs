@@ -53,6 +53,8 @@ namespace CounterStrikeSharp.API.Modules.Utils
         // Set for instances created through EntityKeyValuesNew, which hands us one reference. The engine
         // takes its own reference while an entity spawns from these values, so ours is still outstanding
         // after DispatchSpawn and the native object lives until it is released.
+        private static readonly GameThreadReleaseQueue _pendingReleases = new(NativeAPI.EntityKeyValuesRelease, maxPerFrame: 256);
+
         private readonly bool _ownsReference;
         private int _released;
 
@@ -484,8 +486,7 @@ namespace CounterStrikeSharp.API.Modules.Utils
 
             // The native refcount is a plain int and releasing it can run the engine's destructor, so hop
             // to the game thread instead of releasing from the finalizer thread.
-            var handle = RawHandle;
-            Server.NextFrame(() => NativeAPI.EntityKeyValuesRelease(handle));
+            _pendingReleases.Enqueue(RawHandle);
         }
     }
 }

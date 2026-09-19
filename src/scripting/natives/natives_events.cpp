@@ -17,12 +17,16 @@
 #include "core/log.h"
 
 #include "core/managers/event_manager.h"
+#include <unordered_set>
+
 #include "scripting/autonative.h"
 #include "igameevents.h"
 
 namespace counterstrikesharp {
 
-std::vector<IGameEvent*> managed_game_events;
+// Only feeds css_dump_leaks. A set, not a vector: every fire/free removes its event, and a linear
+// erase made releasing a large backlog of events quadratic (1M pending frees pinned the game thread).
+std::unordered_set<IGameEvent*> managed_game_events;
 
 static void HookEvent(ScriptContext& script_context)
 {
@@ -51,7 +55,7 @@ static IGameEvent* CreateEvent(ScriptContext& script_context)
 
     if (pEvent != nullptr)
     {
-        managed_game_events.push_back(pEvent);
+        managed_game_events.insert(pEvent);
     }
 
     return pEvent;
@@ -68,7 +72,7 @@ static void FireEvent(ScriptContext& script_context)
     }
 
     globals::gameEventManager->FireEvent(game_event, dont_broadcast);
-    managed_game_events.erase(std::remove(managed_game_events.begin(), managed_game_events.end(), game_event), managed_game_events.end());
+    managed_game_events.erase(game_event);
 }
 
 static void FireEventToClient(ScriptContext& script_context)
@@ -101,7 +105,7 @@ static void FreeEvent(ScriptContext& script_context)
     }
 
     globals::gameEventManager->FreeEvent(game_event);
-    managed_game_events.erase(std::remove(managed_game_events.begin(), managed_game_events.end(), game_event), managed_game_events.end());
+    managed_game_events.erase(game_event);
 }
 
 static const char* GetEventName(ScriptContext& script_context)

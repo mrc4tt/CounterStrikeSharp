@@ -14,6 +14,7 @@
  *  along with CounterStrikeSharp.  If not, see <https://www.gnu.org/licenses/>. *
  */
 
+#include <unordered_set>
 #include <vector>
 
 #include "scripting/autonative.h"
@@ -40,7 +41,7 @@ CREATE_SETTER_FUNCTION(Vector, float, Z, Vector*, obj->z = value);
 // TODO: These need to be cleared out somehow
 std::vector<Vector*> managed_vectors;
 std::vector<QAngle*> managed_angles;
-extern std::vector<IGameEvent*> managed_game_events;
+extern std::unordered_set<IGameEvent*> managed_game_events;
 
 extern size_t GetVirtualFunctionCacheSize();
 

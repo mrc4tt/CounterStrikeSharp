@@ -38,6 +38,8 @@ namespace CounterStrikeSharp.API.Modules.Events
         // for every fired event and own nothing, stay non-finalizable.
         private readonly OwnedEvent? _owned;
 
+        private static readonly GameThreadReleaseQueue _pendingFrees = new(NativeAPI.FreeEvent, maxPerFrame: 1024);
+
         private sealed class OwnedEvent
         {
             private readonly IntPtr _handle;
@@ -52,7 +54,7 @@ namespace CounterStrikeSharp.API.Modules.Events
 
             // A created event that was never fired (or only fired with FireEventToClient, which does not
             // consume it) and never freed would otherwise stay allocated in the engine forever. Event
-            // memory belongs to the game thread, so defer instead of freeing from the finalizer thread.
+            // memory belongs to the game thread, so hand it over instead of freeing from the finalizer thread.
             ~OwnedEvent()
             {
                 if (!TryMarkReleased())
@@ -60,8 +62,7 @@ namespace CounterStrikeSharp.API.Modules.Events
                     return;
                 }
 
-                var handle = _handle;
-                Server.NextFrame(() => NativeAPI.FreeEvent(handle));
+                _pendingFrees.Enqueue(_handle);
             }
         }
 
