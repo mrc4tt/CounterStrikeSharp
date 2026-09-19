@@ -34,6 +34,12 @@ namespace CounterStrikeSharp.API
         /// </summary>
         internal static long LiveCount => Interlocked.Read(ref _liveCount);
 
+        /// <summary>
+        /// Test hook, raised with the pointer of every buffer as it is released. <see cref="LiveCount"/> is
+        /// process-wide, so a test sharing the server with other code can only follow its own buffer this way.
+        /// </summary>
+        internal static Action<IntPtr>? Released;
+
         public IntPtr Pointer => _pointer;
 
         private OwnedNativeBlock(int size)
@@ -79,6 +85,7 @@ namespace CounterStrikeSharp.API
         {
             Marshal.FreeHGlobal(pointer);
             Interlocked.Decrement(ref _liveCount);
+            Released?.Invoke(pointer);
         }
 
         /// <summary>

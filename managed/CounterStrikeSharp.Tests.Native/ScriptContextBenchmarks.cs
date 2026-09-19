@@ -270,7 +270,8 @@ public class ScriptContextBenchmarks
     [Fact]
     public void Benchmark_GameEvent_Fire()
     {
-        var player = Utilities.GetPlayerFromSlot(0)!;
+        // Slot 0 is not guaranteed to be occupied (SourceTV, or bots re-added by earlier tests).
+        var player = Utilities.GetPlayers().First();
         Run("GameEvent Fire", "GameEvent", () =>
         {
             var @event = new EventShowSurvivalRespawnStatus(true)
