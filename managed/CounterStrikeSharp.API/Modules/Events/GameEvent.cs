@@ -15,6 +15,7 @@
  */
 
 using System;
+using System.Threading;
 using CounterStrikeSharp.API.Core;
 using CounterStrikeSharp.API.Modules.Entities;
 
@@ -32,8 +33,37 @@ namespace CounterStrikeSharp.API.Modules.Events
 
     public class GameEvent : NativeObject
     {
-        // Used to track freeable state for manually created events.
-        private bool _freeable = false;
+        // Set only for manually created events, which we have to free unless the engine does it for us
+        // (FireEvent). Kept as a separate object so the wrappers handed to event hooks, which are created
+        // for every fired event and own nothing, stay non-finalizable.
+        private readonly OwnedEvent? _owned;
+
+        private sealed class OwnedEvent
+        {
+            private readonly IntPtr _handle;
+            private int _released;
+
+            public OwnedEvent(IntPtr handle)
+            {
+                _handle = handle;
+            }
+
+            public bool TryMarkReleased() => Interlocked.Exchange(ref _released, 1) == 0;
+
+            // A created event that was never fired (or only fired with FireEventToClient, which does not
+            // consume it) and never freed would otherwise stay allocated in the engine forever. Event
+            // memory belongs to the game thread, so defer instead of freeing from the finalizer thread.
+            ~OwnedEvent()
+            {
+                if (!TryMarkReleased())
+                {
+                    return;
+                }
+
+                var handle = _handle;
+                Server.NextFrame(() => NativeAPI.FreeEvent(handle));
+            }
+        }
 
         public GameEvent(IntPtr pointer) : base(pointer)
         {
@@ -41,7 +71,10 @@ namespace CounterStrikeSharp.API.Modules.Events
 
         public GameEvent(string name, bool force) : this(NativeAPI.CreateEvent(name, force))
         {
-            _freeable = true;
+            if (RawHandle != IntPtr.Zero)
+            {
+                _owned = new OwnedEvent(RawHandle);
+            }
         }
 
         public string EventName => NativeAPI.GetEventName(Handle);
@@ -138,7 +171,7 @@ namespace CounterStrikeSharp.API.Modules.Events
         public void FireEvent(bool dontBroadcast)
         {
             NativeAPI.FireEvent(Handle, dontBroadcast);
-            _freeable = false;
+            _owned?.TryMarkReleased();
         }
 
         public void FireEventToClient(CCSPlayerController player) => NativeAPI.FireEventToClient(Handle, (int)player.Index);
@@ -149,14 +182,12 @@ namespace CounterStrikeSharp.API.Modules.Events
         /// </summary>
         public void Free()
         {
-            if (!_freeable)
+            if (_owned == null || !_owned.TryMarkReleased())
             {
                 throw new InvalidOperationException("Event is not able to be freed.");
             }
 
             NativeAPI.FreeEvent(Handle);
-
-            _freeable = false;
         }
     }
 }
