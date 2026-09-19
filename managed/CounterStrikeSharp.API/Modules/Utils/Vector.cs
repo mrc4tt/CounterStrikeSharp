@@ -41,7 +41,7 @@ namespace CounterStrikeSharp.API.Modules.Utils
         private float _x;
         private float _y;
         private float _z;
-        private IntPtr _ownedHandle;
+        private OwnedNativeBlock? _ownedBlock;
 
         public Vector(float? x = null, float? y = null, float? z = null) : base(IntPtr.Zero)
         {
@@ -57,32 +57,10 @@ namespace CounterStrikeSharp.API.Modules.Utils
                 return;
             }
 
-            if (_ownedHandle != IntPtr.Zero)
-            {
-                SetHandle(_ownedHandle);
-                return;
-            }
-
-            var allocated = Marshal.AllocHGlobal(sizeof(float) * 3);
-
             unsafe
             {
-                var buffer = (float*)allocated;
-                buffer[0] = _x;
-                buffer[1] = _y;
-                buffer[2] = _z;
+                SetHandle(OwnedNativeBlock.Materialize(ref _ownedBlock, stackalloc float[] { _x, _y, _z }));
             }
-
-            var existing = Interlocked.CompareExchange(ref _ownedHandle, allocated, IntPtr.Zero);
-            if (existing != IntPtr.Zero)
-            {
-                Marshal.FreeHGlobal(allocated);
-                SetHandle(existing);
-                return;
-            }
-
-            NativeHandleTracker.Track(this, allocated);
-            SetHandle(allocated);
         }
 
         public unsafe ref float X => ref GetElementRef(0);
