@@ -5,6 +5,7 @@ using CounterStrikeSharp.API;
 using CounterStrikeSharp.API.Core;
 using CounterStrikeSharp.API.Modules.Memory;
 using CounterStrikeSharp.API.Modules.Memory.DynamicFunctions;
+using CounterStrikeSharp.API.Modules.Utils;
 using Moq;
 using Xunit;
 
@@ -25,43 +26,53 @@ public class ListenerTests
         NativeAPI.IssueServerCommand("bot_quota 0; bot_quota_mode normal");
         await WaitOneFrame();
 
-        NativeAPI.AddListener("OnClientConnect", callback);
+        var listening = false;
 
-        // Test hooking
-        NativeAPI.IssueServerCommand("bot_kick");
-        NativeAPI.IssueServerCommand("bot_add");
-        await WaitOneFrame();
+        try
+        {
+            NativeAPI.AddListener("OnClientConnect", callback);
+            listening = true;
 
-        Assert.Equal(1, callCount);
-        NativeAPI.RemoveListener("OnClientConnect", callback);
+            // Test hooking
+            NativeAPI.IssueServerCommand("bot_kick");
+            NativeAPI.IssueServerCommand("bot_add");
+            await WaitUntil(() => callCount >= 1);
 
-        // Test unhooking
-        NativeAPI.IssueServerCommand("bot_kick");
-        NativeAPI.IssueServerCommand("bot_add");
-        await WaitOneFrame();
-        Assert.Equal(1, callCount);
+            Assert.Equal(1, callCount);
+            NativeAPI.RemoveListener("OnClientConnect", callback);
+            listening = false;
 
-        NativeAPI.IssueServerCommand("bot_quota 1");
+            // Test unhooking
+            NativeAPI.IssueServerCommand("bot_kick");
+            NativeAPI.IssueServerCommand("bot_add");
+            await WaitFrames(8);
+            Assert.Equal(1, callCount);
+        }
+        finally
+        {
+            // A failed assertion must not leave the listener registered for the tests that follow.
+            if (listening) NativeAPI.RemoveListener("OnClientConnect", callback);
+            NativeAPI.IssueServerCommand("bot_quota 1");
+        }
     }
 
     [Fact]
     public async Task EntityListenersAreFired()
     {
-        var createMock = new Mock<Action<IntPtr>>();
-        createMock.Setup(s => s(It.IsAny<IntPtr>())).Callback<IntPtr>((entityPtr) =>
-        {
-            var entity = new CBaseEntity(entityPtr);
-            Assert.Equal("prop_dynamic", entity.DesignerName);
-        });
-        var createCallback = FunctionReference.Create(createMock.Object);
+        // The listeners see every entity on the server, and bots joining around this test spawn weapons
+        // in the same frames, so only count the entity class this test creates.
+        int createCount = 0;
+        int deleteCount = 0;
 
-        var deleteMock = new Mock<Action<IntPtr>>();
-        deleteMock.Setup(s => s(It.IsAny<IntPtr>())).Callback<IntPtr>((entityPtr) =>
+        var createCallback = FunctionReference.Create((IntPtr entityPtr) =>
         {
-            var entity = new CBaseEntity(entityPtr);
-            Assert.Equal("prop_dynamic", entity.DesignerName);
+            if (new CBaseEntity(entityPtr).DesignerName == "prop_dynamic") createCount++;
         });
-        var deleteCallback = FunctionReference.Create(deleteMock.Object);
+
+        var deleteCallback = FunctionReference.Create((IntPtr entityPtr) =>
+        {
+            if (new CBaseEntity(entityPtr).DesignerName == "prop_dynamic") deleteCount++;
+        });
 
         try
         {
@@ -71,12 +82,12 @@ public class ListenerTests
             var ent = Utilities.CreateEntityByName<CBaseModelEntity>("prop_dynamic");
             await WaitOneFrame();
 
-            Assert.Single(createMock.Invocations);
+            Assert.Equal(1, createCount);
 
             ent.Remove();
             await WaitOneFrame();
 
-            Assert.Single(deleteMock.Invocations);
+            Assert.Equal(1, deleteCount);
         }
         finally
         {
@@ -85,35 +96,49 @@ public class ListenerTests
         }
     }
 
-    [Fact(Skip = "Damage func broken")]
+    [Fact]
     public async Task TakeDamageListenersAreFired()
     {
         int preCallCount = 0;
         int postCallCount = 0;
+        var victimPointer = IntPtr.Zero;
 
-        var preCallback = FunctionReference.Create((IntPtr entityPtr, IntPtr damageInfoPtr) => { preCallCount++; });
+        // Other entities can take damage while this runs, so only count calls for our victim. The pre
+        // listener has to return a HookResult: the native side reads one back for every listener.
+        float seenDamage = -1;
+        var preCallback = FunctionReference.Create((IntPtr entityPtr, IntPtr damageInfoPtr) =>
+        {
+            if (entityPtr == victimPointer)
+            {
+                preCallCount++;
+                seenDamage = new CTakeDamageInfo(damageInfoPtr).Damage;
+            }
 
-        var postCallback = FunctionReference.Create((IntPtr entityPtr, IntPtr damageInfoPtr) => { postCallCount++; });
+            return HookResult.Continue;
+        });
+
+        var postCallback = FunctionReference.Create((IntPtr entityPtr, IntPtr damageInfoPtr) =>
+        {
+            if (entityPtr == victimPointer) postCallCount++;
+        });
 
         try
         {
             NativeAPI.AddListener("OnEntityTakeDamagePre", preCallback);
             NativeAPI.AddListener("OnEntityTakeDamagePost", postCallback);
 
-            // Spawn a bot and deal damage to it
-            NativeAPI.IssueServerCommand("bot_kick");
-            NativeAPI.IssueServerCommand("bot_add");
-            await WaitOneFrame();
+            var pawn = await SpawnVictim();
+            victimPointer = pawn.Handle;
 
-            var player = Utilities.GetPlayers().FirstOrDefault(p => p.IsBot);
-            var playerHealth = player.PlayerPawn.Value.Health;
-            DealDamageFunc(player, player, 10);
+            var playerHealth = pawn.Health;
+            DealDamage(pawn, 10);
 
             await WaitOneFrame();
-            Assert.Equal(playerHealth - 10, player.PlayerPawn.Value.Health);
-
             Assert.Equal(1, preCallCount);
             Assert.Equal(1, postCallCount);
+            Assert.Equal(10, seenDamage);
+            Assert.True(pawn.Health < playerHealth,
+                $"Expected health below {playerHealth}, got {pawn.Health} (damage seen by listener: {seenDamage})");
         }
         finally
         {
@@ -122,25 +147,31 @@ public class ListenerTests
         }
     }
 
-    [Fact(Skip = "Damage func broken")]
+    [Fact]
     public async Task TakeDamageListenerCanBeCancelled()
     {
         int preCallCount = 0;
         int postCallCount = 0;
+        var victimPointer = IntPtr.Zero;
 
-        Listeners.OnEntityTakeDamagePre preCallback = (entityPtr, damageInfoPtr) =>
+        Listeners.OnEntityTakeDamagePre preCallback = (entity, damageInfo) =>
         {
+            if (entity.Handle != victimPointer) return HookResult.Continue;
+
             preCallCount++;
             return HookResult.Stop;
         };
 
-        Listeners.OnEntityTakeDamagePre secondCallback = (entityPtr, damageInfoPtr) =>
+        Listeners.OnEntityTakeDamagePre secondCallback = (entity, damageInfo) =>
         {
-            preCallCount++;
+            if (entity.Handle == victimPointer) preCallCount++;
             return HookResult.Continue;
         };
 
-        Listeners.OnEntityTakeDamagePost postCallback = (entity, damageInfo, damageResult) => { postCallCount++; };
+        Listeners.OnEntityTakeDamagePost postCallback = (entity, damageInfo, damageResult) =>
+        {
+            if (entity.Handle == victimPointer) postCallCount++;
+        };
 
         try
         {
@@ -148,17 +179,14 @@ public class ListenerTests
             NativeAPI.AddListener("OnEntityTakeDamagePre", secondCallback);
             NativeAPI.AddListener("OnEntityTakeDamagePost", postCallback);
 
-            // Spawn a bot and deal damage to it
-            NativeAPI.IssueServerCommand("bot_kick");
-            NativeAPI.IssueServerCommand("bot_add");
-            await WaitOneFrame();
+            var pawn = await SpawnVictim();
+            victimPointer = pawn.Handle;
 
-            var player = Utilities.GetPlayers().FirstOrDefault(p => p.IsBot);
-            var playerHealth = player.PlayerPawn.Value.Health;
-            DealDamageFunc(player, player, 10);
+            var playerHealth = pawn.Health;
+            DealDamage(pawn, 10);
 
             await WaitOneFrame();
-            Assert.Equal(player.PlayerPawn.Value.Health, playerHealth);
+            Assert.Equal(playerHealth, pawn.Health);
 
             Assert.Equal(1, preCallCount);
             Assert.Equal(0, postCallCount);
@@ -171,67 +199,46 @@ public class ListenerTests
         }
     }
 
-    private static void DealDamageFunc(CCSPlayerController attacker, CCSPlayerController victim, int damage,
-        object data = null, DamageTypes_t type = DamageTypes_t.DMG_ENERGYBEAM)
+    private static async Task<CCSPlayerPawn> SpawnVictim()
     {
-        var size = Schema.GetClassSize("CTakeDamageInfo");
-        var ptr = Marshal.AllocHGlobal(size);
+        // Respawn immunity would let the listeners fire without any health being lost.
+        NativeAPI.IssueServerCommand("mp_respawn_immunitytime 0");
+        NativeAPI.IssueServerCommand("bot_kick");
+        NativeAPI.IssueServerCommand("bot_add");
+        await WaitOneFrame();
 
-        for (var i = 0; i < size; i++)
-            Marshal.WriteByte(ptr, i, 0);
+        var player = Utilities.GetPlayers().First(p => p.IsBot && p.PawnIsAlive);
+        var pawn = player.PlayerPawn.Value!;
 
-        var damageInfo = new CTakeDamageInfo(ptr);
-        var attackerInfo = new AttackerInfo_t()
+        // The convar only affects later spawns; this pawn may already carry spawn protection.
+        pawn.GunGameImmunity = false;
+        pawn.ImmuneToGunGameDamageTime = 0;
+
+        return pawn;
+    }
+
+    // Lets the engine build the CTakeDamageInfo. These tests used to fill one in by hand, with the attacker
+    // block at a hard-coded offset, and were skipped ("Damage func broken") once a game update moved it.
+    // point_hurt with "!activator" as its target damages exactly the entity passed as the input's activator.
+    private static void DealDamage(CCSPlayerPawn victim, int damage)
+    {
+        var hurt = Utilities.CreateEntityByName<CPointHurt>("point_hurt")!;
+
+        using (var keyValues = new CEntityKeyValues())
         {
-            AttackerPawn = attacker.Pawn.Raw, AttackerPlayerSlot = attacker.Slot,
-            IsPawn = true, NeedInit = true,
-        };
+            keyValues.SetString("DamageTarget", "!activator");
+            keyValues.SetInt("Damage", damage);
+            keyValues.SetInt("DamageType", (int)DamageTypes_t.DMG_GENERIC);
+            hurt.DispatchSpawn(keyValues);
+        }
 
-        Marshal.StructureToPtr(attackerInfo, new IntPtr(ptr.ToInt64() + 0x88), false);
-
-        if (attacker.Team == victim.Team)
-            attacker = victim;
-
-        Schema.SetSchemaValue(damageInfo.Handle, "CTakeDamageInfo", "m_hInflictor",
-            attacker.PawnIsAlive ? attacker.Pawn.Raw : attacker.PlayerPawn.Raw);
-        Schema.SetSchemaValue(damageInfo.Handle, "CTakeDamageInfo", "m_hAttacker", attacker.Pawn.Raw);
-
-        damageInfo.Damage = damage;
-        damageInfo.BitsDamageType = type;
-        if (type == DamageTypes_t.DMG_ENERGYBEAM)
-            damageInfo.DamageFlags = TakeDamageFlags_t.DFLAG_IGNORE_ARMOR;
-
-        size = Schema.GetClassSize("CTakeDamageResult");
-        var ptr2 = Marshal.AllocHGlobal(size);
-
-        for (var i = 0; i < size; i++)
-            Marshal.WriteByte(ptr2, i, 0);
-
-        var damageResult = new CTakeDamageResult(ptr2);
-        Schema.SetSchemaValue(damageResult.Handle, "CTakeDamageResult", "m_pOriginatingInfo", damageInfo.Handle);
-
-        damageResult.HealthBefore = victim.PlayerPawn.Value.Health;
-        damageResult.HealthLost = damage;
-        damageResult.DamageDealt = damage;
-        damageResult.PreModifiedDamage = damage;
-        damageResult.TotalledHealthLost = damage;
-        damageResult.TotalledDamageDealt = damage;
-        damageResult.WasDamageSuppressed = false;
-
-        VirtualFunctions.CBaseEntity_TakeDamageOldFunc.Invoke(victim.Pawn.Value, damageInfo, damageResult);
-        Marshal.FreeHGlobal(ptr);
-        Marshal.FreeHGlobal(ptr2);
+        try
+        {
+            hurt.AcceptInput("Hurt", victim, victim);
+        }
+        finally
+        {
+            hurt.Remove();
+        }
     }
 }
-
-[StructLayout(LayoutKind.Sequential)]
-public struct AttackerInfo_t
-{
-    public bool NeedInit;
-    public bool IsPawn;
-    public bool IsWorld;
-    public uint AttackerPawn;
-    public int AttackerPlayerSlot;
-    public int TeamChecked;
-    public int Team;
-};
