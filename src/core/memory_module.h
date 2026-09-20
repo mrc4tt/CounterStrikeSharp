@@ -117,6 +117,19 @@ class CModule
         return nullptr;
     }
 
+    // Section that holds `address`, or nullptr when the address is outside this module's sections.
+    const Section* FindSectionContaining(const void* address) const
+    {
+        const auto target = reinterpret_cast<std::uintptr_t>(address);
+        for (const auto& section : m_sections)
+        {
+            const auto base = reinterpret_cast<std::uintptr_t>(section.m_pBase);
+            if (section.m_iSize != 0 && target >= base && target < base + section.m_iSize) return &section;
+        }
+
+        return nullptr;
+    }
+
     [[nodiscard]] bool IsInitialized() const { return m_bInitialized; }
 
     std::string m_pszModule{};

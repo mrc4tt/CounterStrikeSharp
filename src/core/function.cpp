@@ -30,8 +30,11 @@
 #include "core/function.h"
 
 #include <algorithm>
+#include <array>
+#include <string_view>
 
 #include "core/log.h"
+#include "core/memory_module.h"
 #include "dyncall/dyncall/dyncall.h"
 
 #include <cassert>
@@ -117,6 +120,41 @@ template <class ReturnType, class Function> ReturnType CallHelper(Function func,
 
 void CallHelperVoid(DCCallVM* vm, void* addr) { dcCallVoid(vm, (void*)addr); }
 
+// Why a call target cannot be called, or nullptr when it looks fine.
+//
+// A plugin that resolves a pointer out of the server binary's *file image* instead of process memory ends
+// up with an unrelocated value. Every .got.plt slot on disk points at the first byte of .plt (the lazy-bind
+// resolver stub), and libserver.so is linked BIND_NOW, so that stub's own GOT entries are null: calling it is
+// `jmp [0]` and takes the server down with a SIGSEGV at 0x0 in the middle of a game event. The remaining PLT
+// entries are real thunks and stay callable. Addresses outside every known module are left alone -- hook
+// trampolines and plugin-owned native code live there.
+static const char* DescribeUncallableTarget(const void* target)
+{
+    if (target == nullptr) return "address is null";
+
+    for (const auto& module : modules::moduleList)
+    {
+        const auto* section = module->FindSectionContaining(target);
+        if (section == nullptr) continue;
+
+        if (section->m_szName == ".plt")
+        {
+            return target == section->m_pBase ? "address is the PLT resolver stub (unrelocated pointer read from the binary on disk?)"
+                                              : nullptr;
+        }
+
+        static constexpr std::array<std::string_view, 9> data_sections = {
+            ".got", ".got.plt", ".data", ".data.rel.ro", ".rodata", ".rdata", ".bss", ".dynamic", ".pdata",
+        };
+        if (std::find(data_sections.begin(), data_sections.end(), section->m_szName) != data_sections.end())
+            return "address points into a data section, not code";
+
+        return nullptr;
+    }
+
+    return nullptr;
+}
+
 void ValveFunction::Call(ScriptContext& script_context, int offset, bool bypass)
 {
     if (!IsCallable()) return;
@@ -187,6 +225,19 @@ void ValveFunction::Call(ScriptContext& script_context, int offset, bool bypass)
     if (bypass)
     {
         m_target = KHook::FindOriginal(m_ulAddr);
+    }
+
+    // m_ulAddr never changes, so the section walk runs once per function; only the null check repeats.
+    if (!m_targetChecked)
+    {
+        m_targetProblem = DescribeUncallableTarget(m_ulAddr);
+        m_targetChecked = true;
+    }
+
+    if (const char* problem = m_target == nullptr ? "address is null" : m_targetProblem)
+    {
+        script_context.ThrowNativeError("Refusing to call native function at %p: %s", m_target, problem);
+        return;
     }
 
     switch (m_eReturnType)

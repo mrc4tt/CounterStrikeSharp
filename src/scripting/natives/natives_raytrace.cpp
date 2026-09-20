@@ -63,7 +63,7 @@ static void FillResult(CSSTraceResult* out, const CGameTrace& trace)
     out->m_pEnt = trace.m_pEnt;
     out->m_pHitbox = const_cast<CHitBox*>(trace.m_pHitbox);
     out->m_pBody = trace.m_hBody;
-    out->m_pBody = trace.m_hShape;
+    out->m_pShape = trace.m_hShape;
 
     out->m_nContents = trace.m_nContents;
 

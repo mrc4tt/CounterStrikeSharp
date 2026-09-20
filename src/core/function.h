@@ -92,6 +92,11 @@ class ValveFunction
     std::optional<std::function<HookResult(HookMode, DynamicHookContext&)>> m_callback;
 
     std::unique_ptr<DynamicHook> m_hook;
+
+    // Result of the one-off call-target sanity check in Call(); see DescribeUncallableTarget.
+    bool m_targetChecked = false;
+    const char* m_targetProblem = nullptr;
+
     void EnsureHook();
     KHook::Action DispatchHook(bool post, DynamicHookContext& hook);
 };

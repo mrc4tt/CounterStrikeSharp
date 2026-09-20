@@ -38,11 +38,35 @@
 #include "navphysicsinterface.h"
 
 #include "core/globals.h"
+#include "core/log.h"
 #include "core/memory_module.h"
 
-#include <cassert>
-
 class CBaseEntity;
+
+// The vtable is located by RTTI name, not by signature. Release builds define NDEBUG, so the
+// assert() that used to guard this was compiled out and a failed lookup (class renamed or removed
+// by a game update) turned every trace call into a null dereference. Log once and let callers
+// return an empty result instead.
+//
+// CNavPhysicsInterface is stateless, so a pointer to the vtable pointer is a good enough `this`.
+static INavPhysicsInterface* ResolveInterface()
+{
+    static bool s_bLookupFailed = false;
+
+    if (!INavPhysicsInterface::vTable && !s_bLookupFailed)
+    {
+        INavPhysicsInterface::vTable =
+            reinterpret_cast<void**>(counterstrikesharp::modules::server->FindVirtualTable("CNavPhysicsInterface"));
+
+        if (!INavPhysicsInterface::vTable)
+        {
+            s_bLookupFailed = true;
+            CSSHARP_CORE_ERROR("CNavPhysicsInterface vtable not found in the server binary; Trace natives are disabled.");
+        }
+    }
+
+    return INavPhysicsInterface::vTable ? reinterpret_cast<INavPhysicsInterface*>(&INavPhysicsInterface::vTable) : nullptr;
+}
 
 void INavPhysicsInterface::TraceLine(const Vector& vStart,
                                      const Vector& vEnd,
@@ -52,25 +76,15 @@ void INavPhysicsInterface::TraceLine(const Vector& vStart,
                                      uint8 nObjectSetMask,
                                      CGameTrace* trace)
 {
-    if (!vTable)
-    {
-        vTable = reinterpret_cast<void**>(counterstrikesharp::modules::server->FindVirtualTable("CNavPhysicsInterface"));
-    }
-
-    assert(vTable);
-    auto* iface = reinterpret_cast<INavPhysicsInterface*>(&vTable);
+    auto* iface = ResolveInterface();
+    if (!iface) return;
     iface->Nav_TraceLine(vStart, vEnd, pIgnore, nInteractsWith, nCollisionGroup, nObjectSetMask, trace);
 }
 
 void INavPhysicsInterface::TraceLine(const Vector& vStart, const Vector& vEnd, CTraceFilter* pFilter, CGameTrace* trace)
 {
-    if (!vTable)
-    {
-        vTable = reinterpret_cast<void**>(counterstrikesharp::modules::server->FindVirtualTable("CNavPhysicsInterface"));
-    }
-
-    assert(vTable);
-    auto* iface = reinterpret_cast<INavPhysicsInterface*>(&vTable);
+    auto* iface = ResolveInterface();
+    if (!iface) return;
     iface->Nav_TraceLine(vStart, vEnd, pFilter, trace);
 }
 
@@ -83,60 +97,35 @@ void INavPhysicsInterface::TraceShape(const Ray_t& ray,
                                       uint8 nObjectSetMask,
                                       CGameTrace* trace)
 {
-    if (!vTable)
-    {
-        vTable = reinterpret_cast<void**>(counterstrikesharp::modules::server->FindVirtualTable("CNavPhysicsInterface"));
-    }
-
-    assert(vTable);
-    auto* iface = reinterpret_cast<INavPhysicsInterface*>(&vTable);
+    auto* iface = ResolveInterface();
+    if (!iface) return;
     iface->Nav_TraceShape(ray, vStart, vEnd, pIgnore, nInteractsWith, nCollisionGroup, nObjectSetMask, trace);
 }
 
 void INavPhysicsInterface::TraceShape(const Ray_t& ray, const Vector& vStart, const Vector& vEnd, CTraceFilter* pFilter, CGameTrace* trace)
 {
-    if (!vTable)
-    {
-        vTable = reinterpret_cast<void**>(counterstrikesharp::modules::server->FindVirtualTable("CNavPhysicsInterface"));
-    }
-
-    assert(vTable);
-    auto* iface = reinterpret_cast<INavPhysicsInterface*>(&vTable);
+    auto* iface = ResolveInterface();
+    if (!iface) return;
     iface->Nav_TraceShape(ray, vStart, vEnd, pFilter, trace);
 }
 
 uint64 INavPhysicsInterface::PointContents(const Vector* const vTestPos, uint64 nContentsMask)
 {
-    if (!vTable)
-    {
-        vTable = reinterpret_cast<void**>(counterstrikesharp::modules::server->FindVirtualTable("CNavPhysicsInterface"));
-    }
-
-    assert(vTable);
-    auto* iface = reinterpret_cast<INavPhysicsInterface*>(&vTable);
+    auto* iface = ResolveInterface();
+    if (!iface) return 0;
     return iface->Nav_PointContents(vTestPos, nContentsMask);
 }
 
 bool INavPhysicsInterface::CheckAreaOverlappingEntity(const void* const rArea, const CBaseEntity* const rEntity, bool bExtrudeHullHeight)
 {
-    if (!vTable)
-    {
-        vTable = reinterpret_cast<void**>(counterstrikesharp::modules::server->FindVirtualTable("CNavPhysicsInterface"));
-    }
-
-    assert(vTable);
-    auto* iface = reinterpret_cast<INavPhysicsInterface*>(&vTable);
+    auto* iface = ResolveInterface();
+    if (!iface) return false;
     return iface->Nav_CheckAreaOverlappingEntity(rArea, rEntity, bExtrudeHullHeight);
 }
 
 void INavPhysicsInterface::GetEntityWorldSpaceAABB(const CBaseEntity* const rEntity, Vector* pMinsOut, Vector* pMaxsOut)
 {
-    if (!vTable)
-    {
-        vTable = reinterpret_cast<void**>(counterstrikesharp::modules::server->FindVirtualTable("CNavPhysicsInterface"));
-    }
-
-    assert(vTable);
-    auto* iface = reinterpret_cast<INavPhysicsInterface*>(&vTable);
+    auto* iface = ResolveInterface();
+    if (!iface) return;
     iface->Nav_GetEntityWorldSpaceAABB(rEntity, pMinsOut, pMaxsOut);
 }

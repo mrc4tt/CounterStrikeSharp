@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+  </PropertyGroup>
+
+  <!-- The host provides CounterStrikeSharp.API at runtime. RayTraceApi must load from shared/ only:
+       a private copy next to the plugin would give the capability a different type identity than
+       the one its consumers resolve. -->
+  <ItemGroup>
+    <ProjectReference Include="..\..\CounterStrikeSharp.API\CounterStrikeSharp.API.csproj" Private="false" ExcludeAssets="runtime" />
+    <ProjectReference Include="..\RayTraceApi\RayTraceApi.csproj" Private="false" />
+  </ItemGroup>
+
+</Project>

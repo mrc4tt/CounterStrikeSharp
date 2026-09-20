@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+  </PropertyGroup>
+
+  <!-- The host provides CounterStrikeSharp.API at runtime; never ship a copy next to the shared lib. -->
+  <ItemGroup>
+    <ProjectReference Include="..\..\CounterStrikeSharp.API\CounterStrikeSharp.API.csproj" Private="false" ExcludeAssets="runtime" />
+  </ItemGroup>
+
+</Project>

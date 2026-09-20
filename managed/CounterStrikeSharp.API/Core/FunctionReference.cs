@@ -357,7 +357,7 @@ namespace CounterStrikeSharp.API.Core
                         return;
                     }
 
-                    var owner = _targetMethod.Method.DeclaringType?.Assembly.GetName().Name ?? "unknown";
+                    var owner = ResolveOwnerAssembly(e, _targetMethod)?.GetName().Name ?? "unknown";
                     var throttleKey = owner + "|" + _targetMethod.Method.Name + "|" + e.GetBaseException().GetType().Name;
                     var decision = Diagnostics.PluginDiagnostics.RecordError(owner, throttleKey);
 
@@ -385,6 +385,28 @@ namespace CounterStrikeSharp.API.Core
             }
         }
 
+        // Listeners registered through BasePlugin.RegisterListener are wrapped in a closure that
+        // lives in this assembly, so the delegate's declaring assembly is CounterStrikeSharp.API
+        // and the report would blame the framework for a plugin's exception. Plugins load into
+        // their own AssemblyLoadContext while the API sits in the default one, so in that case the
+        // owner is the innermost stack frame outside the default context.
+        private static System.Reflection.Assembly? ResolveOwnerAssembly(Exception ex, Delegate target)
+        {
+            var declaring = target.Method.DeclaringType?.Assembly;
+            if (declaring != typeof(FunctionReference).Assembly)
+                return declaring;
+
+            foreach (var f in new StackTrace(ex.GetBaseException(), false).GetFrames() ?? Array.Empty<StackFrame>())
+            {
+                var asm = f.GetMethod()?.DeclaringType?.Assembly;
+                if (asm == null) continue;
+                if (System.Runtime.Loader.AssemblyLoadContext.GetLoadContext(asm) != System.Runtime.Loader.AssemblyLoadContext.Default)
+                    return asm;
+            }
+
+            return declaring;
+        }
+
         // Names the plugin that owns the crashing handler so a runtime exception in
         // third-party plugin code isn't mistaken for a CounterStrikeSharp bug. The
         // server keeps running (this exception was caught); the report just makes the
@@ -393,11 +415,11 @@ namespace CounterStrikeSharp.API.Core
         {
             var root = ex.GetBaseException();
             var handler = target.Method;
-            var owner = handler.DeclaringType?.Assembly.GetName().Name ?? "unknown";
+            var pluginAsm = ResolveOwnerAssembly(ex, target);
+            var owner = pluginAsm?.GetName().Name ?? "unknown";
 
             // Deepest frame inside the owning plugin assembly -> file:line of the bug.
             string? loc = null;
-            var pluginAsm = handler.DeclaringType?.Assembly;
             foreach (var f in new StackTrace(root, true).GetFrames() ?? Array.Empty<StackFrame>())
             {
                 var m = f.GetMethod();
