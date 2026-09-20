@@ -237,17 +237,17 @@ CModule::CModule(std::string_view path, std::uint64_t base)
 // https://github.com/Source2ZE/CS2Fixes/blob/e1a7aebee8b846b9c6be514dba890646b04a7792/src/utils/plat_unix.cpp#L53
 int GetModuleInformation(HINSTANCE hModule, void** base, size_t* length, std::vector<Section>& m_sections)
 {
+    // The handle belongs to the caller, which closes it. Closing it here dropped a reference
+    // the caller then dropped again.
     link_map* lmap;
-    if (dlinfo(hModule, RTLD_DI_LINKMAP, &lmap) != 0)
+    if (hModule == nullptr || dlinfo(hModule, RTLD_DI_LINKMAP, &lmap) != 0)
     {
-        dlclose(hModule);
         return 1;
     }
 
     int fd = open(lmap->l_name, O_RDONLY);
     if (fd == -1)
     {
-        dlclose(hModule);
         return 2;
     }
 
@@ -299,8 +299,31 @@ CModule::CModule(std::string_view path, dl_phdr_info* info)
     m_pszPath = path.data();
     m_baseAddress = info->dlpi_addr;
 
-    auto module = dlmount(m_pszModule.c_str());
-    GetModuleInformation(module, &m_base, &m_size, m_sections);
+    // Full path, and RTLD_NOLOAD. libserver.so carries no DT_SONAME, so dlopen("libserver.so")
+    // does not match the copy the engine already loaded by absolute path: it falls through to a
+    // path search, which misses because csgo/bin/linuxsteamrt64 is not on the loader path. The
+    // handle came back null, GetModuleInformation bailed, and the module was left with no
+    // sections and m_base == 0 - silently. Everything that reads them then fails for no visible
+    // reason: FindVirtualTable cannot find .rodata, and FindSignatureAlternative returns nullptr
+    // so signature lookups fall through to the disk scan.
+    auto* module = dlopen(m_pszPath.c_str(), RTLD_NOW | RTLD_NOLOAD);
+    if (module == nullptr)
+    {
+        const char* error = dlerror();
+        CSSHARP_CORE_ERROR("Could not obtain a handle for {}: {}. Section lookups and live signature "
+                           "scans are unavailable for this module.",
+                           m_pszPath, error != nullptr ? error : "unknown error");
+    }
+    else
+    {
+        if (const auto result = GetModuleInformation(module, &m_base, &m_size, m_sections); result != 0)
+        {
+            CSSHARP_CORE_ERROR("Could not read section headers for {} (code {}).", m_pszPath, result);
+        }
+
+        // RTLD_NOLOAD still takes a reference on an already-loaded object.
+        dlclose(module);
+    }
 
     const bool should_read_from_disk = std::any_of(modules_to_read_from_disk.begin(), modules_to_read_from_disk.end(), [&](const auto& i) {
         return m_pszModule == i;
@@ -846,7 +869,20 @@ void* CModule::FindVirtualTable(const std::string& name)
 
     SignatureIterator sigIt(readOnlyData->m_pBase, readOnlyData->m_iSize, (const byte*)decoratedTableName.c_str(),
                             decoratedTableName.size() + 1);
-    void* classNameString = sigIt.FindNext(false);
+
+    // The mangled name has to START at the match, not merely occur there. The pattern carries its
+    // own terminator, but "P12CCSGameRules" - the name of the POINTER type - contains
+    // "12CCSGameRules\0" at offset 1, and no type_info points at that interior address. Keep
+    // scanning until a match is preceded by a NUL, i.e. is the beginning of its own string.
+    void* classNameString = nullptr;
+    while (void* candidate = sigIt.FindNext(false))
+    {
+        if (candidate == readOnlyData->m_pBase || static_cast<const byte*>(candidate)[-1] == '\0')
+        {
+            classNameString = candidate;
+            break;
+        }
+    }
 
     if (!classNameString)
     {

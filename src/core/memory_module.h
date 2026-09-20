@@ -52,22 +52,36 @@ class SignatureIterator
         m_pCurrent = m_pBase;
     }
 
+    // Same contract as before: returns the first match at or after the previous one, and leaves
+    // the cursor one byte past it so a repeated call finds overlapping matches too.
+    //
+    // The bounds are the fix. The old loop ran its index over the FULL size on every call while
+    // comparing from the advanced cursor, so a second call read up to (cursor - base) bytes past
+    // the end of the region - straight out of .data.rel.ro in FindVirtualTable's match loop - and
+    // the inner while had no length guard of its own either.
     void* FindNext(bool allowWildcard)
     {
-        for (size_t i = 0; i < m_iSize; i++)
+        if (m_iSigLength == 0 || m_iSize < m_iSigLength) return nullptr;
+
+        byte* last = m_pBase + m_iSize - m_iSigLength;
+
+        for (byte* current = m_pCurrent; current <= last; ++current)
         {
             size_t Matches = 0;
-            while (*(m_pCurrent + i + Matches) == m_pSignature[Matches] || (allowWildcard && m_pSignature[Matches] == '\x2A'))
+            while (Matches < m_iSigLength &&
+                   (current[Matches] == m_pSignature[Matches] || (allowWildcard && m_pSignature[Matches] == '\x2A')))
             {
                 Matches++;
-                if (Matches == m_iSigLength)
-                {
-                    m_pCurrent += i + 1;
-                    return m_pCurrent - 1;
-                }
+            }
+
+            if (Matches == m_iSigLength)
+            {
+                m_pCurrent = current + 1;
+                return current;
             }
         }
 
+        m_pCurrent = last + 1;
         return nullptr;
     }
 
