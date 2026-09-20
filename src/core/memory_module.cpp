@@ -540,9 +540,24 @@ CModule::GetOriginalBytes(const std::vector<std::uint8_t>& disk_data, std::uintp
         // thank you praydog
         // https://github.com/cursey/kananlib/blob/b0323a0b005fc9e3944e0ea36dcc98eda4b84eea/src/Module.cpp#L176
 
+        // Validate every header before dereferencing it: this walks a file read off disk, so its
+        // contents are not a given. The caller's range check runs only on the value returned here.
+        if (disk_data.size() < sizeof(IMAGE_DOS_HEADER)) return std::nullopt;
+
         const auto dos_header = reinterpret_cast<PIMAGE_DOS_HEADER>(data);
+        if (dos_header->e_magic != IMAGE_DOS_SIGNATURE) return std::nullopt;
+        if (dos_header->e_lfanew < 0 ||
+            static_cast<std::size_t>(dos_header->e_lfanew) + sizeof(IMAGE_NT_HEADERS) > disk_data.size())
+            return std::nullopt;
+
         const auto nt_header = reinterpret_cast<PIMAGE_NT_HEADERS>(&data[dos_header->e_lfanew]);
+        if (nt_header->Signature != IMAGE_NT_SIGNATURE) return std::nullopt;
+
         auto section = IMAGE_FIRST_SECTION(nt_header);
+        const auto section_table_end = reinterpret_cast<std::uintptr_t>(section) +
+                                       static_cast<std::size_t>(nt_header->FileHeader.NumberOfSections) * sizeof(IMAGE_SECTION_HEADER);
+        if (section_table_end > reinterpret_cast<std::uintptr_t>(data) + disk_data.size()) return std::nullopt;
+
         for (auto i = 0; i < nt_header->FileHeader.NumberOfSections; i++, section++)
         {
             auto section_size = section->Misc.VirtualSize;
