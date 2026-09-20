@@ -590,12 +590,12 @@ void* CModule::RejectStubAddress(void* address, const char* signature) const
     if (section == nullptr) return address;
 
     if (std::none_of(stub_sections.begin(), stub_sections.end(), [&](const auto& i) {
-            return section->m_szName == i;
-        }))
+        return section->m_szName == i;
+    }))
         return address;
 
-    CSSHARP_CORE_ERROR("Signature \"{}\" resolved to {} in {}{}, which is a linker stub, not code. Rejecting it.",
-                       signature, address, m_pszModule, section->m_szName);
+    CSSHARP_CORE_ERROR("Signature \"{}\" resolved to {} in {}{}, which is a linker stub, not code. Rejecting it.", signature, address,
+                       m_pszModule, section->m_szName);
     return nullptr;
 }
 
