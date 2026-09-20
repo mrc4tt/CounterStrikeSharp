@@ -637,6 +637,45 @@ void* CModule::RejectStubAddress(void* address, const char* signature) const
     return nullptr;
 }
 
+std::size_t CModule::CountSignatureMatches(const std::vector<int16_t>& sigBytes, std::size_t limit) const
+{
+    if (m_base == nullptr || m_size == 0 || sigBytes.empty() || m_size < sigBytes.size()) return 0;
+
+    const auto* data = reinterpret_cast<const std::uint8_t*>(m_base);
+    const auto* last = data + m_size - sigBytes.size();
+
+    std::size_t found = 0;
+    for (const auto* current = data; current <= last; ++current)
+    {
+        if (std::equal(sigBytes.begin(), sigBytes.end(), current, [](auto opt, auto byte) {
+                return opt == -1 || opt == byte;
+            }))
+        {
+            if (++found >= limit) break;
+        }
+    }
+
+    return found;
+}
+
+void CModule::WarnIfAmbiguous(const char* signature, const std::vector<int16_t>& sigBytes) const
+{
+    // Resolution takes the FIRST match. A pattern that matches more than once therefore resolves
+    // to whichever copy sits lowest in the module, which is only the intended function by luck -
+    // and the caller goes on to invoke it with the argument layout it expected. Anchored on a
+    // generic instruction pair this gets bad fast: "48 8D 05 ?? ?? ?? ?? 48 89 03" matches 734
+    // addresses in 14181's libserver.so. The first match is still returned, because a signature
+    // that has been resolving correctly must keep working; the point is that it stops being silent.
+    constexpr std::size_t kReportLimit = 3;
+
+    const auto matches = CountSignatureMatches(sigBytes, kReportLimit);
+    if (matches < 2) return;
+
+    CSSHARP_CORE_WARN("Signature \"{}\" matches {}{} addresses in {}. Resolution takes the first one, "
+                      "which is the intended function only by chance - the pattern needs more anchor bytes.",
+                      signature, matches >= kReportLimit ? "at least " : "", matches, m_pszModule);
+}
+
 void* CModule::FindSignature(const char* signature)
 {
     if (signature == nullptr || strlen(signature) == 0)
@@ -644,35 +683,44 @@ void* CModule::FindSignature(const char* signature)
         return nullptr;
     }
 
+    // Parsed up front so the ambiguity check below can run whichever scanner resolved the address.
+    auto pData = CGameConfig::HexToByte(signature);
+
+    void* address = nullptr;
+
     for (const auto& segment : m_vecSegments)
     {
-        if (auto address = KHook::LookupSignature(reinterpret_cast<void*>(segment.address), segment.bytes.size(), signature))
-            return RejectStubAddress(address, signature);
+        address = KHook::LookupSignature(reinterpret_cast<void*>(segment.address), segment.bytes.size(), signature);
+        if (address != nullptr) break;
     }
 
-    auto pData = CGameConfig::HexToByte(signature);
-    if (pData.empty()) [[unlikely]]
+    if (address == nullptr)
     {
-        CSSHARP_CORE_ERROR("Cannot convert signture \"{}\" to bytes", signature);
-        return nullptr;
+        if (pData.empty()) [[unlikely]]
+        {
+            CSSHARP_CORE_ERROR("Cannot convert signture \"{}\" to bytes", signature);
+            return nullptr;
+        }
+
+        auto pOld = this->FindSignature(pData);
+        auto pNew = this->FindSignatureAlternative(pData);
+
+        if (pOld != pNew)
+        {
+            CSSHARP_CORE_DEBUG(
+                "Signature {} found different pointers using different signature scanning methods. Found old address: {}, new address: {}",
+                signature, (void*)pOld, (void*)pNew);
+        }
+
+        address = pNew != nullptr ? pNew : pOld;
     }
 
-    auto pOld = this->FindSignature(pData);
-    auto pNew = this->FindSignatureAlternative(pData);
+    address = RejectStubAddress(address, signature);
+    if (address == nullptr) return nullptr;
 
-    if (pOld != pNew)
-    {
-        CSSHARP_CORE_DEBUG(
-            "Signature {} found different pointers using different signature scanning methods. Found old address: {}, new address: {}",
-            signature, (void*)pOld, (void*)pNew);
-    }
+    WarnIfAmbiguous(signature, pData);
 
-    if (pNew)
-    {
-        return RejectStubAddress(pNew, signature);
-    }
-
-    return RejectStubAddress(pOld, signature);
+    return address;
 }
 
 void* CModule::FindSignature(const std::vector<int16_t>& sigBytes)

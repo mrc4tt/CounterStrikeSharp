@@ -173,6 +173,14 @@ class CModule
     void* FindSignature(const std::vector<int16_t>& sigBytes);
     void* FindSignatureAlternative(const std::vector<int16_t>& sigBytes);
 
+    // Counts live matches, stopping once `limit` have been seen. Used to tell a unique
+    // signature from one that merely happens to resolve first.
+    std::size_t CountSignatureMatches(const std::vector<int16_t>& sigBytes, std::size_t limit) const;
+
+    // Logs when a signature matches more than one address. Resolution picks the first match, so
+    // an ambiguous pattern silently yields "a" function rather than "the" function.
+    void WarnIfAmbiguous(const char* signature, const std::vector<int16_t>& sigBytes) const;
+
     // Rejects a match that landed in a linker stub or a relocation table instead of real
     // code. Those are never a legitimate signature target, and calling one is fatal:
     // PLT0 of a BIND_NOW module jumps through an unfilled GOT slot straight to rip = 0.
