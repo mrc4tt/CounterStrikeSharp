@@ -19,6 +19,9 @@
 #include <link.h>
 #endif
 
+#include <array>
+#include <cstring>
+
 #include "core/gameconfig.h"
 #include "core/memory.h"
 #include "dbg.h"
@@ -318,7 +321,9 @@ CModule::CModule(std::string_view path, dl_phdr_info* info)
 
     for (auto i = 0; i < info->dlpi_phnum; i++)
     {
-        auto address = m_baseAddress + info->dlpi_phdr[i].p_paddr;
+        // p_vaddr, not p_paddr: p_paddr is meaningless for a shared object and only
+        // happens to equal p_vaddr in the binaries shipped today.
+        auto address = m_baseAddress + info->dlpi_phdr[i].p_vaddr;
         auto type = info->dlpi_phdr[i].p_type;
         auto is_dynamic_section = type == PT_DYNAMIC;
         if (is_dynamic_section)
@@ -507,7 +512,7 @@ void CModule::DumpSymbols(ElfW(Dyn) * dyn)
 std::optional<std::vector<std::uint8_t>>
 CModule::GetOriginalBytes(const std::vector<std::uint8_t>& disk_data, std::uintptr_t rva, std::size_t size)
 {
-    auto get_file_ptr_from_rva = [](std::uint8_t* data, std::uintptr_t address) -> std::optional<std::uintptr_t> {
+    auto get_file_ptr_from_rva = [&disk_data](std::uint8_t* data, std::uintptr_t address) -> std::optional<std::uintptr_t> {
 #ifdef _WIN32
         // thank you praydog
         // https://github.com/cursey/kananlib/blob/b0323a0b005fc9e3944e0ea36dcc98eda4b84eea/src/Module.cpp#L176
@@ -532,18 +537,66 @@ CModule::GetOriginalBytes(const std::vector<std::uint8_t>& disk_data, std::uintp
         }
         return std::nullopt;
 #else
-        // on linux you can just read from rva
-        return reinterpret_cast<std::uintptr_t>(data + address);
+        // An ELF RVA is NOT a file offset. Each PT_LOAD is page-aligned independently in
+        // the file and in memory, so p_vaddr - p_offset is a non-zero delta on every
+        // segment after the first (0x1000 for libserver.so's executable segment). Reading
+        // `data + rva` therefore returned a window shifted one page forward in the file,
+        // and every hit from the disk scan reported an address one page BELOW the code it
+        // actually matched - landing inside .plt, and on PLT0 for a hit near the start.
+        // PLT0 of a BIND_NOW binary jumps through a GOT slot that is never filled, so the
+        // caller ended up at rip = 0.
+        if (disk_data.size() < sizeof(ElfW(Ehdr))) return std::nullopt;
+
+        const auto* ehdr = reinterpret_cast<const ElfW(Ehdr)*>(data);
+        if (std::memcmp(ehdr->e_ident, ELFMAG, SELFMAG) != 0) return std::nullopt;
+
+        const auto phdr_end = static_cast<std::size_t>(ehdr->e_phoff) + static_cast<std::size_t>(ehdr->e_phnum) * ehdr->e_phentsize;
+        if (ehdr->e_phentsize < sizeof(ElfW(Phdr)) || phdr_end > disk_data.size()) return std::nullopt;
+
+        for (auto i = 0; i < ehdr->e_phnum; i++)
+        {
+            const auto* phdr = reinterpret_cast<const ElfW(Phdr)*>(data + ehdr->e_phoff + i * ehdr->e_phentsize);
+            if (phdr->p_type != PT_LOAD) continue;
+            if (address < phdr->p_vaddr || address >= phdr->p_vaddr + phdr->p_filesz) continue;
+
+            return reinterpret_cast<std::uintptr_t>(data + (address - phdr->p_vaddr + phdr->p_offset));
+        }
+
+        return std::nullopt;
 #endif
     };
 
     const auto disk_ptr = get_file_ptr_from_rva(const_cast<std::uint8_t*>(disk_data.data()), rva);
     if (!disk_ptr) return std::nullopt;
 
+    // Never walk off the end of the buffer: the segment's file size is what the headers
+    // claim, not what the file on disk is guaranteed to hold.
+    const auto file_offset = *disk_ptr - reinterpret_cast<std::uintptr_t>(disk_data.data());
+    if (file_offset > disk_data.size() || size > disk_data.size() - file_offset) return std::nullopt;
+
     const auto disk_bytes = reinterpret_cast<std::uint8_t*>(*disk_ptr);
     std::vector<std::uint8_t> result{ &disk_bytes[0], &disk_bytes[size] };
 
     return result;
+}
+
+void* CModule::RejectStubAddress(void* address, const char* signature) const
+{
+    if (address == nullptr) return nullptr;
+
+    static constexpr std::array stub_sections = { ".init", ".plt", ".plt.got", ".plt.sec", ".fini", ".got", ".got.plt" };
+
+    const auto* section = FindSectionContaining(address);
+    if (section == nullptr) return address;
+
+    if (std::none_of(stub_sections.begin(), stub_sections.end(), [&](const auto& i) {
+            return section->m_szName == i;
+        }))
+        return address;
+
+    CSSHARP_CORE_ERROR("Signature \"{}\" resolved to {} in {}{}, which is a linker stub, not code. Rejecting it.",
+                       signature, address, m_pszModule, section->m_szName);
+    return nullptr;
 }
 
 void* CModule::FindSignature(const char* signature)
@@ -556,7 +609,7 @@ void* CModule::FindSignature(const char* signature)
     for (const auto& segment : m_vecSegments)
     {
         if (auto address = KHook::LookupSignature(reinterpret_cast<void*>(segment.address), segment.bytes.size(), signature))
-            return address;
+            return RejectStubAddress(address, signature);
     }
 
     auto pData = CGameConfig::HexToByte(signature);
@@ -578,10 +631,10 @@ void* CModule::FindSignature(const char* signature)
 
     if (pNew)
     {
-        return pNew;
+        return RejectStubAddress(pNew, signature);
     }
 
-    return pOld;
+    return RejectStubAddress(pOld, signature);
 }
 
 void* CModule::FindSignature(const std::vector<int16_t>& sigBytes)

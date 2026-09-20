@@ -55,7 +55,14 @@ class CGameSystem : public CBaseGameSystem
         if (sm_Factory) sm_Factory->SetGlobalPtr(pValue);
     }
 
-    bool DoesGameSystemReallocate() override { return sm_Factory->ShouldAutoAdd(); }
+    // IsReallocating(), NOT ShouldAutoAdd(). They are different questions and the static
+    // factory answers them differently: ShouldAutoAdd() is true (add me to the system list),
+    // IsReallocating() is false (my instance is not heap-allocated). Answering true here told
+    // the engine that g_GameSystem is a reallocating system, so teardown freed it - and
+    // g_GameSystem is a static object in this .so's .bss, not a malloc chunk. That is the
+    // "free(): invalid pointer" printed right after CGameSystem::Shutdown on every clean exit.
+    // CBaseGameSystem's own default for this is false, which is what the static factory needs.
+    bool DoesGameSystemReallocate() override { return sm_Factory != nullptr && sm_Factory->IsReallocating(); }
 
     static IGameSystemFactory* sm_Factory;
 };
