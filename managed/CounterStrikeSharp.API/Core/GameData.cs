@@ -28,9 +28,14 @@ public class Signatures
 
 public class Offsets
 {
-    [JsonPropertyName("windows")] public int Windows { get; set; }
+    // Nullable so "absent" and "slot 0" stay distinguishable. A non-nullable int
+    // deserializes a missing key to 0, which is a VALID vtable index -
+    // CEntityResourceManifest::AddResource is linux slot 0, windows slot 2 - so the two
+    // cases could not be told apart: the validator called a correct entry broken, and
+    // GetOffset silently returned slot 0 for an entry that had no offset at all.
+    [JsonPropertyName("windows")] public int? Windows { get; set; }
 
-    [JsonPropertyName("linux")] public int Linux { get; set; }
+    [JsonPropertyName("linux")] public int? Linux { get; set; }
 }
 
 public sealed class GameDataProvider : IStartupService
@@ -127,8 +132,9 @@ public sealed class GameDataProvider : IStartupService
             var off = data.Offsets;
 
             // An entry is usable if it has a non-empty signature OR an offset for this platform.
+            // Test for PRESENCE, not for non-zero: 0 is a real vtable index.
             bool hasSig = sig != null && !string.IsNullOrWhiteSpace(linux ? sig.Linux : sig.Windows);
-            bool hasOff = off != null && (linux ? off.Linux : off.Windows) != 0;
+            bool hasOff = off != null && (linux ? off.Linux : off.Windows).HasValue;
 
             if (!hasSig && !hasOff)
                 broken.Add(kv.Key);
