@@ -546,8 +546,7 @@ CModule::GetOriginalBytes(const std::vector<std::uint8_t>& disk_data, std::uintp
 
         const auto dos_header = reinterpret_cast<PIMAGE_DOS_HEADER>(data);
         if (dos_header->e_magic != IMAGE_DOS_SIGNATURE) return std::nullopt;
-        if (dos_header->e_lfanew < 0 ||
-            static_cast<std::size_t>(dos_header->e_lfanew) + sizeof(IMAGE_NT_HEADERS) > disk_data.size())
+        if (dos_header->e_lfanew < 0 || static_cast<std::size_t>(dos_header->e_lfanew) + sizeof(IMAGE_NT_HEADERS) > disk_data.size())
             return std::nullopt;
 
         const auto nt_header = reinterpret_cast<PIMAGE_NT_HEADERS>(&data[dos_header->e_lfanew]);
@@ -648,8 +647,8 @@ std::size_t CModule::CountSignatureMatches(const std::vector<int16_t>& sigBytes,
     for (const auto* current = data; current <= last; ++current)
     {
         if (std::equal(sigBytes.begin(), sigBytes.end(), current, [](auto opt, auto byte) {
-                return opt == -1 || opt == byte;
-            }))
+            return opt == -1 || opt == byte;
+        }))
         {
             if (++found >= limit) break;
         }
