@@ -79,6 +79,30 @@ public static class CoreLogging
     public static ILoggerFactory Factory { get; private set; } = null!;
     private static Logger? SerilogLogger { get; set; }
 
+    /// <summary>
+    /// The single writer of logs/log-all.txt — the aggregate of every plugin's output.
+    /// Plugin loggers forward into it with WriteTo.Logger instead of each opening their
+    /// own sink on the same path, because the two obvious alternatives are both broken:
+    ///
+    ///   * one FileSink per plugin with shared: false — the second plugin's sink hits a
+    ///     sharing violation on the already-open file and CreateLogger() throws, taking
+    ///     the plugin load with it;
+    ///   * one FileSink per plugin with shared: true — Serilog's shared mode guards the
+    ///     file with a *named* Mutex, which on Linux is a PAL SharedMemory object. Closing
+    ///     that handle runs SharedMemoryProcessDataHeader::Close -> `delete m_data`, and
+    ///     under .NET 10 libcoreclr imports plain operator new/delete from the global
+    ///     scope, where libtier0.so provides them: tier0's _ZdlPv tail-calls
+    ///     g_pMemAlloc->Free(), so a glibc-allocated PAL object is handed to Valve's
+    ///     allocator and the server takes a SIGSEGV inside libtier0.so. (.NET 8's
+    ///     libcoreclr kept those operators internal, which is why this only started with
+    ///     the .NET 10 build.) Rolling is daily, so the close clustered just after
+    ///     midnight — one mutex per plugin per rollover.
+    ///
+    /// Stays <see cref="Logger.None"/> until AddCoreLogging has run, so a plugin logger
+    /// built before then forwards into a sink that drops instead of throwing.
+    /// </summary>
+    public static Serilog.ILogger PluginAggregateLogger { get; private set; } = Logger.None;
+
     // Live minimum-level control. Defaults to Information so the demoted boot/init
     // lines stay hidden; CoreConfig.Load() drives it from the "LogVerbosity" setting
     // and css_core_reload re-applies it without a restart.
@@ -151,7 +175,7 @@ public static class CoreLogging
                 .WriteTo.Async(a =>
                 {
                     a.File(Path.Join(new[] { contentRoot, "logs", $"log-cssharp.txt" }),
-                        rollingInterval: RollingInterval.Day, shared: true,
+                        rollingInterval: RollingInterval.Day,
                         outputTemplate:
                         "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [" + LevelToken +
                         "] (cssharp:{SourceContext}) {Message:lj}{NewLine}{Exception}");
@@ -159,13 +183,27 @@ public static class CoreLogging
                     // reports) into one file that can be handed to a plugin author without
                     // wading through the full info-level log.
                     a.File(Path.Join(new[] { contentRoot, "logs", $"log-errors.txt" }),
-                        rollingInterval: RollingInterval.Day, shared: true,
+                        rollingInterval: RollingInterval.Day,
                         restrictedToMinimumLevel: LogEventLevel.Error,
                         outputTemplate:
                         "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [" + LevelToken +
                         "] (cssharp:{SourceContext}) {Message:lj}{NewLine}{Exception}");
                 })
                 .CreateLogger();
+
+            // Single owner of log-all.txt (see PluginAggregateLogger). Its own Async
+            // wrapper, so a plugin logging does not wait on this file's roll either.
+            // No level floor here: each plugin logger applies its own before forwarding.
+            var aggregate = new LoggerConfiguration()
+                .MinimumLevel.Verbose()
+                .WriteTo.Async(a => a.File(
+                        Path.Join(new[] { contentRoot, "logs", "log-all.txt" }),
+                        rollingInterval: RollingInterval.Day,
+                        outputTemplate:
+                        "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [" + LevelToken +
+                        "] plugin:{PluginName} {Message:lj}{NewLine}{Exception}"))
+                .CreateLogger();
+            PluginAggregateLogger = aggregate;
 
             // Every sink is now behind an Async wrapper, so anything still sitting in a
             // queue when the process ends is lost unless the logger is disposed. Nothing
@@ -174,7 +212,11 @@ public static class CoreLogging
             // queues. A hard crash still bypasses this -- that is what the direct
             // write(2) breadcrumb in fatal_reporter.cpp is for.
             var logger = SerilogLogger;
-            AppDomain.CurrentDomain.ProcessExit += (_, _) => logger.Dispose();
+            AppDomain.CurrentDomain.ProcessExit += (_, _) =>
+            {
+                logger.Dispose();
+                aggregate.Dispose();
+            };
 
             Factory =
                 LoggerFactory.Create(builder => { builder.AddSerilog(SerilogLogger); });

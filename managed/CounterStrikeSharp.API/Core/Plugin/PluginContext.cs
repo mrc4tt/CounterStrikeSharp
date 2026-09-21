@@ -199,27 +199,30 @@ namespace CounterStrikeSharp.API.Core.Plugin
                             "{Timestamp:HH:mm:ss.fff} [" + CoreLogging.LevelToken +
                             "] {PluginTag:l} {Message:lj}{NewLine}{Exception}"),
                             bufferSize: 10000, blockWhenFull: false)
-                        // File sinks run through Async so file rolls + Serilog's retention
-                        // scan run off the game thread instead of stalling the tick (a
-                        // synchronous roll was measured at ~469ms on the game thread). One
-                        // Async wrapper = one shared background queue/thread per plugin.
-                        .WriteTo.Async(a =>
-                        {
-                            a.File(
-                                Path.Join(new[]
-                                {
-                                    _hostConfiguration.RootPath, "logs",
-                                    $"log-{pluginType.Assembly.GetName().Name}.txt"
-                                }), rollingInterval: RollingInterval.Day,
-                                outputTemplate:
-                                "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [" + CoreLogging.LevelToken +
-                                "] plugin:{PluginName} {Message:lj}{NewLine}{Exception}");
-                            a.File(Path.Join(new[] { _hostConfiguration.RootPath, "logs", $"log-all.txt" }),
-                                rollingInterval: RollingInterval.Day, shared: true,
-                                outputTemplate:
-                                "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [" + CoreLogging.LevelToken +
-                                "] plugin:{PluginName} {Message:lj}{NewLine}{Exception}");
-                        })
+                        // This plugin's own file sink runs through Async so file rolls +
+                        // Serilog's retention scan run off the game thread instead of
+                        // stalling the tick (a synchronous roll was measured at ~469ms on
+                        // the game thread). One Async wrapper = one background queue/thread
+                        // per plugin. Single writer, so no shared mode is needed.
+                        .WriteTo.Async(a => a.File(
+                            Path.Join(new[]
+                            {
+                                _hostConfiguration.RootPath, "logs",
+                                $"log-{pluginType.Assembly.GetName().Name}.txt"
+                            }), rollingInterval: RollingInterval.Day,
+                            outputTemplate:
+                            "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [" + CoreLogging.LevelToken +
+                            "] plugin:{PluginName} {Message:lj}{NewLine}{Exception}"))
+                        // log-all.txt is written by ONE sink owned by CoreLogging that every
+                        // plugin forwards into; this logger does not open the file itself.
+                        // Opening it per plugin needed Serilog's shared mode, whose named
+                        // Mutex is a PAL SharedMemory object — and closing one of those on
+                        // .NET 10 frees a glibc pointer through libtier0.so's operator
+                        // delete (g_pMemAlloc->Free), which SIGSEGVs the server. See the
+                        // comment on CoreLogging.PluginAggregateLogger. Forwarding does not
+                        // take ownership: WriteTo.Logger leaves the target undisposed, so
+                        // the dispose: true below still only releases this plugin's sinks.
+                        .WriteTo.Logger(CoreLogging.PluginAggregateLogger)
                         .CreateLogger(),
                         // dispose: true is what actually makes the unload path's
                         // ServiceProvider.Dispose() release this logger. Without it
