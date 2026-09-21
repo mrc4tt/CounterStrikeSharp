@@ -136,8 +136,10 @@ jobs:
               gamedata-report/gamedata-"$BUILD".log || true
           fi
 
+      # Only when the scan step actually ran: if checkout or build resolution
+      # failed there is no report, and "no files found" would bury the real error.
       - uses: actions/upload-artifact@v7
-        if: always()
+        if: always() && steps.scan.outcome != 'skipped'
         with:
           name: gamedata-report-${{ steps.resolve.outputs.build }}
           path: gamedata-report/
