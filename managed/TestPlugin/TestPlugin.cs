@@ -318,7 +318,7 @@ namespace TestPlugin
 
                     foreach (CPropDoorRotating door in doors)
                     {
-                        info.TransmitEntities.Remove(door);
+                        info.Hide(door);
                     }
                 }
             });

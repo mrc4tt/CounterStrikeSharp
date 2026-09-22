@@ -35,18 +35,27 @@
 
 class CTakeDamageResult;
 class CTakeDamageInfo;
+// Full CCheckTransmitInfo as reversed in CS2Fixes (src/cs2_sdk/cchecktransmitinfo.h); hl2sdk
+// only declares m_pTransmitEntity. m_nPlayerSlot must stay at 576 — that is what the
+// "CheckTransmitPlayerSlot" gamedata offset and the managed CCheckTransmitInfo struct assume.
 class CCheckTransmitInfoHack
 {
   public:
-    CBitVec<16384>* m_pTransmitEntity;
+    CBitVec<16384>* m_pTransmitEntity;     // entities visible/sent to client
+    CBitVec<16384>* m_pTransmitNonPlayers; // non-player entities needing deletion deltas
+    CBitVec<16384>* m_pTransmitOutOfPVS;   // entities that left PVS but still need delta update
+    CBitVec<16384>* m_pTransmitAlways;     // entity n is always sent even if not in PVS (HLTV and Replay only)
 
   private:
-    [[maybe_unused]] int8_t m_pad8[568];
+    [[maybe_unused]] int8_t m_vecTargetSlots[24]; // CUtlVector<CPlayerSlot>
+    [[maybe_unused]] int8_t m_VisInfo[520];       // vis_info_t
 
   public:
     int32_t m_nPlayerSlot;
     bool m_bFullUpdate;
 };
+static_assert(offsetof(CCheckTransmitInfoHack, m_nPlayerSlot) == 576, "CCheckTransmitInfoHack layout drifted");
+static_assert(sizeof(CCheckTransmitInfoHack) == 584, "CCheckTransmitInfoHack layout drifted");
 
 namespace counterstrikesharp {
 class ScriptCallback;

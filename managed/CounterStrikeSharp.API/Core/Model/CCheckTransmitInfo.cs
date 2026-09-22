@@ -19,6 +19,23 @@ using System.Runtime.InteropServices;
 
 namespace CounterStrikeSharp.API.Core
 {
+    // Layout of the engine's CCheckTransmitInfo (584 bytes). hl2sdk only declares the first
+    // pointer; the full struct is reversed in CS2Fixes (src/cs2_sdk/cchecktransmitinfo.h):
+    //
+    //   +0x00  CBitVec<MAX_EDICTS>* m_pTransmitEntity
+    //   +0x08  CBitVec<MAX_EDICTS>* m_pTransmitNonPlayers
+    //   +0x10  CBitVec<MAX_EDICTS>* m_pTransmitOutOfPVS
+    //   +0x18  CBitVec<MAX_EDICTS>* m_pTransmitAlways
+    //   +0x20  CUtlVector<CPlayerSlot> m_vecTargetSlots
+    //   +0x38  vis_info_t m_VisInfo (520 bytes)
+    //   +0x240 CPlayerSlot m_nPlayerSlot          (gamedata "CheckTransmitPlayerSlot" = 576)
+    //   +0x244 bool m_bFullUpdate
+    //
+    // TransmitAlways used to sit at +0x8, which is really m_pTransmitNonPlayers. Clearing an
+    // entity from TransmitEntities alone leaves the client with a stale copy of it — the
+    // engine only emits the deletion delta for entities that are also set in
+    // TransmitNonPlayers — and anything still referencing it client-side (particles, child
+    // entities) logs "Missing client entity N". Use Hide() to do both.
     [StructLayout(LayoutKind.Explicit)]
     public struct CCheckTransmitInfo
     {
@@ -29,10 +46,40 @@ namespace CounterStrikeSharp.API.Core
         public CFixedBitVecBase TransmitEntities;
 
         /// <summary>
-        /// Entity n is always send even if not in PVS (HLTV and Replay only)
+        /// Non-player entity n needs a deletion delta sent to the client.
+        /// Set this together with clearing <see cref="TransmitEntities"/> when hiding an entity,
+        /// otherwise the client keeps a stale copy and logs "Missing client entity".
         /// </summary>
         [FieldOffset(0x8)]
+        public CFixedBitVecBase TransmitNonPlayers;
+
+        /// <summary>
+        /// Entity n left the PVS but still needs a delta update
+        /// </summary>
+        [FieldOffset(0x10)]
+        public CFixedBitVecBase TransmitOutOfPVS;
+
+        /// <summary>
+        /// Entity n is always send even if not in PVS (HLTV and Replay only)
+        /// </summary>
+        [FieldOffset(0x18)]
         public CFixedBitVecBase TransmitAlways;
+
+        /// <summary>
+        /// Stop transmitting entity n to this client and make the engine send the deletion delta,
+        /// so the client actually removes its copy instead of keeping a stale one.
+        /// </summary>
+        public void Hide(CEntityInstance entityInstance) => Hide((int)entityInstance.Index);
+
+        /// <inheritdoc cref="Hide(CEntityInstance)"/>
+        public void Hide(uint entityIndex) => Hide((int)entityIndex);
+
+        /// <inheritdoc cref="Hide(CEntityInstance)"/>
+        public void Hide(int entityIndex)
+        {
+            TransmitEntities.Remove(entityIndex);
+            TransmitNonPlayers.Add(entityIndex);
+        }
     };
 
     public sealed class CCheckTransmitInfoList : NativeObject, IReadOnlyList<(CCheckTransmitInfo info, CCSPlayerController? player)>
