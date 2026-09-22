@@ -42,8 +42,8 @@
   "CCSPlayerPawnBase_PostThink": {
     "signatures": {
       "library": "server",
-      "windows": "40 55 56 41 54 48 8B EC",
-      "linux": "55 48 89 E5 41 56 41 55 41 54 53 48 89 FB 48 83 EC ? E8 ? ? ? ? 80 BB ? 15 00 00 ?"
+      "windows": "40 55 56 41 54 48 8B EC 48 83 EC 50 4C 89 AC 24",
+      "linux": "55 48 89 E5 41 56 41 55 41 54 53 48 89 FB 48 83 EC 10 E8 ? ? ? ? 80"
     }
   },
   "CGameEventManager_Init": {
@@ -70,7 +70,7 @@
   "CBaseModelEntity_SetModel": {
     "signatures": {
       "library": "server",
-      "windows": "40 53 48 83 EC ? 48 8B D9 4C 8B C2 48 8B 0D 95 06 ? ?",
+      "windows": "40 53 48 83 EC 20 48 8B D9 4C 8B C2 48 8B 0D ? ? ? ? 48 8D 54 24 40 48 8B 01 FF 50 60 48 8B 54 24 40 48 8B CB E8 ? ? ? ? 48 83 C4 20 5B C3 CC CC CC CC CC CC CC CC CC CC CC CC CC CC CC 48",
       "linux": "55 48 89 E5 53 48 89 FB 48 83 EC ? 48 8D 05 7D ? ? ? 48 8B 38 48 8B 07 FF 50 ?"
     }
   },
@@ -202,7 +202,7 @@
     "signatures": {
       "library": "server",
       "windows": "48 85 D2 0F 84 ? ? ? ? 48 89 5C 24 ? 57 48 83 EC ? 48 8B DA 48 8B F9 E8 ? ? ? ?",
-      "linux": "48 85 F6 74 0B E9 C6 84 FF FF"
+      "linux": "48 85 F6 74 0B E9 ? ? ? ? 66 0F 1F 44 00 00 C3 CC CC CC CC CC CC CC CC CC CC CC CC CC CC CC 55 48 89 E5 41 54 41"
     }
   },
   "CBaseEntity_Teleport": {
@@ -249,7 +249,7 @@
     "signatures": {
       "library": "server",
       "windows": "48 8B 1D ? ? ? ? 48 85 DB 0F 84 ? ? ? ? BD",
-      "linux": "4C 8B 35 ? ? ? ? 4D 85 F6 75"
+      "linux": "4C 8B 35 ? ? ? ? 4D 85 F6 75 32 E9 ? ? ?"
     }
   },
   "CEntityResourceManifest_AddResource": {
