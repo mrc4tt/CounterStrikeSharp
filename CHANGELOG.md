@@ -1,3 +1,56 @@
+## What's Changed in v1.0.405
+* gamedata: 14182 (auto-generated from CS2_VibeSignatures) ([7ae5cb1](https://github.com/mrc4tt/CounterStrikeSharp/commit/7ae5cb15c566d862258e3acf972fafb64f5f775a))
+* fix: marshal System.Drawing.Color across the native boundary ([53ee78b](https://github.com/mrc4tt/CounterStrikeSharp/commit/53ee78bcbc2ce3060c9041b71ce5a7074d1e1f22))
+* gamedata: fix AcceptInput signature and vtable offsets for 2000914 ([1eefb7d](https://github.com/mrc4tt/CounterStrikeSharp/commit/1eefb7df3b33196dcaba41f701b0bf22996515e3))
+* build: bump hl2sdk-cs2 to AlliedModders cs2 tip (625bfd4e) ([6217552](https://github.com/mrc4tt/CounterStrikeSharp/commit/6217552d7d47e787c5333ce667c684c273634298))
+* build: bump hl2sdk-cs2 to AlliedModders cs2 tip (aeaa10b6) ([c068ca1](https://github.com/mrc4tt/CounterStrikeSharp/commit/c068ca193b45b9e29ee3232ad9bf1053e805884e))
+* build: bump hl2sdk-cs2 to AlliedModders cs2 tip (8d169eed) ([91bf5eb](https://github.com/mrc4tt/CounterStrikeSharp/commit/91bf5eb7becde26361d2ed072fd57a2df0e8e671))
+* Revert "build: track mrc4tt/metamod-source for the strict KHook signature parser" ([11fa964](https://github.com/mrc4tt/CounterStrikeSharp/commit/11fa9645e057ab5606d6d0d85175b6b067b1f74e))
+* Revert "build: track mrc4tt/hl2sdk cs2, resolve GetEconItemSystem from gamedata" ([14bc51e](https://github.com/mrc4tt/CounterStrikeSharp/commit/14bc51e7ea5fdcd3d7430490628906c4b55bf7c6))
+* Merge pull request #18 from mrc4tt/chore/automated/schema-update in [#18](https://github.com/mrc4tt/CounterStrikeSharp/pull/18) ([400c2b2](https://github.com/mrc4tt/CounterStrikeSharp/commit/400c2b251c118959942488018bd5ba577038828f))
+* chore: update schema definitions to 1.41.8.2 ([79433bb](https://github.com/mrc4tt/CounterStrikeSharp/commit/79433bbec539e37d9e8855a10de6dee6bc5a8fe2))
+* build: track mrc4tt/hl2sdk cs2, resolve GetEconItemSystem from gamedata ([461e9a4](https://github.com/mrc4tt/CounterStrikeSharp/commit/461e9a4b3955aafd5fa22383286fef97e2d620c6))
+* build: track mrc4tt/metamod-source for the strict KHook signature parser ([de959dc](https://github.com/mrc4tt/CounterStrikeSharp/commit/de959dc1f52329d483bd218349cd7c1af2830556))
+* fix: skip stub matches instead of ending the signature search ([eb3c020](https://github.com/mrc4tt/CounterStrikeSharp/commit/eb3c0202e4b2d1612e34ceba14bfc193a090f2c0))
+* forgot entitymanager ([a581f9a](https://github.com/mrc4tt/CounterStrikeSharp/commit/a581f9af4905840dc33d75687d0ebcab5d90b6dc))
+* fix: normalise signatures before handing them to KHook ([d099552](https://github.com/mrc4tt/CounterStrikeSharp/commit/d0995529fd9bee76d31572f923e354417970c5ab))
+* fix: log signatures in IDA style ([e795ea8](https://github.com/mrc4tt/CounterStrikeSharp/commit/e795ea8e38baf274aa9cf4531eae79993604de1d))
+* fix: send deletion deltas for entities hidden via CheckTransmit ([4b9e77c](https://github.com/mrc4tt/CounterStrikeSharp/commit/4b9e77cf5e27f72f298621cfabb458958af9453d))
+* fix ([3403018](https://github.com/mrc4tt/CounterStrikeSharp/commit/3403018ebcbb6e8ffa90b8b6912232471da27c90))
+* fix: drop the orphan DynoHook and funchook gitlinks again ([a0bdd13](https://github.com/mrc4tt/CounterStrikeSharp/commit/a0bdd1383a967afa311dea1e2f33a3259c302252))
+* fix: stop opening log files in Serilog shared mode ([ad46f56](https://github.com/mrc4tt/CounterStrikeSharp/commit/ad46f56fc06a4eb1a02b3bdf8a18e9db96b8db36))
+* gamedata: deploy the regenerated CCSCustomHudLayout win64 signatures ([067cd06](https://github.com/mrc4tt/CounterStrikeSharp/commit/067cd06de8eac8fe5587faf1e3fa2c868e489359))
+* fix: report a signature that matches more than one address ([6bd7cec](https://github.com/mrc4tt/CounterStrikeSharp/commit/6bd7cec0bcec04681c33078e459fc479d24d07a0))
+* fix: validate the PE headers before walking them in GetOriginalBytes ([6438a0f](https://github.com/mrc4tt/CounterStrikeSharp/commit/6438a0f7c95aed20948849608e149a1a9528a096))
+* fix: resolve module handles by path, bound the signature scan, anchor RTTI names ([c35cb23](https://github.com/mrc4tt/CounterStrikeSharp/commit/c35cb237e23a93406e841c50fdaaed564e89012d))
+* fix: stop treating vtable slot 0 as a missing gamedata offset ([47c09af](https://github.com/mrc4tt/CounterStrikeSharp/commit/47c09afd0449ccfa174c9cab75900e3d3ded9eac))
+* update ([bd84a6b](https://github.com/mrc4tt/CounterStrikeSharp/commit/bd84a6bf0acb8747ade963a93dff51f73ebbf0e9))
+* [fix] formatting. ([d66bc9a](https://github.com/mrc4tt/CounterStrikeSharp/commit/d66bc9a8cbeed35f612fcba8237667b8955fa67d))
+* fix: correct ELF RVA to file offset, and stop freeing a static game system ([148fb3c](https://github.com/mrc4tt/CounterStrikeSharp/commit/148fb3c5ca7908a638154d0aa9aca967ce4322ed))
+* RayTraceImpl included on core ([71dc009](https://github.com/mrc4tt/CounterStrikeSharp/commit/71dc0097088dae29c22fa65736fe91f27ed79af4))
+* ⠀ ([4fcd489](https://github.com/mrc4tt/CounterStrikeSharp/commit/4fcd4899f7c23a19e44ab6cde8bc5ab6a9331b8d))
+* ⠀ ([632e87a](https://github.com/mrc4tt/CounterStrikeSharp/commit/632e87a05a71202701a1a3566964aaa95a12313b))
+* ⠀ ([5d1a527](https://github.com/mrc4tt/CounterStrikeSharp/commit/5d1a527d355dc8ad550a0724f1fca060c5763123))
+* ⠀ ([a44dec0](https://github.com/mrc4tt/CounterStrikeSharp/commit/a44dec004a26521115a63f3dfa9672a7c45ffabd))
+* ⠀ ([dfbd88c](https://github.com/mrc4tt/CounterStrikeSharp/commit/dfbd88cd24d6e88cb4cbbdf92f587de760ae5338))
+* ⠀ ([4a5c056](https://github.com/mrc4tt/CounterStrikeSharp/commit/4a5c056e175094ec1430adce00f3b1d3d997f506))
+* ⠀ ([0659e04](https://github.com/mrc4tt/CounterStrikeSharp/commit/0659e04147f3326692d726e1079fb564e75692d6))
+* ⠀ ([8841a75](https://github.com/mrc4tt/CounterStrikeSharp/commit/8841a7530649df6c024971d10af8d47455d85344))
+* ⠀ ([203e837](https://github.com/mrc4tt/CounterStrikeSharp/commit/203e83730dc8e0b3c78ab487bde0e5e7ef21dc51))
+* Merge pull request #16 from mrc4tt/ci/gamedata-selfhosted in [#16](https://github.com/mrc4tt/CounterStrikeSharp/pull/16) ([357ab72](https://github.com/mrc4tt/CounterStrikeSharp/commit/357ab720b3925a03aa60ac32d79daa2b9116b858))
+* ci: satisfy shellcheck, move off the node20 cache action, point at /srv ([db13d23](https://github.com/mrc4tt/CounterStrikeSharp/commit/db13d232e45a8ff760d8d99d049d5a6e1bda7c36))
+* ci: check gamedata signatures against real binaries on a self-hosted runner ([26af716](https://github.com/mrc4tt/CounterStrikeSharp/commit/26af716785ecfff7fc591ccab2eaa4571c15e8fc))
+* Merge pull request #15 from mrc4tt/chore/bump-hl2sdk-metamod in [#15](https://github.com/mrc4tt/CounterStrikeSharp/pull/15) ([de77d06](https://github.com/mrc4tt/CounterStrikeSharp/commit/de77d065ae601854fb86123688691b2ce179698d))
+* ci: resolve the LLVM cross toolchain by directory, not by PATH ([e844444](https://github.com/mrc4tt/CounterStrikeSharp/commit/e844444f86317f74faca6b782f95fa18330fdfb1))
+* feat(eng): scan gamedata signatures against binaries on disk ([ca3283a](https://github.com/mrc4tt/CounterStrikeSharp/commit/ca3283a608d0499f9784151412e6d8ad42aeca25))
+* ci: build the Windows DLL on every PR via the clang-cl cross toolchain ([8869da9](https://github.com/mrc4tt/CounterStrikeSharp/commit/8869da951d10479bc2ae74008a4bf75ea9a59a45))
+* chore: ignore xwin's download cache ([236054e](https://github.com/mrc4tt/CounterStrikeSharp/commit/236054e3075cc9d82471a0f30cd8a5a2d5105d34))
+* build: add a clang-cl/xwin toolchain to cross-build win64 from Linux ([e2c30c8](https://github.com/mrc4tt/CounterStrikeSharp/commit/e2c30c84a8e56495fd1544264c1682f28c42968a))
+* chore(deps): bump hl2sdk-cs2 to 3b9adbdf and port to the new tier1 API ([31fb4b5](https://github.com/mrc4tt/CounterStrikeSharp/commit/31fb4b51ab1d3d47adf9a8ac42ae1f6d170e4d49))
+* chore(deps): bump metamod-source to fa6f80e ([e62768d](https://github.com/mrc4tt/CounterStrikeSharp/commit/e62768dd04f0962611cd9c064318748d21203819))
+* Update README.md ([06585bc](https://github.com/mrc4tt/CounterStrikeSharp/commit/06585bcf3acf3f517d78b18a07a32ff629428b97))
+* Update README.md ([03ac869](https://github.com/mrc4tt/CounterStrikeSharp/commit/03ac869ff3cb64624bcd8e86a8090a843d48f1d5))
+
 ## What's Changed in v1.0.404
 * ⠀ ([c824638](https://github.com/mrc4tt/CounterStrikeSharp/commit/c824638984a837bc394b472e50a36020945407f6))
 *  ([b212c4f](https://github.com/mrc4tt/CounterStrikeSharp/commit/b212c4ff98aed15ab5d782b9076f1545d1045079))
@@ -241,8 +294,6 @@
 
 ## What's Changed in v1.0.376
 * test new action ([d3f0fd1](https://github.com/mrc4tt/CounterStrikeSharp/commit/d3f0fd1530abfce10b3cd1fb9fbe41eca217f24b))
-
-## What's Changed in v1.0.375
 * feat: update API.cs ([69a2382](https://github.com/mrc4tt/CounterStrikeSharp/commit/69a23820e33d179178092499134171aa3827616b))
 
 ## What's Changed in v1.0.374
@@ -1286,14 +1337,14 @@
 * Merge branch 'FixSteamIdOnWindowsServer' into main by [@roflmuffin](https://github.com/roflmuffin) ([98b2b01](https://github.com/mrc4tt/CounterStrikeSharp/commit/98b2b01992ce99054a5aac6dc5f2bafe818f2792))
 * tests: update tests, throw out of range exception <= 0 by [@roflmuffin](https://github.com/roflmuffin) ([a537be8](https://github.com/mrc4tt/CounterStrikeSharp/commit/a537be89e41e05a6e76b0aefc31d5212b248eb0c))
 * Merge remote-tracking branch 'origin/main' into FixSteamIdOnWindowsServer by [@roflmuffin](https://github.com/roflmuffin) ([c07d5d2](https://github.com/mrc4tt/CounterStrikeSharp/commit/c07d5d2aa95ffddbb12e3f6869daab1a6bd66262))
-
-## What's Changed in v1.0.114
-* feat: add basic tests project with SteamID tests by [@roflmuffin](https://github.com/roflmuffin) ([1cc9555](https://github.com/mrc4tt/CounterStrikeSharp/commit/1cc95555feda6c6e4a1e7285a7288a2ff775defb))
-* chore: bump hl2sdk version by [@roflmuffin](https://github.com/roflmuffin) ([378c28d](https://github.com/mrc4tt/CounterStrikeSharp/commit/378c28dfd0b235cdf14acecdd9ced0b8763a0500))
 * Fix SteamId on Windows Server #182 by [@TheR00st3r](https://github.com/TheR00st3r) ([c7343c3](https://github.com/mrc4tt/CounterStrikeSharp/commit/c7343c3b7a511ecaefac181ab0c9d6f273ac630e))
 
 ## New Contributors
 * [@TheR00st3r](https://github.com/TheR00st3r) made their first contribution
+
+## What's Changed in v1.0.114
+* feat: add basic tests project with SteamID tests by [@roflmuffin](https://github.com/roflmuffin) ([1cc9555](https://github.com/mrc4tt/CounterStrikeSharp/commit/1cc95555feda6c6e4a1e7285a7288a2ff775defb))
+* chore: bump hl2sdk version by [@roflmuffin](https://github.com/roflmuffin) ([378c28d](https://github.com/mrc4tt/CounterStrikeSharp/commit/378c28dfd0b235cdf14acecdd9ced0b8763a0500))
 
 ## What's Changed in v1.0.112
 * Add VData Access by [@roflmuffin](https://github.com/roflmuffin) ([62f6b09](https://github.com/mrc4tt/CounterStrikeSharp/commit/62f6b09f50aff80007f5496c0383aa59faf687c4))
@@ -1397,9 +1448,6 @@
 ## What's Changed in v1.0.82
 * feat: Add Schema Size Native by [@roflmuffin](https://github.com/roflmuffin) ([911084e](https://github.com/mrc4tt/CounterStrikeSharp/commit/911084e71ecb51fcb51687ef4815827939f96d58))
 * Merge remote-tracking branch 'origin/main' into feature/add-schema-class-size by [@roflmuffin](https://github.com/roflmuffin) ([5b99206](https://github.com/mrc4tt/CounterStrikeSharp/commit/5b9920656827bd5b0e7d1c1ab5ecd42088beaf3f))
-
-## What's Changed in v1.0.81
-* Entity Handle Overhaul by [@roflmuffin](https://github.com/roflmuffin) ([9bcd0f7](https://github.com/mrc4tt/CounterStrikeSharp/commit/9bcd0f7e9214dc71fe93d86fc847c559906875d3))
 * Merge branch 'feature/entity-handle-overhaul' into feature/add-schema-class-size by [@roflmuffin](https://github.com/roflmuffin) ([4bfdf28](https://github.com/mrc4tt/CounterStrikeSharp/commit/4bfdf28beb2f91f079469eb4f377846ba864cb2d))
 * chore: update test plugin version by [@roflmuffin](https://github.com/roflmuffin) ([11c6486](https://github.com/mrc4tt/CounterStrikeSharp/commit/11c6486ec59fdabc8e17e07e0341292bae51b2c9))
 * fix: bad style by [@roflmuffin](https://github.com/roflmuffin) ([ee69560](https://github.com/mrc4tt/CounterStrikeSharp/commit/ee69560a66a94deae63e3d40e9968a79eff388c0))
@@ -1407,6 +1455,16 @@
 * feat: add schema class size native, cast native objects to input argument by [@roflmuffin](https://github.com/roflmuffin) ([c4740d1](https://github.com/mrc4tt/CounterStrikeSharp/commit/c4740d1cc9d64fe50932300cfbe66cff24406153))
 * feat: add `Slot` to player controller by [@roflmuffin](https://github.com/roflmuffin) ([7e92f17](https://github.com/mrc4tt/CounterStrikeSharp/commit/7e92f178fd4cc051f8037e1cf5afd17f11cbe4dd))
 * Merge branch 'main' into feature/entity-handle-overhaul by [@roflmuffin](https://github.com/roflmuffin) ([107ca08](https://github.com/mrc4tt/CounterStrikeSharp/commit/107ca081324d4d90752656ae809c7fac06820c9b))
+* feat: remove native call from native entity instantiation by [@roflmuffin](https://github.com/roflmuffin) ([3d59a05](https://github.com/mrc4tt/CounterStrikeSharp/commit/3d59a05de831b07c1ef753f1d3ffd7442371313a))
+* feat: add `GetAllEntities` method, update implementation by [@roflmuffin](https://github.com/roflmuffin) ([77b7040](https://github.com/mrc4tt/CounterStrikeSharp/commit/77b7040d6c35b97c5c9b678a88f366bf4259c140))
+* feat: move entity system into managed code for perf by [@roflmuffin](https://github.com/roflmuffin) ([75de973](https://github.com/mrc4tt/CounterStrikeSharp/commit/75de9732ef9b8852ef418fbe2a2597e448f0b8cb))
+* feat: update test plugin by [@roflmuffin](https://github.com/roflmuffin) ([7c7f52a](https://github.com/mrc4tt/CounterStrikeSharp/commit/7c7f52a2196f5856362602c345b58c711c679a1e))
+* feat: add `EntityIndex` back to api compat, mark as obsolete by [@roflmuffin](https://github.com/roflmuffin) ([cd593fb](https://github.com/mrc4tt/CounterStrikeSharp/commit/cd593fb238030178dad895e550a685052b290876))
+* fix: remove expensive calls in bullet impact event by [@roflmuffin](https://github.com/roflmuffin) ([c5cc65b](https://github.com/mrc4tt/CounterStrikeSharp/commit/c5cc65be481a69d22f953d5ee0d0f5262366a45e))
+* feat: add `NativeEntity` class by [@roflmuffin](https://github.com/roflmuffin) ([59928bb](https://github.com/mrc4tt/CounterStrikeSharp/commit/59928bbcc55f4a71ec080636613e14ab58539f45))
+
+## What's Changed in v1.0.81
+* Entity Handle Overhaul by [@roflmuffin](https://github.com/roflmuffin) ([9bcd0f7](https://github.com/mrc4tt/CounterStrikeSharp/commit/9bcd0f7e9214dc71fe93d86fc847c559906875d3))
 
 ## What's Changed in v1.0.80
 * feat: wrap `ExecuteClientCommand` and add sound example by [@roflmuffin](https://github.com/roflmuffin) ([8cda8d9](https://github.com/mrc4tt/CounterStrikeSharp/commit/8cda8d9a500692a9656846aef58449c3e0ceb1a5))
@@ -1416,13 +1474,6 @@
 
 ## What's Changed in v1.0.78
 * fix: wildcard bytes for signatures (resolves #123 and related issues) by [@KillStr3aK](https://github.com/KillStr3aK) ([e12a7cb](https://github.com/mrc4tt/CounterStrikeSharp/commit/e12a7cb17ad610e7611c3ab10f52c451eabbdbef))
-* feat: remove native call from native entity instantiation by [@roflmuffin](https://github.com/roflmuffin) ([3d59a05](https://github.com/mrc4tt/CounterStrikeSharp/commit/3d59a05de831b07c1ef753f1d3ffd7442371313a))
-* feat: add `GetAllEntities` method, update implementation by [@roflmuffin](https://github.com/roflmuffin) ([77b7040](https://github.com/mrc4tt/CounterStrikeSharp/commit/77b7040d6c35b97c5c9b678a88f366bf4259c140))
-* feat: move entity system into managed code for perf by [@roflmuffin](https://github.com/roflmuffin) ([75de973](https://github.com/mrc4tt/CounterStrikeSharp/commit/75de9732ef9b8852ef418fbe2a2597e448f0b8cb))
-* feat: update test plugin by [@roflmuffin](https://github.com/roflmuffin) ([7c7f52a](https://github.com/mrc4tt/CounterStrikeSharp/commit/7c7f52a2196f5856362602c345b58c711c679a1e))
-* feat: add `EntityIndex` back to api compat, mark as obsolete by [@roflmuffin](https://github.com/roflmuffin) ([cd593fb](https://github.com/mrc4tt/CounterStrikeSharp/commit/cd593fb238030178dad895e550a685052b290876))
-* fix: remove expensive calls in bullet impact event by [@roflmuffin](https://github.com/roflmuffin) ([c5cc65b](https://github.com/mrc4tt/CounterStrikeSharp/commit/c5cc65be481a69d22f953d5ee0d0f5262366a45e))
-* feat: add `NativeEntity` class by [@roflmuffin](https://github.com/roflmuffin) ([59928bb](https://github.com/mrc4tt/CounterStrikeSharp/commit/59928bbcc55f4a71ec080636613e14ab58539f45))
 
 ## What's Changed in v1.0.77
 * fix: bugs in config manager & plugin load, fixes #138 by [@roflmuffin](https://github.com/roflmuffin) ([319b116](https://github.com/mrc4tt/CounterStrikeSharp/commit/319b116c5fcc364305c1db60c9a3d73fcf02985d))
@@ -1592,10 +1643,10 @@
 ## What's Changed in v1.0.23
 * ci: add package write permission by [@roflmuffin](https://github.com/roflmuffin) ([4b432e9](https://github.com/mrc4tt/CounterStrikeSharp/commit/4b432e9efc058c3f9ed8b38b3e0f7c8561190732))
 * Merge remote-tracking branch 'origin/main' into main by [@roflmuffin](https://github.com/roflmuffin) ([22bbf83](https://github.com/mrc4tt/CounterStrikeSharp/commit/22bbf835c7ae019cfa5a5d8fd66796dd08c2e42e))
+* ci: try publishing nuget package by [@roflmuffin](https://github.com/roflmuffin) ([092a607](https://github.com/mrc4tt/CounterStrikeSharp/commit/092a6077c3e6d8424cdefd0467a9d273e0df0a97))
 
 ## What's Changed in v1.0.22
 * Update README.md by [@pedrotski](https://github.com/pedrotski) ([4430060](https://github.com/mrc4tt/CounterStrikeSharp/commit/4430060efdf4c59aee36e2ece0b4e0ce247a7c04))
-* ci: try publishing nuget package by [@roflmuffin](https://github.com/roflmuffin) ([092a607](https://github.com/mrc4tt/CounterStrikeSharp/commit/092a6077c3e6d8424cdefd0467a9d273e0df0a97))
 * fix: prevent server crash on duplicate command registration, fixes #51 by [@roflmuffin](https://github.com/roflmuffin) ([77ea6fd](https://github.com/mrc4tt/CounterStrikeSharp/commit/77ea6fd80d11033343d981cfad7f27dffd50e8ad))
 
 ## New Contributors
@@ -1617,10 +1668,10 @@
 
 ## What's Changed in v1.0.16
 * Merge branch 'main' of github.com:roflmuffin/CounterStrikeSharp into main by [@roflmuffin](https://github.com/roflmuffin) ([d4a2ae6](https://github.com/mrc4tt/CounterStrikeSharp/commit/d4a2ae68e10b27286d926a9a9edfa9f8780dcf1c))
+* chore: simplify auto-copy `configs` folder by [@roflmuffin](https://github.com/roflmuffin) ([82c92f5](https://github.com/mrc4tt/CounterStrikeSharp/commit/82c92f555b0f5afaf65d05ea7bbd438d633c1e58))
 
 ## What's Changed in v1.0.15
 * feat: Add Current API Version to css console command by [@switz](https://github.com/switz) ([19a0923](https://github.com/mrc4tt/CounterStrikeSharp/commit/19a0923559189ff5114f49c90e96355001b4e43c))
-* chore: simplify auto-copy `configs` folder by [@roflmuffin](https://github.com/roflmuffin) ([82c92f5](https://github.com/mrc4tt/CounterStrikeSharp/commit/82c92f555b0f5afaf65d05ea7bbd438d633c1e58))
 
 ## New Contributors
 * [@switz](https://github.com/switz) made their first contribution
