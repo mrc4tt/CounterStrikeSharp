@@ -276,4 +276,37 @@ std::vector<int16_t> CGameConfig::HexToByte(std::string_view src)
 
     return result;
 }
+
+std::string CGameConfig::ByteToHex(const std::vector<int16_t>& bytes)
+{
+    static constexpr char digits[] = "0123456789ABCDEF";
+
+    std::string result;
+    result.reserve(bytes.size() * 3);
+
+    for (const auto byte : bytes)
+    {
+        if (!result.empty()) result += ' ';
+
+        if (byte < 0)
+        {
+            result += '?';
+            continue;
+        }
+
+        result += digits[(byte >> 4) & 0xF];
+        result += digits[byte & 0xF];
+    }
+
+    return result;
+}
+
+std::string CGameConfig::FormatSignature(std::string_view src)
+{
+    // Already IDA-style: echo it verbatim rather than normalising "??" to "?".
+    if (src.empty() || src[0] != '\\') return std::string(src);
+
+    const auto bytes = HexToByte(src);
+    return bytes.empty() ? std::string(src) : ByteToHex(bytes);
+}
 } // namespace counterstrikesharp

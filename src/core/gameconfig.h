@@ -33,6 +33,12 @@ class CGameConfig
 
     static std::string GetDirectoryName(const std::string& directoryPathInput);
     static std::vector<int16_t> HexToByte(std::string_view src);
+    // IDA-style rendering ("48 8B ? ?") of a parsed signature, for log output.
+    static std::string ByteToHex(const std::vector<int16_t>& bytes);
+    // Renders a signature in either accepted spelling ("\x48\x2A" or "48 ?") IDA-style, so logs
+    // read the same whichever form gamedata or a plugin supplied. Returns the input unchanged
+    // when it does not parse.
+    static std::string FormatSignature(std::string_view src);
 
   private:
     std::string m_sPath;

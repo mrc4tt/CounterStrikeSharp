@@ -43,7 +43,7 @@ public partial class VirtualFunction
             catch (Exception ex)
             {
                 Application.Instance.Logger.LogError(ex,
-                    "Failed to resolve native function for signature \"{Signature}\"", signature);
+                    "Failed to resolve native function for signature \"{Signature}\"", SignatureFormat.ToIdaStyle(signature));
             }
         }
 
@@ -65,7 +65,7 @@ public partial class VirtualFunction
             catch (Exception ex)
             {
                 Application.Instance.Logger.LogError(ex,
-                    "Failed to resolve native function for signature \"{Signature}\" in {Binary}", signature, binarypath);
+                    "Failed to resolve native function for signature \"{Signature}\" in {Binary}", SignatureFormat.ToIdaStyle(signature), binarypath);
             }
         }
 

@@ -631,8 +631,8 @@ void* CModule::RejectStubAddress(void* address, const char* signature) const
     }))
         return address;
 
-    CSSHARP_CORE_ERROR("Signature \"{}\" resolved to {} in {}{}, which is a linker stub, not code. Rejecting it.", signature, address,
-                       m_pszModule, section->m_szName);
+    CSSHARP_CORE_ERROR("Signature \"{}\" resolved to {} in {} ({}), which is a linker stub, not code. Rejecting it.",
+                       CGameConfig::FormatSignature(signature), address, m_pszModule, section->m_szName);
     return nullptr;
 }
 
@@ -672,7 +672,7 @@ void CModule::WarnIfAmbiguous(const char* signature, const std::vector<int16_t>&
 
     CSSHARP_CORE_WARN("Signature \"{}\" matches {}{} addresses in {}. Resolution takes the first one, "
                       "which is the intended function only by chance - the pattern needs more anchor bytes.",
-                      signature, matches >= kReportLimit ? "at least " : "", matches, m_pszModule);
+                      CGameConfig::ByteToHex(sigBytes), matches >= kReportLimit ? "at least " : "", matches, m_pszModule);
 }
 
 void* CModule::FindSignature(const char* signature)
@@ -708,7 +708,7 @@ void* CModule::FindSignature(const char* signature)
         {
             CSSHARP_CORE_DEBUG(
                 "Signature {} found different pointers using different signature scanning methods. Found old address: {}, new address: {}",
-                signature, (void*)pOld, (void*)pNew);
+                CGameConfig::ByteToHex(pData), (void*)pOld, (void*)pNew);
         }
 
         address = pNew != nullptr ? pNew : pOld;

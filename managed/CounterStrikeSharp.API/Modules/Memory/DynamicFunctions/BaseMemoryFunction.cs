@@ -39,7 +39,7 @@ public abstract class BaseMemoryFunction : NativeObject
                 // IntPtr.Zero, and invoking that later jumps to address 0 and crashes
                 // with no clue why. Log so the bad signature is diagnosable.
                 Application.Instance.Logger.LogError(ex,
-                    "Failed to resolve native function for signature \"{Signature}\"", signature);
+                    "Failed to resolve native function for signature \"{Signature}\"", SignatureFormat.ToIdaStyle(signature));
             }
         }
 
@@ -60,7 +60,7 @@ public abstract class BaseMemoryFunction : NativeObject
             catch (Exception ex)
             {
                 Application.Instance.Logger.LogError(ex,
-                    "Failed to resolve native function for signature \"{Signature}\" in {Binary}", signature, binarypath);
+                    "Failed to resolve native function for signature \"{Signature}\" in {Binary}", SignatureFormat.ToIdaStyle(signature), binarypath);
             }
         }
 

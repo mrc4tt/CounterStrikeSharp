@@ -115,7 +115,7 @@ ValveFunction* CreateVirtualFunctionBySignature(ScriptContext& script_context)
 
     if (function_addr == nullptr)
     {
-        script_context.ThrowNativeError("Could not find signature %s", signature_hex_string);
+        script_context.ThrowNativeError("Could not find signature %s", CGameConfig::FormatSignature(signature_hex_string).c_str());
         return nullptr;
     }
 
