@@ -1,5 +1,6 @@
 #include <khook.hpp>
 #include "core/memory_module.h"
+#include "core/signature_pattern.h"
 
 #include <algorithm>
 #include <cstddef>
@@ -687,9 +688,15 @@ void* CModule::FindSignature(const char* signature)
 
     void* address = nullptr;
 
+    // KHook only parses the space-separated form; a code-style "\x48\x8B..." string reached it
+    // verbatim and was scanned as its last byte alone (see signature_pattern.h). Hand it the
+    // normalised form of what HexToByte parsed, and skip KHook when nothing parsed at all.
+    const auto khook_pattern = SignatureToSpacedHex(pData);
+
     for (const auto& segment : m_vecSegments)
     {
-        address = KHook::LookupSignature(reinterpret_cast<void*>(segment.address), segment.bytes.size(), signature);
+        if (khook_pattern.empty()) break;
+        address = KHook::LookupSignature(reinterpret_cast<void*>(segment.address), segment.bytes.size(), khook_pattern.c_str());
         if (address != nullptr) break;
     }
 
