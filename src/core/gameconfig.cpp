@@ -248,14 +248,19 @@ std::vector<int16_t> CGameConfig::HexToByte(std::string_view src)
 
         std::string byte(str.data(), str.size());
 
-        if (byte.substr(0, wildcard.size()) == wildcard)
+        if (byte == wildcard || (!is_code_style && byte == "??"))
         {
             result.emplace_back(-1);
             continue;
         }
 
-        if (byte.size() < 2)
+        // Exactly two hex digits per byte. Taking the first two of a longer token ("488B")
+        // shortens the pattern without saying so, which is how a signature ends up matching
+        // somewhere it was never meant to.
+        if (byte.size() != 2)
         {
+            CSSHARP_CORE_WARN("Signature contains a malformed byte `{0}`, discarding it", byte);
+
             return {};
         }
 

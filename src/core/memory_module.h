@@ -170,8 +170,14 @@ class CModule
     std::optional<std::vector<std::uint8_t>>
     GetOriginalBytes(const std::vector<std::uint8_t>& disk_data, std::uintptr_t rva, std::size_t size);
 
-    void* FindSignature(const std::vector<int16_t>& sigBytes);
-    void* FindSignatureAlternative(const std::vector<int16_t>& sigBytes);
+    // Internal scanners over the on-disk bytes and the live mapping respectively. Both skip
+    // matches that land in a linker stub (see IsStubAddress) and keep scanning.
+    void* FindSignature(const std::vector<int16_t>& sigBytes, const char* signature) const;
+    void* FindSignatureAlternative(const std::vector<int16_t>& sigBytes, const char* signature) const;
+
+    template <typename Accept>
+    static const std::uint8_t*
+    ScanForSignature(const std::uint8_t* data, std::size_t size, const std::vector<int16_t>& sigBytes, Accept&& accept);
 
     // Counts live matches, stopping once `limit` have been seen. Used to tell a unique
     // signature from one that merely happens to resolve first.
@@ -181,10 +187,11 @@ class CModule
     // an ambiguous pattern silently yields "a" function rather than "the" function.
     void WarnIfAmbiguous(const char* signature, const std::vector<int16_t>& sigBytes) const;
 
-    // Rejects a match that landed in a linker stub or a relocation table instead of real
-    // code. Those are never a legitimate signature target, and calling one is fatal:
+    // True (and logged) when a match landed in a linker stub or a relocation table instead of
+    // real code. Those are never a legitimate signature target, and calling one is fatal:
     // PLT0 of a BIND_NOW module jumps through an unfilled GOT slot straight to rip = 0.
-    void* RejectStubAddress(void* address, const char* signature) const;
+    // Scanners skip such a match and keep going rather than ending the search on it.
+    bool IsStubAddress(const void* address, const char* signature) const;
 };
 
 } // namespace counterstrikesharp::modules

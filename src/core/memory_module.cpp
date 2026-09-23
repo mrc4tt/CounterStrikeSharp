@@ -618,23 +618,21 @@ CModule::GetOriginalBytes(const std::vector<std::uint8_t>& disk_data, std::uintp
     return result;
 }
 
-void* CModule::RejectStubAddress(void* address, const char* signature) const
+bool CModule::IsStubAddress(const void* address, const char* signature) const
 {
-    if (address == nullptr) return nullptr;
-
     static constexpr std::array stub_sections = { ".init", ".plt", ".plt.got", ".plt.sec", ".fini", ".got", ".got.plt" };
 
     const auto* section = FindSectionContaining(address);
-    if (section == nullptr) return address;
+    if (section == nullptr) return false;
 
     if (std::none_of(stub_sections.begin(), stub_sections.end(), [&](const auto& i) {
         return section->m_szName == i;
     }))
-        return address;
+        return false;
 
-    CSSHARP_CORE_ERROR("Signature \"{}\" resolved to {} in {} ({}), which is a linker stub, not code. Rejecting it.",
+    CSSHARP_CORE_ERROR("Signature \"{}\" matched {} in {} ({}), which is a linker stub, not code. Skipping it.",
                        CGameConfig::FormatSignature(signature), address, m_pszModule, section->m_szName);
-    return nullptr;
+    return true;
 }
 
 std::size_t CModule::CountSignatureMatches(const std::vector<int16_t>& sigBytes, std::size_t limit) const
@@ -676,6 +674,39 @@ void CModule::WarnIfAmbiguous(const char* signature, const std::vector<int16_t>&
                       CGameConfig::ByteToHex(sigBytes), matches >= kReportLimit ? "at least " : "", matches, m_pszModule);
 }
 
+// First match of `sigBytes` in [data, data + size) that `accept` agrees with. A rejected match
+// does not end the scan - the next candidate is tried - so a pattern that also happens to sit in
+// a linker stub still resolves to the real function further on.
+template <typename Accept>
+const std::uint8_t*
+CModule::ScanForSignature(const std::uint8_t* data, std::size_t size, const std::vector<int16_t>& sigBytes, Accept&& accept)
+{
+    if (sigBytes.empty() || size < sigBytes.size()) return nullptr;
+
+    const auto first_byte = sigBytes[0];
+    const auto* stop = data + size - sigBytes.size() + 1; // one past the last candidate
+
+    for (const auto* current = data; current < stop; ++current)
+    {
+        if (first_byte != -1)
+        {
+            current = std::find(current, stop, static_cast<std::uint8_t>(first_byte));
+            if (current == stop) break;
+        }
+
+        const auto matches = std::equal(sigBytes.begin() + 1, sigBytes.end(), current + 1, [](auto opt, auto byte) {
+            return opt == -1 || opt == byte;
+        });
+
+        if (matches && accept(current))
+        {
+            return current;
+        }
+    }
+
+    return nullptr;
+}
+
 void* CModule::FindSignature(const char* signature)
 {
     if (signature == nullptr || strlen(signature) == 0)
@@ -683,33 +714,65 @@ void* CModule::FindSignature(const char* signature)
         return nullptr;
     }
 
-    // Parsed up front so the ambiguity check below can run whichever scanner resolved the address.
-    auto pData = CGameConfig::HexToByte(signature);
+    // Parse before anything scans. The host scanner (KHook::LookupSignature, i.e. khook's
+    // Ranges::Lookup) cannot be trusted with the raw string: it splits on spaces and reads only
+    // the last two characters of each token, so a code-style "\x48\x8B...\x2A" - one token -
+    // degrades silently into the one-byte pattern 2A, which matches almost immediately and hands
+    // back an arbitrary address. It returns nullptr both for "cannot parse" and "not found",
+    // and an empty pattern matches at `start`. So we parse, refuse degenerate patterns
+    // ourselves, and only ever hand it the canonical IDA form it parses faithfully.
+    const auto pData = CGameConfig::HexToByte(signature);
+    if (pData.empty())
+    {
+        CSSHARP_CORE_ERROR("Cannot convert signature \"{}\" to bytes", signature);
+        return nullptr;
+    }
+
+    // A pattern with too few literal bytes matches everywhere; resolving the first hit is
+    // worse than failing, because the caller goes on to call or detour it.
+    constexpr std::size_t kMinLiteralBytes = 4;
+    const auto literals = static_cast<std::size_t>(std::count_if(pData.begin(), pData.end(), [](auto b) {
+        return b != -1;
+    }));
+    if (literals < kMinLiteralBytes)
+    {
+        CSSHARP_CORE_ERROR("Signature \"{}\" has only {} literal byte(s); at least {} are required. Refusing it.",
+                           CGameConfig::ByteToHex(pData), literals, kMinLiteralBytes);
+        return nullptr;
+    }
+
+    // The only form KHook parses faithfully (see signature_pattern.h).
+    const auto canonical = SignatureToSpacedHex(pData);
 
     void* address = nullptr;
 
-    // KHook only parses the space-separated form; a code-style "\x48\x8B..." string reached it
-    // verbatim and was scanned as its last byte alone (see signature_pattern.h). Hand it the
-    // normalised form of what HexToByte parsed, and skip KHook when nothing parsed at all.
-    const auto khook_pattern = SignatureToSpacedHex(pData);
-
+    // Host scanner first: it reads through its own detours to the original bytes. A match in a
+    // linker stub is skipped and the scan resumes past it, instead of ending the search.
     for (const auto& segment : m_vecSegments)
     {
-        if (khook_pattern.empty()) break;
-        address = KHook::LookupSignature(reinterpret_cast<void*>(segment.address), segment.bytes.size(), khook_pattern.c_str());
+        if (segment.bytes.size() < pData.size()) continue;
+
+        auto start = segment.address;
+        const auto last = segment.address + segment.bytes.size() - pData.size();
+
+        while (address == nullptr && start <= last)
+        {
+            // Lookup reads `start + i` for every candidate `start` it tries, without clamping
+            // to `size` - bound the candidates so the reads stay inside the segment.
+            auto* hit = KHook::LookupSignature(reinterpret_cast<void*>(start), last - start + 1, canonical.c_str());
+            if (hit == nullptr) break;
+
+            if (!IsStubAddress(hit, signature)) address = hit;
+            start = reinterpret_cast<std::uintptr_t>(hit) + 1;
+        }
+
         if (address != nullptr) break;
     }
 
     if (address == nullptr)
     {
-        if (pData.empty()) [[unlikely]]
-        {
-            CSSHARP_CORE_ERROR("Cannot convert signture \"{}\" to bytes", signature);
-            return nullptr;
-        }
-
-        auto pOld = this->FindSignature(pData);
-        auto pNew = this->FindSignatureAlternative(pData);
+        auto pOld = this->FindSignature(pData, signature);
+        auto pNew = this->FindSignatureAlternative(pData, signature);
 
         if (pOld != pNew)
         {
@@ -721,7 +784,6 @@ void* CModule::FindSignature(const char* signature)
         address = pNew != nullptr ? pNew : pOld;
     }
 
-    address = RejectStubAddress(address, signature);
     if (address == nullptr) return nullptr;
 
     WarnIfAmbiguous(signature, pData);
@@ -729,68 +791,34 @@ void* CModule::FindSignature(const char* signature)
     return address;
 }
 
-void* CModule::FindSignature(const std::vector<int16_t>& sigBytes)
+void* CModule::FindSignature(const std::vector<int16_t>& sigBytes, const char* signature) const
 {
     for (auto&& segment : m_vecSegments)
     {
-        const auto size = segment.bytes.size();
-        auto* data = segment.bytes.data();
+        const auto* data = segment.bytes.data();
+        const auto match = ScanForSignature(data, segment.bytes.size(), sigBytes, [&](const std::uint8_t* current) {
+            return !IsStubAddress(reinterpret_cast<void*>(current - data + segment.address), signature);
+        });
 
-        auto first_byte = sigBytes[0];
-        std::uint8_t* end = data + size - sigBytes.size();
-
-        for (std::uint8_t* current = data; current <= end; ++current)
-        {
-            if (first_byte != -1) current = std::find(current, end, first_byte);
-
-            if (current == end)
-            {
-                break;
-            }
-
-            if (std::equal(sigBytes.begin() + 1, sigBytes.end(), current + 1, [](auto opt, auto byte) {
-                return opt == -1 || opt == byte;
-            }))
-            {
-                return reinterpret_cast<void*>(current - data + segment.address);
-            }
-        }
+        if (match != nullptr) return reinterpret_cast<void*>(match - data + segment.address);
     }
 
     return nullptr;
 }
 
-void* CModule::FindSignatureAlternative(const std::vector<int16_t>& sigBytes)
+void* CModule::FindSignatureAlternative(const std::vector<int16_t>& sigBytes, const char* signature) const
 {
-    if (m_base == 0 || m_size == 0)
+    if (m_base == nullptr || m_size == 0)
     {
         return nullptr;
     }
 
-    auto* data = reinterpret_cast<std::uint8_t*>(m_base);
-    const auto size = m_size;
+    const auto* data = reinterpret_cast<const std::uint8_t*>(m_base);
+    const auto match = ScanForSignature(data, m_size, sigBytes, [&](const std::uint8_t* current) {
+        return !IsStubAddress(current, signature);
+    });
 
-    auto first_byte = sigBytes[0];
-    std::uint8_t* end = data + size - sigBytes.size();
-
-    for (std::uint8_t* current = data; current <= end; ++current)
-    {
-        if (first_byte != -1) current = std::find(current, end, first_byte);
-
-        if (current == end)
-        {
-            break;
-        }
-
-        if (std::equal(sigBytes.begin() + 1, sigBytes.end(), current + 1, [](auto opt, auto byte) {
-            return opt == -1 || opt == byte;
-        }))
-        {
-            return reinterpret_cast<void*>(current - data + (std::uintptr_t)m_base);
-        }
-    }
-
-    return nullptr;
+    return const_cast<std::uint8_t*>(match);
 }
 
 void* CModule::FindInterface(std::string_view name)
