@@ -22,14 +22,14 @@
   },
   "CCSPlayerController_ChangeTeam": {
     "offsets": {
-      "windows": 103,
-      "linux": 102
+      "windows": 105,
+      "linux": 104
     }
   },
   "CCSPlayerController_Respawn": {
     "offsets": {
-      "windows": 270,
-      "linux": 272
+      "windows": 274,
+      "linux": 276
     }
   },
   "CBasePlayerController_SetPawn": {
@@ -134,8 +134,8 @@
   },
   "CCSGameRules_FindPickerEntity": {
     "offsets": {
-      "windows": 26,
-      "linux": 27
+      "windows": 25,
+      "linux": 26
     }
   },
   "CTakeDamageInfo_HitGroup": {
@@ -169,13 +169,13 @@
     "signatures": {
       "library": "server",
       "windows": "48 89 5C 24 ? 48 89 74 24 ? 57 48 83 EC ? 49 8B F0 48 8B D9",
-      "linux": "55 48 89 E5 41 56 49 89 FE 41 55 48 8D 7D ?"
+      "linux": "55 48 89 E5 41 57 49 89 FF 41 56 48 8D BD ? ? ? ? 41 55 4C 8D AD"
     }
   },
   "CBaseEntity_IsPlayerPawn": {
     "offsets": {
       "windows": 169,
-      "linux": 168
+      "linux": 170
     }
   },
   "CEntitySystem_AddEntityIOEvent": {
@@ -194,8 +194,8 @@
   },
   "CBasePlayerPawn_CommitSuicide": {
     "offsets": {
-      "windows": 384,
-      "linux": 384
+      "windows": 387,
+      "linux": 387
     }
   },
   "CBasePlayerPawn_RemovePlayerItem": {
@@ -207,8 +207,8 @@
   },
   "CBaseEntity_Teleport": {
     "offsets": {
-      "windows": 163,
-      "linux": 162
+      "windows": 165,
+      "linux": 164
     }
   },
   "CBaseEntity_TakeDamageOld": {
