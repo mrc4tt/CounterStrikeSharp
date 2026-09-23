@@ -14,8 +14,8 @@ using CounterStrikeSharp.API.Core.Attributes;
 
 namespace CounterStrikeSharp.API.Core;
 
-public partial class CCSPlayerCamera : CCSCustomPlayerCamera
+public partial class CCSGO_RushIntroCounterTerroristPosition : CCSGO_RushIntroCharacterPosition
 {
-    public CCSPlayerCamera (IntPtr pointer) : base(pointer) {}
+    public CCSGO_RushIntroCounterTerroristPosition (IntPtr pointer) : base(pointer) {}
 
 }
