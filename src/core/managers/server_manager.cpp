@@ -20,6 +20,8 @@
 #include "scripting/callback_manager.h"
 
 #include "core/game_system.h"
+#include "core/gameconfig.h"
+#include "utils/virtual.h"
 
 namespace counterstrikesharp {
 
@@ -84,7 +86,26 @@ void ServerManager::OnShutdown()
     globals::callbackManager.ReleaseCallback(on_server_precache_resources);
 }
 
-void* ServerManager::GetEconItemSystem() { return globals::server->GetEconItemSystem(); }
+void* ServerManager::GetEconItemSystem()
+{
+    // ISource2Server no longer has GetEconItemSystem at a fixed slot. The hl2sdk layout this
+    // used to compile against put it at 58, which in current builds is an unrelated forwarder
+    // through the entity system - calling it returned garbage to plugins. The slot now comes
+    // from gamedata, and without a key we refuse rather than call an unknown function.
+    static const int offset = globals::gameConfig->GetOffset("ISource2Server_GetEconItemSystem");
+    if (offset < 0)
+    {
+        static bool warned = false;
+        if (!warned)
+        {
+            warned = true;
+            CSSHARP_CORE_ERROR("GetEconItemSystem: no \"ISource2Server_GetEconItemSystem\" offset in gamedata, returning null");
+        }
+        return nullptr;
+    }
+
+    return CALL_VIRTUAL(void*, offset, globals::server);
+}
 
 bool ServerManager::IsPaused() { return globals::server->IsPaused(); }
 
