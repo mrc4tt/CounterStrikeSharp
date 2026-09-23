@@ -4,7 +4,7 @@
 	branch = cs2
 [submodule "libraries/metamod-source"]
 	path = libraries/metamod-source
-	url = https://github.com/alliedmodders/metamod-source
+	url = https://github.com/mrc4tt/metamod-source
 [submodule "libraries/spdlog"]
 	path = libraries/spdlog
 	url = https://github.com/gabime/spdlog
