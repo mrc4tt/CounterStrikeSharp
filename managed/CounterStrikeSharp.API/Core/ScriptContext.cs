@@ -227,6 +227,12 @@ namespace CounterStrikeSharp.API.Core
 
                 return;
             }
+            else if (arg is Color color)
+            {
+                Push(context, ColorMarshaler.Pack(color));
+
+                return;
+            }
             else if (arg is IMarshalToNative marshalToNative)
             {
                 foreach (var value in marshalToNative.GetNativeObject())
@@ -278,6 +284,12 @@ namespace CounterStrikeSharp.API.Core
             else if (arg is InputArgument ia)
             {
                 SetResultInternal(context, ia.Value);
+
+                return;
+            }
+            else if (arg is Color color)
+            {
+                SetResultInternal(context, ColorMarshaler.Pack(color));
 
                 return;
             }
@@ -459,10 +471,11 @@ namespace CounterStrikeSharp.API.Core
                 return Activator.CreateInstance(type, pointer)!;
             }
 
+            // Color maps to DATA_TYPE_UINT (DataType.cs), so natives, virtual functions and hook
+            // params hand back the packed value itself, not a pointer to it.
             if (type == typeof(Color))
             {
-                var pointer = (IntPtr)GetResult(typeof(IntPtr), ptr);
-                return Marshaling.ColorMarshaler.NativeToManaged(pointer);
+                return ColorMarshaler.Unpack((uint)GetResult(typeof(uint), ptr));
             }
 
             // this one only works if the 'Raw'/uint is passed

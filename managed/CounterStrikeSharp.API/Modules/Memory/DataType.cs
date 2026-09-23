@@ -16,6 +16,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using CounterStrikeSharp.API.Core;
 using Microsoft.Extensions.Logging;
 
@@ -58,6 +59,10 @@ namespace CounterStrikeSharp.API.Modules.Memory
             { typeof(short), DataType.DATA_TYPE_SHORT },
             { typeof(sbyte), DataType.DATA_TYPE_UCHAR },
             { typeof(byte), DataType.DATA_TYPE_CHAR },
+            // System.Drawing.Color is a 24-byte managed struct (it carries a name), so it cannot be
+            // pushed as-is. It crosses the native boundary packed into the 4-byte Source 2 Color
+            // layout (see ColorMarshaler.Pack), which the ABI passes and returns like a uint.
+            { typeof(Color), DataType.DATA_TYPE_UINT },
         };
 
         public static DataType? ToDataType(this Type type)
