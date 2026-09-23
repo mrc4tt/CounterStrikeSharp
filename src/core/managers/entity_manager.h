@@ -41,14 +41,14 @@ class CTakeDamageInfo;
 class CCheckTransmitInfoHack
 {
   public:
-    CBitVec<16384>* m_pTransmitEntity;     // entities visible/sent to client
+    CBitVec<16384>* m_pTransmitEntity; // entities visible/sent to client
     CBitVec<16384>* m_pTransmitNonPlayers; // non-player entities needing deletion deltas
-    CBitVec<16384>* m_pTransmitOutOfPVS;   // entities that left PVS but still need delta update
-    CBitVec<16384>* m_pTransmitAlways;     // entity n is always sent even if not in PVS (HLTV and Replay only)
+    CBitVec<16384>* m_pTransmitOutOfPVS; // entities that left PVS but still need delta update
+    CBitVec<16384>* m_pTransmitAlways; // entity n is always sent even if not in PVS (HLTV and Replay only)
 
   private:
     [[maybe_unused]] int8_t m_vecTargetSlots[24]; // CUtlVector<CPlayerSlot>
-    [[maybe_unused]] int8_t m_VisInfo[520];       // vis_info_t
+    [[maybe_unused]] int8_t m_VisInfo[520]; // vis_info_t
 
   public:
     int32_t m_nPlayerSlot;
