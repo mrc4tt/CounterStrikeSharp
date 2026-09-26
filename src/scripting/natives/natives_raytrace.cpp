@@ -108,12 +108,19 @@ static CTraceFilter BuildFilter(CEntityInstance* pIgnore, uint64_t interactsAs, 
         auto* pColl = *reinterpret_cast<uint8_t**>((uintptr_t)pIgnore + collField.offset);
         if (pColl)
         {
-            static auto collClassKey = hash_32_fnv1a_const("CCollisionComponent");
+            // m_pCollision is a CCollisionProperty. There is no CCollisionComponent class in
+            // the schema: looking that up silently returns offset 0, so the old code read the
+            // low bits of m_nInteractsWith instead of the hierarchy id and the filter never
+            // skipped the ignored entity's children. Resolve both offsets from the schema.
+            static auto collClassKey = hash_32_fnv1a_const("CCollisionProperty");
             static auto attrKey = hash_32_fnv1a_const("m_collisionAttribute");
-            static const auto attrField = schema::GetOffset("CCollisionComponent", collClassKey, "m_collisionAttribute", attrKey);
+            static const auto attrField = schema::GetOffset("CCollisionProperty", collClassKey, "m_collisionAttribute", attrKey);
+            static auto attrClassKey = hash_32_fnv1a_const("VPhysicsCollisionAttribute_t");
+            static auto hierarchyKey = hash_32_fnv1a_const("m_nHierarchyId");
+            static const auto hierarchyField =
+                schema::GetOffset("VPhysicsCollisionAttribute_t", attrClassKey, "m_nHierarchyId", hierarchyKey);
 
-            // m_nHierarchyId is at byte 32 inside RnCollisionAttr_t (after 3×uint64 + 2×uint32)
-            nHierarchy = *reinterpret_cast<uint16*>(pColl + attrField.offset + 32);
+            nHierarchy = *reinterpret_cast<uint16*>(pColl + attrField.offset + hierarchyField.offset);
         }
     }
 
