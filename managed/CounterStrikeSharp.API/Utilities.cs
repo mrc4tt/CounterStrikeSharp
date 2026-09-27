@@ -258,13 +258,24 @@ namespace CounterStrikeSharp.API
             int offset = Schema.GetSchemaOffset(className, fieldName);
             int chainOffset = FindSchemaChain(className);
 
+            NotifyStateChanged(entity, offset + extraOffset, chainOffset);
+        }
+
+        /// <summary>
+        /// The notification half of <see cref="SetStateChanged"/> with every lookup already
+        /// resolved, shared with <see cref="Modules.Memory.SchemaField{T}"/> so both mark a
+        /// networked field changed the same way. The caller has already established that
+        /// the field is networked.
+        /// </summary>
+        internal static void NotifyStateChanged(CBaseEntity entity, int offset, int chainOffset)
+        {
             if (chainOffset != 0)
             {
-                NativeAPI.SchemaNetworkStateChanged(entity.Handle + chainOffset, (uint)(offset + extraOffset), 0xFFFFFFFF, 0xFFFFFFFF);
+                NativeAPI.SchemaNetworkStateChanged(entity.Handle + chainOffset, (uint)offset, 0xFFFFFFFF, 0xFFFFFFFF);
                 return;
             }
 
-            NativeAPI.SchemaSetStateChanged(entity.Handle, (uint)(offset + extraOffset), 0xFFFFFFFF, 0xFFFFFFFF);
+            NativeAPI.SchemaSetStateChanged(entity.Handle, (uint)offset, 0xFFFFFFFF, 0xFFFFFFFF);
 
             entity.LastNetworkChange = Server.CurrentTime;
             entity.IsSteadyState.Clear();

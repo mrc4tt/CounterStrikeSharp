@@ -121,6 +121,21 @@ public class Schema
 
     private static short GetSchemaOffsetCore(string className, string propertyName) => Resolve(className, propertyName).Offset;
 
+    /// <summary>
+    /// Resolves a (class, property) pair through the same cache as <see cref="GetSchemaOffset"/>
+    /// but returns the blocklist answer instead of throwing, so <see cref="SchemaField{T}"/>
+    /// can cache both once and re-check <see cref="CoreConfig.FollowCS2ServerGuidelines"/>
+    /// on each access (the config can be reloaded at runtime).
+    /// </summary>
+    internal static (short Offset, bool Blocked) ResolveEntry(string className, string propertyName)
+    {
+        var entry = Resolve(className, propertyName);
+        return (entry.Offset, entry.Blocked);
+    }
+
+    internal static Exception BlockedFieldException(string className, string propertyName)
+        => new($"Cannot set or get '{className}::{propertyName}' with \"FollowCS2ServerGuidelines\" option enabled.");
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static SchemaEntry Resolve(string className, string propertyName)
     {
