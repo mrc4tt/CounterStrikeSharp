@@ -19,11 +19,13 @@ public partial class CCSPlayer_ItemServices : CPlayer_ItemServices
     public CCSPlayer_ItemServices (IntPtr pointer) : base(pointer) {}
 
 	// m_bHasDefuser
+	private static readonly SchemaField<bool> __m_bHasDefuser = new("CCSPlayer_ItemServices", "m_bHasDefuser");
 	[SchemaMember("CCSPlayer_ItemServices", "m_bHasDefuser")]
-	public ref bool HasDefuser => ref Schema.GetRef<bool>(this.Handle, "CCSPlayer_ItemServices", "m_bHasDefuser");
+	public ref bool HasDefuser => ref __m_bHasDefuser.GetRef(this.Handle);
 
 	// m_bHasHelmet
+	private static readonly SchemaField<bool> __m_bHasHelmet = new("CCSPlayer_ItemServices", "m_bHasHelmet");
 	[SchemaMember("CCSPlayer_ItemServices", "m_bHasHelmet")]
-	public ref bool HasHelmet => ref Schema.GetRef<bool>(this.Handle, "CCSPlayer_ItemServices", "m_bHasHelmet");
+	public ref bool HasHelmet => ref __m_bHasHelmet.GetRef(this.Handle);
 
 }

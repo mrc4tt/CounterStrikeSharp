@@ -43,16 +43,19 @@ public partial class CSoundOpvarSetEntity : CBaseEntity
 	}
 
 	// m_nOpvarType
+	private static readonly SchemaField<Int32> __m_nOpvarType = new("CSoundOpvarSetEntity", "m_nOpvarType");
 	[SchemaMember("CSoundOpvarSetEntity", "m_nOpvarType")]
-	public ref Int32 OpvarType => ref Schema.GetRef<Int32>(this.Handle, "CSoundOpvarSetEntity", "m_nOpvarType");
+	public ref Int32 OpvarType => ref __m_nOpvarType.GetRef(this.Handle);
 
 	// m_nOpvarIndex
+	private static readonly SchemaField<Int32> __m_nOpvarIndex = new("CSoundOpvarSetEntity", "m_nOpvarIndex");
 	[SchemaMember("CSoundOpvarSetEntity", "m_nOpvarIndex")]
-	public ref Int32 OpvarIndex => ref Schema.GetRef<Int32>(this.Handle, "CSoundOpvarSetEntity", "m_nOpvarIndex");
+	public ref Int32 OpvarIndex => ref __m_nOpvarIndex.GetRef(this.Handle);
 
 	// m_flOpvarValue
+	private static readonly SchemaField<float> __m_flOpvarValue = new("CSoundOpvarSetEntity", "m_flOpvarValue");
 	[SchemaMember("CSoundOpvarSetEntity", "m_flOpvarValue")]
-	public ref float OpvarValue => ref Schema.GetRef<float>(this.Handle, "CSoundOpvarSetEntity", "m_flOpvarValue");
+	public ref float OpvarValue => ref __m_flOpvarValue.GetRef(this.Handle);
 
 	// m_OpvarValueString
 	[SchemaMember("CSoundOpvarSetEntity", "m_OpvarValueString")]
@@ -63,7 +66,8 @@ public partial class CSoundOpvarSetEntity : CBaseEntity
 	}
 
 	// m_bSetOnSpawn
+	private static readonly SchemaField<bool> __m_bSetOnSpawn = new("CSoundOpvarSetEntity", "m_bSetOnSpawn");
 	[SchemaMember("CSoundOpvarSetEntity", "m_bSetOnSpawn")]
-	public ref bool SetOnSpawn => ref Schema.GetRef<bool>(this.Handle, "CSoundOpvarSetEntity", "m_bSetOnSpawn");
+	public ref bool SetOnSpawn => ref __m_bSetOnSpawn.GetRef(this.Handle);
 
 }

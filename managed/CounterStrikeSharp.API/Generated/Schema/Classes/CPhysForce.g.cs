@@ -31,20 +31,23 @@ public partial class CPhysForce : CPointEntity
 	}
 
 	// m_force
+	private static readonly SchemaField<float> __m_force = new("CPhysForce", "m_force");
 	[SchemaMember("CPhysForce", "m_force")]
-	public ref float Force => ref Schema.GetRef<float>(this.Handle, "CPhysForce", "m_force");
+	public ref float Force => ref __m_force.GetRef(this.Handle);
 
 	// m_forceTime
+	private static readonly SchemaField<float> __m_forceTime = new("CPhysForce", "m_forceTime");
 	[SchemaMember("CPhysForce", "m_forceTime")]
-	public ref float ForceTime => ref Schema.GetRef<float>(this.Handle, "CPhysForce", "m_forceTime");
+	public ref float ForceTime => ref __m_forceTime.GetRef(this.Handle);
 
 	// m_attachedObject
 	[SchemaMember("CPhysForce", "m_attachedObject")]
 	public CHandle<CBaseEntity> AttachedObject => Schema.GetDeclaredClass<CHandle<CBaseEntity>>(this.Handle, "CPhysForce", "m_attachedObject");
 
 	// m_wasRestored
+	private static readonly SchemaField<bool> __m_wasRestored = new("CPhysForce", "m_wasRestored");
 	[SchemaMember("CPhysForce", "m_wasRestored")]
-	public ref bool WasRestored => ref Schema.GetRef<bool>(this.Handle, "CPhysForce", "m_wasRestored");
+	public ref bool WasRestored => ref __m_wasRestored.GetRef(this.Handle);
 
 	// m_integrator
 	[SchemaMember("CPhysForce", "m_integrator")]

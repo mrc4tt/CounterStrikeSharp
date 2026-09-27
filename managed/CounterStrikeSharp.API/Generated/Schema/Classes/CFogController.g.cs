@@ -23,11 +23,13 @@ public partial class CFogController : CBaseEntity
 	public fogparams_t Fog => Schema.GetDeclaredClass<fogparams_t>(this.Handle, "CFogController", "m_fog");
 
 	// m_bUseAngles
+	private static readonly SchemaField<bool> __m_bUseAngles = new("CFogController", "m_bUseAngles");
 	[SchemaMember("CFogController", "m_bUseAngles")]
-	public ref bool UseAngles => ref Schema.GetRef<bool>(this.Handle, "CFogController", "m_bUseAngles");
+	public ref bool UseAngles => ref __m_bUseAngles.GetRef(this.Handle);
 
 	// m_iChangedVariables
+	private static readonly SchemaField<Int32> __m_iChangedVariables = new("CFogController", "m_iChangedVariables");
 	[SchemaMember("CFogController", "m_iChangedVariables")]
-	public ref Int32 ChangedVariables => ref Schema.GetRef<Int32>(this.Handle, "CFogController", "m_iChangedVariables");
+	public ref Int32 ChangedVariables => ref __m_iChangedVariables.GetRef(this.Handle);
 
 }

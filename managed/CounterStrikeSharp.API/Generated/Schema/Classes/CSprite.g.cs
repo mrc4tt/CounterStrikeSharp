@@ -27,87 +27,108 @@ public partial class CSprite : CBaseModelEntity
 	public CHandle<CBaseEntity> AttachedToEntity => Schema.GetDeclaredClass<CHandle<CBaseEntity>>(this.Handle, "CSprite", "m_hAttachedToEntity");
 
 	// m_flSpriteFramerate
+	private static readonly SchemaField<float> __m_flSpriteFramerate = new("CSprite", "m_flSpriteFramerate");
 	[SchemaMember("CSprite", "m_flSpriteFramerate")]
-	public ref float SpriteFramerate => ref Schema.GetRef<float>(this.Handle, "CSprite", "m_flSpriteFramerate");
+	public ref float SpriteFramerate => ref __m_flSpriteFramerate.GetRef(this.Handle);
 
 	// m_flFrame
+	private static readonly SchemaField<float> __m_flFrame = new("CSprite", "m_flFrame");
 	[SchemaMember("CSprite", "m_flFrame")]
-	public ref float Frame => ref Schema.GetRef<float>(this.Handle, "CSprite", "m_flFrame");
+	public ref float Frame => ref __m_flFrame.GetRef(this.Handle);
 
 	// m_flDieTime
+	private static readonly SchemaField<float> __m_flDieTime = new("CSprite", "m_flDieTime");
 	[SchemaMember("CSprite", "m_flDieTime")]
-	public ref float DieTime => ref Schema.GetRef<float>(this.Handle, "CSprite", "m_flDieTime");
+	public ref float DieTime => ref __m_flDieTime.GetRef(this.Handle);
 
 	// m_nBrightness
+	private static readonly SchemaField<UInt32> __m_nBrightness = new("CSprite", "m_nBrightness");
 	[SchemaMember("CSprite", "m_nBrightness")]
-	public ref UInt32 Brightness => ref Schema.GetRef<UInt32>(this.Handle, "CSprite", "m_nBrightness");
+	public ref UInt32 Brightness => ref __m_nBrightness.GetRef(this.Handle);
 
 	// m_flBrightnessDuration
+	private static readonly SchemaField<float> __m_flBrightnessDuration = new("CSprite", "m_flBrightnessDuration");
 	[SchemaMember("CSprite", "m_flBrightnessDuration")]
-	public ref float BrightnessDuration => ref Schema.GetRef<float>(this.Handle, "CSprite", "m_flBrightnessDuration");
+	public ref float BrightnessDuration => ref __m_flBrightnessDuration.GetRef(this.Handle);
 
 	// m_flSpriteScale
+	private static readonly SchemaField<float> __m_flSpriteScale = new("CSprite", "m_flSpriteScale");
 	[SchemaMember("CSprite", "m_flSpriteScale")]
-	public ref float SpriteScale => ref Schema.GetRef<float>(this.Handle, "CSprite", "m_flSpriteScale");
+	public ref float SpriteScale => ref __m_flSpriteScale.GetRef(this.Handle);
 
 	// m_flScaleDuration
+	private static readonly SchemaField<float> __m_flScaleDuration = new("CSprite", "m_flScaleDuration");
 	[SchemaMember("CSprite", "m_flScaleDuration")]
-	public ref float ScaleDuration => ref Schema.GetRef<float>(this.Handle, "CSprite", "m_flScaleDuration");
+	public ref float ScaleDuration => ref __m_flScaleDuration.GetRef(this.Handle);
 
 	// m_bWorldSpaceScale
+	private static readonly SchemaField<bool> __m_bWorldSpaceScale = new("CSprite", "m_bWorldSpaceScale");
 	[SchemaMember("CSprite", "m_bWorldSpaceScale")]
-	public ref bool WorldSpaceScale => ref Schema.GetRef<bool>(this.Handle, "CSprite", "m_bWorldSpaceScale");
+	public ref bool WorldSpaceScale => ref __m_bWorldSpaceScale.GetRef(this.Handle);
 
 	// m_flGlowProxySize
+	private static readonly SchemaField<float> __m_flGlowProxySize = new("CSprite", "m_flGlowProxySize");
 	[SchemaMember("CSprite", "m_flGlowProxySize")]
-	public ref float GlowProxySize => ref Schema.GetRef<float>(this.Handle, "CSprite", "m_flGlowProxySize");
+	public ref float GlowProxySize => ref __m_flGlowProxySize.GetRef(this.Handle);
 
 	// m_flHDRColorScale
+	private static readonly SchemaField<float> __m_flHDRColorScale = new("CSprite", "m_flHDRColorScale");
 	[SchemaMember("CSprite", "m_flHDRColorScale")]
-	public ref float HDRColorScale => ref Schema.GetRef<float>(this.Handle, "CSprite", "m_flHDRColorScale");
+	public ref float HDRColorScale => ref __m_flHDRColorScale.GetRef(this.Handle);
 
 	// m_flLastTime
+	private static readonly SchemaField<float> __m_flLastTime = new("CSprite", "m_flLastTime");
 	[SchemaMember("CSprite", "m_flLastTime")]
-	public ref float LastTime => ref Schema.GetRef<float>(this.Handle, "CSprite", "m_flLastTime");
+	public ref float LastTime => ref __m_flLastTime.GetRef(this.Handle);
 
 	// m_flMaxFrame
+	private static readonly SchemaField<float> __m_flMaxFrame = new("CSprite", "m_flMaxFrame");
 	[SchemaMember("CSprite", "m_flMaxFrame")]
-	public ref float MaxFrame => ref Schema.GetRef<float>(this.Handle, "CSprite", "m_flMaxFrame");
+	public ref float MaxFrame => ref __m_flMaxFrame.GetRef(this.Handle);
 
 	// m_flStartScale
+	private static readonly SchemaField<float> __m_flStartScale = new("CSprite", "m_flStartScale");
 	[SchemaMember("CSprite", "m_flStartScale")]
-	public ref float StartScale => ref Schema.GetRef<float>(this.Handle, "CSprite", "m_flStartScale");
+	public ref float StartScale => ref __m_flStartScale.GetRef(this.Handle);
 
 	// m_flDestScale
+	private static readonly SchemaField<float> __m_flDestScale = new("CSprite", "m_flDestScale");
 	[SchemaMember("CSprite", "m_flDestScale")]
-	public ref float DestScale => ref Schema.GetRef<float>(this.Handle, "CSprite", "m_flDestScale");
+	public ref float DestScale => ref __m_flDestScale.GetRef(this.Handle);
 
 	// m_flScaleTimeStart
+	private static readonly SchemaField<float> __m_flScaleTimeStart = new("CSprite", "m_flScaleTimeStart");
 	[SchemaMember("CSprite", "m_flScaleTimeStart")]
-	public ref float ScaleTimeStart => ref Schema.GetRef<float>(this.Handle, "CSprite", "m_flScaleTimeStart");
+	public ref float ScaleTimeStart => ref __m_flScaleTimeStart.GetRef(this.Handle);
 
 	// m_nStartBrightness
+	private static readonly SchemaField<Int32> __m_nStartBrightness = new("CSprite", "m_nStartBrightness");
 	[SchemaMember("CSprite", "m_nStartBrightness")]
-	public ref Int32 StartBrightness => ref Schema.GetRef<Int32>(this.Handle, "CSprite", "m_nStartBrightness");
+	public ref Int32 StartBrightness => ref __m_nStartBrightness.GetRef(this.Handle);
 
 	// m_nDestBrightness
+	private static readonly SchemaField<Int32> __m_nDestBrightness = new("CSprite", "m_nDestBrightness");
 	[SchemaMember("CSprite", "m_nDestBrightness")]
-	public ref Int32 DestBrightness => ref Schema.GetRef<Int32>(this.Handle, "CSprite", "m_nDestBrightness");
+	public ref Int32 DestBrightness => ref __m_nDestBrightness.GetRef(this.Handle);
 
 	// m_flBrightnessTimeStart
+	private static readonly SchemaField<float> __m_flBrightnessTimeStart = new("CSprite", "m_flBrightnessTimeStart");
 	[SchemaMember("CSprite", "m_flBrightnessTimeStart")]
-	public ref float BrightnessTimeStart => ref Schema.GetRef<float>(this.Handle, "CSprite", "m_flBrightnessTimeStart");
+	public ref float BrightnessTimeStart => ref __m_flBrightnessTimeStart.GetRef(this.Handle);
 
 	// m_nSpriteWidth
+	private static readonly SchemaField<Int32> __m_nSpriteWidth = new("CSprite", "m_nSpriteWidth");
 	[SchemaMember("CSprite", "m_nSpriteWidth")]
-	public ref Int32 SpriteWidth => ref Schema.GetRef<Int32>(this.Handle, "CSprite", "m_nSpriteWidth");
+	public ref Int32 SpriteWidth => ref __m_nSpriteWidth.GetRef(this.Handle);
 
 	// m_nSpriteHeight
+	private static readonly SchemaField<Int32> __m_nSpriteHeight = new("CSprite", "m_nSpriteHeight");
 	[SchemaMember("CSprite", "m_nSpriteHeight")]
-	public ref Int32 SpriteHeight => ref Schema.GetRef<Int32>(this.Handle, "CSprite", "m_nSpriteHeight");
+	public ref Int32 SpriteHeight => ref __m_nSpriteHeight.GetRef(this.Handle);
 
 	// m_flSpeed
+	private static readonly SchemaField<float> __m_flSpeed = new("CSprite", "m_flSpeed");
 	[SchemaMember("CSprite", "m_flSpeed")]
-	public ref float Speed => ref Schema.GetRef<float>(this.Handle, "CSprite", "m_flSpeed");
+	public ref float Speed => ref __m_flSpeed.GetRef(this.Handle);
 
 }

@@ -35,19 +35,22 @@ public partial class CInfoChoreoAnchorPosition : NativeObject
 	public Vector ExtentsMax => Schema.GetDeclaredClass<Vector>(this.Handle, "CInfoChoreoAnchorPosition", "m_vExtentsMax");
 
 	// m_flRadius
+	private static readonly SchemaField<float> __m_flRadius = new("CInfoChoreoAnchorPosition", "m_flRadius");
 	[SchemaMember("CInfoChoreoAnchorPosition", "m_flRadius")]
-	public ref float Radius => ref Schema.GetRef<float>(this.Handle, "CInfoChoreoAnchorPosition", "m_flRadius");
+	public ref float Radius => ref __m_flRadius.GetRef(this.Handle);
 
 	// m_bOnlyWarpPosition
+	private static readonly SchemaField<bool> __m_bOnlyWarpPosition = new("CInfoChoreoAnchorPosition", "m_bOnlyWarpPosition");
 	[SchemaMember("CInfoChoreoAnchorPosition", "m_bOnlyWarpPosition")]
-	public ref bool OnlyWarpPosition => ref Schema.GetRef<bool>(this.Handle, "CInfoChoreoAnchorPosition", "m_bOnlyWarpPosition");
+	public ref bool OnlyWarpPosition => ref __m_bOnlyWarpPosition.GetRef(this.Handle);
 
 	// m_hParent
 	[SchemaMember("CInfoChoreoAnchorPosition", "m_hParent")]
 	public CHandle<CBaseEntity> Parent => Schema.GetDeclaredClass<CHandle<CBaseEntity>>(this.Handle, "CInfoChoreoAnchorPosition", "m_hParent");
 
 	// m_nShapeType
+	private static readonly SchemaField<CInfoChoreoLocatorShapeType_t> __m_nShapeType = new("CInfoChoreoAnchorPosition", "m_nShapeType");
 	[SchemaMember("CInfoChoreoAnchorPosition", "m_nShapeType")]
-	public ref CInfoChoreoLocatorShapeType_t ShapeType => ref Schema.GetRef<CInfoChoreoLocatorShapeType_t>(this.Handle, "CInfoChoreoAnchorPosition", "m_nShapeType");
+	public ref CInfoChoreoLocatorShapeType_t ShapeType => ref __m_nShapeType.GetRef(this.Handle);
 
 }

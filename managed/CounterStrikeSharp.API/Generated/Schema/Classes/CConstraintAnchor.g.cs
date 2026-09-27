@@ -19,7 +19,8 @@ public partial class CConstraintAnchor : CBaseAnimGraph
     public CConstraintAnchor (IntPtr pointer) : base(pointer) {}
 
 	// m_massScale
+	private static readonly SchemaField<float> __m_massScale = new("CConstraintAnchor", "m_massScale");
 	[SchemaMember("CConstraintAnchor", "m_massScale")]
-	public ref float MassScale => ref Schema.GetRef<float>(this.Handle, "CConstraintAnchor", "m_massScale");
+	public ref float MassScale => ref __m_massScale.GetRef(this.Handle);
 
 }

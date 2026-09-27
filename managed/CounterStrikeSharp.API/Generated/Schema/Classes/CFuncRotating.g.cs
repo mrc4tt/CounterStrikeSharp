@@ -35,32 +35,39 @@ public partial class CFuncRotating : CBaseModelEntity
 	public Vector LocalRotationVector => Schema.GetDeclaredClass<Vector>(this.Handle, "CFuncRotating", "m_localRotationVector");
 
 	// m_flSpeed
+	private static readonly SchemaField<float> __m_flSpeed = new("CFuncRotating", "m_flSpeed");
 	[SchemaMember("CFuncRotating", "m_flSpeed")]
-	public ref float Speed => ref Schema.GetRef<float>(this.Handle, "CFuncRotating", "m_flSpeed");
+	public ref float Speed => ref __m_flSpeed.GetRef(this.Handle);
 
 	// m_flFanFriction
+	private static readonly SchemaField<float> __m_flFanFriction = new("CFuncRotating", "m_flFanFriction");
 	[SchemaMember("CFuncRotating", "m_flFanFriction")]
-	public ref float FanFriction => ref Schema.GetRef<float>(this.Handle, "CFuncRotating", "m_flFanFriction");
+	public ref float FanFriction => ref __m_flFanFriction.GetRef(this.Handle);
 
 	// m_flAttenuation
+	private static readonly SchemaField<float> __m_flAttenuation = new("CFuncRotating", "m_flAttenuation");
 	[SchemaMember("CFuncRotating", "m_flAttenuation")]
-	public ref float Attenuation => ref Schema.GetRef<float>(this.Handle, "CFuncRotating", "m_flAttenuation");
+	public ref float Attenuation => ref __m_flAttenuation.GetRef(this.Handle);
 
 	// m_flVolume
+	private static readonly SchemaField<float> __m_flVolume = new("CFuncRotating", "m_flVolume");
 	[SchemaMember("CFuncRotating", "m_flVolume")]
-	public ref float Volume => ref Schema.GetRef<float>(this.Handle, "CFuncRotating", "m_flVolume");
+	public ref float Volume => ref __m_flVolume.GetRef(this.Handle);
 
 	// m_flTargetSpeed
+	private static readonly SchemaField<float> __m_flTargetSpeed = new("CFuncRotating", "m_flTargetSpeed");
 	[SchemaMember("CFuncRotating", "m_flTargetSpeed")]
-	public ref float TargetSpeed => ref Schema.GetRef<float>(this.Handle, "CFuncRotating", "m_flTargetSpeed");
+	public ref float TargetSpeed => ref __m_flTargetSpeed.GetRef(this.Handle);
 
 	// m_flMaxSpeed
+	private static readonly SchemaField<float> __m_flMaxSpeed = new("CFuncRotating", "m_flMaxSpeed");
 	[SchemaMember("CFuncRotating", "m_flMaxSpeed")]
-	public ref float MaxSpeed => ref Schema.GetRef<float>(this.Handle, "CFuncRotating", "m_flMaxSpeed");
+	public ref float MaxSpeed => ref __m_flMaxSpeed.GetRef(this.Handle);
 
 	// m_flBlockDamage
+	private static readonly SchemaField<float> __m_flBlockDamage = new("CFuncRotating", "m_flBlockDamage");
 	[SchemaMember("CFuncRotating", "m_flBlockDamage")]
-	public ref float BlockDamage => ref Schema.GetRef<float>(this.Handle, "CFuncRotating", "m_flBlockDamage");
+	public ref float BlockDamage => ref __m_flBlockDamage.GetRef(this.Handle);
 
 	// m_NoiseRunning
 	[SchemaMember("CFuncRotating", "m_NoiseRunning")]
@@ -71,12 +78,14 @@ public partial class CFuncRotating : CBaseModelEntity
 	}
 
 	// m_bReversed
+	private static readonly SchemaField<bool> __m_bReversed = new("CFuncRotating", "m_bReversed");
 	[SchemaMember("CFuncRotating", "m_bReversed")]
-	public ref bool Reversed => ref Schema.GetRef<bool>(this.Handle, "CFuncRotating", "m_bReversed");
+	public ref bool Reversed => ref __m_bReversed.GetRef(this.Handle);
 
 	// m_bAccelDecel
+	private static readonly SchemaField<bool> __m_bAccelDecel = new("CFuncRotating", "m_bAccelDecel");
 	[SchemaMember("CFuncRotating", "m_bAccelDecel")]
-	public ref bool AccelDecel => ref Schema.GetRef<bool>(this.Handle, "CFuncRotating", "m_bAccelDecel");
+	public ref bool AccelDecel => ref __m_bAccelDecel.GetRef(this.Handle);
 
 	// m_prevLocalAngles
 	[SchemaMember("CFuncRotating", "m_prevLocalAngles")]
@@ -87,8 +96,9 @@ public partial class CFuncRotating : CBaseModelEntity
 	public QAngle Start => Schema.GetDeclaredClass<QAngle>(this.Handle, "CFuncRotating", "m_angStart");
 
 	// m_bStopAtStartPos
+	private static readonly SchemaField<bool> __m_bStopAtStartPos = new("CFuncRotating", "m_bStopAtStartPos");
 	[SchemaMember("CFuncRotating", "m_bStopAtStartPos")]
-	public ref bool StopAtStartPos => ref Schema.GetRef<bool>(this.Handle, "CFuncRotating", "m_bStopAtStartPos");
+	public ref bool StopAtStartPos => ref __m_bStopAtStartPos.GetRef(this.Handle);
 
 	// m_vecClientOrigin
 	[SchemaMember("CFuncRotating", "m_vecClientOrigin")]

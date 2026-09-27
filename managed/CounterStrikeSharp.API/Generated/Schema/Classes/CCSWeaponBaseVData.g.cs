@@ -19,12 +19,14 @@ public partial class CCSWeaponBaseVData : CBasePlayerWeaponVData
     public CCSWeaponBaseVData (IntPtr pointer) : base(pointer) {}
 
 	// m_WeaponType
+	private static readonly SchemaField<CSWeaponType> __m_WeaponType = new("CCSWeaponBaseVData", "m_WeaponType");
 	[SchemaMember("CCSWeaponBaseVData", "m_WeaponType")]
-	public ref CSWeaponType WeaponType => ref Schema.GetRef<CSWeaponType>(this.Handle, "CCSWeaponBaseVData", "m_WeaponType");
+	public ref CSWeaponType WeaponType => ref __m_WeaponType.GetRef(this.Handle);
 
 	// m_WeaponCategory
+	private static readonly SchemaField<CSWeaponCategory> __m_WeaponCategory = new("CCSWeaponBaseVData", "m_WeaponCategory");
 	[SchemaMember("CCSWeaponBaseVData", "m_WeaponCategory")]
-	public ref CSWeaponCategory WeaponCategory => ref Schema.GetRef<CSWeaponCategory>(this.Handle, "CCSWeaponBaseVData", "m_WeaponCategory");
+	public ref CSWeaponCategory WeaponCategory => ref __m_WeaponCategory.GetRef(this.Handle);
 
 	// m_vecMuzzlePos0
 	[SchemaMember("CCSWeaponBaseVData", "m_vecMuzzlePos0")]
@@ -35,48 +37,59 @@ public partial class CCSWeaponBaseVData : CBasePlayerWeaponVData
 	public Vector MuzzlePos1 => Schema.GetDeclaredClass<Vector>(this.Handle, "CCSWeaponBaseVData", "m_vecMuzzlePos1");
 
 	// m_GearSlot
+	private static readonly SchemaField<gear_slot_t> __m_GearSlot = new("CCSWeaponBaseVData", "m_GearSlot");
 	[SchemaMember("CCSWeaponBaseVData", "m_GearSlot")]
-	public ref gear_slot_t GearSlot => ref Schema.GetRef<gear_slot_t>(this.Handle, "CCSWeaponBaseVData", "m_GearSlot");
+	public ref gear_slot_t GearSlot => ref __m_GearSlot.GetRef(this.Handle);
 
 	// m_GearSlotPosition
+	private static readonly SchemaField<Int32> __m_GearSlotPosition = new("CCSWeaponBaseVData", "m_GearSlotPosition");
 	[SchemaMember("CCSWeaponBaseVData", "m_GearSlotPosition")]
-	public ref Int32 GearSlotPosition => ref Schema.GetRef<Int32>(this.Handle, "CCSWeaponBaseVData", "m_GearSlotPosition");
+	public ref Int32 GearSlotPosition => ref __m_GearSlotPosition.GetRef(this.Handle);
 
 	// m_DefaultLoadoutSlot
+	private static readonly SchemaField<loadout_slot_t> __m_DefaultLoadoutSlot = new("CCSWeaponBaseVData", "m_DefaultLoadoutSlot");
 	[SchemaMember("CCSWeaponBaseVData", "m_DefaultLoadoutSlot")]
-	public ref loadout_slot_t DefaultLoadoutSlot => ref Schema.GetRef<loadout_slot_t>(this.Handle, "CCSWeaponBaseVData", "m_DefaultLoadoutSlot");
+	public ref loadout_slot_t DefaultLoadoutSlot => ref __m_DefaultLoadoutSlot.GetRef(this.Handle);
 
 	// m_nPrice
+	private static readonly SchemaField<Int32> __m_nPrice = new("CCSWeaponBaseVData", "m_nPrice");
 	[SchemaMember("CCSWeaponBaseVData", "m_nPrice")]
-	public ref Int32 Price => ref Schema.GetRef<Int32>(this.Handle, "CCSWeaponBaseVData", "m_nPrice");
+	public ref Int32 Price => ref __m_nPrice.GetRef(this.Handle);
 
 	// m_nKillAward
+	private static readonly SchemaField<Int32> __m_nKillAward = new("CCSWeaponBaseVData", "m_nKillAward");
 	[SchemaMember("CCSWeaponBaseVData", "m_nKillAward")]
-	public ref Int32 KillAward => ref Schema.GetRef<Int32>(this.Handle, "CCSWeaponBaseVData", "m_nKillAward");
+	public ref Int32 KillAward => ref __m_nKillAward.GetRef(this.Handle);
 
 	// m_nPrimaryReserveAmmoMax
+	private static readonly SchemaField<Int32> __m_nPrimaryReserveAmmoMax = new("CCSWeaponBaseVData", "m_nPrimaryReserveAmmoMax");
 	[SchemaMember("CCSWeaponBaseVData", "m_nPrimaryReserveAmmoMax")]
-	public ref Int32 PrimaryReserveAmmoMax => ref Schema.GetRef<Int32>(this.Handle, "CCSWeaponBaseVData", "m_nPrimaryReserveAmmoMax");
+	public ref Int32 PrimaryReserveAmmoMax => ref __m_nPrimaryReserveAmmoMax.GetRef(this.Handle);
 
 	// m_nSecondaryReserveAmmoMax
+	private static readonly SchemaField<Int32> __m_nSecondaryReserveAmmoMax = new("CCSWeaponBaseVData", "m_nSecondaryReserveAmmoMax");
 	[SchemaMember("CCSWeaponBaseVData", "m_nSecondaryReserveAmmoMax")]
-	public ref Int32 SecondaryReserveAmmoMax => ref Schema.GetRef<Int32>(this.Handle, "CCSWeaponBaseVData", "m_nSecondaryReserveAmmoMax");
+	public ref Int32 SecondaryReserveAmmoMax => ref __m_nSecondaryReserveAmmoMax.GetRef(this.Handle);
 
 	// m_bMeleeWeapon
+	private static readonly SchemaField<bool> __m_bMeleeWeapon = new("CCSWeaponBaseVData", "m_bMeleeWeapon");
 	[SchemaMember("CCSWeaponBaseVData", "m_bMeleeWeapon")]
-	public ref bool MeleeWeapon => ref Schema.GetRef<bool>(this.Handle, "CCSWeaponBaseVData", "m_bMeleeWeapon");
+	public ref bool MeleeWeapon => ref __m_bMeleeWeapon.GetRef(this.Handle);
 
 	// m_bHasBurstMode
+	private static readonly SchemaField<bool> __m_bHasBurstMode = new("CCSWeaponBaseVData", "m_bHasBurstMode");
 	[SchemaMember("CCSWeaponBaseVData", "m_bHasBurstMode")]
-	public ref bool HasBurstMode => ref Schema.GetRef<bool>(this.Handle, "CCSWeaponBaseVData", "m_bHasBurstMode");
+	public ref bool HasBurstMode => ref __m_bHasBurstMode.GetRef(this.Handle);
 
 	// m_bIsRevolver
+	private static readonly SchemaField<bool> __m_bIsRevolver = new("CCSWeaponBaseVData", "m_bIsRevolver");
 	[SchemaMember("CCSWeaponBaseVData", "m_bIsRevolver")]
-	public ref bool IsRevolver => ref Schema.GetRef<bool>(this.Handle, "CCSWeaponBaseVData", "m_bIsRevolver");
+	public ref bool IsRevolver => ref __m_bIsRevolver.GetRef(this.Handle);
 
 	// m_bCannotShootUnderwater
+	private static readonly SchemaField<bool> __m_bCannotShootUnderwater = new("CCSWeaponBaseVData", "m_bCannotShootUnderwater");
 	[SchemaMember("CCSWeaponBaseVData", "m_bCannotShootUnderwater")]
-	public ref bool CannotShootUnderwater => ref Schema.GetRef<bool>(this.Handle, "CCSWeaponBaseVData", "m_bCannotShootUnderwater");
+	public ref bool CannotShootUnderwater => ref __m_bCannotShootUnderwater.GetRef(this.Handle);
 
 	// m_szName
 	[SchemaMember("CCSWeaponBaseVData", "m_szName")]
@@ -87,36 +100,43 @@ public partial class CCSWeaponBaseVData : CBasePlayerWeaponVData
 	}
 
 	// m_eSilencerType
+	private static readonly SchemaField<CSWeaponSilencerType> __m_eSilencerType = new("CCSWeaponBaseVData", "m_eSilencerType");
 	[SchemaMember("CCSWeaponBaseVData", "m_eSilencerType")]
-	public ref CSWeaponSilencerType SilencerType => ref Schema.GetRef<CSWeaponSilencerType>(this.Handle, "CCSWeaponBaseVData", "m_eSilencerType");
+	public ref CSWeaponSilencerType SilencerType => ref __m_eSilencerType.GetRef(this.Handle);
 
 	// m_bShowCrosshair
+	private static readonly SchemaField<bool> __m_bShowCrosshair = new("CCSWeaponBaseVData", "m_bShowCrosshair");
 	[SchemaMember("CCSWeaponBaseVData", "m_bShowCrosshair")]
-	public ref bool ShowCrosshair => ref Schema.GetRef<bool>(this.Handle, "CCSWeaponBaseVData", "m_bShowCrosshair");
+	public ref bool ShowCrosshair => ref __m_bShowCrosshair.GetRef(this.Handle);
 
 	// m_bIsFullAuto
+	private static readonly SchemaField<bool> __m_bIsFullAuto = new("CCSWeaponBaseVData", "m_bIsFullAuto");
 	[SchemaMember("CCSWeaponBaseVData", "m_bIsFullAuto")]
-	public ref bool IsFullAuto => ref Schema.GetRef<bool>(this.Handle, "CCSWeaponBaseVData", "m_bIsFullAuto");
+	public ref bool IsFullAuto => ref __m_bIsFullAuto.GetRef(this.Handle);
 
 	// m_nNumBullets
+	private static readonly SchemaField<Int32> __m_nNumBullets = new("CCSWeaponBaseVData", "m_nNumBullets");
 	[SchemaMember("CCSWeaponBaseVData", "m_nNumBullets")]
-	public ref Int32 NumBullets => ref Schema.GetRef<Int32>(this.Handle, "CCSWeaponBaseVData", "m_nNumBullets");
+	public ref Int32 NumBullets => ref __m_nNumBullets.GetRef(this.Handle);
 
 	// m_bReloadsSingleShells
+	private static readonly SchemaField<bool> __m_bReloadsSingleShells = new("CCSWeaponBaseVData", "m_bReloadsSingleShells");
 	[SchemaMember("CCSWeaponBaseVData", "m_bReloadsSingleShells")]
-	public ref bool ReloadsSingleShells => ref Schema.GetRef<bool>(this.Handle, "CCSWeaponBaseVData", "m_bReloadsSingleShells");
+	public ref bool ReloadsSingleShells => ref __m_bReloadsSingleShells.GetRef(this.Handle);
 
 	// m_flCycleTime
 	[SchemaMember("CCSWeaponBaseVData", "m_flCycleTime")]
 	public CFiringModeFloat CycleTime => Schema.GetDeclaredClass<CFiringModeFloat>(this.Handle, "CCSWeaponBaseVData", "m_flCycleTime");
 
 	// m_flCycleTimeWhenInBurstMode
+	private static readonly SchemaField<float> __m_flCycleTimeWhenInBurstMode = new("CCSWeaponBaseVData", "m_flCycleTimeWhenInBurstMode");
 	[SchemaMember("CCSWeaponBaseVData", "m_flCycleTimeWhenInBurstMode")]
-	public ref float CycleTimeWhenInBurstMode => ref Schema.GetRef<float>(this.Handle, "CCSWeaponBaseVData", "m_flCycleTimeWhenInBurstMode");
+	public ref float CycleTimeWhenInBurstMode => ref __m_flCycleTimeWhenInBurstMode.GetRef(this.Handle);
 
 	// m_flTimeBetweenBurstShots
+	private static readonly SchemaField<float> __m_flTimeBetweenBurstShots = new("CCSWeaponBaseVData", "m_flTimeBetweenBurstShots");
 	[SchemaMember("CCSWeaponBaseVData", "m_flTimeBetweenBurstShots")]
-	public ref float TimeBetweenBurstShots => ref Schema.GetRef<float>(this.Handle, "CCSWeaponBaseVData", "m_flTimeBetweenBurstShots");
+	public ref float TimeBetweenBurstShots => ref __m_flTimeBetweenBurstShots.GetRef(this.Handle);
 
 	// m_flMaxSpeed
 	[SchemaMember("CCSWeaponBaseVData", "m_flMaxSpeed")]
@@ -175,52 +195,64 @@ public partial class CCSWeaponBaseVData : CBasePlayerWeaponVData
 	public CFiringModeInt TracerFrequency => Schema.GetDeclaredClass<CFiringModeInt>(this.Handle, "CCSWeaponBaseVData", "m_nTracerFrequency");
 
 	// m_flInaccuracyJumpInitial
+	private static readonly SchemaField<float> __m_flInaccuracyJumpInitial = new("CCSWeaponBaseVData", "m_flInaccuracyJumpInitial");
 	[SchemaMember("CCSWeaponBaseVData", "m_flInaccuracyJumpInitial")]
-	public ref float InaccuracyJumpInitial => ref Schema.GetRef<float>(this.Handle, "CCSWeaponBaseVData", "m_flInaccuracyJumpInitial");
+	public ref float InaccuracyJumpInitial => ref __m_flInaccuracyJumpInitial.GetRef(this.Handle);
 
 	// m_flInaccuracyJumpApex
+	private static readonly SchemaField<float> __m_flInaccuracyJumpApex = new("CCSWeaponBaseVData", "m_flInaccuracyJumpApex");
 	[SchemaMember("CCSWeaponBaseVData", "m_flInaccuracyJumpApex")]
-	public ref float InaccuracyJumpApex => ref Schema.GetRef<float>(this.Handle, "CCSWeaponBaseVData", "m_flInaccuracyJumpApex");
+	public ref float InaccuracyJumpApex => ref __m_flInaccuracyJumpApex.GetRef(this.Handle);
 
 	// m_flInaccuracyReload
+	private static readonly SchemaField<float> __m_flInaccuracyReload = new("CCSWeaponBaseVData", "m_flInaccuracyReload");
 	[SchemaMember("CCSWeaponBaseVData", "m_flInaccuracyReload")]
-	public ref float InaccuracyReload => ref Schema.GetRef<float>(this.Handle, "CCSWeaponBaseVData", "m_flInaccuracyReload");
+	public ref float InaccuracyReload => ref __m_flInaccuracyReload.GetRef(this.Handle);
 
 	// m_flDeployDuration
+	private static readonly SchemaField<float> __m_flDeployDuration = new("CCSWeaponBaseVData", "m_flDeployDuration");
 	[SchemaMember("CCSWeaponBaseVData", "m_flDeployDuration")]
-	public ref float DeployDuration => ref Schema.GetRef<float>(this.Handle, "CCSWeaponBaseVData", "m_flDeployDuration");
+	public ref float DeployDuration => ref __m_flDeployDuration.GetRef(this.Handle);
 
 	// m_flDisallowAttackAfterReloadStartDuration
+	private static readonly SchemaField<float> __m_flDisallowAttackAfterReloadStartDuration = new("CCSWeaponBaseVData", "m_flDisallowAttackAfterReloadStartDuration");
 	[SchemaMember("CCSWeaponBaseVData", "m_flDisallowAttackAfterReloadStartDuration")]
-	public ref float DisallowAttackAfterReloadStartDuration => ref Schema.GetRef<float>(this.Handle, "CCSWeaponBaseVData", "m_flDisallowAttackAfterReloadStartDuration");
+	public ref float DisallowAttackAfterReloadStartDuration => ref __m_flDisallowAttackAfterReloadStartDuration.GetRef(this.Handle);
 
 	// m_nBurstShotCount
+	private static readonly SchemaField<Int32> __m_nBurstShotCount = new("CCSWeaponBaseVData", "m_nBurstShotCount");
 	[SchemaMember("CCSWeaponBaseVData", "m_nBurstShotCount")]
-	public ref Int32 BurstShotCount => ref Schema.GetRef<Int32>(this.Handle, "CCSWeaponBaseVData", "m_nBurstShotCount");
+	public ref Int32 BurstShotCount => ref __m_nBurstShotCount.GetRef(this.Handle);
 
 	// m_bAllowBurstHolster
+	private static readonly SchemaField<bool> __m_bAllowBurstHolster = new("CCSWeaponBaseVData", "m_bAllowBurstHolster");
 	[SchemaMember("CCSWeaponBaseVData", "m_bAllowBurstHolster")]
-	public ref bool AllowBurstHolster => ref Schema.GetRef<bool>(this.Handle, "CCSWeaponBaseVData", "m_bAllowBurstHolster");
+	public ref bool AllowBurstHolster => ref __m_bAllowBurstHolster.GetRef(this.Handle);
 
 	// m_nRecoilSeed
+	private static readonly SchemaField<Int32> __m_nRecoilSeed = new("CCSWeaponBaseVData", "m_nRecoilSeed");
 	[SchemaMember("CCSWeaponBaseVData", "m_nRecoilSeed")]
-	public ref Int32 RecoilSeed => ref Schema.GetRef<Int32>(this.Handle, "CCSWeaponBaseVData", "m_nRecoilSeed");
+	public ref Int32 RecoilSeed => ref __m_nRecoilSeed.GetRef(this.Handle);
 
 	// m_nSpreadSeed
+	private static readonly SchemaField<Int32> __m_nSpreadSeed = new("CCSWeaponBaseVData", "m_nSpreadSeed");
 	[SchemaMember("CCSWeaponBaseVData", "m_nSpreadSeed")]
-	public ref Int32 SpreadSeed => ref Schema.GetRef<Int32>(this.Handle, "CCSWeaponBaseVData", "m_nSpreadSeed");
+	public ref Int32 SpreadSeed => ref __m_nSpreadSeed.GetRef(this.Handle);
 
 	// m_flAttackMovespeedFactor
+	private static readonly SchemaField<float> __m_flAttackMovespeedFactor = new("CCSWeaponBaseVData", "m_flAttackMovespeedFactor");
 	[SchemaMember("CCSWeaponBaseVData", "m_flAttackMovespeedFactor")]
-	public ref float AttackMovespeedFactor => ref Schema.GetRef<float>(this.Handle, "CCSWeaponBaseVData", "m_flAttackMovespeedFactor");
+	public ref float AttackMovespeedFactor => ref __m_flAttackMovespeedFactor.GetRef(this.Handle);
 
 	// m_flInaccuracyPitchShift
+	private static readonly SchemaField<float> __m_flInaccuracyPitchShift = new("CCSWeaponBaseVData", "m_flInaccuracyPitchShift");
 	[SchemaMember("CCSWeaponBaseVData", "m_flInaccuracyPitchShift")]
-	public ref float InaccuracyPitchShift => ref Schema.GetRef<float>(this.Handle, "CCSWeaponBaseVData", "m_flInaccuracyPitchShift");
+	public ref float InaccuracyPitchShift => ref __m_flInaccuracyPitchShift.GetRef(this.Handle);
 
 	// m_flInaccuracyAltSoundThreshold
+	private static readonly SchemaField<float> __m_flInaccuracyAltSoundThreshold = new("CCSWeaponBaseVData", "m_flInaccuracyAltSoundThreshold");
 	[SchemaMember("CCSWeaponBaseVData", "m_flInaccuracyAltSoundThreshold")]
-	public ref float InaccuracyAltSoundThreshold => ref Schema.GetRef<float>(this.Handle, "CCSWeaponBaseVData", "m_flInaccuracyAltSoundThreshold");
+	public ref float InaccuracyAltSoundThreshold => ref __m_flInaccuracyAltSoundThreshold.GetRef(this.Handle);
 
 	// m_szUseRadioSubtitle
 	[SchemaMember("CCSWeaponBaseVData", "m_szUseRadioSubtitle")]
@@ -231,116 +263,144 @@ public partial class CCSWeaponBaseVData : CBasePlayerWeaponVData
 	}
 
 	// m_bUnzoomsAfterShot
+	private static readonly SchemaField<bool> __m_bUnzoomsAfterShot = new("CCSWeaponBaseVData", "m_bUnzoomsAfterShot");
 	[SchemaMember("CCSWeaponBaseVData", "m_bUnzoomsAfterShot")]
-	public ref bool UnzoomsAfterShot => ref Schema.GetRef<bool>(this.Handle, "CCSWeaponBaseVData", "m_bUnzoomsAfterShot");
+	public ref bool UnzoomsAfterShot => ref __m_bUnzoomsAfterShot.GetRef(this.Handle);
 
 	// m_bHideViewModelWhenZoomed
+	private static readonly SchemaField<bool> __m_bHideViewModelWhenZoomed = new("CCSWeaponBaseVData", "m_bHideViewModelWhenZoomed");
 	[SchemaMember("CCSWeaponBaseVData", "m_bHideViewModelWhenZoomed")]
-	public ref bool HideViewModelWhenZoomed => ref Schema.GetRef<bool>(this.Handle, "CCSWeaponBaseVData", "m_bHideViewModelWhenZoomed");
+	public ref bool HideViewModelWhenZoomed => ref __m_bHideViewModelWhenZoomed.GetRef(this.Handle);
 
 	// m_nZoomLevels
+	private static readonly SchemaField<Int32> __m_nZoomLevels = new("CCSWeaponBaseVData", "m_nZoomLevels");
 	[SchemaMember("CCSWeaponBaseVData", "m_nZoomLevels")]
-	public ref Int32 ZoomLevels => ref Schema.GetRef<Int32>(this.Handle, "CCSWeaponBaseVData", "m_nZoomLevels");
+	public ref Int32 ZoomLevels => ref __m_nZoomLevels.GetRef(this.Handle);
 
 	// m_nZoomFOV1
+	private static readonly SchemaField<Int32> __m_nZoomFOV1 = new("CCSWeaponBaseVData", "m_nZoomFOV1");
 	[SchemaMember("CCSWeaponBaseVData", "m_nZoomFOV1")]
-	public ref Int32 ZoomFOV1 => ref Schema.GetRef<Int32>(this.Handle, "CCSWeaponBaseVData", "m_nZoomFOV1");
+	public ref Int32 ZoomFOV1 => ref __m_nZoomFOV1.GetRef(this.Handle);
 
 	// m_nZoomFOV2
+	private static readonly SchemaField<Int32> __m_nZoomFOV2 = new("CCSWeaponBaseVData", "m_nZoomFOV2");
 	[SchemaMember("CCSWeaponBaseVData", "m_nZoomFOV2")]
-	public ref Int32 ZoomFOV2 => ref Schema.GetRef<Int32>(this.Handle, "CCSWeaponBaseVData", "m_nZoomFOV2");
+	public ref Int32 ZoomFOV2 => ref __m_nZoomFOV2.GetRef(this.Handle);
 
 	// m_flZoomTime0
+	private static readonly SchemaField<float> __m_flZoomTime0 = new("CCSWeaponBaseVData", "m_flZoomTime0");
 	[SchemaMember("CCSWeaponBaseVData", "m_flZoomTime0")]
-	public ref float ZoomTime0 => ref Schema.GetRef<float>(this.Handle, "CCSWeaponBaseVData", "m_flZoomTime0");
+	public ref float ZoomTime0 => ref __m_flZoomTime0.GetRef(this.Handle);
 
 	// m_flZoomTime1
+	private static readonly SchemaField<float> __m_flZoomTime1 = new("CCSWeaponBaseVData", "m_flZoomTime1");
 	[SchemaMember("CCSWeaponBaseVData", "m_flZoomTime1")]
-	public ref float ZoomTime1 => ref Schema.GetRef<float>(this.Handle, "CCSWeaponBaseVData", "m_flZoomTime1");
+	public ref float ZoomTime1 => ref __m_flZoomTime1.GetRef(this.Handle);
 
 	// m_flZoomTime2
+	private static readonly SchemaField<float> __m_flZoomTime2 = new("CCSWeaponBaseVData", "m_flZoomTime2");
 	[SchemaMember("CCSWeaponBaseVData", "m_flZoomTime2")]
-	public ref float ZoomTime2 => ref Schema.GetRef<float>(this.Handle, "CCSWeaponBaseVData", "m_flZoomTime2");
+	public ref float ZoomTime2 => ref __m_flZoomTime2.GetRef(this.Handle);
 
 	// m_flIronSightPullUpSpeed
+	private static readonly SchemaField<float> __m_flIronSightPullUpSpeed = new("CCSWeaponBaseVData", "m_flIronSightPullUpSpeed");
 	[SchemaMember("CCSWeaponBaseVData", "m_flIronSightPullUpSpeed")]
-	public ref float IronSightPullUpSpeed => ref Schema.GetRef<float>(this.Handle, "CCSWeaponBaseVData", "m_flIronSightPullUpSpeed");
+	public ref float IronSightPullUpSpeed => ref __m_flIronSightPullUpSpeed.GetRef(this.Handle);
 
 	// m_flIronSightPutDownSpeed
+	private static readonly SchemaField<float> __m_flIronSightPutDownSpeed = new("CCSWeaponBaseVData", "m_flIronSightPutDownSpeed");
 	[SchemaMember("CCSWeaponBaseVData", "m_flIronSightPutDownSpeed")]
-	public ref float IronSightPutDownSpeed => ref Schema.GetRef<float>(this.Handle, "CCSWeaponBaseVData", "m_flIronSightPutDownSpeed");
+	public ref float IronSightPutDownSpeed => ref __m_flIronSightPutDownSpeed.GetRef(this.Handle);
 
 	// m_flIronSightFOV
+	private static readonly SchemaField<float> __m_flIronSightFOV = new("CCSWeaponBaseVData", "m_flIronSightFOV");
 	[SchemaMember("CCSWeaponBaseVData", "m_flIronSightFOV")]
-	public ref float IronSightFOV => ref Schema.GetRef<float>(this.Handle, "CCSWeaponBaseVData", "m_flIronSightFOV");
+	public ref float IronSightFOV => ref __m_flIronSightFOV.GetRef(this.Handle);
 
 	// m_flIronSightPivotForward
+	private static readonly SchemaField<float> __m_flIronSightPivotForward = new("CCSWeaponBaseVData", "m_flIronSightPivotForward");
 	[SchemaMember("CCSWeaponBaseVData", "m_flIronSightPivotForward")]
-	public ref float IronSightPivotForward => ref Schema.GetRef<float>(this.Handle, "CCSWeaponBaseVData", "m_flIronSightPivotForward");
+	public ref float IronSightPivotForward => ref __m_flIronSightPivotForward.GetRef(this.Handle);
 
 	// m_flIronSightLooseness
+	private static readonly SchemaField<float> __m_flIronSightLooseness = new("CCSWeaponBaseVData", "m_flIronSightLooseness");
 	[SchemaMember("CCSWeaponBaseVData", "m_flIronSightLooseness")]
-	public ref float IronSightLooseness => ref Schema.GetRef<float>(this.Handle, "CCSWeaponBaseVData", "m_flIronSightLooseness");
+	public ref float IronSightLooseness => ref __m_flIronSightLooseness.GetRef(this.Handle);
 
 	// m_nDamage
+	private static readonly SchemaField<Int32> __m_nDamage = new("CCSWeaponBaseVData", "m_nDamage");
 	[SchemaMember("CCSWeaponBaseVData", "m_nDamage")]
-	public ref Int32 Damage => ref Schema.GetRef<Int32>(this.Handle, "CCSWeaponBaseVData", "m_nDamage");
+	public ref Int32 Damage => ref __m_nDamage.GetRef(this.Handle);
 
 	// m_flHeadshotMultiplier
+	private static readonly SchemaField<float> __m_flHeadshotMultiplier = new("CCSWeaponBaseVData", "m_flHeadshotMultiplier");
 	[SchemaMember("CCSWeaponBaseVData", "m_flHeadshotMultiplier")]
-	public ref float HeadshotMultiplier => ref Schema.GetRef<float>(this.Handle, "CCSWeaponBaseVData", "m_flHeadshotMultiplier");
+	public ref float HeadshotMultiplier => ref __m_flHeadshotMultiplier.GetRef(this.Handle);
 
 	// m_flArmorRatio
+	private static readonly SchemaField<float> __m_flArmorRatio = new("CCSWeaponBaseVData", "m_flArmorRatio");
 	[SchemaMember("CCSWeaponBaseVData", "m_flArmorRatio")]
-	public ref float ArmorRatio => ref Schema.GetRef<float>(this.Handle, "CCSWeaponBaseVData", "m_flArmorRatio");
+	public ref float ArmorRatio => ref __m_flArmorRatio.GetRef(this.Handle);
 
 	// m_flPenetration
+	private static readonly SchemaField<float> __m_flPenetration = new("CCSWeaponBaseVData", "m_flPenetration");
 	[SchemaMember("CCSWeaponBaseVData", "m_flPenetration")]
-	public ref float Penetration => ref Schema.GetRef<float>(this.Handle, "CCSWeaponBaseVData", "m_flPenetration");
+	public ref float Penetration => ref __m_flPenetration.GetRef(this.Handle);
 
 	// m_flRange
+	private static readonly SchemaField<float> __m_flRange = new("CCSWeaponBaseVData", "m_flRange");
 	[SchemaMember("CCSWeaponBaseVData", "m_flRange")]
-	public ref float Range => ref Schema.GetRef<float>(this.Handle, "CCSWeaponBaseVData", "m_flRange");
+	public ref float Range => ref __m_flRange.GetRef(this.Handle);
 
 	// m_flRangeModifier
+	private static readonly SchemaField<float> __m_flRangeModifier = new("CCSWeaponBaseVData", "m_flRangeModifier");
 	[SchemaMember("CCSWeaponBaseVData", "m_flRangeModifier")]
-	public ref float RangeModifier => ref Schema.GetRef<float>(this.Handle, "CCSWeaponBaseVData", "m_flRangeModifier");
+	public ref float RangeModifier => ref __m_flRangeModifier.GetRef(this.Handle);
 
 	// m_flFlinchVelocityModifierLarge
+	private static readonly SchemaField<float> __m_flFlinchVelocityModifierLarge = new("CCSWeaponBaseVData", "m_flFlinchVelocityModifierLarge");
 	[SchemaMember("CCSWeaponBaseVData", "m_flFlinchVelocityModifierLarge")]
-	public ref float FlinchVelocityModifierLarge => ref Schema.GetRef<float>(this.Handle, "CCSWeaponBaseVData", "m_flFlinchVelocityModifierLarge");
+	public ref float FlinchVelocityModifierLarge => ref __m_flFlinchVelocityModifierLarge.GetRef(this.Handle);
 
 	// m_flFlinchVelocityModifierSmall
+	private static readonly SchemaField<float> __m_flFlinchVelocityModifierSmall = new("CCSWeaponBaseVData", "m_flFlinchVelocityModifierSmall");
 	[SchemaMember("CCSWeaponBaseVData", "m_flFlinchVelocityModifierSmall")]
-	public ref float FlinchVelocityModifierSmall => ref Schema.GetRef<float>(this.Handle, "CCSWeaponBaseVData", "m_flFlinchVelocityModifierSmall");
+	public ref float FlinchVelocityModifierSmall => ref __m_flFlinchVelocityModifierSmall.GetRef(this.Handle);
 
 	// m_flRecoveryTimeCrouch
+	private static readonly SchemaField<float> __m_flRecoveryTimeCrouch = new("CCSWeaponBaseVData", "m_flRecoveryTimeCrouch");
 	[SchemaMember("CCSWeaponBaseVData", "m_flRecoveryTimeCrouch")]
-	public ref float RecoveryTimeCrouch => ref Schema.GetRef<float>(this.Handle, "CCSWeaponBaseVData", "m_flRecoveryTimeCrouch");
+	public ref float RecoveryTimeCrouch => ref __m_flRecoveryTimeCrouch.GetRef(this.Handle);
 
 	// m_flRecoveryTimeStand
+	private static readonly SchemaField<float> __m_flRecoveryTimeStand = new("CCSWeaponBaseVData", "m_flRecoveryTimeStand");
 	[SchemaMember("CCSWeaponBaseVData", "m_flRecoveryTimeStand")]
-	public ref float RecoveryTimeStand => ref Schema.GetRef<float>(this.Handle, "CCSWeaponBaseVData", "m_flRecoveryTimeStand");
+	public ref float RecoveryTimeStand => ref __m_flRecoveryTimeStand.GetRef(this.Handle);
 
 	// m_flRecoveryTimeCrouchFinal
+	private static readonly SchemaField<float> __m_flRecoveryTimeCrouchFinal = new("CCSWeaponBaseVData", "m_flRecoveryTimeCrouchFinal");
 	[SchemaMember("CCSWeaponBaseVData", "m_flRecoveryTimeCrouchFinal")]
-	public ref float RecoveryTimeCrouchFinal => ref Schema.GetRef<float>(this.Handle, "CCSWeaponBaseVData", "m_flRecoveryTimeCrouchFinal");
+	public ref float RecoveryTimeCrouchFinal => ref __m_flRecoveryTimeCrouchFinal.GetRef(this.Handle);
 
 	// m_flRecoveryTimeStandFinal
+	private static readonly SchemaField<float> __m_flRecoveryTimeStandFinal = new("CCSWeaponBaseVData", "m_flRecoveryTimeStandFinal");
 	[SchemaMember("CCSWeaponBaseVData", "m_flRecoveryTimeStandFinal")]
-	public ref float RecoveryTimeStandFinal => ref Schema.GetRef<float>(this.Handle, "CCSWeaponBaseVData", "m_flRecoveryTimeStandFinal");
+	public ref float RecoveryTimeStandFinal => ref __m_flRecoveryTimeStandFinal.GetRef(this.Handle);
 
 	// m_nRecoveryTransitionStartBullet
+	private static readonly SchemaField<Int32> __m_nRecoveryTransitionStartBullet = new("CCSWeaponBaseVData", "m_nRecoveryTransitionStartBullet");
 	[SchemaMember("CCSWeaponBaseVData", "m_nRecoveryTransitionStartBullet")]
-	public ref Int32 RecoveryTransitionStartBullet => ref Schema.GetRef<Int32>(this.Handle, "CCSWeaponBaseVData", "m_nRecoveryTransitionStartBullet");
+	public ref Int32 RecoveryTransitionStartBullet => ref __m_nRecoveryTransitionStartBullet.GetRef(this.Handle);
 
 	// m_nRecoveryTransitionEndBullet
+	private static readonly SchemaField<Int32> __m_nRecoveryTransitionEndBullet = new("CCSWeaponBaseVData", "m_nRecoveryTransitionEndBullet");
 	[SchemaMember("CCSWeaponBaseVData", "m_nRecoveryTransitionEndBullet")]
-	public ref Int32 RecoveryTransitionEndBullet => ref Schema.GetRef<Int32>(this.Handle, "CCSWeaponBaseVData", "m_nRecoveryTransitionEndBullet");
+	public ref Int32 RecoveryTransitionEndBullet => ref __m_nRecoveryTransitionEndBullet.GetRef(this.Handle);
 
 	// m_flThrowVelocity
+	private static readonly SchemaField<float> __m_flThrowVelocity = new("CCSWeaponBaseVData", "m_flThrowVelocity");
 	[SchemaMember("CCSWeaponBaseVData", "m_flThrowVelocity")]
-	public ref float ThrowVelocity => ref Schema.GetRef<float>(this.Handle, "CCSWeaponBaseVData", "m_flThrowVelocity");
+	public ref float ThrowVelocity => ref __m_flThrowVelocity.GetRef(this.Handle);
 
 	// m_vSmokeColor
 	[SchemaMember("CCSWeaponBaseVData", "m_vSmokeColor")]

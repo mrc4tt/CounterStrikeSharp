@@ -19,235 +19,289 @@ public partial class CCSWeaponBase : CBasePlayerWeapon
     public CCSWeaponBase (IntPtr pointer) : base(pointer) {}
 
 	// m_bRemoveable
+	private static readonly SchemaField<bool> __m_bRemoveable = new("CCSWeaponBase", "m_bRemoveable");
 	[SchemaMember("CCSWeaponBase", "m_bRemoveable")]
-	public ref bool Removeable => ref Schema.GetRef<bool>(this.Handle, "CCSWeaponBase", "m_bRemoveable");
+	public ref bool Removeable => ref __m_bRemoveable.GetRef(this.Handle);
 
 	// m_bPlayerAmmoStockOnPickup
+	private static readonly SchemaField<bool> __m_bPlayerAmmoStockOnPickup = new("CCSWeaponBase", "m_bPlayerAmmoStockOnPickup");
 	[SchemaMember("CCSWeaponBase", "m_bPlayerAmmoStockOnPickup")]
-	public ref bool PlayerAmmoStockOnPickup => ref Schema.GetRef<bool>(this.Handle, "CCSWeaponBase", "m_bPlayerAmmoStockOnPickup");
+	public ref bool PlayerAmmoStockOnPickup => ref __m_bPlayerAmmoStockOnPickup.GetRef(this.Handle);
 
 	// m_bRequireUseToTouch
+	private static readonly SchemaField<bool> __m_bRequireUseToTouch = new("CCSWeaponBase", "m_bRequireUseToTouch");
 	[SchemaMember("CCSWeaponBase", "m_bRequireUseToTouch")]
-	public ref bool RequireUseToTouch => ref Schema.GetRef<bool>(this.Handle, "CCSWeaponBase", "m_bRequireUseToTouch");
+	public ref bool RequireUseToTouch => ref __m_bRequireUseToTouch.GetRef(this.Handle);
 
 	// m_iWeaponGameplayAnimState
+	private static readonly SchemaField<WeaponGameplayAnimState> __m_iWeaponGameplayAnimState = new("CCSWeaponBase", "m_iWeaponGameplayAnimState");
 	[SchemaMember("CCSWeaponBase", "m_iWeaponGameplayAnimState")]
-	public ref WeaponGameplayAnimState WeaponGameplayAnimState => ref Schema.GetRef<WeaponGameplayAnimState>(this.Handle, "CCSWeaponBase", "m_iWeaponGameplayAnimState");
+	public ref WeaponGameplayAnimState WeaponGameplayAnimState => ref __m_iWeaponGameplayAnimState.GetRef(this.Handle);
 
 	// m_flWeaponGameplayAnimStateTimestamp
+	private static readonly SchemaField<float> __m_flWeaponGameplayAnimStateTimestamp = new("CCSWeaponBase", "m_flWeaponGameplayAnimStateTimestamp");
 	[SchemaMember("CCSWeaponBase", "m_flWeaponGameplayAnimStateTimestamp")]
-	public ref float WeaponGameplayAnimStateTimestamp => ref Schema.GetRef<float>(this.Handle, "CCSWeaponBase", "m_flWeaponGameplayAnimStateTimestamp");
+	public ref float WeaponGameplayAnimStateTimestamp => ref __m_flWeaponGameplayAnimStateTimestamp.GetRef(this.Handle);
 
 	// m_flInspectCancelCompleteTime
+	private static readonly SchemaField<float> __m_flInspectCancelCompleteTime = new("CCSWeaponBase", "m_flInspectCancelCompleteTime");
 	[SchemaMember("CCSWeaponBase", "m_flInspectCancelCompleteTime")]
-	public ref float InspectCancelCompleteTime => ref Schema.GetRef<float>(this.Handle, "CCSWeaponBase", "m_flInspectCancelCompleteTime");
+	public ref float InspectCancelCompleteTime => ref __m_flInspectCancelCompleteTime.GetRef(this.Handle);
 
 	// m_bInspectPending
+	private static readonly SchemaField<bool> __m_bInspectPending = new("CCSWeaponBase", "m_bInspectPending");
 	[SchemaMember("CCSWeaponBase", "m_bInspectPending")]
-	public ref bool InspectPending => ref Schema.GetRef<bool>(this.Handle, "CCSWeaponBase", "m_bInspectPending");
+	public ref bool InspectPending => ref __m_bInspectPending.GetRef(this.Handle);
 
 	// m_bInspectShouldLoop
+	private static readonly SchemaField<bool> __m_bInspectShouldLoop = new("CCSWeaponBase", "m_bInspectShouldLoop");
 	[SchemaMember("CCSWeaponBase", "m_bInspectShouldLoop")]
-	public ref bool InspectShouldLoop => ref Schema.GetRef<bool>(this.Handle, "CCSWeaponBase", "m_bInspectShouldLoop");
+	public ref bool InspectShouldLoop => ref __m_bInspectShouldLoop.GetRef(this.Handle);
 
 	// m_nLastEmptySoundCmdNum
+	private static readonly SchemaField<Int32> __m_nLastEmptySoundCmdNum = new("CCSWeaponBase", "m_nLastEmptySoundCmdNum");
 	[SchemaMember("CCSWeaponBase", "m_nLastEmptySoundCmdNum")]
-	public ref Int32 LastEmptySoundCmdNum => ref Schema.GetRef<Int32>(this.Handle, "CCSWeaponBase", "m_nLastEmptySoundCmdNum");
+	public ref Int32 LastEmptySoundCmdNum => ref __m_nLastEmptySoundCmdNum.GetRef(this.Handle);
 
 	// m_bFireOnEmpty
+	private static readonly SchemaField<bool> __m_bFireOnEmpty = new("CCSWeaponBase", "m_bFireOnEmpty");
 	[SchemaMember("CCSWeaponBase", "m_bFireOnEmpty")]
-	public ref bool FireOnEmpty => ref Schema.GetRef<bool>(this.Handle, "CCSWeaponBase", "m_bFireOnEmpty");
+	public ref bool FireOnEmpty => ref __m_bFireOnEmpty.GetRef(this.Handle);
 
 	// m_OnPlayerPickup
 	[SchemaMember("CCSWeaponBase", "m_OnPlayerPickup")]
 	public CEntityIOOutput OnPlayerPickup => Schema.GetDeclaredClass<CEntityIOOutput>(this.Handle, "CCSWeaponBase", "m_OnPlayerPickup");
 
 	// m_weaponMode
+	private static readonly SchemaField<CSWeaponMode> __m_weaponMode = new("CCSWeaponBase", "m_weaponMode");
 	[SchemaMember("CCSWeaponBase", "m_weaponMode")]
-	public ref CSWeaponMode WeaponMode => ref Schema.GetRef<CSWeaponMode>(this.Handle, "CCSWeaponBase", "m_weaponMode");
+	public ref CSWeaponMode WeaponMode => ref __m_weaponMode.GetRef(this.Handle);
 
 	// m_flTurningInaccuracyDelta
+	private static readonly SchemaField<float> __m_flTurningInaccuracyDelta = new("CCSWeaponBase", "m_flTurningInaccuracyDelta");
 	[SchemaMember("CCSWeaponBase", "m_flTurningInaccuracyDelta")]
-	public ref float TurningInaccuracyDelta => ref Schema.GetRef<float>(this.Handle, "CCSWeaponBase", "m_flTurningInaccuracyDelta");
+	public ref float TurningInaccuracyDelta => ref __m_flTurningInaccuracyDelta.GetRef(this.Handle);
 
 	// m_vecTurningInaccuracyEyeDirLast
 	[SchemaMember("CCSWeaponBase", "m_vecTurningInaccuracyEyeDirLast")]
 	public Vector TurningInaccuracyEyeDirLast => Schema.GetDeclaredClass<Vector>(this.Handle, "CCSWeaponBase", "m_vecTurningInaccuracyEyeDirLast");
 
 	// m_flTurningInaccuracy
+	private static readonly SchemaField<float> __m_flTurningInaccuracy = new("CCSWeaponBase", "m_flTurningInaccuracy");
 	[SchemaMember("CCSWeaponBase", "m_flTurningInaccuracy")]
-	public ref float TurningInaccuracy => ref Schema.GetRef<float>(this.Handle, "CCSWeaponBase", "m_flTurningInaccuracy");
+	public ref float TurningInaccuracy => ref __m_flTurningInaccuracy.GetRef(this.Handle);
 
 	// m_fAccuracyPenalty
+	private static readonly SchemaField<float> __m_fAccuracyPenalty = new("CCSWeaponBase", "m_fAccuracyPenalty");
 	[SchemaMember("CCSWeaponBase", "m_fAccuracyPenalty")]
-	public ref float AccuracyPenalty => ref Schema.GetRef<float>(this.Handle, "CCSWeaponBase", "m_fAccuracyPenalty");
+	public ref float AccuracyPenalty => ref __m_fAccuracyPenalty.GetRef(this.Handle);
 
 	// m_flLastAccuracyUpdateTime
+	private static readonly SchemaField<float> __m_flLastAccuracyUpdateTime = new("CCSWeaponBase", "m_flLastAccuracyUpdateTime");
 	[SchemaMember("CCSWeaponBase", "m_flLastAccuracyUpdateTime")]
-	public ref float LastAccuracyUpdateTime => ref Schema.GetRef<float>(this.Handle, "CCSWeaponBase", "m_flLastAccuracyUpdateTime");
+	public ref float LastAccuracyUpdateTime => ref __m_flLastAccuracyUpdateTime.GetRef(this.Handle);
 
 	// m_fAccuracySmoothedForZoom
+	private static readonly SchemaField<float> __m_fAccuracySmoothedForZoom = new("CCSWeaponBase", "m_fAccuracySmoothedForZoom");
 	[SchemaMember("CCSWeaponBase", "m_fAccuracySmoothedForZoom")]
-	public ref float AccuracySmoothedForZoom => ref Schema.GetRef<float>(this.Handle, "CCSWeaponBase", "m_fAccuracySmoothedForZoom");
+	public ref float AccuracySmoothedForZoom => ref __m_fAccuracySmoothedForZoom.GetRef(this.Handle);
 
 	// m_iRecoilIndex
+	private static readonly SchemaField<Int32> __m_iRecoilIndex = new("CCSWeaponBase", "m_iRecoilIndex");
 	[SchemaMember("CCSWeaponBase", "m_iRecoilIndex")]
-	public ref Int32 IRecoilIndex => ref Schema.GetRef<Int32>(this.Handle, "CCSWeaponBase", "m_iRecoilIndex");
+	public ref Int32 IRecoilIndex => ref __m_iRecoilIndex.GetRef(this.Handle);
 
 	// m_flRecoilIndex
+	private static readonly SchemaField<float> __m_flRecoilIndex = new("CCSWeaponBase", "m_flRecoilIndex");
 	[SchemaMember("CCSWeaponBase", "m_flRecoilIndex")]
-	public ref float FlRecoilIndex => ref Schema.GetRef<float>(this.Handle, "CCSWeaponBase", "m_flRecoilIndex");
+	public ref float FlRecoilIndex => ref __m_flRecoilIndex.GetRef(this.Handle);
 
 	// m_bBurstMode
+	private static readonly SchemaField<bool> __m_bBurstMode = new("CCSWeaponBase", "m_bBurstMode");
 	[SchemaMember("CCSWeaponBase", "m_bBurstMode")]
-	public ref bool BurstMode => ref Schema.GetRef<bool>(this.Handle, "CCSWeaponBase", "m_bBurstMode");
+	public ref bool BurstMode => ref __m_bBurstMode.GetRef(this.Handle);
 
 	// m_nPostponeFireReadyTicks
+	private static readonly SchemaField<Int32> __m_nPostponeFireReadyTicks = new("CCSWeaponBase", "m_nPostponeFireReadyTicks");
 	[SchemaMember("CCSWeaponBase", "m_nPostponeFireReadyTicks")]
-	public ref Int32 PostponeFireReadyTicks => ref Schema.GetRef<Int32>(this.Handle, "CCSWeaponBase", "m_nPostponeFireReadyTicks");
+	public ref Int32 PostponeFireReadyTicks => ref __m_nPostponeFireReadyTicks.GetRef(this.Handle);
 
 	// m_flPostponeFireReadyFrac
+	private static readonly SchemaField<float> __m_flPostponeFireReadyFrac = new("CCSWeaponBase", "m_flPostponeFireReadyFrac");
 	[SchemaMember("CCSWeaponBase", "m_flPostponeFireReadyFrac")]
-	public ref float PostponeFireReadyFrac => ref Schema.GetRef<float>(this.Handle, "CCSWeaponBase", "m_flPostponeFireReadyFrac");
+	public ref float PostponeFireReadyFrac => ref __m_flPostponeFireReadyFrac.GetRef(this.Handle);
 
 	// m_bInReload
+	private static readonly SchemaField<bool> __m_bInReload = new("CCSWeaponBase", "m_bInReload");
 	[SchemaMember("CCSWeaponBase", "m_bInReload")]
-	public ref bool InReload => ref Schema.GetRef<bool>(this.Handle, "CCSWeaponBase", "m_bInReload");
+	public ref bool InReload => ref __m_bInReload.GetRef(this.Handle);
 
 	// m_nDeployTick
+	private static readonly SchemaField<Int32> __m_nDeployTick = new("CCSWeaponBase", "m_nDeployTick");
 	[SchemaMember("CCSWeaponBase", "m_nDeployTick")]
-	public ref Int32 DeployTick => ref Schema.GetRef<Int32>(this.Handle, "CCSWeaponBase", "m_nDeployTick");
+	public ref Int32 DeployTick => ref __m_nDeployTick.GetRef(this.Handle);
 
 	// m_flDroppedAtTime
+	private static readonly SchemaField<float> __m_flDroppedAtTime = new("CCSWeaponBase", "m_flDroppedAtTime");
 	[SchemaMember("CCSWeaponBase", "m_flDroppedAtTime")]
-	public ref float DroppedAtTime => ref Schema.GetRef<float>(this.Handle, "CCSWeaponBase", "m_flDroppedAtTime");
+	public ref float DroppedAtTime => ref __m_flDroppedAtTime.GetRef(this.Handle);
 
 	// m_bIsHauledBack
+	private static readonly SchemaField<bool> __m_bIsHauledBack = new("CCSWeaponBase", "m_bIsHauledBack");
 	[SchemaMember("CCSWeaponBase", "m_bIsHauledBack")]
-	public ref bool IsHauledBack => ref Schema.GetRef<bool>(this.Handle, "CCSWeaponBase", "m_bIsHauledBack");
+	public ref bool IsHauledBack => ref __m_bIsHauledBack.GetRef(this.Handle);
 
 	// m_bSilencerOn
+	private static readonly SchemaField<bool> __m_bSilencerOn = new("CCSWeaponBase", "m_bSilencerOn");
 	[SchemaMember("CCSWeaponBase", "m_bSilencerOn")]
-	public ref bool SilencerOn => ref Schema.GetRef<bool>(this.Handle, "CCSWeaponBase", "m_bSilencerOn");
+	public ref bool SilencerOn => ref __m_bSilencerOn.GetRef(this.Handle);
 
 	// m_flTimeSilencerSwitchComplete
+	private static readonly SchemaField<float> __m_flTimeSilencerSwitchComplete = new("CCSWeaponBase", "m_flTimeSilencerSwitchComplete");
 	[SchemaMember("CCSWeaponBase", "m_flTimeSilencerSwitchComplete")]
-	public ref float TimeSilencerSwitchComplete => ref Schema.GetRef<float>(this.Handle, "CCSWeaponBase", "m_flTimeSilencerSwitchComplete");
+	public ref float TimeSilencerSwitchComplete => ref __m_flTimeSilencerSwitchComplete.GetRef(this.Handle);
 
 	// m_bStealthy
+	private static readonly SchemaField<bool> __m_bStealthy = new("CCSWeaponBase", "m_bStealthy");
 	[SchemaMember("CCSWeaponBase", "m_bStealthy")]
-	public ref bool Stealthy => ref Schema.GetRef<bool>(this.Handle, "CCSWeaponBase", "m_bStealthy");
+	public ref bool Stealthy => ref __m_bStealthy.GetRef(this.Handle);
 
 	// m_bInSilentReloadSection
+	private static readonly SchemaField<bool> __m_bInSilentReloadSection = new("CCSWeaponBase", "m_bInSilentReloadSection");
 	[SchemaMember("CCSWeaponBase", "m_bInSilentReloadSection")]
-	public ref bool InSilentReloadSection => ref Schema.GetRef<bool>(this.Handle, "CCSWeaponBase", "m_bInSilentReloadSection");
+	public ref bool InSilentReloadSection => ref __m_bInSilentReloadSection.GetRef(this.Handle);
 
 	// m_bSilentReloadStatCounted
+	private static readonly SchemaField<bool> __m_bSilentReloadStatCounted = new("CCSWeaponBase", "m_bSilentReloadStatCounted");
 	[SchemaMember("CCSWeaponBase", "m_bSilentReloadStatCounted")]
-	public ref bool SilentReloadStatCounted => ref Schema.GetRef<bool>(this.Handle, "CCSWeaponBase", "m_bSilentReloadStatCounted");
+	public ref bool SilentReloadStatCounted => ref __m_bSilentReloadStatCounted.GetRef(this.Handle);
 
 	// m_bSilentReloadStatPending
+	private static readonly SchemaField<bool> __m_bSilentReloadStatPending = new("CCSWeaponBase", "m_bSilentReloadStatPending");
 	[SchemaMember("CCSWeaponBase", "m_bSilentReloadStatPending")]
-	public ref bool SilentReloadStatPending => ref Schema.GetRef<bool>(this.Handle, "CCSWeaponBase", "m_bSilentReloadStatPending");
+	public ref bool SilentReloadStatPending => ref __m_bSilentReloadStatPending.GetRef(this.Handle);
 
 	// m_flStealthHoldStartTime
+	private static readonly SchemaField<float> __m_flStealthHoldStartTime = new("CCSWeaponBase", "m_flStealthHoldStartTime");
 	[SchemaMember("CCSWeaponBase", "m_flStealthHoldStartTime")]
-	public ref float StealthHoldStartTime => ref Schema.GetRef<float>(this.Handle, "CCSWeaponBase", "m_flStealthHoldStartTime");
+	public ref float StealthHoldStartTime => ref __m_flStealthHoldStartTime.GetRef(this.Handle);
 
 	// m_bReloadHeldSinceStart
+	private static readonly SchemaField<bool> __m_bReloadHeldSinceStart = new("CCSWeaponBase", "m_bReloadHeldSinceStart");
 	[SchemaMember("CCSWeaponBase", "m_bReloadHeldSinceStart")]
-	public ref bool ReloadHeldSinceStart => ref Schema.GetRef<bool>(this.Handle, "CCSWeaponBase", "m_bReloadHeldSinceStart");
+	public ref bool ReloadHeldSinceStart => ref __m_bReloadHeldSinceStart.GetRef(this.Handle);
 
 	// m_flWeaponActionPlaybackRate
+	private static readonly SchemaField<float> __m_flWeaponActionPlaybackRate = new("CCSWeaponBase", "m_flWeaponActionPlaybackRate");
 	[SchemaMember("CCSWeaponBase", "m_flWeaponActionPlaybackRate")]
-	public ref float WeaponActionPlaybackRate => ref Schema.GetRef<float>(this.Handle, "CCSWeaponBase", "m_flWeaponActionPlaybackRate");
+	public ref float WeaponActionPlaybackRate => ref __m_flWeaponActionPlaybackRate.GetRef(this.Handle);
 
 	// m_iOriginalTeamNumber
+	private static readonly SchemaField<Int32> __m_iOriginalTeamNumber = new("CCSWeaponBase", "m_iOriginalTeamNumber");
 	[SchemaMember("CCSWeaponBase", "m_iOriginalTeamNumber")]
-	public ref Int32 OriginalTeamNumber => ref Schema.GetRef<Int32>(this.Handle, "CCSWeaponBase", "m_iOriginalTeamNumber");
+	public ref Int32 OriginalTeamNumber => ref __m_iOriginalTeamNumber.GetRef(this.Handle);
 
 	// m_iMostRecentTeamNumber
+	private static readonly SchemaField<Int32> __m_iMostRecentTeamNumber = new("CCSWeaponBase", "m_iMostRecentTeamNumber");
 	[SchemaMember("CCSWeaponBase", "m_iMostRecentTeamNumber")]
-	public ref Int32 MostRecentTeamNumber => ref Schema.GetRef<Int32>(this.Handle, "CCSWeaponBase", "m_iMostRecentTeamNumber");
+	public ref Int32 MostRecentTeamNumber => ref __m_iMostRecentTeamNumber.GetRef(this.Handle);
 
 	// m_bDroppedNearBuyZone
+	private static readonly SchemaField<bool> __m_bDroppedNearBuyZone = new("CCSWeaponBase", "m_bDroppedNearBuyZone");
 	[SchemaMember("CCSWeaponBase", "m_bDroppedNearBuyZone")]
-	public ref bool DroppedNearBuyZone => ref Schema.GetRef<bool>(this.Handle, "CCSWeaponBase", "m_bDroppedNearBuyZone");
+	public ref bool DroppedNearBuyZone => ref __m_bDroppedNearBuyZone.GetRef(this.Handle);
 
 	// m_flNextAttackRenderTimeOffset
+	private static readonly SchemaField<float> __m_flNextAttackRenderTimeOffset = new("CCSWeaponBase", "m_flNextAttackRenderTimeOffset");
 	[SchemaMember("CCSWeaponBase", "m_flNextAttackRenderTimeOffset")]
-	public ref float NextAttackRenderTimeOffset => ref Schema.GetRef<float>(this.Handle, "CCSWeaponBase", "m_flNextAttackRenderTimeOffset");
+	public ref float NextAttackRenderTimeOffset => ref __m_flNextAttackRenderTimeOffset.GetRef(this.Handle);
 
 	// m_bCanBePickedUp
+	private static readonly SchemaField<bool> __m_bCanBePickedUp = new("CCSWeaponBase", "m_bCanBePickedUp");
 	[SchemaMember("CCSWeaponBase", "m_bCanBePickedUp")]
-	public ref bool CanBePickedUp => ref Schema.GetRef<bool>(this.Handle, "CCSWeaponBase", "m_bCanBePickedUp");
+	public ref bool CanBePickedUp => ref __m_bCanBePickedUp.GetRef(this.Handle);
 
 	// m_bUseCanOverrideNextOwnerTouchTime
+	private static readonly SchemaField<bool> __m_bUseCanOverrideNextOwnerTouchTime = new("CCSWeaponBase", "m_bUseCanOverrideNextOwnerTouchTime");
 	[SchemaMember("CCSWeaponBase", "m_bUseCanOverrideNextOwnerTouchTime")]
-	public ref bool UseCanOverrideNextOwnerTouchTime => ref Schema.GetRef<bool>(this.Handle, "CCSWeaponBase", "m_bUseCanOverrideNextOwnerTouchTime");
+	public ref bool UseCanOverrideNextOwnerTouchTime => ref __m_bUseCanOverrideNextOwnerTouchTime.GetRef(this.Handle);
 
 	// m_nextOwnerTouchTime
+	private static readonly SchemaField<float> __m_nextOwnerTouchTime = new("CCSWeaponBase", "m_nextOwnerTouchTime");
 	[SchemaMember("CCSWeaponBase", "m_nextOwnerTouchTime")]
-	public ref float NextOwnerTouchTime => ref Schema.GetRef<float>(this.Handle, "CCSWeaponBase", "m_nextOwnerTouchTime");
+	public ref float NextOwnerTouchTime => ref __m_nextOwnerTouchTime.GetRef(this.Handle);
 
 	// m_nextPrevOwnerTouchTime
+	private static readonly SchemaField<float> __m_nextPrevOwnerTouchTime = new("CCSWeaponBase", "m_nextPrevOwnerTouchTime");
 	[SchemaMember("CCSWeaponBase", "m_nextPrevOwnerTouchTime")]
-	public ref float NextPrevOwnerTouchTime => ref Schema.GetRef<float>(this.Handle, "CCSWeaponBase", "m_nextPrevOwnerTouchTime");
+	public ref float NextPrevOwnerTouchTime => ref __m_nextPrevOwnerTouchTime.GetRef(this.Handle);
 
 	// m_nextPrevOwnerUseTime
+	private static readonly SchemaField<float> __m_nextPrevOwnerUseTime = new("CCSWeaponBase", "m_nextPrevOwnerUseTime");
 	[SchemaMember("CCSWeaponBase", "m_nextPrevOwnerUseTime")]
-	public ref float NextPrevOwnerUseTime => ref Schema.GetRef<float>(this.Handle, "CCSWeaponBase", "m_nextPrevOwnerUseTime");
+	public ref float NextPrevOwnerUseTime => ref __m_nextPrevOwnerUseTime.GetRef(this.Handle);
 
 	// m_hPrevOwner
 	[SchemaMember("CCSWeaponBase", "m_hPrevOwner")]
 	public CHandle<CCSPlayerPawn> PrevOwner => Schema.GetDeclaredClass<CHandle<CCSPlayerPawn>>(this.Handle, "CCSWeaponBase", "m_hPrevOwner");
 
 	// m_nDropTick
+	private static readonly SchemaField<Int32> __m_nDropTick = new("CCSWeaponBase", "m_nDropTick");
 	[SchemaMember("CCSWeaponBase", "m_nDropTick")]
-	public ref Int32 DropTick => ref Schema.GetRef<Int32>(this.Handle, "CCSWeaponBase", "m_nDropTick");
+	public ref Int32 DropTick => ref __m_nDropTick.GetRef(this.Handle);
 
 	// m_bWasActiveWeaponWhenDropped
+	private static readonly SchemaField<bool> __m_bWasActiveWeaponWhenDropped = new("CCSWeaponBase", "m_bWasActiveWeaponWhenDropped");
 	[SchemaMember("CCSWeaponBase", "m_bWasActiveWeaponWhenDropped")]
-	public ref bool WasActiveWeaponWhenDropped => ref Schema.GetRef<bool>(this.Handle, "CCSWeaponBase", "m_bWasActiveWeaponWhenDropped");
+	public ref bool WasActiveWeaponWhenDropped => ref __m_bWasActiveWeaponWhenDropped.GetRef(this.Handle);
 
 	// m_donated
+	private static readonly SchemaField<bool> __m_donated = new("CCSWeaponBase", "m_donated");
 	[SchemaMember("CCSWeaponBase", "m_donated")]
-	public ref bool Donated => ref Schema.GetRef<bool>(this.Handle, "CCSWeaponBase", "m_donated");
+	public ref bool Donated => ref __m_donated.GetRef(this.Handle);
 
 	// m_fLastShotTime
+	private static readonly SchemaField<float> __m_fLastShotTime = new("CCSWeaponBase", "m_fLastShotTime");
 	[SchemaMember("CCSWeaponBase", "m_fLastShotTime")]
-	public ref float LastShotTime => ref Schema.GetRef<float>(this.Handle, "CCSWeaponBase", "m_fLastShotTime");
+	public ref float LastShotTime => ref __m_fLastShotTime.GetRef(this.Handle);
 
 	// m_bWasOwnedByCT
+	private static readonly SchemaField<bool> __m_bWasOwnedByCT = new("CCSWeaponBase", "m_bWasOwnedByCT");
 	[SchemaMember("CCSWeaponBase", "m_bWasOwnedByCT")]
-	public ref bool WasOwnedByCT => ref Schema.GetRef<bool>(this.Handle, "CCSWeaponBase", "m_bWasOwnedByCT");
+	public ref bool WasOwnedByCT => ref __m_bWasOwnedByCT.GetRef(this.Handle);
 
 	// m_bWasOwnedByTerrorist
+	private static readonly SchemaField<bool> __m_bWasOwnedByTerrorist = new("CCSWeaponBase", "m_bWasOwnedByTerrorist");
 	[SchemaMember("CCSWeaponBase", "m_bWasOwnedByTerrorist")]
-	public ref bool WasOwnedByTerrorist => ref Schema.GetRef<bool>(this.Handle, "CCSWeaponBase", "m_bWasOwnedByTerrorist");
+	public ref bool WasOwnedByTerrorist => ref __m_bWasOwnedByTerrorist.GetRef(this.Handle);
 
 	// m_numRemoveUnownedWeaponThink
+	private static readonly SchemaField<Int32> __m_numRemoveUnownedWeaponThink = new("CCSWeaponBase", "m_numRemoveUnownedWeaponThink");
 	[SchemaMember("CCSWeaponBase", "m_numRemoveUnownedWeaponThink")]
-	public ref Int32 NumRemoveUnownedWeaponThink => ref Schema.GetRef<Int32>(this.Handle, "CCSWeaponBase", "m_numRemoveUnownedWeaponThink");
+	public ref Int32 NumRemoveUnownedWeaponThink => ref __m_numRemoveUnownedWeaponThink.GetRef(this.Handle);
 
 	// m_IronSightController
 	[SchemaMember("CCSWeaponBase", "m_IronSightController")]
 	public CIronSightController IronSightController => Schema.GetDeclaredClass<CIronSightController>(this.Handle, "CCSWeaponBase", "m_IronSightController");
 
 	// m_iIronSightMode
+	private static readonly SchemaField<Int32> __m_iIronSightMode = new("CCSWeaponBase", "m_iIronSightMode");
 	[SchemaMember("CCSWeaponBase", "m_iIronSightMode")]
-	public ref Int32 IronSightMode => ref Schema.GetRef<Int32>(this.Handle, "CCSWeaponBase", "m_iIronSightMode");
+	public ref Int32 IronSightMode => ref __m_iIronSightMode.GetRef(this.Handle);
 
 	// m_flLastLOSTraceFailureTime
+	private static readonly SchemaField<float> __m_flLastLOSTraceFailureTime = new("CCSWeaponBase", "m_flLastLOSTraceFailureTime");
 	[SchemaMember("CCSWeaponBase", "m_flLastLOSTraceFailureTime")]
-	public ref float LastLOSTraceFailureTime => ref Schema.GetRef<float>(this.Handle, "CCSWeaponBase", "m_flLastLOSTraceFailureTime");
+	public ref float LastLOSTraceFailureTime => ref __m_flLastLOSTraceFailureTime.GetRef(this.Handle);
 
 	// m_flWatTickOffset
+	private static readonly SchemaField<float> __m_flWatTickOffset = new("CCSWeaponBase", "m_flWatTickOffset");
 	[SchemaMember("CCSWeaponBase", "m_flWatTickOffset")]
-	public ref float WatTickOffset => ref Schema.GetRef<float>(this.Handle, "CCSWeaponBase", "m_flWatTickOffset");
+	public ref float WatTickOffset => ref __m_flWatTickOffset.GetRef(this.Handle);
 
 	// m_flLastShakeTime
+	private static readonly SchemaField<float> __m_flLastShakeTime = new("CCSWeaponBase", "m_flLastShakeTime");
 	[SchemaMember("CCSWeaponBase", "m_flLastShakeTime")]
-	public ref float LastShakeTime => ref Schema.GetRef<float>(this.Handle, "CCSWeaponBase", "m_flLastShakeTime");
+	public ref float LastShakeTime => ref __m_flLastShakeTime.GetRef(this.Handle);
 
 }

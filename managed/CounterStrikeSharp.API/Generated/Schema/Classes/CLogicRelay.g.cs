@@ -27,23 +27,28 @@ public partial class CLogicRelay : CLogicalEntity
 	public CEntityIOOutput OnTrigger => Schema.GetDeclaredClass<CEntityIOOutput>(this.Handle, "CLogicRelay", "m_OnTrigger");
 
 	// m_bDisabled
+	private static readonly SchemaField<bool> __m_bDisabled = new("CLogicRelay", "m_bDisabled");
 	[SchemaMember("CLogicRelay", "m_bDisabled")]
-	public ref bool Disabled => ref Schema.GetRef<bool>(this.Handle, "CLogicRelay", "m_bDisabled");
+	public ref bool Disabled => ref __m_bDisabled.GetRef(this.Handle);
 
 	// m_bWaitForRefire
+	private static readonly SchemaField<bool> __m_bWaitForRefire = new("CLogicRelay", "m_bWaitForRefire");
 	[SchemaMember("CLogicRelay", "m_bWaitForRefire")]
-	public ref bool WaitForRefire => ref Schema.GetRef<bool>(this.Handle, "CLogicRelay", "m_bWaitForRefire");
+	public ref bool WaitForRefire => ref __m_bWaitForRefire.GetRef(this.Handle);
 
 	// m_bTriggerOnce
+	private static readonly SchemaField<bool> __m_bTriggerOnce = new("CLogicRelay", "m_bTriggerOnce");
 	[SchemaMember("CLogicRelay", "m_bTriggerOnce")]
-	public ref bool TriggerOnce => ref Schema.GetRef<bool>(this.Handle, "CLogicRelay", "m_bTriggerOnce");
+	public ref bool TriggerOnce => ref __m_bTriggerOnce.GetRef(this.Handle);
 
 	// m_bFastRetrigger
+	private static readonly SchemaField<bool> __m_bFastRetrigger = new("CLogicRelay", "m_bFastRetrigger");
 	[SchemaMember("CLogicRelay", "m_bFastRetrigger")]
-	public ref bool FastRetrigger => ref Schema.GetRef<bool>(this.Handle, "CLogicRelay", "m_bFastRetrigger");
+	public ref bool FastRetrigger => ref __m_bFastRetrigger.GetRef(this.Handle);
 
 	// m_bPassthoughCaller
+	private static readonly SchemaField<bool> __m_bPassthoughCaller = new("CLogicRelay", "m_bPassthoughCaller");
 	[SchemaMember("CLogicRelay", "m_bPassthoughCaller")]
-	public ref bool PassthoughCaller => ref Schema.GetRef<bool>(this.Handle, "CLogicRelay", "m_bPassthoughCaller");
+	public ref bool PassthoughCaller => ref __m_bPassthoughCaller.GetRef(this.Handle);
 
 }

@@ -27,11 +27,13 @@ public partial class CPhysicsEntitySolver : CLogicalEntity
 	public CHandle<CBaseEntity> PhysicsBlocker => Schema.GetDeclaredClass<CHandle<CBaseEntity>>(this.Handle, "CPhysicsEntitySolver", "m_hPhysicsBlocker");
 
 	// m_separationDuration
+	private static readonly SchemaField<float> __m_separationDuration = new("CPhysicsEntitySolver", "m_separationDuration");
 	[SchemaMember("CPhysicsEntitySolver", "m_separationDuration")]
-	public ref float SeparationDuration => ref Schema.GetRef<float>(this.Handle, "CPhysicsEntitySolver", "m_separationDuration");
+	public ref float SeparationDuration => ref __m_separationDuration.GetRef(this.Handle);
 
 	// m_cancelTime
+	private static readonly SchemaField<float> __m_cancelTime = new("CPhysicsEntitySolver", "m_cancelTime");
 	[SchemaMember("CPhysicsEntitySolver", "m_cancelTime")]
-	public ref float CancelTime => ref Schema.GetRef<float>(this.Handle, "CPhysicsEntitySolver", "m_cancelTime");
+	public ref float CancelTime => ref __m_cancelTime.GetRef(this.Handle);
 
 }

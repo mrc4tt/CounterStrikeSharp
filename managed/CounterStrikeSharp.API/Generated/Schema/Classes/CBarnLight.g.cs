@@ -19,12 +19,14 @@ public partial class CBarnLight : CBaseModelEntity
     public CBarnLight (IntPtr pointer) : base(pointer) {}
 
 	// m_bEnabled
+	private static readonly SchemaField<bool> __m_bEnabled = new("CBarnLight", "m_bEnabled");
 	[SchemaMember("CBarnLight", "m_bEnabled")]
-	public ref bool Enabled => ref Schema.GetRef<bool>(this.Handle, "CBarnLight", "m_bEnabled");
+	public ref bool Enabled => ref __m_bEnabled.GetRef(this.Handle);
 
 	// m_nColorMode
+	private static readonly SchemaField<Int32> __m_nColorMode = new("CBarnLight", "m_nColorMode");
 	[SchemaMember("CBarnLight", "m_nColorMode")]
-	public ref Int32 ColorMode => ref Schema.GetRef<Int32>(this.Handle, "CBarnLight", "m_nColorMode");
+	public ref Int32 ColorMode => ref __m_nColorMode.GetRef(this.Handle);
 
 	// m_Color
 	[SchemaMember("CBarnLight", "m_Color")]
@@ -35,44 +37,54 @@ public partial class CBarnLight : CBaseModelEntity
 	}
 
 	// m_flColorTemperature
+	private static readonly SchemaField<float> __m_flColorTemperature = new("CBarnLight", "m_flColorTemperature");
 	[SchemaMember("CBarnLight", "m_flColorTemperature")]
-	public ref float ColorTemperature => ref Schema.GetRef<float>(this.Handle, "CBarnLight", "m_flColorTemperature");
+	public ref float ColorTemperature => ref __m_flColorTemperature.GetRef(this.Handle);
 
 	// m_flBrightness
+	private static readonly SchemaField<float> __m_flBrightness = new("CBarnLight", "m_flBrightness");
 	[SchemaMember("CBarnLight", "m_flBrightness")]
-	public ref float Brightness => ref Schema.GetRef<float>(this.Handle, "CBarnLight", "m_flBrightness");
+	public ref float Brightness => ref __m_flBrightness.GetRef(this.Handle);
 
 	// m_flBrightnessScale
+	private static readonly SchemaField<float> __m_flBrightnessScale = new("CBarnLight", "m_flBrightnessScale");
 	[SchemaMember("CBarnLight", "m_flBrightnessScale")]
-	public ref float BrightnessScale => ref Schema.GetRef<float>(this.Handle, "CBarnLight", "m_flBrightnessScale");
+	public ref float BrightnessScale => ref __m_flBrightnessScale.GetRef(this.Handle);
 
 	// m_nDirectLight
+	private static readonly SchemaField<Int32> __m_nDirectLight = new("CBarnLight", "m_nDirectLight");
 	[SchemaMember("CBarnLight", "m_nDirectLight")]
-	public ref Int32 DirectLight => ref Schema.GetRef<Int32>(this.Handle, "CBarnLight", "m_nDirectLight");
+	public ref Int32 DirectLight => ref __m_nDirectLight.GetRef(this.Handle);
 
 	// m_nBakedShadowIndex
+	private static readonly SchemaField<Int32> __m_nBakedShadowIndex = new("CBarnLight", "m_nBakedShadowIndex");
 	[SchemaMember("CBarnLight", "m_nBakedShadowIndex")]
-	public ref Int32 BakedShadowIndex => ref Schema.GetRef<Int32>(this.Handle, "CBarnLight", "m_nBakedShadowIndex");
+	public ref Int32 BakedShadowIndex => ref __m_nBakedShadowIndex.GetRef(this.Handle);
 
 	// m_nLightPathUniqueId
+	private static readonly SchemaField<Int32> __m_nLightPathUniqueId = new("CBarnLight", "m_nLightPathUniqueId");
 	[SchemaMember("CBarnLight", "m_nLightPathUniqueId")]
-	public ref Int32 LightPathUniqueId => ref Schema.GetRef<Int32>(this.Handle, "CBarnLight", "m_nLightPathUniqueId");
+	public ref Int32 LightPathUniqueId => ref __m_nLightPathUniqueId.GetRef(this.Handle);
 
 	// m_nLightMapUniqueId
+	private static readonly SchemaField<Int32> __m_nLightMapUniqueId = new("CBarnLight", "m_nLightMapUniqueId");
 	[SchemaMember("CBarnLight", "m_nLightMapUniqueId")]
-	public ref Int32 LightMapUniqueId => ref Schema.GetRef<Int32>(this.Handle, "CBarnLight", "m_nLightMapUniqueId");
+	public ref Int32 LightMapUniqueId => ref __m_nLightMapUniqueId.GetRef(this.Handle);
 
 	// m_nLuminaireShape
+	private static readonly SchemaField<Int32> __m_nLuminaireShape = new("CBarnLight", "m_nLuminaireShape");
 	[SchemaMember("CBarnLight", "m_nLuminaireShape")]
-	public ref Int32 LuminaireShape => ref Schema.GetRef<Int32>(this.Handle, "CBarnLight", "m_nLuminaireShape");
+	public ref Int32 LuminaireShape => ref __m_nLuminaireShape.GetRef(this.Handle);
 
 	// m_flLuminaireSize
+	private static readonly SchemaField<float> __m_flLuminaireSize = new("CBarnLight", "m_flLuminaireSize");
 	[SchemaMember("CBarnLight", "m_flLuminaireSize")]
-	public ref float LuminaireSize => ref Schema.GetRef<float>(this.Handle, "CBarnLight", "m_flLuminaireSize");
+	public ref float LuminaireSize => ref __m_flLuminaireSize.GetRef(this.Handle);
 
 	// m_flLuminaireAnisotropy
+	private static readonly SchemaField<float> __m_flLuminaireAnisotropy = new("CBarnLight", "m_flLuminaireAnisotropy");
 	[SchemaMember("CBarnLight", "m_flLuminaireAnisotropy")]
-	public ref float LuminaireAnisotropy => ref Schema.GetRef<float>(this.Handle, "CBarnLight", "m_flLuminaireAnisotropy");
+	public ref float LuminaireAnisotropy => ref __m_flLuminaireAnisotropy.GetRef(this.Handle);
 
 	// m_LightStyleString
 	[SchemaMember("CBarnLight", "m_LightStyleString")]
@@ -83,8 +95,9 @@ public partial class CBarnLight : CBaseModelEntity
 	}
 
 	// m_flLightStyleStartTime
+	private static readonly SchemaField<float> __m_flLightStyleStartTime = new("CBarnLight", "m_flLightStyleStartTime");
 	[SchemaMember("CBarnLight", "m_flLightStyleStartTime")]
-	public ref float LightStyleStartTime => ref Schema.GetRef<float>(this.Handle, "CBarnLight", "m_flLightStyleStartTime");
+	public ref float LightStyleStartTime => ref __m_flLightStyleStartTime.GetRef(this.Handle);
 
 	// m_QueuedLightStyleStrings
 	[SchemaMember("CBarnLight", "m_QueuedLightStyleStrings")]
@@ -107,124 +120,150 @@ public partial class CBarnLight : CBaseModelEntity
 	public CStrongHandle<InfoForResourceTypeCTextureBase> LightCookie => Schema.GetDeclaredClass<CStrongHandle<InfoForResourceTypeCTextureBase>>(this.Handle, "CBarnLight", "m_hLightCookie");
 
 	// m_flShape
+	private static readonly SchemaField<float> __m_flShape = new("CBarnLight", "m_flShape");
 	[SchemaMember("CBarnLight", "m_flShape")]
-	public ref float Shape => ref Schema.GetRef<float>(this.Handle, "CBarnLight", "m_flShape");
+	public ref float Shape => ref __m_flShape.GetRef(this.Handle);
 
 	// m_flSoftX
+	private static readonly SchemaField<float> __m_flSoftX = new("CBarnLight", "m_flSoftX");
 	[SchemaMember("CBarnLight", "m_flSoftX")]
-	public ref float SoftX => ref Schema.GetRef<float>(this.Handle, "CBarnLight", "m_flSoftX");
+	public ref float SoftX => ref __m_flSoftX.GetRef(this.Handle);
 
 	// m_flSoftY
+	private static readonly SchemaField<float> __m_flSoftY = new("CBarnLight", "m_flSoftY");
 	[SchemaMember("CBarnLight", "m_flSoftY")]
-	public ref float SoftY => ref Schema.GetRef<float>(this.Handle, "CBarnLight", "m_flSoftY");
+	public ref float SoftY => ref __m_flSoftY.GetRef(this.Handle);
 
 	// m_flSkirt
+	private static readonly SchemaField<float> __m_flSkirt = new("CBarnLight", "m_flSkirt");
 	[SchemaMember("CBarnLight", "m_flSkirt")]
-	public ref float Skirt => ref Schema.GetRef<float>(this.Handle, "CBarnLight", "m_flSkirt");
+	public ref float Skirt => ref __m_flSkirt.GetRef(this.Handle);
 
 	// m_flSkirtNear
+	private static readonly SchemaField<float> __m_flSkirtNear = new("CBarnLight", "m_flSkirtNear");
 	[SchemaMember("CBarnLight", "m_flSkirtNear")]
-	public ref float SkirtNear => ref Schema.GetRef<float>(this.Handle, "CBarnLight", "m_flSkirtNear");
+	public ref float SkirtNear => ref __m_flSkirtNear.GetRef(this.Handle);
 
 	// m_vSizeParams
 	[SchemaMember("CBarnLight", "m_vSizeParams")]
 	public Vector SizeParams => Schema.GetDeclaredClass<Vector>(this.Handle, "CBarnLight", "m_vSizeParams");
 
 	// m_flRange
+	private static readonly SchemaField<float> __m_flRange = new("CBarnLight", "m_flRange");
 	[SchemaMember("CBarnLight", "m_flRange")]
-	public ref float Range => ref Schema.GetRef<float>(this.Handle, "CBarnLight", "m_flRange");
+	public ref float Range => ref __m_flRange.GetRef(this.Handle);
 
 	// m_vShear
 	[SchemaMember("CBarnLight", "m_vShear")]
 	public Vector Shear => Schema.GetDeclaredClass<Vector>(this.Handle, "CBarnLight", "m_vShear");
 
 	// m_nBakeSpecularToCubemaps
+	private static readonly SchemaField<Int32> __m_nBakeSpecularToCubemaps = new("CBarnLight", "m_nBakeSpecularToCubemaps");
 	[SchemaMember("CBarnLight", "m_nBakeSpecularToCubemaps")]
-	public ref Int32 BakeSpecularToCubemaps => ref Schema.GetRef<Int32>(this.Handle, "CBarnLight", "m_nBakeSpecularToCubemaps");
+	public ref Int32 BakeSpecularToCubemaps => ref __m_nBakeSpecularToCubemaps.GetRef(this.Handle);
 
 	// m_vBakeSpecularToCubemapsSize
 	[SchemaMember("CBarnLight", "m_vBakeSpecularToCubemapsSize")]
 	public Vector BakeSpecularToCubemapsSize => Schema.GetDeclaredClass<Vector>(this.Handle, "CBarnLight", "m_vBakeSpecularToCubemapsSize");
 
 	// m_flBakeSpecularToCubemapsScale
+	private static readonly SchemaField<float> __m_flBakeSpecularToCubemapsScale = new("CBarnLight", "m_flBakeSpecularToCubemapsScale");
 	[SchemaMember("CBarnLight", "m_flBakeSpecularToCubemapsScale")]
-	public ref float BakeSpecularToCubemapsScale => ref Schema.GetRef<float>(this.Handle, "CBarnLight", "m_flBakeSpecularToCubemapsScale");
+	public ref float BakeSpecularToCubemapsScale => ref __m_flBakeSpecularToCubemapsScale.GetRef(this.Handle);
 
 	// m_nCastShadows
+	private static readonly SchemaField<Int32> __m_nCastShadows = new("CBarnLight", "m_nCastShadows");
 	[SchemaMember("CBarnLight", "m_nCastShadows")]
-	public ref Int32 CastShadows => ref Schema.GetRef<Int32>(this.Handle, "CBarnLight", "m_nCastShadows");
+	public ref Int32 CastShadows => ref __m_nCastShadows.GetRef(this.Handle);
 
 	// m_nShadowMapSize
+	private static readonly SchemaField<Int32> __m_nShadowMapSize = new("CBarnLight", "m_nShadowMapSize");
 	[SchemaMember("CBarnLight", "m_nShadowMapSize")]
-	public ref Int32 ShadowMapSize => ref Schema.GetRef<Int32>(this.Handle, "CBarnLight", "m_nShadowMapSize");
+	public ref Int32 ShadowMapSize => ref __m_nShadowMapSize.GetRef(this.Handle);
 
 	// m_nShadowPriority
+	private static readonly SchemaField<Int32> __m_nShadowPriority = new("CBarnLight", "m_nShadowPriority");
 	[SchemaMember("CBarnLight", "m_nShadowPriority")]
-	public ref Int32 ShadowPriority => ref Schema.GetRef<Int32>(this.Handle, "CBarnLight", "m_nShadowPriority");
+	public ref Int32 ShadowPriority => ref __m_nShadowPriority.GetRef(this.Handle);
 
 	// m_bContactShadow
+	private static readonly SchemaField<bool> __m_bContactShadow = new("CBarnLight", "m_bContactShadow");
 	[SchemaMember("CBarnLight", "m_bContactShadow")]
-	public ref bool ContactShadow => ref Schema.GetRef<bool>(this.Handle, "CBarnLight", "m_bContactShadow");
+	public ref bool ContactShadow => ref __m_bContactShadow.GetRef(this.Handle);
 
 	// m_bForceShadowsEnabled
+	private static readonly SchemaField<bool> __m_bForceShadowsEnabled = new("CBarnLight", "m_bForceShadowsEnabled");
 	[SchemaMember("CBarnLight", "m_bForceShadowsEnabled")]
-	public ref bool ForceShadowsEnabled => ref Schema.GetRef<bool>(this.Handle, "CBarnLight", "m_bForceShadowsEnabled");
+	public ref bool ForceShadowsEnabled => ref __m_bForceShadowsEnabled.GetRef(this.Handle);
 
 	// m_nBounceLight
+	private static readonly SchemaField<Int32> __m_nBounceLight = new("CBarnLight", "m_nBounceLight");
 	[SchemaMember("CBarnLight", "m_nBounceLight")]
-	public ref Int32 BounceLight => ref Schema.GetRef<Int32>(this.Handle, "CBarnLight", "m_nBounceLight");
+	public ref Int32 BounceLight => ref __m_nBounceLight.GetRef(this.Handle);
 
 	// m_flBounceScale
+	private static readonly SchemaField<float> __m_flBounceScale = new("CBarnLight", "m_flBounceScale");
 	[SchemaMember("CBarnLight", "m_flBounceScale")]
-	public ref float BounceScale => ref Schema.GetRef<float>(this.Handle, "CBarnLight", "m_flBounceScale");
+	public ref float BounceScale => ref __m_flBounceScale.GetRef(this.Handle);
 
 	// m_flMinRoughness
+	private static readonly SchemaField<float> __m_flMinRoughness = new("CBarnLight", "m_flMinRoughness");
 	[SchemaMember("CBarnLight", "m_flMinRoughness")]
-	public ref float MinRoughness => ref Schema.GetRef<float>(this.Handle, "CBarnLight", "m_flMinRoughness");
+	public ref float MinRoughness => ref __m_flMinRoughness.GetRef(this.Handle);
 
 	// m_vAlternateColor
 	[SchemaMember("CBarnLight", "m_vAlternateColor")]
 	public Vector AlternateColor => Schema.GetDeclaredClass<Vector>(this.Handle, "CBarnLight", "m_vAlternateColor");
 
 	// m_fAlternateColorBrightness
+	private static readonly SchemaField<float> __m_fAlternateColorBrightness = new("CBarnLight", "m_fAlternateColorBrightness");
 	[SchemaMember("CBarnLight", "m_fAlternateColorBrightness")]
-	public ref float AlternateColorBrightness => ref Schema.GetRef<float>(this.Handle, "CBarnLight", "m_fAlternateColorBrightness");
+	public ref float AlternateColorBrightness => ref __m_fAlternateColorBrightness.GetRef(this.Handle);
 
 	// m_nFog
+	private static readonly SchemaField<Int32> __m_nFog = new("CBarnLight", "m_nFog");
 	[SchemaMember("CBarnLight", "m_nFog")]
-	public ref Int32 Fog => ref Schema.GetRef<Int32>(this.Handle, "CBarnLight", "m_nFog");
+	public ref Int32 Fog => ref __m_nFog.GetRef(this.Handle);
 
 	// m_flFogStrength
+	private static readonly SchemaField<float> __m_flFogStrength = new("CBarnLight", "m_flFogStrength");
 	[SchemaMember("CBarnLight", "m_flFogStrength")]
-	public ref float FogStrength => ref Schema.GetRef<float>(this.Handle, "CBarnLight", "m_flFogStrength");
+	public ref float FogStrength => ref __m_flFogStrength.GetRef(this.Handle);
 
 	// m_nFogShadows
+	private static readonly SchemaField<Int32> __m_nFogShadows = new("CBarnLight", "m_nFogShadows");
 	[SchemaMember("CBarnLight", "m_nFogShadows")]
-	public ref Int32 FogShadows => ref Schema.GetRef<Int32>(this.Handle, "CBarnLight", "m_nFogShadows");
+	public ref Int32 FogShadows => ref __m_nFogShadows.GetRef(this.Handle);
 
 	// m_flFogScale
+	private static readonly SchemaField<float> __m_flFogScale = new("CBarnLight", "m_flFogScale");
 	[SchemaMember("CBarnLight", "m_flFogScale")]
-	public ref float FogScale => ref Schema.GetRef<float>(this.Handle, "CBarnLight", "m_flFogScale");
+	public ref float FogScale => ref __m_flFogScale.GetRef(this.Handle);
 
 	// m_flFadeSizeStart
+	private static readonly SchemaField<float> __m_flFadeSizeStart = new("CBarnLight", "m_flFadeSizeStart");
 	[SchemaMember("CBarnLight", "m_flFadeSizeStart")]
-	public ref float FadeSizeStart => ref Schema.GetRef<float>(this.Handle, "CBarnLight", "m_flFadeSizeStart");
+	public ref float FadeSizeStart => ref __m_flFadeSizeStart.GetRef(this.Handle);
 
 	// m_flFadeSizeEnd
+	private static readonly SchemaField<float> __m_flFadeSizeEnd = new("CBarnLight", "m_flFadeSizeEnd");
 	[SchemaMember("CBarnLight", "m_flFadeSizeEnd")]
-	public ref float FadeSizeEnd => ref Schema.GetRef<float>(this.Handle, "CBarnLight", "m_flFadeSizeEnd");
+	public ref float FadeSizeEnd => ref __m_flFadeSizeEnd.GetRef(this.Handle);
 
 	// m_flShadowFadeSizeStart
+	private static readonly SchemaField<float> __m_flShadowFadeSizeStart = new("CBarnLight", "m_flShadowFadeSizeStart");
 	[SchemaMember("CBarnLight", "m_flShadowFadeSizeStart")]
-	public ref float ShadowFadeSizeStart => ref Schema.GetRef<float>(this.Handle, "CBarnLight", "m_flShadowFadeSizeStart");
+	public ref float ShadowFadeSizeStart => ref __m_flShadowFadeSizeStart.GetRef(this.Handle);
 
 	// m_flShadowFadeSizeEnd
+	private static readonly SchemaField<float> __m_flShadowFadeSizeEnd = new("CBarnLight", "m_flShadowFadeSizeEnd");
 	[SchemaMember("CBarnLight", "m_flShadowFadeSizeEnd")]
-	public ref float ShadowFadeSizeEnd => ref Schema.GetRef<float>(this.Handle, "CBarnLight", "m_flShadowFadeSizeEnd");
+	public ref float ShadowFadeSizeEnd => ref __m_flShadowFadeSizeEnd.GetRef(this.Handle);
 
 	// m_bPrecomputedFieldsValid
+	private static readonly SchemaField<bool> __m_bPrecomputedFieldsValid = new("CBarnLight", "m_bPrecomputedFieldsValid");
 	[SchemaMember("CBarnLight", "m_bPrecomputedFieldsValid")]
-	public ref bool PrecomputedFieldsValid => ref Schema.GetRef<bool>(this.Handle, "CBarnLight", "m_bPrecomputedFieldsValid");
+	public ref bool PrecomputedFieldsValid => ref __m_bPrecomputedFieldsValid.GetRef(this.Handle);
 
 	// m_vPrecomputedBoundsMins
 	[SchemaMember("CBarnLight", "m_vPrecomputedBoundsMins")]
@@ -247,8 +286,9 @@ public partial class CBarnLight : CBaseModelEntity
 	public Vector PrecomputedOBBExtent => Schema.GetDeclaredClass<Vector>(this.Handle, "CBarnLight", "m_vPrecomputedOBBExtent");
 
 	// m_nPrecomputedSubFrusta
+	private static readonly SchemaField<Int32> __m_nPrecomputedSubFrusta = new("CBarnLight", "m_nPrecomputedSubFrusta");
 	[SchemaMember("CBarnLight", "m_nPrecomputedSubFrusta")]
-	public ref Int32 PrecomputedSubFrusta => ref Schema.GetRef<Int32>(this.Handle, "CBarnLight", "m_nPrecomputedSubFrusta");
+	public ref Int32 PrecomputedSubFrusta => ref __m_nPrecomputedSubFrusta.GetRef(this.Handle);
 
 	// m_vPrecomputedOBBOrigin0
 	[SchemaMember("CBarnLight", "m_vPrecomputedOBBOrigin0")]
@@ -323,12 +363,14 @@ public partial class CBarnLight : CBaseModelEntity
 	public Vector PrecomputedOBBExtent5 => Schema.GetDeclaredClass<Vector>(this.Handle, "CBarnLight", "m_vPrecomputedOBBExtent5");
 
 	// m_bPvsModifyEntity
+	private static readonly SchemaField<bool> __m_bPvsModifyEntity = new("CBarnLight", "m_bPvsModifyEntity");
 	[SchemaMember("CBarnLight", "m_bPvsModifyEntity")]
-	public ref bool PvsModifyEntity => ref Schema.GetRef<bool>(this.Handle, "CBarnLight", "m_bPvsModifyEntity");
+	public ref bool PvsModifyEntity => ref __m_bPvsModifyEntity.GetRef(this.Handle);
 
 	// m_bTransmitAlways
+	private static readonly SchemaField<bool> __m_bTransmitAlways = new("CBarnLight", "m_bTransmitAlways");
 	[SchemaMember("CBarnLight", "m_bTransmitAlways")]
-	public ref bool TransmitAlways => ref Schema.GetRef<bool>(this.Handle, "CBarnLight", "m_bTransmitAlways");
+	public ref bool TransmitAlways => ref __m_bTransmitAlways.GetRef(this.Handle);
 
 	// m_VisClusters
 	[SchemaMember("CBarnLight", "m_VisClusters")]

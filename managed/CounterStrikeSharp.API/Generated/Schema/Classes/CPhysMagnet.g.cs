@@ -27,43 +27,52 @@ public partial class CPhysMagnet : CBaseAnimGraph
 	public CEntityIOOutput OnMagnetDetach => Schema.GetDeclaredClass<CEntityIOOutput>(this.Handle, "CPhysMagnet", "m_OnMagnetDetach");
 
 	// m_massScale
+	private static readonly SchemaField<float> __m_massScale = new("CPhysMagnet", "m_massScale");
 	[SchemaMember("CPhysMagnet", "m_massScale")]
-	public ref float MassScale => ref Schema.GetRef<float>(this.Handle, "CPhysMagnet", "m_massScale");
+	public ref float MassScale => ref __m_massScale.GetRef(this.Handle);
 
 	// m_forceLimit
+	private static readonly SchemaField<float> __m_forceLimit = new("CPhysMagnet", "m_forceLimit");
 	[SchemaMember("CPhysMagnet", "m_forceLimit")]
-	public ref float ForceLimit => ref Schema.GetRef<float>(this.Handle, "CPhysMagnet", "m_forceLimit");
+	public ref float ForceLimit => ref __m_forceLimit.GetRef(this.Handle);
 
 	// m_torqueLimit
+	private static readonly SchemaField<float> __m_torqueLimit = new("CPhysMagnet", "m_torqueLimit");
 	[SchemaMember("CPhysMagnet", "m_torqueLimit")]
-	public ref float TorqueLimit => ref Schema.GetRef<float>(this.Handle, "CPhysMagnet", "m_torqueLimit");
+	public ref float TorqueLimit => ref __m_torqueLimit.GetRef(this.Handle);
 
 	// m_MagnettedEntities
 	[SchemaMember("CPhysMagnet", "m_MagnettedEntities")]
 	public NetworkedVector<magnetted_objects_t> MagnettedEntities => Schema.GetDeclaredClass<NetworkedVector<magnetted_objects_t>>(this.Handle, "CPhysMagnet", "m_MagnettedEntities");
 
 	// m_bActive
+	private static readonly SchemaField<bool> __m_bActive = new("CPhysMagnet", "m_bActive");
 	[SchemaMember("CPhysMagnet", "m_bActive")]
-	public ref bool Active => ref Schema.GetRef<bool>(this.Handle, "CPhysMagnet", "m_bActive");
+	public ref bool Active => ref __m_bActive.GetRef(this.Handle);
 
 	// m_bHasHitSomething
+	private static readonly SchemaField<bool> __m_bHasHitSomething = new("CPhysMagnet", "m_bHasHitSomething");
 	[SchemaMember("CPhysMagnet", "m_bHasHitSomething")]
-	public ref bool HasHitSomething => ref Schema.GetRef<bool>(this.Handle, "CPhysMagnet", "m_bHasHitSomething");
+	public ref bool HasHitSomething => ref __m_bHasHitSomething.GetRef(this.Handle);
 
 	// m_flTotalMass
+	private static readonly SchemaField<float> __m_flTotalMass = new("CPhysMagnet", "m_flTotalMass");
 	[SchemaMember("CPhysMagnet", "m_flTotalMass")]
-	public ref float TotalMass => ref Schema.GetRef<float>(this.Handle, "CPhysMagnet", "m_flTotalMass");
+	public ref float TotalMass => ref __m_flTotalMass.GetRef(this.Handle);
 
 	// m_flRadius
+	private static readonly SchemaField<float> __m_flRadius = new("CPhysMagnet", "m_flRadius");
 	[SchemaMember("CPhysMagnet", "m_flRadius")]
-	public ref float Radius => ref Schema.GetRef<float>(this.Handle, "CPhysMagnet", "m_flRadius");
+	public ref float Radius => ref __m_flRadius.GetRef(this.Handle);
 
 	// m_flNextSuckTime
+	private static readonly SchemaField<float> __m_flNextSuckTime = new("CPhysMagnet", "m_flNextSuckTime");
 	[SchemaMember("CPhysMagnet", "m_flNextSuckTime")]
-	public ref float NextSuckTime => ref Schema.GetRef<float>(this.Handle, "CPhysMagnet", "m_flNextSuckTime");
+	public ref float NextSuckTime => ref __m_flNextSuckTime.GetRef(this.Handle);
 
 	// m_iMaxObjectsAttached
+	private static readonly SchemaField<Int32> __m_iMaxObjectsAttached = new("CPhysMagnet", "m_iMaxObjectsAttached");
 	[SchemaMember("CPhysMagnet", "m_iMaxObjectsAttached")]
-	public ref Int32 MaxObjectsAttached => ref Schema.GetRef<Int32>(this.Handle, "CPhysMagnet", "m_iMaxObjectsAttached");
+	public ref Int32 MaxObjectsAttached => ref __m_iMaxObjectsAttached.GetRef(this.Handle);
 
 }

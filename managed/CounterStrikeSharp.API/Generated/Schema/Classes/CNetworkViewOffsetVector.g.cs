@@ -19,15 +19,18 @@ public partial class CNetworkViewOffsetVector : NativeObject
     public CNetworkViewOffsetVector (IntPtr pointer) : base(pointer) {}
 
 	// m_vecX
+	private static readonly SchemaField<float> __m_vecX = new("CNetworkViewOffsetVector", "m_vecX");
 	[SchemaMember("CNetworkViewOffsetVector", "m_vecX")]
-	public ref float X => ref Schema.GetRef<float>(this.Handle, "CNetworkViewOffsetVector", "m_vecX");
+	public ref float X => ref __m_vecX.GetRef(this.Handle);
 
 	// m_vecY
+	private static readonly SchemaField<float> __m_vecY = new("CNetworkViewOffsetVector", "m_vecY");
 	[SchemaMember("CNetworkViewOffsetVector", "m_vecY")]
-	public ref float Y => ref Schema.GetRef<float>(this.Handle, "CNetworkViewOffsetVector", "m_vecY");
+	public ref float Y => ref __m_vecY.GetRef(this.Handle);
 
 	// m_vecZ
+	private static readonly SchemaField<float> __m_vecZ = new("CNetworkViewOffsetVector", "m_vecZ");
 	[SchemaMember("CNetworkViewOffsetVector", "m_vecZ")]
-	public ref float Z => ref Schema.GetRef<float>(this.Handle, "CNetworkViewOffsetVector", "m_vecZ");
+	public ref float Z => ref __m_vecZ.GetRef(this.Handle);
 
 }

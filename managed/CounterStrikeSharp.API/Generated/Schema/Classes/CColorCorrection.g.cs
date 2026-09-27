@@ -19,64 +19,79 @@ public partial class CColorCorrection : CBaseEntity
     public CColorCorrection (IntPtr pointer) : base(pointer) {}
 
 	// m_flFadeInDuration
+	private static readonly SchemaField<float> __m_flFadeInDuration = new("CColorCorrection", "m_flFadeInDuration");
 	[SchemaMember("CColorCorrection", "m_flFadeInDuration")]
-	public ref float FadeInDuration => ref Schema.GetRef<float>(this.Handle, "CColorCorrection", "m_flFadeInDuration");
+	public ref float FadeInDuration => ref __m_flFadeInDuration.GetRef(this.Handle);
 
 	// m_flFadeOutDuration
+	private static readonly SchemaField<float> __m_flFadeOutDuration = new("CColorCorrection", "m_flFadeOutDuration");
 	[SchemaMember("CColorCorrection", "m_flFadeOutDuration")]
-	public ref float FadeOutDuration => ref Schema.GetRef<float>(this.Handle, "CColorCorrection", "m_flFadeOutDuration");
+	public ref float FadeOutDuration => ref __m_flFadeOutDuration.GetRef(this.Handle);
 
 	// m_flStartFadeInWeight
+	private static readonly SchemaField<float> __m_flStartFadeInWeight = new("CColorCorrection", "m_flStartFadeInWeight");
 	[SchemaMember("CColorCorrection", "m_flStartFadeInWeight")]
-	public ref float StartFadeInWeight => ref Schema.GetRef<float>(this.Handle, "CColorCorrection", "m_flStartFadeInWeight");
+	public ref float StartFadeInWeight => ref __m_flStartFadeInWeight.GetRef(this.Handle);
 
 	// m_flStartFadeOutWeight
+	private static readonly SchemaField<float> __m_flStartFadeOutWeight = new("CColorCorrection", "m_flStartFadeOutWeight");
 	[SchemaMember("CColorCorrection", "m_flStartFadeOutWeight")]
-	public ref float StartFadeOutWeight => ref Schema.GetRef<float>(this.Handle, "CColorCorrection", "m_flStartFadeOutWeight");
+	public ref float StartFadeOutWeight => ref __m_flStartFadeOutWeight.GetRef(this.Handle);
 
 	// m_flTimeStartFadeIn
+	private static readonly SchemaField<float> __m_flTimeStartFadeIn = new("CColorCorrection", "m_flTimeStartFadeIn");
 	[SchemaMember("CColorCorrection", "m_flTimeStartFadeIn")]
-	public ref float TimeStartFadeIn => ref Schema.GetRef<float>(this.Handle, "CColorCorrection", "m_flTimeStartFadeIn");
+	public ref float TimeStartFadeIn => ref __m_flTimeStartFadeIn.GetRef(this.Handle);
 
 	// m_flTimeStartFadeOut
+	private static readonly SchemaField<float> __m_flTimeStartFadeOut = new("CColorCorrection", "m_flTimeStartFadeOut");
 	[SchemaMember("CColorCorrection", "m_flTimeStartFadeOut")]
-	public ref float TimeStartFadeOut => ref Schema.GetRef<float>(this.Handle, "CColorCorrection", "m_flTimeStartFadeOut");
+	public ref float TimeStartFadeOut => ref __m_flTimeStartFadeOut.GetRef(this.Handle);
 
 	// m_flMaxWeight
+	private static readonly SchemaField<float> __m_flMaxWeight = new("CColorCorrection", "m_flMaxWeight");
 	[SchemaMember("CColorCorrection", "m_flMaxWeight")]
-	public ref float MaxWeight => ref Schema.GetRef<float>(this.Handle, "CColorCorrection", "m_flMaxWeight");
+	public ref float MaxWeight => ref __m_flMaxWeight.GetRef(this.Handle);
 
 	// m_bStartDisabled
+	private static readonly SchemaField<bool> __m_bStartDisabled = new("CColorCorrection", "m_bStartDisabled");
 	[SchemaMember("CColorCorrection", "m_bStartDisabled")]
-	public ref bool StartDisabled => ref Schema.GetRef<bool>(this.Handle, "CColorCorrection", "m_bStartDisabled");
+	public ref bool StartDisabled => ref __m_bStartDisabled.GetRef(this.Handle);
 
 	// m_bEnabled
+	private static readonly SchemaField<bool> __m_bEnabled = new("CColorCorrection", "m_bEnabled");
 	[SchemaMember("CColorCorrection", "m_bEnabled")]
-	public ref bool Enabled => ref Schema.GetRef<bool>(this.Handle, "CColorCorrection", "m_bEnabled");
+	public ref bool Enabled => ref __m_bEnabled.GetRef(this.Handle);
 
 	// m_bMaster
+	private static readonly SchemaField<bool> __m_bMaster = new("CColorCorrection", "m_bMaster");
 	[SchemaMember("CColorCorrection", "m_bMaster")]
-	public ref bool Master => ref Schema.GetRef<bool>(this.Handle, "CColorCorrection", "m_bMaster");
+	public ref bool Master => ref __m_bMaster.GetRef(this.Handle);
 
 	// m_bClientSide
+	private static readonly SchemaField<bool> __m_bClientSide = new("CColorCorrection", "m_bClientSide");
 	[SchemaMember("CColorCorrection", "m_bClientSide")]
-	public ref bool ClientSide => ref Schema.GetRef<bool>(this.Handle, "CColorCorrection", "m_bClientSide");
+	public ref bool ClientSide => ref __m_bClientSide.GetRef(this.Handle);
 
 	// m_bExclusive
+	private static readonly SchemaField<bool> __m_bExclusive = new("CColorCorrection", "m_bExclusive");
 	[SchemaMember("CColorCorrection", "m_bExclusive")]
-	public ref bool Exclusive => ref Schema.GetRef<bool>(this.Handle, "CColorCorrection", "m_bExclusive");
+	public ref bool Exclusive => ref __m_bExclusive.GetRef(this.Handle);
 
 	// m_MinFalloff
+	private static readonly SchemaField<float> __m_MinFalloff = new("CColorCorrection", "m_MinFalloff");
 	[SchemaMember("CColorCorrection", "m_MinFalloff")]
-	public ref float MinFalloff => ref Schema.GetRef<float>(this.Handle, "CColorCorrection", "m_MinFalloff");
+	public ref float MinFalloff => ref __m_MinFalloff.GetRef(this.Handle);
 
 	// m_MaxFalloff
+	private static readonly SchemaField<float> __m_MaxFalloff = new("CColorCorrection", "m_MaxFalloff");
 	[SchemaMember("CColorCorrection", "m_MaxFalloff")]
-	public ref float MaxFalloff => ref Schema.GetRef<float>(this.Handle, "CColorCorrection", "m_MaxFalloff");
+	public ref float MaxFalloff => ref __m_MaxFalloff.GetRef(this.Handle);
 
 	// m_flCurWeight
+	private static readonly SchemaField<float> __m_flCurWeight = new("CColorCorrection", "m_flCurWeight");
 	[SchemaMember("CColorCorrection", "m_flCurWeight")]
-	public ref float CurWeight => ref Schema.GetRef<float>(this.Handle, "CColorCorrection", "m_flCurWeight");
+	public ref float CurWeight => ref __m_flCurWeight.GetRef(this.Handle);
 
 	// m_netlookupFilename
 	[SchemaMember("CColorCorrection", "m_netlookupFilename")]

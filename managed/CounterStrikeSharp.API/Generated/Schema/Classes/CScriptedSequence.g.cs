@@ -83,184 +83,229 @@ public partial class CScriptedSequence : CBaseEntity
 	}
 
 	// m_nMoveTo
+	private static readonly SchemaField<ScriptedMoveTo_t> __m_nMoveTo = new("CScriptedSequence", "m_nMoveTo");
 	[SchemaMember("CScriptedSequence", "m_nMoveTo")]
-	public ref ScriptedMoveTo_t MoveTo => ref Schema.GetRef<ScriptedMoveTo_t>(this.Handle, "CScriptedSequence", "m_nMoveTo");
+	public ref ScriptedMoveTo_t MoveTo => ref __m_nMoveTo.GetRef(this.Handle);
 
 	// m_nMoveToGait
+	private static readonly SchemaField<SharedMovementGait_t> __m_nMoveToGait = new("CScriptedSequence", "m_nMoveToGait");
 	[SchemaMember("CScriptedSequence", "m_nMoveToGait")]
-	public ref SharedMovementGait_t MoveToGait => ref Schema.GetRef<SharedMovementGait_t>(this.Handle, "CScriptedSequence", "m_nMoveToGait");
+	public ref SharedMovementGait_t MoveToGait => ref __m_nMoveToGait.GetRef(this.Handle);
 
 	// m_nHeldWeaponBehavior
+	private static readonly SchemaField<ScriptedHeldWeaponBehavior_t> __m_nHeldWeaponBehavior = new("CScriptedSequence", "m_nHeldWeaponBehavior");
 	[SchemaMember("CScriptedSequence", "m_nHeldWeaponBehavior")]
-	public ref ScriptedHeldWeaponBehavior_t HeldWeaponBehavior => ref Schema.GetRef<ScriptedHeldWeaponBehavior_t>(this.Handle, "CScriptedSequence", "m_nHeldWeaponBehavior");
+	public ref ScriptedHeldWeaponBehavior_t HeldWeaponBehavior => ref __m_nHeldWeaponBehavior.GetRef(this.Handle);
 
 	// m_nForcedCrouchState
+	private static readonly SchemaField<ForcedCrouchState_t> __m_nForcedCrouchState = new("CScriptedSequence", "m_nForcedCrouchState");
 	[SchemaMember("CScriptedSequence", "m_nForcedCrouchState")]
-	public ref ForcedCrouchState_t ForcedCrouchState => ref Schema.GetRef<ForcedCrouchState_t>(this.Handle, "CScriptedSequence", "m_nForcedCrouchState");
+	public ref ForcedCrouchState_t ForcedCrouchState => ref __m_nForcedCrouchState.GetRef(this.Handle);
 
 	// m_bIsPlayingPreIdle
+	private static readonly SchemaField<bool> __m_bIsPlayingPreIdle = new("CScriptedSequence", "m_bIsPlayingPreIdle");
 	[SchemaMember("CScriptedSequence", "m_bIsPlayingPreIdle")]
-	public ref bool IsPlayingPreIdle => ref Schema.GetRef<bool>(this.Handle, "CScriptedSequence", "m_bIsPlayingPreIdle");
+	public ref bool IsPlayingPreIdle => ref __m_bIsPlayingPreIdle.GetRef(this.Handle);
 
 	// m_bIsPlayingEntry
+	private static readonly SchemaField<bool> __m_bIsPlayingEntry = new("CScriptedSequence", "m_bIsPlayingEntry");
 	[SchemaMember("CScriptedSequence", "m_bIsPlayingEntry")]
-	public ref bool IsPlayingEntry => ref Schema.GetRef<bool>(this.Handle, "CScriptedSequence", "m_bIsPlayingEntry");
+	public ref bool IsPlayingEntry => ref __m_bIsPlayingEntry.GetRef(this.Handle);
 
 	// m_bIsPlayingAction
+	private static readonly SchemaField<bool> __m_bIsPlayingAction = new("CScriptedSequence", "m_bIsPlayingAction");
 	[SchemaMember("CScriptedSequence", "m_bIsPlayingAction")]
-	public ref bool IsPlayingAction => ref Schema.GetRef<bool>(this.Handle, "CScriptedSequence", "m_bIsPlayingAction");
+	public ref bool IsPlayingAction => ref __m_bIsPlayingAction.GetRef(this.Handle);
 
 	// m_bIsPlayingPostIdle
+	private static readonly SchemaField<bool> __m_bIsPlayingPostIdle = new("CScriptedSequence", "m_bIsPlayingPostIdle");
 	[SchemaMember("CScriptedSequence", "m_bIsPlayingPostIdle")]
-	public ref bool IsPlayingPostIdle => ref Schema.GetRef<bool>(this.Handle, "CScriptedSequence", "m_bIsPlayingPostIdle");
+	public ref bool IsPlayingPostIdle => ref __m_bIsPlayingPostIdle.GetRef(this.Handle);
 
 	// m_bDontRotateOther
+	private static readonly SchemaField<bool> __m_bDontRotateOther = new("CScriptedSequence", "m_bDontRotateOther");
 	[SchemaMember("CScriptedSequence", "m_bDontRotateOther")]
-	public ref bool DontRotateOther => ref Schema.GetRef<bool>(this.Handle, "CScriptedSequence", "m_bDontRotateOther");
+	public ref bool DontRotateOther => ref __m_bDontRotateOther.GetRef(this.Handle);
 
 	// m_bIsRepeatable
+	private static readonly SchemaField<bool> __m_bIsRepeatable = new("CScriptedSequence", "m_bIsRepeatable");
 	[SchemaMember("CScriptedSequence", "m_bIsRepeatable")]
-	public ref bool IsRepeatable => ref Schema.GetRef<bool>(this.Handle, "CScriptedSequence", "m_bIsRepeatable");
+	public ref bool IsRepeatable => ref __m_bIsRepeatable.GetRef(this.Handle);
 
 	// m_bShouldLeaveCorpse
+	private static readonly SchemaField<bool> __m_bShouldLeaveCorpse = new("CScriptedSequence", "m_bShouldLeaveCorpse");
 	[SchemaMember("CScriptedSequence", "m_bShouldLeaveCorpse")]
-	public ref bool ShouldLeaveCorpse => ref Schema.GetRef<bool>(this.Handle, "CScriptedSequence", "m_bShouldLeaveCorpse");
+	public ref bool ShouldLeaveCorpse => ref __m_bShouldLeaveCorpse.GetRef(this.Handle);
 
 	// m_bStartOnSpawn
+	private static readonly SchemaField<bool> __m_bStartOnSpawn = new("CScriptedSequence", "m_bStartOnSpawn");
 	[SchemaMember("CScriptedSequence", "m_bStartOnSpawn")]
-	public ref bool StartOnSpawn => ref Schema.GetRef<bool>(this.Handle, "CScriptedSequence", "m_bStartOnSpawn");
+	public ref bool StartOnSpawn => ref __m_bStartOnSpawn.GetRef(this.Handle);
 
 	// m_bDisallowInterrupts
+	private static readonly SchemaField<bool> __m_bDisallowInterrupts = new("CScriptedSequence", "m_bDisallowInterrupts");
 	[SchemaMember("CScriptedSequence", "m_bDisallowInterrupts")]
-	public ref bool DisallowInterrupts => ref Schema.GetRef<bool>(this.Handle, "CScriptedSequence", "m_bDisallowInterrupts");
+	public ref bool DisallowInterrupts => ref __m_bDisallowInterrupts.GetRef(this.Handle);
 
 	// m_bCanOverrideNPCState
+	private static readonly SchemaField<bool> __m_bCanOverrideNPCState = new("CScriptedSequence", "m_bCanOverrideNPCState");
 	[SchemaMember("CScriptedSequence", "m_bCanOverrideNPCState")]
-	public ref bool CanOverrideNPCState => ref Schema.GetRef<bool>(this.Handle, "CScriptedSequence", "m_bCanOverrideNPCState");
+	public ref bool CanOverrideNPCState => ref __m_bCanOverrideNPCState.GetRef(this.Handle);
 
 	// m_bDontTeleportAtEnd
+	private static readonly SchemaField<bool> __m_bDontTeleportAtEnd = new("CScriptedSequence", "m_bDontTeleportAtEnd");
 	[SchemaMember("CScriptedSequence", "m_bDontTeleportAtEnd")]
-	public ref bool DontTeleportAtEnd => ref Schema.GetRef<bool>(this.Handle, "CScriptedSequence", "m_bDontTeleportAtEnd");
+	public ref bool DontTeleportAtEnd => ref __m_bDontTeleportAtEnd.GetRef(this.Handle);
 
 	// m_bHighPriority
+	private static readonly SchemaField<bool> __m_bHighPriority = new("CScriptedSequence", "m_bHighPriority");
 	[SchemaMember("CScriptedSequence", "m_bHighPriority")]
-	public ref bool HighPriority => ref Schema.GetRef<bool>(this.Handle, "CScriptedSequence", "m_bHighPriority");
+	public ref bool HighPriority => ref __m_bHighPriority.GetRef(this.Handle);
 
 	// m_bHideDebugComplaints
+	private static readonly SchemaField<bool> __m_bHideDebugComplaints = new("CScriptedSequence", "m_bHideDebugComplaints");
 	[SchemaMember("CScriptedSequence", "m_bHideDebugComplaints")]
-	public ref bool HideDebugComplaints => ref Schema.GetRef<bool>(this.Handle, "CScriptedSequence", "m_bHideDebugComplaints");
+	public ref bool HideDebugComplaints => ref __m_bHideDebugComplaints.GetRef(this.Handle);
 
 	// m_bContinueOnDeath
+	private static readonly SchemaField<bool> __m_bContinueOnDeath = new("CScriptedSequence", "m_bContinueOnDeath");
 	[SchemaMember("CScriptedSequence", "m_bContinueOnDeath")]
-	public ref bool ContinueOnDeath => ref Schema.GetRef<bool>(this.Handle, "CScriptedSequence", "m_bContinueOnDeath");
+	public ref bool ContinueOnDeath => ref __m_bContinueOnDeath.GetRef(this.Handle);
 
 	// m_bLoopPreIdleSequence
+	private static readonly SchemaField<bool> __m_bLoopPreIdleSequence = new("CScriptedSequence", "m_bLoopPreIdleSequence");
 	[SchemaMember("CScriptedSequence", "m_bLoopPreIdleSequence")]
-	public ref bool LoopPreIdleSequence => ref Schema.GetRef<bool>(this.Handle, "CScriptedSequence", "m_bLoopPreIdleSequence");
+	public ref bool LoopPreIdleSequence => ref __m_bLoopPreIdleSequence.GetRef(this.Handle);
 
 	// m_bLoopActionSequence
+	private static readonly SchemaField<bool> __m_bLoopActionSequence = new("CScriptedSequence", "m_bLoopActionSequence");
 	[SchemaMember("CScriptedSequence", "m_bLoopActionSequence")]
-	public ref bool LoopActionSequence => ref Schema.GetRef<bool>(this.Handle, "CScriptedSequence", "m_bLoopActionSequence");
+	public ref bool LoopActionSequence => ref __m_bLoopActionSequence.GetRef(this.Handle);
 
 	// m_bLoopPostIdleSequence
+	private static readonly SchemaField<bool> __m_bLoopPostIdleSequence = new("CScriptedSequence", "m_bLoopPostIdleSequence");
 	[SchemaMember("CScriptedSequence", "m_bLoopPostIdleSequence")]
-	public ref bool LoopPostIdleSequence => ref Schema.GetRef<bool>(this.Handle, "CScriptedSequence", "m_bLoopPostIdleSequence");
+	public ref bool LoopPostIdleSequence => ref __m_bLoopPostIdleSequence.GetRef(this.Handle);
 
 	// m_bSynchPostIdles
+	private static readonly SchemaField<bool> __m_bSynchPostIdles = new("CScriptedSequence", "m_bSynchPostIdles");
 	[SchemaMember("CScriptedSequence", "m_bSynchPostIdles")]
-	public ref bool SynchPostIdles => ref Schema.GetRef<bool>(this.Handle, "CScriptedSequence", "m_bSynchPostIdles");
+	public ref bool SynchPostIdles => ref __m_bSynchPostIdles.GetRef(this.Handle);
 
 	// m_bIgnoreLookAt
+	private static readonly SchemaField<bool> __m_bIgnoreLookAt = new("CScriptedSequence", "m_bIgnoreLookAt");
 	[SchemaMember("CScriptedSequence", "m_bIgnoreLookAt")]
-	public ref bool IgnoreLookAt => ref Schema.GetRef<bool>(this.Handle, "CScriptedSequence", "m_bIgnoreLookAt");
+	public ref bool IgnoreLookAt => ref __m_bIgnoreLookAt.GetRef(this.Handle);
 
 	// m_bIgnoreGravity
+	private static readonly SchemaField<bool> __m_bIgnoreGravity = new("CScriptedSequence", "m_bIgnoreGravity");
 	[SchemaMember("CScriptedSequence", "m_bIgnoreGravity")]
-	public ref bool IgnoreGravity => ref Schema.GetRef<bool>(this.Handle, "CScriptedSequence", "m_bIgnoreGravity");
+	public ref bool IgnoreGravity => ref __m_bIgnoreGravity.GetRef(this.Handle);
 
 	// m_bDisableNPCCollisions
+	private static readonly SchemaField<bool> __m_bDisableNPCCollisions = new("CScriptedSequence", "m_bDisableNPCCollisions");
 	[SchemaMember("CScriptedSequence", "m_bDisableNPCCollisions")]
-	public ref bool DisableNPCCollisions => ref Schema.GetRef<bool>(this.Handle, "CScriptedSequence", "m_bDisableNPCCollisions");
+	public ref bool DisableNPCCollisions => ref __m_bDisableNPCCollisions.GetRef(this.Handle);
 
 	// m_bKeepAnimgraphLockedPost
+	private static readonly SchemaField<bool> __m_bKeepAnimgraphLockedPost = new("CScriptedSequence", "m_bKeepAnimgraphLockedPost");
 	[SchemaMember("CScriptedSequence", "m_bKeepAnimgraphLockedPost")]
-	public ref bool KeepAnimgraphLockedPost => ref Schema.GetRef<bool>(this.Handle, "CScriptedSequence", "m_bKeepAnimgraphLockedPost");
+	public ref bool KeepAnimgraphLockedPost => ref __m_bKeepAnimgraphLockedPost.GetRef(this.Handle);
 
 	// m_bDontAddModifiers
+	private static readonly SchemaField<bool> __m_bDontAddModifiers = new("CScriptedSequence", "m_bDontAddModifiers");
 	[SchemaMember("CScriptedSequence", "m_bDontAddModifiers")]
-	public ref bool DontAddModifiers => ref Schema.GetRef<bool>(this.Handle, "CScriptedSequence", "m_bDontAddModifiers");
+	public ref bool DontAddModifiers => ref __m_bDontAddModifiers.GetRef(this.Handle);
 
 	// m_bDisableAimingWhileMoving
+	private static readonly SchemaField<bool> __m_bDisableAimingWhileMoving = new("CScriptedSequence", "m_bDisableAimingWhileMoving");
 	[SchemaMember("CScriptedSequence", "m_bDisableAimingWhileMoving")]
-	public ref bool DisableAimingWhileMoving => ref Schema.GetRef<bool>(this.Handle, "CScriptedSequence", "m_bDisableAimingWhileMoving");
+	public ref bool DisableAimingWhileMoving => ref __m_bDisableAimingWhileMoving.GetRef(this.Handle);
 
 	// m_bIgnoreRotation
+	private static readonly SchemaField<bool> __m_bIgnoreRotation = new("CScriptedSequence", "m_bIgnoreRotation");
 	[SchemaMember("CScriptedSequence", "m_bIgnoreRotation")]
-	public ref bool IgnoreRotation => ref Schema.GetRef<bool>(this.Handle, "CScriptedSequence", "m_bIgnoreRotation");
+	public ref bool IgnoreRotation => ref __m_bIgnoreRotation.GetRef(this.Handle);
 
 	// m_flRadius
+	private static readonly SchemaField<float> __m_flRadius = new("CScriptedSequence", "m_flRadius");
 	[SchemaMember("CScriptedSequence", "m_flRadius")]
-	public ref float Radius => ref Schema.GetRef<float>(this.Handle, "CScriptedSequence", "m_flRadius");
+	public ref float Radius => ref __m_flRadius.GetRef(this.Handle);
 
 	// m_flRepeat
+	private static readonly SchemaField<float> __m_flRepeat = new("CScriptedSequence", "m_flRepeat");
 	[SchemaMember("CScriptedSequence", "m_flRepeat")]
-	public ref float Repeat => ref Schema.GetRef<float>(this.Handle, "CScriptedSequence", "m_flRepeat");
+	public ref float Repeat => ref __m_flRepeat.GetRef(this.Handle);
 
 	// m_flPlayAnimFadeInTime
+	private static readonly SchemaField<float> __m_flPlayAnimFadeInTime = new("CScriptedSequence", "m_flPlayAnimFadeInTime");
 	[SchemaMember("CScriptedSequence", "m_flPlayAnimFadeInTime")]
-	public ref float PlayAnimFadeInTime => ref Schema.GetRef<float>(this.Handle, "CScriptedSequence", "m_flPlayAnimFadeInTime");
+	public ref float PlayAnimFadeInTime => ref __m_flPlayAnimFadeInTime.GetRef(this.Handle);
 
 	// m_flMoveInterpTime
+	private static readonly SchemaField<float> __m_flMoveInterpTime = new("CScriptedSequence", "m_flMoveInterpTime");
 	[SchemaMember("CScriptedSequence", "m_flMoveInterpTime")]
-	public ref float MoveInterpTime => ref Schema.GetRef<float>(this.Handle, "CScriptedSequence", "m_flMoveInterpTime");
+	public ref float MoveInterpTime => ref __m_flMoveInterpTime.GetRef(this.Handle);
 
 	// m_flAngRate
+	private static readonly SchemaField<float> __m_flAngRate = new("CScriptedSequence", "m_flAngRate");
 	[SchemaMember("CScriptedSequence", "m_flAngRate")]
-	public ref float AngRate => ref Schema.GetRef<float>(this.Handle, "CScriptedSequence", "m_flAngRate");
+	public ref float AngRate => ref __m_flAngRate.GetRef(this.Handle);
 
 	// m_flMoveSpeed
+	private static readonly SchemaField<float> __m_flMoveSpeed = new("CScriptedSequence", "m_flMoveSpeed");
 	[SchemaMember("CScriptedSequence", "m_flMoveSpeed")]
-	public ref float MoveSpeed => ref Schema.GetRef<float>(this.Handle, "CScriptedSequence", "m_flMoveSpeed");
+	public ref float MoveSpeed => ref __m_flMoveSpeed.GetRef(this.Handle);
 
 	// m_bWaitUntilMoveCompletesToStartAnimation
+	private static readonly SchemaField<bool> __m_bWaitUntilMoveCompletesToStartAnimation = new("CScriptedSequence", "m_bWaitUntilMoveCompletesToStartAnimation");
 	[SchemaMember("CScriptedSequence", "m_bWaitUntilMoveCompletesToStartAnimation")]
-	public ref bool WaitUntilMoveCompletesToStartAnimation => ref Schema.GetRef<bool>(this.Handle, "CScriptedSequence", "m_bWaitUntilMoveCompletesToStartAnimation");
+	public ref bool WaitUntilMoveCompletesToStartAnimation => ref __m_bWaitUntilMoveCompletesToStartAnimation.GetRef(this.Handle);
 
 	// m_nNotReadySequenceCount
+	private static readonly SchemaField<Int32> __m_nNotReadySequenceCount = new("CScriptedSequence", "m_nNotReadySequenceCount");
 	[SchemaMember("CScriptedSequence", "m_nNotReadySequenceCount")]
-	public ref Int32 NotReadySequenceCount => ref Schema.GetRef<Int32>(this.Handle, "CScriptedSequence", "m_nNotReadySequenceCount");
+	public ref Int32 NotReadySequenceCount => ref __m_nNotReadySequenceCount.GetRef(this.Handle);
 
 	// m_startTime
+	private static readonly SchemaField<float> __m_startTime = new("CScriptedSequence", "m_startTime");
 	[SchemaMember("CScriptedSequence", "m_startTime")]
-	public ref float StartTime => ref Schema.GetRef<float>(this.Handle, "CScriptedSequence", "m_startTime");
+	public ref float StartTime => ref __m_startTime.GetRef(this.Handle);
 
 	// m_bWaitForBeginSequence
+	private static readonly SchemaField<bool> __m_bWaitForBeginSequence = new("CScriptedSequence", "m_bWaitForBeginSequence");
 	[SchemaMember("CScriptedSequence", "m_bWaitForBeginSequence")]
-	public ref bool WaitForBeginSequence => ref Schema.GetRef<bool>(this.Handle, "CScriptedSequence", "m_bWaitForBeginSequence");
+	public ref bool WaitForBeginSequence => ref __m_bWaitForBeginSequence.GetRef(this.Handle);
 
 	// m_saved_effects
+	private static readonly SchemaField<Int32> __m_saved_effects = new("CScriptedSequence", "m_saved_effects");
 	[SchemaMember("CScriptedSequence", "m_saved_effects")]
-	public ref Int32 Saved_effects => ref Schema.GetRef<Int32>(this.Handle, "CScriptedSequence", "m_saved_effects");
+	public ref Int32 Saved_effects => ref __m_saved_effects.GetRef(this.Handle);
 
 	// m_savedFlags
+	private static readonly SchemaField<Int32> __m_savedFlags = new("CScriptedSequence", "m_savedFlags");
 	[SchemaMember("CScriptedSequence", "m_savedFlags")]
-	public ref Int32 SavedFlags => ref Schema.GetRef<Int32>(this.Handle, "CScriptedSequence", "m_savedFlags");
+	public ref Int32 SavedFlags => ref __m_savedFlags.GetRef(this.Handle);
 
 	// m_savedCollisionGroup
+	private static readonly SchemaField<Int32> __m_savedCollisionGroup = new("CScriptedSequence", "m_savedCollisionGroup");
 	[SchemaMember("CScriptedSequence", "m_savedCollisionGroup")]
-	public ref Int32 SavedCollisionGroup => ref Schema.GetRef<Int32>(this.Handle, "CScriptedSequence", "m_savedCollisionGroup");
+	public ref Int32 SavedCollisionGroup => ref __m_savedCollisionGroup.GetRef(this.Handle);
 
 	// m_bInterruptable
+	private static readonly SchemaField<bool> __m_bInterruptable = new("CScriptedSequence", "m_bInterruptable");
 	[SchemaMember("CScriptedSequence", "m_bInterruptable")]
-	public ref bool Interruptable => ref Schema.GetRef<bool>(this.Handle, "CScriptedSequence", "m_bInterruptable");
+	public ref bool Interruptable => ref __m_bInterruptable.GetRef(this.Handle);
 
 	// m_sequenceStarted
+	private static readonly SchemaField<bool> __m_sequenceStarted = new("CScriptedSequence", "m_sequenceStarted");
 	[SchemaMember("CScriptedSequence", "m_sequenceStarted")]
-	public ref bool SequenceStarted => ref Schema.GetRef<bool>(this.Handle, "CScriptedSequence", "m_sequenceStarted");
+	public ref bool SequenceStarted => ref __m_sequenceStarted.GetRef(this.Handle);
 
 	// m_bPositionRelativeToOtherEntity
+	private static readonly SchemaField<bool> __m_bPositionRelativeToOtherEntity = new("CScriptedSequence", "m_bPositionRelativeToOtherEntity");
 	[SchemaMember("CScriptedSequence", "m_bPositionRelativeToOtherEntity")]
-	public ref bool PositionRelativeToOtherEntity => ref Schema.GetRef<bool>(this.Handle, "CScriptedSequence", "m_bPositionRelativeToOtherEntity");
+	public ref bool PositionRelativeToOtherEntity => ref __m_bPositionRelativeToOtherEntity.GetRef(this.Handle);
 
 	// m_hTargetEnt
 	[SchemaMember("CScriptedSequence", "m_hTargetEnt")]
@@ -271,48 +316,58 @@ public partial class CScriptedSequence : CBaseEntity
 	public CHandle<CScriptedSequence> NextCine => Schema.GetDeclaredClass<CHandle<CScriptedSequence>>(this.Handle, "CScriptedSequence", "m_hNextCine");
 
 	// m_bThinking
+	private static readonly SchemaField<bool> __m_bThinking = new("CScriptedSequence", "m_bThinking");
 	[SchemaMember("CScriptedSequence", "m_bThinking")]
-	public ref bool Thinking => ref Schema.GetRef<bool>(this.Handle, "CScriptedSequence", "m_bThinking");
+	public ref bool Thinking => ref __m_bThinking.GetRef(this.Handle);
 
 	// m_bInitiatedSelfDelete
+	private static readonly SchemaField<bool> __m_bInitiatedSelfDelete = new("CScriptedSequence", "m_bInitiatedSelfDelete");
 	[SchemaMember("CScriptedSequence", "m_bInitiatedSelfDelete")]
-	public ref bool InitiatedSelfDelete => ref Schema.GetRef<bool>(this.Handle, "CScriptedSequence", "m_bInitiatedSelfDelete");
+	public ref bool InitiatedSelfDelete => ref __m_bInitiatedSelfDelete.GetRef(this.Handle);
 
 	// m_bIsTeleportingDueToMoveTo
+	private static readonly SchemaField<bool> __m_bIsTeleportingDueToMoveTo = new("CScriptedSequence", "m_bIsTeleportingDueToMoveTo");
 	[SchemaMember("CScriptedSequence", "m_bIsTeleportingDueToMoveTo")]
-	public ref bool IsTeleportingDueToMoveTo => ref Schema.GetRef<bool>(this.Handle, "CScriptedSequence", "m_bIsTeleportingDueToMoveTo");
+	public ref bool IsTeleportingDueToMoveTo => ref __m_bIsTeleportingDueToMoveTo.GetRef(this.Handle);
 
 	// m_bAllowCustomInterruptConditions
+	private static readonly SchemaField<bool> __m_bAllowCustomInterruptConditions = new("CScriptedSequence", "m_bAllowCustomInterruptConditions");
 	[SchemaMember("CScriptedSequence", "m_bAllowCustomInterruptConditions")]
-	public ref bool AllowCustomInterruptConditions => ref Schema.GetRef<bool>(this.Handle, "CScriptedSequence", "m_bAllowCustomInterruptConditions");
+	public ref bool AllowCustomInterruptConditions => ref __m_bAllowCustomInterruptConditions.GetRef(this.Handle);
 
 	// m_hForcedTarget
 	[SchemaMember("CScriptedSequence", "m_hForcedTarget")]
 	public CHandle<CBaseAnimGraph> ForcedTarget => Schema.GetDeclaredClass<CHandle<CBaseAnimGraph>>(this.Handle, "CScriptedSequence", "m_hForcedTarget");
 
 	// m_bDontCancelOtherSequences
+	private static readonly SchemaField<bool> __m_bDontCancelOtherSequences = new("CScriptedSequence", "m_bDontCancelOtherSequences");
 	[SchemaMember("CScriptedSequence", "m_bDontCancelOtherSequences")]
-	public ref bool DontCancelOtherSequences => ref Schema.GetRef<bool>(this.Handle, "CScriptedSequence", "m_bDontCancelOtherSequences");
+	public ref bool DontCancelOtherSequences => ref __m_bDontCancelOtherSequences.GetRef(this.Handle);
 
 	// m_bForceSynch
+	private static readonly SchemaField<bool> __m_bForceSynch = new("CScriptedSequence", "m_bForceSynch");
 	[SchemaMember("CScriptedSequence", "m_bForceSynch")]
-	public ref bool ForceSynch => ref Schema.GetRef<bool>(this.Handle, "CScriptedSequence", "m_bForceSynch");
+	public ref bool ForceSynch => ref __m_bForceSynch.GetRef(this.Handle);
 
 	// m_bPreventUpdateYawOnFinish
+	private static readonly SchemaField<bool> __m_bPreventUpdateYawOnFinish = new("CScriptedSequence", "m_bPreventUpdateYawOnFinish");
 	[SchemaMember("CScriptedSequence", "m_bPreventUpdateYawOnFinish")]
-	public ref bool PreventUpdateYawOnFinish => ref Schema.GetRef<bool>(this.Handle, "CScriptedSequence", "m_bPreventUpdateYawOnFinish");
+	public ref bool PreventUpdateYawOnFinish => ref __m_bPreventUpdateYawOnFinish.GetRef(this.Handle);
 
 	// m_bEnsureOnNavmeshOnFinish
+	private static readonly SchemaField<bool> __m_bEnsureOnNavmeshOnFinish = new("CScriptedSequence", "m_bEnsureOnNavmeshOnFinish");
 	[SchemaMember("CScriptedSequence", "m_bEnsureOnNavmeshOnFinish")]
-	public ref bool EnsureOnNavmeshOnFinish => ref Schema.GetRef<bool>(this.Handle, "CScriptedSequence", "m_bEnsureOnNavmeshOnFinish");
+	public ref bool EnsureOnNavmeshOnFinish => ref __m_bEnsureOnNavmeshOnFinish.GetRef(this.Handle);
 
 	// m_onDeathBehavior
+	private static readonly SchemaField<ScriptedOnDeath_t> __m_onDeathBehavior = new("CScriptedSequence", "m_onDeathBehavior");
 	[SchemaMember("CScriptedSequence", "m_onDeathBehavior")]
-	public ref ScriptedOnDeath_t OnDeathBehavior => ref Schema.GetRef<ScriptedOnDeath_t>(this.Handle, "CScriptedSequence", "m_onDeathBehavior");
+	public ref ScriptedOnDeath_t OnDeathBehavior => ref __m_onDeathBehavior.GetRef(this.Handle);
 
 	// m_ConflictResponse
+	private static readonly SchemaField<ScriptedConflictResponse_t> __m_ConflictResponse = new("CScriptedSequence", "m_ConflictResponse");
 	[SchemaMember("CScriptedSequence", "m_ConflictResponse")]
-	public ref ScriptedConflictResponse_t ConflictResponse => ref Schema.GetRef<ScriptedConflictResponse_t>(this.Handle, "CScriptedSequence", "m_ConflictResponse");
+	public ref ScriptedConflictResponse_t ConflictResponse => ref __m_ConflictResponse.GetRef(this.Handle);
 
 	// m_OnBeginSequence
 	[SchemaMember("CScriptedSequence", "m_OnBeginSequence")]
@@ -351,11 +406,13 @@ public partial class CScriptedSequence : CBaseEntity
 	public CHandle<CBaseEntity> InteractionMainEntity => Schema.GetDeclaredClass<CHandle<CBaseEntity>>(this.Handle, "CScriptedSequence", "m_hInteractionMainEntity");
 
 	// m_iPlayerDeathBehavior
+	private static readonly SchemaField<Int32> __m_iPlayerDeathBehavior = new("CScriptedSequence", "m_iPlayerDeathBehavior");
 	[SchemaMember("CScriptedSequence", "m_iPlayerDeathBehavior")]
-	public ref Int32 PlayerDeathBehavior => ref Schema.GetRef<Int32>(this.Handle, "CScriptedSequence", "m_iPlayerDeathBehavior");
+	public ref Int32 PlayerDeathBehavior => ref __m_iPlayerDeathBehavior.GetRef(this.Handle);
 
 	// m_bSkipFadeIn
+	private static readonly SchemaField<bool> __m_bSkipFadeIn = new("CScriptedSequence", "m_bSkipFadeIn");
 	[SchemaMember("CScriptedSequence", "m_bSkipFadeIn")]
-	public ref bool SkipFadeIn => ref Schema.GetRef<bool>(this.Handle, "CScriptedSequence", "m_bSkipFadeIn");
+	public ref bool SkipFadeIn => ref __m_bSkipFadeIn.GetRef(this.Handle);
 
 }

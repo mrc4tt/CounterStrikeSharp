@@ -19,11 +19,13 @@ public partial class CWeaponTaser : CCSWeaponBaseGun
     public CWeaponTaser (IntPtr pointer) : base(pointer) {}
 
 	// m_fFireTime
+	private static readonly SchemaField<float> __m_fFireTime = new("CWeaponTaser", "m_fFireTime");
 	[SchemaMember("CWeaponTaser", "m_fFireTime")]
-	public ref float FireTime => ref Schema.GetRef<float>(this.Handle, "CWeaponTaser", "m_fFireTime");
+	public ref float FireTime => ref __m_fFireTime.GetRef(this.Handle);
 
 	// m_nLastAttackTick
+	private static readonly SchemaField<Int32> __m_nLastAttackTick = new("CWeaponTaser", "m_nLastAttackTick");
 	[SchemaMember("CWeaponTaser", "m_nLastAttackTick")]
-	public ref Int32 LastAttackTick => ref Schema.GetRef<Int32>(this.Handle, "CWeaponTaser", "m_nLastAttackTick");
+	public ref Int32 LastAttackTick => ref __m_nLastAttackTick.GetRef(this.Handle);
 
 }

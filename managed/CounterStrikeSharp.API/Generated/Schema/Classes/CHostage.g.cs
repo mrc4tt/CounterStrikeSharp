@@ -39,36 +39,43 @@ public partial class CHostage : CHostageExpresserShim
 	public EntitySpottedState_t EntitySpottedState => Schema.GetDeclaredClass<EntitySpottedState_t>(this.Handle, "CHostage", "m_entitySpottedState");
 
 	// m_nSpotRules
+	private static readonly SchemaField<Int32> __m_nSpotRules = new("CHostage", "m_nSpotRules");
 	[SchemaMember("CHostage", "m_nSpotRules")]
-	public ref Int32 SpotRules => ref Schema.GetRef<Int32>(this.Handle, "CHostage", "m_nSpotRules");
+	public ref Int32 SpotRules => ref __m_nSpotRules.GetRef(this.Handle);
 
 	// m_uiHostageSpawnExclusionGroupMask
+	private static readonly SchemaField<UInt32> __m_uiHostageSpawnExclusionGroupMask = new("CHostage", "m_uiHostageSpawnExclusionGroupMask");
 	[SchemaMember("CHostage", "m_uiHostageSpawnExclusionGroupMask")]
-	public ref UInt32 UiHostageSpawnExclusionGroupMask => ref Schema.GetRef<UInt32>(this.Handle, "CHostage", "m_uiHostageSpawnExclusionGroupMask");
+	public ref UInt32 UiHostageSpawnExclusionGroupMask => ref __m_uiHostageSpawnExclusionGroupMask.GetRef(this.Handle);
 
 	// m_nHostageSpawnRandomFactor
+	private static readonly SchemaField<UInt32> __m_nHostageSpawnRandomFactor = new("CHostage", "m_nHostageSpawnRandomFactor");
 	[SchemaMember("CHostage", "m_nHostageSpawnRandomFactor")]
-	public ref UInt32 HostageSpawnRandomFactor => ref Schema.GetRef<UInt32>(this.Handle, "CHostage", "m_nHostageSpawnRandomFactor");
+	public ref UInt32 HostageSpawnRandomFactor => ref __m_nHostageSpawnRandomFactor.GetRef(this.Handle);
 
 	// m_bRemove
+	private static readonly SchemaField<bool> __m_bRemove = new("CHostage", "m_bRemove");
 	[SchemaMember("CHostage", "m_bRemove")]
-	public ref bool ShouldRemove => ref Schema.GetRef<bool>(this.Handle, "CHostage", "m_bRemove");
+	public ref bool ShouldRemove => ref __m_bRemove.GetRef(this.Handle);
 
 	// m_vel
 	[SchemaMember("CHostage", "m_vel")]
 	public Vector Vel => Schema.GetDeclaredClass<Vector>(this.Handle, "CHostage", "m_vel");
 
 	// m_isRescued
+	private static readonly SchemaField<bool> __m_isRescued = new("CHostage", "m_isRescued");
 	[SchemaMember("CHostage", "m_isRescued")]
-	public ref bool IsRescued => ref Schema.GetRef<bool>(this.Handle, "CHostage", "m_isRescued");
+	public ref bool IsRescued => ref __m_isRescued.GetRef(this.Handle);
 
 	// m_jumpedThisFrame
+	private static readonly SchemaField<bool> __m_jumpedThisFrame = new("CHostage", "m_jumpedThisFrame");
 	[SchemaMember("CHostage", "m_jumpedThisFrame")]
-	public ref bool JumpedThisFrame => ref Schema.GetRef<bool>(this.Handle, "CHostage", "m_jumpedThisFrame");
+	public ref bool JumpedThisFrame => ref __m_jumpedThisFrame.GetRef(this.Handle);
 
 	// m_nHostageState
+	private static readonly SchemaField<Int32> __m_nHostageState = new("CHostage", "m_nHostageState");
 	[SchemaMember("CHostage", "m_nHostageState")]
-	public ref Int32 HostageState => ref Schema.GetRef<Int32>(this.Handle, "CHostage", "m_nHostageState");
+	public ref Int32 HostageState => ref __m_nHostageState.GetRef(this.Handle);
 
 	// m_leader
 	[SchemaMember("CHostage", "m_leader")]
@@ -83,28 +90,32 @@ public partial class CHostage : CHostageExpresserShim
 	public CountdownTimer ReuseTimer => Schema.GetDeclaredClass<CountdownTimer>(this.Handle, "CHostage", "m_reuseTimer");
 
 	// m_hasBeenUsed
+	private static readonly SchemaField<bool> __m_hasBeenUsed = new("CHostage", "m_hasBeenUsed");
 	[SchemaMember("CHostage", "m_hasBeenUsed")]
-	public ref bool HasBeenUsed => ref Schema.GetRef<bool>(this.Handle, "CHostage", "m_hasBeenUsed");
+	public ref bool HasBeenUsed => ref __m_hasBeenUsed.GetRef(this.Handle);
 
 	// m_accel
 	[SchemaMember("CHostage", "m_accel")]
 	public Vector Accel => Schema.GetDeclaredClass<Vector>(this.Handle, "CHostage", "m_accel");
 
 	// m_isRunning
+	private static readonly SchemaField<bool> __m_isRunning = new("CHostage", "m_isRunning");
 	[SchemaMember("CHostage", "m_isRunning")]
-	public ref bool IsRunning => ref Schema.GetRef<bool>(this.Handle, "CHostage", "m_isRunning");
+	public ref bool IsRunning => ref __m_isRunning.GetRef(this.Handle);
 
 	// m_isCrouching
+	private static readonly SchemaField<bool> __m_isCrouching = new("CHostage", "m_isCrouching");
 	[SchemaMember("CHostage", "m_isCrouching")]
-	public ref bool IsCrouching => ref Schema.GetRef<bool>(this.Handle, "CHostage", "m_isCrouching");
+	public ref bool IsCrouching => ref __m_isCrouching.GetRef(this.Handle);
 
 	// m_jumpTimer
 	[SchemaMember("CHostage", "m_jumpTimer")]
 	public CountdownTimer JumpTimer => Schema.GetDeclaredClass<CountdownTimer>(this.Handle, "CHostage", "m_jumpTimer");
 
 	// m_isWaitingForLeader
+	private static readonly SchemaField<bool> __m_isWaitingForLeader = new("CHostage", "m_isWaitingForLeader");
 	[SchemaMember("CHostage", "m_isWaitingForLeader")]
-	public ref bool IsWaitingForLeader => ref Schema.GetRef<bool>(this.Handle, "CHostage", "m_isWaitingForLeader");
+	public ref bool IsWaitingForLeader => ref __m_isWaitingForLeader.GetRef(this.Handle);
 
 	// m_repathTimer
 	[SchemaMember("CHostage", "m_repathTimer")]
@@ -123,20 +134,23 @@ public partial class CHostage : CHostageExpresserShim
 	public CountdownTimer WiggleTimer => Schema.GetDeclaredClass<CountdownTimer>(this.Handle, "CHostage", "m_wiggleTimer");
 
 	// m_isAdjusted
+	private static readonly SchemaField<bool> __m_isAdjusted = new("CHostage", "m_isAdjusted");
 	[SchemaMember("CHostage", "m_isAdjusted")]
-	public ref bool IsAdjusted => ref Schema.GetRef<bool>(this.Handle, "CHostage", "m_isAdjusted");
+	public ref bool IsAdjusted => ref __m_isAdjusted.GetRef(this.Handle);
 
 	// m_bHandsHaveBeenCut
+	private static readonly SchemaField<bool> __m_bHandsHaveBeenCut = new("CHostage", "m_bHandsHaveBeenCut");
 	[SchemaMember("CHostage", "m_bHandsHaveBeenCut")]
-	public ref bool HandsHaveBeenCut => ref Schema.GetRef<bool>(this.Handle, "CHostage", "m_bHandsHaveBeenCut");
+	public ref bool HandsHaveBeenCut => ref __m_bHandsHaveBeenCut.GetRef(this.Handle);
 
 	// m_hHostageGrabber
 	[SchemaMember("CHostage", "m_hHostageGrabber")]
 	public CHandle<CCSPlayerPawn> HostageGrabber => Schema.GetDeclaredClass<CHandle<CCSPlayerPawn>>(this.Handle, "CHostage", "m_hHostageGrabber");
 
 	// m_fLastGrabTime
+	private static readonly SchemaField<float> __m_fLastGrabTime = new("CHostage", "m_fLastGrabTime");
 	[SchemaMember("CHostage", "m_fLastGrabTime")]
-	public ref float LastGrabTime => ref Schema.GetRef<float>(this.Handle, "CHostage", "m_fLastGrabTime");
+	public ref float LastGrabTime => ref __m_fLastGrabTime.GetRef(this.Handle);
 
 	// m_vecPositionWhenStartedDroppingToGround
 	[SchemaMember("CHostage", "m_vecPositionWhenStartedDroppingToGround")]
@@ -147,24 +161,29 @@ public partial class CHostage : CHostageExpresserShim
 	public Vector GrabbedPos => Schema.GetDeclaredClass<Vector>(this.Handle, "CHostage", "m_vecGrabbedPos");
 
 	// m_flRescueStartTime
+	private static readonly SchemaField<float> __m_flRescueStartTime = new("CHostage", "m_flRescueStartTime");
 	[SchemaMember("CHostage", "m_flRescueStartTime")]
-	public ref float RescueStartTime => ref Schema.GetRef<float>(this.Handle, "CHostage", "m_flRescueStartTime");
+	public ref float RescueStartTime => ref __m_flRescueStartTime.GetRef(this.Handle);
 
 	// m_flGrabSuccessTime
+	private static readonly SchemaField<float> __m_flGrabSuccessTime = new("CHostage", "m_flGrabSuccessTime");
 	[SchemaMember("CHostage", "m_flGrabSuccessTime")]
-	public ref float GrabSuccessTime => ref Schema.GetRef<float>(this.Handle, "CHostage", "m_flGrabSuccessTime");
+	public ref float GrabSuccessTime => ref __m_flGrabSuccessTime.GetRef(this.Handle);
 
 	// m_flDropStartTime
+	private static readonly SchemaField<float> __m_flDropStartTime = new("CHostage", "m_flDropStartTime");
 	[SchemaMember("CHostage", "m_flDropStartTime")]
-	public ref float DropStartTime => ref Schema.GetRef<float>(this.Handle, "CHostage", "m_flDropStartTime");
+	public ref float DropStartTime => ref __m_flDropStartTime.GetRef(this.Handle);
 
 	// m_nApproachRewardPayouts
+	private static readonly SchemaField<Int32> __m_nApproachRewardPayouts = new("CHostage", "m_nApproachRewardPayouts");
 	[SchemaMember("CHostage", "m_nApproachRewardPayouts")]
-	public ref Int32 ApproachRewardPayouts => ref Schema.GetRef<Int32>(this.Handle, "CHostage", "m_nApproachRewardPayouts");
+	public ref Int32 ApproachRewardPayouts => ref __m_nApproachRewardPayouts.GetRef(this.Handle);
 
 	// m_nPickupEventCount
+	private static readonly SchemaField<Int32> __m_nPickupEventCount = new("CHostage", "m_nPickupEventCount");
 	[SchemaMember("CHostage", "m_nPickupEventCount")]
-	public ref Int32 PickupEventCount => ref Schema.GetRef<Int32>(this.Handle, "CHostage", "m_nPickupEventCount");
+	public ref Int32 PickupEventCount => ref __m_nPickupEventCount.GetRef(this.Handle);
 
 	// m_vecSpawnGroundPos
 	[SchemaMember("CHostage", "m_vecSpawnGroundPos")]

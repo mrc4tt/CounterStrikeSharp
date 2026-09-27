@@ -31,8 +31,9 @@ public partial class CSoundOpvarSetDomeEntity : CSoundOpvarSetPointEntity
 	public NetworkedVector<Int32> ArNeighbors => Schema.GetDeclaredClass<NetworkedVector<Int32>>(this.Handle, "CSoundOpvarSetDomeEntity", "m_arNeighbors");
 
 	// m_nCurrentIndex
+	private static readonly SchemaField<Int32> __m_nCurrentIndex = new("CSoundOpvarSetDomeEntity", "m_nCurrentIndex");
 	[SchemaMember("CSoundOpvarSetDomeEntity", "m_nCurrentIndex")]
-	public ref Int32 CurrentIndex => ref Schema.GetRef<Int32>(this.Handle, "CSoundOpvarSetDomeEntity", "m_nCurrentIndex");
+	public ref Int32 CurrentIndex => ref __m_nCurrentIndex.GetRef(this.Handle);
 
 	// m_arClusterParent
 	[SchemaMember("CSoundOpvarSetDomeEntity", "m_arClusterParent")]
@@ -51,12 +52,14 @@ public partial class CSoundOpvarSetDomeEntity : CSoundOpvarSetPointEntity
 	public NetworkedVector<Vector> ArClusterDirSum => Schema.GetDeclaredClass<NetworkedVector<Vector>>(this.Handle, "CSoundOpvarSetDomeEntity", "m_arClusterDirSum");
 
 	// m_nClusterIndex
+	private static readonly SchemaField<Int32> __m_nClusterIndex = new("CSoundOpvarSetDomeEntity", "m_nClusterIndex");
 	[SchemaMember("CSoundOpvarSetDomeEntity", "m_nClusterIndex")]
-	public ref Int32 ClusterIndex => ref Schema.GetRef<Int32>(this.Handle, "CSoundOpvarSetDomeEntity", "m_nClusterIndex");
+	public ref Int32 ClusterIndex => ref __m_nClusterIndex.GetRef(this.Handle);
 
 	// m_flClusteredOpenness
+	private static readonly SchemaField<float> __m_flClusteredOpenness = new("CSoundOpvarSetDomeEntity", "m_flClusteredOpenness");
 	[SchemaMember("CSoundOpvarSetDomeEntity", "m_flClusteredOpenness")]
-	public ref float ClusteredOpenness => ref Schema.GetRef<float>(this.Handle, "CSoundOpvarSetDomeEntity", "m_flClusteredOpenness");
+	public ref float ClusteredOpenness => ref __m_flClusteredOpenness.GetRef(this.Handle);
 
 	// m_vClusterDirection
 	[SchemaMember("CSoundOpvarSetDomeEntity", "m_vClusterDirection")]
@@ -67,79 +70,97 @@ public partial class CSoundOpvarSetDomeEntity : CSoundOpvarSetPointEntity
 	public Vector SmoothedOpenDir => Schema.GetDeclaredClass<Vector>(this.Handle, "CSoundOpvarSetDomeEntity", "m_vSmoothedOpenDir");
 
 	// m_nDirWarmupThinksRemaining
+	private static readonly SchemaField<Int32> __m_nDirWarmupThinksRemaining = new("CSoundOpvarSetDomeEntity", "m_nDirWarmupThinksRemaining");
 	[SchemaMember("CSoundOpvarSetDomeEntity", "m_nDirWarmupThinksRemaining")]
-	public ref Int32 DirWarmupThinksRemaining => ref Schema.GetRef<Int32>(this.Handle, "CSoundOpvarSetDomeEntity", "m_nDirWarmupThinksRemaining");
+	public ref Int32 DirWarmupThinksRemaining => ref __m_nDirWarmupThinksRemaining.GetRef(this.Handle);
 
 	// m_vLastTraceOrigin
 	[SchemaMember("CSoundOpvarSetDomeEntity", "m_vLastTraceOrigin")]
 	public Vector LastTraceOrigin => Schema.GetDeclaredClass<Vector>(this.Handle, "CSoundOpvarSetDomeEntity", "m_vLastTraceOrigin");
 
 	// m_bTraceOriginValid
+	private static readonly SchemaField<bool> __m_bTraceOriginValid = new("CSoundOpvarSetDomeEntity", "m_bTraceOriginValid");
 	[SchemaMember("CSoundOpvarSetDomeEntity", "m_bTraceOriginValid")]
-	public ref bool TraceOriginValid => ref Schema.GetRef<bool>(this.Handle, "CSoundOpvarSetDomeEntity", "m_bTraceOriginValid");
+	public ref bool TraceOriginValid => ref __m_bTraceOriginValid.GetRef(this.Handle);
 
 	// m_nCatchUpThinksRemaining
+	private static readonly SchemaField<Int32> __m_nCatchUpThinksRemaining = new("CSoundOpvarSetDomeEntity", "m_nCatchUpThinksRemaining");
 	[SchemaMember("CSoundOpvarSetDomeEntity", "m_nCatchUpThinksRemaining")]
-	public ref Int32 CatchUpThinksRemaining => ref Schema.GetRef<Int32>(this.Handle, "CSoundOpvarSetDomeEntity", "m_nCatchUpThinksRemaining");
+	public ref Int32 CatchUpThinksRemaining => ref __m_nCatchUpThinksRemaining.GetRef(this.Handle);
 
 	// m_bDiscontinuityPending
+	private static readonly SchemaField<bool> __m_bDiscontinuityPending = new("CSoundOpvarSetDomeEntity", "m_bDiscontinuityPending");
 	[SchemaMember("CSoundOpvarSetDomeEntity", "m_bDiscontinuityPending")]
-	public ref bool DiscontinuityPending => ref Schema.GetRef<bool>(this.Handle, "CSoundOpvarSetDomeEntity", "m_bDiscontinuityPending");
+	public ref bool DiscontinuityPending => ref __m_bDiscontinuityPending.GetRef(this.Handle);
 
 	// m_flSmoothedOpenness
+	private static readonly SchemaField<float> __m_flSmoothedOpenness = new("CSoundOpvarSetDomeEntity", "m_flSmoothedOpenness");
 	[SchemaMember("CSoundOpvarSetDomeEntity", "m_flSmoothedOpenness")]
-	public ref float SmoothedOpenness => ref Schema.GetRef<float>(this.Handle, "CSoundOpvarSetDomeEntity", "m_flSmoothedOpenness");
+	public ref float SmoothedOpenness => ref __m_flSmoothedOpenness.GetRef(this.Handle);
 
 	// m_flLastSmoothTime
+	private static readonly SchemaField<float> __m_flLastSmoothTime = new("CSoundOpvarSetDomeEntity", "m_flLastSmoothTime");
 	[SchemaMember("CSoundOpvarSetDomeEntity", "m_flLastSmoothTime")]
-	public ref float LastSmoothTime => ref Schema.GetRef<float>(this.Handle, "CSoundOpvarSetDomeEntity", "m_flLastSmoothTime");
+	public ref float LastSmoothTime => ref __m_flLastSmoothTime.GetRef(this.Handle);
 
 	// m_flSize
+	private static readonly SchemaField<float> __m_flSize = new("CSoundOpvarSetDomeEntity", "m_flSize");
 	[SchemaMember("CSoundOpvarSetDomeEntity", "m_flSize")]
-	public ref float Size => ref Schema.GetRef<float>(this.Handle, "CSoundOpvarSetDomeEntity", "m_flSize");
+	public ref float Size => ref __m_flSize.GetRef(this.Handle);
 
 	// m_nTotalDirections
+	private static readonly SchemaField<Int32> __m_nTotalDirections = new("CSoundOpvarSetDomeEntity", "m_nTotalDirections");
 	[SchemaMember("CSoundOpvarSetDomeEntity", "m_nTotalDirections")]
-	public ref Int32 TotalDirections => ref Schema.GetRef<Int32>(this.Handle, "CSoundOpvarSetDomeEntity", "m_nTotalDirections");
+	public ref Int32 TotalDirections => ref __m_nTotalDirections.GetRef(this.Handle);
 
 	// m_nTracesPerFrame
+	private static readonly SchemaField<Int32> __m_nTracesPerFrame = new("CSoundOpvarSetDomeEntity", "m_nTracesPerFrame");
 	[SchemaMember("CSoundOpvarSetDomeEntity", "m_nTracesPerFrame")]
-	public ref Int32 TracesPerFrame => ref Schema.GetRef<Int32>(this.Handle, "CSoundOpvarSetDomeEntity", "m_nTracesPerFrame");
+	public ref Int32 TracesPerFrame => ref __m_nTracesPerFrame.GetRef(this.Handle);
 
 	// m_bDomeMode
+	private static readonly SchemaField<bool> __m_bDomeMode = new("CSoundOpvarSetDomeEntity", "m_bDomeMode");
 	[SchemaMember("CSoundOpvarSetDomeEntity", "m_bDomeMode")]
-	public ref bool DomeMode => ref Schema.GetRef<bool>(this.Handle, "CSoundOpvarSetDomeEntity", "m_bDomeMode");
+	public ref bool DomeMode => ref __m_bDomeMode.GetRef(this.Handle);
 
 	// m_bMultiWall
+	private static readonly SchemaField<bool> __m_bMultiWall = new("CSoundOpvarSetDomeEntity", "m_bMultiWall");
 	[SchemaMember("CSoundOpvarSetDomeEntity", "m_bMultiWall")]
-	public ref bool MultiWall => ref Schema.GetRef<bool>(this.Handle, "CSoundOpvarSetDomeEntity", "m_bMultiWall");
+	public ref bool MultiWall => ref __m_bMultiWall.GetRef(this.Handle);
 
 	// m_flWallTransmission
+	private static readonly SchemaField<float> __m_flWallTransmission = new("CSoundOpvarSetDomeEntity", "m_flWallTransmission");
 	[SchemaMember("CSoundOpvarSetDomeEntity", "m_flWallTransmission")]
-	public ref float WallTransmission => ref Schema.GetRef<float>(this.Handle, "CSoundOpvarSetDomeEntity", "m_flWallTransmission");
+	public ref float WallTransmission => ref __m_flWallTransmission.GetRef(this.Handle);
 
 	// m_nClusterK
+	private static readonly SchemaField<Int32> __m_nClusterK = new("CSoundOpvarSetDomeEntity", "m_nClusterK");
 	[SchemaMember("CSoundOpvarSetDomeEntity", "m_nClusterK")]
-	public ref Int32 ClusterK => ref Schema.GetRef<Int32>(this.Handle, "CSoundOpvarSetDomeEntity", "m_nClusterK");
+	public ref Int32 ClusterK => ref __m_nClusterK.GetRef(this.Handle);
 
 	// m_flClusterP
+	private static readonly SchemaField<float> __m_flClusterP = new("CSoundOpvarSetDomeEntity", "m_flClusterP");
 	[SchemaMember("CSoundOpvarSetDomeEntity", "m_flClusterP")]
-	public ref float ClusterP => ref Schema.GetRef<float>(this.Handle, "CSoundOpvarSetDomeEntity", "m_flClusterP");
+	public ref float ClusterP => ref __m_flClusterP.GetRef(this.Handle);
 
 	// m_flClusterBlend
+	private static readonly SchemaField<float> __m_flClusterBlend = new("CSoundOpvarSetDomeEntity", "m_flClusterBlend");
 	[SchemaMember("CSoundOpvarSetDomeEntity", "m_flClusterBlend")]
-	public ref float ClusterBlend => ref Schema.GetRef<float>(this.Handle, "CSoundOpvarSetDomeEntity", "m_flClusterBlend");
+	public ref float ClusterBlend => ref __m_flClusterBlend.GetRef(this.Handle);
 
 	// m_flOpennessExponent
+	private static readonly SchemaField<float> __m_flOpennessExponent = new("CSoundOpvarSetDomeEntity", "m_flOpennessExponent");
 	[SchemaMember("CSoundOpvarSetDomeEntity", "m_flOpennessExponent")]
-	public ref float OpennessExponent => ref Schema.GetRef<float>(this.Handle, "CSoundOpvarSetDomeEntity", "m_flOpennessExponent");
+	public ref float OpennessExponent => ref __m_flOpennessExponent.GetRef(this.Handle);
 
 	// m_flShoulderExponent
+	private static readonly SchemaField<float> __m_flShoulderExponent = new("CSoundOpvarSetDomeEntity", "m_flShoulderExponent");
 	[SchemaMember("CSoundOpvarSetDomeEntity", "m_flShoulderExponent")]
-	public ref float ShoulderExponent => ref Schema.GetRef<float>(this.Handle, "CSoundOpvarSetDomeEntity", "m_flShoulderExponent");
+	public ref float ShoulderExponent => ref __m_flShoulderExponent.GetRef(this.Handle);
 
 	// m_flSmoothHalfLife
+	private static readonly SchemaField<float> __m_flSmoothHalfLife = new("CSoundOpvarSetDomeEntity", "m_flSmoothHalfLife");
 	[SchemaMember("CSoundOpvarSetDomeEntity", "m_flSmoothHalfLife")]
-	public ref float SmoothHalfLife => ref Schema.GetRef<float>(this.Handle, "CSoundOpvarSetDomeEntity", "m_flSmoothHalfLife");
+	public ref float SmoothHalfLife => ref __m_flSmoothHalfLife.GetRef(this.Handle);
 
 }

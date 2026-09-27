@@ -23,28 +23,34 @@ public partial class CPropDoorRotating : CBasePropDoor
 	public Vector Axis => Schema.GetDeclaredClass<Vector>(this.Handle, "CPropDoorRotating", "m_vecAxis");
 
 	// m_flDistance
+	private static readonly SchemaField<float> __m_flDistance = new("CPropDoorRotating", "m_flDistance");
 	[SchemaMember("CPropDoorRotating", "m_flDistance")]
-	public ref float Distance => ref Schema.GetRef<float>(this.Handle, "CPropDoorRotating", "m_flDistance");
+	public ref float Distance => ref __m_flDistance.GetRef(this.Handle);
 
 	// m_eSpawnPosition
+	private static readonly SchemaField<PropDoorRotatingSpawnPos_t> __m_eSpawnPosition = new("CPropDoorRotating", "m_eSpawnPosition");
 	[SchemaMember("CPropDoorRotating", "m_eSpawnPosition")]
-	public ref PropDoorRotatingSpawnPos_t SpawnPosition => ref Schema.GetRef<PropDoorRotatingSpawnPos_t>(this.Handle, "CPropDoorRotating", "m_eSpawnPosition");
+	public ref PropDoorRotatingSpawnPos_t SpawnPosition => ref __m_eSpawnPosition.GetRef(this.Handle);
 
 	// m_eOpenDirection
+	private static readonly SchemaField<PropDoorRotatingOpenDirection_e> __m_eOpenDirection = new("CPropDoorRotating", "m_eOpenDirection");
 	[SchemaMember("CPropDoorRotating", "m_eOpenDirection")]
-	public ref PropDoorRotatingOpenDirection_e OpenDirection => ref Schema.GetRef<PropDoorRotatingOpenDirection_e>(this.Handle, "CPropDoorRotating", "m_eOpenDirection");
+	public ref PropDoorRotatingOpenDirection_e OpenDirection => ref __m_eOpenDirection.GetRef(this.Handle);
 
 	// m_eCurrentOpenDirection
+	private static readonly SchemaField<PropDoorRotatingOpenDirection_e> __m_eCurrentOpenDirection = new("CPropDoorRotating", "m_eCurrentOpenDirection");
 	[SchemaMember("CPropDoorRotating", "m_eCurrentOpenDirection")]
-	public ref PropDoorRotatingOpenDirection_e CurrentOpenDirection => ref Schema.GetRef<PropDoorRotatingOpenDirection_e>(this.Handle, "CPropDoorRotating", "m_eCurrentOpenDirection");
+	public ref PropDoorRotatingOpenDirection_e CurrentOpenDirection => ref __m_eCurrentOpenDirection.GetRef(this.Handle);
 
 	// m_eDefaultCheckDirection
+	private static readonly SchemaField<doorCheck_e> __m_eDefaultCheckDirection = new("CPropDoorRotating", "m_eDefaultCheckDirection");
 	[SchemaMember("CPropDoorRotating", "m_eDefaultCheckDirection")]
-	public ref doorCheck_e DefaultCheckDirection => ref Schema.GetRef<doorCheck_e>(this.Handle, "CPropDoorRotating", "m_eDefaultCheckDirection");
+	public ref doorCheck_e DefaultCheckDirection => ref __m_eDefaultCheckDirection.GetRef(this.Handle);
 
 	// m_flAjarAngle
+	private static readonly SchemaField<float> __m_flAjarAngle = new("CPropDoorRotating", "m_flAjarAngle");
 	[SchemaMember("CPropDoorRotating", "m_flAjarAngle")]
-	public ref float AjarAngle => ref Schema.GetRef<float>(this.Handle, "CPropDoorRotating", "m_flAjarAngle");
+	public ref float AjarAngle => ref __m_flAjarAngle.GetRef(this.Handle);
 
 	// m_angRotationAjarDeprecated
 	[SchemaMember("CPropDoorRotating", "m_angRotationAjarDeprecated")]
@@ -83,8 +89,9 @@ public partial class CPropDoorRotating : CBasePropDoor
 	public Vector BackBoundsMax => Schema.GetDeclaredClass<Vector>(this.Handle, "CPropDoorRotating", "m_vecBackBoundsMax");
 
 	// m_bAjarDoorShouldntAlwaysOpen
+	private static readonly SchemaField<bool> __m_bAjarDoorShouldntAlwaysOpen = new("CPropDoorRotating", "m_bAjarDoorShouldntAlwaysOpen");
 	[SchemaMember("CPropDoorRotating", "m_bAjarDoorShouldntAlwaysOpen")]
-	public ref bool AjarDoorShouldntAlwaysOpen => ref Schema.GetRef<bool>(this.Handle, "CPropDoorRotating", "m_bAjarDoorShouldntAlwaysOpen");
+	public ref bool AjarDoorShouldntAlwaysOpen => ref __m_bAjarDoorShouldntAlwaysOpen.GetRef(this.Handle);
 
 	// m_hEntityBlocker
 	[SchemaMember("CPropDoorRotating", "m_hEntityBlocker")]

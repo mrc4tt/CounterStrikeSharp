@@ -19,55 +19,68 @@ public partial class CSPerRoundStats_t : NativeObject
     public CSPerRoundStats_t (IntPtr pointer) : base(pointer) {}
 
 	// m_iKills
+	private static readonly SchemaField<Int32> __m_iKills = new("CSPerRoundStats_t", "m_iKills");
 	[SchemaMember("CSPerRoundStats_t", "m_iKills")]
-	public ref Int32 Kills => ref Schema.GetRef<Int32>(this.Handle, "CSPerRoundStats_t", "m_iKills");
+	public ref Int32 Kills => ref __m_iKills.GetRef(this.Handle);
 
 	// m_iDeaths
+	private static readonly SchemaField<Int32> __m_iDeaths = new("CSPerRoundStats_t", "m_iDeaths");
 	[SchemaMember("CSPerRoundStats_t", "m_iDeaths")]
-	public ref Int32 Deaths => ref Schema.GetRef<Int32>(this.Handle, "CSPerRoundStats_t", "m_iDeaths");
+	public ref Int32 Deaths => ref __m_iDeaths.GetRef(this.Handle);
 
 	// m_iAssists
+	private static readonly SchemaField<Int32> __m_iAssists = new("CSPerRoundStats_t", "m_iAssists");
 	[SchemaMember("CSPerRoundStats_t", "m_iAssists")]
-	public ref Int32 Assists => ref Schema.GetRef<Int32>(this.Handle, "CSPerRoundStats_t", "m_iAssists");
+	public ref Int32 Assists => ref __m_iAssists.GetRef(this.Handle);
 
 	// m_iDamage
+	private static readonly SchemaField<Int32> __m_iDamage = new("CSPerRoundStats_t", "m_iDamage");
 	[SchemaMember("CSPerRoundStats_t", "m_iDamage")]
-	public ref Int32 Damage => ref Schema.GetRef<Int32>(this.Handle, "CSPerRoundStats_t", "m_iDamage");
+	public ref Int32 Damage => ref __m_iDamage.GetRef(this.Handle);
 
 	// m_iEquipmentValue
+	private static readonly SchemaField<Int32> __m_iEquipmentValue = new("CSPerRoundStats_t", "m_iEquipmentValue");
 	[SchemaMember("CSPerRoundStats_t", "m_iEquipmentValue")]
-	public ref Int32 EquipmentValue => ref Schema.GetRef<Int32>(this.Handle, "CSPerRoundStats_t", "m_iEquipmentValue");
+	public ref Int32 EquipmentValue => ref __m_iEquipmentValue.GetRef(this.Handle);
 
 	// m_iMoneySaved
+	private static readonly SchemaField<Int32> __m_iMoneySaved = new("CSPerRoundStats_t", "m_iMoneySaved");
 	[SchemaMember("CSPerRoundStats_t", "m_iMoneySaved")]
-	public ref Int32 MoneySaved => ref Schema.GetRef<Int32>(this.Handle, "CSPerRoundStats_t", "m_iMoneySaved");
+	public ref Int32 MoneySaved => ref __m_iMoneySaved.GetRef(this.Handle);
 
 	// m_iKillReward
+	private static readonly SchemaField<Int32> __m_iKillReward = new("CSPerRoundStats_t", "m_iKillReward");
 	[SchemaMember("CSPerRoundStats_t", "m_iKillReward")]
-	public ref Int32 KillReward => ref Schema.GetRef<Int32>(this.Handle, "CSPerRoundStats_t", "m_iKillReward");
+	public ref Int32 KillReward => ref __m_iKillReward.GetRef(this.Handle);
 
 	// m_iLiveTime
+	private static readonly SchemaField<Int32> __m_iLiveTime = new("CSPerRoundStats_t", "m_iLiveTime");
 	[SchemaMember("CSPerRoundStats_t", "m_iLiveTime")]
-	public ref Int32 LiveTime => ref Schema.GetRef<Int32>(this.Handle, "CSPerRoundStats_t", "m_iLiveTime");
+	public ref Int32 LiveTime => ref __m_iLiveTime.GetRef(this.Handle);
 
 	// m_iHeadShotKills
+	private static readonly SchemaField<Int32> __m_iHeadShotKills = new("CSPerRoundStats_t", "m_iHeadShotKills");
 	[SchemaMember("CSPerRoundStats_t", "m_iHeadShotKills")]
-	public ref Int32 HeadShotKills => ref Schema.GetRef<Int32>(this.Handle, "CSPerRoundStats_t", "m_iHeadShotKills");
+	public ref Int32 HeadShotKills => ref __m_iHeadShotKills.GetRef(this.Handle);
 
 	// m_iObjective
+	private static readonly SchemaField<Int32> __m_iObjective = new("CSPerRoundStats_t", "m_iObjective");
 	[SchemaMember("CSPerRoundStats_t", "m_iObjective")]
-	public ref Int32 Objective => ref Schema.GetRef<Int32>(this.Handle, "CSPerRoundStats_t", "m_iObjective");
+	public ref Int32 Objective => ref __m_iObjective.GetRef(this.Handle);
 
 	// m_iCashEarned
+	private static readonly SchemaField<Int32> __m_iCashEarned = new("CSPerRoundStats_t", "m_iCashEarned");
 	[SchemaMember("CSPerRoundStats_t", "m_iCashEarned")]
-	public ref Int32 CashEarned => ref Schema.GetRef<Int32>(this.Handle, "CSPerRoundStats_t", "m_iCashEarned");
+	public ref Int32 CashEarned => ref __m_iCashEarned.GetRef(this.Handle);
 
 	// m_iUtilityDamage
+	private static readonly SchemaField<Int32> __m_iUtilityDamage = new("CSPerRoundStats_t", "m_iUtilityDamage");
 	[SchemaMember("CSPerRoundStats_t", "m_iUtilityDamage")]
-	public ref Int32 UtilityDamage => ref Schema.GetRef<Int32>(this.Handle, "CSPerRoundStats_t", "m_iUtilityDamage");
+	public ref Int32 UtilityDamage => ref __m_iUtilityDamage.GetRef(this.Handle);
 
 	// m_iEnemiesFlashed
+	private static readonly SchemaField<Int32> __m_iEnemiesFlashed = new("CSPerRoundStats_t", "m_iEnemiesFlashed");
 	[SchemaMember("CSPerRoundStats_t", "m_iEnemiesFlashed")]
-	public ref Int32 EnemiesFlashed => ref Schema.GetRef<Int32>(this.Handle, "CSPerRoundStats_t", "m_iEnemiesFlashed");
+	public ref Int32 EnemiesFlashed => ref __m_iEnemiesFlashed.GetRef(this.Handle);
 
 }

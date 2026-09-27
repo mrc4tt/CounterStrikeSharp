@@ -31,11 +31,13 @@ public partial class CTriggerProximity : CBaseTrigger
 	}
 
 	// m_fRadius
+	private static readonly SchemaField<float> __m_fRadius = new("CTriggerProximity", "m_fRadius");
 	[SchemaMember("CTriggerProximity", "m_fRadius")]
-	public ref float Radius => ref Schema.GetRef<float>(this.Handle, "CTriggerProximity", "m_fRadius");
+	public ref float Radius => ref __m_fRadius.GetRef(this.Handle);
 
 	// m_nTouchers
+	private static readonly SchemaField<Int32> __m_nTouchers = new("CTriggerProximity", "m_nTouchers");
 	[SchemaMember("CTriggerProximity", "m_nTouchers")]
-	public ref Int32 Touchers => ref Schema.GetRef<Int32>(this.Handle, "CTriggerProximity", "m_nTouchers");
+	public ref Int32 Touchers => ref __m_nTouchers.GetRef(this.Handle);
 
 }

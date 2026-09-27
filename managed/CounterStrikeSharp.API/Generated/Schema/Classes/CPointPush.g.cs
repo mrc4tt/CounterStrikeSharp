@@ -19,24 +19,29 @@ public partial class CPointPush : CPointEntity
     public CPointPush (IntPtr pointer) : base(pointer) {}
 
 	// m_bEnabled
+	private static readonly SchemaField<bool> __m_bEnabled = new("CPointPush", "m_bEnabled");
 	[SchemaMember("CPointPush", "m_bEnabled")]
-	public ref bool Enabled => ref Schema.GetRef<bool>(this.Handle, "CPointPush", "m_bEnabled");
+	public ref bool Enabled => ref __m_bEnabled.GetRef(this.Handle);
 
 	// m_flMagnitude
+	private static readonly SchemaField<float> __m_flMagnitude = new("CPointPush", "m_flMagnitude");
 	[SchemaMember("CPointPush", "m_flMagnitude")]
-	public ref float Magnitude => ref Schema.GetRef<float>(this.Handle, "CPointPush", "m_flMagnitude");
+	public ref float Magnitude => ref __m_flMagnitude.GetRef(this.Handle);
 
 	// m_flRadius
+	private static readonly SchemaField<float> __m_flRadius = new("CPointPush", "m_flRadius");
 	[SchemaMember("CPointPush", "m_flRadius")]
-	public ref float Radius => ref Schema.GetRef<float>(this.Handle, "CPointPush", "m_flRadius");
+	public ref float Radius => ref __m_flRadius.GetRef(this.Handle);
 
 	// m_flInnerRadius
+	private static readonly SchemaField<float> __m_flInnerRadius = new("CPointPush", "m_flInnerRadius");
 	[SchemaMember("CPointPush", "m_flInnerRadius")]
-	public ref float InnerRadius => ref Schema.GetRef<float>(this.Handle, "CPointPush", "m_flInnerRadius");
+	public ref float InnerRadius => ref __m_flInnerRadius.GetRef(this.Handle);
 
 	// m_flConeOfInfluence
+	private static readonly SchemaField<float> __m_flConeOfInfluence = new("CPointPush", "m_flConeOfInfluence");
 	[SchemaMember("CPointPush", "m_flConeOfInfluence")]
-	public ref float ConeOfInfluence => ref Schema.GetRef<float>(this.Handle, "CPointPush", "m_flConeOfInfluence");
+	public ref float ConeOfInfluence => ref __m_flConeOfInfluence.GetRef(this.Handle);
 
 	// m_iszFilterName
 	[SchemaMember("CPointPush", "m_iszFilterName")]

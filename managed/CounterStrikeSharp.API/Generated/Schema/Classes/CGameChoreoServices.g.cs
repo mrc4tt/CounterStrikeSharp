@@ -27,7 +27,8 @@ public partial class CGameChoreoServices : IChoreoServices
 	public CHandle<CScriptedSequence> ScriptedSequence => Schema.GetDeclaredClass<CHandle<CScriptedSequence>>(this.Handle, "CGameChoreoServices", "m_hScriptedSequence");
 
 	// m_flTimeStartedState
+	private static readonly SchemaField<float> __m_flTimeStartedState = new("CGameChoreoServices", "m_flTimeStartedState");
 	[SchemaMember("CGameChoreoServices", "m_flTimeStartedState")]
-	public ref float TimeStartedState => ref Schema.GetRef<float>(this.Handle, "CGameChoreoServices", "m_flTimeStartedState");
+	public ref float TimeStartedState => ref __m_flTimeStartedState.GetRef(this.Handle);
 
 }

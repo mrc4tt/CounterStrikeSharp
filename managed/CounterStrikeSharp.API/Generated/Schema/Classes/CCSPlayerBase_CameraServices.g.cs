@@ -19,20 +19,24 @@ public partial class CCSPlayerBase_CameraServices : CPlayer_CameraServices
     public CCSPlayerBase_CameraServices (IntPtr pointer) : base(pointer) {}
 
 	// m_iFOV
+	private static readonly SchemaField<UInt32> __m_iFOV = new("CCSPlayerBase_CameraServices", "m_iFOV");
 	[SchemaMember("CCSPlayerBase_CameraServices", "m_iFOV")]
-	public ref UInt32 FOV => ref Schema.GetRef<UInt32>(this.Handle, "CCSPlayerBase_CameraServices", "m_iFOV");
+	public ref UInt32 FOV => ref __m_iFOV.GetRef(this.Handle);
 
 	// m_iFOVStart
+	private static readonly SchemaField<UInt32> __m_iFOVStart = new("CCSPlayerBase_CameraServices", "m_iFOVStart");
 	[SchemaMember("CCSPlayerBase_CameraServices", "m_iFOVStart")]
-	public ref UInt32 FOVStart => ref Schema.GetRef<UInt32>(this.Handle, "CCSPlayerBase_CameraServices", "m_iFOVStart");
+	public ref UInt32 FOVStart => ref __m_iFOVStart.GetRef(this.Handle);
 
 	// m_flFOVTime
+	private static readonly SchemaField<float> __m_flFOVTime = new("CCSPlayerBase_CameraServices", "m_flFOVTime");
 	[SchemaMember("CCSPlayerBase_CameraServices", "m_flFOVTime")]
-	public ref float FOVTime => ref Schema.GetRef<float>(this.Handle, "CCSPlayerBase_CameraServices", "m_flFOVTime");
+	public ref float FOVTime => ref __m_flFOVTime.GetRef(this.Handle);
 
 	// m_flFOVRate
+	private static readonly SchemaField<float> __m_flFOVRate = new("CCSPlayerBase_CameraServices", "m_flFOVRate");
 	[SchemaMember("CCSPlayerBase_CameraServices", "m_flFOVRate")]
-	public ref float FOVRate => ref Schema.GetRef<float>(this.Handle, "CCSPlayerBase_CameraServices", "m_flFOVRate");
+	public ref float FOVRate => ref __m_flFOVRate.GetRef(this.Handle);
 
 	// m_hZoomOwner
 	[SchemaMember("CCSPlayerBase_CameraServices", "m_hZoomOwner")]

@@ -35,7 +35,8 @@ public partial class locksound_t : NativeObject
 	}
 
 	// flwaitSound
+	private static readonly SchemaField<float> __flwaitSound = new("locksound_t", "flwaitSound");
 	[SchemaMember("locksound_t", "flwaitSound")]
-	public ref float FlwaitSound => ref Schema.GetRef<float>(this.Handle, "locksound_t", "flwaitSound");
+	public ref float FlwaitSound => ref __flwaitSound.GetRef(this.Handle);
 
 }

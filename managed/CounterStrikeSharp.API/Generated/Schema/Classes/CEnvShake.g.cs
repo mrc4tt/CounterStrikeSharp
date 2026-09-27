@@ -27,32 +27,39 @@ public partial class CEnvShake : CPointEntity
 	}
 
 	// m_Amplitude
+	private static readonly SchemaField<float> __m_Amplitude = new("CEnvShake", "m_Amplitude");
 	[SchemaMember("CEnvShake", "m_Amplitude")]
-	public ref float Amplitude => ref Schema.GetRef<float>(this.Handle, "CEnvShake", "m_Amplitude");
+	public ref float Amplitude => ref __m_Amplitude.GetRef(this.Handle);
 
 	// m_Frequency
+	private static readonly SchemaField<float> __m_Frequency = new("CEnvShake", "m_Frequency");
 	[SchemaMember("CEnvShake", "m_Frequency")]
-	public ref float Frequency => ref Schema.GetRef<float>(this.Handle, "CEnvShake", "m_Frequency");
+	public ref float Frequency => ref __m_Frequency.GetRef(this.Handle);
 
 	// m_Duration
+	private static readonly SchemaField<float> __m_Duration = new("CEnvShake", "m_Duration");
 	[SchemaMember("CEnvShake", "m_Duration")]
-	public ref float Duration => ref Schema.GetRef<float>(this.Handle, "CEnvShake", "m_Duration");
+	public ref float Duration => ref __m_Duration.GetRef(this.Handle);
 
 	// m_Radius
+	private static readonly SchemaField<float> __m_Radius = new("CEnvShake", "m_Radius");
 	[SchemaMember("CEnvShake", "m_Radius")]
-	public ref float Radius => ref Schema.GetRef<float>(this.Handle, "CEnvShake", "m_Radius");
+	public ref float Radius => ref __m_Radius.GetRef(this.Handle);
 
 	// m_stopTime
+	private static readonly SchemaField<float> __m_stopTime = new("CEnvShake", "m_stopTime");
 	[SchemaMember("CEnvShake", "m_stopTime")]
-	public ref float StopTime => ref Schema.GetRef<float>(this.Handle, "CEnvShake", "m_stopTime");
+	public ref float StopTime => ref __m_stopTime.GetRef(this.Handle);
 
 	// m_nextShake
+	private static readonly SchemaField<float> __m_nextShake = new("CEnvShake", "m_nextShake");
 	[SchemaMember("CEnvShake", "m_nextShake")]
-	public ref float NextShake => ref Schema.GetRef<float>(this.Handle, "CEnvShake", "m_nextShake");
+	public ref float NextShake => ref __m_nextShake.GetRef(this.Handle);
 
 	// m_currentAmp
+	private static readonly SchemaField<float> __m_currentAmp = new("CEnvShake", "m_currentAmp");
 	[SchemaMember("CEnvShake", "m_currentAmp")]
-	public ref float CurrentAmp => ref Schema.GetRef<float>(this.Handle, "CEnvShake", "m_currentAmp");
+	public ref float CurrentAmp => ref __m_currentAmp.GetRef(this.Handle);
 
 	// m_maxForce
 	[SchemaMember("CEnvShake", "m_maxForce")]

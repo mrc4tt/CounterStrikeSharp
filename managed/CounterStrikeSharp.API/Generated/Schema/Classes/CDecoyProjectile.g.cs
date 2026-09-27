@@ -19,19 +19,23 @@ public partial class CDecoyProjectile : CBaseCSGrenadeProjectile
     public CDecoyProjectile (IntPtr pointer) : base(pointer) {}
 
 	// m_nDecoyShotTick
+	private static readonly SchemaField<Int32> __m_nDecoyShotTick = new("CDecoyProjectile", "m_nDecoyShotTick");
 	[SchemaMember("CDecoyProjectile", "m_nDecoyShotTick")]
-	public ref Int32 DecoyShotTick => ref Schema.GetRef<Int32>(this.Handle, "CDecoyProjectile", "m_nDecoyShotTick");
+	public ref Int32 DecoyShotTick => ref __m_nDecoyShotTick.GetRef(this.Handle);
 
 	// m_shotsRemaining
+	private static readonly SchemaField<Int32> __m_shotsRemaining = new("CDecoyProjectile", "m_shotsRemaining");
 	[SchemaMember("CDecoyProjectile", "m_shotsRemaining")]
-	public ref Int32 ShotsRemaining => ref Schema.GetRef<Int32>(this.Handle, "CDecoyProjectile", "m_shotsRemaining");
+	public ref Int32 ShotsRemaining => ref __m_shotsRemaining.GetRef(this.Handle);
 
 	// m_fExpireTime
+	private static readonly SchemaField<float> __m_fExpireTime = new("CDecoyProjectile", "m_fExpireTime");
 	[SchemaMember("CDecoyProjectile", "m_fExpireTime")]
-	public ref float ExpireTime => ref Schema.GetRef<float>(this.Handle, "CDecoyProjectile", "m_fExpireTime");
+	public ref float ExpireTime => ref __m_fExpireTime.GetRef(this.Handle);
 
 	// m_decoyWeaponDefIndex
+	private static readonly SchemaField<UInt16> __m_decoyWeaponDefIndex = new("CDecoyProjectile", "m_decoyWeaponDefIndex");
 	[SchemaMember("CDecoyProjectile", "m_decoyWeaponDefIndex")]
-	public ref UInt16 DecoyWeaponDefIndex => ref Schema.GetRef<UInt16>(this.Handle, "CDecoyProjectile", "m_decoyWeaponDefIndex");
+	public ref UInt16 DecoyWeaponDefIndex => ref __m_decoyWeaponDefIndex.GetRef(this.Handle);
 
 }

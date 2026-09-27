@@ -19,7 +19,8 @@ public partial class CPointCameraVFOV : CPointCamera
     public CPointCameraVFOV (IntPtr pointer) : base(pointer) {}
 
 	// m_flVerticalFOV
+	private static readonly SchemaField<float> __m_flVerticalFOV = new("CPointCameraVFOV", "m_flVerticalFOV");
 	[SchemaMember("CPointCameraVFOV", "m_flVerticalFOV")]
-	public ref float VerticalFOV => ref Schema.GetRef<float>(this.Handle, "CPointCameraVFOV", "m_flVerticalFOV");
+	public ref float VerticalFOV => ref __m_flVerticalFOV.GetRef(this.Handle);
 
 }

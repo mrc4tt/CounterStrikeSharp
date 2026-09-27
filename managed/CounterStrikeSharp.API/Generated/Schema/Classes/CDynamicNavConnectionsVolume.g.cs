@@ -39,19 +39,23 @@ public partial class CDynamicNavConnectionsVolume : CTriggerMultiple
 	}
 
 	// m_bConnectionsEnabled
+	private static readonly SchemaField<bool> __m_bConnectionsEnabled = new("CDynamicNavConnectionsVolume", "m_bConnectionsEnabled");
 	[SchemaMember("CDynamicNavConnectionsVolume", "m_bConnectionsEnabled")]
-	public ref bool ConnectionsEnabled => ref Schema.GetRef<bool>(this.Handle, "CDynamicNavConnectionsVolume", "m_bConnectionsEnabled");
+	public ref bool ConnectionsEnabled => ref __m_bConnectionsEnabled.GetRef(this.Handle);
 
 	// m_flTargetAreaSearchRadius
+	private static readonly SchemaField<float> __m_flTargetAreaSearchRadius = new("CDynamicNavConnectionsVolume", "m_flTargetAreaSearchRadius");
 	[SchemaMember("CDynamicNavConnectionsVolume", "m_flTargetAreaSearchRadius")]
-	public ref float TargetAreaSearchRadius => ref Schema.GetRef<float>(this.Handle, "CDynamicNavConnectionsVolume", "m_flTargetAreaSearchRadius");
+	public ref float TargetAreaSearchRadius => ref __m_flTargetAreaSearchRadius.GetRef(this.Handle);
 
 	// m_flUpdateDistance
+	private static readonly SchemaField<float> __m_flUpdateDistance = new("CDynamicNavConnectionsVolume", "m_flUpdateDistance");
 	[SchemaMember("CDynamicNavConnectionsVolume", "m_flUpdateDistance")]
-	public ref float UpdateDistance => ref Schema.GetRef<float>(this.Handle, "CDynamicNavConnectionsVolume", "m_flUpdateDistance");
+	public ref float UpdateDistance => ref __m_flUpdateDistance.GetRef(this.Handle);
 
 	// m_flMaxConnectionDistance
+	private static readonly SchemaField<float> __m_flMaxConnectionDistance = new("CDynamicNavConnectionsVolume", "m_flMaxConnectionDistance");
 	[SchemaMember("CDynamicNavConnectionsVolume", "m_flMaxConnectionDistance")]
-	public ref float MaxConnectionDistance => ref Schema.GetRef<float>(this.Handle, "CDynamicNavConnectionsVolume", "m_flMaxConnectionDistance");
+	public ref float MaxConnectionDistance => ref __m_flMaxConnectionDistance.GetRef(this.Handle);
 
 }

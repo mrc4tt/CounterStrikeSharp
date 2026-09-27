@@ -31,32 +31,38 @@ public partial class CSkyCameraVolume : CBaseEntity
 	public new CHandle<CSkyCameraVolumeTarget> Target => Schema.GetDeclaredClass<CHandle<CSkyCameraVolumeTarget>>(this.Handle, "CSkyCameraVolume", "m_hTarget");
 
 	// m_nPriority
+	private static readonly SchemaField<Int32> __m_nPriority = new("CSkyCameraVolume", "m_nPriority");
 	[SchemaMember("CSkyCameraVolume", "m_nPriority")]
-	public ref Int32 Priority => ref Schema.GetRef<Int32>(this.Handle, "CSkyCameraVolume", "m_nPriority");
+	public ref Int32 Priority => ref __m_nPriority.GetRef(this.Handle);
 
 	// m_bIsEnabled
+	private static readonly SchemaField<bool> __m_bIsEnabled = new("CSkyCameraVolume", "m_bIsEnabled");
 	[SchemaMember("CSkyCameraVolume", "m_bIsEnabled")]
-	public ref bool IsEnabled => ref Schema.GetRef<bool>(this.Handle, "CSkyCameraVolume", "m_bIsEnabled");
+	public ref bool IsEnabled => ref __m_bIsEnabled.GetRef(this.Handle);
 
 	// m_bSkyboxBlurEffect
+	private static readonly SchemaField<bool> __m_bSkyboxBlurEffect = new("CSkyCameraVolume", "m_bSkyboxBlurEffect");
 	[SchemaMember("CSkyCameraVolume", "m_bSkyboxBlurEffect")]
-	public ref bool SkyboxBlurEffect => ref Schema.GetRef<bool>(this.Handle, "CSkyCameraVolume", "m_bSkyboxBlurEffect");
+	public ref bool SkyboxBlurEffect => ref __m_bSkyboxBlurEffect.GetRef(this.Handle);
 
 	// m_vBlurOrigin
 	[SchemaMember("CSkyCameraVolume", "m_vBlurOrigin")]
 	public Vector BlurOrigin => Schema.GetDeclaredClass<Vector>(this.Handle, "CSkyCameraVolume", "m_vBlurOrigin");
 
 	// m_bSkyboxReceivesWorldCsm
+	private static readonly SchemaField<bool> __m_bSkyboxReceivesWorldCsm = new("CSkyCameraVolume", "m_bSkyboxReceivesWorldCsm");
 	[SchemaMember("CSkyCameraVolume", "m_bSkyboxReceivesWorldCsm")]
-	public ref bool SkyboxReceivesWorldCsm => ref Schema.GetRef<bool>(this.Handle, "CSkyCameraVolume", "m_bSkyboxReceivesWorldCsm");
+	public ref bool SkyboxReceivesWorldCsm => ref __m_bSkyboxReceivesWorldCsm.GetRef(this.Handle);
 
 	// m_bWorldReceivesSkyboxCsm
+	private static readonly SchemaField<bool> __m_bWorldReceivesSkyboxCsm = new("CSkyCameraVolume", "m_bWorldReceivesSkyboxCsm");
 	[SchemaMember("CSkyCameraVolume", "m_bWorldReceivesSkyboxCsm")]
-	public ref bool WorldReceivesSkyboxCsm => ref Schema.GetRef<bool>(this.Handle, "CSkyCameraVolume", "m_bWorldReceivesSkyboxCsm");
+	public ref bool WorldReceivesSkyboxCsm => ref __m_bWorldReceivesSkyboxCsm.GetRef(this.Handle);
 
 	// m_bStartDisabled
+	private static readonly SchemaField<bool> __m_bStartDisabled = new("CSkyCameraVolume", "m_bStartDisabled");
 	[SchemaMember("CSkyCameraVolume", "m_bStartDisabled")]
-	public ref bool StartDisabled => ref Schema.GetRef<bool>(this.Handle, "CSkyCameraVolume", "m_bStartDisabled");
+	public ref bool StartDisabled => ref __m_bStartDisabled.GetRef(this.Handle);
 
 	// m_iszTargetName
 	[SchemaMember("CSkyCameraVolume", "m_iszTargetName")]

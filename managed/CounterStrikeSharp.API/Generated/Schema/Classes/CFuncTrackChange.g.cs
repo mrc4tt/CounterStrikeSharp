@@ -55,15 +55,18 @@ public partial class CFuncTrackChange : CFuncPlatRot
 	}
 
 	// m_code
+	private static readonly SchemaField<TRAIN_CODE> __m_code = new("CFuncTrackChange", "m_code");
 	[SchemaMember("CFuncTrackChange", "m_code")]
-	public ref TRAIN_CODE Code => ref Schema.GetRef<TRAIN_CODE>(this.Handle, "CFuncTrackChange", "m_code");
+	public ref TRAIN_CODE Code => ref __m_code.GetRef(this.Handle);
 
 	// m_targetState
+	private static readonly SchemaField<Int32> __m_targetState = new("CFuncTrackChange", "m_targetState");
 	[SchemaMember("CFuncTrackChange", "m_targetState")]
-	public ref Int32 TargetState => ref Schema.GetRef<Int32>(this.Handle, "CFuncTrackChange", "m_targetState");
+	public ref Int32 TargetState => ref __m_targetState.GetRef(this.Handle);
 
 	// m_use
+	private static readonly SchemaField<Int32> __m_use = new("CFuncTrackChange", "m_use");
 	[SchemaMember("CFuncTrackChange", "m_use")]
-	public ref Int32 Use => ref Schema.GetRef<Int32>(this.Handle, "CFuncTrackChange", "m_use");
+	public ref Int32 Use => ref __m_use.GetRef(this.Handle);
 
 }

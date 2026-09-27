@@ -19,39 +19,48 @@ public partial class CRagdollConstraint : CPhysConstraint
     public CRagdollConstraint (IntPtr pointer) : base(pointer) {}
 
 	// m_xmin
+	private static readonly SchemaField<float> __m_xmin = new("CRagdollConstraint", "m_xmin");
 	[SchemaMember("CRagdollConstraint", "m_xmin")]
-	public ref float Xmin => ref Schema.GetRef<float>(this.Handle, "CRagdollConstraint", "m_xmin");
+	public ref float Xmin => ref __m_xmin.GetRef(this.Handle);
 
 	// m_xmax
+	private static readonly SchemaField<float> __m_xmax = new("CRagdollConstraint", "m_xmax");
 	[SchemaMember("CRagdollConstraint", "m_xmax")]
-	public ref float Xmax => ref Schema.GetRef<float>(this.Handle, "CRagdollConstraint", "m_xmax");
+	public ref float Xmax => ref __m_xmax.GetRef(this.Handle);
 
 	// m_ymin
+	private static readonly SchemaField<float> __m_ymin = new("CRagdollConstraint", "m_ymin");
 	[SchemaMember("CRagdollConstraint", "m_ymin")]
-	public ref float Ymin => ref Schema.GetRef<float>(this.Handle, "CRagdollConstraint", "m_ymin");
+	public ref float Ymin => ref __m_ymin.GetRef(this.Handle);
 
 	// m_ymax
+	private static readonly SchemaField<float> __m_ymax = new("CRagdollConstraint", "m_ymax");
 	[SchemaMember("CRagdollConstraint", "m_ymax")]
-	public ref float Ymax => ref Schema.GetRef<float>(this.Handle, "CRagdollConstraint", "m_ymax");
+	public ref float Ymax => ref __m_ymax.GetRef(this.Handle);
 
 	// m_zmin
+	private static readonly SchemaField<float> __m_zmin = new("CRagdollConstraint", "m_zmin");
 	[SchemaMember("CRagdollConstraint", "m_zmin")]
-	public ref float Zmin => ref Schema.GetRef<float>(this.Handle, "CRagdollConstraint", "m_zmin");
+	public ref float Zmin => ref __m_zmin.GetRef(this.Handle);
 
 	// m_zmax
+	private static readonly SchemaField<float> __m_zmax = new("CRagdollConstraint", "m_zmax");
 	[SchemaMember("CRagdollConstraint", "m_zmax")]
-	public ref float Zmax => ref Schema.GetRef<float>(this.Handle, "CRagdollConstraint", "m_zmax");
+	public ref float Zmax => ref __m_zmax.GetRef(this.Handle);
 
 	// m_xfriction
+	private static readonly SchemaField<float> __m_xfriction = new("CRagdollConstraint", "m_xfriction");
 	[SchemaMember("CRagdollConstraint", "m_xfriction")]
-	public ref float Xfriction => ref Schema.GetRef<float>(this.Handle, "CRagdollConstraint", "m_xfriction");
+	public ref float Xfriction => ref __m_xfriction.GetRef(this.Handle);
 
 	// m_yfriction
+	private static readonly SchemaField<float> __m_yfriction = new("CRagdollConstraint", "m_yfriction");
 	[SchemaMember("CRagdollConstraint", "m_yfriction")]
-	public ref float Yfriction => ref Schema.GetRef<float>(this.Handle, "CRagdollConstraint", "m_yfriction");
+	public ref float Yfriction => ref __m_yfriction.GetRef(this.Handle);
 
 	// m_zfriction
+	private static readonly SchemaField<float> __m_zfriction = new("CRagdollConstraint", "m_zfriction");
 	[SchemaMember("CRagdollConstraint", "m_zfriction")]
-	public ref float Zfriction => ref Schema.GetRef<float>(this.Handle, "CRagdollConstraint", "m_zfriction");
+	public ref float Zfriction => ref __m_zfriction.GetRef(this.Handle);
 
 }

@@ -19,16 +19,19 @@ public partial class CSmokeGrenadeProjectile : CBaseCSGrenadeProjectile
     public CSmokeGrenadeProjectile (IntPtr pointer) : base(pointer) {}
 
 	// m_nSmokeEffectTickBegin
+	private static readonly SchemaField<Int32> __m_nSmokeEffectTickBegin = new("CSmokeGrenadeProjectile", "m_nSmokeEffectTickBegin");
 	[SchemaMember("CSmokeGrenadeProjectile", "m_nSmokeEffectTickBegin")]
-	public ref Int32 SmokeEffectTickBegin => ref Schema.GetRef<Int32>(this.Handle, "CSmokeGrenadeProjectile", "m_nSmokeEffectTickBegin");
+	public ref Int32 SmokeEffectTickBegin => ref __m_nSmokeEffectTickBegin.GetRef(this.Handle);
 
 	// m_bDidSmokeEffect
+	private static readonly SchemaField<bool> __m_bDidSmokeEffect = new("CSmokeGrenadeProjectile", "m_bDidSmokeEffect");
 	[SchemaMember("CSmokeGrenadeProjectile", "m_bDidSmokeEffect")]
-	public ref bool DidSmokeEffect => ref Schema.GetRef<bool>(this.Handle, "CSmokeGrenadeProjectile", "m_bDidSmokeEffect");
+	public ref bool DidSmokeEffect => ref __m_bDidSmokeEffect.GetRef(this.Handle);
 
 	// m_nRandomSeed
+	private static readonly SchemaField<Int32> __m_nRandomSeed = new("CSmokeGrenadeProjectile", "m_nRandomSeed");
 	[SchemaMember("CSmokeGrenadeProjectile", "m_nRandomSeed")]
-	public ref Int32 RandomSeed => ref Schema.GetRef<Int32>(this.Handle, "CSmokeGrenadeProjectile", "m_nRandomSeed");
+	public ref Int32 RandomSeed => ref __m_nRandomSeed.GetRef(this.Handle);
 
 	// m_vSmokeColor
 	[SchemaMember("CSmokeGrenadeProjectile", "m_vSmokeColor")]
@@ -43,31 +46,38 @@ public partial class CSmokeGrenadeProjectile : CBaseCSGrenadeProjectile
 	public NetworkedVector<byte> VoxelFrameData => Schema.GetDeclaredClass<NetworkedVector<byte>>(this.Handle, "CSmokeGrenadeProjectile", "m_VoxelFrameData");
 
 	// m_nVoxelFrameDataSize
+	private static readonly SchemaField<Int32> __m_nVoxelFrameDataSize = new("CSmokeGrenadeProjectile", "m_nVoxelFrameDataSize");
 	[SchemaMember("CSmokeGrenadeProjectile", "m_nVoxelFrameDataSize")]
-	public ref Int32 VoxelFrameDataSize => ref Schema.GetRef<Int32>(this.Handle, "CSmokeGrenadeProjectile", "m_nVoxelFrameDataSize");
+	public ref Int32 VoxelFrameDataSize => ref __m_nVoxelFrameDataSize.GetRef(this.Handle);
 
 	// m_nVoxelUpdate
+	private static readonly SchemaField<Int32> __m_nVoxelUpdate = new("CSmokeGrenadeProjectile", "m_nVoxelUpdate");
 	[SchemaMember("CSmokeGrenadeProjectile", "m_nVoxelUpdate")]
-	public ref Int32 VoxelUpdate => ref Schema.GetRef<Int32>(this.Handle, "CSmokeGrenadeProjectile", "m_nVoxelUpdate");
+	public ref Int32 VoxelUpdate => ref __m_nVoxelUpdate.GetRef(this.Handle);
 
 	// m_nSmokeLightProbeRegen
+	private static readonly SchemaField<byte> __m_nSmokeLightProbeRegen = new("CSmokeGrenadeProjectile", "m_nSmokeLightProbeRegen");
 	[SchemaMember("CSmokeGrenadeProjectile", "m_nSmokeLightProbeRegen")]
-	public ref byte SmokeLightProbeRegen => ref Schema.GetRef<byte>(this.Handle, "CSmokeGrenadeProjectile", "m_nSmokeLightProbeRegen");
+	public ref byte SmokeLightProbeRegen => ref __m_nSmokeLightProbeRegen.GetRef(this.Handle);
 
 	// m_flLastBounce
+	private static readonly SchemaField<float> __m_flLastBounce = new("CSmokeGrenadeProjectile", "m_flLastBounce");
 	[SchemaMember("CSmokeGrenadeProjectile", "m_flLastBounce")]
-	public ref float LastBounce => ref Schema.GetRef<float>(this.Handle, "CSmokeGrenadeProjectile", "m_flLastBounce");
+	public ref float LastBounce => ref __m_flLastBounce.GetRef(this.Handle);
 
 	// m_fllastSimulationTime
+	private static readonly SchemaField<float> __m_fllastSimulationTime = new("CSmokeGrenadeProjectile", "m_fllastSimulationTime");
 	[SchemaMember("CSmokeGrenadeProjectile", "m_fllastSimulationTime")]
-	public ref float FllastSimulationTime => ref Schema.GetRef<float>(this.Handle, "CSmokeGrenadeProjectile", "m_fllastSimulationTime");
+	public ref float FllastSimulationTime => ref __m_fllastSimulationTime.GetRef(this.Handle);
 
 	// m_bExplodeFromInferno
+	private static readonly SchemaField<bool> __m_bExplodeFromInferno = new("CSmokeGrenadeProjectile", "m_bExplodeFromInferno");
 	[SchemaMember("CSmokeGrenadeProjectile", "m_bExplodeFromInferno")]
-	public ref bool ExplodeFromInferno => ref Schema.GetRef<bool>(this.Handle, "CSmokeGrenadeProjectile", "m_bExplodeFromInferno");
+	public ref bool ExplodeFromInferno => ref __m_bExplodeFromInferno.GetRef(this.Handle);
 
 	// m_bDidGroundScorch
+	private static readonly SchemaField<bool> __m_bDidGroundScorch = new("CSmokeGrenadeProjectile", "m_bDidGroundScorch");
 	[SchemaMember("CSmokeGrenadeProjectile", "m_bDidGroundScorch")]
-	public ref bool DidGroundScorch => ref Schema.GetRef<bool>(this.Handle, "CSmokeGrenadeProjectile", "m_bDidGroundScorch");
+	public ref bool DidGroundScorch => ref __m_bDidGroundScorch.GetRef(this.Handle);
 
 }

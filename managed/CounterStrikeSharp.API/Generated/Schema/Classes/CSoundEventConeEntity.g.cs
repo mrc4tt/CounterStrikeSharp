@@ -19,20 +19,24 @@ public partial class CSoundEventConeEntity : CSoundEventEntity
     public CSoundEventConeEntity (IntPtr pointer) : base(pointer) {}
 
 	// m_flEmitterAngle
+	private static readonly SchemaField<float> __m_flEmitterAngle = new("CSoundEventConeEntity", "m_flEmitterAngle");
 	[SchemaMember("CSoundEventConeEntity", "m_flEmitterAngle")]
-	public ref float EmitterAngle => ref Schema.GetRef<float>(this.Handle, "CSoundEventConeEntity", "m_flEmitterAngle");
+	public ref float EmitterAngle => ref __m_flEmitterAngle.GetRef(this.Handle);
 
 	// m_flSweetSpotAngle
+	private static readonly SchemaField<float> __m_flSweetSpotAngle = new("CSoundEventConeEntity", "m_flSweetSpotAngle");
 	[SchemaMember("CSoundEventConeEntity", "m_flSweetSpotAngle")]
-	public ref float SweetSpotAngle => ref Schema.GetRef<float>(this.Handle, "CSoundEventConeEntity", "m_flSweetSpotAngle");
+	public ref float SweetSpotAngle => ref __m_flSweetSpotAngle.GetRef(this.Handle);
 
 	// m_flAttenMin
+	private static readonly SchemaField<float> __m_flAttenMin = new("CSoundEventConeEntity", "m_flAttenMin");
 	[SchemaMember("CSoundEventConeEntity", "m_flAttenMin")]
-	public ref float AttenMin => ref Schema.GetRef<float>(this.Handle, "CSoundEventConeEntity", "m_flAttenMin");
+	public ref float AttenMin => ref __m_flAttenMin.GetRef(this.Handle);
 
 	// m_flAttenMax
+	private static readonly SchemaField<float> __m_flAttenMax = new("CSoundEventConeEntity", "m_flAttenMax");
 	[SchemaMember("CSoundEventConeEntity", "m_flAttenMax")]
-	public ref float AttenMax => ref Schema.GetRef<float>(this.Handle, "CSoundEventConeEntity", "m_flAttenMax");
+	public ref float AttenMax => ref __m_flAttenMax.GetRef(this.Handle);
 
 	// m_iszParameterName
 	[SchemaMember("CSoundEventConeEntity", "m_iszParameterName")]

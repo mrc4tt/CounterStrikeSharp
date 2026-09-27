@@ -43,40 +43,49 @@ public partial class CPointWorldText : CModelPointEntity
 	}
 
 	// m_bEnabled
+	private static readonly SchemaField<bool> __m_bEnabled = new("CPointWorldText", "m_bEnabled");
 	[SchemaMember("CPointWorldText", "m_bEnabled")]
-	public ref bool Enabled => ref Schema.GetRef<bool>(this.Handle, "CPointWorldText", "m_bEnabled");
+	public ref bool Enabled => ref __m_bEnabled.GetRef(this.Handle);
 
 	// m_bFullbright
+	private static readonly SchemaField<bool> __m_bFullbright = new("CPointWorldText", "m_bFullbright");
 	[SchemaMember("CPointWorldText", "m_bFullbright")]
-	public ref bool Fullbright => ref Schema.GetRef<bool>(this.Handle, "CPointWorldText", "m_bFullbright");
+	public ref bool Fullbright => ref __m_bFullbright.GetRef(this.Handle);
 
 	// m_flWorldUnitsPerPx
+	private static readonly SchemaField<float> __m_flWorldUnitsPerPx = new("CPointWorldText", "m_flWorldUnitsPerPx");
 	[SchemaMember("CPointWorldText", "m_flWorldUnitsPerPx")]
-	public ref float WorldUnitsPerPx => ref Schema.GetRef<float>(this.Handle, "CPointWorldText", "m_flWorldUnitsPerPx");
+	public ref float WorldUnitsPerPx => ref __m_flWorldUnitsPerPx.GetRef(this.Handle);
 
 	// m_flFontSize
+	private static readonly SchemaField<float> __m_flFontSize = new("CPointWorldText", "m_flFontSize");
 	[SchemaMember("CPointWorldText", "m_flFontSize")]
-	public ref float FontSize => ref Schema.GetRef<float>(this.Handle, "CPointWorldText", "m_flFontSize");
+	public ref float FontSize => ref __m_flFontSize.GetRef(this.Handle);
 
 	// m_flDepthOffset
+	private static readonly SchemaField<float> __m_flDepthOffset = new("CPointWorldText", "m_flDepthOffset");
 	[SchemaMember("CPointWorldText", "m_flDepthOffset")]
-	public ref float DepthOffset => ref Schema.GetRef<float>(this.Handle, "CPointWorldText", "m_flDepthOffset");
+	public ref float DepthOffset => ref __m_flDepthOffset.GetRef(this.Handle);
 
 	// m_bDrawBackground
+	private static readonly SchemaField<bool> __m_bDrawBackground = new("CPointWorldText", "m_bDrawBackground");
 	[SchemaMember("CPointWorldText", "m_bDrawBackground")]
-	public ref bool DrawBackground => ref Schema.GetRef<bool>(this.Handle, "CPointWorldText", "m_bDrawBackground");
+	public ref bool DrawBackground => ref __m_bDrawBackground.GetRef(this.Handle);
 
 	// m_flBackgroundBorderWidth
+	private static readonly SchemaField<float> __m_flBackgroundBorderWidth = new("CPointWorldText", "m_flBackgroundBorderWidth");
 	[SchemaMember("CPointWorldText", "m_flBackgroundBorderWidth")]
-	public ref float BackgroundBorderWidth => ref Schema.GetRef<float>(this.Handle, "CPointWorldText", "m_flBackgroundBorderWidth");
+	public ref float BackgroundBorderWidth => ref __m_flBackgroundBorderWidth.GetRef(this.Handle);
 
 	// m_flBackgroundBorderHeight
+	private static readonly SchemaField<float> __m_flBackgroundBorderHeight = new("CPointWorldText", "m_flBackgroundBorderHeight");
 	[SchemaMember("CPointWorldText", "m_flBackgroundBorderHeight")]
-	public ref float BackgroundBorderHeight => ref Schema.GetRef<float>(this.Handle, "CPointWorldText", "m_flBackgroundBorderHeight");
+	public ref float BackgroundBorderHeight => ref __m_flBackgroundBorderHeight.GetRef(this.Handle);
 
 	// m_flBackgroundWorldToUV
+	private static readonly SchemaField<float> __m_flBackgroundWorldToUV = new("CPointWorldText", "m_flBackgroundWorldToUV");
 	[SchemaMember("CPointWorldText", "m_flBackgroundWorldToUV")]
-	public ref float BackgroundWorldToUV => ref Schema.GetRef<float>(this.Handle, "CPointWorldText", "m_flBackgroundWorldToUV");
+	public ref float BackgroundWorldToUV => ref __m_flBackgroundWorldToUV.GetRef(this.Handle);
 
 	// m_Color
 	[SchemaMember("CPointWorldText", "m_Color")]
@@ -87,15 +96,18 @@ public partial class CPointWorldText : CModelPointEntity
 	}
 
 	// m_nJustifyHorizontal
+	private static readonly SchemaField<PointWorldTextJustifyHorizontal_t> __m_nJustifyHorizontal = new("CPointWorldText", "m_nJustifyHorizontal");
 	[SchemaMember("CPointWorldText", "m_nJustifyHorizontal")]
-	public ref PointWorldTextJustifyHorizontal_t JustifyHorizontal => ref Schema.GetRef<PointWorldTextJustifyHorizontal_t>(this.Handle, "CPointWorldText", "m_nJustifyHorizontal");
+	public ref PointWorldTextJustifyHorizontal_t JustifyHorizontal => ref __m_nJustifyHorizontal.GetRef(this.Handle);
 
 	// m_nJustifyVertical
+	private static readonly SchemaField<PointWorldTextJustifyVertical_t> __m_nJustifyVertical = new("CPointWorldText", "m_nJustifyVertical");
 	[SchemaMember("CPointWorldText", "m_nJustifyVertical")]
-	public ref PointWorldTextJustifyVertical_t JustifyVertical => ref Schema.GetRef<PointWorldTextJustifyVertical_t>(this.Handle, "CPointWorldText", "m_nJustifyVertical");
+	public ref PointWorldTextJustifyVertical_t JustifyVertical => ref __m_nJustifyVertical.GetRef(this.Handle);
 
 	// m_nReorientMode
+	private static readonly SchemaField<PointWorldTextReorientMode_t> __m_nReorientMode = new("CPointWorldText", "m_nReorientMode");
 	[SchemaMember("CPointWorldText", "m_nReorientMode")]
-	public ref PointWorldTextReorientMode_t ReorientMode => ref Schema.GetRef<PointWorldTextReorientMode_t>(this.Handle, "CPointWorldText", "m_nReorientMode");
+	public ref PointWorldTextReorientMode_t ReorientMode => ref __m_nReorientMode.GetRef(this.Handle);
 
 }

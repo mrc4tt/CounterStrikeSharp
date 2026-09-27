@@ -23,20 +23,24 @@ public partial class CGlowProperty : NativeObject
 	public Vector GlowColor => Schema.GetDeclaredClass<Vector>(this.Handle, "CGlowProperty", "m_fGlowColor");
 
 	// m_iGlowType
+	private static readonly SchemaField<Int32> __m_iGlowType = new("CGlowProperty", "m_iGlowType");
 	[SchemaMember("CGlowProperty", "m_iGlowType")]
-	public ref Int32 GlowType => ref Schema.GetRef<Int32>(this.Handle, "CGlowProperty", "m_iGlowType");
+	public ref Int32 GlowType => ref __m_iGlowType.GetRef(this.Handle);
 
 	// m_iGlowTeam
+	private static readonly SchemaField<Int32> __m_iGlowTeam = new("CGlowProperty", "m_iGlowTeam");
 	[SchemaMember("CGlowProperty", "m_iGlowTeam")]
-	public ref Int32 GlowTeam => ref Schema.GetRef<Int32>(this.Handle, "CGlowProperty", "m_iGlowTeam");
+	public ref Int32 GlowTeam => ref __m_iGlowTeam.GetRef(this.Handle);
 
 	// m_nGlowRange
+	private static readonly SchemaField<Int32> __m_nGlowRange = new("CGlowProperty", "m_nGlowRange");
 	[SchemaMember("CGlowProperty", "m_nGlowRange")]
-	public ref Int32 GlowRange => ref Schema.GetRef<Int32>(this.Handle, "CGlowProperty", "m_nGlowRange");
+	public ref Int32 GlowRange => ref __m_nGlowRange.GetRef(this.Handle);
 
 	// m_nGlowRangeMin
+	private static readonly SchemaField<Int32> __m_nGlowRangeMin = new("CGlowProperty", "m_nGlowRangeMin");
 	[SchemaMember("CGlowProperty", "m_nGlowRangeMin")]
-	public ref Int32 GlowRangeMin => ref Schema.GetRef<Int32>(this.Handle, "CGlowProperty", "m_nGlowRangeMin");
+	public ref Int32 GlowRangeMin => ref __m_nGlowRangeMin.GetRef(this.Handle);
 
 	// m_glowColorOverride
 	[SchemaMember("CGlowProperty", "m_glowColorOverride")]
@@ -47,23 +51,28 @@ public partial class CGlowProperty : NativeObject
 	}
 
 	// m_bFlashing
+	private static readonly SchemaField<bool> __m_bFlashing = new("CGlowProperty", "m_bFlashing");
 	[SchemaMember("CGlowProperty", "m_bFlashing")]
-	public ref bool Flashing => ref Schema.GetRef<bool>(this.Handle, "CGlowProperty", "m_bFlashing");
+	public ref bool Flashing => ref __m_bFlashing.GetRef(this.Handle);
 
 	// m_flGlowTime
+	private static readonly SchemaField<float> __m_flGlowTime = new("CGlowProperty", "m_flGlowTime");
 	[SchemaMember("CGlowProperty", "m_flGlowTime")]
-	public ref float GlowTime => ref Schema.GetRef<float>(this.Handle, "CGlowProperty", "m_flGlowTime");
+	public ref float GlowTime => ref __m_flGlowTime.GetRef(this.Handle);
 
 	// m_flGlowStartTime
+	private static readonly SchemaField<float> __m_flGlowStartTime = new("CGlowProperty", "m_flGlowStartTime");
 	[SchemaMember("CGlowProperty", "m_flGlowStartTime")]
-	public ref float GlowStartTime => ref Schema.GetRef<float>(this.Handle, "CGlowProperty", "m_flGlowStartTime");
+	public ref float GlowStartTime => ref __m_flGlowStartTime.GetRef(this.Handle);
 
 	// m_bEligibleForScreenHighlight
+	private static readonly SchemaField<bool> __m_bEligibleForScreenHighlight = new("CGlowProperty", "m_bEligibleForScreenHighlight");
 	[SchemaMember("CGlowProperty", "m_bEligibleForScreenHighlight")]
-	public ref bool EligibleForScreenHighlight => ref Schema.GetRef<bool>(this.Handle, "CGlowProperty", "m_bEligibleForScreenHighlight");
+	public ref bool EligibleForScreenHighlight => ref __m_bEligibleForScreenHighlight.GetRef(this.Handle);
 
 	// m_bGlowing
+	private static readonly SchemaField<bool> __m_bGlowing = new("CGlowProperty", "m_bGlowing");
 	[SchemaMember("CGlowProperty", "m_bGlowing")]
-	public ref bool Glowing => ref Schema.GetRef<bool>(this.Handle, "CGlowProperty", "m_bGlowing");
+	public ref bool Glowing => ref __m_bGlowing.GetRef(this.Handle);
 
 }

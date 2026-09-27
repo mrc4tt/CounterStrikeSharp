@@ -23,20 +23,24 @@ public partial class CInstancedSceneEntity : CSceneEntity
 	public CHandle<CBaseEntity> Owner => Schema.GetDeclaredClass<CHandle<CBaseEntity>>(this.Handle, "CInstancedSceneEntity", "m_hOwner");
 
 	// m_bHadOwner
+	private static readonly SchemaField<bool> __m_bHadOwner = new("CInstancedSceneEntity", "m_bHadOwner");
 	[SchemaMember("CInstancedSceneEntity", "m_bHadOwner")]
-	public ref bool HadOwner => ref Schema.GetRef<bool>(this.Handle, "CInstancedSceneEntity", "m_bHadOwner");
+	public ref bool HadOwner => ref __m_bHadOwner.GetRef(this.Handle);
 
 	// m_flPostSpeakDelay
+	private static readonly SchemaField<float> __m_flPostSpeakDelay = new("CInstancedSceneEntity", "m_flPostSpeakDelay");
 	[SchemaMember("CInstancedSceneEntity", "m_flPostSpeakDelay")]
-	public ref float PostSpeakDelay => ref Schema.GetRef<float>(this.Handle, "CInstancedSceneEntity", "m_flPostSpeakDelay");
+	public ref float PostSpeakDelay => ref __m_flPostSpeakDelay.GetRef(this.Handle);
 
 	// m_flPreDelay
+	private static readonly SchemaField<float> __m_flPreDelay = new("CInstancedSceneEntity", "m_flPreDelay");
 	[SchemaMember("CInstancedSceneEntity", "m_flPreDelay")]
-	public ref float PreDelay => ref Schema.GetRef<float>(this.Handle, "CInstancedSceneEntity", "m_flPreDelay");
+	public ref float PreDelay => ref __m_flPreDelay.GetRef(this.Handle);
 
 	// m_bIsBackground
+	private static readonly SchemaField<bool> __m_bIsBackground = new("CInstancedSceneEntity", "m_bIsBackground");
 	[SchemaMember("CInstancedSceneEntity", "m_bIsBackground")]
-	public ref bool IsBackground => ref Schema.GetRef<bool>(this.Handle, "CInstancedSceneEntity", "m_bIsBackground");
+	public ref bool IsBackground => ref __m_bIsBackground.GetRef(this.Handle);
 
 	// m_hTarget
 	[SchemaMember("CInstancedSceneEntity", "m_hTarget")]

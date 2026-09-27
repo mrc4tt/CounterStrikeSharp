@@ -19,67 +19,83 @@ public partial class CCSPlayerAnimationState : NativeObject
     public CCSPlayerAnimationState (IntPtr pointer) : base(pointer) {}
 
 	// m_currentMoveType
+	private static readonly SchemaField<CCSPlayerAnimationStateMoveType_t> __m_currentMoveType = new("CCSPlayerAnimationState", "m_currentMoveType");
 	[SchemaMember("CCSPlayerAnimationState", "m_currentMoveType")]
-	public ref CCSPlayerAnimationStateMoveType_t CurrentMoveType => ref Schema.GetRef<CCSPlayerAnimationStateMoveType_t>(this.Handle, "CCSPlayerAnimationState", "m_currentMoveType");
+	public ref CCSPlayerAnimationStateMoveType_t CurrentMoveType => ref __m_currentMoveType.GetRef(this.Handle);
 
 	// m_groundMoveState
+	private static readonly SchemaField<CCSPlayerAnimationStateGroundMoveState_t> __m_groundMoveState = new("CCSPlayerAnimationState", "m_groundMoveState");
 	[SchemaMember("CCSPlayerAnimationState", "m_groundMoveState")]
-	public ref CCSPlayerAnimationStateGroundMoveState_t GroundMoveState => ref Schema.GetRef<CCSPlayerAnimationStateGroundMoveState_t>(this.Handle, "CCSPlayerAnimationState", "m_groundMoveState");
+	public ref CCSPlayerAnimationStateGroundMoveState_t GroundMoveState => ref __m_groundMoveState.GetRef(this.Handle);
 
 	// m_groundActionDirection
+	private static readonly SchemaField<CCSPlayerAnimationStateDirection_t> __m_groundActionDirection = new("CCSPlayerAnimationState", "m_groundActionDirection");
 	[SchemaMember("CCSPlayerAnimationState", "m_groundActionDirection")]
-	public ref CCSPlayerAnimationStateDirection_t GroundActionDirection => ref Schema.GetRef<CCSPlayerAnimationStateDirection_t>(this.Handle, "CCSPlayerAnimationState", "m_groundActionDirection");
+	public ref CCSPlayerAnimationStateDirection_t GroundActionDirection => ref __m_groundActionDirection.GetRef(this.Handle);
 
 	// m_airAction
+	private static readonly SchemaField<CCSPlayerAnimationStateAirAction_t> __m_airAction = new("CCSPlayerAnimationState", "m_airAction");
 	[SchemaMember("CCSPlayerAnimationState", "m_airAction")]
-	public ref CCSPlayerAnimationStateAirAction_t AirAction => ref Schema.GetRef<CCSPlayerAnimationStateAirAction_t>(this.Handle, "CCSPlayerAnimationState", "m_airAction");
+	public ref CCSPlayerAnimationStateAirAction_t AirAction => ref __m_airAction.GetRef(this.Handle);
 
 	// m_bWasOnGroundLastUpdate
+	private static readonly SchemaField<bool> __m_bWasOnGroundLastUpdate = new("CCSPlayerAnimationState", "m_bWasOnGroundLastUpdate");
 	[SchemaMember("CCSPlayerAnimationState", "m_bWasOnGroundLastUpdate")]
-	public ref bool WasOnGroundLastUpdate => ref Schema.GetRef<bool>(this.Handle, "CCSPlayerAnimationState", "m_bWasOnGroundLastUpdate");
+	public ref bool WasOnGroundLastUpdate => ref __m_bWasOnGroundLastUpdate.GetRef(this.Handle);
 
 	// m_bWasStationaryLastUpdate
+	private static readonly SchemaField<bool> __m_bWasStationaryLastUpdate = new("CCSPlayerAnimationState", "m_bWasStationaryLastUpdate");
 	[SchemaMember("CCSPlayerAnimationState", "m_bWasStationaryLastUpdate")]
-	public ref bool WasStationaryLastUpdate => ref Schema.GetRef<bool>(this.Handle, "CCSPlayerAnimationState", "m_bWasStationaryLastUpdate");
+	public ref bool WasStationaryLastUpdate => ref __m_bWasStationaryLastUpdate.GetRef(this.Handle);
 
 	// m_actionStartTick
+	private static readonly SchemaField<Int32> __m_actionStartTick = new("CCSPlayerAnimationState", "m_actionStartTick");
 	[SchemaMember("CCSPlayerAnimationState", "m_actionStartTick")]
-	public ref Int32 ActionStartTick => ref Schema.GetRef<Int32>(this.Handle, "CCSPlayerAnimationState", "m_actionStartTick");
+	public ref Int32 ActionStartTick => ref __m_actionStartTick.GetRef(this.Handle);
 
 	// m_staticAimTimerStartTick
+	private static readonly SchemaField<Int32> __m_staticAimTimerStartTick = new("CCSPlayerAnimationState", "m_staticAimTimerStartTick");
 	[SchemaMember("CCSPlayerAnimationState", "m_staticAimTimerStartTick")]
-	public ref Int32 StaticAimTimerStartTick => ref Schema.GetRef<Int32>(this.Handle, "CCSPlayerAnimationState", "m_staticAimTimerStartTick");
+	public ref Int32 StaticAimTimerStartTick => ref __m_staticAimTimerStartTick.GetRef(this.Handle);
 
 	// m_plantAndTurnStartTick
+	private static readonly SchemaField<Int32> __m_plantAndTurnStartTick = new("CCSPlayerAnimationState", "m_plantAndTurnStartTick");
 	[SchemaMember("CCSPlayerAnimationState", "m_plantAndTurnStartTick")]
-	public ref Int32 PlantAndTurnStartTick => ref Schema.GetRef<Int32>(this.Handle, "CCSPlayerAnimationState", "m_plantAndTurnStartTick");
+	public ref Int32 PlantAndTurnStartTick => ref __m_plantAndTurnStartTick.GetRef(this.Handle);
 
 	// m_flTurnOnSpotAngle
+	private static readonly SchemaField<float> __m_flTurnOnSpotAngle = new("CCSPlayerAnimationState", "m_flTurnOnSpotAngle");
 	[SchemaMember("CCSPlayerAnimationState", "m_flTurnOnSpotAngle")]
-	public ref float TurnOnSpotAngle => ref Schema.GetRef<float>(this.Handle, "CCSPlayerAnimationState", "m_flTurnOnSpotAngle");
+	public ref float TurnOnSpotAngle => ref __m_flTurnOnSpotAngle.GetRef(this.Handle);
 
 	// m_flPreviousAimYaw
+	private static readonly SchemaField<float> __m_flPreviousAimYaw = new("CCSPlayerAnimationState", "m_flPreviousAimYaw");
 	[SchemaMember("CCSPlayerAnimationState", "m_flPreviousAimYaw")]
-	public ref float PreviousAimYaw => ref Schema.GetRef<float>(this.Handle, "CCSPlayerAnimationState", "m_flPreviousAimYaw");
+	public ref float PreviousAimYaw => ref __m_flPreviousAimYaw.GetRef(this.Handle);
 
 	// m_flPreviousHorizontalSpeed
+	private static readonly SchemaField<float> __m_flPreviousHorizontalSpeed = new("CCSPlayerAnimationState", "m_flPreviousHorizontalSpeed");
 	[SchemaMember("CCSPlayerAnimationState", "m_flPreviousHorizontalSpeed")]
-	public ref float PreviousHorizontalSpeed => ref Schema.GetRef<float>(this.Handle, "CCSPlayerAnimationState", "m_flPreviousHorizontalSpeed");
+	public ref float PreviousHorizontalSpeed => ref __m_flPreviousHorizontalSpeed.GetRef(this.Handle);
 
 	// m_flFootIKOffsetLeft
+	private static readonly SchemaField<float> __m_flFootIKOffsetLeft = new("CCSPlayerAnimationState", "m_flFootIKOffsetLeft");
 	[SchemaMember("CCSPlayerAnimationState", "m_flFootIKOffsetLeft")]
-	public ref float FootIKOffsetLeft => ref Schema.GetRef<float>(this.Handle, "CCSPlayerAnimationState", "m_flFootIKOffsetLeft");
+	public ref float FootIKOffsetLeft => ref __m_flFootIKOffsetLeft.GetRef(this.Handle);
 
 	// m_flFootIKOffsetRight
+	private static readonly SchemaField<float> __m_flFootIKOffsetRight = new("CCSPlayerAnimationState", "m_flFootIKOffsetRight");
 	[SchemaMember("CCSPlayerAnimationState", "m_flFootIKOffsetRight")]
-	public ref float FootIKOffsetRight => ref Schema.GetRef<float>(this.Handle, "CCSPlayerAnimationState", "m_flFootIKOffsetRight");
+	public ref float FootIKOffsetRight => ref __m_flFootIKOffsetRight.GetRef(this.Handle);
 
 	// m_flWeaponDropPercentageDueToMovement
+	private static readonly SchemaField<float> __m_flWeaponDropPercentageDueToMovement = new("CCSPlayerAnimationState", "m_flWeaponDropPercentageDueToMovement");
 	[SchemaMember("CCSPlayerAnimationState", "m_flWeaponDropPercentageDueToMovement")]
-	public ref float WeaponDropPercentageDueToMovement => ref Schema.GetRef<float>(this.Handle, "CCSPlayerAnimationState", "m_flWeaponDropPercentageDueToMovement");
+	public ref float WeaponDropPercentageDueToMovement => ref __m_flWeaponDropPercentageDueToMovement.GetRef(this.Handle);
 
 	// m_flWeaponDropSmoothDampVelocity
+	private static readonly SchemaField<float> __m_flWeaponDropSmoothDampVelocity = new("CCSPlayerAnimationState", "m_flWeaponDropSmoothDampVelocity");
 	[SchemaMember("CCSPlayerAnimationState", "m_flWeaponDropSmoothDampVelocity")]
-	public ref float WeaponDropSmoothDampVelocity => ref Schema.GetRef<float>(this.Handle, "CCSPlayerAnimationState", "m_flWeaponDropSmoothDampVelocity");
+	public ref float WeaponDropSmoothDampVelocity => ref __m_flWeaponDropSmoothDampVelocity.GetRef(this.Handle);
 
 }

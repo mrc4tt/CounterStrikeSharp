@@ -71,24 +71,29 @@ public partial class CPhysConstraint : CLogicalEntity
 	}
 
 	// m_forceLimit
+	private static readonly SchemaField<float> __m_forceLimit = new("CPhysConstraint", "m_forceLimit");
 	[SchemaMember("CPhysConstraint", "m_forceLimit")]
-	public ref float ForceLimit => ref Schema.GetRef<float>(this.Handle, "CPhysConstraint", "m_forceLimit");
+	public ref float ForceLimit => ref __m_forceLimit.GetRef(this.Handle);
 
 	// m_torqueLimit
+	private static readonly SchemaField<float> __m_torqueLimit = new("CPhysConstraint", "m_torqueLimit");
 	[SchemaMember("CPhysConstraint", "m_torqueLimit")]
-	public ref float TorqueLimit => ref Schema.GetRef<float>(this.Handle, "CPhysConstraint", "m_torqueLimit");
+	public ref float TorqueLimit => ref __m_torqueLimit.GetRef(this.Handle);
 
 	// m_minTeleportDistance
+	private static readonly SchemaField<float> __m_minTeleportDistance = new("CPhysConstraint", "m_minTeleportDistance");
 	[SchemaMember("CPhysConstraint", "m_minTeleportDistance")]
-	public ref float MinTeleportDistance => ref Schema.GetRef<float>(this.Handle, "CPhysConstraint", "m_minTeleportDistance");
+	public ref float MinTeleportDistance => ref __m_minTeleportDistance.GetRef(this.Handle);
 
 	// m_bSnapObjectPositions
+	private static readonly SchemaField<bool> __m_bSnapObjectPositions = new("CPhysConstraint", "m_bSnapObjectPositions");
 	[SchemaMember("CPhysConstraint", "m_bSnapObjectPositions")]
-	public ref bool SnapObjectPositions => ref Schema.GetRef<bool>(this.Handle, "CPhysConstraint", "m_bSnapObjectPositions");
+	public ref bool SnapObjectPositions => ref __m_bSnapObjectPositions.GetRef(this.Handle);
 
 	// m_bTreatEntity1AsInfiniteMass
+	private static readonly SchemaField<bool> __m_bTreatEntity1AsInfiniteMass = new("CPhysConstraint", "m_bTreatEntity1AsInfiniteMass");
 	[SchemaMember("CPhysConstraint", "m_bTreatEntity1AsInfiniteMass")]
-	public ref bool TreatEntity1AsInfiniteMass => ref Schema.GetRef<bool>(this.Handle, "CPhysConstraint", "m_bTreatEntity1AsInfiniteMass");
+	public ref bool TreatEntity1AsInfiniteMass => ref __m_bTreatEntity1AsInfiniteMass.GetRef(this.Handle);
 
 	// m_OnBreak
 	[SchemaMember("CPhysConstraint", "m_OnBreak")]

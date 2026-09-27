@@ -19,23 +19,28 @@ public partial class CTonemapController2 : CBaseEntity
     public CTonemapController2 (IntPtr pointer) : base(pointer) {}
 
 	// m_flAutoExposureMin
+	private static readonly SchemaField<float> __m_flAutoExposureMin = new("CTonemapController2", "m_flAutoExposureMin");
 	[SchemaMember("CTonemapController2", "m_flAutoExposureMin")]
-	public ref float AutoExposureMin => ref Schema.GetRef<float>(this.Handle, "CTonemapController2", "m_flAutoExposureMin");
+	public ref float AutoExposureMin => ref __m_flAutoExposureMin.GetRef(this.Handle);
 
 	// m_flAutoExposureMax
+	private static readonly SchemaField<float> __m_flAutoExposureMax = new("CTonemapController2", "m_flAutoExposureMax");
 	[SchemaMember("CTonemapController2", "m_flAutoExposureMax")]
-	public ref float AutoExposureMax => ref Schema.GetRef<float>(this.Handle, "CTonemapController2", "m_flAutoExposureMax");
+	public ref float AutoExposureMax => ref __m_flAutoExposureMax.GetRef(this.Handle);
 
 	// m_flExposureAdaptationSpeedUp
+	private static readonly SchemaField<float> __m_flExposureAdaptationSpeedUp = new("CTonemapController2", "m_flExposureAdaptationSpeedUp");
 	[SchemaMember("CTonemapController2", "m_flExposureAdaptationSpeedUp")]
-	public ref float ExposureAdaptationSpeedUp => ref Schema.GetRef<float>(this.Handle, "CTonemapController2", "m_flExposureAdaptationSpeedUp");
+	public ref float ExposureAdaptationSpeedUp => ref __m_flExposureAdaptationSpeedUp.GetRef(this.Handle);
 
 	// m_flExposureAdaptationSpeedDown
+	private static readonly SchemaField<float> __m_flExposureAdaptationSpeedDown = new("CTonemapController2", "m_flExposureAdaptationSpeedDown");
 	[SchemaMember("CTonemapController2", "m_flExposureAdaptationSpeedDown")]
-	public ref float ExposureAdaptationSpeedDown => ref Schema.GetRef<float>(this.Handle, "CTonemapController2", "m_flExposureAdaptationSpeedDown");
+	public ref float ExposureAdaptationSpeedDown => ref __m_flExposureAdaptationSpeedDown.GetRef(this.Handle);
 
 	// m_flTonemapEVSmoothingRange
+	private static readonly SchemaField<float> __m_flTonemapEVSmoothingRange = new("CTonemapController2", "m_flTonemapEVSmoothingRange");
 	[SchemaMember("CTonemapController2", "m_flTonemapEVSmoothingRange")]
-	public ref float TonemapEVSmoothingRange => ref Schema.GetRef<float>(this.Handle, "CTonemapController2", "m_flTonemapEVSmoothingRange");
+	public ref float TonemapEVSmoothingRange => ref __m_flTonemapEVSmoothingRange.GetRef(this.Handle);
 
 }

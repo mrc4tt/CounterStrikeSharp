@@ -23,12 +23,14 @@ public partial class CPlayer_CameraServices : CPlayerPawnComponent
 	public QAngle CsViewPunchAngle => Schema.GetDeclaredClass<QAngle>(this.Handle, "CPlayer_CameraServices", "m_vecCsViewPunchAngle");
 
 	// m_nCsViewPunchAngleTick
+	private static readonly SchemaField<Int32> __m_nCsViewPunchAngleTick = new("CPlayer_CameraServices", "m_nCsViewPunchAngleTick");
 	[SchemaMember("CPlayer_CameraServices", "m_nCsViewPunchAngleTick")]
-	public ref Int32 CsViewPunchAngleTick => ref Schema.GetRef<Int32>(this.Handle, "CPlayer_CameraServices", "m_nCsViewPunchAngleTick");
+	public ref Int32 CsViewPunchAngleTick => ref __m_nCsViewPunchAngleTick.GetRef(this.Handle);
 
 	// m_flCsViewPunchAngleTickRatio
+	private static readonly SchemaField<float> __m_flCsViewPunchAngleTickRatio = new("CPlayer_CameraServices", "m_flCsViewPunchAngleTickRatio");
 	[SchemaMember("CPlayer_CameraServices", "m_flCsViewPunchAngleTickRatio")]
-	public ref float CsViewPunchAngleTickRatio => ref Schema.GetRef<float>(this.Handle, "CPlayer_CameraServices", "m_flCsViewPunchAngleTickRatio");
+	public ref float CsViewPunchAngleTickRatio => ref __m_flCsViewPunchAngleTickRatio.GetRef(this.Handle);
 
 	// m_PlayerFog
 	[SchemaMember("CPlayer_CameraServices", "m_PlayerFog")]
@@ -55,12 +57,14 @@ public partial class CPlayer_CameraServices : CPlayerPawnComponent
 	public NetworkedVector<CHandle<CPostProcessingVolume>> PostProcessingVolumes => Schema.GetDeclaredClass<NetworkedVector<CHandle<CPostProcessingVolume>>>(this.Handle, "CPlayer_CameraServices", "m_PostProcessingVolumes");
 
 	// m_flOldPlayerZ
+	private static readonly SchemaField<float> __m_flOldPlayerZ = new("CPlayer_CameraServices", "m_flOldPlayerZ");
 	[SchemaMember("CPlayer_CameraServices", "m_flOldPlayerZ")]
-	public ref float OldPlayerZ => ref Schema.GetRef<float>(this.Handle, "CPlayer_CameraServices", "m_flOldPlayerZ");
+	public ref float OldPlayerZ => ref __m_flOldPlayerZ.GetRef(this.Handle);
 
 	// m_flOldPlayerViewOffsetZ
+	private static readonly SchemaField<float> __m_flOldPlayerViewOffsetZ = new("CPlayer_CameraServices", "m_flOldPlayerViewOffsetZ");
 	[SchemaMember("CPlayer_CameraServices", "m_flOldPlayerViewOffsetZ")]
-	public ref float OldPlayerViewOffsetZ => ref Schema.GetRef<float>(this.Handle, "CPlayer_CameraServices", "m_flOldPlayerViewOffsetZ");
+	public ref float OldPlayerViewOffsetZ => ref __m_flOldPlayerViewOffsetZ.GetRef(this.Handle);
 
 	// m_hTriggerSoundscapeList
 	[SchemaMember("CPlayer_CameraServices", "m_hTriggerSoundscapeList")]

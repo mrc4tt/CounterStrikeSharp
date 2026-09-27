@@ -23,8 +23,9 @@ public partial class CFuncTrackTrain : CBaseModelEntity
 	public CHandle<CPathTrack> Ppath => Schema.GetDeclaredClass<CHandle<CPathTrack>>(this.Handle, "CFuncTrackTrain", "m_ppath");
 
 	// m_length
+	private static readonly SchemaField<float> __m_length = new("CFuncTrackTrain", "m_length");
 	[SchemaMember("CFuncTrackTrain", "m_length")]
-	public ref float Length => ref Schema.GetRef<float>(this.Handle, "CFuncTrackTrain", "m_length");
+	public ref float Length => ref __m_length.GetRef(this.Handle);
 
 	// m_vPosPrev
 	[SchemaMember("CFuncTrackTrain", "m_vPosPrev")]
@@ -35,8 +36,9 @@ public partial class CFuncTrackTrain : CBaseModelEntity
 	public QAngle Prev => Schema.GetDeclaredClass<QAngle>(this.Handle, "CFuncTrackTrain", "m_angPrev");
 
 	// m_flSpeed
+	private static readonly SchemaField<float> __m_flSpeed = new("CFuncTrackTrain", "m_flSpeed");
 	[SchemaMember("CFuncTrackTrain", "m_flSpeed")]
-	public ref float Speed => ref Schema.GetRef<float>(this.Handle, "CFuncTrackTrain", "m_flSpeed");
+	public ref float Speed => ref __m_flSpeed.GetRef(this.Handle);
 
 	// m_controlMins
 	[SchemaMember("CFuncTrackTrain", "m_controlMins")]
@@ -51,36 +53,44 @@ public partial class CFuncTrackTrain : CBaseModelEntity
 	public Vector LastBlockPos => Schema.GetDeclaredClass<Vector>(this.Handle, "CFuncTrackTrain", "m_lastBlockPos");
 
 	// m_lastBlockTick
+	private static readonly SchemaField<Int32> __m_lastBlockTick = new("CFuncTrackTrain", "m_lastBlockTick");
 	[SchemaMember("CFuncTrackTrain", "m_lastBlockTick")]
-	public ref Int32 LastBlockTick => ref Schema.GetRef<Int32>(this.Handle, "CFuncTrackTrain", "m_lastBlockTick");
+	public ref Int32 LastBlockTick => ref __m_lastBlockTick.GetRef(this.Handle);
 
 	// m_flVolume
+	private static readonly SchemaField<float> __m_flVolume = new("CFuncTrackTrain", "m_flVolume");
 	[SchemaMember("CFuncTrackTrain", "m_flVolume")]
-	public ref float Volume => ref Schema.GetRef<float>(this.Handle, "CFuncTrackTrain", "m_flVolume");
+	public ref float Volume => ref __m_flVolume.GetRef(this.Handle);
 
 	// m_flBank
+	private static readonly SchemaField<float> __m_flBank = new("CFuncTrackTrain", "m_flBank");
 	[SchemaMember("CFuncTrackTrain", "m_flBank")]
-	public ref float Bank => ref Schema.GetRef<float>(this.Handle, "CFuncTrackTrain", "m_flBank");
+	public ref float Bank => ref __m_flBank.GetRef(this.Handle);
 
 	// m_oldSpeed
+	private static readonly SchemaField<float> __m_oldSpeed = new("CFuncTrackTrain", "m_oldSpeed");
 	[SchemaMember("CFuncTrackTrain", "m_oldSpeed")]
-	public ref float OldSpeed => ref Schema.GetRef<float>(this.Handle, "CFuncTrackTrain", "m_oldSpeed");
+	public ref float OldSpeed => ref __m_oldSpeed.GetRef(this.Handle);
 
 	// m_flBlockDamage
+	private static readonly SchemaField<float> __m_flBlockDamage = new("CFuncTrackTrain", "m_flBlockDamage");
 	[SchemaMember("CFuncTrackTrain", "m_flBlockDamage")]
-	public ref float BlockDamage => ref Schema.GetRef<float>(this.Handle, "CFuncTrackTrain", "m_flBlockDamage");
+	public ref float BlockDamage => ref __m_flBlockDamage.GetRef(this.Handle);
 
 	// m_height
+	private static readonly SchemaField<float> __m_height = new("CFuncTrackTrain", "m_height");
 	[SchemaMember("CFuncTrackTrain", "m_height")]
-	public ref float Height => ref Schema.GetRef<float>(this.Handle, "CFuncTrackTrain", "m_height");
+	public ref float Height => ref __m_height.GetRef(this.Handle);
 
 	// m_maxSpeed
+	private static readonly SchemaField<float> __m_maxSpeed = new("CFuncTrackTrain", "m_maxSpeed");
 	[SchemaMember("CFuncTrackTrain", "m_maxSpeed")]
-	public ref float MaxSpeed => ref Schema.GetRef<float>(this.Handle, "CFuncTrackTrain", "m_maxSpeed");
+	public ref float MaxSpeed => ref __m_maxSpeed.GetRef(this.Handle);
 
 	// m_dir
+	private static readonly SchemaField<float> __m_dir = new("CFuncTrackTrain", "m_dir");
 	[SchemaMember("CFuncTrackTrain", "m_dir")]
-	public ref float Dir => ref Schema.GetRef<float>(this.Handle, "CFuncTrackTrain", "m_dir");
+	public ref float Dir => ref __m_dir.GetRef(this.Handle);
 
 	// m_iszSoundMove
 	[SchemaMember("CFuncTrackTrain", "m_iszSoundMove")]
@@ -123,32 +133,39 @@ public partial class CFuncTrackTrain : CBaseModelEntity
 	}
 
 	// m_flMoveSoundMinDuration
+	private static readonly SchemaField<float> __m_flMoveSoundMinDuration = new("CFuncTrackTrain", "m_flMoveSoundMinDuration");
 	[SchemaMember("CFuncTrackTrain", "m_flMoveSoundMinDuration")]
-	public ref float MoveSoundMinDuration => ref Schema.GetRef<float>(this.Handle, "CFuncTrackTrain", "m_flMoveSoundMinDuration");
+	public ref float MoveSoundMinDuration => ref __m_flMoveSoundMinDuration.GetRef(this.Handle);
 
 	// m_flMoveSoundMaxDuration
+	private static readonly SchemaField<float> __m_flMoveSoundMaxDuration = new("CFuncTrackTrain", "m_flMoveSoundMaxDuration");
 	[SchemaMember("CFuncTrackTrain", "m_flMoveSoundMaxDuration")]
-	public ref float MoveSoundMaxDuration => ref Schema.GetRef<float>(this.Handle, "CFuncTrackTrain", "m_flMoveSoundMaxDuration");
+	public ref float MoveSoundMaxDuration => ref __m_flMoveSoundMaxDuration.GetRef(this.Handle);
 
 	// m_flNextMoveSoundTime
+	private static readonly SchemaField<float> __m_flNextMoveSoundTime = new("CFuncTrackTrain", "m_flNextMoveSoundTime");
 	[SchemaMember("CFuncTrackTrain", "m_flNextMoveSoundTime")]
-	public ref float NextMoveSoundTime => ref Schema.GetRef<float>(this.Handle, "CFuncTrackTrain", "m_flNextMoveSoundTime");
+	public ref float NextMoveSoundTime => ref __m_flNextMoveSoundTime.GetRef(this.Handle);
 
 	// m_flMoveSoundMinPitch
+	private static readonly SchemaField<float> __m_flMoveSoundMinPitch = new("CFuncTrackTrain", "m_flMoveSoundMinPitch");
 	[SchemaMember("CFuncTrackTrain", "m_flMoveSoundMinPitch")]
-	public ref float MoveSoundMinPitch => ref Schema.GetRef<float>(this.Handle, "CFuncTrackTrain", "m_flMoveSoundMinPitch");
+	public ref float MoveSoundMinPitch => ref __m_flMoveSoundMinPitch.GetRef(this.Handle);
 
 	// m_flMoveSoundMaxPitch
+	private static readonly SchemaField<float> __m_flMoveSoundMaxPitch = new("CFuncTrackTrain", "m_flMoveSoundMaxPitch");
 	[SchemaMember("CFuncTrackTrain", "m_flMoveSoundMaxPitch")]
-	public ref float MoveSoundMaxPitch => ref Schema.GetRef<float>(this.Handle, "CFuncTrackTrain", "m_flMoveSoundMaxPitch");
+	public ref float MoveSoundMaxPitch => ref __m_flMoveSoundMaxPitch.GetRef(this.Handle);
 
 	// m_eOrientationType
+	private static readonly SchemaField<TrainOrientationType_t> __m_eOrientationType = new("CFuncTrackTrain", "m_eOrientationType");
 	[SchemaMember("CFuncTrackTrain", "m_eOrientationType")]
-	public ref TrainOrientationType_t OrientationType => ref Schema.GetRef<TrainOrientationType_t>(this.Handle, "CFuncTrackTrain", "m_eOrientationType");
+	public ref TrainOrientationType_t OrientationType => ref __m_eOrientationType.GetRef(this.Handle);
 
 	// m_eVelocityType
+	private static readonly SchemaField<TrainVelocityType_t> __m_eVelocityType = new("CFuncTrackTrain", "m_eVelocityType");
 	[SchemaMember("CFuncTrackTrain", "m_eVelocityType")]
-	public ref TrainVelocityType_t VelocityType => ref Schema.GetRef<TrainVelocityType_t>(this.Handle, "CFuncTrackTrain", "m_eVelocityType");
+	public ref TrainVelocityType_t VelocityType => ref __m_eVelocityType.GetRef(this.Handle);
 
 	// m_OnStart
 	[SchemaMember("CFuncTrackTrain", "m_OnStart")]
@@ -163,31 +180,38 @@ public partial class CFuncTrackTrain : CBaseModelEntity
 	public CEntityIOOutput OnArrivedAtDestinationNode => Schema.GetDeclaredClass<CEntityIOOutput>(this.Handle, "CFuncTrackTrain", "m_OnArrivedAtDestinationNode");
 
 	// m_bManualSpeedChanges
+	private static readonly SchemaField<bool> __m_bManualSpeedChanges = new("CFuncTrackTrain", "m_bManualSpeedChanges");
 	[SchemaMember("CFuncTrackTrain", "m_bManualSpeedChanges")]
-	public ref bool ManualSpeedChanges => ref Schema.GetRef<bool>(this.Handle, "CFuncTrackTrain", "m_bManualSpeedChanges");
+	public ref bool ManualSpeedChanges => ref __m_bManualSpeedChanges.GetRef(this.Handle);
 
 	// m_flDesiredSpeed
+	private static readonly SchemaField<float> __m_flDesiredSpeed = new("CFuncTrackTrain", "m_flDesiredSpeed");
 	[SchemaMember("CFuncTrackTrain", "m_flDesiredSpeed")]
-	public ref float DesiredSpeed => ref Schema.GetRef<float>(this.Handle, "CFuncTrackTrain", "m_flDesiredSpeed");
+	public ref float DesiredSpeed => ref __m_flDesiredSpeed.GetRef(this.Handle);
 
 	// m_flSpeedChangeTime
+	private static readonly SchemaField<float> __m_flSpeedChangeTime = new("CFuncTrackTrain", "m_flSpeedChangeTime");
 	[SchemaMember("CFuncTrackTrain", "m_flSpeedChangeTime")]
-	public ref float SpeedChangeTime => ref Schema.GetRef<float>(this.Handle, "CFuncTrackTrain", "m_flSpeedChangeTime");
+	public ref float SpeedChangeTime => ref __m_flSpeedChangeTime.GetRef(this.Handle);
 
 	// m_flAccelSpeed
+	private static readonly SchemaField<float> __m_flAccelSpeed = new("CFuncTrackTrain", "m_flAccelSpeed");
 	[SchemaMember("CFuncTrackTrain", "m_flAccelSpeed")]
-	public ref float AccelSpeed => ref Schema.GetRef<float>(this.Handle, "CFuncTrackTrain", "m_flAccelSpeed");
+	public ref float AccelSpeed => ref __m_flAccelSpeed.GetRef(this.Handle);
 
 	// m_flDecelSpeed
+	private static readonly SchemaField<float> __m_flDecelSpeed = new("CFuncTrackTrain", "m_flDecelSpeed");
 	[SchemaMember("CFuncTrackTrain", "m_flDecelSpeed")]
-	public ref float DecelSpeed => ref Schema.GetRef<float>(this.Handle, "CFuncTrackTrain", "m_flDecelSpeed");
+	public ref float DecelSpeed => ref __m_flDecelSpeed.GetRef(this.Handle);
 
 	// m_bAccelToSpeed
+	private static readonly SchemaField<bool> __m_bAccelToSpeed = new("CFuncTrackTrain", "m_bAccelToSpeed");
 	[SchemaMember("CFuncTrackTrain", "m_bAccelToSpeed")]
-	public ref bool AccelToSpeed => ref Schema.GetRef<bool>(this.Handle, "CFuncTrackTrain", "m_bAccelToSpeed");
+	public ref bool AccelToSpeed => ref __m_bAccelToSpeed.GetRef(this.Handle);
 
 	// m_flNextMPSoundTime
+	private static readonly SchemaField<float> __m_flNextMPSoundTime = new("CFuncTrackTrain", "m_flNextMPSoundTime");
 	[SchemaMember("CFuncTrackTrain", "m_flNextMPSoundTime")]
-	public ref float NextMPSoundTime => ref Schema.GetRef<float>(this.Handle, "CFuncTrackTrain", "m_flNextMPSoundTime");
+	public ref float NextMPSoundTime => ref __m_flNextMPSoundTime.GetRef(this.Handle);
 
 }

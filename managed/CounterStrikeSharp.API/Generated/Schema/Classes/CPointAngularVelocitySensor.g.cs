@@ -23,28 +23,34 @@ public partial class CPointAngularVelocitySensor : CPointEntity
 	public CHandle<CBaseEntity> TargetEntity => Schema.GetDeclaredClass<CHandle<CBaseEntity>>(this.Handle, "CPointAngularVelocitySensor", "m_hTargetEntity");
 
 	// m_flThreshold
+	private static readonly SchemaField<float> __m_flThreshold = new("CPointAngularVelocitySensor", "m_flThreshold");
 	[SchemaMember("CPointAngularVelocitySensor", "m_flThreshold")]
-	public ref float Threshold => ref Schema.GetRef<float>(this.Handle, "CPointAngularVelocitySensor", "m_flThreshold");
+	public ref float Threshold => ref __m_flThreshold.GetRef(this.Handle);
 
 	// m_nLastCompareResult
+	private static readonly SchemaField<Int32> __m_nLastCompareResult = new("CPointAngularVelocitySensor", "m_nLastCompareResult");
 	[SchemaMember("CPointAngularVelocitySensor", "m_nLastCompareResult")]
-	public ref Int32 LastCompareResult => ref Schema.GetRef<Int32>(this.Handle, "CPointAngularVelocitySensor", "m_nLastCompareResult");
+	public ref Int32 LastCompareResult => ref __m_nLastCompareResult.GetRef(this.Handle);
 
 	// m_nLastFireResult
+	private static readonly SchemaField<Int32> __m_nLastFireResult = new("CPointAngularVelocitySensor", "m_nLastFireResult");
 	[SchemaMember("CPointAngularVelocitySensor", "m_nLastFireResult")]
-	public ref Int32 LastFireResult => ref Schema.GetRef<Int32>(this.Handle, "CPointAngularVelocitySensor", "m_nLastFireResult");
+	public ref Int32 LastFireResult => ref __m_nLastFireResult.GetRef(this.Handle);
 
 	// m_flFireTime
+	private static readonly SchemaField<float> __m_flFireTime = new("CPointAngularVelocitySensor", "m_flFireTime");
 	[SchemaMember("CPointAngularVelocitySensor", "m_flFireTime")]
-	public ref float FireTime => ref Schema.GetRef<float>(this.Handle, "CPointAngularVelocitySensor", "m_flFireTime");
+	public ref float FireTime => ref __m_flFireTime.GetRef(this.Handle);
 
 	// m_flFireInterval
+	private static readonly SchemaField<float> __m_flFireInterval = new("CPointAngularVelocitySensor", "m_flFireInterval");
 	[SchemaMember("CPointAngularVelocitySensor", "m_flFireInterval")]
-	public ref float FireInterval => ref Schema.GetRef<float>(this.Handle, "CPointAngularVelocitySensor", "m_flFireInterval");
+	public ref float FireInterval => ref __m_flFireInterval.GetRef(this.Handle);
 
 	// m_flLastAngVelocity
+	private static readonly SchemaField<float> __m_flLastAngVelocity = new("CPointAngularVelocitySensor", "m_flLastAngVelocity");
 	[SchemaMember("CPointAngularVelocitySensor", "m_flLastAngVelocity")]
-	public ref float LastAngVelocity => ref Schema.GetRef<float>(this.Handle, "CPointAngularVelocitySensor", "m_flLastAngVelocity");
+	public ref float LastAngVelocity => ref __m_flLastAngVelocity.GetRef(this.Handle);
 
 	// m_lastOrientation
 	[SchemaMember("CPointAngularVelocitySensor", "m_lastOrientation")]
@@ -55,8 +61,9 @@ public partial class CPointAngularVelocitySensor : CPointEntity
 	public Vector Axis => Schema.GetDeclaredClass<Vector>(this.Handle, "CPointAngularVelocitySensor", "m_vecAxis");
 
 	// m_bUseHelper
+	private static readonly SchemaField<bool> __m_bUseHelper = new("CPointAngularVelocitySensor", "m_bUseHelper");
 	[SchemaMember("CPointAngularVelocitySensor", "m_bUseHelper")]
-	public ref bool UseHelper => ref Schema.GetRef<bool>(this.Handle, "CPointAngularVelocitySensor", "m_bUseHelper");
+	public ref bool UseHelper => ref __m_bUseHelper.GetRef(this.Handle);
 
 	// m_OnLessThan
 	[SchemaMember("CPointAngularVelocitySensor", "m_OnLessThan")]

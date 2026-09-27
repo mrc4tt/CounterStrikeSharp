@@ -19,8 +19,9 @@ public partial class CPointProximitySensor : CPointEntity
     public CPointProximitySensor (IntPtr pointer) : base(pointer) {}
 
 	// m_bDisabled
+	private static readonly SchemaField<bool> __m_bDisabled = new("CPointProximitySensor", "m_bDisabled");
 	[SchemaMember("CPointProximitySensor", "m_bDisabled")]
-	public ref bool Disabled => ref Schema.GetRef<bool>(this.Handle, "CPointProximitySensor", "m_bDisabled");
+	public ref bool Disabled => ref __m_bDisabled.GetRef(this.Handle);
 
 	// m_hTargetEntity
 	[SchemaMember("CPointProximitySensor", "m_hTargetEntity")]

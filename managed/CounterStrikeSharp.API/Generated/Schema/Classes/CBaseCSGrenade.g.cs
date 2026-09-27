@@ -19,52 +19,64 @@ public partial class CBaseCSGrenade : CCSWeaponBase
     public CBaseCSGrenade (IntPtr pointer) : base(pointer) {}
 
 	// m_bRedraw
+	private static readonly SchemaField<bool> __m_bRedraw = new("CBaseCSGrenade", "m_bRedraw");
 	[SchemaMember("CBaseCSGrenade", "m_bRedraw")]
-	public ref bool Redraw => ref Schema.GetRef<bool>(this.Handle, "CBaseCSGrenade", "m_bRedraw");
+	public ref bool Redraw => ref __m_bRedraw.GetRef(this.Handle);
 
 	// m_bIsHeldByPlayer
+	private static readonly SchemaField<bool> __m_bIsHeldByPlayer = new("CBaseCSGrenade", "m_bIsHeldByPlayer");
 	[SchemaMember("CBaseCSGrenade", "m_bIsHeldByPlayer")]
-	public ref bool IsHeldByPlayer => ref Schema.GetRef<bool>(this.Handle, "CBaseCSGrenade", "m_bIsHeldByPlayer");
+	public ref bool IsHeldByPlayer => ref __m_bIsHeldByPlayer.GetRef(this.Handle);
 
 	// m_bPinPulled
+	private static readonly SchemaField<bool> __m_bPinPulled = new("CBaseCSGrenade", "m_bPinPulled");
 	[SchemaMember("CBaseCSGrenade", "m_bPinPulled")]
-	public ref bool PinPulled => ref Schema.GetRef<bool>(this.Handle, "CBaseCSGrenade", "m_bPinPulled");
+	public ref bool PinPulled => ref __m_bPinPulled.GetRef(this.Handle);
 
 	// m_bJumpThrow
+	private static readonly SchemaField<bool> __m_bJumpThrow = new("CBaseCSGrenade", "m_bJumpThrow");
 	[SchemaMember("CBaseCSGrenade", "m_bJumpThrow")]
-	public ref bool JumpThrow => ref Schema.GetRef<bool>(this.Handle, "CBaseCSGrenade", "m_bJumpThrow");
+	public ref bool JumpThrow => ref __m_bJumpThrow.GetRef(this.Handle);
 
 	// m_bThrowAnimating
+	private static readonly SchemaField<bool> __m_bThrowAnimating = new("CBaseCSGrenade", "m_bThrowAnimating");
 	[SchemaMember("CBaseCSGrenade", "m_bThrowAnimating")]
-	public ref bool ThrowAnimating => ref Schema.GetRef<bool>(this.Handle, "CBaseCSGrenade", "m_bThrowAnimating");
+	public ref bool ThrowAnimating => ref __m_bThrowAnimating.GetRef(this.Handle);
 
 	// m_fThrowTime
+	private static readonly SchemaField<float> __m_fThrowTime = new("CBaseCSGrenade", "m_fThrowTime");
 	[SchemaMember("CBaseCSGrenade", "m_fThrowTime")]
-	public ref float ThrowTime => ref Schema.GetRef<float>(this.Handle, "CBaseCSGrenade", "m_fThrowTime");
+	public ref float ThrowTime => ref __m_fThrowTime.GetRef(this.Handle);
 
 	// m_flThrowStrength
+	private static readonly SchemaField<float> __m_flThrowStrength = new("CBaseCSGrenade", "m_flThrowStrength");
 	[SchemaMember("CBaseCSGrenade", "m_flThrowStrength")]
-	public ref float ThrowStrength => ref Schema.GetRef<float>(this.Handle, "CBaseCSGrenade", "m_flThrowStrength");
+	public ref float ThrowStrength => ref __m_flThrowStrength.GetRef(this.Handle);
 
 	// m_fDropTime
+	private static readonly SchemaField<float> __m_fDropTime = new("CBaseCSGrenade", "m_fDropTime");
 	[SchemaMember("CBaseCSGrenade", "m_fDropTime")]
-	public ref float DropTime => ref Schema.GetRef<float>(this.Handle, "CBaseCSGrenade", "m_fDropTime");
+	public ref float DropTime => ref __m_fDropTime.GetRef(this.Handle);
 
 	// m_fPinPullTime
+	private static readonly SchemaField<float> __m_fPinPullTime = new("CBaseCSGrenade", "m_fPinPullTime");
 	[SchemaMember("CBaseCSGrenade", "m_fPinPullTime")]
-	public ref float PinPullTime => ref Schema.GetRef<float>(this.Handle, "CBaseCSGrenade", "m_fPinPullTime");
+	public ref float PinPullTime => ref __m_fPinPullTime.GetRef(this.Handle);
 
 	// m_bJustPulledPin
+	private static readonly SchemaField<bool> __m_bJustPulledPin = new("CBaseCSGrenade", "m_bJustPulledPin");
 	[SchemaMember("CBaseCSGrenade", "m_bJustPulledPin")]
-	public ref bool JustPulledPin => ref Schema.GetRef<bool>(this.Handle, "CBaseCSGrenade", "m_bJustPulledPin");
+	public ref bool JustPulledPin => ref __m_bJustPulledPin.GetRef(this.Handle);
 
 	// m_nNextHoldTick
+	private static readonly SchemaField<Int32> __m_nNextHoldTick = new("CBaseCSGrenade", "m_nNextHoldTick");
 	[SchemaMember("CBaseCSGrenade", "m_nNextHoldTick")]
-	public ref Int32 NextHoldTick => ref Schema.GetRef<Int32>(this.Handle, "CBaseCSGrenade", "m_nNextHoldTick");
+	public ref Int32 NextHoldTick => ref __m_nNextHoldTick.GetRef(this.Handle);
 
 	// m_flNextHoldFrac
+	private static readonly SchemaField<float> __m_flNextHoldFrac = new("CBaseCSGrenade", "m_flNextHoldFrac");
 	[SchemaMember("CBaseCSGrenade", "m_flNextHoldFrac")]
-	public ref float NextHoldFrac => ref Schema.GetRef<float>(this.Handle, "CBaseCSGrenade", "m_flNextHoldFrac");
+	public ref float NextHoldFrac => ref __m_flNextHoldFrac.GetRef(this.Handle);
 
 	// m_hSwitchToWeaponAfterThrow
 	[SchemaMember("CBaseCSGrenade", "m_hSwitchToWeaponAfterThrow")]

@@ -19,8 +19,9 @@ public partial class CSkyCameraVolumeTarget : CBaseEntity
     public CSkyCameraVolumeTarget (IntPtr pointer) : base(pointer) {}
 
 	// m_nSkyboxScale
+	private static readonly SchemaField<Int16> __m_nSkyboxScale = new("CSkyCameraVolumeTarget", "m_nSkyboxScale");
 	[SchemaMember("CSkyCameraVolumeTarget", "m_nSkyboxScale")]
-	public ref Int16 SkyboxScale => ref Schema.GetRef<Int16>(this.Handle, "CSkyCameraVolumeTarget", "m_nSkyboxScale");
+	public ref Int16 SkyboxScale => ref __m_nSkyboxScale.GetRef(this.Handle);
 
 	// m_hSkyMaterial
 	[SchemaMember("CSkyCameraVolumeTarget", "m_hSkyMaterial")]

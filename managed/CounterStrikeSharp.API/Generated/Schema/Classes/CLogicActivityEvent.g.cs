@@ -19,12 +19,14 @@ public partial class CLogicActivityEvent : CLogicalEntity
     public CLogicActivityEvent (IntPtr pointer) : base(pointer) {}
 
 	// m_nEventType
+	private static readonly SchemaField<Int32> __m_nEventType = new("CLogicActivityEvent", "m_nEventType");
 	[SchemaMember("CLogicActivityEvent", "m_nEventType")]
-	public ref Int32 EventType => ref Schema.GetRef<Int32>(this.Handle, "CLogicActivityEvent", "m_nEventType");
+	public ref Int32 EventType => ref __m_nEventType.GetRef(this.Handle);
 
 	// m_flDuration
+	private static readonly SchemaField<float> __m_flDuration = new("CLogicActivityEvent", "m_flDuration");
 	[SchemaMember("CLogicActivityEvent", "m_flDuration")]
-	public ref float Duration => ref Schema.GetRef<float>(this.Handle, "CLogicActivityEvent", "m_flDuration");
+	public ref float Duration => ref __m_flDuration.GetRef(this.Handle);
 
 	// m_iszSourceEntityName
 	[SchemaMember("CLogicActivityEvent", "m_iszSourceEntityName")]

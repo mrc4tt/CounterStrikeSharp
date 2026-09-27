@@ -19,19 +19,23 @@ public partial class CGameGibManager : CBaseEntity
     public CGameGibManager (IntPtr pointer) : base(pointer) {}
 
 	// m_bAllowNewGibs
+	private static readonly SchemaField<bool> __m_bAllowNewGibs = new("CGameGibManager", "m_bAllowNewGibs");
 	[SchemaMember("CGameGibManager", "m_bAllowNewGibs")]
-	public ref bool AllowNewGibs => ref Schema.GetRef<bool>(this.Handle, "CGameGibManager", "m_bAllowNewGibs");
+	public ref bool AllowNewGibs => ref __m_bAllowNewGibs.GetRef(this.Handle);
 
 	// m_iCurrentMaxPieces
+	private static readonly SchemaField<Int32> __m_iCurrentMaxPieces = new("CGameGibManager", "m_iCurrentMaxPieces");
 	[SchemaMember("CGameGibManager", "m_iCurrentMaxPieces")]
-	public ref Int32 CurrentMaxPieces => ref Schema.GetRef<Int32>(this.Handle, "CGameGibManager", "m_iCurrentMaxPieces");
+	public ref Int32 CurrentMaxPieces => ref __m_iCurrentMaxPieces.GetRef(this.Handle);
 
 	// m_iMaxPieces
+	private static readonly SchemaField<Int32> __m_iMaxPieces = new("CGameGibManager", "m_iMaxPieces");
 	[SchemaMember("CGameGibManager", "m_iMaxPieces")]
-	public ref Int32 MaxPieces => ref Schema.GetRef<Int32>(this.Handle, "CGameGibManager", "m_iMaxPieces");
+	public ref Int32 MaxPieces => ref __m_iMaxPieces.GetRef(this.Handle);
 
 	// m_iLastFrame
+	private static readonly SchemaField<Int32> __m_iLastFrame = new("CGameGibManager", "m_iLastFrame");
 	[SchemaMember("CGameGibManager", "m_iLastFrame")]
-	public ref Int32 LastFrame => ref Schema.GetRef<Int32>(this.Handle, "CGameGibManager", "m_iLastFrame");
+	public ref Int32 LastFrame => ref __m_iLastFrame.GetRef(this.Handle);
 
 }

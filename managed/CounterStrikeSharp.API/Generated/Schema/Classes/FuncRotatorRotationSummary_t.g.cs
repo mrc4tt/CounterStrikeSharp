@@ -19,11 +19,13 @@ public partial class FuncRotatorRotationSummary_t : NativeObject
     public FuncRotatorRotationSummary_t (IntPtr pointer) : base(pointer) {}
 
 	// nTick
+	private static readonly SchemaField<Int32> __nTick = new("FuncRotatorRotationSummary_t", "nTick");
 	[SchemaMember("FuncRotatorRotationSummary_t", "nTick")]
-	public ref Int32 NTick => ref Schema.GetRef<Int32>(this.Handle, "FuncRotatorRotationSummary_t", "nTick");
+	public ref Int32 NTick => ref __nTick.GetRef(this.Handle);
 
 	// nFlags
+	private static readonly SchemaField<FuncRotatorRotationSummaryFlags_t> __nFlags = new("FuncRotatorRotationSummary_t", "nFlags");
 	[SchemaMember("FuncRotatorRotationSummary_t", "nFlags")]
-	public ref FuncRotatorRotationSummaryFlags_t NFlags => ref Schema.GetRef<FuncRotatorRotationSummaryFlags_t>(this.Handle, "FuncRotatorRotationSummary_t", "nFlags");
+	public ref FuncRotatorRotationSummaryFlags_t NFlags => ref __nFlags.GetRef(this.Handle);
 
 }

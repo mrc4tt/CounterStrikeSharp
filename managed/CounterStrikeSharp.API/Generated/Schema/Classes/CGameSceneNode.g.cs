@@ -47,8 +47,9 @@ public partial class CGameSceneNode : NativeObject
 	public QAngle Rotation => Schema.GetDeclaredClass<QAngle>(this.Handle, "CGameSceneNode", "m_angRotation");
 
 	// m_flScale
+	private static readonly SchemaField<float> __m_flScale = new("CGameSceneNode", "m_flScale");
 	[SchemaMember("CGameSceneNode", "m_flScale")]
-	public ref float Scale => ref Schema.GetRef<float>(this.Handle, "CGameSceneNode", "m_flScale");
+	public ref float Scale => ref __m_flScale.GetRef(this.Handle);
 
 	// m_vecAbsOrigin
 	[SchemaMember("CGameSceneNode", "m_vecAbsOrigin")]
@@ -59,36 +60,44 @@ public partial class CGameSceneNode : NativeObject
 	public QAngle AbsRotation => Schema.GetDeclaredClass<QAngle>(this.Handle, "CGameSceneNode", "m_angAbsRotation");
 
 	// m_flAbsScale
+	private static readonly SchemaField<float> __m_flAbsScale = new("CGameSceneNode", "m_flAbsScale");
 	[SchemaMember("CGameSceneNode", "m_flAbsScale")]
-	public ref float AbsScale => ref Schema.GetRef<float>(this.Handle, "CGameSceneNode", "m_flAbsScale");
+	public ref float AbsScale => ref __m_flAbsScale.GetRef(this.Handle);
 
 	// m_nParentAttachmentOrBone
+	private static readonly SchemaField<Int16> __m_nParentAttachmentOrBone = new("CGameSceneNode", "m_nParentAttachmentOrBone");
 	[SchemaMember("CGameSceneNode", "m_nParentAttachmentOrBone")]
-	public ref Int16 ParentAttachmentOrBone => ref Schema.GetRef<Int16>(this.Handle, "CGameSceneNode", "m_nParentAttachmentOrBone");
+	public ref Int16 ParentAttachmentOrBone => ref __m_nParentAttachmentOrBone.GetRef(this.Handle);
 
 	// m_bDebugAbsOriginChanges
+	private static readonly SchemaField<bool> __m_bDebugAbsOriginChanges = new("CGameSceneNode", "m_bDebugAbsOriginChanges");
 	[SchemaMember("CGameSceneNode", "m_bDebugAbsOriginChanges")]
-	public ref bool DebugAbsOriginChanges => ref Schema.GetRef<bool>(this.Handle, "CGameSceneNode", "m_bDebugAbsOriginChanges");
+	public ref bool DebugAbsOriginChanges => ref __m_bDebugAbsOriginChanges.GetRef(this.Handle);
 
 	// m_bDormant
+	private static readonly SchemaField<bool> __m_bDormant = new("CGameSceneNode", "m_bDormant");
 	[SchemaMember("CGameSceneNode", "m_bDormant")]
-	public ref bool Dormant => ref Schema.GetRef<bool>(this.Handle, "CGameSceneNode", "m_bDormant");
+	public ref bool Dormant => ref __m_bDormant.GetRef(this.Handle);
 
 	// m_bForceParentToBeNetworked
+	private static readonly SchemaField<bool> __m_bForceParentToBeNetworked = new("CGameSceneNode", "m_bForceParentToBeNetworked");
 	[SchemaMember("CGameSceneNode", "m_bForceParentToBeNetworked")]
-	public ref bool ForceParentToBeNetworked => ref Schema.GetRef<bool>(this.Handle, "CGameSceneNode", "m_bForceParentToBeNetworked");
+	public ref bool ForceParentToBeNetworked => ref __m_bForceParentToBeNetworked.GetRef(this.Handle);
 
 	// m_nHierarchicalDepth
+	private static readonly SchemaField<byte> __m_nHierarchicalDepth = new("CGameSceneNode", "m_nHierarchicalDepth");
 	[SchemaMember("CGameSceneNode", "m_nHierarchicalDepth")]
-	public ref byte HierarchicalDepth => ref Schema.GetRef<byte>(this.Handle, "CGameSceneNode", "m_nHierarchicalDepth");
+	public ref byte HierarchicalDepth => ref __m_nHierarchicalDepth.GetRef(this.Handle);
 
 	// m_nHierarchyType
+	private static readonly SchemaField<byte> __m_nHierarchyType = new("CGameSceneNode", "m_nHierarchyType");
 	[SchemaMember("CGameSceneNode", "m_nHierarchyType")]
-	public ref byte HierarchyType => ref Schema.GetRef<byte>(this.Handle, "CGameSceneNode", "m_nHierarchyType");
+	public ref byte HierarchyType => ref __m_nHierarchyType.GetRef(this.Handle);
 
 	// m_nDoNotSetAnimTimeInInvalidatePhysicsCount
+	private static readonly SchemaField<byte> __m_nDoNotSetAnimTimeInInvalidatePhysicsCount = new("CGameSceneNode", "m_nDoNotSetAnimTimeInInvalidatePhysicsCount");
 	[SchemaMember("CGameSceneNode", "m_nDoNotSetAnimTimeInInvalidatePhysicsCount")]
-	public ref byte DoNotSetAnimTimeInInvalidatePhysicsCount => ref Schema.GetRef<byte>(this.Handle, "CGameSceneNode", "m_nDoNotSetAnimTimeInInvalidatePhysicsCount");
+	public ref byte DoNotSetAnimTimeInInvalidatePhysicsCount => ref __m_nDoNotSetAnimTimeInInvalidatePhysicsCount.GetRef(this.Handle);
 
 	// m_name
 	[SchemaMember("CGameSceneNode", "m_name")]
@@ -99,7 +108,8 @@ public partial class CGameSceneNode : NativeObject
 	public CUtlStringToken HierarchyAttachName => Schema.GetDeclaredClass<CUtlStringToken>(this.Handle, "CGameSceneNode", "m_hierarchyAttachName");
 
 	// m_flClientLocalScale
+	private static readonly SchemaField<float> __m_flClientLocalScale = new("CGameSceneNode", "m_flClientLocalScale");
 	[SchemaMember("CGameSceneNode", "m_flClientLocalScale")]
-	public ref float ClientLocalScale => ref Schema.GetRef<float>(this.Handle, "CGameSceneNode", "m_flClientLocalScale");
+	public ref float ClientLocalScale => ref __m_flClientLocalScale.GetRef(this.Handle);
 
 }

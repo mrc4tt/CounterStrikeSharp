@@ -19,20 +19,23 @@ public partial class sky3dparams_t : NativeObject
     public sky3dparams_t (IntPtr pointer) : base(pointer) {}
 
 	// scale
+	private static readonly SchemaField<Int16> __scale = new("sky3dparams_t", "scale");
 	[SchemaMember("sky3dparams_t", "scale")]
-	public ref Int16 Scale => ref Schema.GetRef<Int16>(this.Handle, "sky3dparams_t", "scale");
+	public ref Int16 Scale => ref __scale.GetRef(this.Handle);
 
 	// origin
 	[SchemaMember("sky3dparams_t", "origin")]
 	public Vector Origin => Schema.GetDeclaredClass<Vector>(this.Handle, "sky3dparams_t", "origin");
 
 	// bClip3DSkyBoxNearToWorldFar
+	private static readonly SchemaField<bool> __bClip3DSkyBoxNearToWorldFar = new("sky3dparams_t", "bClip3DSkyBoxNearToWorldFar");
 	[SchemaMember("sky3dparams_t", "bClip3DSkyBoxNearToWorldFar")]
-	public ref bool BClip3DSkyBoxNearToWorldFar => ref Schema.GetRef<bool>(this.Handle, "sky3dparams_t", "bClip3DSkyBoxNearToWorldFar");
+	public ref bool BClip3DSkyBoxNearToWorldFar => ref __bClip3DSkyBoxNearToWorldFar.GetRef(this.Handle);
 
 	// flClip3DSkyBoxNearToWorldFarOffset
+	private static readonly SchemaField<float> __flClip3DSkyBoxNearToWorldFarOffset = new("sky3dparams_t", "flClip3DSkyBoxNearToWorldFarOffset");
 	[SchemaMember("sky3dparams_t", "flClip3DSkyBoxNearToWorldFarOffset")]
-	public ref float FlClip3DSkyBoxNearToWorldFarOffset => ref Schema.GetRef<float>(this.Handle, "sky3dparams_t", "flClip3DSkyBoxNearToWorldFarOffset");
+	public ref float FlClip3DSkyBoxNearToWorldFarOffset => ref __flClip3DSkyBoxNearToWorldFarOffset.GetRef(this.Handle);
 
 	// fog
 	[SchemaMember("sky3dparams_t", "fog")]

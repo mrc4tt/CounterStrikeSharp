@@ -27,12 +27,14 @@ public partial class CTriggerFan : CBaseTrigger
 	public Vector Direction => Schema.GetDeclaredClass<Vector>(this.Handle, "CTriggerFan", "m_vDirection");
 
 	// m_bPushTowardsInfoTarget
+	private static readonly SchemaField<bool> __m_bPushTowardsInfoTarget = new("CTriggerFan", "m_bPushTowardsInfoTarget");
 	[SchemaMember("CTriggerFan", "m_bPushTowardsInfoTarget")]
-	public ref bool PushTowardsInfoTarget => ref Schema.GetRef<bool>(this.Handle, "CTriggerFan", "m_bPushTowardsInfoTarget");
+	public ref bool PushTowardsInfoTarget => ref __m_bPushTowardsInfoTarget.GetRef(this.Handle);
 
 	// m_bPushAwayFromInfoTarget
+	private static readonly SchemaField<bool> __m_bPushAwayFromInfoTarget = new("CTriggerFan", "m_bPushAwayFromInfoTarget");
 	[SchemaMember("CTriggerFan", "m_bPushAwayFromInfoTarget")]
-	public ref bool PushAwayFromInfoTarget => ref Schema.GetRef<bool>(this.Handle, "CTriggerFan", "m_bPushAwayFromInfoTarget");
+	public ref bool PushAwayFromInfoTarget => ref __m_bPushAwayFromInfoTarget.GetRef(this.Handle);
 
 	// m_qNoiseDelta
 	[SchemaMember("CTriggerFan", "m_qNoiseDelta")]
@@ -43,12 +45,14 @@ public partial class CTriggerFan : CBaseTrigger
 	public CHandle<CInfoFan> HInfoFan => Schema.GetDeclaredClass<CHandle<CInfoFan>>(this.Handle, "CTriggerFan", "m_hInfoFan");
 
 	// m_flForce
+	private static readonly SchemaField<float> __m_flForce = new("CTriggerFan", "m_flForce");
 	[SchemaMember("CTriggerFan", "m_flForce")]
-	public ref float Force => ref Schema.GetRef<float>(this.Handle, "CTriggerFan", "m_flForce");
+	public ref float Force => ref __m_flForce.GetRef(this.Handle);
 
 	// m_bFalloff
+	private static readonly SchemaField<bool> __m_bFalloff = new("CTriggerFan", "m_bFalloff");
 	[SchemaMember("CTriggerFan", "m_bFalloff")]
-	public ref bool Falloff => ref Schema.GetRef<bool>(this.Handle, "CTriggerFan", "m_bFalloff");
+	public ref bool Falloff => ref __m_bFalloff.GetRef(this.Handle);
 
 	// m_RampTimer
 	[SchemaMember("CTriggerFan", "m_RampTimer")]
@@ -79,47 +83,58 @@ public partial class CTriggerFan : CBaseTrigger
 	}
 
 	// m_flRopeForceScale
+	private static readonly SchemaField<float> __m_flRopeForceScale = new("CTriggerFan", "m_flRopeForceScale");
 	[SchemaMember("CTriggerFan", "m_flRopeForceScale")]
-	public ref float RopeForceScale => ref Schema.GetRef<float>(this.Handle, "CTriggerFan", "m_flRopeForceScale");
+	public ref float RopeForceScale => ref __m_flRopeForceScale.GetRef(this.Handle);
 
 	// m_flParticleForceScale
+	private static readonly SchemaField<float> __m_flParticleForceScale = new("CTriggerFan", "m_flParticleForceScale");
 	[SchemaMember("CTriggerFan", "m_flParticleForceScale")]
-	public ref float ParticleForceScale => ref Schema.GetRef<float>(this.Handle, "CTriggerFan", "m_flParticleForceScale");
+	public ref float ParticleForceScale => ref __m_flParticleForceScale.GetRef(this.Handle);
 
 	// m_flPlayerForce
+	private static readonly SchemaField<float> __m_flPlayerForce = new("CTriggerFan", "m_flPlayerForce");
 	[SchemaMember("CTriggerFan", "m_flPlayerForce")]
-	public ref float PlayerForce => ref Schema.GetRef<float>(this.Handle, "CTriggerFan", "m_flPlayerForce");
+	public ref float PlayerForce => ref __m_flPlayerForce.GetRef(this.Handle);
 
 	// m_bPlayerWindblock
+	private static readonly SchemaField<bool> __m_bPlayerWindblock = new("CTriggerFan", "m_bPlayerWindblock");
 	[SchemaMember("CTriggerFan", "m_bPlayerWindblock")]
-	public ref bool PlayerWindblock => ref Schema.GetRef<bool>(this.Handle, "CTriggerFan", "m_bPlayerWindblock");
+	public ref bool PlayerWindblock => ref __m_bPlayerWindblock.GetRef(this.Handle);
 
 	// m_flNPCForce
+	private static readonly SchemaField<float> __m_flNPCForce = new("CTriggerFan", "m_flNPCForce");
 	[SchemaMember("CTriggerFan", "m_flNPCForce")]
-	public ref float NPCForce => ref Schema.GetRef<float>(this.Handle, "CTriggerFan", "m_flNPCForce");
+	public ref float NPCForce => ref __m_flNPCForce.GetRef(this.Handle);
 
 	// m_flRampTime
+	private static readonly SchemaField<float> __m_flRampTime = new("CTriggerFan", "m_flRampTime");
 	[SchemaMember("CTriggerFan", "m_flRampTime")]
-	public ref float RampTime => ref Schema.GetRef<float>(this.Handle, "CTriggerFan", "m_flRampTime");
+	public ref float RampTime => ref __m_flRampTime.GetRef(this.Handle);
 
 	// m_fNoiseDegrees
+	private static readonly SchemaField<float> __m_fNoiseDegrees = new("CTriggerFan", "m_fNoiseDegrees");
 	[SchemaMember("CTriggerFan", "m_fNoiseDegrees")]
-	public ref float NoiseDegrees => ref Schema.GetRef<float>(this.Handle, "CTriggerFan", "m_fNoiseDegrees");
+	public ref float NoiseDegrees => ref __m_fNoiseDegrees.GetRef(this.Handle);
 
 	// m_fNoiseSpeed
+	private static readonly SchemaField<float> __m_fNoiseSpeed = new("CTriggerFan", "m_fNoiseSpeed");
 	[SchemaMember("CTriggerFan", "m_fNoiseSpeed")]
-	public ref float NoiseSpeed => ref Schema.GetRef<float>(this.Handle, "CTriggerFan", "m_fNoiseSpeed");
+	public ref float NoiseSpeed => ref __m_fNoiseSpeed.GetRef(this.Handle);
 
 	// m_bPushPlayer
+	private static readonly SchemaField<bool> __m_bPushPlayer = new("CTriggerFan", "m_bPushPlayer");
 	[SchemaMember("CTriggerFan", "m_bPushPlayer")]
-	public ref bool PushPlayer => ref Schema.GetRef<bool>(this.Handle, "CTriggerFan", "m_bPushPlayer");
+	public ref bool PushPlayer => ref __m_bPushPlayer.GetRef(this.Handle);
 
 	// m_bRampDown
+	private static readonly SchemaField<bool> __m_bRampDown = new("CTriggerFan", "m_bRampDown");
 	[SchemaMember("CTriggerFan", "m_bRampDown")]
-	public ref bool RampDown => ref Schema.GetRef<bool>(this.Handle, "CTriggerFan", "m_bRampDown");
+	public ref bool RampDown => ref __m_bRampDown.GetRef(this.Handle);
 
 	// m_nManagerFanIdx
+	private static readonly SchemaField<Int32> __m_nManagerFanIdx = new("CTriggerFan", "m_nManagerFanIdx");
 	[SchemaMember("CTriggerFan", "m_nManagerFanIdx")]
-	public ref Int32 ManagerFanIdx => ref Schema.GetRef<Int32>(this.Handle, "CTriggerFan", "m_nManagerFanIdx");
+	public ref Int32 ManagerFanIdx => ref __m_nManagerFanIdx.GetRef(this.Handle);
 
 }

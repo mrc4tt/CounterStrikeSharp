@@ -19,12 +19,14 @@ public partial class CCSCustomHudLayoutState : NativeObject
     public CCSCustomHudLayoutState (IntPtr pointer) : base(pointer) {}
 
 	// m_playerSlot
+	private static readonly SchemaField<Int32> __m_playerSlot = new("CCSCustomHudLayoutState", "m_playerSlot");
 	[SchemaMember("CCSCustomHudLayoutState", "m_playerSlot")]
-	public ref Int32 PlayerSlot => ref Schema.GetRef<Int32>(this.Handle, "CCSCustomHudLayoutState", "m_playerSlot");
+	public ref Int32 PlayerSlot => ref __m_playerSlot.GetRef(this.Handle);
 
 	// m_bInputCaptureEnabled
+	private static readonly SchemaField<bool> __m_bInputCaptureEnabled = new("CCSCustomHudLayoutState", "m_bInputCaptureEnabled");
 	[SchemaMember("CCSCustomHudLayoutState", "m_bInputCaptureEnabled")]
-	public ref bool InputCaptureEnabled => ref Schema.GetRef<bool>(this.Handle, "CCSCustomHudLayoutState", "m_bInputCaptureEnabled");
+	public ref bool InputCaptureEnabled => ref __m_bInputCaptureEnabled.GetRef(this.Handle);
 
 	// m_vecHasClasses
 	[SchemaMember("CCSCustomHudLayoutState", "m_vecHasClasses")]

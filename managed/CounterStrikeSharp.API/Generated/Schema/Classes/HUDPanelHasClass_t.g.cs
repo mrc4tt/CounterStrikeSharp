@@ -19,15 +19,18 @@ public partial class HUDPanelHasClass_t : NativeObject
     public HUDPanelHasClass_t (IntPtr pointer) : base(pointer) {}
 
 	// m_nPanelIdIndex
+	private static readonly SchemaField<UInt16> __m_nPanelIdIndex = new("HUDPanelHasClass_t", "m_nPanelIdIndex");
 	[SchemaMember("HUDPanelHasClass_t", "m_nPanelIdIndex")]
-	public ref UInt16 PanelIdIndex => ref Schema.GetRef<UInt16>(this.Handle, "HUDPanelHasClass_t", "m_nPanelIdIndex");
+	public ref UInt16 PanelIdIndex => ref __m_nPanelIdIndex.GetRef(this.Handle);
 
 	// m_nClassNameIndex
+	private static readonly SchemaField<UInt16> __m_nClassNameIndex = new("HUDPanelHasClass_t", "m_nClassNameIndex");
 	[SchemaMember("HUDPanelHasClass_t", "m_nClassNameIndex")]
-	public ref UInt16 ClassNameIndex => ref Schema.GetRef<UInt16>(this.Handle, "HUDPanelHasClass_t", "m_nClassNameIndex");
+	public ref UInt16 ClassNameIndex => ref __m_nClassNameIndex.GetRef(this.Handle);
 
 	// m_eClassStatus
+	private static readonly SchemaField<EHudPanelClassStatus_t> __m_eClassStatus = new("HUDPanelHasClass_t", "m_eClassStatus");
 	[SchemaMember("HUDPanelHasClass_t", "m_eClassStatus")]
-	public ref EHudPanelClassStatus_t ClassStatus => ref Schema.GetRef<EHudPanelClassStatus_t>(this.Handle, "HUDPanelHasClass_t", "m_eClassStatus");
+	public ref EHudPanelClassStatus_t ClassStatus => ref __m_eClassStatus.GetRef(this.Handle);
 
 }

@@ -31,32 +31,39 @@ public partial class CBaseDoor : CBaseToggle
 	public locksound_t Ls => Schema.GetDeclaredClass<locksound_t>(this.Handle, "CBaseDoor", "m_ls");
 
 	// m_bForceClosed
+	private static readonly SchemaField<bool> __m_bForceClosed = new("CBaseDoor", "m_bForceClosed");
 	[SchemaMember("CBaseDoor", "m_bForceClosed")]
-	public ref bool ForceClosed => ref Schema.GetRef<bool>(this.Handle, "CBaseDoor", "m_bForceClosed");
+	public ref bool ForceClosed => ref __m_bForceClosed.GetRef(this.Handle);
 
 	// m_bDoorGroup
+	private static readonly SchemaField<bool> __m_bDoorGroup = new("CBaseDoor", "m_bDoorGroup");
 	[SchemaMember("CBaseDoor", "m_bDoorGroup")]
-	public ref bool DoorGroup => ref Schema.GetRef<bool>(this.Handle, "CBaseDoor", "m_bDoorGroup");
+	public ref bool DoorGroup => ref __m_bDoorGroup.GetRef(this.Handle);
 
 	// m_bLocked
+	private static readonly SchemaField<bool> __m_bLocked = new("CBaseDoor", "m_bLocked");
 	[SchemaMember("CBaseDoor", "m_bLocked")]
-	public ref bool Locked => ref Schema.GetRef<bool>(this.Handle, "CBaseDoor", "m_bLocked");
+	public ref bool Locked => ref __m_bLocked.GetRef(this.Handle);
 
 	// m_bIgnoreDebris
+	private static readonly SchemaField<bool> __m_bIgnoreDebris = new("CBaseDoor", "m_bIgnoreDebris");
 	[SchemaMember("CBaseDoor", "m_bIgnoreDebris")]
-	public ref bool IgnoreDebris => ref Schema.GetRef<bool>(this.Handle, "CBaseDoor", "m_bIgnoreDebris");
+	public ref bool IgnoreDebris => ref __m_bIgnoreDebris.GetRef(this.Handle);
 
 	// m_bNoNPCs
+	private static readonly SchemaField<bool> __m_bNoNPCs = new("CBaseDoor", "m_bNoNPCs");
 	[SchemaMember("CBaseDoor", "m_bNoNPCs")]
-	public ref bool NoNPCs => ref Schema.GetRef<bool>(this.Handle, "CBaseDoor", "m_bNoNPCs");
+	public ref bool NoNPCs => ref __m_bNoNPCs.GetRef(this.Handle);
 
 	// m_eSpawnPosition
+	private static readonly SchemaField<FuncDoorSpawnPos_t> __m_eSpawnPosition = new("CBaseDoor", "m_eSpawnPosition");
 	[SchemaMember("CBaseDoor", "m_eSpawnPosition")]
-	public ref FuncDoorSpawnPos_t SpawnPosition => ref Schema.GetRef<FuncDoorSpawnPos_t>(this.Handle, "CBaseDoor", "m_eSpawnPosition");
+	public ref FuncDoorSpawnPos_t SpawnPosition => ref __m_eSpawnPosition.GetRef(this.Handle);
 
 	// m_flBlockDamage
+	private static readonly SchemaField<float> __m_flBlockDamage = new("CBaseDoor", "m_flBlockDamage");
 	[SchemaMember("CBaseDoor", "m_flBlockDamage")]
-	public ref float BlockDamage => ref Schema.GetRef<float>(this.Handle, "CBaseDoor", "m_flBlockDamage");
+	public ref float BlockDamage => ref __m_flBlockDamage.GetRef(this.Handle);
 
 	// m_NoiseMoving
 	[SchemaMember("CBaseDoor", "m_NoiseMoving")]
@@ -135,23 +142,28 @@ public partial class CBaseDoor : CBaseToggle
 	public CEntityIOOutput OnLockedUse => Schema.GetDeclaredClass<CEntityIOOutput>(this.Handle, "CBaseDoor", "m_OnLockedUse");
 
 	// m_bLoopMoveSound
+	private static readonly SchemaField<bool> __m_bLoopMoveSound = new("CBaseDoor", "m_bLoopMoveSound");
 	[SchemaMember("CBaseDoor", "m_bLoopMoveSound")]
-	public ref bool LoopMoveSound => ref Schema.GetRef<bool>(this.Handle, "CBaseDoor", "m_bLoopMoveSound");
+	public ref bool LoopMoveSound => ref __m_bLoopMoveSound.GetRef(this.Handle);
 
 	// m_bCreateNavObstacle
+	private static readonly SchemaField<bool> __m_bCreateNavObstacle = new("CBaseDoor", "m_bCreateNavObstacle");
 	[SchemaMember("CBaseDoor", "m_bCreateNavObstacle")]
-	public ref bool CreateNavObstacle => ref Schema.GetRef<bool>(this.Handle, "CBaseDoor", "m_bCreateNavObstacle");
+	public ref bool CreateNavObstacle => ref __m_bCreateNavObstacle.GetRef(this.Handle);
 
 	// m_flSpeed
+	private static readonly SchemaField<float> __m_flSpeed = new("CBaseDoor", "m_flSpeed");
 	[SchemaMember("CBaseDoor", "m_flSpeed")]
-	public ref float Speed => ref Schema.GetRef<float>(this.Handle, "CBaseDoor", "m_flSpeed");
+	public ref float Speed => ref __m_flSpeed.GetRef(this.Handle);
 
 	// m_isChaining
+	private static readonly SchemaField<bool> __m_isChaining = new("CBaseDoor", "m_isChaining");
 	[SchemaMember("CBaseDoor", "m_isChaining")]
-	public ref bool IsChaining => ref Schema.GetRef<bool>(this.Handle, "CBaseDoor", "m_isChaining");
+	public ref bool IsChaining => ref __m_isChaining.GetRef(this.Handle);
 
 	// m_bIsUsable
+	private static readonly SchemaField<bool> __m_bIsUsable = new("CBaseDoor", "m_bIsUsable");
 	[SchemaMember("CBaseDoor", "m_bIsUsable")]
-	public ref bool IsUsable => ref Schema.GetRef<bool>(this.Handle, "CBaseDoor", "m_bIsUsable");
+	public ref bool IsUsable => ref __m_bIsUsable.GetRef(this.Handle);
 
 }

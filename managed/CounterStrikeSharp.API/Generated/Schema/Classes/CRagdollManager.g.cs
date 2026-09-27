@@ -19,19 +19,23 @@ public partial class CRagdollManager : CBaseEntity
     public CRagdollManager (IntPtr pointer) : base(pointer) {}
 
 	// m_iCurrentMaxRagdollCount
+	private static readonly SchemaField<sbyte> __m_iCurrentMaxRagdollCount = new("CRagdollManager", "m_iCurrentMaxRagdollCount");
 	[SchemaMember("CRagdollManager", "m_iCurrentMaxRagdollCount")]
-	public ref sbyte CurrentMaxRagdollCount => ref Schema.GetRef<sbyte>(this.Handle, "CRagdollManager", "m_iCurrentMaxRagdollCount");
+	public ref sbyte CurrentMaxRagdollCount => ref __m_iCurrentMaxRagdollCount.GetRef(this.Handle);
 
 	// m_iMaxRagdollCount
+	private static readonly SchemaField<Int32> __m_iMaxRagdollCount = new("CRagdollManager", "m_iMaxRagdollCount");
 	[SchemaMember("CRagdollManager", "m_iMaxRagdollCount")]
-	public ref Int32 MaxRagdollCount => ref Schema.GetRef<Int32>(this.Handle, "CRagdollManager", "m_iMaxRagdollCount");
+	public ref Int32 MaxRagdollCount => ref __m_iMaxRagdollCount.GetRef(this.Handle);
 
 	// m_bSaveImportant
+	private static readonly SchemaField<bool> __m_bSaveImportant = new("CRagdollManager", "m_bSaveImportant");
 	[SchemaMember("CRagdollManager", "m_bSaveImportant")]
-	public ref bool SaveImportant => ref Schema.GetRef<bool>(this.Handle, "CRagdollManager", "m_bSaveImportant");
+	public ref bool SaveImportant => ref __m_bSaveImportant.GetRef(this.Handle);
 
 	// m_bCanTakeDamage
+	private static readonly SchemaField<bool> __m_bCanTakeDamage = new("CRagdollManager", "m_bCanTakeDamage");
 	[SchemaMember("CRagdollManager", "m_bCanTakeDamage")]
-	public ref bool CanTakeDamage => ref Schema.GetRef<bool>(this.Handle, "CRagdollManager", "m_bCanTakeDamage");
+	public ref bool CanTakeDamage => ref __m_bCanTakeDamage.GetRef(this.Handle);
 
 }

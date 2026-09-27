@@ -19,7 +19,8 @@ public partial class CBuyZone : CBaseTrigger
     public CBuyZone (IntPtr pointer) : base(pointer) {}
 
 	// m_LegacyTeamNum
+	private static readonly SchemaField<Int32> __m_LegacyTeamNum = new("CBuyZone", "m_LegacyTeamNum");
 	[SchemaMember("CBuyZone", "m_LegacyTeamNum")]
-	public ref Int32 LegacyTeamNum => ref Schema.GetRef<Int32>(this.Handle, "CBuyZone", "m_LegacyTeamNum");
+	public ref Int32 LegacyTeamNum => ref __m_LegacyTeamNum.GetRef(this.Handle);
 
 }

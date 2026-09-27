@@ -31,16 +31,19 @@ public partial class CBombTarget : CBaseTrigger
 	public CEntityIOOutput OnBombDefused => Schema.GetDeclaredClass<CEntityIOOutput>(this.Handle, "CBombTarget", "m_OnBombDefused");
 
 	// m_bIsBombSiteB
+	private static readonly SchemaField<bool> __m_bIsBombSiteB = new("CBombTarget", "m_bIsBombSiteB");
 	[SchemaMember("CBombTarget", "m_bIsBombSiteB")]
-	public ref bool IsBombSiteB => ref Schema.GetRef<bool>(this.Handle, "CBombTarget", "m_bIsBombSiteB");
+	public ref bool IsBombSiteB => ref __m_bIsBombSiteB.GetRef(this.Handle);
 
 	// m_bIsHeistBombTarget
+	private static readonly SchemaField<bool> __m_bIsHeistBombTarget = new("CBombTarget", "m_bIsHeistBombTarget");
 	[SchemaMember("CBombTarget", "m_bIsHeistBombTarget")]
-	public ref bool IsHeistBombTarget => ref Schema.GetRef<bool>(this.Handle, "CBombTarget", "m_bIsHeistBombTarget");
+	public ref bool IsHeistBombTarget => ref __m_bIsHeistBombTarget.GetRef(this.Handle);
 
 	// m_bBombPlantedHere
+	private static readonly SchemaField<bool> __m_bBombPlantedHere = new("CBombTarget", "m_bBombPlantedHere");
 	[SchemaMember("CBombTarget", "m_bBombPlantedHere")]
-	public ref bool BombPlantedHere => ref Schema.GetRef<bool>(this.Handle, "CBombTarget", "m_bBombPlantedHere");
+	public ref bool BombPlantedHere => ref __m_bBombPlantedHere.GetRef(this.Handle);
 
 	// m_szMountTarget
 	[SchemaMember("CBombTarget", "m_szMountTarget")]
@@ -55,7 +58,8 @@ public partial class CBombTarget : CBaseTrigger
 	public CHandle<CBaseEntity> InstructorHint => Schema.GetDeclaredClass<CHandle<CBaseEntity>>(this.Handle, "CBombTarget", "m_hInstructorHint");
 
 	// m_nBombSiteDesignation
+	private static readonly SchemaField<Int32> __m_nBombSiteDesignation = new("CBombTarget", "m_nBombSiteDesignation");
 	[SchemaMember("CBombTarget", "m_nBombSiteDesignation")]
-	public ref Int32 BombSiteDesignation => ref Schema.GetRef<Int32>(this.Handle, "CBombTarget", "m_nBombSiteDesignation");
+	public ref Int32 BombSiteDesignation => ref __m_nBombSiteDesignation.GetRef(this.Handle);
 
 }

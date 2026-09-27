@@ -19,11 +19,13 @@ public partial class CCSPlayerLegacyJump : NativeObject
     public CCSPlayerLegacyJump (IntPtr pointer) : base(pointer) {}
 
 	// m_bOldJumpPressed
+	private static readonly SchemaField<bool> __m_bOldJumpPressed = new("CCSPlayerLegacyJump", "m_bOldJumpPressed");
 	[SchemaMember("CCSPlayerLegacyJump", "m_bOldJumpPressed")]
-	public ref bool OldJumpPressed => ref Schema.GetRef<bool>(this.Handle, "CCSPlayerLegacyJump", "m_bOldJumpPressed");
+	public ref bool OldJumpPressed => ref __m_bOldJumpPressed.GetRef(this.Handle);
 
 	// m_flJumpPressedTime
+	private static readonly SchemaField<float> __m_flJumpPressedTime = new("CCSPlayerLegacyJump", "m_flJumpPressedTime");
 	[SchemaMember("CCSPlayerLegacyJump", "m_flJumpPressedTime")]
-	public ref float JumpPressedTime => ref Schema.GetRef<float>(this.Handle, "CCSPlayerLegacyJump", "m_flJumpPressedTime");
+	public ref float JumpPressedTime => ref __m_flJumpPressedTime.GetRef(this.Handle);
 
 }

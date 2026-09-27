@@ -19,32 +19,38 @@ public partial class CBasePropDoor : CDynamicProp
     public CBasePropDoor (IntPtr pointer) : base(pointer) {}
 
 	// m_flAutoReturnDelay
+	private static readonly SchemaField<float> __m_flAutoReturnDelay = new("CBasePropDoor", "m_flAutoReturnDelay");
 	[SchemaMember("CBasePropDoor", "m_flAutoReturnDelay")]
-	public ref float AutoReturnDelay => ref Schema.GetRef<float>(this.Handle, "CBasePropDoor", "m_flAutoReturnDelay");
+	public ref float AutoReturnDelay => ref __m_flAutoReturnDelay.GetRef(this.Handle);
 
 	// m_hDoorList
 	[SchemaMember("CBasePropDoor", "m_hDoorList")]
 	public NetworkedVector<CHandle<CBasePropDoor>> DoorList => Schema.GetDeclaredClass<NetworkedVector<CHandle<CBasePropDoor>>>(this.Handle, "CBasePropDoor", "m_hDoorList");
 
 	// m_nHardwareType
+	private static readonly SchemaField<Int32> __m_nHardwareType = new("CBasePropDoor", "m_nHardwareType");
 	[SchemaMember("CBasePropDoor", "m_nHardwareType")]
-	public ref Int32 HardwareType => ref Schema.GetRef<Int32>(this.Handle, "CBasePropDoor", "m_nHardwareType");
+	public ref Int32 HardwareType => ref __m_nHardwareType.GetRef(this.Handle);
 
 	// m_bNeedsHardware
+	private static readonly SchemaField<bool> __m_bNeedsHardware = new("CBasePropDoor", "m_bNeedsHardware");
 	[SchemaMember("CBasePropDoor", "m_bNeedsHardware")]
-	public ref bool NeedsHardware => ref Schema.GetRef<bool>(this.Handle, "CBasePropDoor", "m_bNeedsHardware");
+	public ref bool NeedsHardware => ref __m_bNeedsHardware.GetRef(this.Handle);
 
 	// m_eDoorState
+	private static readonly SchemaField<DoorState_t> __m_eDoorState = new("CBasePropDoor", "m_eDoorState");
 	[SchemaMember("CBasePropDoor", "m_eDoorState")]
-	public ref DoorState_t DoorState => ref Schema.GetRef<DoorState_t>(this.Handle, "CBasePropDoor", "m_eDoorState");
+	public ref DoorState_t DoorState => ref __m_eDoorState.GetRef(this.Handle);
 
 	// m_bLocked
+	private static readonly SchemaField<bool> __m_bLocked = new("CBasePropDoor", "m_bLocked");
 	[SchemaMember("CBasePropDoor", "m_bLocked")]
-	public ref bool Locked => ref Schema.GetRef<bool>(this.Handle, "CBasePropDoor", "m_bLocked");
+	public ref bool Locked => ref __m_bLocked.GetRef(this.Handle);
 
 	// m_bNoNPCs
+	private static readonly SchemaField<bool> __m_bNoNPCs = new("CBasePropDoor", "m_bNoNPCs");
 	[SchemaMember("CBasePropDoor", "m_bNoNPCs")]
-	public ref bool NoNPCs => ref Schema.GetRef<bool>(this.Handle, "CBasePropDoor", "m_bNoNPCs");
+	public ref bool NoNPCs => ref __m_bNoNPCs.GetRef(this.Handle);
 
 	// m_closedPosition
 	[SchemaMember("CBasePropDoor", "m_closedPosition")]
@@ -59,16 +65,18 @@ public partial class CBasePropDoor : CDynamicProp
 	public new CHandle<CBaseEntity> Blocker => Schema.GetDeclaredClass<CHandle<CBaseEntity>>(this.Handle, "CBasePropDoor", "m_hBlocker");
 
 	// m_bFirstBlocked
+	private static readonly SchemaField<bool> __m_bFirstBlocked = new("CBasePropDoor", "m_bFirstBlocked");
 	[SchemaMember("CBasePropDoor", "m_bFirstBlocked")]
-	public ref bool FirstBlocked => ref Schema.GetRef<bool>(this.Handle, "CBasePropDoor", "m_bFirstBlocked");
+	public ref bool FirstBlocked => ref __m_bFirstBlocked.GetRef(this.Handle);
 
 	// m_ls
 	[SchemaMember("CBasePropDoor", "m_ls")]
 	public locksound_t Ls => Schema.GetDeclaredClass<locksound_t>(this.Handle, "CBasePropDoor", "m_ls");
 
 	// m_bForceClosed
+	private static readonly SchemaField<bool> __m_bForceClosed = new("CBasePropDoor", "m_bForceClosed");
 	[SchemaMember("CBasePropDoor", "m_bForceClosed")]
-	public ref bool ForceClosed => ref Schema.GetRef<bool>(this.Handle, "CBasePropDoor", "m_bForceClosed");
+	public ref bool ForceClosed => ref __m_bForceClosed.GetRef(this.Handle);
 
 	// m_vecLatchWorldPosition
 	[SchemaMember("CBasePropDoor", "m_vecLatchWorldPosition")]
@@ -79,8 +87,9 @@ public partial class CBasePropDoor : CDynamicProp
 	public CHandle<CBaseEntity> Activator => Schema.GetDeclaredClass<CHandle<CBaseEntity>>(this.Handle, "CBasePropDoor", "m_hActivator");
 
 	// m_flSpeed
+	private static readonly SchemaField<float> __m_flSpeed = new("CBasePropDoor", "m_flSpeed");
 	[SchemaMember("CBasePropDoor", "m_flSpeed")]
-	public ref float Speed => ref Schema.GetRef<float>(this.Handle, "CBasePropDoor", "m_flSpeed");
+	public ref float Speed => ref __m_flSpeed.GetRef(this.Handle);
 
 	// m_SoundMoving
 	[SchemaMember("CBasePropDoor", "m_SoundMoving")]
@@ -155,8 +164,9 @@ public partial class CBasePropDoor : CDynamicProp
 	}
 
 	// m_numCloseAttempts
+	private static readonly SchemaField<Int32> __m_numCloseAttempts = new("CBasePropDoor", "m_numCloseAttempts");
 	[SchemaMember("CBasePropDoor", "m_numCloseAttempts")]
-	public ref Int32 NumCloseAttempts => ref Schema.GetRef<Int32>(this.Handle, "CBasePropDoor", "m_numCloseAttempts");
+	public ref Int32 NumCloseAttempts => ref __m_numCloseAttempts.GetRef(this.Handle);
 
 	// m_nPhysicsMaterial
 	[SchemaMember("CBasePropDoor", "m_nPhysicsMaterial")]

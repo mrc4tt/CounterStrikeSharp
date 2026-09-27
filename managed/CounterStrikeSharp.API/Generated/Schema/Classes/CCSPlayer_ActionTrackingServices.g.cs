@@ -23,8 +23,9 @@ public partial class CCSPlayer_ActionTrackingServices : CPlayerPawnComponent
 	public CHandle<CBasePlayerWeapon> LastWeaponBeforeC4AutoSwitch => Schema.GetDeclaredClass<CHandle<CBasePlayerWeapon>>(this.Handle, "CCSPlayer_ActionTrackingServices", "m_hLastWeaponBeforeC4AutoSwitch");
 
 	// m_bIsRescuing
+	private static readonly SchemaField<bool> __m_bIsRescuing = new("CCSPlayer_ActionTrackingServices", "m_bIsRescuing");
 	[SchemaMember("CCSPlayer_ActionTrackingServices", "m_bIsRescuing")]
-	public ref bool IsRescuing => ref Schema.GetRef<bool>(this.Handle, "CCSPlayer_ActionTrackingServices", "m_bIsRescuing");
+	public ref bool IsRescuing => ref __m_bIsRescuing.GetRef(this.Handle);
 
 	// m_weaponPurchasesThisMatch
 	[SchemaMember("CCSPlayer_ActionTrackingServices", "m_weaponPurchasesThisMatch")]

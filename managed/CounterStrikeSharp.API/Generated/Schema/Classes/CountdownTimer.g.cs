@@ -19,16 +19,19 @@ public partial class CountdownTimer : NativeObject
     public CountdownTimer (IntPtr pointer) : base(pointer) {}
 
 	// m_duration
+	private static readonly SchemaField<float> __m_duration = new("CountdownTimer", "m_duration");
 	[SchemaMember("CountdownTimer", "m_duration")]
-	public ref float Duration => ref Schema.GetRef<float>(this.Handle, "CountdownTimer", "m_duration");
+	public ref float Duration => ref __m_duration.GetRef(this.Handle);
 
 	// m_timestamp
+	private static readonly SchemaField<float> __m_timestamp = new("CountdownTimer", "m_timestamp");
 	[SchemaMember("CountdownTimer", "m_timestamp")]
-	public ref float Timestamp => ref Schema.GetRef<float>(this.Handle, "CountdownTimer", "m_timestamp");
+	public ref float Timestamp => ref __m_timestamp.GetRef(this.Handle);
 
 	// m_timescale
+	private static readonly SchemaField<float> __m_timescale = new("CountdownTimer", "m_timescale");
 	[SchemaMember("CountdownTimer", "m_timescale")]
-	public ref float Timescale => ref Schema.GetRef<float>(this.Handle, "CountdownTimer", "m_timescale");
+	public ref float Timescale => ref __m_timescale.GetRef(this.Handle);
 
 	// m_nWorldGroupId
 	[SchemaMember("CountdownTimer", "m_nWorldGroupId")]

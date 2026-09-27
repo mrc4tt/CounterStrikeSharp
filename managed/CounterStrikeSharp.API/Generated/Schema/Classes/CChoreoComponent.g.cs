@@ -27,8 +27,9 @@ public partial class CChoreoComponent : NativeObject
 	public CHandle<CBaseModelEntity> Owner => Schema.GetDeclaredClass<CHandle<CBaseModelEntity>>(this.Handle, "CChoreoComponent", "m_hOwner");
 
 	// m_nExernalChoreoGraphCount
+	private static readonly SchemaField<Int32> __m_nExernalChoreoGraphCount = new("CChoreoComponent", "m_nExernalChoreoGraphCount");
 	[SchemaMember("CChoreoComponent", "m_nExernalChoreoGraphCount")]
-	public ref Int32 ExernalChoreoGraphCount => ref Schema.GetRef<Int32>(this.Handle, "CChoreoComponent", "m_nExernalChoreoGraphCount");
+	public ref Int32 ExernalChoreoGraphCount => ref __m_nExernalChoreoGraphCount.GetRef(this.Handle);
 
 	// m_sActiveExternalChoreoGraphSlotID
 	[SchemaMember("CChoreoComponent", "m_sActiveExternalChoreoGraphSlotID")]
@@ -43,7 +44,8 @@ public partial class CChoreoComponent : NativeObject
 	public SceneEventId_t NextSceneEventId => Schema.GetDeclaredClass<SceneEventId_t>(this.Handle, "CChoreoComponent", "m_nNextSceneEventId");
 
 	// m_flAllowResponsesEndTime
+	private static readonly SchemaField<float> __m_flAllowResponsesEndTime = new("CChoreoComponent", "m_flAllowResponsesEndTime");
 	[SchemaMember("CChoreoComponent", "m_flAllowResponsesEndTime")]
-	public ref float AllowResponsesEndTime => ref Schema.GetRef<float>(this.Handle, "CChoreoComponent", "m_flAllowResponsesEndTime");
+	public ref float AllowResponsesEndTime => ref __m_flAllowResponsesEndTime.GetRef(this.Handle);
 
 }

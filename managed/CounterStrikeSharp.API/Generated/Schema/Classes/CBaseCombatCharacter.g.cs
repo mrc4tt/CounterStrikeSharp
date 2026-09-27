@@ -19,24 +19,28 @@ public partial class CBaseCombatCharacter : CBaseAnimGraph
     public CBaseCombatCharacter (IntPtr pointer) : base(pointer) {}
 
 	// m_bForceServerRagdoll
+	private static readonly SchemaField<bool> __m_bForceServerRagdoll = new("CBaseCombatCharacter", "m_bForceServerRagdoll");
 	[SchemaMember("CBaseCombatCharacter", "m_bForceServerRagdoll")]
-	public ref bool ForceServerRagdoll => ref Schema.GetRef<bool>(this.Handle, "CBaseCombatCharacter", "m_bForceServerRagdoll");
+	public ref bool ForceServerRagdoll => ref __m_bForceServerRagdoll.GetRef(this.Handle);
 
 	// m_hMyWearables
 	[SchemaMember("CBaseCombatCharacter", "m_hMyWearables")]
 	public NetworkedVector<CHandle<CEconWearable>> MyWearables => Schema.GetDeclaredClass<NetworkedVector<CHandle<CEconWearable>>>(this.Handle, "CBaseCombatCharacter", "m_hMyWearables");
 
 	// m_impactEnergyScale
+	private static readonly SchemaField<float> __m_impactEnergyScale = new("CBaseCombatCharacter", "m_impactEnergyScale");
 	[SchemaMember("CBaseCombatCharacter", "m_impactEnergyScale")]
-	public ref float ImpactEnergyScale => ref Schema.GetRef<float>(this.Handle, "CBaseCombatCharacter", "m_impactEnergyScale");
+	public ref float ImpactEnergyScale => ref __m_impactEnergyScale.GetRef(this.Handle);
 
 	// m_bApplyStressDamage
+	private static readonly SchemaField<bool> __m_bApplyStressDamage = new("CBaseCombatCharacter", "m_bApplyStressDamage");
 	[SchemaMember("CBaseCombatCharacter", "m_bApplyStressDamage")]
-	public ref bool ApplyStressDamage => ref Schema.GetRef<bool>(this.Handle, "CBaseCombatCharacter", "m_bApplyStressDamage");
+	public ref bool ApplyStressDamage => ref __m_bApplyStressDamage.GetRef(this.Handle);
 
 	// m_bDeathEventsDispatched
+	private static readonly SchemaField<bool> __m_bDeathEventsDispatched = new("CBaseCombatCharacter", "m_bDeathEventsDispatched");
 	[SchemaMember("CBaseCombatCharacter", "m_bDeathEventsDispatched")]
-	public ref bool DeathEventsDispatched => ref Schema.GetRef<bool>(this.Handle, "CBaseCombatCharacter", "m_bDeathEventsDispatched");
+	public ref bool DeathEventsDispatched => ref __m_bDeathEventsDispatched.GetRef(this.Handle);
 
 	// m_vecRelationships
 	[SchemaMember("CBaseCombatCharacter", "m_vecRelationships")]
@@ -51,12 +55,14 @@ public partial class CBaseCombatCharacter : CBaseAnimGraph
 	}
 
 	// m_eHull
+	private static readonly SchemaField<Hull_t> __m_eHull = new("CBaseCombatCharacter", "m_eHull");
 	[SchemaMember("CBaseCombatCharacter", "m_eHull")]
-	public ref Hull_t Hull => ref Schema.GetRef<Hull_t>(this.Handle, "CBaseCombatCharacter", "m_eHull");
+	public ref Hull_t Hull => ref __m_eHull.GetRef(this.Handle);
 
 	// m_nNavHullIdx
+	private static readonly SchemaField<UInt32> __m_nNavHullIdx = new("CBaseCombatCharacter", "m_nNavHullIdx");
 	[SchemaMember("CBaseCombatCharacter", "m_nNavHullIdx")]
-	public ref UInt32 NavHullIdx => ref Schema.GetRef<UInt32>(this.Handle, "CBaseCombatCharacter", "m_nNavHullIdx");
+	public ref UInt32 NavHullIdx => ref __m_nNavHullIdx.GetRef(this.Handle);
 
 	// m_movementStats
 	[SchemaMember("CBaseCombatCharacter", "m_movementStats")]

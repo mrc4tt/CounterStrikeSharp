@@ -19,28 +19,34 @@ public partial class CMapVetoPickController : CBaseEntity
     public CMapVetoPickController (IntPtr pointer) : base(pointer) {}
 
 	// m_bPlayedIntroVcd
+	private static readonly SchemaField<bool> __m_bPlayedIntroVcd = new("CMapVetoPickController", "m_bPlayedIntroVcd");
 	[SchemaMember("CMapVetoPickController", "m_bPlayedIntroVcd")]
-	public ref bool PlayedIntroVcd => ref Schema.GetRef<bool>(this.Handle, "CMapVetoPickController", "m_bPlayedIntroVcd");
+	public ref bool PlayedIntroVcd => ref __m_bPlayedIntroVcd.GetRef(this.Handle);
 
 	// m_bNeedToPlayFiveSecondsRemaining
+	private static readonly SchemaField<bool> __m_bNeedToPlayFiveSecondsRemaining = new("CMapVetoPickController", "m_bNeedToPlayFiveSecondsRemaining");
 	[SchemaMember("CMapVetoPickController", "m_bNeedToPlayFiveSecondsRemaining")]
-	public ref bool NeedToPlayFiveSecondsRemaining => ref Schema.GetRef<bool>(this.Handle, "CMapVetoPickController", "m_bNeedToPlayFiveSecondsRemaining");
+	public ref bool NeedToPlayFiveSecondsRemaining => ref __m_bNeedToPlayFiveSecondsRemaining.GetRef(this.Handle);
 
 	// m_dblPreMatchDraftSequenceTime
+	private static readonly SchemaField<double> __m_dblPreMatchDraftSequenceTime = new("CMapVetoPickController", "m_dblPreMatchDraftSequenceTime");
 	[SchemaMember("CMapVetoPickController", "m_dblPreMatchDraftSequenceTime")]
-	public ref double DblPreMatchDraftSequenceTime => ref Schema.GetRef<double>(this.Handle, "CMapVetoPickController", "m_dblPreMatchDraftSequenceTime");
+	public ref double DblPreMatchDraftSequenceTime => ref __m_dblPreMatchDraftSequenceTime.GetRef(this.Handle);
 
 	// m_bPreMatchDraftStateChanged
+	private static readonly SchemaField<bool> __m_bPreMatchDraftStateChanged = new("CMapVetoPickController", "m_bPreMatchDraftStateChanged");
 	[SchemaMember("CMapVetoPickController", "m_bPreMatchDraftStateChanged")]
-	public ref bool PreMatchDraftStateChanged => ref Schema.GetRef<bool>(this.Handle, "CMapVetoPickController", "m_bPreMatchDraftStateChanged");
+	public ref bool PreMatchDraftStateChanged => ref __m_bPreMatchDraftStateChanged.GetRef(this.Handle);
 
 	// m_nDraftType
+	private static readonly SchemaField<Int32> __m_nDraftType = new("CMapVetoPickController", "m_nDraftType");
 	[SchemaMember("CMapVetoPickController", "m_nDraftType")]
-	public ref Int32 DraftType => ref Schema.GetRef<Int32>(this.Handle, "CMapVetoPickController", "m_nDraftType");
+	public ref Int32 DraftType => ref __m_nDraftType.GetRef(this.Handle);
 
 	// m_nTeamWinningCoinToss
+	private static readonly SchemaField<Int32> __m_nTeamWinningCoinToss = new("CMapVetoPickController", "m_nTeamWinningCoinToss");
 	[SchemaMember("CMapVetoPickController", "m_nTeamWinningCoinToss")]
-	public ref Int32 TeamWinningCoinToss => ref Schema.GetRef<Int32>(this.Handle, "CMapVetoPickController", "m_nTeamWinningCoinToss");
+	public ref Int32 TeamWinningCoinToss => ref __m_nTeamWinningCoinToss.GetRef(this.Handle);
 
 	// m_nTeamWithFirstChoice
 	[SchemaMember("CMapVetoPickController", "m_nTeamWithFirstChoice")]
@@ -83,15 +89,18 @@ public partial class CMapVetoPickController : CBaseEntity
 	public Span<Int32> StartingSide0 => Schema.GetFixedArray<Int32>(this.Handle, "CMapVetoPickController", "m_nStartingSide0", 64);
 
 	// m_nCurrentPhase
+	private static readonly SchemaField<Int32> __m_nCurrentPhase = new("CMapVetoPickController", "m_nCurrentPhase");
 	[SchemaMember("CMapVetoPickController", "m_nCurrentPhase")]
-	public ref Int32 CurrentPhase => ref Schema.GetRef<Int32>(this.Handle, "CMapVetoPickController", "m_nCurrentPhase");
+	public ref Int32 CurrentPhase => ref __m_nCurrentPhase.GetRef(this.Handle);
 
 	// m_nPhaseStartTick
+	private static readonly SchemaField<Int32> __m_nPhaseStartTick = new("CMapVetoPickController", "m_nPhaseStartTick");
 	[SchemaMember("CMapVetoPickController", "m_nPhaseStartTick")]
-	public ref Int32 PhaseStartTick => ref Schema.GetRef<Int32>(this.Handle, "CMapVetoPickController", "m_nPhaseStartTick");
+	public ref Int32 PhaseStartTick => ref __m_nPhaseStartTick.GetRef(this.Handle);
 
 	// m_nPhaseDurationTicks
+	private static readonly SchemaField<Int32> __m_nPhaseDurationTicks = new("CMapVetoPickController", "m_nPhaseDurationTicks");
 	[SchemaMember("CMapVetoPickController", "m_nPhaseDurationTicks")]
-	public ref Int32 PhaseDurationTicks => ref Schema.GetRef<Int32>(this.Handle, "CMapVetoPickController", "m_nPhaseDurationTicks");
+	public ref Int32 PhaseDurationTicks => ref __m_nPhaseDurationTicks.GetRef(this.Handle);
 
 }

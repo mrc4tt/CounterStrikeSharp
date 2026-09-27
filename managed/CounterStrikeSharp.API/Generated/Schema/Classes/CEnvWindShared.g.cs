@@ -19,56 +19,69 @@ public partial class CEnvWindShared : NativeObject
     public CEnvWindShared (IntPtr pointer) : base(pointer) {}
 
 	// m_flStartTime
+	private static readonly SchemaField<float> __m_flStartTime = new("CEnvWindShared", "m_flStartTime");
 	[SchemaMember("CEnvWindShared", "m_flStartTime")]
-	public ref float StartTime => ref Schema.GetRef<float>(this.Handle, "CEnvWindShared", "m_flStartTime");
+	public ref float StartTime => ref __m_flStartTime.GetRef(this.Handle);
 
 	// m_iWindSeed
+	private static readonly SchemaField<UInt32> __m_iWindSeed = new("CEnvWindShared", "m_iWindSeed");
 	[SchemaMember("CEnvWindShared", "m_iWindSeed")]
-	public ref UInt32 WindSeed => ref Schema.GetRef<UInt32>(this.Handle, "CEnvWindShared", "m_iWindSeed");
+	public ref UInt32 WindSeed => ref __m_iWindSeed.GetRef(this.Handle);
 
 	// m_iMinWind
+	private static readonly SchemaField<UInt16> __m_iMinWind = new("CEnvWindShared", "m_iMinWind");
 	[SchemaMember("CEnvWindShared", "m_iMinWind")]
-	public ref UInt16 MinWind => ref Schema.GetRef<UInt16>(this.Handle, "CEnvWindShared", "m_iMinWind");
+	public ref UInt16 MinWind => ref __m_iMinWind.GetRef(this.Handle);
 
 	// m_iMaxWind
+	private static readonly SchemaField<UInt16> __m_iMaxWind = new("CEnvWindShared", "m_iMaxWind");
 	[SchemaMember("CEnvWindShared", "m_iMaxWind")]
-	public ref UInt16 MaxWind => ref Schema.GetRef<UInt16>(this.Handle, "CEnvWindShared", "m_iMaxWind");
+	public ref UInt16 MaxWind => ref __m_iMaxWind.GetRef(this.Handle);
 
 	// m_windRadius
+	private static readonly SchemaField<Int32> __m_windRadius = new("CEnvWindShared", "m_windRadius");
 	[SchemaMember("CEnvWindShared", "m_windRadius")]
-	public ref Int32 WindRadius => ref Schema.GetRef<Int32>(this.Handle, "CEnvWindShared", "m_windRadius");
+	public ref Int32 WindRadius => ref __m_windRadius.GetRef(this.Handle);
 
 	// m_iMinGust
+	private static readonly SchemaField<UInt16> __m_iMinGust = new("CEnvWindShared", "m_iMinGust");
 	[SchemaMember("CEnvWindShared", "m_iMinGust")]
-	public ref UInt16 MinGust => ref Schema.GetRef<UInt16>(this.Handle, "CEnvWindShared", "m_iMinGust");
+	public ref UInt16 MinGust => ref __m_iMinGust.GetRef(this.Handle);
 
 	// m_iMaxGust
+	private static readonly SchemaField<UInt16> __m_iMaxGust = new("CEnvWindShared", "m_iMaxGust");
 	[SchemaMember("CEnvWindShared", "m_iMaxGust")]
-	public ref UInt16 MaxGust => ref Schema.GetRef<UInt16>(this.Handle, "CEnvWindShared", "m_iMaxGust");
+	public ref UInt16 MaxGust => ref __m_iMaxGust.GetRef(this.Handle);
 
 	// m_flMinGustDelay
+	private static readonly SchemaField<float> __m_flMinGustDelay = new("CEnvWindShared", "m_flMinGustDelay");
 	[SchemaMember("CEnvWindShared", "m_flMinGustDelay")]
-	public ref float MinGustDelay => ref Schema.GetRef<float>(this.Handle, "CEnvWindShared", "m_flMinGustDelay");
+	public ref float MinGustDelay => ref __m_flMinGustDelay.GetRef(this.Handle);
 
 	// m_flMaxGustDelay
+	private static readonly SchemaField<float> __m_flMaxGustDelay = new("CEnvWindShared", "m_flMaxGustDelay");
 	[SchemaMember("CEnvWindShared", "m_flMaxGustDelay")]
-	public ref float MaxGustDelay => ref Schema.GetRef<float>(this.Handle, "CEnvWindShared", "m_flMaxGustDelay");
+	public ref float MaxGustDelay => ref __m_flMaxGustDelay.GetRef(this.Handle);
 
 	// m_flGustDuration
+	private static readonly SchemaField<float> __m_flGustDuration = new("CEnvWindShared", "m_flGustDuration");
 	[SchemaMember("CEnvWindShared", "m_flGustDuration")]
-	public ref float GustDuration => ref Schema.GetRef<float>(this.Handle, "CEnvWindShared", "m_flGustDuration");
+	public ref float GustDuration => ref __m_flGustDuration.GetRef(this.Handle);
 
 	// m_iGustDirChange
+	private static readonly SchemaField<UInt16> __m_iGustDirChange = new("CEnvWindShared", "m_iGustDirChange");
 	[SchemaMember("CEnvWindShared", "m_iGustDirChange")]
-	public ref UInt16 GustDirChange => ref Schema.GetRef<UInt16>(this.Handle, "CEnvWindShared", "m_iGustDirChange");
+	public ref UInt16 GustDirChange => ref __m_iGustDirChange.GetRef(this.Handle);
 
 	// m_iInitialWindDir
+	private static readonly SchemaField<UInt16> __m_iInitialWindDir = new("CEnvWindShared", "m_iInitialWindDir");
 	[SchemaMember("CEnvWindShared", "m_iInitialWindDir")]
-	public ref UInt16 InitialWindDir => ref Schema.GetRef<UInt16>(this.Handle, "CEnvWindShared", "m_iInitialWindDir");
+	public ref UInt16 InitialWindDir => ref __m_iInitialWindDir.GetRef(this.Handle);
 
 	// m_flInitialWindSpeed
+	private static readonly SchemaField<float> __m_flInitialWindSpeed = new("CEnvWindShared", "m_flInitialWindSpeed");
 	[SchemaMember("CEnvWindShared", "m_flInitialWindSpeed")]
-	public ref float InitialWindSpeed => ref Schema.GetRef<float>(this.Handle, "CEnvWindShared", "m_flInitialWindSpeed");
+	public ref float InitialWindSpeed => ref __m_flInitialWindSpeed.GetRef(this.Handle);
 
 	// m_location
 	[SchemaMember("CEnvWindShared", "m_location")]

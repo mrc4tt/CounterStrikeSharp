@@ -19,19 +19,22 @@ public partial class CShatterGlassShardPhysics : CBaseModelEntity
     public CShatterGlassShardPhysics (IntPtr pointer) : base(pointer) {}
 
 	// m_hParentShard
+	private static readonly SchemaField<UInt32> __m_hParentShard = new("CShatterGlassShardPhysics", "m_hParentShard");
 	[SchemaMember("CShatterGlassShardPhysics", "m_hParentShard")]
-	public ref UInt32 ParentShard => ref Schema.GetRef<UInt32>(this.Handle, "CShatterGlassShardPhysics", "m_hParentShard");
+	public ref UInt32 ParentShard => ref __m_hParentShard.GetRef(this.Handle);
 
 	// m_ShardDesc
 	[SchemaMember("CShatterGlassShardPhysics", "m_ShardDesc")]
 	public shard_model_desc_t ShardDesc => Schema.GetDeclaredClass<shard_model_desc_t>(this.Handle, "CShatterGlassShardPhysics", "m_ShardDesc");
 
 	// m_nPoolState
+	private static readonly SchemaField<ShatterGlassEntityPoolState_t> __m_nPoolState = new("CShatterGlassShardPhysics", "m_nPoolState");
 	[SchemaMember("CShatterGlassShardPhysics", "m_nPoolState")]
-	public ref ShatterGlassEntityPoolState_t PoolState => ref Schema.GetRef<ShatterGlassEntityPoolState_t>(this.Handle, "CShatterGlassShardPhysics", "m_nPoolState");
+	public ref ShatterGlassEntityPoolState_t PoolState => ref __m_nPoolState.GetRef(this.Handle);
 
 	// m_bTouchedByPlayer
+	private static readonly SchemaField<bool> __m_bTouchedByPlayer = new("CShatterGlassShardPhysics", "m_bTouchedByPlayer");
 	[SchemaMember("CShatterGlassShardPhysics", "m_bTouchedByPlayer")]
-	public ref bool TouchedByPlayer => ref Schema.GetRef<bool>(this.Handle, "CShatterGlassShardPhysics", "m_bTouchedByPlayer");
+	public ref bool TouchedByPlayer => ref __m_bTouchedByPlayer.GetRef(this.Handle);
 
 }

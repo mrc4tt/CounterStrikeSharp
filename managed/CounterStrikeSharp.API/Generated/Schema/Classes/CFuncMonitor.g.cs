@@ -27,16 +27,19 @@ public partial class CFuncMonitor : CFuncBrush
 	}
 
 	// m_nResolutionEnum
+	private static readonly SchemaField<Int32> __m_nResolutionEnum = new("CFuncMonitor", "m_nResolutionEnum");
 	[SchemaMember("CFuncMonitor", "m_nResolutionEnum")]
-	public ref Int32 ResolutionEnum => ref Schema.GetRef<Int32>(this.Handle, "CFuncMonitor", "m_nResolutionEnum");
+	public ref Int32 ResolutionEnum => ref __m_nResolutionEnum.GetRef(this.Handle);
 
 	// m_bRenderShadows
+	private static readonly SchemaField<bool> __m_bRenderShadows = new("CFuncMonitor", "m_bRenderShadows");
 	[SchemaMember("CFuncMonitor", "m_bRenderShadows")]
-	public ref bool RenderShadows => ref Schema.GetRef<bool>(this.Handle, "CFuncMonitor", "m_bRenderShadows");
+	public ref bool RenderShadows => ref __m_bRenderShadows.GetRef(this.Handle);
 
 	// m_bUseUniqueColorTarget
+	private static readonly SchemaField<bool> __m_bUseUniqueColorTarget = new("CFuncMonitor", "m_bUseUniqueColorTarget");
 	[SchemaMember("CFuncMonitor", "m_bUseUniqueColorTarget")]
-	public ref bool UseUniqueColorTarget => ref Schema.GetRef<bool>(this.Handle, "CFuncMonitor", "m_bUseUniqueColorTarget");
+	public ref bool UseUniqueColorTarget => ref __m_bUseUniqueColorTarget.GetRef(this.Handle);
 
 	// m_brushModelName
 	[SchemaMember("CFuncMonitor", "m_brushModelName")]
@@ -51,15 +54,18 @@ public partial class CFuncMonitor : CFuncBrush
 	public CHandle<CBaseEntity> HTargetCamera => Schema.GetDeclaredClass<CHandle<CBaseEntity>>(this.Handle, "CFuncMonitor", "m_hTargetCamera");
 
 	// m_bEnabled
+	private static readonly SchemaField<bool> __m_bEnabled = new("CFuncMonitor", "m_bEnabled");
 	[SchemaMember("CFuncMonitor", "m_bEnabled")]
-	public ref bool Enabled => ref Schema.GetRef<bool>(this.Handle, "CFuncMonitor", "m_bEnabled");
+	public ref bool Enabled => ref __m_bEnabled.GetRef(this.Handle);
 
 	// m_bDraw3DSkybox
+	private static readonly SchemaField<bool> __m_bDraw3DSkybox = new("CFuncMonitor", "m_bDraw3DSkybox");
 	[SchemaMember("CFuncMonitor", "m_bDraw3DSkybox")]
-	public ref bool Draw3DSkybox => ref Schema.GetRef<bool>(this.Handle, "CFuncMonitor", "m_bDraw3DSkybox");
+	public ref bool Draw3DSkybox => ref __m_bDraw3DSkybox.GetRef(this.Handle);
 
 	// m_bStartEnabled
+	private static readonly SchemaField<bool> __m_bStartEnabled = new("CFuncMonitor", "m_bStartEnabled");
 	[SchemaMember("CFuncMonitor", "m_bStartEnabled")]
-	public ref bool StartEnabled => ref Schema.GetRef<bool>(this.Handle, "CFuncMonitor", "m_bStartEnabled");
+	public ref bool StartEnabled => ref __m_bStartEnabled.GetRef(this.Handle);
 
 }

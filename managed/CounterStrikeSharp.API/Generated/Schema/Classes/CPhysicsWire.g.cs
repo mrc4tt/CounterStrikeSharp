@@ -19,7 +19,8 @@ public partial class CPhysicsWire : CBaseEntity
     public CPhysicsWire (IntPtr pointer) : base(pointer) {}
 
 	// m_nDensity
+	private static readonly SchemaField<Int32> __m_nDensity = new("CPhysicsWire", "m_nDensity");
 	[SchemaMember("CPhysicsWire", "m_nDensity")]
-	public ref Int32 Density => ref Schema.GetRef<Int32>(this.Handle, "CPhysicsWire", "m_nDensity");
+	public ref Int32 Density => ref __m_nDensity.GetRef(this.Handle);
 
 }

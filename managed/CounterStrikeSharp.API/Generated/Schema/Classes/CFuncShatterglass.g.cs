@@ -35,52 +35,64 @@ public partial class CFuncShatterglass : CBaseModelEntity
 	public Vector2D PanelSize => Schema.GetDeclaredClass<Vector2D>(this.Handle, "CFuncShatterglass", "m_PanelSize");
 
 	// m_flLastShatterSoundEmitTime
+	private static readonly SchemaField<float> __m_flLastShatterSoundEmitTime = new("CFuncShatterglass", "m_flLastShatterSoundEmitTime");
 	[SchemaMember("CFuncShatterglass", "m_flLastShatterSoundEmitTime")]
-	public ref float LastShatterSoundEmitTime => ref Schema.GetRef<float>(this.Handle, "CFuncShatterglass", "m_flLastShatterSoundEmitTime");
+	public ref float LastShatterSoundEmitTime => ref __m_flLastShatterSoundEmitTime.GetRef(this.Handle);
 
 	// m_flLastCleanupTime
+	private static readonly SchemaField<float> __m_flLastCleanupTime = new("CFuncShatterglass", "m_flLastCleanupTime");
 	[SchemaMember("CFuncShatterglass", "m_flLastCleanupTime")]
-	public ref float LastCleanupTime => ref Schema.GetRef<float>(this.Handle, "CFuncShatterglass", "m_flLastCleanupTime");
+	public ref float LastCleanupTime => ref __m_flLastCleanupTime.GetRef(this.Handle);
 
 	// m_flInitAtTime
+	private static readonly SchemaField<float> __m_flInitAtTime = new("CFuncShatterglass", "m_flInitAtTime");
 	[SchemaMember("CFuncShatterglass", "m_flInitAtTime")]
-	public ref float InitAtTime => ref Schema.GetRef<float>(this.Handle, "CFuncShatterglass", "m_flInitAtTime");
+	public ref float InitAtTime => ref __m_flInitAtTime.GetRef(this.Handle);
 
 	// m_flGlassThickness
+	private static readonly SchemaField<float> __m_flGlassThickness = new("CFuncShatterglass", "m_flGlassThickness");
 	[SchemaMember("CFuncShatterglass", "m_flGlassThickness")]
-	public ref float GlassThickness => ref Schema.GetRef<float>(this.Handle, "CFuncShatterglass", "m_flGlassThickness");
+	public ref float GlassThickness => ref __m_flGlassThickness.GetRef(this.Handle);
 
 	// m_flSpawnInvulnerability
+	private static readonly SchemaField<float> __m_flSpawnInvulnerability = new("CFuncShatterglass", "m_flSpawnInvulnerability");
 	[SchemaMember("CFuncShatterglass", "m_flSpawnInvulnerability")]
-	public ref float SpawnInvulnerability => ref Schema.GetRef<float>(this.Handle, "CFuncShatterglass", "m_flSpawnInvulnerability");
+	public ref float SpawnInvulnerability => ref __m_flSpawnInvulnerability.GetRef(this.Handle);
 
 	// m_bBreakSilent
+	private static readonly SchemaField<bool> __m_bBreakSilent = new("CFuncShatterglass", "m_bBreakSilent");
 	[SchemaMember("CFuncShatterglass", "m_bBreakSilent")]
-	public ref bool BreakSilent => ref Schema.GetRef<bool>(this.Handle, "CFuncShatterglass", "m_bBreakSilent");
+	public ref bool BreakSilent => ref __m_bBreakSilent.GetRef(this.Handle);
 
 	// m_bBreakShardless
+	private static readonly SchemaField<bool> __m_bBreakShardless = new("CFuncShatterglass", "m_bBreakShardless");
 	[SchemaMember("CFuncShatterglass", "m_bBreakShardless")]
-	public ref bool BreakShardless => ref Schema.GetRef<bool>(this.Handle, "CFuncShatterglass", "m_bBreakShardless");
+	public ref bool BreakShardless => ref __m_bBreakShardless.GetRef(this.Handle);
 
 	// m_bBroken
+	private static readonly SchemaField<bool> __m_bBroken = new("CFuncShatterglass", "m_bBroken");
 	[SchemaMember("CFuncShatterglass", "m_bBroken")]
-	public ref bool Broken => ref Schema.GetRef<bool>(this.Handle, "CFuncShatterglass", "m_bBroken");
+	public ref bool Broken => ref __m_bBroken.GetRef(this.Handle);
 
 	// m_bGlassNavIgnore
+	private static readonly SchemaField<bool> __m_bGlassNavIgnore = new("CFuncShatterglass", "m_bGlassNavIgnore");
 	[SchemaMember("CFuncShatterglass", "m_bGlassNavIgnore")]
-	public ref bool GlassNavIgnore => ref Schema.GetRef<bool>(this.Handle, "CFuncShatterglass", "m_bGlassNavIgnore");
+	public ref bool GlassNavIgnore => ref __m_bGlassNavIgnore.GetRef(this.Handle);
 
 	// m_bGlassInFrame
+	private static readonly SchemaField<bool> __m_bGlassInFrame = new("CFuncShatterglass", "m_bGlassInFrame");
 	[SchemaMember("CFuncShatterglass", "m_bGlassInFrame")]
-	public ref bool GlassInFrame => ref Schema.GetRef<bool>(this.Handle, "CFuncShatterglass", "m_bGlassInFrame");
+	public ref bool GlassInFrame => ref __m_bGlassInFrame.GetRef(this.Handle);
 
 	// m_bStartBroken
+	private static readonly SchemaField<bool> __m_bStartBroken = new("CFuncShatterglass", "m_bStartBroken");
 	[SchemaMember("CFuncShatterglass", "m_bStartBroken")]
-	public ref bool StartBroken => ref Schema.GetRef<bool>(this.Handle, "CFuncShatterglass", "m_bStartBroken");
+	public ref bool StartBroken => ref __m_bStartBroken.GetRef(this.Handle);
 
 	// m_iInitialDamageType
+	private static readonly SchemaField<byte> __m_iInitialDamageType = new("CFuncShatterglass", "m_iInitialDamageType");
 	[SchemaMember("CFuncShatterglass", "m_iInitialDamageType")]
-	public ref byte InitialDamageType => ref Schema.GetRef<byte>(this.Handle, "CFuncShatterglass", "m_iInitialDamageType");
+	public ref byte InitialDamageType => ref __m_iInitialDamageType.GetRef(this.Handle);
 
 	// m_szDamagePositioningEntityName01
 	[SchemaMember("CFuncShatterglass", "m_szDamagePositioningEntityName01")]
@@ -131,8 +143,9 @@ public partial class CFuncShatterglass : CBaseModelEntity
 	public CEntityIOOutput OnBroken => Schema.GetDeclaredClass<CEntityIOOutput>(this.Handle, "CFuncShatterglass", "m_OnBroken");
 
 	// m_iSurfaceType
+	private static readonly SchemaField<byte> __m_iSurfaceType = new("CFuncShatterglass", "m_iSurfaceType");
 	[SchemaMember("CFuncShatterglass", "m_iSurfaceType")]
-	public ref byte SurfaceType => ref Schema.GetRef<byte>(this.Handle, "CFuncShatterglass", "m_iSurfaceType");
+	public ref byte SurfaceType => ref __m_iSurfaceType.GetRef(this.Handle);
 
 	// m_hMaterialDamageBase
 	[SchemaMember("CFuncShatterglass", "m_hMaterialDamageBase")]

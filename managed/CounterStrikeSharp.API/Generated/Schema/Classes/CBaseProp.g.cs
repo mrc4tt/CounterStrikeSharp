@@ -19,16 +19,19 @@ public partial class CBaseProp : CBaseAnimGraph
     public CBaseProp (IntPtr pointer) : base(pointer) {}
 
 	// m_bModelOverrodeBlockLOS
+	private static readonly SchemaField<bool> __m_bModelOverrodeBlockLOS = new("CBaseProp", "m_bModelOverrodeBlockLOS");
 	[SchemaMember("CBaseProp", "m_bModelOverrodeBlockLOS")]
-	public ref bool ModelOverrodeBlockLOS => ref Schema.GetRef<bool>(this.Handle, "CBaseProp", "m_bModelOverrodeBlockLOS");
+	public ref bool ModelOverrodeBlockLOS => ref __m_bModelOverrodeBlockLOS.GetRef(this.Handle);
 
 	// m_iShapeType
+	private static readonly SchemaField<Int32> __m_iShapeType = new("CBaseProp", "m_iShapeType");
 	[SchemaMember("CBaseProp", "m_iShapeType")]
-	public ref Int32 ShapeType => ref Schema.GetRef<Int32>(this.Handle, "CBaseProp", "m_iShapeType");
+	public ref Int32 ShapeType => ref __m_iShapeType.GetRef(this.Handle);
 
 	// m_bConformToCollisionBounds
+	private static readonly SchemaField<bool> __m_bConformToCollisionBounds = new("CBaseProp", "m_bConformToCollisionBounds");
 	[SchemaMember("CBaseProp", "m_bConformToCollisionBounds")]
-	public ref bool ConformToCollisionBounds => ref Schema.GetRef<bool>(this.Handle, "CBaseProp", "m_bConformToCollisionBounds");
+	public ref bool ConformToCollisionBounds => ref __m_bConformToCollisionBounds.GetRef(this.Handle);
 
 	// m_mPreferredCatchTransform
 	[SchemaMember("CBaseProp", "m_mPreferredCatchTransform")]

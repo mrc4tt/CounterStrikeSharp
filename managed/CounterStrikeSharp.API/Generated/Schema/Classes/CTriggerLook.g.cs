@@ -23,48 +23,59 @@ public partial class CTriggerLook : CTriggerOnce
 	public CHandle<CBaseEntity> LookTarget => Schema.GetDeclaredClass<CHandle<CBaseEntity>>(this.Handle, "CTriggerLook", "m_hLookTarget");
 
 	// m_flFieldOfView
+	private static readonly SchemaField<float> __m_flFieldOfView = new("CTriggerLook", "m_flFieldOfView");
 	[SchemaMember("CTriggerLook", "m_flFieldOfView")]
-	public ref float FieldOfView => ref Schema.GetRef<float>(this.Handle, "CTriggerLook", "m_flFieldOfView");
+	public ref float FieldOfView => ref __m_flFieldOfView.GetRef(this.Handle);
 
 	// m_flLookTime
+	private static readonly SchemaField<float> __m_flLookTime = new("CTriggerLook", "m_flLookTime");
 	[SchemaMember("CTriggerLook", "m_flLookTime")]
-	public ref float LookTime => ref Schema.GetRef<float>(this.Handle, "CTriggerLook", "m_flLookTime");
+	public ref float LookTime => ref __m_flLookTime.GetRef(this.Handle);
 
 	// m_flLookTimeTotal
+	private static readonly SchemaField<float> __m_flLookTimeTotal = new("CTriggerLook", "m_flLookTimeTotal");
 	[SchemaMember("CTriggerLook", "m_flLookTimeTotal")]
-	public ref float LookTimeTotal => ref Schema.GetRef<float>(this.Handle, "CTriggerLook", "m_flLookTimeTotal");
+	public ref float LookTimeTotal => ref __m_flLookTimeTotal.GetRef(this.Handle);
 
 	// m_flLookTimeLast
+	private static readonly SchemaField<float> __m_flLookTimeLast = new("CTriggerLook", "m_flLookTimeLast");
 	[SchemaMember("CTriggerLook", "m_flLookTimeLast")]
-	public ref float LookTimeLast => ref Schema.GetRef<float>(this.Handle, "CTriggerLook", "m_flLookTimeLast");
+	public ref float LookTimeLast => ref __m_flLookTimeLast.GetRef(this.Handle);
 
 	// m_flTimeoutDuration
+	private static readonly SchemaField<float> __m_flTimeoutDuration = new("CTriggerLook", "m_flTimeoutDuration");
 	[SchemaMember("CTriggerLook", "m_flTimeoutDuration")]
-	public ref float TimeoutDuration => ref Schema.GetRef<float>(this.Handle, "CTriggerLook", "m_flTimeoutDuration");
+	public ref float TimeoutDuration => ref __m_flTimeoutDuration.GetRef(this.Handle);
 
 	// m_bTimeoutFired
+	private static readonly SchemaField<bool> __m_bTimeoutFired = new("CTriggerLook", "m_bTimeoutFired");
 	[SchemaMember("CTriggerLook", "m_bTimeoutFired")]
-	public ref bool TimeoutFired => ref Schema.GetRef<bool>(this.Handle, "CTriggerLook", "m_bTimeoutFired");
+	public ref bool TimeoutFired => ref __m_bTimeoutFired.GetRef(this.Handle);
 
 	// m_bIsLooking
+	private static readonly SchemaField<bool> __m_bIsLooking = new("CTriggerLook", "m_bIsLooking");
 	[SchemaMember("CTriggerLook", "m_bIsLooking")]
-	public ref bool IsLooking => ref Schema.GetRef<bool>(this.Handle, "CTriggerLook", "m_bIsLooking");
+	public ref bool IsLooking => ref __m_bIsLooking.GetRef(this.Handle);
 
 	// m_b2DFOV
+	private static readonly SchemaField<bool> __m_b2DFOV = new("CTriggerLook", "m_b2DFOV");
 	[SchemaMember("CTriggerLook", "m_b2DFOV")]
-	public ref bool B2DFOV => ref Schema.GetRef<bool>(this.Handle, "CTriggerLook", "m_b2DFOV");
+	public ref bool B2DFOV => ref __m_b2DFOV.GetRef(this.Handle);
 
 	// m_bUseVelocity
+	private static readonly SchemaField<bool> __m_bUseVelocity = new("CTriggerLook", "m_bUseVelocity");
 	[SchemaMember("CTriggerLook", "m_bUseVelocity")]
-	public ref bool UseVelocity => ref Schema.GetRef<bool>(this.Handle, "CTriggerLook", "m_bUseVelocity");
+	public ref bool UseVelocity => ref __m_bUseVelocity.GetRef(this.Handle);
 
 	// m_bTestOcclusion
+	private static readonly SchemaField<bool> __m_bTestOcclusion = new("CTriggerLook", "m_bTestOcclusion");
 	[SchemaMember("CTriggerLook", "m_bTestOcclusion")]
-	public ref bool TestOcclusion => ref Schema.GetRef<bool>(this.Handle, "CTriggerLook", "m_bTestOcclusion");
+	public ref bool TestOcclusion => ref __m_bTestOcclusion.GetRef(this.Handle);
 
 	// m_bTestAllVisibleOcclusion
+	private static readonly SchemaField<bool> __m_bTestAllVisibleOcclusion = new("CTriggerLook", "m_bTestAllVisibleOcclusion");
 	[SchemaMember("CTriggerLook", "m_bTestAllVisibleOcclusion")]
-	public ref bool TestAllVisibleOcclusion => ref Schema.GetRef<bool>(this.Handle, "CTriggerLook", "m_bTestAllVisibleOcclusion");
+	public ref bool TestAllVisibleOcclusion => ref __m_bTestAllVisibleOcclusion.GetRef(this.Handle);
 
 	// m_OnTimeout
 	[SchemaMember("CTriggerLook", "m_OnTimeout")]

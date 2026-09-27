@@ -35,8 +35,9 @@ public partial class CMomentaryRotButton : CRotButton
 	public CEntityIOOutput OnReachedPosition => Schema.GetDeclaredClass<CEntityIOOutput>(this.Handle, "CMomentaryRotButton", "m_OnReachedPosition");
 
 	// m_lastUsed
+	private static readonly SchemaField<Int32> __m_lastUsed = new("CMomentaryRotButton", "m_lastUsed");
 	[SchemaMember("CMomentaryRotButton", "m_lastUsed")]
-	public ref Int32 LastUsed => ref Schema.GetRef<Int32>(this.Handle, "CMomentaryRotButton", "m_lastUsed");
+	public ref Int32 LastUsed => ref __m_lastUsed.GetRef(this.Handle);
 
 	// m_start
 	[SchemaMember("CMomentaryRotButton", "m_start")]
@@ -47,8 +48,9 @@ public partial class CMomentaryRotButton : CRotButton
 	public QAngle End => Schema.GetDeclaredClass<QAngle>(this.Handle, "CMomentaryRotButton", "m_end");
 
 	// m_IdealYaw
+	private static readonly SchemaField<float> __m_IdealYaw = new("CMomentaryRotButton", "m_IdealYaw");
 	[SchemaMember("CMomentaryRotButton", "m_IdealYaw")]
-	public ref float IdealYaw => ref Schema.GetRef<float>(this.Handle, "CMomentaryRotButton", "m_IdealYaw");
+	public ref float IdealYaw => ref __m_IdealYaw.GetRef(this.Handle);
 
 	// m_sNoise
 	[SchemaMember("CMomentaryRotButton", "m_sNoise")]
@@ -59,19 +61,23 @@ public partial class CMomentaryRotButton : CRotButton
 	}
 
 	// m_bUpdateTarget
+	private static readonly SchemaField<bool> __m_bUpdateTarget = new("CMomentaryRotButton", "m_bUpdateTarget");
 	[SchemaMember("CMomentaryRotButton", "m_bUpdateTarget")]
-	public ref bool UpdateTarget => ref Schema.GetRef<bool>(this.Handle, "CMomentaryRotButton", "m_bUpdateTarget");
+	public ref bool UpdateTarget => ref __m_bUpdateTarget.GetRef(this.Handle);
 
 	// m_direction
+	private static readonly SchemaField<Int32> __m_direction = new("CMomentaryRotButton", "m_direction");
 	[SchemaMember("CMomentaryRotButton", "m_direction")]
-	public ref Int32 Direction => ref Schema.GetRef<Int32>(this.Handle, "CMomentaryRotButton", "m_direction");
+	public ref Int32 Direction => ref __m_direction.GetRef(this.Handle);
 
 	// m_returnSpeed
+	private static readonly SchemaField<float> __m_returnSpeed = new("CMomentaryRotButton", "m_returnSpeed");
 	[SchemaMember("CMomentaryRotButton", "m_returnSpeed")]
-	public ref float ReturnSpeed => ref Schema.GetRef<float>(this.Handle, "CMomentaryRotButton", "m_returnSpeed");
+	public ref float ReturnSpeed => ref __m_returnSpeed.GetRef(this.Handle);
 
 	// m_flStartPosition
+	private static readonly SchemaField<float> __m_flStartPosition = new("CMomentaryRotButton", "m_flStartPosition");
 	[SchemaMember("CMomentaryRotButton", "m_flStartPosition")]
-	public ref float StartPosition => ref Schema.GetRef<float>(this.Handle, "CMomentaryRotButton", "m_flStartPosition");
+	public ref float StartPosition => ref __m_flStartPosition.GetRef(this.Handle);
 
 }

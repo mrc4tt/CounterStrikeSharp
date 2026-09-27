@@ -27,12 +27,14 @@ public partial class CFuncConveyor : CBaseModelEntity
 	}
 
 	// m_flTransitionDurationSeconds
+	private static readonly SchemaField<float> __m_flTransitionDurationSeconds = new("CFuncConveyor", "m_flTransitionDurationSeconds");
 	[SchemaMember("CFuncConveyor", "m_flTransitionDurationSeconds")]
-	public ref float TransitionDurationSeconds => ref Schema.GetRef<float>(this.Handle, "CFuncConveyor", "m_flTransitionDurationSeconds");
+	public ref float TransitionDurationSeconds => ref __m_flTransitionDurationSeconds.GetRef(this.Handle);
 
 	// m_flSpeed
+	private static readonly SchemaField<float> __m_flSpeed = new("CFuncConveyor", "m_flSpeed");
 	[SchemaMember("CFuncConveyor", "m_flSpeed")]
-	public ref float Speed => ref Schema.GetRef<float>(this.Handle, "CFuncConveyor", "m_flSpeed");
+	public ref float Speed => ref __m_flSpeed.GetRef(this.Handle);
 
 	// m_angMoveEntitySpace
 	[SchemaMember("CFuncConveyor", "m_angMoveEntitySpace")]
@@ -43,24 +45,29 @@ public partial class CFuncConveyor : CBaseModelEntity
 	public Vector MoveDirEntitySpace => Schema.GetDeclaredClass<Vector>(this.Handle, "CFuncConveyor", "m_vecMoveDirEntitySpace");
 
 	// m_flTargetSpeed
+	private static readonly SchemaField<float> __m_flTargetSpeed = new("CFuncConveyor", "m_flTargetSpeed");
 	[SchemaMember("CFuncConveyor", "m_flTargetSpeed")]
-	public ref float TargetSpeed => ref Schema.GetRef<float>(this.Handle, "CFuncConveyor", "m_flTargetSpeed");
+	public ref float TargetSpeed => ref __m_flTargetSpeed.GetRef(this.Handle);
 
 	// m_nTransitionStartTick
+	private static readonly SchemaField<Int32> __m_nTransitionStartTick = new("CFuncConveyor", "m_nTransitionStartTick");
 	[SchemaMember("CFuncConveyor", "m_nTransitionStartTick")]
-	public ref Int32 TransitionStartTick => ref Schema.GetRef<Int32>(this.Handle, "CFuncConveyor", "m_nTransitionStartTick");
+	public ref Int32 TransitionStartTick => ref __m_nTransitionStartTick.GetRef(this.Handle);
 
 	// m_nTransitionDurationTicks
+	private static readonly SchemaField<Int32> __m_nTransitionDurationTicks = new("CFuncConveyor", "m_nTransitionDurationTicks");
 	[SchemaMember("CFuncConveyor", "m_nTransitionDurationTicks")]
-	public ref Int32 TransitionDurationTicks => ref Schema.GetRef<Int32>(this.Handle, "CFuncConveyor", "m_nTransitionDurationTicks");
+	public ref Int32 TransitionDurationTicks => ref __m_nTransitionDurationTicks.GetRef(this.Handle);
 
 	// m_flTransitionStartSpeed
+	private static readonly SchemaField<float> __m_flTransitionStartSpeed = new("CFuncConveyor", "m_flTransitionStartSpeed");
 	[SchemaMember("CFuncConveyor", "m_flTransitionStartSpeed")]
-	public ref float TransitionStartSpeed => ref Schema.GetRef<float>(this.Handle, "CFuncConveyor", "m_flTransitionStartSpeed");
+	public ref float TransitionStartSpeed => ref __m_flTransitionStartSpeed.GetRef(this.Handle);
 
 	// m_flFrictionScale
+	private static readonly SchemaField<float> __m_flFrictionScale = new("CFuncConveyor", "m_flFrictionScale");
 	[SchemaMember("CFuncConveyor", "m_flFrictionScale")]
-	public ref float FrictionScale => ref Schema.GetRef<float>(this.Handle, "CFuncConveyor", "m_flFrictionScale");
+	public ref float FrictionScale => ref __m_flFrictionScale.GetRef(this.Handle);
 
 	// m_hConveyorModels
 	[SchemaMember("CFuncConveyor", "m_hConveyorModels")]

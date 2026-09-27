@@ -39,35 +39,43 @@ public partial class CBasePlayerVData : CEntitySubclassVDataBase
 	public CSkillFloat LegDamageMultiplier => Schema.GetDeclaredClass<CSkillFloat>(this.Handle, "CBasePlayerVData", "m_flLegDamageMultiplier");
 
 	// m_flHoldBreathTime
+	private static readonly SchemaField<float> __m_flHoldBreathTime = new("CBasePlayerVData", "m_flHoldBreathTime");
 	[SchemaMember("CBasePlayerVData", "m_flHoldBreathTime")]
-	public ref float HoldBreathTime => ref Schema.GetRef<float>(this.Handle, "CBasePlayerVData", "m_flHoldBreathTime");
+	public ref float HoldBreathTime => ref __m_flHoldBreathTime.GetRef(this.Handle);
 
 	// m_flDrowningDamageInterval
+	private static readonly SchemaField<float> __m_flDrowningDamageInterval = new("CBasePlayerVData", "m_flDrowningDamageInterval");
 	[SchemaMember("CBasePlayerVData", "m_flDrowningDamageInterval")]
-	public ref float DrowningDamageInterval => ref Schema.GetRef<float>(this.Handle, "CBasePlayerVData", "m_flDrowningDamageInterval");
+	public ref float DrowningDamageInterval => ref __m_flDrowningDamageInterval.GetRef(this.Handle);
 
 	// m_nDrowningDamageInitial
+	private static readonly SchemaField<Int32> __m_nDrowningDamageInitial = new("CBasePlayerVData", "m_nDrowningDamageInitial");
 	[SchemaMember("CBasePlayerVData", "m_nDrowningDamageInitial")]
-	public ref Int32 DrowningDamageInitial => ref Schema.GetRef<Int32>(this.Handle, "CBasePlayerVData", "m_nDrowningDamageInitial");
+	public ref Int32 DrowningDamageInitial => ref __m_nDrowningDamageInitial.GetRef(this.Handle);
 
 	// m_nDrowningDamageMax
+	private static readonly SchemaField<Int32> __m_nDrowningDamageMax = new("CBasePlayerVData", "m_nDrowningDamageMax");
 	[SchemaMember("CBasePlayerVData", "m_nDrowningDamageMax")]
-	public ref Int32 DrowningDamageMax => ref Schema.GetRef<Int32>(this.Handle, "CBasePlayerVData", "m_nDrowningDamageMax");
+	public ref Int32 DrowningDamageMax => ref __m_nDrowningDamageMax.GetRef(this.Handle);
 
 	// m_nWaterSpeed
+	private static readonly SchemaField<Int32> __m_nWaterSpeed = new("CBasePlayerVData", "m_nWaterSpeed");
 	[SchemaMember("CBasePlayerVData", "m_nWaterSpeed")]
-	public ref Int32 WaterSpeed => ref Schema.GetRef<Int32>(this.Handle, "CBasePlayerVData", "m_nWaterSpeed");
+	public ref Int32 WaterSpeed => ref __m_nWaterSpeed.GetRef(this.Handle);
 
 	// m_flUseRange
+	private static readonly SchemaField<float> __m_flUseRange = new("CBasePlayerVData", "m_flUseRange");
 	[SchemaMember("CBasePlayerVData", "m_flUseRange")]
-	public ref float UseRange => ref Schema.GetRef<float>(this.Handle, "CBasePlayerVData", "m_flUseRange");
+	public ref float UseRange => ref __m_flUseRange.GetRef(this.Handle);
 
 	// m_flUseAngleTolerance
+	private static readonly SchemaField<float> __m_flUseAngleTolerance = new("CBasePlayerVData", "m_flUseAngleTolerance");
 	[SchemaMember("CBasePlayerVData", "m_flUseAngleTolerance")]
-	public ref float UseAngleTolerance => ref Schema.GetRef<float>(this.Handle, "CBasePlayerVData", "m_flUseAngleTolerance");
+	public ref float UseAngleTolerance => ref __m_flUseAngleTolerance.GetRef(this.Handle);
 
 	// m_flCrouchTime
+	private static readonly SchemaField<float> __m_flCrouchTime = new("CBasePlayerVData", "m_flCrouchTime");
 	[SchemaMember("CBasePlayerVData", "m_flCrouchTime")]
-	public ref float CrouchTime => ref Schema.GetRef<float>(this.Handle, "CBasePlayerVData", "m_flCrouchTime");
+	public ref float CrouchTime => ref __m_flCrouchTime.GetRef(this.Handle);
 
 }

@@ -19,7 +19,8 @@ public partial class CMarkupVolumeTagged_Nav : CMarkupVolumeTagged
     public CMarkupVolumeTagged_Nav (IntPtr pointer) : base(pointer) {}
 
 	// m_nScopes
+	private static readonly SchemaField<NavScopeFlags_t> __m_nScopes = new("CMarkupVolumeTagged_Nav", "m_nScopes");
 	[SchemaMember("CMarkupVolumeTagged_Nav", "m_nScopes")]
-	public ref NavScopeFlags_t Scopes => ref Schema.GetRef<NavScopeFlags_t>(this.Handle, "CMarkupVolumeTagged_Nav", "m_nScopes");
+	public ref NavScopeFlags_t Scopes => ref __m_nScopes.GetRef(this.Handle);
 
 }

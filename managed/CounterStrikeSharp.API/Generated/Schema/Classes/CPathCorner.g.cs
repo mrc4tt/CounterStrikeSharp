@@ -19,40 +19,49 @@ public partial class CPathCorner : CPointEntity
     public CPathCorner (IntPtr pointer) : base(pointer) {}
 
 	// m_bTriggerLocomotionStop
+	private static readonly SchemaField<bool> __m_bTriggerLocomotionStop = new("CPathCorner", "m_bTriggerLocomotionStop");
 	[SchemaMember("CPathCorner", "m_bTriggerLocomotionStop")]
-	public ref bool TriggerLocomotionStop => ref Schema.GetRef<bool>(this.Handle, "CPathCorner", "m_bTriggerLocomotionStop");
+	public ref bool TriggerLocomotionStop => ref __m_bTriggerLocomotionStop.GetRef(this.Handle);
 
 	// m_bSmoothArrival
+	private static readonly SchemaField<bool> __m_bSmoothArrival = new("CPathCorner", "m_bSmoothArrival");
 	[SchemaMember("CPathCorner", "m_bSmoothArrival")]
-	public ref bool SmoothArrival => ref Schema.GetRef<bool>(this.Handle, "CPathCorner", "m_bSmoothArrival");
+	public ref bool SmoothArrival => ref __m_bSmoothArrival.GetRef(this.Handle);
 
 	// m_bExactPositioning
+	private static readonly SchemaField<bool> __m_bExactPositioning = new("CPathCorner", "m_bExactPositioning");
 	[SchemaMember("CPathCorner", "m_bExactPositioning")]
-	public ref bool ExactPositioning => ref Schema.GetRef<bool>(this.Handle, "CPathCorner", "m_bExactPositioning");
+	public ref bool ExactPositioning => ref __m_bExactPositioning.GetRef(this.Handle);
 
 	// m_flWait
+	private static readonly SchemaField<float> __m_flWait = new("CPathCorner", "m_flWait");
 	[SchemaMember("CPathCorner", "m_flWait")]
-	public ref float Wait => ref Schema.GetRef<float>(this.Handle, "CPathCorner", "m_flWait");
+	public ref float Wait => ref __m_flWait.GetRef(this.Handle);
 
 	// m_flRadius
+	private static readonly SchemaField<float> __m_flRadius = new("CPathCorner", "m_flRadius");
 	[SchemaMember("CPathCorner", "m_flRadius")]
-	public ref float Radius => ref Schema.GetRef<float>(this.Handle, "CPathCorner", "m_flRadius");
+	public ref float Radius => ref __m_flRadius.GetRef(this.Handle);
 
 	// m_flWaypointSuccessRadiusWhenBlocked
+	private static readonly SchemaField<float> __m_flWaypointSuccessRadiusWhenBlocked = new("CPathCorner", "m_flWaypointSuccessRadiusWhenBlocked");
 	[SchemaMember("CPathCorner", "m_flWaypointSuccessRadiusWhenBlocked")]
-	public ref float WaypointSuccessRadiusWhenBlocked => ref Schema.GetRef<float>(this.Handle, "CPathCorner", "m_flWaypointSuccessRadiusWhenBlocked");
+	public ref float WaypointSuccessRadiusWhenBlocked => ref __m_flWaypointSuccessRadiusWhenBlocked.GetRef(this.Handle);
 
 	// m_flWaypointSuccessRadius
+	private static readonly SchemaField<float> __m_flWaypointSuccessRadius = new("CPathCorner", "m_flWaypointSuccessRadius");
 	[SchemaMember("CPathCorner", "m_flWaypointSuccessRadius")]
-	public ref float WaypointSuccessRadius => ref Schema.GetRef<float>(this.Handle, "CPathCorner", "m_flWaypointSuccessRadius");
+	public ref float WaypointSuccessRadius => ref __m_flWaypointSuccessRadius.GetRef(this.Handle);
 
 	// m_flPathEndDistanceFromGoal
+	private static readonly SchemaField<float> __m_flPathEndDistanceFromGoal = new("CPathCorner", "m_flPathEndDistanceFromGoal");
 	[SchemaMember("CPathCorner", "m_flPathEndDistanceFromGoal")]
-	public ref float PathEndDistanceFromGoal => ref Schema.GetRef<float>(this.Handle, "CPathCorner", "m_flPathEndDistanceFromGoal");
+	public ref float PathEndDistanceFromGoal => ref __m_flPathEndDistanceFromGoal.GetRef(this.Handle);
 
 	// m_flSpeed
+	private static readonly SchemaField<float> __m_flSpeed = new("CPathCorner", "m_flSpeed");
 	[SchemaMember("CPathCorner", "m_flSpeed")]
-	public ref float Speed => ref Schema.GetRef<float>(this.Handle, "CPathCorner", "m_flSpeed");
+	public ref float Speed => ref __m_flSpeed.GetRef(this.Handle);
 
 	// m_OnPass
 	[SchemaMember("CPathCorner", "m_OnPass")]

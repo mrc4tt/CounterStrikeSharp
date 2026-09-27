@@ -27,8 +27,9 @@ public partial class CGameMoney : CRulePointEntity
 	public CEntityIOOutput OnMoneySpentFail => Schema.GetDeclaredClass<CEntityIOOutput>(this.Handle, "CGameMoney", "m_OnMoneySpentFail");
 
 	// m_nMoney
+	private static readonly SchemaField<Int32> __m_nMoney = new("CGameMoney", "m_nMoney");
 	[SchemaMember("CGameMoney", "m_nMoney")]
-	public ref Int32 Money => ref Schema.GetRef<Int32>(this.Handle, "CGameMoney", "m_nMoney");
+	public ref Int32 Money => ref __m_nMoney.GetRef(this.Handle);
 
 	// m_strAwardText
 	[SchemaMember("CGameMoney", "m_strAwardText")]

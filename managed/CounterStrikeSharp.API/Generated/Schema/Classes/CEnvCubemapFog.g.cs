@@ -19,56 +19,69 @@ public partial class CEnvCubemapFog : CBaseEntity
     public CEnvCubemapFog (IntPtr pointer) : base(pointer) {}
 
 	// m_flEndDistance
+	private static readonly SchemaField<float> __m_flEndDistance = new("CEnvCubemapFog", "m_flEndDistance");
 	[SchemaMember("CEnvCubemapFog", "m_flEndDistance")]
-	public ref float EndDistance => ref Schema.GetRef<float>(this.Handle, "CEnvCubemapFog", "m_flEndDistance");
+	public ref float EndDistance => ref __m_flEndDistance.GetRef(this.Handle);
 
 	// m_flStartDistance
+	private static readonly SchemaField<float> __m_flStartDistance = new("CEnvCubemapFog", "m_flStartDistance");
 	[SchemaMember("CEnvCubemapFog", "m_flStartDistance")]
-	public ref float StartDistance => ref Schema.GetRef<float>(this.Handle, "CEnvCubemapFog", "m_flStartDistance");
+	public ref float StartDistance => ref __m_flStartDistance.GetRef(this.Handle);
 
 	// m_flFogFalloffExponent
+	private static readonly SchemaField<float> __m_flFogFalloffExponent = new("CEnvCubemapFog", "m_flFogFalloffExponent");
 	[SchemaMember("CEnvCubemapFog", "m_flFogFalloffExponent")]
-	public ref float FogFalloffExponent => ref Schema.GetRef<float>(this.Handle, "CEnvCubemapFog", "m_flFogFalloffExponent");
+	public ref float FogFalloffExponent => ref __m_flFogFalloffExponent.GetRef(this.Handle);
 
 	// m_bHeightFogEnabled
+	private static readonly SchemaField<bool> __m_bHeightFogEnabled = new("CEnvCubemapFog", "m_bHeightFogEnabled");
 	[SchemaMember("CEnvCubemapFog", "m_bHeightFogEnabled")]
-	public ref bool HeightFogEnabled => ref Schema.GetRef<bool>(this.Handle, "CEnvCubemapFog", "m_bHeightFogEnabled");
+	public ref bool HeightFogEnabled => ref __m_bHeightFogEnabled.GetRef(this.Handle);
 
 	// m_flFogHeightWidth
+	private static readonly SchemaField<float> __m_flFogHeightWidth = new("CEnvCubemapFog", "m_flFogHeightWidth");
 	[SchemaMember("CEnvCubemapFog", "m_flFogHeightWidth")]
-	public ref float FogHeightWidth => ref Schema.GetRef<float>(this.Handle, "CEnvCubemapFog", "m_flFogHeightWidth");
+	public ref float FogHeightWidth => ref __m_flFogHeightWidth.GetRef(this.Handle);
 
 	// m_flFogHeightEnd
+	private static readonly SchemaField<float> __m_flFogHeightEnd = new("CEnvCubemapFog", "m_flFogHeightEnd");
 	[SchemaMember("CEnvCubemapFog", "m_flFogHeightEnd")]
-	public ref float FogHeightEnd => ref Schema.GetRef<float>(this.Handle, "CEnvCubemapFog", "m_flFogHeightEnd");
+	public ref float FogHeightEnd => ref __m_flFogHeightEnd.GetRef(this.Handle);
 
 	// m_flFogHeightStart
+	private static readonly SchemaField<float> __m_flFogHeightStart = new("CEnvCubemapFog", "m_flFogHeightStart");
 	[SchemaMember("CEnvCubemapFog", "m_flFogHeightStart")]
-	public ref float FogHeightStart => ref Schema.GetRef<float>(this.Handle, "CEnvCubemapFog", "m_flFogHeightStart");
+	public ref float FogHeightStart => ref __m_flFogHeightStart.GetRef(this.Handle);
 
 	// m_flFogHeightExponent
+	private static readonly SchemaField<float> __m_flFogHeightExponent = new("CEnvCubemapFog", "m_flFogHeightExponent");
 	[SchemaMember("CEnvCubemapFog", "m_flFogHeightExponent")]
-	public ref float FogHeightExponent => ref Schema.GetRef<float>(this.Handle, "CEnvCubemapFog", "m_flFogHeightExponent");
+	public ref float FogHeightExponent => ref __m_flFogHeightExponent.GetRef(this.Handle);
 
 	// m_flLODBias
+	private static readonly SchemaField<float> __m_flLODBias = new("CEnvCubemapFog", "m_flLODBias");
 	[SchemaMember("CEnvCubemapFog", "m_flLODBias")]
-	public ref float LODBias => ref Schema.GetRef<float>(this.Handle, "CEnvCubemapFog", "m_flLODBias");
+	public ref float LODBias => ref __m_flLODBias.GetRef(this.Handle);
 
 	// m_bActive
+	private static readonly SchemaField<bool> __m_bActive = new("CEnvCubemapFog", "m_bActive");
 	[SchemaMember("CEnvCubemapFog", "m_bActive")]
-	public ref bool Active => ref Schema.GetRef<bool>(this.Handle, "CEnvCubemapFog", "m_bActive");
+	public ref bool Active => ref __m_bActive.GetRef(this.Handle);
 
 	// m_bStartDisabled
+	private static readonly SchemaField<bool> __m_bStartDisabled = new("CEnvCubemapFog", "m_bStartDisabled");
 	[SchemaMember("CEnvCubemapFog", "m_bStartDisabled")]
-	public ref bool StartDisabled => ref Schema.GetRef<bool>(this.Handle, "CEnvCubemapFog", "m_bStartDisabled");
+	public ref bool StartDisabled => ref __m_bStartDisabled.GetRef(this.Handle);
 
 	// m_flFogMaxOpacity
+	private static readonly SchemaField<float> __m_flFogMaxOpacity = new("CEnvCubemapFog", "m_flFogMaxOpacity");
 	[SchemaMember("CEnvCubemapFog", "m_flFogMaxOpacity")]
-	public ref float FogMaxOpacity => ref Schema.GetRef<float>(this.Handle, "CEnvCubemapFog", "m_flFogMaxOpacity");
+	public ref float FogMaxOpacity => ref __m_flFogMaxOpacity.GetRef(this.Handle);
 
 	// m_nCubemapSourceType
+	private static readonly SchemaField<Int32> __m_nCubemapSourceType = new("CEnvCubemapFog", "m_nCubemapSourceType");
 	[SchemaMember("CEnvCubemapFog", "m_nCubemapSourceType")]
-	public ref Int32 CubemapSourceType => ref Schema.GetRef<Int32>(this.Handle, "CEnvCubemapFog", "m_nCubemapSourceType");
+	public ref Int32 CubemapSourceType => ref __m_nCubemapSourceType.GetRef(this.Handle);
 
 	// m_hSkyMaterial
 	[SchemaMember("CEnvCubemapFog", "m_hSkyMaterial")]
@@ -83,20 +96,24 @@ public partial class CEnvCubemapFog : CBaseEntity
 	}
 
 	// m_nHeightFogType
+	private static readonly SchemaField<Int32> __m_nHeightFogType = new("CEnvCubemapFog", "m_nHeightFogType");
 	[SchemaMember("CEnvCubemapFog", "m_nHeightFogType")]
-	public ref Int32 HeightFogType => ref Schema.GetRef<Int32>(this.Handle, "CEnvCubemapFog", "m_nHeightFogType");
+	public ref Int32 HeightFogType => ref __m_nHeightFogType.GetRef(this.Handle);
 
 	// m_nFogHeightBlendMode
+	private static readonly SchemaField<Int32> __m_nFogHeightBlendMode = new("CEnvCubemapFog", "m_nFogHeightBlendMode");
 	[SchemaMember("CEnvCubemapFog", "m_nFogHeightBlendMode")]
-	public ref Int32 FogHeightBlendMode => ref Schema.GetRef<Int32>(this.Handle, "CEnvCubemapFog", "m_nFogHeightBlendMode");
+	public ref Int32 FogHeightBlendMode => ref __m_nFogHeightBlendMode.GetRef(this.Handle);
 
 	// m_nFogHeightCoordinateSpace
+	private static readonly SchemaField<Int32> __m_nFogHeightCoordinateSpace = new("CEnvCubemapFog", "m_nFogHeightCoordinateSpace");
 	[SchemaMember("CEnvCubemapFog", "m_nFogHeightCoordinateSpace")]
-	public ref Int32 FogHeightCoordinateSpace => ref Schema.GetRef<Int32>(this.Handle, "CEnvCubemapFog", "m_nFogHeightCoordinateSpace");
+	public ref Int32 FogHeightCoordinateSpace => ref __m_nFogHeightCoordinateSpace.GetRef(this.Handle);
 
 	// m_nDistanceFogType
+	private static readonly SchemaField<Int32> __m_nDistanceFogType = new("CEnvCubemapFog", "m_nDistanceFogType");
 	[SchemaMember("CEnvCubemapFog", "m_nDistanceFogType")]
-	public ref Int32 DistanceFogType => ref Schema.GetRef<Int32>(this.Handle, "CEnvCubemapFog", "m_nDistanceFogType");
+	public ref Int32 DistanceFogType => ref __m_nDistanceFogType.GetRef(this.Handle);
 
 	// m_DistanceFogCurveString
 	[SchemaMember("CEnvCubemapFog", "m_DistanceFogCurveString")]
@@ -119,11 +136,13 @@ public partial class CEnvCubemapFog : CBaseEntity
 	public CStrongHandle<InfoForResourceTypeCTextureBase> FogCubemapTexture => Schema.GetDeclaredClass<CStrongHandle<InfoForResourceTypeCTextureBase>>(this.Handle, "CEnvCubemapFog", "m_hFogCubemapTexture");
 
 	// m_bHasHeightFogEnd
+	private static readonly SchemaField<bool> __m_bHasHeightFogEnd = new("CEnvCubemapFog", "m_bHasHeightFogEnd");
 	[SchemaMember("CEnvCubemapFog", "m_bHasHeightFogEnd")]
-	public ref bool HasHeightFogEnd => ref Schema.GetRef<bool>(this.Handle, "CEnvCubemapFog", "m_bHasHeightFogEnd");
+	public ref bool HasHeightFogEnd => ref __m_bHasHeightFogEnd.GetRef(this.Handle);
 
 	// m_bFirstTime
+	private static readonly SchemaField<bool> __m_bFirstTime = new("CEnvCubemapFog", "m_bFirstTime");
 	[SchemaMember("CEnvCubemapFog", "m_bFirstTime")]
-	public ref bool FirstTime => ref Schema.GetRef<bool>(this.Handle, "CEnvCubemapFog", "m_bFirstTime");
+	public ref bool FirstTime => ref __m_bFirstTime.GetRef(this.Handle);
 
 }

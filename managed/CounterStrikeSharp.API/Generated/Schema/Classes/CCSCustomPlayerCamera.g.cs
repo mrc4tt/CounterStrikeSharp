@@ -23,16 +23,18 @@ public partial class CCSCustomPlayerCamera : CBaseEntity
 	public CHandle<CCSPlayerPawnBase> Pawn => Schema.GetDeclaredClass<CHandle<CCSPlayerPawnBase>>(this.Handle, "CCSCustomPlayerCamera", "m_hPawn");
 
 	// m_nCameraMode
+	private static readonly SchemaField<CustomCameraMode_t> __m_nCameraMode = new("CCSCustomPlayerCamera", "m_nCameraMode");
 	[SchemaMember("CCSCustomPlayerCamera", "m_nCameraMode")]
-	public ref CustomCameraMode_t CameraMode => ref Schema.GetRef<CustomCameraMode_t>(this.Handle, "CCSCustomPlayerCamera", "m_nCameraMode");
+	public ref CustomCameraMode_t CameraMode => ref __m_nCameraMode.GetRef(this.Handle);
 
 	// m_hFollowEntity
 	[SchemaMember("CCSCustomPlayerCamera", "m_hFollowEntity")]
 	public CHandle<CBaseEntity> FollowEntity => Schema.GetDeclaredClass<CHandle<CBaseEntity>>(this.Handle, "CCSCustomPlayerCamera", "m_hFollowEntity");
 
 	// m_bFollowEyes
+	private static readonly SchemaField<bool> __m_bFollowEyes = new("CCSCustomPlayerCamera", "m_bFollowEyes");
 	[SchemaMember("CCSCustomPlayerCamera", "m_bFollowEyes")]
-	public ref bool FollowEyes => ref Schema.GetRef<bool>(this.Handle, "CCSCustomPlayerCamera", "m_bFollowEyes");
+	public ref bool FollowEyes => ref __m_bFollowEyes.GetRef(this.Handle);
 
 	// m_vecFollowOffset
 	[SchemaMember("CCSCustomPlayerCamera", "m_vecFollowOffset")]
@@ -43,11 +45,13 @@ public partial class CCSCustomPlayerCamera : CBaseEntity
 	public Vector CameraOffset => Schema.GetDeclaredClass<Vector>(this.Handle, "CCSCustomPlayerCamera", "m_vecCameraOffset");
 
 	// m_bClipCameraOffset
+	private static readonly SchemaField<bool> __m_bClipCameraOffset = new("CCSCustomPlayerCamera", "m_bClipCameraOffset");
 	[SchemaMember("CCSCustomPlayerCamera", "m_bClipCameraOffset")]
-	public ref bool ClipCameraOffset => ref Schema.GetRef<bool>(this.Handle, "CCSCustomPlayerCamera", "m_bClipCameraOffset");
+	public ref bool ClipCameraOffset => ref __m_bClipCameraOffset.GetRef(this.Handle);
 
 	// m_flCameraOffsetReturnStrength
+	private static readonly SchemaField<float> __m_flCameraOffsetReturnStrength = new("CCSCustomPlayerCamera", "m_flCameraOffsetReturnStrength");
 	[SchemaMember("CCSCustomPlayerCamera", "m_flCameraOffsetReturnStrength")]
-	public ref float CameraOffsetReturnStrength => ref Schema.GetRef<float>(this.Handle, "CCSCustomPlayerCamera", "m_flCameraOffsetReturnStrength");
+	public ref float CameraOffsetReturnStrength => ref __m_flCameraOffsetReturnStrength.GetRef(this.Handle);
 
 }

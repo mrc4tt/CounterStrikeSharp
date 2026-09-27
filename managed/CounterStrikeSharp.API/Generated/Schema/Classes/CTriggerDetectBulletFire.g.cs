@@ -19,8 +19,9 @@ public partial class CTriggerDetectBulletFire : CBaseTrigger
     public CTriggerDetectBulletFire (IntPtr pointer) : base(pointer) {}
 
 	// m_bPlayerFireOnly
+	private static readonly SchemaField<bool> __m_bPlayerFireOnly = new("CTriggerDetectBulletFire", "m_bPlayerFireOnly");
 	[SchemaMember("CTriggerDetectBulletFire", "m_bPlayerFireOnly")]
-	public ref bool PlayerFireOnly => ref Schema.GetRef<bool>(this.Handle, "CTriggerDetectBulletFire", "m_bPlayerFireOnly");
+	public ref bool PlayerFireOnly => ref __m_bPlayerFireOnly.GetRef(this.Handle);
 
 	// m_OnDetectedBulletFire
 	[SchemaMember("CTriggerDetectBulletFire", "m_OnDetectedBulletFire")]

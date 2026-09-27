@@ -31,48 +31,58 @@ public partial class CSplineConstraint : CPhysConstraint
 	public IPhysicsBody? SplineBody => Schema.GetPointer<IPhysicsBody>(this.Handle, "CSplineConstraint", "m_pSplineBody");
 
 	// m_bEnableLateralConstraint
+	private static readonly SchemaField<bool> __m_bEnableLateralConstraint = new("CSplineConstraint", "m_bEnableLateralConstraint");
 	[SchemaMember("CSplineConstraint", "m_bEnableLateralConstraint")]
-	public ref bool EnableLateralConstraint => ref Schema.GetRef<bool>(this.Handle, "CSplineConstraint", "m_bEnableLateralConstraint");
+	public ref bool EnableLateralConstraint => ref __m_bEnableLateralConstraint.GetRef(this.Handle);
 
 	// m_bEnableVerticalConstraint
+	private static readonly SchemaField<bool> __m_bEnableVerticalConstraint = new("CSplineConstraint", "m_bEnableVerticalConstraint");
 	[SchemaMember("CSplineConstraint", "m_bEnableVerticalConstraint")]
-	public ref bool EnableVerticalConstraint => ref Schema.GetRef<bool>(this.Handle, "CSplineConstraint", "m_bEnableVerticalConstraint");
+	public ref bool EnableVerticalConstraint => ref __m_bEnableVerticalConstraint.GetRef(this.Handle);
 
 	// m_bEnableAngularConstraint
+	private static readonly SchemaField<bool> __m_bEnableAngularConstraint = new("CSplineConstraint", "m_bEnableAngularConstraint");
 	[SchemaMember("CSplineConstraint", "m_bEnableAngularConstraint")]
-	public ref bool EnableAngularConstraint => ref Schema.GetRef<bool>(this.Handle, "CSplineConstraint", "m_bEnableAngularConstraint");
+	public ref bool EnableAngularConstraint => ref __m_bEnableAngularConstraint.GetRef(this.Handle);
 
 	// m_bEnableLimit
+	private static readonly SchemaField<bool> __m_bEnableLimit = new("CSplineConstraint", "m_bEnableLimit");
 	[SchemaMember("CSplineConstraint", "m_bEnableLimit")]
-	public ref bool EnableLimit => ref Schema.GetRef<bool>(this.Handle, "CSplineConstraint", "m_bEnableLimit");
+	public ref bool EnableLimit => ref __m_bEnableLimit.GetRef(this.Handle);
 
 	// m_bFireEventsOnPath
+	private static readonly SchemaField<bool> __m_bFireEventsOnPath = new("CSplineConstraint", "m_bFireEventsOnPath");
 	[SchemaMember("CSplineConstraint", "m_bFireEventsOnPath")]
-	public ref bool FireEventsOnPath => ref Schema.GetRef<bool>(this.Handle, "CSplineConstraint", "m_bFireEventsOnPath");
+	public ref bool FireEventsOnPath => ref __m_bFireEventsOnPath.GetRef(this.Handle);
 
 	// m_flLinearFrequency
+	private static readonly SchemaField<float> __m_flLinearFrequency = new("CSplineConstraint", "m_flLinearFrequency");
 	[SchemaMember("CSplineConstraint", "m_flLinearFrequency")]
-	public ref float LinearFrequency => ref Schema.GetRef<float>(this.Handle, "CSplineConstraint", "m_flLinearFrequency");
+	public ref float LinearFrequency => ref __m_flLinearFrequency.GetRef(this.Handle);
 
 	// m_flLinarDampingRatio
+	private static readonly SchemaField<float> __m_flLinarDampingRatio = new("CSplineConstraint", "m_flLinarDampingRatio");
 	[SchemaMember("CSplineConstraint", "m_flLinarDampingRatio")]
-	public ref float LinarDampingRatio => ref Schema.GetRef<float>(this.Handle, "CSplineConstraint", "m_flLinarDampingRatio");
+	public ref float LinarDampingRatio => ref __m_flLinarDampingRatio.GetRef(this.Handle);
 
 	// m_flJointFriction
+	private static readonly SchemaField<float> __m_flJointFriction = new("CSplineConstraint", "m_flJointFriction");
 	[SchemaMember("CSplineConstraint", "m_flJointFriction")]
-	public ref float JointFriction => ref Schema.GetRef<float>(this.Handle, "CSplineConstraint", "m_flJointFriction");
+	public ref float JointFriction => ref __m_flJointFriction.GetRef(this.Handle);
 
 	// m_flTransitionTime
+	private static readonly SchemaField<float> __m_flTransitionTime = new("CSplineConstraint", "m_flTransitionTime");
 	[SchemaMember("CSplineConstraint", "m_flTransitionTime")]
-	public ref float TransitionTime => ref Schema.GetRef<float>(this.Handle, "CSplineConstraint", "m_flTransitionTime");
+	public ref float TransitionTime => ref __m_flTransitionTime.GetRef(this.Handle);
 
 	// m_vPreSolveAnchorPos
 	[SchemaMember("CSplineConstraint", "m_vPreSolveAnchorPos")]
 	public Vector PreSolveAnchorPos => Schema.GetDeclaredClass<Vector>(this.Handle, "CSplineConstraint", "m_vPreSolveAnchorPos");
 
 	// m_StartTransitionTime
+	private static readonly SchemaField<float> __m_StartTransitionTime = new("CSplineConstraint", "m_StartTransitionTime");
 	[SchemaMember("CSplineConstraint", "m_StartTransitionTime")]
-	public ref float StartTransitionTime => ref Schema.GetRef<float>(this.Handle, "CSplineConstraint", "m_StartTransitionTime");
+	public ref float StartTransitionTime => ref __m_StartTransitionTime.GetRef(this.Handle);
 
 	// m_vTangentSpaceAnchorAtTransitionStart
 	[SchemaMember("CSplineConstraint", "m_vTangentSpaceAnchorAtTransitionStart")]

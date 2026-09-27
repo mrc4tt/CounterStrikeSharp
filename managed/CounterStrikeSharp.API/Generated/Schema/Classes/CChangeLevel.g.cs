@@ -39,19 +39,23 @@ public partial class CChangeLevel : CBaseTrigger
 	public CEntityIOOutput OnChangeLevel => Schema.GetDeclaredClass<CEntityIOOutput>(this.Handle, "CChangeLevel", "m_OnChangeLevel");
 
 	// m_bTouched
+	private static readonly SchemaField<bool> __m_bTouched = new("CChangeLevel", "m_bTouched");
 	[SchemaMember("CChangeLevel", "m_bTouched")]
-	public ref bool Touched => ref Schema.GetRef<bool>(this.Handle, "CChangeLevel", "m_bTouched");
+	public ref bool Touched => ref __m_bTouched.GetRef(this.Handle);
 
 	// m_bNoTouch
+	private static readonly SchemaField<bool> __m_bNoTouch = new("CChangeLevel", "m_bNoTouch");
 	[SchemaMember("CChangeLevel", "m_bNoTouch")]
-	public ref bool NoTouch => ref Schema.GetRef<bool>(this.Handle, "CChangeLevel", "m_bNoTouch");
+	public ref bool NoTouch => ref __m_bNoTouch.GetRef(this.Handle);
 
 	// m_bNewChapter
+	private static readonly SchemaField<bool> __m_bNewChapter = new("CChangeLevel", "m_bNewChapter");
 	[SchemaMember("CChangeLevel", "m_bNewChapter")]
-	public ref bool NewChapter => ref Schema.GetRef<bool>(this.Handle, "CChangeLevel", "m_bNewChapter");
+	public ref bool NewChapter => ref __m_bNewChapter.GetRef(this.Handle);
 
 	// m_bOnChangeLevelFired
+	private static readonly SchemaField<bool> __m_bOnChangeLevelFired = new("CChangeLevel", "m_bOnChangeLevelFired");
 	[SchemaMember("CChangeLevel", "m_bOnChangeLevelFired")]
-	public ref bool OnChangeLevelFired => ref Schema.GetRef<bool>(this.Handle, "CChangeLevel", "m_bOnChangeLevelFired");
+	public ref bool OnChangeLevelFired => ref __m_bOnChangeLevelFired.GetRef(this.Handle);
 
 }

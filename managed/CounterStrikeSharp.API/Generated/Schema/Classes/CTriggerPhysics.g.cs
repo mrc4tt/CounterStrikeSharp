@@ -23,44 +23,53 @@ public partial class CTriggerPhysics : CBaseTrigger
 	public IPhysicsMotionController? Controller => Schema.GetPointer<IPhysicsMotionController>(this.Handle, "CTriggerPhysics", "m_pController");
 
 	// m_gravityScale
+	private static readonly SchemaField<float> __m_gravityScale = new("CTriggerPhysics", "m_gravityScale");
 	[SchemaMember("CTriggerPhysics", "m_gravityScale")]
-	public new ref float GravityScale => ref Schema.GetRef<float>(this.Handle, "CTriggerPhysics", "m_gravityScale");
+	public new ref float GravityScale => ref __m_gravityScale.GetRef(this.Handle);
 
 	// m_linearLimit
+	private static readonly SchemaField<float> __m_linearLimit = new("CTriggerPhysics", "m_linearLimit");
 	[SchemaMember("CTriggerPhysics", "m_linearLimit")]
-	public ref float LinearLimit => ref Schema.GetRef<float>(this.Handle, "CTriggerPhysics", "m_linearLimit");
+	public ref float LinearLimit => ref __m_linearLimit.GetRef(this.Handle);
 
 	// m_linearDamping
+	private static readonly SchemaField<float> __m_linearDamping = new("CTriggerPhysics", "m_linearDamping");
 	[SchemaMember("CTriggerPhysics", "m_linearDamping")]
-	public ref float LinearDamping => ref Schema.GetRef<float>(this.Handle, "CTriggerPhysics", "m_linearDamping");
+	public ref float LinearDamping => ref __m_linearDamping.GetRef(this.Handle);
 
 	// m_angularLimit
+	private static readonly SchemaField<float> __m_angularLimit = new("CTriggerPhysics", "m_angularLimit");
 	[SchemaMember("CTriggerPhysics", "m_angularLimit")]
-	public ref float AngularLimit => ref Schema.GetRef<float>(this.Handle, "CTriggerPhysics", "m_angularLimit");
+	public ref float AngularLimit => ref __m_angularLimit.GetRef(this.Handle);
 
 	// m_angularDamping
+	private static readonly SchemaField<float> __m_angularDamping = new("CTriggerPhysics", "m_angularDamping");
 	[SchemaMember("CTriggerPhysics", "m_angularDamping")]
-	public ref float AngularDamping => ref Schema.GetRef<float>(this.Handle, "CTriggerPhysics", "m_angularDamping");
+	public ref float AngularDamping => ref __m_angularDamping.GetRef(this.Handle);
 
 	// m_linearForce
+	private static readonly SchemaField<float> __m_linearForce = new("CTriggerPhysics", "m_linearForce");
 	[SchemaMember("CTriggerPhysics", "m_linearForce")]
-	public ref float LinearForce => ref Schema.GetRef<float>(this.Handle, "CTriggerPhysics", "m_linearForce");
+	public ref float LinearForce => ref __m_linearForce.GetRef(this.Handle);
 
 	// m_flFrequency
+	private static readonly SchemaField<float> __m_flFrequency = new("CTriggerPhysics", "m_flFrequency");
 	[SchemaMember("CTriggerPhysics", "m_flFrequency")]
-	public ref float Frequency => ref Schema.GetRef<float>(this.Handle, "CTriggerPhysics", "m_flFrequency");
+	public ref float Frequency => ref __m_flFrequency.GetRef(this.Handle);
 
 	// m_flDampingRatio
+	private static readonly SchemaField<float> __m_flDampingRatio = new("CTriggerPhysics", "m_flDampingRatio");
 	[SchemaMember("CTriggerPhysics", "m_flDampingRatio")]
-	public ref float DampingRatio => ref Schema.GetRef<float>(this.Handle, "CTriggerPhysics", "m_flDampingRatio");
+	public ref float DampingRatio => ref __m_flDampingRatio.GetRef(this.Handle);
 
 	// m_vecLinearForcePointAt
 	[SchemaMember("CTriggerPhysics", "m_vecLinearForcePointAt")]
 	public Vector LinearForcePointAt => Schema.GetDeclaredClass<Vector>(this.Handle, "CTriggerPhysics", "m_vecLinearForcePointAt");
 
 	// m_bCollapseToForcePoint
+	private static readonly SchemaField<bool> __m_bCollapseToForcePoint = new("CTriggerPhysics", "m_bCollapseToForcePoint");
 	[SchemaMember("CTriggerPhysics", "m_bCollapseToForcePoint")]
-	public ref bool CollapseToForcePoint => ref Schema.GetRef<bool>(this.Handle, "CTriggerPhysics", "m_bCollapseToForcePoint");
+	public ref bool CollapseToForcePoint => ref __m_bCollapseToForcePoint.GetRef(this.Handle);
 
 	// m_vecLinearForcePointAtWorld
 	[SchemaMember("CTriggerPhysics", "m_vecLinearForcePointAtWorld")]
@@ -71,11 +80,13 @@ public partial class CTriggerPhysics : CBaseTrigger
 	public Vector LinearForceDirection => Schema.GetDeclaredClass<Vector>(this.Handle, "CTriggerPhysics", "m_vecLinearForceDirection");
 
 	// m_bForceDirectionIsInLocalSpace
+	private static readonly SchemaField<bool> __m_bForceDirectionIsInLocalSpace = new("CTriggerPhysics", "m_bForceDirectionIsInLocalSpace");
 	[SchemaMember("CTriggerPhysics", "m_bForceDirectionIsInLocalSpace")]
-	public ref bool ForceDirectionIsInLocalSpace => ref Schema.GetRef<bool>(this.Handle, "CTriggerPhysics", "m_bForceDirectionIsInLocalSpace");
+	public ref bool ForceDirectionIsInLocalSpace => ref __m_bForceDirectionIsInLocalSpace.GetRef(this.Handle);
 
 	// m_bConvertToDebrisWhenPossible
+	private static readonly SchemaField<bool> __m_bConvertToDebrisWhenPossible = new("CTriggerPhysics", "m_bConvertToDebrisWhenPossible");
 	[SchemaMember("CTriggerPhysics", "m_bConvertToDebrisWhenPossible")]
-	public ref bool ConvertToDebrisWhenPossible => ref Schema.GetRef<bool>(this.Handle, "CTriggerPhysics", "m_bConvertToDebrisWhenPossible");
+	public ref bool ConvertToDebrisWhenPossible => ref __m_bConvertToDebrisWhenPossible.GetRef(this.Handle);
 
 }

@@ -27,39 +27,46 @@ public partial class CC4 : CCSWeaponBase
 	public Vector LastValidDroppedPosition => Schema.GetDeclaredClass<Vector>(this.Handle, "CC4", "m_vecLastValidDroppedPosition");
 
 	// m_bDoValidDroppedPositionCheck
+	private static readonly SchemaField<bool> __m_bDoValidDroppedPositionCheck = new("CC4", "m_bDoValidDroppedPositionCheck");
 	[SchemaMember("CC4", "m_bDoValidDroppedPositionCheck")]
-	public ref bool DoValidDroppedPositionCheck => ref Schema.GetRef<bool>(this.Handle, "CC4", "m_bDoValidDroppedPositionCheck");
+	public ref bool DoValidDroppedPositionCheck => ref __m_bDoValidDroppedPositionCheck.GetRef(this.Handle);
 
 	// m_bStartedArming
+	private static readonly SchemaField<bool> __m_bStartedArming = new("CC4", "m_bStartedArming");
 	[SchemaMember("CC4", "m_bStartedArming")]
-	public ref bool StartedArming => ref Schema.GetRef<bool>(this.Handle, "CC4", "m_bStartedArming");
+	public ref bool StartedArming => ref __m_bStartedArming.GetRef(this.Handle);
 
 	// m_fArmedTime
+	private static readonly SchemaField<float> __m_fArmedTime = new("CC4", "m_fArmedTime");
 	[SchemaMember("CC4", "m_fArmedTime")]
-	public ref float ArmedTime => ref Schema.GetRef<float>(this.Handle, "CC4", "m_fArmedTime");
+	public ref float ArmedTime => ref __m_fArmedTime.GetRef(this.Handle);
 
 	// m_bBombPlacedAnimation
+	private static readonly SchemaField<bool> __m_bBombPlacedAnimation = new("CC4", "m_bBombPlacedAnimation");
 	[SchemaMember("CC4", "m_bBombPlacedAnimation")]
-	public ref bool BombPlacedAnimation => ref Schema.GetRef<bool>(this.Handle, "CC4", "m_bBombPlacedAnimation");
+	public ref bool BombPlacedAnimation => ref __m_bBombPlacedAnimation.GetRef(this.Handle);
 
 	// m_bIsPlantingViaUse
+	private static readonly SchemaField<bool> __m_bIsPlantingViaUse = new("CC4", "m_bIsPlantingViaUse");
 	[SchemaMember("CC4", "m_bIsPlantingViaUse")]
-	public ref bool IsPlantingViaUse => ref Schema.GetRef<bool>(this.Handle, "CC4", "m_bIsPlantingViaUse");
+	public ref bool IsPlantingViaUse => ref __m_bIsPlantingViaUse.GetRef(this.Handle);
 
 	// m_entitySpottedState
 	[SchemaMember("CC4", "m_entitySpottedState")]
 	public EntitySpottedState_t EntitySpottedState => Schema.GetDeclaredClass<EntitySpottedState_t>(this.Handle, "CC4", "m_entitySpottedState");
 
 	// m_nSpotRules
+	private static readonly SchemaField<Int32> __m_nSpotRules = new("CC4", "m_nSpotRules");
 	[SchemaMember("CC4", "m_nSpotRules")]
-	public ref Int32 SpotRules => ref Schema.GetRef<Int32>(this.Handle, "CC4", "m_nSpotRules");
+	public ref Int32 SpotRules => ref __m_nSpotRules.GetRef(this.Handle);
 
 	// m_bPlayedArmingBeeps
 	[SchemaMember("CC4", "m_bPlayedArmingBeeps")]
 	public Span<bool> PlayedArmingBeeps => Schema.GetFixedArray<bool>(this.Handle, "CC4", "m_bPlayedArmingBeeps", 7);
 
 	// m_bBombPlanted
+	private static readonly SchemaField<bool> __m_bBombPlanted = new("CC4", "m_bBombPlanted");
 	[SchemaMember("CC4", "m_bBombPlanted")]
-	public ref bool BombPlanted => ref Schema.GetRef<bool>(this.Handle, "CC4", "m_bBombPlanted");
+	public ref bool BombPlanted => ref __m_bBombPlanted.GetRef(this.Handle);
 
 }

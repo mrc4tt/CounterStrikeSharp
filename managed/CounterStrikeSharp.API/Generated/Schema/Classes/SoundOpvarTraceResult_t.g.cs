@@ -23,11 +23,13 @@ public partial class SoundOpvarTraceResult_t : NativeObject
 	public Vector VPos => Schema.GetDeclaredClass<Vector>(this.Handle, "SoundOpvarTraceResult_t", "vPos");
 
 	// bDidHit
+	private static readonly SchemaField<bool> __bDidHit = new("SoundOpvarTraceResult_t", "bDidHit");
 	[SchemaMember("SoundOpvarTraceResult_t", "bDidHit")]
-	public ref bool BDidHit => ref Schema.GetRef<bool>(this.Handle, "SoundOpvarTraceResult_t", "bDidHit");
+	public ref bool BDidHit => ref __bDidHit.GetRef(this.Handle);
 
 	// flDistSqrToCenter
+	private static readonly SchemaField<float> __flDistSqrToCenter = new("SoundOpvarTraceResult_t", "flDistSqrToCenter");
 	[SchemaMember("SoundOpvarTraceResult_t", "flDistSqrToCenter")]
-	public ref float FlDistSqrToCenter => ref Schema.GetRef<float>(this.Handle, "SoundOpvarTraceResult_t", "flDistSqrToCenter");
+	public ref float FlDistSqrToCenter => ref __flDistSqrToCenter.GetRef(this.Handle);
 
 }

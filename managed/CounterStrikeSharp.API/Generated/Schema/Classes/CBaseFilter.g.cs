@@ -19,8 +19,9 @@ public partial class CBaseFilter : CLogicalEntity
     public CBaseFilter (IntPtr pointer) : base(pointer) {}
 
 	// m_bNegated
+	private static readonly SchemaField<bool> __m_bNegated = new("CBaseFilter", "m_bNegated");
 	[SchemaMember("CBaseFilter", "m_bNegated")]
-	public ref bool Negated => ref Schema.GetRef<bool>(this.Handle, "CBaseFilter", "m_bNegated");
+	public ref bool Negated => ref __m_bNegated.GetRef(this.Handle);
 
 	// m_OnPass
 	[SchemaMember("CBaseFilter", "m_OnPass")]

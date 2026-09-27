@@ -27,16 +27,18 @@ public partial class CEnvCombinedLightProbeVolume : CBaseEntity
 	}
 
 	// m_Entity_flBrightness
+	private static readonly SchemaField<float> __m_Entity_flBrightness = new("CEnvCombinedLightProbeVolume", "m_Entity_flBrightness");
 	[SchemaMember("CEnvCombinedLightProbeVolume", "m_Entity_flBrightness")]
-	public ref float Entity_flBrightness => ref Schema.GetRef<float>(this.Handle, "CEnvCombinedLightProbeVolume", "m_Entity_flBrightness");
+	public ref float Entity_flBrightness => ref __m_Entity_flBrightness.GetRef(this.Handle);
 
 	// m_Entity_hCubemapTexture
 	[SchemaMember("CEnvCombinedLightProbeVolume", "m_Entity_hCubemapTexture")]
 	public CStrongHandle<InfoForResourceTypeCTextureBase> Entity_hCubemapTexture => Schema.GetDeclaredClass<CStrongHandle<InfoForResourceTypeCTextureBase>>(this.Handle, "CEnvCombinedLightProbeVolume", "m_Entity_hCubemapTexture");
 
 	// m_Entity_bCustomCubemapTexture
+	private static readonly SchemaField<bool> __m_Entity_bCustomCubemapTexture = new("CEnvCombinedLightProbeVolume", "m_Entity_bCustomCubemapTexture");
 	[SchemaMember("CEnvCombinedLightProbeVolume", "m_Entity_bCustomCubemapTexture")]
-	public ref bool Entity_bCustomCubemapTexture => ref Schema.GetRef<bool>(this.Handle, "CEnvCombinedLightProbeVolume", "m_Entity_bCustomCubemapTexture");
+	public ref bool Entity_bCustomCubemapTexture => ref __m_Entity_bCustomCubemapTexture.GetRef(this.Handle);
 
 	// m_Entity_hLightProbeTexture_AmbientCube
 	[SchemaMember("CEnvCombinedLightProbeVolume", "m_Entity_hLightProbeTexture_AmbientCube")]
@@ -75,59 +77,72 @@ public partial class CEnvCombinedLightProbeVolume : CBaseEntity
 	public Vector Entity_vBoxMaxs => Schema.GetDeclaredClass<Vector>(this.Handle, "CEnvCombinedLightProbeVolume", "m_Entity_vBoxMaxs");
 
 	// m_Entity_bMoveable
+	private static readonly SchemaField<bool> __m_Entity_bMoveable = new("CEnvCombinedLightProbeVolume", "m_Entity_bMoveable");
 	[SchemaMember("CEnvCombinedLightProbeVolume", "m_Entity_bMoveable")]
-	public ref bool Entity_bMoveable => ref Schema.GetRef<bool>(this.Handle, "CEnvCombinedLightProbeVolume", "m_Entity_bMoveable");
+	public ref bool Entity_bMoveable => ref __m_Entity_bMoveable.GetRef(this.Handle);
 
 	// m_Entity_nHandshake
+	private static readonly SchemaField<Int32> __m_Entity_nHandshake = new("CEnvCombinedLightProbeVolume", "m_Entity_nHandshake");
 	[SchemaMember("CEnvCombinedLightProbeVolume", "m_Entity_nHandshake")]
-	public ref Int32 Entity_nHandshake => ref Schema.GetRef<Int32>(this.Handle, "CEnvCombinedLightProbeVolume", "m_Entity_nHandshake");
+	public ref Int32 Entity_nHandshake => ref __m_Entity_nHandshake.GetRef(this.Handle);
 
 	// m_Entity_nEnvCubeMapArrayIndex
+	private static readonly SchemaField<Int32> __m_Entity_nEnvCubeMapArrayIndex = new("CEnvCombinedLightProbeVolume", "m_Entity_nEnvCubeMapArrayIndex");
 	[SchemaMember("CEnvCombinedLightProbeVolume", "m_Entity_nEnvCubeMapArrayIndex")]
-	public ref Int32 Entity_nEnvCubeMapArrayIndex => ref Schema.GetRef<Int32>(this.Handle, "CEnvCombinedLightProbeVolume", "m_Entity_nEnvCubeMapArrayIndex");
+	public ref Int32 Entity_nEnvCubeMapArrayIndex => ref __m_Entity_nEnvCubeMapArrayIndex.GetRef(this.Handle);
 
 	// m_Entity_nPriority
+	private static readonly SchemaField<Int32> __m_Entity_nPriority = new("CEnvCombinedLightProbeVolume", "m_Entity_nPriority");
 	[SchemaMember("CEnvCombinedLightProbeVolume", "m_Entity_nPriority")]
-	public ref Int32 Entity_nPriority => ref Schema.GetRef<Int32>(this.Handle, "CEnvCombinedLightProbeVolume", "m_Entity_nPriority");
+	public ref Int32 Entity_nPriority => ref __m_Entity_nPriority.GetRef(this.Handle);
 
 	// m_Entity_bStartDisabled
+	private static readonly SchemaField<bool> __m_Entity_bStartDisabled = new("CEnvCombinedLightProbeVolume", "m_Entity_bStartDisabled");
 	[SchemaMember("CEnvCombinedLightProbeVolume", "m_Entity_bStartDisabled")]
-	public ref bool Entity_bStartDisabled => ref Schema.GetRef<bool>(this.Handle, "CEnvCombinedLightProbeVolume", "m_Entity_bStartDisabled");
+	public ref bool Entity_bStartDisabled => ref __m_Entity_bStartDisabled.GetRef(this.Handle);
 
 	// m_Entity_flEdgeFadeDist
+	private static readonly SchemaField<float> __m_Entity_flEdgeFadeDist = new("CEnvCombinedLightProbeVolume", "m_Entity_flEdgeFadeDist");
 	[SchemaMember("CEnvCombinedLightProbeVolume", "m_Entity_flEdgeFadeDist")]
-	public ref float Entity_flEdgeFadeDist => ref Schema.GetRef<float>(this.Handle, "CEnvCombinedLightProbeVolume", "m_Entity_flEdgeFadeDist");
+	public ref float Entity_flEdgeFadeDist => ref __m_Entity_flEdgeFadeDist.GetRef(this.Handle);
 
 	// m_Entity_vEdgeFadeDists
 	[SchemaMember("CEnvCombinedLightProbeVolume", "m_Entity_vEdgeFadeDists")]
 	public Vector Entity_vEdgeFadeDists => Schema.GetDeclaredClass<Vector>(this.Handle, "CEnvCombinedLightProbeVolume", "m_Entity_vEdgeFadeDists");
 
 	// m_Entity_nLightProbeSizeX
+	private static readonly SchemaField<Int32> __m_Entity_nLightProbeSizeX = new("CEnvCombinedLightProbeVolume", "m_Entity_nLightProbeSizeX");
 	[SchemaMember("CEnvCombinedLightProbeVolume", "m_Entity_nLightProbeSizeX")]
-	public ref Int32 Entity_nLightProbeSizeX => ref Schema.GetRef<Int32>(this.Handle, "CEnvCombinedLightProbeVolume", "m_Entity_nLightProbeSizeX");
+	public ref Int32 Entity_nLightProbeSizeX => ref __m_Entity_nLightProbeSizeX.GetRef(this.Handle);
 
 	// m_Entity_nLightProbeSizeY
+	private static readonly SchemaField<Int32> __m_Entity_nLightProbeSizeY = new("CEnvCombinedLightProbeVolume", "m_Entity_nLightProbeSizeY");
 	[SchemaMember("CEnvCombinedLightProbeVolume", "m_Entity_nLightProbeSizeY")]
-	public ref Int32 Entity_nLightProbeSizeY => ref Schema.GetRef<Int32>(this.Handle, "CEnvCombinedLightProbeVolume", "m_Entity_nLightProbeSizeY");
+	public ref Int32 Entity_nLightProbeSizeY => ref __m_Entity_nLightProbeSizeY.GetRef(this.Handle);
 
 	// m_Entity_nLightProbeSizeZ
+	private static readonly SchemaField<Int32> __m_Entity_nLightProbeSizeZ = new("CEnvCombinedLightProbeVolume", "m_Entity_nLightProbeSizeZ");
 	[SchemaMember("CEnvCombinedLightProbeVolume", "m_Entity_nLightProbeSizeZ")]
-	public ref Int32 Entity_nLightProbeSizeZ => ref Schema.GetRef<Int32>(this.Handle, "CEnvCombinedLightProbeVolume", "m_Entity_nLightProbeSizeZ");
+	public ref Int32 Entity_nLightProbeSizeZ => ref __m_Entity_nLightProbeSizeZ.GetRef(this.Handle);
 
 	// m_Entity_nLightProbeAtlasX
+	private static readonly SchemaField<Int32> __m_Entity_nLightProbeAtlasX = new("CEnvCombinedLightProbeVolume", "m_Entity_nLightProbeAtlasX");
 	[SchemaMember("CEnvCombinedLightProbeVolume", "m_Entity_nLightProbeAtlasX")]
-	public ref Int32 Entity_nLightProbeAtlasX => ref Schema.GetRef<Int32>(this.Handle, "CEnvCombinedLightProbeVolume", "m_Entity_nLightProbeAtlasX");
+	public ref Int32 Entity_nLightProbeAtlasX => ref __m_Entity_nLightProbeAtlasX.GetRef(this.Handle);
 
 	// m_Entity_nLightProbeAtlasY
+	private static readonly SchemaField<Int32> __m_Entity_nLightProbeAtlasY = new("CEnvCombinedLightProbeVolume", "m_Entity_nLightProbeAtlasY");
 	[SchemaMember("CEnvCombinedLightProbeVolume", "m_Entity_nLightProbeAtlasY")]
-	public ref Int32 Entity_nLightProbeAtlasY => ref Schema.GetRef<Int32>(this.Handle, "CEnvCombinedLightProbeVolume", "m_Entity_nLightProbeAtlasY");
+	public ref Int32 Entity_nLightProbeAtlasY => ref __m_Entity_nLightProbeAtlasY.GetRef(this.Handle);
 
 	// m_Entity_nLightProbeAtlasZ
+	private static readonly SchemaField<Int32> __m_Entity_nLightProbeAtlasZ = new("CEnvCombinedLightProbeVolume", "m_Entity_nLightProbeAtlasZ");
 	[SchemaMember("CEnvCombinedLightProbeVolume", "m_Entity_nLightProbeAtlasZ")]
-	public ref Int32 Entity_nLightProbeAtlasZ => ref Schema.GetRef<Int32>(this.Handle, "CEnvCombinedLightProbeVolume", "m_Entity_nLightProbeAtlasZ");
+	public ref Int32 Entity_nLightProbeAtlasZ => ref __m_Entity_nLightProbeAtlasZ.GetRef(this.Handle);
 
 	// m_Entity_bEnabled
+	private static readonly SchemaField<bool> __m_Entity_bEnabled = new("CEnvCombinedLightProbeVolume", "m_Entity_bEnabled");
 	[SchemaMember("CEnvCombinedLightProbeVolume", "m_Entity_bEnabled")]
-	public ref bool Entity_bEnabled => ref Schema.GetRef<bool>(this.Handle, "CEnvCombinedLightProbeVolume", "m_Entity_bEnabled");
+	public ref bool Entity_bEnabled => ref __m_Entity_bEnabled.GetRef(this.Handle);
 
 }

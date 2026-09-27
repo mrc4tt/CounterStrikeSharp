@@ -23,19 +23,22 @@ public partial class CAttributeManager : NativeObject
 	public NetworkedVector<CHandle<CBaseEntity>> Providers => Schema.GetDeclaredClass<NetworkedVector<CHandle<CBaseEntity>>>(this.Handle, "CAttributeManager", "m_Providers");
 
 	// m_iReapplyProvisionParity
+	private static readonly SchemaField<Int32> __m_iReapplyProvisionParity = new("CAttributeManager", "m_iReapplyProvisionParity");
 	[SchemaMember("CAttributeManager", "m_iReapplyProvisionParity")]
-	public ref Int32 ReapplyProvisionParity => ref Schema.GetRef<Int32>(this.Handle, "CAttributeManager", "m_iReapplyProvisionParity");
+	public ref Int32 ReapplyProvisionParity => ref __m_iReapplyProvisionParity.GetRef(this.Handle);
 
 	// m_hOuter
 	[SchemaMember("CAttributeManager", "m_hOuter")]
 	public CHandle<CBaseEntity> Outer => Schema.GetDeclaredClass<CHandle<CBaseEntity>>(this.Handle, "CAttributeManager", "m_hOuter");
 
 	// m_bPreventLoopback
+	private static readonly SchemaField<bool> __m_bPreventLoopback = new("CAttributeManager", "m_bPreventLoopback");
 	[SchemaMember("CAttributeManager", "m_bPreventLoopback")]
-	public ref bool PreventLoopback => ref Schema.GetRef<bool>(this.Handle, "CAttributeManager", "m_bPreventLoopback");
+	public ref bool PreventLoopback => ref __m_bPreventLoopback.GetRef(this.Handle);
 
 	// m_ProviderType
+	private static readonly SchemaField<attributeprovidertypes_t> __m_ProviderType = new("CAttributeManager", "m_ProviderType");
 	[SchemaMember("CAttributeManager", "m_ProviderType")]
-	public ref attributeprovidertypes_t ProviderType => ref Schema.GetRef<attributeprovidertypes_t>(this.Handle, "CAttributeManager", "m_ProviderType");
+	public ref attributeprovidertypes_t ProviderType => ref __m_ProviderType.GetRef(this.Handle);
 
 }

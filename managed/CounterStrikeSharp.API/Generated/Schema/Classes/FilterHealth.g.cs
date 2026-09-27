@@ -19,15 +19,18 @@ public partial class FilterHealth : CBaseFilter
     public FilterHealth (IntPtr pointer) : base(pointer) {}
 
 	// m_bAdrenalineActive
+	private static readonly SchemaField<bool> __m_bAdrenalineActive = new("FilterHealth", "m_bAdrenalineActive");
 	[SchemaMember("FilterHealth", "m_bAdrenalineActive")]
-	public ref bool AdrenalineActive => ref Schema.GetRef<bool>(this.Handle, "FilterHealth", "m_bAdrenalineActive");
+	public ref bool AdrenalineActive => ref __m_bAdrenalineActive.GetRef(this.Handle);
 
 	// m_iHealthMin
+	private static readonly SchemaField<Int32> __m_iHealthMin = new("FilterHealth", "m_iHealthMin");
 	[SchemaMember("FilterHealth", "m_iHealthMin")]
-	public ref Int32 HealthMin => ref Schema.GetRef<Int32>(this.Handle, "FilterHealth", "m_iHealthMin");
+	public ref Int32 HealthMin => ref __m_iHealthMin.GetRef(this.Handle);
 
 	// m_iHealthMax
+	private static readonly SchemaField<Int32> __m_iHealthMax = new("FilterHealth", "m_iHealthMax");
 	[SchemaMember("FilterHealth", "m_iHealthMax")]
-	public ref Int32 HealthMax => ref Schema.GetRef<Int32>(this.Handle, "FilterHealth", "m_iHealthMax");
+	public ref Int32 HealthMax => ref __m_iHealthMax.GetRef(this.Handle);
 
 }

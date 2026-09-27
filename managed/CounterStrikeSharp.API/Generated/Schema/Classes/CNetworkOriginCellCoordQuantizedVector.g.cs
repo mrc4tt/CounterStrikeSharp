@@ -19,31 +19,38 @@ public partial class CNetworkOriginCellCoordQuantizedVector : NativeObject
     public CNetworkOriginCellCoordQuantizedVector (IntPtr pointer) : base(pointer) {}
 
 	// m_cellX
+	private static readonly SchemaField<UInt16> __m_cellX = new("CNetworkOriginCellCoordQuantizedVector", "m_cellX");
 	[SchemaMember("CNetworkOriginCellCoordQuantizedVector", "m_cellX")]
-	public ref UInt16 CellX => ref Schema.GetRef<UInt16>(this.Handle, "CNetworkOriginCellCoordQuantizedVector", "m_cellX");
+	public ref UInt16 CellX => ref __m_cellX.GetRef(this.Handle);
 
 	// m_cellY
+	private static readonly SchemaField<UInt16> __m_cellY = new("CNetworkOriginCellCoordQuantizedVector", "m_cellY");
 	[SchemaMember("CNetworkOriginCellCoordQuantizedVector", "m_cellY")]
-	public ref UInt16 CellY => ref Schema.GetRef<UInt16>(this.Handle, "CNetworkOriginCellCoordQuantizedVector", "m_cellY");
+	public ref UInt16 CellY => ref __m_cellY.GetRef(this.Handle);
 
 	// m_cellZ
+	private static readonly SchemaField<UInt16> __m_cellZ = new("CNetworkOriginCellCoordQuantizedVector", "m_cellZ");
 	[SchemaMember("CNetworkOriginCellCoordQuantizedVector", "m_cellZ")]
-	public ref UInt16 CellZ => ref Schema.GetRef<UInt16>(this.Handle, "CNetworkOriginCellCoordQuantizedVector", "m_cellZ");
+	public ref UInt16 CellZ => ref __m_cellZ.GetRef(this.Handle);
 
 	// m_nOutsideWorld
+	private static readonly SchemaField<UInt16> __m_nOutsideWorld = new("CNetworkOriginCellCoordQuantizedVector", "m_nOutsideWorld");
 	[SchemaMember("CNetworkOriginCellCoordQuantizedVector", "m_nOutsideWorld")]
-	public ref UInt16 OutsideWorld => ref Schema.GetRef<UInt16>(this.Handle, "CNetworkOriginCellCoordQuantizedVector", "m_nOutsideWorld");
+	public ref UInt16 OutsideWorld => ref __m_nOutsideWorld.GetRef(this.Handle);
 
 	// m_vecX
+	private static readonly SchemaField<float> __m_vecX = new("CNetworkOriginCellCoordQuantizedVector", "m_vecX");
 	[SchemaMember("CNetworkOriginCellCoordQuantizedVector", "m_vecX")]
-	public ref float X => ref Schema.GetRef<float>(this.Handle, "CNetworkOriginCellCoordQuantizedVector", "m_vecX");
+	public ref float X => ref __m_vecX.GetRef(this.Handle);
 
 	// m_vecY
+	private static readonly SchemaField<float> __m_vecY = new("CNetworkOriginCellCoordQuantizedVector", "m_vecY");
 	[SchemaMember("CNetworkOriginCellCoordQuantizedVector", "m_vecY")]
-	public ref float Y => ref Schema.GetRef<float>(this.Handle, "CNetworkOriginCellCoordQuantizedVector", "m_vecY");
+	public ref float Y => ref __m_vecY.GetRef(this.Handle);
 
 	// m_vecZ
+	private static readonly SchemaField<float> __m_vecZ = new("CNetworkOriginCellCoordQuantizedVector", "m_vecZ");
 	[SchemaMember("CNetworkOriginCellCoordQuantizedVector", "m_vecZ")]
-	public ref float Z => ref Schema.GetRef<float>(this.Handle, "CNetworkOriginCellCoordQuantizedVector", "m_vecZ");
+	public ref float Z => ref __m_vecZ.GetRef(this.Handle);
 
 }

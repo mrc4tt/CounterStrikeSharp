@@ -19,188 +19,234 @@ public partial class CGenericConstraint : CPhysConstraint
     public CGenericConstraint (IntPtr pointer) : base(pointer) {}
 
 	// m_bPlaceAnchorsAtConstraintTransform
+	private static readonly SchemaField<bool> __m_bPlaceAnchorsAtConstraintTransform = new("CGenericConstraint", "m_bPlaceAnchorsAtConstraintTransform");
 	[SchemaMember("CGenericConstraint", "m_bPlaceAnchorsAtConstraintTransform")]
-	public ref bool PlaceAnchorsAtConstraintTransform => ref Schema.GetRef<bool>(this.Handle, "CGenericConstraint", "m_bPlaceAnchorsAtConstraintTransform");
+	public ref bool PlaceAnchorsAtConstraintTransform => ref __m_bPlaceAnchorsAtConstraintTransform.GetRef(this.Handle);
 
 	// m_nLinearMotionX
+	private static readonly SchemaField<JointMotion_t> __m_nLinearMotionX = new("CGenericConstraint", "m_nLinearMotionX");
 	[SchemaMember("CGenericConstraint", "m_nLinearMotionX")]
-	public ref JointMotion_t LinearMotionX => ref Schema.GetRef<JointMotion_t>(this.Handle, "CGenericConstraint", "m_nLinearMotionX");
+	public ref JointMotion_t LinearMotionX => ref __m_nLinearMotionX.GetRef(this.Handle);
 
 	// m_nLinearMotionY
+	private static readonly SchemaField<JointMotion_t> __m_nLinearMotionY = new("CGenericConstraint", "m_nLinearMotionY");
 	[SchemaMember("CGenericConstraint", "m_nLinearMotionY")]
-	public ref JointMotion_t LinearMotionY => ref Schema.GetRef<JointMotion_t>(this.Handle, "CGenericConstraint", "m_nLinearMotionY");
+	public ref JointMotion_t LinearMotionY => ref __m_nLinearMotionY.GetRef(this.Handle);
 
 	// m_nLinearMotionZ
+	private static readonly SchemaField<JointMotion_t> __m_nLinearMotionZ = new("CGenericConstraint", "m_nLinearMotionZ");
 	[SchemaMember("CGenericConstraint", "m_nLinearMotionZ")]
-	public ref JointMotion_t LinearMotionZ => ref Schema.GetRef<JointMotion_t>(this.Handle, "CGenericConstraint", "m_nLinearMotionZ");
+	public ref JointMotion_t LinearMotionZ => ref __m_nLinearMotionZ.GetRef(this.Handle);
 
 	// m_flLinearFrequencyX
+	private static readonly SchemaField<float> __m_flLinearFrequencyX = new("CGenericConstraint", "m_flLinearFrequencyX");
 	[SchemaMember("CGenericConstraint", "m_flLinearFrequencyX")]
-	public ref float LinearFrequencyX => ref Schema.GetRef<float>(this.Handle, "CGenericConstraint", "m_flLinearFrequencyX");
+	public ref float LinearFrequencyX => ref __m_flLinearFrequencyX.GetRef(this.Handle);
 
 	// m_flLinearFrequencyY
+	private static readonly SchemaField<float> __m_flLinearFrequencyY = new("CGenericConstraint", "m_flLinearFrequencyY");
 	[SchemaMember("CGenericConstraint", "m_flLinearFrequencyY")]
-	public ref float LinearFrequencyY => ref Schema.GetRef<float>(this.Handle, "CGenericConstraint", "m_flLinearFrequencyY");
+	public ref float LinearFrequencyY => ref __m_flLinearFrequencyY.GetRef(this.Handle);
 
 	// m_flLinearFrequencyZ
+	private static readonly SchemaField<float> __m_flLinearFrequencyZ = new("CGenericConstraint", "m_flLinearFrequencyZ");
 	[SchemaMember("CGenericConstraint", "m_flLinearFrequencyZ")]
-	public ref float LinearFrequencyZ => ref Schema.GetRef<float>(this.Handle, "CGenericConstraint", "m_flLinearFrequencyZ");
+	public ref float LinearFrequencyZ => ref __m_flLinearFrequencyZ.GetRef(this.Handle);
 
 	// m_flLinearDampingRatioX
+	private static readonly SchemaField<float> __m_flLinearDampingRatioX = new("CGenericConstraint", "m_flLinearDampingRatioX");
 	[SchemaMember("CGenericConstraint", "m_flLinearDampingRatioX")]
-	public ref float LinearDampingRatioX => ref Schema.GetRef<float>(this.Handle, "CGenericConstraint", "m_flLinearDampingRatioX");
+	public ref float LinearDampingRatioX => ref __m_flLinearDampingRatioX.GetRef(this.Handle);
 
 	// m_flLinearDampingRatioY
+	private static readonly SchemaField<float> __m_flLinearDampingRatioY = new("CGenericConstraint", "m_flLinearDampingRatioY");
 	[SchemaMember("CGenericConstraint", "m_flLinearDampingRatioY")]
-	public ref float LinearDampingRatioY => ref Schema.GetRef<float>(this.Handle, "CGenericConstraint", "m_flLinearDampingRatioY");
+	public ref float LinearDampingRatioY => ref __m_flLinearDampingRatioY.GetRef(this.Handle);
 
 	// m_flLinearDampingRatioZ
+	private static readonly SchemaField<float> __m_flLinearDampingRatioZ = new("CGenericConstraint", "m_flLinearDampingRatioZ");
 	[SchemaMember("CGenericConstraint", "m_flLinearDampingRatioZ")]
-	public ref float LinearDampingRatioZ => ref Schema.GetRef<float>(this.Handle, "CGenericConstraint", "m_flLinearDampingRatioZ");
+	public ref float LinearDampingRatioZ => ref __m_flLinearDampingRatioZ.GetRef(this.Handle);
 
 	// m_flMaxLinearImpulseX
+	private static readonly SchemaField<float> __m_flMaxLinearImpulseX = new("CGenericConstraint", "m_flMaxLinearImpulseX");
 	[SchemaMember("CGenericConstraint", "m_flMaxLinearImpulseX")]
-	public ref float MaxLinearImpulseX => ref Schema.GetRef<float>(this.Handle, "CGenericConstraint", "m_flMaxLinearImpulseX");
+	public ref float MaxLinearImpulseX => ref __m_flMaxLinearImpulseX.GetRef(this.Handle);
 
 	// m_flMaxLinearImpulseY
+	private static readonly SchemaField<float> __m_flMaxLinearImpulseY = new("CGenericConstraint", "m_flMaxLinearImpulseY");
 	[SchemaMember("CGenericConstraint", "m_flMaxLinearImpulseY")]
-	public ref float MaxLinearImpulseY => ref Schema.GetRef<float>(this.Handle, "CGenericConstraint", "m_flMaxLinearImpulseY");
+	public ref float MaxLinearImpulseY => ref __m_flMaxLinearImpulseY.GetRef(this.Handle);
 
 	// m_flMaxLinearImpulseZ
+	private static readonly SchemaField<float> __m_flMaxLinearImpulseZ = new("CGenericConstraint", "m_flMaxLinearImpulseZ");
 	[SchemaMember("CGenericConstraint", "m_flMaxLinearImpulseZ")]
-	public ref float MaxLinearImpulseZ => ref Schema.GetRef<float>(this.Handle, "CGenericConstraint", "m_flMaxLinearImpulseZ");
+	public ref float MaxLinearImpulseZ => ref __m_flMaxLinearImpulseZ.GetRef(this.Handle);
 
 	// m_flBreakAfterTimeX
+	private static readonly SchemaField<float> __m_flBreakAfterTimeX = new("CGenericConstraint", "m_flBreakAfterTimeX");
 	[SchemaMember("CGenericConstraint", "m_flBreakAfterTimeX")]
-	public ref float BreakAfterTimeX => ref Schema.GetRef<float>(this.Handle, "CGenericConstraint", "m_flBreakAfterTimeX");
+	public ref float BreakAfterTimeX => ref __m_flBreakAfterTimeX.GetRef(this.Handle);
 
 	// m_flBreakAfterTimeY
+	private static readonly SchemaField<float> __m_flBreakAfterTimeY = new("CGenericConstraint", "m_flBreakAfterTimeY");
 	[SchemaMember("CGenericConstraint", "m_flBreakAfterTimeY")]
-	public ref float BreakAfterTimeY => ref Schema.GetRef<float>(this.Handle, "CGenericConstraint", "m_flBreakAfterTimeY");
+	public ref float BreakAfterTimeY => ref __m_flBreakAfterTimeY.GetRef(this.Handle);
 
 	// m_flBreakAfterTimeZ
+	private static readonly SchemaField<float> __m_flBreakAfterTimeZ = new("CGenericConstraint", "m_flBreakAfterTimeZ");
 	[SchemaMember("CGenericConstraint", "m_flBreakAfterTimeZ")]
-	public ref float BreakAfterTimeZ => ref Schema.GetRef<float>(this.Handle, "CGenericConstraint", "m_flBreakAfterTimeZ");
+	public ref float BreakAfterTimeZ => ref __m_flBreakAfterTimeZ.GetRef(this.Handle);
 
 	// m_flBreakAfterTimeStartTimeX
+	private static readonly SchemaField<float> __m_flBreakAfterTimeStartTimeX = new("CGenericConstraint", "m_flBreakAfterTimeStartTimeX");
 	[SchemaMember("CGenericConstraint", "m_flBreakAfterTimeStartTimeX")]
-	public ref float BreakAfterTimeStartTimeX => ref Schema.GetRef<float>(this.Handle, "CGenericConstraint", "m_flBreakAfterTimeStartTimeX");
+	public ref float BreakAfterTimeStartTimeX => ref __m_flBreakAfterTimeStartTimeX.GetRef(this.Handle);
 
 	// m_flBreakAfterTimeStartTimeY
+	private static readonly SchemaField<float> __m_flBreakAfterTimeStartTimeY = new("CGenericConstraint", "m_flBreakAfterTimeStartTimeY");
 	[SchemaMember("CGenericConstraint", "m_flBreakAfterTimeStartTimeY")]
-	public ref float BreakAfterTimeStartTimeY => ref Schema.GetRef<float>(this.Handle, "CGenericConstraint", "m_flBreakAfterTimeStartTimeY");
+	public ref float BreakAfterTimeStartTimeY => ref __m_flBreakAfterTimeStartTimeY.GetRef(this.Handle);
 
 	// m_flBreakAfterTimeStartTimeZ
+	private static readonly SchemaField<float> __m_flBreakAfterTimeStartTimeZ = new("CGenericConstraint", "m_flBreakAfterTimeStartTimeZ");
 	[SchemaMember("CGenericConstraint", "m_flBreakAfterTimeStartTimeZ")]
-	public ref float BreakAfterTimeStartTimeZ => ref Schema.GetRef<float>(this.Handle, "CGenericConstraint", "m_flBreakAfterTimeStartTimeZ");
+	public ref float BreakAfterTimeStartTimeZ => ref __m_flBreakAfterTimeStartTimeZ.GetRef(this.Handle);
 
 	// m_flBreakAfterTimeThresholdX
+	private static readonly SchemaField<float> __m_flBreakAfterTimeThresholdX = new("CGenericConstraint", "m_flBreakAfterTimeThresholdX");
 	[SchemaMember("CGenericConstraint", "m_flBreakAfterTimeThresholdX")]
-	public ref float BreakAfterTimeThresholdX => ref Schema.GetRef<float>(this.Handle, "CGenericConstraint", "m_flBreakAfterTimeThresholdX");
+	public ref float BreakAfterTimeThresholdX => ref __m_flBreakAfterTimeThresholdX.GetRef(this.Handle);
 
 	// m_flBreakAfterTimeThresholdY
+	private static readonly SchemaField<float> __m_flBreakAfterTimeThresholdY = new("CGenericConstraint", "m_flBreakAfterTimeThresholdY");
 	[SchemaMember("CGenericConstraint", "m_flBreakAfterTimeThresholdY")]
-	public ref float BreakAfterTimeThresholdY => ref Schema.GetRef<float>(this.Handle, "CGenericConstraint", "m_flBreakAfterTimeThresholdY");
+	public ref float BreakAfterTimeThresholdY => ref __m_flBreakAfterTimeThresholdY.GetRef(this.Handle);
 
 	// m_flBreakAfterTimeThresholdZ
+	private static readonly SchemaField<float> __m_flBreakAfterTimeThresholdZ = new("CGenericConstraint", "m_flBreakAfterTimeThresholdZ");
 	[SchemaMember("CGenericConstraint", "m_flBreakAfterTimeThresholdZ")]
-	public ref float BreakAfterTimeThresholdZ => ref Schema.GetRef<float>(this.Handle, "CGenericConstraint", "m_flBreakAfterTimeThresholdZ");
+	public ref float BreakAfterTimeThresholdZ => ref __m_flBreakAfterTimeThresholdZ.GetRef(this.Handle);
 
 	// m_flNotifyForceX
+	private static readonly SchemaField<float> __m_flNotifyForceX = new("CGenericConstraint", "m_flNotifyForceX");
 	[SchemaMember("CGenericConstraint", "m_flNotifyForceX")]
-	public ref float NotifyForceX => ref Schema.GetRef<float>(this.Handle, "CGenericConstraint", "m_flNotifyForceX");
+	public ref float NotifyForceX => ref __m_flNotifyForceX.GetRef(this.Handle);
 
 	// m_flNotifyForceY
+	private static readonly SchemaField<float> __m_flNotifyForceY = new("CGenericConstraint", "m_flNotifyForceY");
 	[SchemaMember("CGenericConstraint", "m_flNotifyForceY")]
-	public ref float NotifyForceY => ref Schema.GetRef<float>(this.Handle, "CGenericConstraint", "m_flNotifyForceY");
+	public ref float NotifyForceY => ref __m_flNotifyForceY.GetRef(this.Handle);
 
 	// m_flNotifyForceZ
+	private static readonly SchemaField<float> __m_flNotifyForceZ = new("CGenericConstraint", "m_flNotifyForceZ");
 	[SchemaMember("CGenericConstraint", "m_flNotifyForceZ")]
-	public ref float NotifyForceZ => ref Schema.GetRef<float>(this.Handle, "CGenericConstraint", "m_flNotifyForceZ");
+	public ref float NotifyForceZ => ref __m_flNotifyForceZ.GetRef(this.Handle);
 
 	// m_flNotifyForceMinTimeX
+	private static readonly SchemaField<float> __m_flNotifyForceMinTimeX = new("CGenericConstraint", "m_flNotifyForceMinTimeX");
 	[SchemaMember("CGenericConstraint", "m_flNotifyForceMinTimeX")]
-	public ref float NotifyForceMinTimeX => ref Schema.GetRef<float>(this.Handle, "CGenericConstraint", "m_flNotifyForceMinTimeX");
+	public ref float NotifyForceMinTimeX => ref __m_flNotifyForceMinTimeX.GetRef(this.Handle);
 
 	// m_flNotifyForceMinTimeY
+	private static readonly SchemaField<float> __m_flNotifyForceMinTimeY = new("CGenericConstraint", "m_flNotifyForceMinTimeY");
 	[SchemaMember("CGenericConstraint", "m_flNotifyForceMinTimeY")]
-	public ref float NotifyForceMinTimeY => ref Schema.GetRef<float>(this.Handle, "CGenericConstraint", "m_flNotifyForceMinTimeY");
+	public ref float NotifyForceMinTimeY => ref __m_flNotifyForceMinTimeY.GetRef(this.Handle);
 
 	// m_flNotifyForceMinTimeZ
+	private static readonly SchemaField<float> __m_flNotifyForceMinTimeZ = new("CGenericConstraint", "m_flNotifyForceMinTimeZ");
 	[SchemaMember("CGenericConstraint", "m_flNotifyForceMinTimeZ")]
-	public ref float NotifyForceMinTimeZ => ref Schema.GetRef<float>(this.Handle, "CGenericConstraint", "m_flNotifyForceMinTimeZ");
+	public ref float NotifyForceMinTimeZ => ref __m_flNotifyForceMinTimeZ.GetRef(this.Handle);
 
 	// m_flNotifyForceLastTimeX
+	private static readonly SchemaField<float> __m_flNotifyForceLastTimeX = new("CGenericConstraint", "m_flNotifyForceLastTimeX");
 	[SchemaMember("CGenericConstraint", "m_flNotifyForceLastTimeX")]
-	public ref float NotifyForceLastTimeX => ref Schema.GetRef<float>(this.Handle, "CGenericConstraint", "m_flNotifyForceLastTimeX");
+	public ref float NotifyForceLastTimeX => ref __m_flNotifyForceLastTimeX.GetRef(this.Handle);
 
 	// m_flNotifyForceLastTimeY
+	private static readonly SchemaField<float> __m_flNotifyForceLastTimeY = new("CGenericConstraint", "m_flNotifyForceLastTimeY");
 	[SchemaMember("CGenericConstraint", "m_flNotifyForceLastTimeY")]
-	public ref float NotifyForceLastTimeY => ref Schema.GetRef<float>(this.Handle, "CGenericConstraint", "m_flNotifyForceLastTimeY");
+	public ref float NotifyForceLastTimeY => ref __m_flNotifyForceLastTimeY.GetRef(this.Handle);
 
 	// m_flNotifyForceLastTimeZ
+	private static readonly SchemaField<float> __m_flNotifyForceLastTimeZ = new("CGenericConstraint", "m_flNotifyForceLastTimeZ");
 	[SchemaMember("CGenericConstraint", "m_flNotifyForceLastTimeZ")]
-	public ref float NotifyForceLastTimeZ => ref Schema.GetRef<float>(this.Handle, "CGenericConstraint", "m_flNotifyForceLastTimeZ");
+	public ref float NotifyForceLastTimeZ => ref __m_flNotifyForceLastTimeZ.GetRef(this.Handle);
 
 	// m_bAxisNotifiedX
+	private static readonly SchemaField<bool> __m_bAxisNotifiedX = new("CGenericConstraint", "m_bAxisNotifiedX");
 	[SchemaMember("CGenericConstraint", "m_bAxisNotifiedX")]
-	public ref bool AxisNotifiedX => ref Schema.GetRef<bool>(this.Handle, "CGenericConstraint", "m_bAxisNotifiedX");
+	public ref bool AxisNotifiedX => ref __m_bAxisNotifiedX.GetRef(this.Handle);
 
 	// m_bAxisNotifiedY
+	private static readonly SchemaField<bool> __m_bAxisNotifiedY = new("CGenericConstraint", "m_bAxisNotifiedY");
 	[SchemaMember("CGenericConstraint", "m_bAxisNotifiedY")]
-	public ref bool AxisNotifiedY => ref Schema.GetRef<bool>(this.Handle, "CGenericConstraint", "m_bAxisNotifiedY");
+	public ref bool AxisNotifiedY => ref __m_bAxisNotifiedY.GetRef(this.Handle);
 
 	// m_bAxisNotifiedZ
+	private static readonly SchemaField<bool> __m_bAxisNotifiedZ = new("CGenericConstraint", "m_bAxisNotifiedZ");
 	[SchemaMember("CGenericConstraint", "m_bAxisNotifiedZ")]
-	public ref bool AxisNotifiedZ => ref Schema.GetRef<bool>(this.Handle, "CGenericConstraint", "m_bAxisNotifiedZ");
+	public ref bool AxisNotifiedZ => ref __m_bAxisNotifiedZ.GetRef(this.Handle);
 
 	// m_nAngularMotionX
+	private static readonly SchemaField<JointMotion_t> __m_nAngularMotionX = new("CGenericConstraint", "m_nAngularMotionX");
 	[SchemaMember("CGenericConstraint", "m_nAngularMotionX")]
-	public ref JointMotion_t AngularMotionX => ref Schema.GetRef<JointMotion_t>(this.Handle, "CGenericConstraint", "m_nAngularMotionX");
+	public ref JointMotion_t AngularMotionX => ref __m_nAngularMotionX.GetRef(this.Handle);
 
 	// m_nAngularMotionY
+	private static readonly SchemaField<JointMotion_t> __m_nAngularMotionY = new("CGenericConstraint", "m_nAngularMotionY");
 	[SchemaMember("CGenericConstraint", "m_nAngularMotionY")]
-	public ref JointMotion_t AngularMotionY => ref Schema.GetRef<JointMotion_t>(this.Handle, "CGenericConstraint", "m_nAngularMotionY");
+	public ref JointMotion_t AngularMotionY => ref __m_nAngularMotionY.GetRef(this.Handle);
 
 	// m_nAngularMotionZ
+	private static readonly SchemaField<JointMotion_t> __m_nAngularMotionZ = new("CGenericConstraint", "m_nAngularMotionZ");
 	[SchemaMember("CGenericConstraint", "m_nAngularMotionZ")]
-	public ref JointMotion_t AngularMotionZ => ref Schema.GetRef<JointMotion_t>(this.Handle, "CGenericConstraint", "m_nAngularMotionZ");
+	public ref JointMotion_t AngularMotionZ => ref __m_nAngularMotionZ.GetRef(this.Handle);
 
 	// m_flAngularFrequencyX
+	private static readonly SchemaField<float> __m_flAngularFrequencyX = new("CGenericConstraint", "m_flAngularFrequencyX");
 	[SchemaMember("CGenericConstraint", "m_flAngularFrequencyX")]
-	public ref float AngularFrequencyX => ref Schema.GetRef<float>(this.Handle, "CGenericConstraint", "m_flAngularFrequencyX");
+	public ref float AngularFrequencyX => ref __m_flAngularFrequencyX.GetRef(this.Handle);
 
 	// m_flAngularFrequencyY
+	private static readonly SchemaField<float> __m_flAngularFrequencyY = new("CGenericConstraint", "m_flAngularFrequencyY");
 	[SchemaMember("CGenericConstraint", "m_flAngularFrequencyY")]
-	public ref float AngularFrequencyY => ref Schema.GetRef<float>(this.Handle, "CGenericConstraint", "m_flAngularFrequencyY");
+	public ref float AngularFrequencyY => ref __m_flAngularFrequencyY.GetRef(this.Handle);
 
 	// m_flAngularFrequencyZ
+	private static readonly SchemaField<float> __m_flAngularFrequencyZ = new("CGenericConstraint", "m_flAngularFrequencyZ");
 	[SchemaMember("CGenericConstraint", "m_flAngularFrequencyZ")]
-	public ref float AngularFrequencyZ => ref Schema.GetRef<float>(this.Handle, "CGenericConstraint", "m_flAngularFrequencyZ");
+	public ref float AngularFrequencyZ => ref __m_flAngularFrequencyZ.GetRef(this.Handle);
 
 	// m_flAngularDampingRatioX
+	private static readonly SchemaField<float> __m_flAngularDampingRatioX = new("CGenericConstraint", "m_flAngularDampingRatioX");
 	[SchemaMember("CGenericConstraint", "m_flAngularDampingRatioX")]
-	public ref float AngularDampingRatioX => ref Schema.GetRef<float>(this.Handle, "CGenericConstraint", "m_flAngularDampingRatioX");
+	public ref float AngularDampingRatioX => ref __m_flAngularDampingRatioX.GetRef(this.Handle);
 
 	// m_flAngularDampingRatioY
+	private static readonly SchemaField<float> __m_flAngularDampingRatioY = new("CGenericConstraint", "m_flAngularDampingRatioY");
 	[SchemaMember("CGenericConstraint", "m_flAngularDampingRatioY")]
-	public ref float AngularDampingRatioY => ref Schema.GetRef<float>(this.Handle, "CGenericConstraint", "m_flAngularDampingRatioY");
+	public ref float AngularDampingRatioY => ref __m_flAngularDampingRatioY.GetRef(this.Handle);
 
 	// m_flAngularDampingRatioZ
+	private static readonly SchemaField<float> __m_flAngularDampingRatioZ = new("CGenericConstraint", "m_flAngularDampingRatioZ");
 	[SchemaMember("CGenericConstraint", "m_flAngularDampingRatioZ")]
-	public ref float AngularDampingRatioZ => ref Schema.GetRef<float>(this.Handle, "CGenericConstraint", "m_flAngularDampingRatioZ");
+	public ref float AngularDampingRatioZ => ref __m_flAngularDampingRatioZ.GetRef(this.Handle);
 
 	// m_flMaxAngularImpulseX
+	private static readonly SchemaField<float> __m_flMaxAngularImpulseX = new("CGenericConstraint", "m_flMaxAngularImpulseX");
 	[SchemaMember("CGenericConstraint", "m_flMaxAngularImpulseX")]
-	public ref float MaxAngularImpulseX => ref Schema.GetRef<float>(this.Handle, "CGenericConstraint", "m_flMaxAngularImpulseX");
+	public ref float MaxAngularImpulseX => ref __m_flMaxAngularImpulseX.GetRef(this.Handle);
 
 	// m_flMaxAngularImpulseY
+	private static readonly SchemaField<float> __m_flMaxAngularImpulseY = new("CGenericConstraint", "m_flMaxAngularImpulseY");
 	[SchemaMember("CGenericConstraint", "m_flMaxAngularImpulseY")]
-	public ref float MaxAngularImpulseY => ref Schema.GetRef<float>(this.Handle, "CGenericConstraint", "m_flMaxAngularImpulseY");
+	public ref float MaxAngularImpulseY => ref __m_flMaxAngularImpulseY.GetRef(this.Handle);
 
 	// m_flMaxAngularImpulseZ
+	private static readonly SchemaField<float> __m_flMaxAngularImpulseZ = new("CGenericConstraint", "m_flMaxAngularImpulseZ");
 	[SchemaMember("CGenericConstraint", "m_flMaxAngularImpulseZ")]
-	public ref float MaxAngularImpulseZ => ref Schema.GetRef<float>(this.Handle, "CGenericConstraint", "m_flMaxAngularImpulseZ");
+	public ref float MaxAngularImpulseZ => ref __m_flMaxAngularImpulseZ.GetRef(this.Handle);
 
 	// m_NotifyForceReachedX
 	[SchemaMember("CGenericConstraint", "m_NotifyForceReachedX")]

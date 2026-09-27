@@ -31,27 +31,33 @@ public partial class CGameRules : NativeObject
 	}
 
 	// m_nQuestPhase
+	private static readonly SchemaField<Int32> __m_nQuestPhase = new("CGameRules", "m_nQuestPhase");
 	[SchemaMember("CGameRules", "m_nQuestPhase")]
-	public ref Int32 QuestPhase => ref Schema.GetRef<Int32>(this.Handle, "CGameRules", "m_nQuestPhase");
+	public ref Int32 QuestPhase => ref __m_nQuestPhase.GetRef(this.Handle);
 
 	// m_nLastMatchTime
+	private static readonly SchemaField<UInt32> __m_nLastMatchTime = new("CGameRules", "m_nLastMatchTime");
 	[SchemaMember("CGameRules", "m_nLastMatchTime")]
-	public ref UInt32 LastMatchTime => ref Schema.GetRef<UInt32>(this.Handle, "CGameRules", "m_nLastMatchTime");
+	public ref UInt32 LastMatchTime => ref __m_nLastMatchTime.GetRef(this.Handle);
 
 	// m_nLastMatchTime_MatchID64
+	private static readonly SchemaField<UInt64> __m_nLastMatchTime_MatchID64 = new("CGameRules", "m_nLastMatchTime_MatchID64");
 	[SchemaMember("CGameRules", "m_nLastMatchTime_MatchID64")]
-	public ref UInt64 LastMatchTime_MatchID64 => ref Schema.GetRef<UInt64>(this.Handle, "CGameRules", "m_nLastMatchTime_MatchID64");
+	public ref UInt64 LastMatchTime_MatchID64 => ref __m_nLastMatchTime_MatchID64.GetRef(this.Handle);
 
 	// m_nTotalPausedTicks
+	private static readonly SchemaField<Int32> __m_nTotalPausedTicks = new("CGameRules", "m_nTotalPausedTicks");
 	[SchemaMember("CGameRules", "m_nTotalPausedTicks")]
-	public ref Int32 TotalPausedTicks => ref Schema.GetRef<Int32>(this.Handle, "CGameRules", "m_nTotalPausedTicks");
+	public ref Int32 TotalPausedTicks => ref __m_nTotalPausedTicks.GetRef(this.Handle);
 
 	// m_nPauseStartTick
+	private static readonly SchemaField<Int32> __m_nPauseStartTick = new("CGameRules", "m_nPauseStartTick");
 	[SchemaMember("CGameRules", "m_nPauseStartTick")]
-	public ref Int32 PauseStartTick => ref Schema.GetRef<Int32>(this.Handle, "CGameRules", "m_nPauseStartTick");
+	public ref Int32 PauseStartTick => ref __m_nPauseStartTick.GetRef(this.Handle);
 
 	// m_bGamePaused
+	private static readonly SchemaField<bool> __m_bGamePaused = new("CGameRules", "m_bGamePaused");
 	[SchemaMember("CGameRules", "m_bGamePaused")]
-	public ref bool GamePaused => ref Schema.GetRef<bool>(this.Handle, "CGameRules", "m_bGamePaused");
+	public ref bool GamePaused => ref __m_bGamePaused.GetRef(this.Handle);
 
 }

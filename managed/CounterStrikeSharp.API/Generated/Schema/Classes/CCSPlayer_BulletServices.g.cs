@@ -19,7 +19,8 @@ public partial class CCSPlayer_BulletServices : CPlayerPawnComponent
     public CCSPlayer_BulletServices (IntPtr pointer) : base(pointer) {}
 
 	// m_totalHitsOnServer
+	private static readonly SchemaField<Int32> __m_totalHitsOnServer = new("CCSPlayer_BulletServices", "m_totalHitsOnServer");
 	[SchemaMember("CCSPlayer_BulletServices", "m_totalHitsOnServer")]
-	public ref Int32 TotalHitsOnServer => ref Schema.GetRef<Int32>(this.Handle, "CCSPlayer_BulletServices", "m_totalHitsOnServer");
+	public ref Int32 TotalHitsOnServer => ref __m_totalHitsOnServer.GetRef(this.Handle);
 
 }

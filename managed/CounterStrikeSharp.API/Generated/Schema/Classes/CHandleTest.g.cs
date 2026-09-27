@@ -23,7 +23,8 @@ public partial class CHandleTest : CBaseEntity
 	public CHandle<CBaseEntity> TestHandle => Schema.GetDeclaredClass<CHandle<CBaseEntity>>(this.Handle, "CHandleTest", "m_Handle");
 
 	// m_bSendHandle
+	private static readonly SchemaField<bool> __m_bSendHandle = new("CHandleTest", "m_bSendHandle");
 	[SchemaMember("CHandleTest", "m_bSendHandle")]
-	public ref bool SendHandle => ref Schema.GetRef<bool>(this.Handle, "CHandleTest", "m_bSendHandle");
+	public ref bool SendHandle => ref __m_bSendHandle.GetRef(this.Handle);
 
 }

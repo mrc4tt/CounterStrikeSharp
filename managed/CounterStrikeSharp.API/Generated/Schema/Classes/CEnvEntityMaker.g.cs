@@ -43,16 +43,19 @@ public partial class CEnvEntityMaker : CPointEntity
 	public QAngle PostSpawnDirection => Schema.GetDeclaredClass<QAngle>(this.Handle, "CEnvEntityMaker", "m_angPostSpawnDirection");
 
 	// m_flPostSpawnDirectionVariance
+	private static readonly SchemaField<float> __m_flPostSpawnDirectionVariance = new("CEnvEntityMaker", "m_flPostSpawnDirectionVariance");
 	[SchemaMember("CEnvEntityMaker", "m_flPostSpawnDirectionVariance")]
-	public ref float PostSpawnDirectionVariance => ref Schema.GetRef<float>(this.Handle, "CEnvEntityMaker", "m_flPostSpawnDirectionVariance");
+	public ref float PostSpawnDirectionVariance => ref __m_flPostSpawnDirectionVariance.GetRef(this.Handle);
 
 	// m_flPostSpawnSpeed
+	private static readonly SchemaField<float> __m_flPostSpawnSpeed = new("CEnvEntityMaker", "m_flPostSpawnSpeed");
 	[SchemaMember("CEnvEntityMaker", "m_flPostSpawnSpeed")]
-	public ref float PostSpawnSpeed => ref Schema.GetRef<float>(this.Handle, "CEnvEntityMaker", "m_flPostSpawnSpeed");
+	public ref float PostSpawnSpeed => ref __m_flPostSpawnSpeed.GetRef(this.Handle);
 
 	// m_bPostSpawnUseAngles
+	private static readonly SchemaField<bool> __m_bPostSpawnUseAngles = new("CEnvEntityMaker", "m_bPostSpawnUseAngles");
 	[SchemaMember("CEnvEntityMaker", "m_bPostSpawnUseAngles")]
-	public ref bool PostSpawnUseAngles => ref Schema.GetRef<bool>(this.Handle, "CEnvEntityMaker", "m_bPostSpawnUseAngles");
+	public ref bool PostSpawnUseAngles => ref __m_bPostSpawnUseAngles.GetRef(this.Handle);
 
 	// m_iszTemplate
 	[SchemaMember("CEnvEntityMaker", "m_iszTemplate")]

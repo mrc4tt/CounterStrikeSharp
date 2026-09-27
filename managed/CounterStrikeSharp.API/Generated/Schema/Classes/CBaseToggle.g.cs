@@ -19,24 +19,29 @@ public partial class CBaseToggle : CBaseModelEntity
     public CBaseToggle (IntPtr pointer) : base(pointer) {}
 
 	// m_toggle_state
+	private static readonly SchemaField<TOGGLE_STATE> __m_toggle_state = new("CBaseToggle", "m_toggle_state");
 	[SchemaMember("CBaseToggle", "m_toggle_state")]
-	public ref TOGGLE_STATE Toggle_state => ref Schema.GetRef<TOGGLE_STATE>(this.Handle, "CBaseToggle", "m_toggle_state");
+	public ref TOGGLE_STATE Toggle_state => ref __m_toggle_state.GetRef(this.Handle);
 
 	// m_flMoveDistance
+	private static readonly SchemaField<float> __m_flMoveDistance = new("CBaseToggle", "m_flMoveDistance");
 	[SchemaMember("CBaseToggle", "m_flMoveDistance")]
-	public ref float MoveDistance => ref Schema.GetRef<float>(this.Handle, "CBaseToggle", "m_flMoveDistance");
+	public ref float MoveDistance => ref __m_flMoveDistance.GetRef(this.Handle);
 
 	// m_flWait
+	private static readonly SchemaField<float> __m_flWait = new("CBaseToggle", "m_flWait");
 	[SchemaMember("CBaseToggle", "m_flWait")]
-	public ref float Wait => ref Schema.GetRef<float>(this.Handle, "CBaseToggle", "m_flWait");
+	public ref float Wait => ref __m_flWait.GetRef(this.Handle);
 
 	// m_flLip
+	private static readonly SchemaField<float> __m_flLip = new("CBaseToggle", "m_flLip");
 	[SchemaMember("CBaseToggle", "m_flLip")]
-	public ref float Lip => ref Schema.GetRef<float>(this.Handle, "CBaseToggle", "m_flLip");
+	public ref float Lip => ref __m_flLip.GetRef(this.Handle);
 
 	// m_bAlwaysFireBlockedOutputs
+	private static readonly SchemaField<bool> __m_bAlwaysFireBlockedOutputs = new("CBaseToggle", "m_bAlwaysFireBlockedOutputs");
 	[SchemaMember("CBaseToggle", "m_bAlwaysFireBlockedOutputs")]
-	public ref bool AlwaysFireBlockedOutputs => ref Schema.GetRef<bool>(this.Handle, "CBaseToggle", "m_bAlwaysFireBlockedOutputs");
+	public ref bool AlwaysFireBlockedOutputs => ref __m_bAlwaysFireBlockedOutputs.GetRef(this.Handle);
 
 	// m_vecPosition1
 	[SchemaMember("CBaseToggle", "m_vecPosition1")]
@@ -59,8 +64,9 @@ public partial class CBaseToggle : CBaseModelEntity
 	public QAngle Angle2 => Schema.GetDeclaredClass<QAngle>(this.Handle, "CBaseToggle", "m_vecAngle2");
 
 	// m_flHeight
+	private static readonly SchemaField<float> __m_flHeight = new("CBaseToggle", "m_flHeight");
 	[SchemaMember("CBaseToggle", "m_flHeight")]
-	public ref float Height => ref Schema.GetRef<float>(this.Handle, "CBaseToggle", "m_flHeight");
+	public ref float Height => ref __m_flHeight.GetRef(this.Handle);
 
 	// m_hActivator
 	[SchemaMember("CBaseToggle", "m_hActivator")]
@@ -75,8 +81,9 @@ public partial class CBaseToggle : CBaseModelEntity
 	public QAngle FinalAngle => Schema.GetDeclaredClass<QAngle>(this.Handle, "CBaseToggle", "m_vecFinalAngle");
 
 	// m_movementType
+	private static readonly SchemaField<Int32> __m_movementType = new("CBaseToggle", "m_movementType");
 	[SchemaMember("CBaseToggle", "m_movementType")]
-	public ref Int32 MovementType => ref Schema.GetRef<Int32>(this.Handle, "CBaseToggle", "m_movementType");
+	public ref Int32 MovementType => ref __m_movementType.GetRef(this.Handle);
 
 	// m_sMaster
 	[SchemaMember("CBaseToggle", "m_sMaster")]

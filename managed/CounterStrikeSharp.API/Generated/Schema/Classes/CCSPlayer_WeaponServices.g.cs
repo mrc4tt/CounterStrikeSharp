@@ -19,55 +19,66 @@ public partial class CCSPlayer_WeaponServices : CPlayer_WeaponServices
     public CCSPlayer_WeaponServices (IntPtr pointer) : base(pointer) {}
 
 	// m_flNextAttack
+	private static readonly SchemaField<float> __m_flNextAttack = new("CCSPlayer_WeaponServices", "m_flNextAttack");
 	[SchemaMember("CCSPlayer_WeaponServices", "m_flNextAttack")]
-	public ref float NextAttack => ref Schema.GetRef<float>(this.Handle, "CCSPlayer_WeaponServices", "m_flNextAttack");
+	public ref float NextAttack => ref __m_flNextAttack.GetRef(this.Handle);
 
 	// m_hSavedWeapon
 	[SchemaMember("CCSPlayer_WeaponServices", "m_hSavedWeapon")]
 	public CHandle<CBasePlayerWeapon> SavedWeapon => Schema.GetDeclaredClass<CHandle<CBasePlayerWeapon>>(this.Handle, "CCSPlayer_WeaponServices", "m_hSavedWeapon");
 
 	// m_nTimeToMelee
+	private static readonly SchemaField<Int32> __m_nTimeToMelee = new("CCSPlayer_WeaponServices", "m_nTimeToMelee");
 	[SchemaMember("CCSPlayer_WeaponServices", "m_nTimeToMelee")]
-	public ref Int32 TimeToMelee => ref Schema.GetRef<Int32>(this.Handle, "CCSPlayer_WeaponServices", "m_nTimeToMelee");
+	public ref Int32 TimeToMelee => ref __m_nTimeToMelee.GetRef(this.Handle);
 
 	// m_nTimeToSecondary
+	private static readonly SchemaField<Int32> __m_nTimeToSecondary = new("CCSPlayer_WeaponServices", "m_nTimeToSecondary");
 	[SchemaMember("CCSPlayer_WeaponServices", "m_nTimeToSecondary")]
-	public ref Int32 TimeToSecondary => ref Schema.GetRef<Int32>(this.Handle, "CCSPlayer_WeaponServices", "m_nTimeToSecondary");
+	public ref Int32 TimeToSecondary => ref __m_nTimeToSecondary.GetRef(this.Handle);
 
 	// m_nTimeToPrimary
+	private static readonly SchemaField<Int32> __m_nTimeToPrimary = new("CCSPlayer_WeaponServices", "m_nTimeToPrimary");
 	[SchemaMember("CCSPlayer_WeaponServices", "m_nTimeToPrimary")]
-	public ref Int32 TimeToPrimary => ref Schema.GetRef<Int32>(this.Handle, "CCSPlayer_WeaponServices", "m_nTimeToPrimary");
+	public ref Int32 TimeToPrimary => ref __m_nTimeToPrimary.GetRef(this.Handle);
 
 	// m_nTimeToSniperRifle
+	private static readonly SchemaField<Int32> __m_nTimeToSniperRifle = new("CCSPlayer_WeaponServices", "m_nTimeToSniperRifle");
 	[SchemaMember("CCSPlayer_WeaponServices", "m_nTimeToSniperRifle")]
-	public ref Int32 TimeToSniperRifle => ref Schema.GetRef<Int32>(this.Handle, "CCSPlayer_WeaponServices", "m_nTimeToSniperRifle");
+	public ref Int32 TimeToSniperRifle => ref __m_nTimeToSniperRifle.GetRef(this.Handle);
 
 	// m_bIsBeingGivenItem
+	private static readonly SchemaField<bool> __m_bIsBeingGivenItem = new("CCSPlayer_WeaponServices", "m_bIsBeingGivenItem");
 	[SchemaMember("CCSPlayer_WeaponServices", "m_bIsBeingGivenItem")]
-	public ref bool IsBeingGivenItem => ref Schema.GetRef<bool>(this.Handle, "CCSPlayer_WeaponServices", "m_bIsBeingGivenItem");
+	public ref bool IsBeingGivenItem => ref __m_bIsBeingGivenItem.GetRef(this.Handle);
 
 	// m_bIsPickingUpItemWithUse
+	private static readonly SchemaField<bool> __m_bIsPickingUpItemWithUse = new("CCSPlayer_WeaponServices", "m_bIsPickingUpItemWithUse");
 	[SchemaMember("CCSPlayer_WeaponServices", "m_bIsPickingUpItemWithUse")]
-	public ref bool IsPickingUpItemWithUse => ref Schema.GetRef<bool>(this.Handle, "CCSPlayer_WeaponServices", "m_bIsPickingUpItemWithUse");
+	public ref bool IsPickingUpItemWithUse => ref __m_bIsPickingUpItemWithUse.GetRef(this.Handle);
 
 	// m_bPickedUpWeapon
+	private static readonly SchemaField<bool> __m_bPickedUpWeapon = new("CCSPlayer_WeaponServices", "m_bPickedUpWeapon");
 	[SchemaMember("CCSPlayer_WeaponServices", "m_bPickedUpWeapon")]
-	public ref bool PickedUpWeapon => ref Schema.GetRef<bool>(this.Handle, "CCSPlayer_WeaponServices", "m_bPickedUpWeapon");
+	public ref bool PickedUpWeapon => ref __m_bPickedUpWeapon.GetRef(this.Handle);
 
 	// m_bDisableAutoDeploy
+	private static readonly SchemaField<bool> __m_bDisableAutoDeploy = new("CCSPlayer_WeaponServices", "m_bDisableAutoDeploy");
 	[SchemaMember("CCSPlayer_WeaponServices", "m_bDisableAutoDeploy")]
-	public ref bool DisableAutoDeploy => ref Schema.GetRef<bool>(this.Handle, "CCSPlayer_WeaponServices", "m_bDisableAutoDeploy");
+	public ref bool DisableAutoDeploy => ref __m_bDisableAutoDeploy.GetRef(this.Handle);
 
 	// m_bIsPickingUpGroundWeapon
+	private static readonly SchemaField<bool> __m_bIsPickingUpGroundWeapon = new("CCSPlayer_WeaponServices", "m_bIsPickingUpGroundWeapon");
 	[SchemaMember("CCSPlayer_WeaponServices", "m_bIsPickingUpGroundWeapon")]
-	public ref bool IsPickingUpGroundWeapon => ref Schema.GetRef<bool>(this.Handle, "CCSPlayer_WeaponServices", "m_bIsPickingUpGroundWeapon");
+	public ref bool IsPickingUpGroundWeapon => ref __m_bIsPickingUpGroundWeapon.GetRef(this.Handle);
 
 	// m_networkAnimTiming
 	[SchemaMember("CCSPlayer_WeaponServices", "m_networkAnimTiming")]
 	public NetworkedVector<byte> NetworkAnimTiming => Schema.GetDeclaredClass<NetworkedVector<byte>>(this.Handle, "CCSPlayer_WeaponServices", "m_networkAnimTiming");
 
 	// m_bBlockInspectUntilNextGraphUpdate
+	private static readonly SchemaField<bool> __m_bBlockInspectUntilNextGraphUpdate = new("CCSPlayer_WeaponServices", "m_bBlockInspectUntilNextGraphUpdate");
 	[SchemaMember("CCSPlayer_WeaponServices", "m_bBlockInspectUntilNextGraphUpdate")]
-	public ref bool BlockInspectUntilNextGraphUpdate => ref Schema.GetRef<bool>(this.Handle, "CCSPlayer_WeaponServices", "m_bBlockInspectUntilNextGraphUpdate");
+	public ref bool BlockInspectUntilNextGraphUpdate => ref __m_bBlockInspectUntilNextGraphUpdate.GetRef(this.Handle);
 
 }

@@ -19,15 +19,18 @@ public partial class CFlashbangProjectile : CBaseCSGrenadeProjectile
     public CFlashbangProjectile (IntPtr pointer) : base(pointer) {}
 
 	// m_flTimeToDetonate
+	private static readonly SchemaField<float> __m_flTimeToDetonate = new("CFlashbangProjectile", "m_flTimeToDetonate");
 	[SchemaMember("CFlashbangProjectile", "m_flTimeToDetonate")]
-	public ref float TimeToDetonate => ref Schema.GetRef<float>(this.Handle, "CFlashbangProjectile", "m_flTimeToDetonate");
+	public ref float TimeToDetonate => ref __m_flTimeToDetonate.GetRef(this.Handle);
 
 	// m_numOpponentsHit
+	private static readonly SchemaField<byte> __m_numOpponentsHit = new("CFlashbangProjectile", "m_numOpponentsHit");
 	[SchemaMember("CFlashbangProjectile", "m_numOpponentsHit")]
-	public ref byte NumOpponentsHit => ref Schema.GetRef<byte>(this.Handle, "CFlashbangProjectile", "m_numOpponentsHit");
+	public ref byte NumOpponentsHit => ref __m_numOpponentsHit.GetRef(this.Handle);
 
 	// m_numTeammatesHit
+	private static readonly SchemaField<byte> __m_numTeammatesHit = new("CFlashbangProjectile", "m_numTeammatesHit");
 	[SchemaMember("CFlashbangProjectile", "m_numTeammatesHit")]
-	public ref byte NumTeammatesHit => ref Schema.GetRef<byte>(this.Handle, "CFlashbangProjectile", "m_numTeammatesHit");
+	public ref byte NumTeammatesHit => ref __m_numTeammatesHit.GetRef(this.Handle);
 
 }

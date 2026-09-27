@@ -19,8 +19,9 @@ public partial class CFilterMultiple : CBaseFilter
     public CFilterMultiple (IntPtr pointer) : base(pointer) {}
 
 	// m_nFilterType
+	private static readonly SchemaField<filter_t> __m_nFilterType = new("CFilterMultiple", "m_nFilterType");
 	[SchemaMember("CFilterMultiple", "m_nFilterType")]
-	public ref filter_t FilterType => ref Schema.GetRef<filter_t>(this.Handle, "CFilterMultiple", "m_nFilterType");
+	public ref filter_t FilterType => ref __m_nFilterType.GetRef(this.Handle);
 
 	// m_iFilterName
 	[SchemaMember("CFilterMultiple", "m_iFilterName")]

@@ -27,12 +27,14 @@ public partial class CPlayerPing : CBaseEntity
 	public CHandle<CBaseEntity> PingedEntity => Schema.GetDeclaredClass<CHandle<CBaseEntity>>(this.Handle, "CPlayerPing", "m_hPingedEntity");
 
 	// m_iType
+	private static readonly SchemaField<Int32> __m_iType = new("CPlayerPing", "m_iType");
 	[SchemaMember("CPlayerPing", "m_iType")]
-	public ref Int32 Type => ref Schema.GetRef<Int32>(this.Handle, "CPlayerPing", "m_iType");
+	public ref Int32 Type => ref __m_iType.GetRef(this.Handle);
 
 	// m_bUrgent
+	private static readonly SchemaField<bool> __m_bUrgent = new("CPlayerPing", "m_bUrgent");
 	[SchemaMember("CPlayerPing", "m_bUrgent")]
-	public ref bool Urgent => ref Schema.GetRef<bool>(this.Handle, "CPlayerPing", "m_bUrgent");
+	public ref bool Urgent => ref __m_bUrgent.GetRef(this.Handle);
 
 	// m_szPlaceName
 	[SchemaMember("CPlayerPing", "m_szPlaceName")]

@@ -19,16 +19,19 @@ public partial class CPointCamera : CBaseEntity
     public CPointCamera (IntPtr pointer) : base(pointer) {}
 
 	// m_FOV
+	private static readonly SchemaField<float> __m_FOV = new("CPointCamera", "m_FOV");
 	[SchemaMember("CPointCamera", "m_FOV")]
-	public ref float FOV => ref Schema.GetRef<float>(this.Handle, "CPointCamera", "m_FOV");
+	public ref float FOV => ref __m_FOV.GetRef(this.Handle);
 
 	// m_Resolution
+	private static readonly SchemaField<float> __m_Resolution = new("CPointCamera", "m_Resolution");
 	[SchemaMember("CPointCamera", "m_Resolution")]
-	public ref float Resolution => ref Schema.GetRef<float>(this.Handle, "CPointCamera", "m_Resolution");
+	public ref float Resolution => ref __m_Resolution.GetRef(this.Handle);
 
 	// m_bFogEnable
+	private static readonly SchemaField<bool> __m_bFogEnable = new("CPointCamera", "m_bFogEnable");
 	[SchemaMember("CPointCamera", "m_bFogEnable")]
-	public ref bool FogEnable => ref Schema.GetRef<bool>(this.Handle, "CPointCamera", "m_bFogEnable");
+	public ref bool FogEnable => ref __m_bFogEnable.GetRef(this.Handle);
 
 	// m_FogColor
 	[SchemaMember("CPointCamera", "m_FogColor")]
@@ -39,88 +42,109 @@ public partial class CPointCamera : CBaseEntity
 	}
 
 	// m_flFogStart
+	private static readonly SchemaField<float> __m_flFogStart = new("CPointCamera", "m_flFogStart");
 	[SchemaMember("CPointCamera", "m_flFogStart")]
-	public ref float FogStart => ref Schema.GetRef<float>(this.Handle, "CPointCamera", "m_flFogStart");
+	public ref float FogStart => ref __m_flFogStart.GetRef(this.Handle);
 
 	// m_flFogEnd
+	private static readonly SchemaField<float> __m_flFogEnd = new("CPointCamera", "m_flFogEnd");
 	[SchemaMember("CPointCamera", "m_flFogEnd")]
-	public ref float FogEnd => ref Schema.GetRef<float>(this.Handle, "CPointCamera", "m_flFogEnd");
+	public ref float FogEnd => ref __m_flFogEnd.GetRef(this.Handle);
 
 	// m_flFogMaxDensity
+	private static readonly SchemaField<float> __m_flFogMaxDensity = new("CPointCamera", "m_flFogMaxDensity");
 	[SchemaMember("CPointCamera", "m_flFogMaxDensity")]
-	public ref float FogMaxDensity => ref Schema.GetRef<float>(this.Handle, "CPointCamera", "m_flFogMaxDensity");
+	public ref float FogMaxDensity => ref __m_flFogMaxDensity.GetRef(this.Handle);
 
 	// m_bActive
+	private static readonly SchemaField<bool> __m_bActive = new("CPointCamera", "m_bActive");
 	[SchemaMember("CPointCamera", "m_bActive")]
-	public ref bool Active => ref Schema.GetRef<bool>(this.Handle, "CPointCamera", "m_bActive");
+	public ref bool Active => ref __m_bActive.GetRef(this.Handle);
 
 	// m_bUseScreenAspectRatio
+	private static readonly SchemaField<bool> __m_bUseScreenAspectRatio = new("CPointCamera", "m_bUseScreenAspectRatio");
 	[SchemaMember("CPointCamera", "m_bUseScreenAspectRatio")]
-	public ref bool UseScreenAspectRatio => ref Schema.GetRef<bool>(this.Handle, "CPointCamera", "m_bUseScreenAspectRatio");
+	public ref bool UseScreenAspectRatio => ref __m_bUseScreenAspectRatio.GetRef(this.Handle);
 
 	// m_flAspectRatio
+	private static readonly SchemaField<float> __m_flAspectRatio = new("CPointCamera", "m_flAspectRatio");
 	[SchemaMember("CPointCamera", "m_flAspectRatio")]
-	public ref float AspectRatio => ref Schema.GetRef<float>(this.Handle, "CPointCamera", "m_flAspectRatio");
+	public ref float AspectRatio => ref __m_flAspectRatio.GetRef(this.Handle);
 
 	// m_bNoSky
+	private static readonly SchemaField<bool> __m_bNoSky = new("CPointCamera", "m_bNoSky");
 	[SchemaMember("CPointCamera", "m_bNoSky")]
-	public ref bool NoSky => ref Schema.GetRef<bool>(this.Handle, "CPointCamera", "m_bNoSky");
+	public ref bool NoSky => ref __m_bNoSky.GetRef(this.Handle);
 
 	// m_fBrightness
+	private static readonly SchemaField<float> __m_fBrightness = new("CPointCamera", "m_fBrightness");
 	[SchemaMember("CPointCamera", "m_fBrightness")]
-	public ref float Brightness => ref Schema.GetRef<float>(this.Handle, "CPointCamera", "m_fBrightness");
+	public ref float Brightness => ref __m_fBrightness.GetRef(this.Handle);
 
 	// m_flZFar
+	private static readonly SchemaField<float> __m_flZFar = new("CPointCamera", "m_flZFar");
 	[SchemaMember("CPointCamera", "m_flZFar")]
-	public ref float ZFar => ref Schema.GetRef<float>(this.Handle, "CPointCamera", "m_flZFar");
+	public ref float ZFar => ref __m_flZFar.GetRef(this.Handle);
 
 	// m_flZNear
+	private static readonly SchemaField<float> __m_flZNear = new("CPointCamera", "m_flZNear");
 	[SchemaMember("CPointCamera", "m_flZNear")]
-	public ref float ZNear => ref Schema.GetRef<float>(this.Handle, "CPointCamera", "m_flZNear");
+	public ref float ZNear => ref __m_flZNear.GetRef(this.Handle);
 
 	// m_bCanHLTVUse
+	private static readonly SchemaField<bool> __m_bCanHLTVUse = new("CPointCamera", "m_bCanHLTVUse");
 	[SchemaMember("CPointCamera", "m_bCanHLTVUse")]
-	public ref bool CanHLTVUse => ref Schema.GetRef<bool>(this.Handle, "CPointCamera", "m_bCanHLTVUse");
+	public ref bool CanHLTVUse => ref __m_bCanHLTVUse.GetRef(this.Handle);
 
 	// m_bAlignWithParent
+	private static readonly SchemaField<bool> __m_bAlignWithParent = new("CPointCamera", "m_bAlignWithParent");
 	[SchemaMember("CPointCamera", "m_bAlignWithParent")]
-	public ref bool AlignWithParent => ref Schema.GetRef<bool>(this.Handle, "CPointCamera", "m_bAlignWithParent");
+	public ref bool AlignWithParent => ref __m_bAlignWithParent.GetRef(this.Handle);
 
 	// m_bDofEnabled
+	private static readonly SchemaField<bool> __m_bDofEnabled = new("CPointCamera", "m_bDofEnabled");
 	[SchemaMember("CPointCamera", "m_bDofEnabled")]
-	public ref bool DofEnabled => ref Schema.GetRef<bool>(this.Handle, "CPointCamera", "m_bDofEnabled");
+	public ref bool DofEnabled => ref __m_bDofEnabled.GetRef(this.Handle);
 
 	// m_flDofNearBlurry
+	private static readonly SchemaField<float> __m_flDofNearBlurry = new("CPointCamera", "m_flDofNearBlurry");
 	[SchemaMember("CPointCamera", "m_flDofNearBlurry")]
-	public ref float DofNearBlurry => ref Schema.GetRef<float>(this.Handle, "CPointCamera", "m_flDofNearBlurry");
+	public ref float DofNearBlurry => ref __m_flDofNearBlurry.GetRef(this.Handle);
 
 	// m_flDofNearCrisp
+	private static readonly SchemaField<float> __m_flDofNearCrisp = new("CPointCamera", "m_flDofNearCrisp");
 	[SchemaMember("CPointCamera", "m_flDofNearCrisp")]
-	public ref float DofNearCrisp => ref Schema.GetRef<float>(this.Handle, "CPointCamera", "m_flDofNearCrisp");
+	public ref float DofNearCrisp => ref __m_flDofNearCrisp.GetRef(this.Handle);
 
 	// m_flDofFarCrisp
+	private static readonly SchemaField<float> __m_flDofFarCrisp = new("CPointCamera", "m_flDofFarCrisp");
 	[SchemaMember("CPointCamera", "m_flDofFarCrisp")]
-	public ref float DofFarCrisp => ref Schema.GetRef<float>(this.Handle, "CPointCamera", "m_flDofFarCrisp");
+	public ref float DofFarCrisp => ref __m_flDofFarCrisp.GetRef(this.Handle);
 
 	// m_flDofFarBlurry
+	private static readonly SchemaField<float> __m_flDofFarBlurry = new("CPointCamera", "m_flDofFarBlurry");
 	[SchemaMember("CPointCamera", "m_flDofFarBlurry")]
-	public ref float DofFarBlurry => ref Schema.GetRef<float>(this.Handle, "CPointCamera", "m_flDofFarBlurry");
+	public ref float DofFarBlurry => ref __m_flDofFarBlurry.GetRef(this.Handle);
 
 	// m_flDofTiltToGround
+	private static readonly SchemaField<float> __m_flDofTiltToGround = new("CPointCamera", "m_flDofTiltToGround");
 	[SchemaMember("CPointCamera", "m_flDofTiltToGround")]
-	public ref float DofTiltToGround => ref Schema.GetRef<float>(this.Handle, "CPointCamera", "m_flDofTiltToGround");
+	public ref float DofTiltToGround => ref __m_flDofTiltToGround.GetRef(this.Handle);
 
 	// m_TargetFOV
+	private static readonly SchemaField<float> __m_TargetFOV = new("CPointCamera", "m_TargetFOV");
 	[SchemaMember("CPointCamera", "m_TargetFOV")]
-	public ref float TargetFOV => ref Schema.GetRef<float>(this.Handle, "CPointCamera", "m_TargetFOV");
+	public ref float TargetFOV => ref __m_TargetFOV.GetRef(this.Handle);
 
 	// m_DegreesPerSecond
+	private static readonly SchemaField<float> __m_DegreesPerSecond = new("CPointCamera", "m_DegreesPerSecond");
 	[SchemaMember("CPointCamera", "m_DegreesPerSecond")]
-	public ref float DegreesPerSecond => ref Schema.GetRef<float>(this.Handle, "CPointCamera", "m_DegreesPerSecond");
+	public ref float DegreesPerSecond => ref __m_DegreesPerSecond.GetRef(this.Handle);
 
 	// m_bIsOn
+	private static readonly SchemaField<bool> __m_bIsOn = new("CPointCamera", "m_bIsOn");
 	[SchemaMember("CPointCamera", "m_bIsOn")]
-	public ref bool IsOn => ref Schema.GetRef<bool>(this.Handle, "CPointCamera", "m_bIsOn");
+	public ref bool IsOn => ref __m_bIsOn.GetRef(this.Handle);
 
 	// m_pNext
 	[SchemaMember("CPointCamera", "m_pNext")]

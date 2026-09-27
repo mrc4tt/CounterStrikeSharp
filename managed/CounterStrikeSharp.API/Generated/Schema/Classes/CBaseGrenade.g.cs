@@ -19,8 +19,9 @@ public partial class CBaseGrenade : CBaseAnimGraph
     public CBaseGrenade (IntPtr pointer) : base(pointer) {}
 
 	// m_bDamageDetonating
+	private static readonly SchemaField<bool> __m_bDamageDetonating = new("CBaseGrenade", "m_bDamageDetonating");
 	[SchemaMember("CBaseGrenade", "m_bDamageDetonating")]
-	public ref bool DamageDetonating => ref Schema.GetRef<bool>(this.Handle, "CBaseGrenade", "m_bDamageDetonating");
+	public ref bool DamageDetonating => ref __m_bDamageDetonating.GetRef(this.Handle);
 
 	// m_OnPlayerPickup
 	[SchemaMember("CBaseGrenade", "m_OnPlayerPickup")]
@@ -31,32 +32,39 @@ public partial class CBaseGrenade : CBaseAnimGraph
 	public CEntityIOOutput OnExplode => Schema.GetDeclaredClass<CEntityIOOutput>(this.Handle, "CBaseGrenade", "m_OnExplode");
 
 	// m_bHasWarnedAI
+	private static readonly SchemaField<bool> __m_bHasWarnedAI = new("CBaseGrenade", "m_bHasWarnedAI");
 	[SchemaMember("CBaseGrenade", "m_bHasWarnedAI")]
-	public ref bool HasWarnedAI => ref Schema.GetRef<bool>(this.Handle, "CBaseGrenade", "m_bHasWarnedAI");
+	public ref bool HasWarnedAI => ref __m_bHasWarnedAI.GetRef(this.Handle);
 
 	// m_bIsSmokeGrenade
+	private static readonly SchemaField<bool> __m_bIsSmokeGrenade = new("CBaseGrenade", "m_bIsSmokeGrenade");
 	[SchemaMember("CBaseGrenade", "m_bIsSmokeGrenade")]
-	public ref bool IsSmokeGrenade => ref Schema.GetRef<bool>(this.Handle, "CBaseGrenade", "m_bIsSmokeGrenade");
+	public ref bool IsSmokeGrenade => ref __m_bIsSmokeGrenade.GetRef(this.Handle);
 
 	// m_bIsLive
+	private static readonly SchemaField<bool> __m_bIsLive = new("CBaseGrenade", "m_bIsLive");
 	[SchemaMember("CBaseGrenade", "m_bIsLive")]
-	public ref bool IsLive => ref Schema.GetRef<bool>(this.Handle, "CBaseGrenade", "m_bIsLive");
+	public ref bool IsLive => ref __m_bIsLive.GetRef(this.Handle);
 
 	// m_DmgRadius
+	private static readonly SchemaField<float> __m_DmgRadius = new("CBaseGrenade", "m_DmgRadius");
 	[SchemaMember("CBaseGrenade", "m_DmgRadius")]
-	public ref float DmgRadius => ref Schema.GetRef<float>(this.Handle, "CBaseGrenade", "m_DmgRadius");
+	public ref float DmgRadius => ref __m_DmgRadius.GetRef(this.Handle);
 
 	// m_flDetonateTime
+	private static readonly SchemaField<float> __m_flDetonateTime = new("CBaseGrenade", "m_flDetonateTime");
 	[SchemaMember("CBaseGrenade", "m_flDetonateTime")]
-	public ref float DetonateTime => ref Schema.GetRef<float>(this.Handle, "CBaseGrenade", "m_flDetonateTime");
+	public ref float DetonateTime => ref __m_flDetonateTime.GetRef(this.Handle);
 
 	// m_flWarnAITime
+	private static readonly SchemaField<float> __m_flWarnAITime = new("CBaseGrenade", "m_flWarnAITime");
 	[SchemaMember("CBaseGrenade", "m_flWarnAITime")]
-	public ref float WarnAITime => ref Schema.GetRef<float>(this.Handle, "CBaseGrenade", "m_flWarnAITime");
+	public ref float WarnAITime => ref __m_flWarnAITime.GetRef(this.Handle);
 
 	// m_flDamage
+	private static readonly SchemaField<float> __m_flDamage = new("CBaseGrenade", "m_flDamage");
 	[SchemaMember("CBaseGrenade", "m_flDamage")]
-	public ref float Damage => ref Schema.GetRef<float>(this.Handle, "CBaseGrenade", "m_flDamage");
+	public ref float Damage => ref __m_flDamage.GetRef(this.Handle);
 
 	// m_iszBounceSound
 	[SchemaMember("CBaseGrenade", "m_iszBounceSound")]
@@ -79,8 +87,9 @@ public partial class CBaseGrenade : CBaseAnimGraph
 	public CHandle<CCSPlayerPawn> Thrower => Schema.GetDeclaredClass<CHandle<CCSPlayerPawn>>(this.Handle, "CBaseGrenade", "m_hThrower");
 
 	// m_flNextAttack
+	private static readonly SchemaField<float> __m_flNextAttack = new("CBaseGrenade", "m_flNextAttack");
 	[SchemaMember("CBaseGrenade", "m_flNextAttack")]
-	public ref float NextAttack => ref Schema.GetRef<float>(this.Handle, "CBaseGrenade", "m_flNextAttack");
+	public ref float NextAttack => ref __m_flNextAttack.GetRef(this.Handle);
 
 	// m_hOriginalThrower
 	[SchemaMember("CBaseGrenade", "m_hOriginalThrower")]

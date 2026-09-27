@@ -19,7 +19,8 @@ public partial class CWeaponCZ75a : CCSWeaponBaseGun
     public CWeaponCZ75a (IntPtr pointer) : base(pointer) {}
 
 	// m_bMagazineRemoved
+	private static readonly SchemaField<bool> __m_bMagazineRemoved = new("CWeaponCZ75a", "m_bMagazineRemoved");
 	[SchemaMember("CWeaponCZ75a", "m_bMagazineRemoved")]
-	public ref bool MagazineRemoved => ref Schema.GetRef<bool>(this.Handle, "CWeaponCZ75a", "m_bMagazineRemoved");
+	public ref bool MagazineRemoved => ref __m_bMagazineRemoved.GetRef(this.Handle);
 
 }

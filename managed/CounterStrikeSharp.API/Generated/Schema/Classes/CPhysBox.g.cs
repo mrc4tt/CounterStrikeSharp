@@ -19,16 +19,19 @@ public partial class CPhysBox : CBreakable
     public CPhysBox (IntPtr pointer) : base(pointer) {}
 
 	// m_damageType
+	private static readonly SchemaField<Int32> __m_damageType = new("CPhysBox", "m_damageType");
 	[SchemaMember("CPhysBox", "m_damageType")]
-	public ref Int32 DamageType => ref Schema.GetRef<Int32>(this.Handle, "CPhysBox", "m_damageType");
+	public ref Int32 DamageType => ref __m_damageType.GetRef(this.Handle);
 
 	// m_damageToEnableMotion
+	private static readonly SchemaField<Int32> __m_damageToEnableMotion = new("CPhysBox", "m_damageToEnableMotion");
 	[SchemaMember("CPhysBox", "m_damageToEnableMotion")]
-	public ref Int32 DamageToEnableMotion => ref Schema.GetRef<Int32>(this.Handle, "CPhysBox", "m_damageToEnableMotion");
+	public ref Int32 DamageToEnableMotion => ref __m_damageToEnableMotion.GetRef(this.Handle);
 
 	// m_flForceToEnableMotion
+	private static readonly SchemaField<float> __m_flForceToEnableMotion = new("CPhysBox", "m_flForceToEnableMotion");
 	[SchemaMember("CPhysBox", "m_flForceToEnableMotion")]
-	public ref float ForceToEnableMotion => ref Schema.GetRef<float>(this.Handle, "CPhysBox", "m_flForceToEnableMotion");
+	public ref float ForceToEnableMotion => ref __m_flForceToEnableMotion.GetRef(this.Handle);
 
 	// m_vHoverPosePosition
 	[SchemaMember("CPhysBox", "m_vHoverPosePosition")]
@@ -39,20 +42,24 @@ public partial class CPhysBox : CBreakable
 	public QAngle HoverPoseAngles => Schema.GetDeclaredClass<QAngle>(this.Handle, "CPhysBox", "m_angHoverPoseAngles");
 
 	// m_bNotSolidToWorld
+	private static readonly SchemaField<bool> __m_bNotSolidToWorld = new("CPhysBox", "m_bNotSolidToWorld");
 	[SchemaMember("CPhysBox", "m_bNotSolidToWorld")]
-	public ref bool NotSolidToWorld => ref Schema.GetRef<bool>(this.Handle, "CPhysBox", "m_bNotSolidToWorld");
+	public ref bool NotSolidToWorld => ref __m_bNotSolidToWorld.GetRef(this.Handle);
 
 	// m_bEnableUseOutput
+	private static readonly SchemaField<bool> __m_bEnableUseOutput = new("CPhysBox", "m_bEnableUseOutput");
 	[SchemaMember("CPhysBox", "m_bEnableUseOutput")]
-	public ref bool EnableUseOutput => ref Schema.GetRef<bool>(this.Handle, "CPhysBox", "m_bEnableUseOutput");
+	public ref bool EnableUseOutput => ref __m_bEnableUseOutput.GetRef(this.Handle);
 
 	// m_nHoverPoseFlags
+	private static readonly SchemaField<HoverPoseFlags_t> __m_nHoverPoseFlags = new("CPhysBox", "m_nHoverPoseFlags");
 	[SchemaMember("CPhysBox", "m_nHoverPoseFlags")]
-	public ref HoverPoseFlags_t HoverPoseFlags => ref Schema.GetRef<HoverPoseFlags_t>(this.Handle, "CPhysBox", "m_nHoverPoseFlags");
+	public ref HoverPoseFlags_t HoverPoseFlags => ref __m_nHoverPoseFlags.GetRef(this.Handle);
 
 	// m_flTouchOutputPerEntityDelay
+	private static readonly SchemaField<float> __m_flTouchOutputPerEntityDelay = new("CPhysBox", "m_flTouchOutputPerEntityDelay");
 	[SchemaMember("CPhysBox", "m_flTouchOutputPerEntityDelay")]
-	public ref float TouchOutputPerEntityDelay => ref Schema.GetRef<float>(this.Handle, "CPhysBox", "m_flTouchOutputPerEntityDelay");
+	public ref float TouchOutputPerEntityDelay => ref __m_flTouchOutputPerEntityDelay.GetRef(this.Handle);
 
 	// m_iszCollisionGroup
 	[SchemaMember("CPhysBox", "m_iszCollisionGroup")]

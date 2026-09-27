@@ -19,16 +19,19 @@ public partial class CInfoFan : CPointEntity
     public CInfoFan (IntPtr pointer) : base(pointer) {}
 
 	// m_fFanForceMaxRadius
+	private static readonly SchemaField<float> __m_fFanForceMaxRadius = new("CInfoFan", "m_fFanForceMaxRadius");
 	[SchemaMember("CInfoFan", "m_fFanForceMaxRadius")]
-	public ref float FanForceMaxRadius => ref Schema.GetRef<float>(this.Handle, "CInfoFan", "m_fFanForceMaxRadius");
+	public ref float FanForceMaxRadius => ref __m_fFanForceMaxRadius.GetRef(this.Handle);
 
 	// m_fFanForceMinRadius
+	private static readonly SchemaField<float> __m_fFanForceMinRadius = new("CInfoFan", "m_fFanForceMinRadius");
 	[SchemaMember("CInfoFan", "m_fFanForceMinRadius")]
-	public ref float FanForceMinRadius => ref Schema.GetRef<float>(this.Handle, "CInfoFan", "m_fFanForceMinRadius");
+	public ref float FanForceMinRadius => ref __m_fFanForceMinRadius.GetRef(this.Handle);
 
 	// m_flCurveDistRange
+	private static readonly SchemaField<float> __m_flCurveDistRange = new("CInfoFan", "m_flCurveDistRange");
 	[SchemaMember("CInfoFan", "m_flCurveDistRange")]
-	public ref float CurveDistRange => ref Schema.GetRef<float>(this.Handle, "CInfoFan", "m_flCurveDistRange");
+	public ref float CurveDistRange => ref __m_flCurveDistRange.GetRef(this.Handle);
 
 	// m_FanForceCurveString
 	[SchemaMember("CInfoFan", "m_FanForceCurveString")]

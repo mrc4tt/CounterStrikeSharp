@@ -19,11 +19,13 @@ public partial class CEnvBeverage : CBaseEntity
     public CEnvBeverage (IntPtr pointer) : base(pointer) {}
 
 	// m_CanInDispenser
+	private static readonly SchemaField<bool> __m_CanInDispenser = new("CEnvBeverage", "m_CanInDispenser");
 	[SchemaMember("CEnvBeverage", "m_CanInDispenser")]
-	public ref bool CanInDispenser => ref Schema.GetRef<bool>(this.Handle, "CEnvBeverage", "m_CanInDispenser");
+	public ref bool CanInDispenser => ref __m_CanInDispenser.GetRef(this.Handle);
 
 	// m_nBeverageType
+	private static readonly SchemaField<Int32> __m_nBeverageType = new("CEnvBeverage", "m_nBeverageType");
 	[SchemaMember("CEnvBeverage", "m_nBeverageType")]
-	public ref Int32 BeverageType => ref Schema.GetRef<Int32>(this.Handle, "CEnvBeverage", "m_nBeverageType");
+	public ref Int32 BeverageType => ref __m_nBeverageType.GetRef(this.Handle);
 
 }

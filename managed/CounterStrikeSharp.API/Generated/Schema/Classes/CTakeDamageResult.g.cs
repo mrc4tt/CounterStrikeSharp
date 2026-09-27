@@ -23,55 +23,67 @@ public partial class CTakeDamageResult : NativeObject
 	public CTakeDamageInfo? OriginatingInfo => Schema.GetPointer<CTakeDamageInfo>(this.Handle, "CTakeDamageResult", "m_pOriginatingInfo");
 
 	// m_nHealthLost
+	private static readonly SchemaField<Int32> __m_nHealthLost = new("CTakeDamageResult", "m_nHealthLost");
 	[SchemaMember("CTakeDamageResult", "m_nHealthLost")]
-	public ref Int32 HealthLost => ref Schema.GetRef<Int32>(this.Handle, "CTakeDamageResult", "m_nHealthLost");
+	public ref Int32 HealthLost => ref __m_nHealthLost.GetRef(this.Handle);
 
 	// m_nHealthBefore
+	private static readonly SchemaField<Int32> __m_nHealthBefore = new("CTakeDamageResult", "m_nHealthBefore");
 	[SchemaMember("CTakeDamageResult", "m_nHealthBefore")]
-	public ref Int32 HealthBefore => ref Schema.GetRef<Int32>(this.Handle, "CTakeDamageResult", "m_nHealthBefore");
+	public ref Int32 HealthBefore => ref __m_nHealthBefore.GetRef(this.Handle);
 
 	// m_flDamageDealt
+	private static readonly SchemaField<float> __m_flDamageDealt = new("CTakeDamageResult", "m_flDamageDealt");
 	[SchemaMember("CTakeDamageResult", "m_flDamageDealt")]
-	public ref float DamageDealt => ref Schema.GetRef<float>(this.Handle, "CTakeDamageResult", "m_flDamageDealt");
+	public ref float DamageDealt => ref __m_flDamageDealt.GetRef(this.Handle);
 
 	// m_flPreModifiedDamage
+	private static readonly SchemaField<float> __m_flPreModifiedDamage = new("CTakeDamageResult", "m_flPreModifiedDamage");
 	[SchemaMember("CTakeDamageResult", "m_flPreModifiedDamage")]
-	public ref float PreModifiedDamage => ref Schema.GetRef<float>(this.Handle, "CTakeDamageResult", "m_flPreModifiedDamage");
+	public ref float PreModifiedDamage => ref __m_flPreModifiedDamage.GetRef(this.Handle);
 
 	// m_vDamagePosition
 	[SchemaMember("CTakeDamageResult", "m_vDamagePosition")]
 	public Vector DamagePosition => Schema.GetDeclaredClass<Vector>(this.Handle, "CTakeDamageResult", "m_vDamagePosition");
 
 	// m_nTotalledHealthLost
+	private static readonly SchemaField<Int32> __m_nTotalledHealthLost = new("CTakeDamageResult", "m_nTotalledHealthLost");
 	[SchemaMember("CTakeDamageResult", "m_nTotalledHealthLost")]
-	public ref Int32 TotalledHealthLost => ref Schema.GetRef<Int32>(this.Handle, "CTakeDamageResult", "m_nTotalledHealthLost");
+	public ref Int32 TotalledHealthLost => ref __m_nTotalledHealthLost.GetRef(this.Handle);
 
 	// m_flTotalledDamageDealt
+	private static readonly SchemaField<float> __m_flTotalledDamageDealt = new("CTakeDamageResult", "m_flTotalledDamageDealt");
 	[SchemaMember("CTakeDamageResult", "m_flTotalledDamageDealt")]
-	public ref float TotalledDamageDealt => ref Schema.GetRef<float>(this.Handle, "CTakeDamageResult", "m_flTotalledDamageDealt");
+	public ref float TotalledDamageDealt => ref __m_flTotalledDamageDealt.GetRef(this.Handle);
 
 	// m_flTotalledPreModifiedDamage
+	private static readonly SchemaField<float> __m_flTotalledPreModifiedDamage = new("CTakeDamageResult", "m_flTotalledPreModifiedDamage");
 	[SchemaMember("CTakeDamageResult", "m_flTotalledPreModifiedDamage")]
-	public ref float TotalledPreModifiedDamage => ref Schema.GetRef<float>(this.Handle, "CTakeDamageResult", "m_flTotalledPreModifiedDamage");
+	public ref float TotalledPreModifiedDamage => ref __m_flTotalledPreModifiedDamage.GetRef(this.Handle);
 
 	// m_flNewDamageAccumulatorValue
+	private static readonly SchemaField<float> __m_flNewDamageAccumulatorValue = new("CTakeDamageResult", "m_flNewDamageAccumulatorValue");
 	[SchemaMember("CTakeDamageResult", "m_flNewDamageAccumulatorValue")]
-	public ref float NewDamageAccumulatorValue => ref Schema.GetRef<float>(this.Handle, "CTakeDamageResult", "m_flNewDamageAccumulatorValue");
+	public ref float NewDamageAccumulatorValue => ref __m_flNewDamageAccumulatorValue.GetRef(this.Handle);
 
 	// m_nDamageFlags
+	private static readonly SchemaField<TakeDamageFlags_t> __m_nDamageFlags = new("CTakeDamageResult", "m_nDamageFlags");
 	[SchemaMember("CTakeDamageResult", "m_nDamageFlags")]
-	public ref TakeDamageFlags_t DamageFlags => ref Schema.GetRef<TakeDamageFlags_t>(this.Handle, "CTakeDamageResult", "m_nDamageFlags");
+	public ref TakeDamageFlags_t DamageFlags => ref __m_nDamageFlags.GetRef(this.Handle);
 
 	// m_bWasDamageSuppressed
+	private static readonly SchemaField<bool> __m_bWasDamageSuppressed = new("CTakeDamageResult", "m_bWasDamageSuppressed");
 	[SchemaMember("CTakeDamageResult", "m_bWasDamageSuppressed")]
-	public ref bool WasDamageSuppressed => ref Schema.GetRef<bool>(this.Handle, "CTakeDamageResult", "m_bWasDamageSuppressed");
+	public ref bool WasDamageSuppressed => ref __m_bWasDamageSuppressed.GetRef(this.Handle);
 
 	// m_bSuppressFlinch
+	private static readonly SchemaField<bool> __m_bSuppressFlinch = new("CTakeDamageResult", "m_bSuppressFlinch");
 	[SchemaMember("CTakeDamageResult", "m_bSuppressFlinch")]
-	public ref bool SuppressFlinch => ref Schema.GetRef<bool>(this.Handle, "CTakeDamageResult", "m_bSuppressFlinch");
+	public ref bool SuppressFlinch => ref __m_bSuppressFlinch.GetRef(this.Handle);
 
 	// m_nOverrideFlinchHitGroup
+	private static readonly SchemaField<HitGroup_t> __m_nOverrideFlinchHitGroup = new("CTakeDamageResult", "m_nOverrideFlinchHitGroup");
 	[SchemaMember("CTakeDamageResult", "m_nOverrideFlinchHitGroup")]
-	public ref HitGroup_t OverrideFlinchHitGroup => ref Schema.GetRef<HitGroup_t>(this.Handle, "CTakeDamageResult", "m_nOverrideFlinchHitGroup");
+	public ref HitGroup_t OverrideFlinchHitGroup => ref __m_nOverrideFlinchHitGroup.GetRef(this.Handle);
 
 }

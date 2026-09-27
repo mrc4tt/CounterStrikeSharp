@@ -19,15 +19,18 @@ public partial class ServerAuthoritativeWeaponSlot_t : NativeObject
     public ServerAuthoritativeWeaponSlot_t (IntPtr pointer) : base(pointer) {}
 
 	// unClass
+	private static readonly SchemaField<UInt16> __unClass = new("ServerAuthoritativeWeaponSlot_t", "unClass");
 	[SchemaMember("ServerAuthoritativeWeaponSlot_t", "unClass")]
-	public ref UInt16 UnClass => ref Schema.GetRef<UInt16>(this.Handle, "ServerAuthoritativeWeaponSlot_t", "unClass");
+	public ref UInt16 UnClass => ref __unClass.GetRef(this.Handle);
 
 	// unSlot
+	private static readonly SchemaField<UInt16> __unSlot = new("ServerAuthoritativeWeaponSlot_t", "unSlot");
 	[SchemaMember("ServerAuthoritativeWeaponSlot_t", "unSlot")]
-	public ref UInt16 UnSlot => ref Schema.GetRef<UInt16>(this.Handle, "ServerAuthoritativeWeaponSlot_t", "unSlot");
+	public ref UInt16 UnSlot => ref __unSlot.GetRef(this.Handle);
 
 	// unItemDefIdx
+	private static readonly SchemaField<UInt16> __unItemDefIdx = new("ServerAuthoritativeWeaponSlot_t", "unItemDefIdx");
 	[SchemaMember("ServerAuthoritativeWeaponSlot_t", "unItemDefIdx")]
-	public ref UInt16 UnItemDefIdx => ref Schema.GetRef<UInt16>(this.Handle, "ServerAuthoritativeWeaponSlot_t", "unItemDefIdx");
+	public ref UInt16 UnItemDefIdx => ref __unItemDefIdx.GetRef(this.Handle);
 
 }

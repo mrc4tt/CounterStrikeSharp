@@ -19,8 +19,9 @@ public partial class CRopeKeyframe : CBaseModelEntity
     public CRopeKeyframe (IntPtr pointer) : base(pointer) {}
 
 	// m_RopeFlags
+	private static readonly SchemaField<UInt16> __m_RopeFlags = new("CRopeKeyframe", "m_RopeFlags");
 	[SchemaMember("CRopeKeyframe", "m_RopeFlags")]
-	public ref UInt16 RopeFlags => ref Schema.GetRef<UInt16>(this.Handle, "CRopeKeyframe", "m_RopeFlags");
+	public ref UInt16 RopeFlags => ref __m_RopeFlags.GetRef(this.Handle);
 
 	// m_iNextLinkName
 	[SchemaMember("CRopeKeyframe", "m_iNextLinkName")]
@@ -31,24 +32,29 @@ public partial class CRopeKeyframe : CBaseModelEntity
 	}
 
 	// m_Slack
+	private static readonly SchemaField<Int16> __m_Slack = new("CRopeKeyframe", "m_Slack");
 	[SchemaMember("CRopeKeyframe", "m_Slack")]
-	public ref Int16 Slack => ref Schema.GetRef<Int16>(this.Handle, "CRopeKeyframe", "m_Slack");
+	public ref Int16 Slack => ref __m_Slack.GetRef(this.Handle);
 
 	// m_Width
+	private static readonly SchemaField<float> __m_Width = new("CRopeKeyframe", "m_Width");
 	[SchemaMember("CRopeKeyframe", "m_Width")]
-	public ref float Width => ref Schema.GetRef<float>(this.Handle, "CRopeKeyframe", "m_Width");
+	public ref float Width => ref __m_Width.GetRef(this.Handle);
 
 	// m_TextureScale
+	private static readonly SchemaField<float> __m_TextureScale = new("CRopeKeyframe", "m_TextureScale");
 	[SchemaMember("CRopeKeyframe", "m_TextureScale")]
-	public ref float TextureScale => ref Schema.GetRef<float>(this.Handle, "CRopeKeyframe", "m_TextureScale");
+	public ref float TextureScale => ref __m_TextureScale.GetRef(this.Handle);
 
 	// m_nSegments
+	private static readonly SchemaField<byte> __m_nSegments = new("CRopeKeyframe", "m_nSegments");
 	[SchemaMember("CRopeKeyframe", "m_nSegments")]
-	public ref byte Segments => ref Schema.GetRef<byte>(this.Handle, "CRopeKeyframe", "m_nSegments");
+	public ref byte Segments => ref __m_nSegments.GetRef(this.Handle);
 
 	// m_bConstrainBetweenEndpoints
+	private static readonly SchemaField<bool> __m_bConstrainBetweenEndpoints = new("CRopeKeyframe", "m_bConstrainBetweenEndpoints");
 	[SchemaMember("CRopeKeyframe", "m_bConstrainBetweenEndpoints")]
-	public ref bool ConstrainBetweenEndpoints => ref Schema.GetRef<bool>(this.Handle, "CRopeKeyframe", "m_bConstrainBetweenEndpoints");
+	public ref bool ConstrainBetweenEndpoints => ref __m_bConstrainBetweenEndpoints.GetRef(this.Handle);
 
 	// m_strRopeMaterialModel
 	[SchemaMember("CRopeKeyframe", "m_strRopeMaterialModel")]
@@ -63,36 +69,44 @@ public partial class CRopeKeyframe : CBaseModelEntity
 	public CStrongHandle<InfoForResourceTypeIMaterial2> RopeMaterialModelIndex => Schema.GetDeclaredClass<CStrongHandle<InfoForResourceTypeIMaterial2>>(this.Handle, "CRopeKeyframe", "m_iRopeMaterialModelIndex");
 
 	// m_Subdiv
+	private static readonly SchemaField<byte> __m_Subdiv = new("CRopeKeyframe", "m_Subdiv");
 	[SchemaMember("CRopeKeyframe", "m_Subdiv")]
-	public ref byte Subdiv => ref Schema.GetRef<byte>(this.Handle, "CRopeKeyframe", "m_Subdiv");
+	public ref byte Subdiv => ref __m_Subdiv.GetRef(this.Handle);
 
 	// m_nChangeCount
+	private static readonly SchemaField<byte> __m_nChangeCount = new("CRopeKeyframe", "m_nChangeCount");
 	[SchemaMember("CRopeKeyframe", "m_nChangeCount")]
-	public ref byte ChangeCount => ref Schema.GetRef<byte>(this.Handle, "CRopeKeyframe", "m_nChangeCount");
+	public ref byte ChangeCount => ref __m_nChangeCount.GetRef(this.Handle);
 
 	// m_RopeLength
+	private static readonly SchemaField<Int16> __m_RopeLength = new("CRopeKeyframe", "m_RopeLength");
 	[SchemaMember("CRopeKeyframe", "m_RopeLength")]
-	public ref Int16 RopeLength => ref Schema.GetRef<Int16>(this.Handle, "CRopeKeyframe", "m_RopeLength");
+	public ref Int16 RopeLength => ref __m_RopeLength.GetRef(this.Handle);
 
 	// m_fLockedPoints
+	private static readonly SchemaField<byte> __m_fLockedPoints = new("CRopeKeyframe", "m_fLockedPoints");
 	[SchemaMember("CRopeKeyframe", "m_fLockedPoints")]
-	public ref byte LockedPoints => ref Schema.GetRef<byte>(this.Handle, "CRopeKeyframe", "m_fLockedPoints");
+	public ref byte LockedPoints => ref __m_fLockedPoints.GetRef(this.Handle);
 
 	// m_bCreatedFromMapFile
+	private static readonly SchemaField<bool> __m_bCreatedFromMapFile = new("CRopeKeyframe", "m_bCreatedFromMapFile");
 	[SchemaMember("CRopeKeyframe", "m_bCreatedFromMapFile")]
-	public ref bool CreatedFromMapFile => ref Schema.GetRef<bool>(this.Handle, "CRopeKeyframe", "m_bCreatedFromMapFile");
+	public ref bool CreatedFromMapFile => ref __m_bCreatedFromMapFile.GetRef(this.Handle);
 
 	// m_flScrollSpeed
+	private static readonly SchemaField<float> __m_flScrollSpeed = new("CRopeKeyframe", "m_flScrollSpeed");
 	[SchemaMember("CRopeKeyframe", "m_flScrollSpeed")]
-	public ref float ScrollSpeed => ref Schema.GetRef<float>(this.Handle, "CRopeKeyframe", "m_flScrollSpeed");
+	public ref float ScrollSpeed => ref __m_flScrollSpeed.GetRef(this.Handle);
 
 	// m_bStartPointValid
+	private static readonly SchemaField<bool> __m_bStartPointValid = new("CRopeKeyframe", "m_bStartPointValid");
 	[SchemaMember("CRopeKeyframe", "m_bStartPointValid")]
-	public ref bool StartPointValid => ref Schema.GetRef<bool>(this.Handle, "CRopeKeyframe", "m_bStartPointValid");
+	public ref bool StartPointValid => ref __m_bStartPointValid.GetRef(this.Handle);
 
 	// m_bEndPointValid
+	private static readonly SchemaField<bool> __m_bEndPointValid = new("CRopeKeyframe", "m_bEndPointValid");
 	[SchemaMember("CRopeKeyframe", "m_bEndPointValid")]
-	public ref bool EndPointValid => ref Schema.GetRef<bool>(this.Handle, "CRopeKeyframe", "m_bEndPointValid");
+	public ref bool EndPointValid => ref __m_bEndPointValid.GetRef(this.Handle);
 
 	// m_hStartPoint
 	[SchemaMember("CRopeKeyframe", "m_hStartPoint")]

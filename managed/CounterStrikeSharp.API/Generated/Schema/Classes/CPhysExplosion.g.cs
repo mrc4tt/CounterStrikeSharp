@@ -19,20 +19,24 @@ public partial class CPhysExplosion : CPointEntity
     public CPhysExplosion (IntPtr pointer) : base(pointer) {}
 
 	// m_bExplodeOnSpawn
+	private static readonly SchemaField<bool> __m_bExplodeOnSpawn = new("CPhysExplosion", "m_bExplodeOnSpawn");
 	[SchemaMember("CPhysExplosion", "m_bExplodeOnSpawn")]
-	public ref bool ExplodeOnSpawn => ref Schema.GetRef<bool>(this.Handle, "CPhysExplosion", "m_bExplodeOnSpawn");
+	public ref bool ExplodeOnSpawn => ref __m_bExplodeOnSpawn.GetRef(this.Handle);
 
 	// m_flMagnitude
+	private static readonly SchemaField<float> __m_flMagnitude = new("CPhysExplosion", "m_flMagnitude");
 	[SchemaMember("CPhysExplosion", "m_flMagnitude")]
-	public ref float Magnitude => ref Schema.GetRef<float>(this.Handle, "CPhysExplosion", "m_flMagnitude");
+	public ref float Magnitude => ref __m_flMagnitude.GetRef(this.Handle);
 
 	// m_flDamage
+	private static readonly SchemaField<float> __m_flDamage = new("CPhysExplosion", "m_flDamage");
 	[SchemaMember("CPhysExplosion", "m_flDamage")]
-	public ref float Damage => ref Schema.GetRef<float>(this.Handle, "CPhysExplosion", "m_flDamage");
+	public ref float Damage => ref __m_flDamage.GetRef(this.Handle);
 
 	// m_radius
+	private static readonly SchemaField<float> __m_radius = new("CPhysExplosion", "m_radius");
 	[SchemaMember("CPhysExplosion", "m_radius")]
-	public ref float Radius => ref Schema.GetRef<float>(this.Handle, "CPhysExplosion", "m_radius");
+	public ref float Radius => ref __m_radius.GetRef(this.Handle);
 
 	// m_targetEntityName
 	[SchemaMember("CPhysExplosion", "m_targetEntityName")]
@@ -51,24 +55,29 @@ public partial class CPhysExplosion : CPointEntity
 	}
 
 	// m_flInnerRadius
+	private static readonly SchemaField<float> __m_flInnerRadius = new("CPhysExplosion", "m_flInnerRadius");
 	[SchemaMember("CPhysExplosion", "m_flInnerRadius")]
-	public ref float InnerRadius => ref Schema.GetRef<float>(this.Handle, "CPhysExplosion", "m_flInnerRadius");
+	public ref float InnerRadius => ref __m_flInnerRadius.GetRef(this.Handle);
 
 	// m_flPushScale
+	private static readonly SchemaField<float> __m_flPushScale = new("CPhysExplosion", "m_flPushScale");
 	[SchemaMember("CPhysExplosion", "m_flPushScale")]
-	public ref float PushScale => ref Schema.GetRef<float>(this.Handle, "CPhysExplosion", "m_flPushScale");
+	public ref float PushScale => ref __m_flPushScale.GetRef(this.Handle);
 
 	// m_bConvertToDebrisWhenPossible
+	private static readonly SchemaField<bool> __m_bConvertToDebrisWhenPossible = new("CPhysExplosion", "m_bConvertToDebrisWhenPossible");
 	[SchemaMember("CPhysExplosion", "m_bConvertToDebrisWhenPossible")]
-	public ref bool ConvertToDebrisWhenPossible => ref Schema.GetRef<bool>(this.Handle, "CPhysExplosion", "m_bConvertToDebrisWhenPossible");
+	public ref bool ConvertToDebrisWhenPossible => ref __m_bConvertToDebrisWhenPossible.GetRef(this.Handle);
 
 	// m_bAffectInvulnerableEnts
+	private static readonly SchemaField<bool> __m_bAffectInvulnerableEnts = new("CPhysExplosion", "m_bAffectInvulnerableEnts");
 	[SchemaMember("CPhysExplosion", "m_bAffectInvulnerableEnts")]
-	public ref bool AffectInvulnerableEnts => ref Schema.GetRef<bool>(this.Handle, "CPhysExplosion", "m_bAffectInvulnerableEnts");
+	public ref bool AffectInvulnerableEnts => ref __m_bAffectInvulnerableEnts.GetRef(this.Handle);
 
 	// m_bDisablePushClamp
+	private static readonly SchemaField<bool> __m_bDisablePushClamp = new("CPhysExplosion", "m_bDisablePushClamp");
 	[SchemaMember("CPhysExplosion", "m_bDisablePushClamp")]
-	public ref bool DisablePushClamp => ref Schema.GetRef<bool>(this.Handle, "CPhysExplosion", "m_bDisablePushClamp");
+	public ref bool DisablePushClamp => ref __m_bDisablePushClamp.GetRef(this.Handle);
 
 	// m_OnPushedPlayer
 	[SchemaMember("CPhysExplosion", "m_OnPushedPlayer")]

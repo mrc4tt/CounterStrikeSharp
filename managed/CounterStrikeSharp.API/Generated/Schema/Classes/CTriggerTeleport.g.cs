@@ -27,15 +27,18 @@ public partial class CTriggerTeleport : CBaseTrigger
 	}
 
 	// m_bUseLandmarkAngles
+	private static readonly SchemaField<bool> __m_bUseLandmarkAngles = new("CTriggerTeleport", "m_bUseLandmarkAngles");
 	[SchemaMember("CTriggerTeleport", "m_bUseLandmarkAngles")]
-	public ref bool UseLandmarkAngles => ref Schema.GetRef<bool>(this.Handle, "CTriggerTeleport", "m_bUseLandmarkAngles");
+	public ref bool UseLandmarkAngles => ref __m_bUseLandmarkAngles.GetRef(this.Handle);
 
 	// m_bMirrorPlayer
+	private static readonly SchemaField<bool> __m_bMirrorPlayer = new("CTriggerTeleport", "m_bMirrorPlayer");
 	[SchemaMember("CTriggerTeleport", "m_bMirrorPlayer")]
-	public ref bool MirrorPlayer => ref Schema.GetRef<bool>(this.Handle, "CTriggerTeleport", "m_bMirrorPlayer");
+	public ref bool MirrorPlayer => ref __m_bMirrorPlayer.GetRef(this.Handle);
 
 	// m_bCheckDestIfClearForPlayer
+	private static readonly SchemaField<bool> __m_bCheckDestIfClearForPlayer = new("CTriggerTeleport", "m_bCheckDestIfClearForPlayer");
 	[SchemaMember("CTriggerTeleport", "m_bCheckDestIfClearForPlayer")]
-	public ref bool CheckDestIfClearForPlayer => ref Schema.GetRef<bool>(this.Handle, "CTriggerTeleport", "m_bCheckDestIfClearForPlayer");
+	public ref bool CheckDestIfClearForPlayer => ref __m_bCheckDestIfClearForPlayer.GetRef(this.Handle);
 
 }

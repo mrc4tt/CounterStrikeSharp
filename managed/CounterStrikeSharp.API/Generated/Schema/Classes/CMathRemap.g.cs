@@ -19,28 +19,34 @@ public partial class CMathRemap : CLogicalEntity
     public CMathRemap (IntPtr pointer) : base(pointer) {}
 
 	// m_flInMin
+	private static readonly SchemaField<float> __m_flInMin = new("CMathRemap", "m_flInMin");
 	[SchemaMember("CMathRemap", "m_flInMin")]
-	public ref float InMin => ref Schema.GetRef<float>(this.Handle, "CMathRemap", "m_flInMin");
+	public ref float InMin => ref __m_flInMin.GetRef(this.Handle);
 
 	// m_flInMax
+	private static readonly SchemaField<float> __m_flInMax = new("CMathRemap", "m_flInMax");
 	[SchemaMember("CMathRemap", "m_flInMax")]
-	public ref float InMax => ref Schema.GetRef<float>(this.Handle, "CMathRemap", "m_flInMax");
+	public ref float InMax => ref __m_flInMax.GetRef(this.Handle);
 
 	// m_flOut1
+	private static readonly SchemaField<float> __m_flOut1 = new("CMathRemap", "m_flOut1");
 	[SchemaMember("CMathRemap", "m_flOut1")]
-	public ref float Out1 => ref Schema.GetRef<float>(this.Handle, "CMathRemap", "m_flOut1");
+	public ref float Out1 => ref __m_flOut1.GetRef(this.Handle);
 
 	// m_flOut2
+	private static readonly SchemaField<float> __m_flOut2 = new("CMathRemap", "m_flOut2");
 	[SchemaMember("CMathRemap", "m_flOut2")]
-	public ref float Out2 => ref Schema.GetRef<float>(this.Handle, "CMathRemap", "m_flOut2");
+	public ref float Out2 => ref __m_flOut2.GetRef(this.Handle);
 
 	// m_flOldInValue
+	private static readonly SchemaField<float> __m_flOldInValue = new("CMathRemap", "m_flOldInValue");
 	[SchemaMember("CMathRemap", "m_flOldInValue")]
-	public ref float OldInValue => ref Schema.GetRef<float>(this.Handle, "CMathRemap", "m_flOldInValue");
+	public ref float OldInValue => ref __m_flOldInValue.GetRef(this.Handle);
 
 	// m_bEnabled
+	private static readonly SchemaField<bool> __m_bEnabled = new("CMathRemap", "m_bEnabled");
 	[SchemaMember("CMathRemap", "m_bEnabled")]
-	public ref bool Enabled => ref Schema.GetRef<bool>(this.Handle, "CMathRemap", "m_bEnabled");
+	public ref bool Enabled => ref __m_bEnabled.GetRef(this.Handle);
 
 	// m_OnRoseAboveMin
 	[SchemaMember("CMathRemap", "m_OnRoseAboveMin")]

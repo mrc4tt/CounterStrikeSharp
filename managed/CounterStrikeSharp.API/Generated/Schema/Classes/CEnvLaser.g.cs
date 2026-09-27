@@ -43,7 +43,8 @@ public partial class CEnvLaser : CBeam
 	public Vector FirePosition => Schema.GetDeclaredClass<Vector>(this.Handle, "CEnvLaser", "m_firePosition");
 
 	// m_flStartFrame
+	private static readonly SchemaField<float> __m_flStartFrame = new("CEnvLaser", "m_flStartFrame");
 	[SchemaMember("CEnvLaser", "m_flStartFrame")]
-	public new ref float StartFrame => ref Schema.GetRef<float>(this.Handle, "CEnvLaser", "m_flStartFrame");
+	public new ref float StartFrame => ref __m_flStartFrame.GetRef(this.Handle);
 
 }

@@ -19,7 +19,8 @@ public partial class CPointChildModifier : CPointEntity
     public CPointChildModifier (IntPtr pointer) : base(pointer) {}
 
 	// m_bOrphanInsteadOfDeletingChildrenOnRemove
+	private static readonly SchemaField<bool> __m_bOrphanInsteadOfDeletingChildrenOnRemove = new("CPointChildModifier", "m_bOrphanInsteadOfDeletingChildrenOnRemove");
 	[SchemaMember("CPointChildModifier", "m_bOrphanInsteadOfDeletingChildrenOnRemove")]
-	public ref bool OrphanInsteadOfDeletingChildrenOnRemove => ref Schema.GetRef<bool>(this.Handle, "CPointChildModifier", "m_bOrphanInsteadOfDeletingChildrenOnRemove");
+	public ref bool OrphanInsteadOfDeletingChildrenOnRemove => ref __m_bOrphanInsteadOfDeletingChildrenOnRemove.GetRef(this.Handle);
 
 }

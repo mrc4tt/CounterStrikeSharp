@@ -35,8 +35,9 @@ public partial class CEnvInstructorVRHint : CPointEntity
 	}
 
 	// m_iTimeout
+	private static readonly SchemaField<Int32> __m_iTimeout = new("CEnvInstructorVRHint", "m_iTimeout");
 	[SchemaMember("CEnvInstructorVRHint", "m_iTimeout")]
-	public ref Int32 Timeout => ref Schema.GetRef<Int32>(this.Handle, "CEnvInstructorVRHint", "m_iTimeout");
+	public ref Int32 Timeout => ref __m_iTimeout.GetRef(this.Handle);
 
 	// m_iszCaption
 	[SchemaMember("CEnvInstructorVRHint", "m_iszCaption")]
@@ -55,8 +56,9 @@ public partial class CEnvInstructorVRHint : CPointEntity
 	}
 
 	// m_iLayoutFileType
+	private static readonly SchemaField<Int32> __m_iLayoutFileType = new("CEnvInstructorVRHint", "m_iLayoutFileType");
 	[SchemaMember("CEnvInstructorVRHint", "m_iLayoutFileType")]
-	public ref Int32 LayoutFileType => ref Schema.GetRef<Int32>(this.Handle, "CEnvInstructorVRHint", "m_iLayoutFileType");
+	public ref Int32 LayoutFileType => ref __m_iLayoutFileType.GetRef(this.Handle);
 
 	// m_iszCustomLayoutFile
 	[SchemaMember("CEnvInstructorVRHint", "m_iszCustomLayoutFile")]
@@ -67,11 +69,13 @@ public partial class CEnvInstructorVRHint : CPointEntity
 	}
 
 	// m_iAttachType
+	private static readonly SchemaField<Int32> __m_iAttachType = new("CEnvInstructorVRHint", "m_iAttachType");
 	[SchemaMember("CEnvInstructorVRHint", "m_iAttachType")]
-	public ref Int32 AttachType => ref Schema.GetRef<Int32>(this.Handle, "CEnvInstructorVRHint", "m_iAttachType");
+	public ref Int32 AttachType => ref __m_iAttachType.GetRef(this.Handle);
 
 	// m_flHeightOffset
+	private static readonly SchemaField<float> __m_flHeightOffset = new("CEnvInstructorVRHint", "m_flHeightOffset");
 	[SchemaMember("CEnvInstructorVRHint", "m_flHeightOffset")]
-	public ref float HeightOffset => ref Schema.GetRef<float>(this.Handle, "CEnvInstructorVRHint", "m_flHeightOffset");
+	public ref float HeightOffset => ref __m_flHeightOffset.GetRef(this.Handle);
 
 }

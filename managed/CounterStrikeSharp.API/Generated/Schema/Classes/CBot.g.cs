@@ -27,47 +27,57 @@ public partial class CBot : NativeObject
 	public CCSPlayerPawn? Player => Schema.GetPointer<CCSPlayerPawn>(this.Handle, "CBot", "m_pPlayer");
 
 	// m_bHasSpawned
+	private static readonly SchemaField<bool> __m_bHasSpawned = new("CBot", "m_bHasSpawned");
 	[SchemaMember("CBot", "m_bHasSpawned")]
-	public ref bool HasSpawned => ref Schema.GetRef<bool>(this.Handle, "CBot", "m_bHasSpawned");
+	public ref bool HasSpawned => ref __m_bHasSpawned.GetRef(this.Handle);
 
 	// m_id
+	private static readonly SchemaField<UInt32> __m_id = new("CBot", "m_id");
 	[SchemaMember("CBot", "m_id")]
-	public ref UInt32 Id => ref Schema.GetRef<UInt32>(this.Handle, "CBot", "m_id");
+	public ref UInt32 Id => ref __m_id.GetRef(this.Handle);
 
 	// m_isRunning
+	private static readonly SchemaField<bool> __m_isRunning = new("CBot", "m_isRunning");
 	[SchemaMember("CBot", "m_isRunning")]
-	public ref bool IsRunning => ref Schema.GetRef<bool>(this.Handle, "CBot", "m_isRunning");
+	public ref bool IsRunning => ref __m_isRunning.GetRef(this.Handle);
 
 	// m_isCrouching
+	private static readonly SchemaField<bool> __m_isCrouching = new("CBot", "m_isCrouching");
 	[SchemaMember("CBot", "m_isCrouching")]
-	public ref bool IsCrouching => ref Schema.GetRef<bool>(this.Handle, "CBot", "m_isCrouching");
+	public ref bool IsCrouching => ref __m_isCrouching.GetRef(this.Handle);
 
 	// m_forwardSpeed
+	private static readonly SchemaField<float> __m_forwardSpeed = new("CBot", "m_forwardSpeed");
 	[SchemaMember("CBot", "m_forwardSpeed")]
-	public ref float ForwardSpeed => ref Schema.GetRef<float>(this.Handle, "CBot", "m_forwardSpeed");
+	public ref float ForwardSpeed => ref __m_forwardSpeed.GetRef(this.Handle);
 
 	// m_leftSpeed
+	private static readonly SchemaField<float> __m_leftSpeed = new("CBot", "m_leftSpeed");
 	[SchemaMember("CBot", "m_leftSpeed")]
-	public ref float LeftSpeed => ref Schema.GetRef<float>(this.Handle, "CBot", "m_leftSpeed");
+	public ref float LeftSpeed => ref __m_leftSpeed.GetRef(this.Handle);
 
 	// m_verticalSpeed
+	private static readonly SchemaField<float> __m_verticalSpeed = new("CBot", "m_verticalSpeed");
 	[SchemaMember("CBot", "m_verticalSpeed")]
-	public ref float VerticalSpeed => ref Schema.GetRef<float>(this.Handle, "CBot", "m_verticalSpeed");
+	public ref float VerticalSpeed => ref __m_verticalSpeed.GetRef(this.Handle);
 
 	// m_buttonFlags
+	private static readonly SchemaField<UInt64> __m_buttonFlags = new("CBot", "m_buttonFlags");
 	[SchemaMember("CBot", "m_buttonFlags")]
-	public ref UInt64 ButtonFlags => ref Schema.GetRef<UInt64>(this.Handle, "CBot", "m_buttonFlags");
+	public ref UInt64 ButtonFlags => ref __m_buttonFlags.GetRef(this.Handle);
 
 	// m_jumpTimestamp
+	private static readonly SchemaField<float> __m_jumpTimestamp = new("CBot", "m_jumpTimestamp");
 	[SchemaMember("CBot", "m_jumpTimestamp")]
-	public ref float JumpTimestamp => ref Schema.GetRef<float>(this.Handle, "CBot", "m_jumpTimestamp");
+	public ref float JumpTimestamp => ref __m_jumpTimestamp.GetRef(this.Handle);
 
 	// m_viewForward
 	[SchemaMember("CBot", "m_viewForward")]
 	public Vector ViewForward => Schema.GetDeclaredClass<Vector>(this.Handle, "CBot", "m_viewForward");
 
 	// m_postureStackIndex
+	private static readonly SchemaField<Int32> __m_postureStackIndex = new("CBot", "m_postureStackIndex");
 	[SchemaMember("CBot", "m_postureStackIndex")]
-	public ref Int32 PostureStackIndex => ref Schema.GetRef<Int32>(this.Handle, "CBot", "m_postureStackIndex");
+	public ref Int32 PostureStackIndex => ref __m_postureStackIndex.GetRef(this.Handle);
 
 }

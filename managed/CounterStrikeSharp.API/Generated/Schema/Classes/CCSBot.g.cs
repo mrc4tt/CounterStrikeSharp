@@ -31,56 +31,66 @@ public partial class CCSBot : CBot
 	}
 
 	// m_combatRange
+	private static readonly SchemaField<float> __m_combatRange = new("CCSBot", "m_combatRange");
 	[SchemaMember("CCSBot", "m_combatRange")]
-	public ref float CombatRange => ref Schema.GetRef<float>(this.Handle, "CCSBot", "m_combatRange");
+	public ref float CombatRange => ref __m_combatRange.GetRef(this.Handle);
 
 	// m_isRogue
+	private static readonly SchemaField<bool> __m_isRogue = new("CCSBot", "m_isRogue");
 	[SchemaMember("CCSBot", "m_isRogue")]
-	public ref bool IsRogue => ref Schema.GetRef<bool>(this.Handle, "CCSBot", "m_isRogue");
+	public ref bool IsRogue => ref __m_isRogue.GetRef(this.Handle);
 
 	// m_rogueTimer
 	[SchemaMember("CCSBot", "m_rogueTimer")]
 	public CountdownTimer RogueTimer => Schema.GetDeclaredClass<CountdownTimer>(this.Handle, "CCSBot", "m_rogueTimer");
 
 	// m_diedLastRound
+	private static readonly SchemaField<bool> __m_diedLastRound = new("CCSBot", "m_diedLastRound");
 	[SchemaMember("CCSBot", "m_diedLastRound")]
-	public ref bool DiedLastRound => ref Schema.GetRef<bool>(this.Handle, "CCSBot", "m_diedLastRound");
+	public ref bool DiedLastRound => ref __m_diedLastRound.GetRef(this.Handle);
 
 	// m_safeTime
+	private static readonly SchemaField<float> __m_safeTime = new("CCSBot", "m_safeTime");
 	[SchemaMember("CCSBot", "m_safeTime")]
-	public ref float SafeTime => ref Schema.GetRef<float>(this.Handle, "CCSBot", "m_safeTime");
+	public ref float SafeTime => ref __m_safeTime.GetRef(this.Handle);
 
 	// m_wasSafe
+	private static readonly SchemaField<bool> __m_wasSafe = new("CCSBot", "m_wasSafe");
 	[SchemaMember("CCSBot", "m_wasSafe")]
-	public ref bool WasSafe => ref Schema.GetRef<bool>(this.Handle, "CCSBot", "m_wasSafe");
+	public ref bool WasSafe => ref __m_wasSafe.GetRef(this.Handle);
 
 	// m_blindFire
+	private static readonly SchemaField<bool> __m_blindFire = new("CCSBot", "m_blindFire");
 	[SchemaMember("CCSBot", "m_blindFire")]
-	public ref bool BlindFire => ref Schema.GetRef<bool>(this.Handle, "CCSBot", "m_blindFire");
+	public ref bool BlindFire => ref __m_blindFire.GetRef(this.Handle);
 
 	// m_surpriseTimer
 	[SchemaMember("CCSBot", "m_surpriseTimer")]
 	public CountdownTimer SurpriseTimer => Schema.GetDeclaredClass<CountdownTimer>(this.Handle, "CCSBot", "m_surpriseTimer");
 
 	// m_bAllowActive
+	private static readonly SchemaField<bool> __m_bAllowActive = new("CCSBot", "m_bAllowActive");
 	[SchemaMember("CCSBot", "m_bAllowActive")]
-	public ref bool AllowActive => ref Schema.GetRef<bool>(this.Handle, "CCSBot", "m_bAllowActive");
+	public ref bool AllowActive => ref __m_bAllowActive.GetRef(this.Handle);
 
 	// m_isFollowing
+	private static readonly SchemaField<bool> __m_isFollowing = new("CCSBot", "m_isFollowing");
 	[SchemaMember("CCSBot", "m_isFollowing")]
-	public ref bool IsFollowing => ref Schema.GetRef<bool>(this.Handle, "CCSBot", "m_isFollowing");
+	public ref bool IsFollowing => ref __m_isFollowing.GetRef(this.Handle);
 
 	// m_leader
 	[SchemaMember("CCSBot", "m_leader")]
 	public CHandle<CCSPlayerPawn> Leader => Schema.GetDeclaredClass<CHandle<CCSPlayerPawn>>(this.Handle, "CCSBot", "m_leader");
 
 	// m_followTimestamp
+	private static readonly SchemaField<float> __m_followTimestamp = new("CCSBot", "m_followTimestamp");
 	[SchemaMember("CCSBot", "m_followTimestamp")]
-	public ref float FollowTimestamp => ref Schema.GetRef<float>(this.Handle, "CCSBot", "m_followTimestamp");
+	public ref float FollowTimestamp => ref __m_followTimestamp.GetRef(this.Handle);
 
 	// m_allowAutoFollowTime
+	private static readonly SchemaField<float> __m_allowAutoFollowTime = new("CCSBot", "m_allowAutoFollowTime");
 	[SchemaMember("CCSBot", "m_allowAutoFollowTime")]
-	public ref float AllowAutoFollowTime => ref Schema.GetRef<float>(this.Handle, "CCSBot", "m_allowAutoFollowTime");
+	public ref float AllowAutoFollowTime => ref __m_allowAutoFollowTime.GetRef(this.Handle);
 
 	// m_hurryTimer
 	[SchemaMember("CCSBot", "m_hurryTimer")]
@@ -99,16 +109,19 @@ public partial class CCSBot : CBot
 	public CountdownTimer PanicTimer => Schema.GetDeclaredClass<CountdownTimer>(this.Handle, "CCSBot", "m_panicTimer");
 
 	// m_stateTimestamp
+	private static readonly SchemaField<float> __m_stateTimestamp = new("CCSBot", "m_stateTimestamp");
 	[SchemaMember("CCSBot", "m_stateTimestamp")]
-	public ref float StateTimestamp => ref Schema.GetRef<float>(this.Handle, "CCSBot", "m_stateTimestamp");
+	public ref float StateTimestamp => ref __m_stateTimestamp.GetRef(this.Handle);
 
 	// m_isAttacking
+	private static readonly SchemaField<bool> __m_isAttacking = new("CCSBot", "m_isAttacking");
 	[SchemaMember("CCSBot", "m_isAttacking")]
-	public ref bool IsAttacking => ref Schema.GetRef<bool>(this.Handle, "CCSBot", "m_isAttacking");
+	public ref bool IsAttacking => ref __m_isAttacking.GetRef(this.Handle);
 
 	// m_isOpeningDoor
+	private static readonly SchemaField<bool> __m_isOpeningDoor = new("CCSBot", "m_isOpeningDoor");
 	[SchemaMember("CCSBot", "m_isOpeningDoor")]
-	public ref bool IsOpeningDoor => ref Schema.GetRef<bool>(this.Handle, "CCSBot", "m_isOpeningDoor");
+	public ref bool IsOpeningDoor => ref __m_isOpeningDoor.GetRef(this.Handle);
 
 	// m_taskEntity
 	[SchemaMember("CCSBot", "m_taskEntity")]
@@ -127,32 +140,38 @@ public partial class CCSBot : CBot
 	public CHandle<CBaseEntity> Avoid => Schema.GetDeclaredClass<CHandle<CBaseEntity>>(this.Handle, "CCSBot", "m_avoid");
 
 	// m_avoidTimestamp
+	private static readonly SchemaField<float> __m_avoidTimestamp = new("CCSBot", "m_avoidTimestamp");
 	[SchemaMember("CCSBot", "m_avoidTimestamp")]
-	public ref float AvoidTimestamp => ref Schema.GetRef<float>(this.Handle, "CCSBot", "m_avoidTimestamp");
+	public ref float AvoidTimestamp => ref __m_avoidTimestamp.GetRef(this.Handle);
 
 	// m_isStopping
+	private static readonly SchemaField<bool> __m_isStopping = new("CCSBot", "m_isStopping");
 	[SchemaMember("CCSBot", "m_isStopping")]
-	public ref bool IsStopping => ref Schema.GetRef<bool>(this.Handle, "CCSBot", "m_isStopping");
+	public ref bool IsStopping => ref __m_isStopping.GetRef(this.Handle);
 
 	// m_hasVisitedEnemySpawn
+	private static readonly SchemaField<bool> __m_hasVisitedEnemySpawn = new("CCSBot", "m_hasVisitedEnemySpawn");
 	[SchemaMember("CCSBot", "m_hasVisitedEnemySpawn")]
-	public ref bool HasVisitedEnemySpawn => ref Schema.GetRef<bool>(this.Handle, "CCSBot", "m_hasVisitedEnemySpawn");
+	public ref bool HasVisitedEnemySpawn => ref __m_hasVisitedEnemySpawn.GetRef(this.Handle);
 
 	// m_stillTimer
 	[SchemaMember("CCSBot", "m_stillTimer")]
 	public IntervalTimer StillTimer => Schema.GetDeclaredClass<IntervalTimer>(this.Handle, "CCSBot", "m_stillTimer");
 
 	// m_bEyeAnglesUnderPathFinderControl
+	private static readonly SchemaField<bool> __m_bEyeAnglesUnderPathFinderControl = new("CCSBot", "m_bEyeAnglesUnderPathFinderControl");
 	[SchemaMember("CCSBot", "m_bEyeAnglesUnderPathFinderControl")]
-	public ref bool EyeAnglesUnderPathFinderControl => ref Schema.GetRef<bool>(this.Handle, "CCSBot", "m_bEyeAnglesUnderPathFinderControl");
+	public ref bool EyeAnglesUnderPathFinderControl => ref __m_bEyeAnglesUnderPathFinderControl.GetRef(this.Handle);
 
 	// m_pathIndex
+	private static readonly SchemaField<Int32> __m_pathIndex = new("CCSBot", "m_pathIndex");
 	[SchemaMember("CCSBot", "m_pathIndex")]
-	public ref Int32 PathIndex => ref Schema.GetRef<Int32>(this.Handle, "CCSBot", "m_pathIndex");
+	public ref Int32 PathIndex => ref __m_pathIndex.GetRef(this.Handle);
 
 	// m_areaEnteredTimestamp
+	private static readonly SchemaField<float> __m_areaEnteredTimestamp = new("CCSBot", "m_areaEnteredTimestamp");
 	[SchemaMember("CCSBot", "m_areaEnteredTimestamp")]
-	public ref float AreaEnteredTimestamp => ref Schema.GetRef<float>(this.Handle, "CCSBot", "m_areaEnteredTimestamp");
+	public ref float AreaEnteredTimestamp => ref __m_areaEnteredTimestamp.GetRef(this.Handle);
 
 	// m_repathTimer
 	[SchemaMember("CCSBot", "m_repathTimer")]
@@ -163,20 +182,23 @@ public partial class CCSBot : CBot
 	public CountdownTimer AvoidFriendTimer => Schema.GetDeclaredClass<CountdownTimer>(this.Handle, "CCSBot", "m_avoidFriendTimer");
 
 	// m_isFriendInTheWay
+	private static readonly SchemaField<bool> __m_isFriendInTheWay = new("CCSBot", "m_isFriendInTheWay");
 	[SchemaMember("CCSBot", "m_isFriendInTheWay")]
-	public ref bool IsFriendInTheWay => ref Schema.GetRef<bool>(this.Handle, "CCSBot", "m_isFriendInTheWay");
+	public ref bool IsFriendInTheWay => ref __m_isFriendInTheWay.GetRef(this.Handle);
 
 	// m_politeTimer
 	[SchemaMember("CCSBot", "m_politeTimer")]
 	public CountdownTimer PoliteTimer => Schema.GetDeclaredClass<CountdownTimer>(this.Handle, "CCSBot", "m_politeTimer");
 
 	// m_isWaitingBehindFriend
+	private static readonly SchemaField<bool> __m_isWaitingBehindFriend = new("CCSBot", "m_isWaitingBehindFriend");
 	[SchemaMember("CCSBot", "m_isWaitingBehindFriend")]
-	public ref bool IsWaitingBehindFriend => ref Schema.GetRef<bool>(this.Handle, "CCSBot", "m_isWaitingBehindFriend");
+	public ref bool IsWaitingBehindFriend => ref __m_isWaitingBehindFriend.GetRef(this.Handle);
 
 	// m_pathLadderEnd
+	private static readonly SchemaField<float> __m_pathLadderEnd = new("CCSBot", "m_pathLadderEnd");
 	[SchemaMember("CCSBot", "m_pathLadderEnd")]
-	public ref float PathLadderEnd => ref Schema.GetRef<float>(this.Handle, "CCSBot", "m_pathLadderEnd");
+	public ref float PathLadderEnd => ref __m_pathLadderEnd.GetRef(this.Handle);
 
 	// m_mustRunTimer
 	[SchemaMember("CCSBot", "m_mustRunTimer")]
@@ -195,28 +217,34 @@ public partial class CCSBot : CBot
 	public Span<float> PlayerTravelDistance => Schema.GetFixedArray<float>(this.Handle, "CCSBot", "m_playerTravelDistance", 64);
 
 	// m_travelDistancePhase
+	private static readonly SchemaField<byte> __m_travelDistancePhase = new("CCSBot", "m_travelDistancePhase");
 	[SchemaMember("CCSBot", "m_travelDistancePhase")]
-	public ref byte TravelDistancePhase => ref Schema.GetRef<byte>(this.Handle, "CCSBot", "m_travelDistancePhase");
+	public ref byte TravelDistancePhase => ref __m_travelDistancePhase.GetRef(this.Handle);
 
 	// m_hostageEscortCount
+	private static readonly SchemaField<byte> __m_hostageEscortCount = new("CCSBot", "m_hostageEscortCount");
 	[SchemaMember("CCSBot", "m_hostageEscortCount")]
-	public ref byte HostageEscortCount => ref Schema.GetRef<byte>(this.Handle, "CCSBot", "m_hostageEscortCount");
+	public ref byte HostageEscortCount => ref __m_hostageEscortCount.GetRef(this.Handle);
 
 	// m_hostageEscortCountTimestamp
+	private static readonly SchemaField<float> __m_hostageEscortCountTimestamp = new("CCSBot", "m_hostageEscortCountTimestamp");
 	[SchemaMember("CCSBot", "m_hostageEscortCountTimestamp")]
-	public ref float HostageEscortCountTimestamp => ref Schema.GetRef<float>(this.Handle, "CCSBot", "m_hostageEscortCountTimestamp");
+	public ref float HostageEscortCountTimestamp => ref __m_hostageEscortCountTimestamp.GetRef(this.Handle);
 
 	// m_desiredTeam
+	private static readonly SchemaField<Int32> __m_desiredTeam = new("CCSBot", "m_desiredTeam");
 	[SchemaMember("CCSBot", "m_desiredTeam")]
-	public ref Int32 DesiredTeam => ref Schema.GetRef<Int32>(this.Handle, "CCSBot", "m_desiredTeam");
+	public ref Int32 DesiredTeam => ref __m_desiredTeam.GetRef(this.Handle);
 
 	// m_hasJoined
+	private static readonly SchemaField<bool> __m_hasJoined = new("CCSBot", "m_hasJoined");
 	[SchemaMember("CCSBot", "m_hasJoined")]
-	public ref bool HasJoined => ref Schema.GetRef<bool>(this.Handle, "CCSBot", "m_hasJoined");
+	public ref bool HasJoined => ref __m_hasJoined.GetRef(this.Handle);
 
 	// m_isWaitingForHostage
+	private static readonly SchemaField<bool> __m_isWaitingForHostage = new("CCSBot", "m_isWaitingForHostage");
 	[SchemaMember("CCSBot", "m_isWaitingForHostage")]
-	public ref bool IsWaitingForHostage => ref Schema.GetRef<bool>(this.Handle, "CCSBot", "m_isWaitingForHostage");
+	public ref bool IsWaitingForHostage => ref __m_isWaitingForHostage.GetRef(this.Handle);
 
 	// m_inhibitWaitingForHostageTimer
 	[SchemaMember("CCSBot", "m_inhibitWaitingForHostageTimer")]
@@ -231,12 +259,14 @@ public partial class CCSBot : CBot
 	public Vector NoisePosition => Schema.GetDeclaredClass<Vector>(this.Handle, "CCSBot", "m_noisePosition");
 
 	// m_noiseTravelDistance
+	private static readonly SchemaField<float> __m_noiseTravelDistance = new("CCSBot", "m_noiseTravelDistance");
 	[SchemaMember("CCSBot", "m_noiseTravelDistance")]
-	public ref float NoiseTravelDistance => ref Schema.GetRef<float>(this.Handle, "CCSBot", "m_noiseTravelDistance");
+	public ref float NoiseTravelDistance => ref __m_noiseTravelDistance.GetRef(this.Handle);
 
 	// m_noiseTimestamp
+	private static readonly SchemaField<float> __m_noiseTimestamp = new("CCSBot", "m_noiseTimestamp");
 	[SchemaMember("CCSBot", "m_noiseTimestamp")]
-	public ref float NoiseTimestamp => ref Schema.GetRef<float>(this.Handle, "CCSBot", "m_noiseTimestamp");
+	public ref float NoiseTimestamp => ref __m_noiseTimestamp.GetRef(this.Handle);
 
 	// m_noiseSource
 	[SchemaMember("CCSBot", "m_noiseSource")]
@@ -251,52 +281,63 @@ public partial class CCSBot : CBot
 	public Vector BentNoisePosition => Schema.GetDeclaredClass<Vector>(this.Handle, "CCSBot", "m_bentNoisePosition");
 
 	// m_bendNoisePositionValid
+	private static readonly SchemaField<bool> __m_bendNoisePositionValid = new("CCSBot", "m_bendNoisePositionValid");
 	[SchemaMember("CCSBot", "m_bendNoisePositionValid")]
-	public ref bool BendNoisePositionValid => ref Schema.GetRef<bool>(this.Handle, "CCSBot", "m_bendNoisePositionValid");
+	public ref bool BendNoisePositionValid => ref __m_bendNoisePositionValid.GetRef(this.Handle);
 
 	// m_lookAroundStateTimestamp
+	private static readonly SchemaField<float> __m_lookAroundStateTimestamp = new("CCSBot", "m_lookAroundStateTimestamp");
 	[SchemaMember("CCSBot", "m_lookAroundStateTimestamp")]
-	public ref float LookAroundStateTimestamp => ref Schema.GetRef<float>(this.Handle, "CCSBot", "m_lookAroundStateTimestamp");
+	public ref float LookAroundStateTimestamp => ref __m_lookAroundStateTimestamp.GetRef(this.Handle);
 
 	// m_lookAheadAngle
+	private static readonly SchemaField<float> __m_lookAheadAngle = new("CCSBot", "m_lookAheadAngle");
 	[SchemaMember("CCSBot", "m_lookAheadAngle")]
-	public ref float LookAheadAngle => ref Schema.GetRef<float>(this.Handle, "CCSBot", "m_lookAheadAngle");
+	public ref float LookAheadAngle => ref __m_lookAheadAngle.GetRef(this.Handle);
 
 	// m_lookUpAngle
+	private static readonly SchemaField<float> __m_lookUpAngle = new("CCSBot", "m_lookUpAngle");
 	[SchemaMember("CCSBot", "m_lookUpAngle")]
-	public ref float LookUpAngle => ref Schema.GetRef<float>(this.Handle, "CCSBot", "m_lookUpAngle");
+	public ref float LookUpAngle => ref __m_lookUpAngle.GetRef(this.Handle);
 
 	// m_forwardAngle
+	private static readonly SchemaField<float> __m_forwardAngle = new("CCSBot", "m_forwardAngle");
 	[SchemaMember("CCSBot", "m_forwardAngle")]
-	public ref float ForwardAngle => ref Schema.GetRef<float>(this.Handle, "CCSBot", "m_forwardAngle");
+	public ref float ForwardAngle => ref __m_forwardAngle.GetRef(this.Handle);
 
 	// m_inhibitLookAroundTimestamp
+	private static readonly SchemaField<float> __m_inhibitLookAroundTimestamp = new("CCSBot", "m_inhibitLookAroundTimestamp");
 	[SchemaMember("CCSBot", "m_inhibitLookAroundTimestamp")]
-	public ref float InhibitLookAroundTimestamp => ref Schema.GetRef<float>(this.Handle, "CCSBot", "m_inhibitLookAroundTimestamp");
+	public ref float InhibitLookAroundTimestamp => ref __m_inhibitLookAroundTimestamp.GetRef(this.Handle);
 
 	// m_lookAtSpot
 	[SchemaMember("CCSBot", "m_lookAtSpot")]
 	public Vector LookAtSpot => Schema.GetDeclaredClass<Vector>(this.Handle, "CCSBot", "m_lookAtSpot");
 
 	// m_lookAtSpotDuration
+	private static readonly SchemaField<float> __m_lookAtSpotDuration = new("CCSBot", "m_lookAtSpotDuration");
 	[SchemaMember("CCSBot", "m_lookAtSpotDuration")]
-	public ref float LookAtSpotDuration => ref Schema.GetRef<float>(this.Handle, "CCSBot", "m_lookAtSpotDuration");
+	public ref float LookAtSpotDuration => ref __m_lookAtSpotDuration.GetRef(this.Handle);
 
 	// m_lookAtSpotTimestamp
+	private static readonly SchemaField<float> __m_lookAtSpotTimestamp = new("CCSBot", "m_lookAtSpotTimestamp");
 	[SchemaMember("CCSBot", "m_lookAtSpotTimestamp")]
-	public ref float LookAtSpotTimestamp => ref Schema.GetRef<float>(this.Handle, "CCSBot", "m_lookAtSpotTimestamp");
+	public ref float LookAtSpotTimestamp => ref __m_lookAtSpotTimestamp.GetRef(this.Handle);
 
 	// m_lookAtSpotAngleTolerance
+	private static readonly SchemaField<float> __m_lookAtSpotAngleTolerance = new("CCSBot", "m_lookAtSpotAngleTolerance");
 	[SchemaMember("CCSBot", "m_lookAtSpotAngleTolerance")]
-	public ref float LookAtSpotAngleTolerance => ref Schema.GetRef<float>(this.Handle, "CCSBot", "m_lookAtSpotAngleTolerance");
+	public ref float LookAtSpotAngleTolerance => ref __m_lookAtSpotAngleTolerance.GetRef(this.Handle);
 
 	// m_lookAtSpotClearIfClose
+	private static readonly SchemaField<bool> __m_lookAtSpotClearIfClose = new("CCSBot", "m_lookAtSpotClearIfClose");
 	[SchemaMember("CCSBot", "m_lookAtSpotClearIfClose")]
-	public ref bool LookAtSpotClearIfClose => ref Schema.GetRef<bool>(this.Handle, "CCSBot", "m_lookAtSpotClearIfClose");
+	public ref bool LookAtSpotClearIfClose => ref __m_lookAtSpotClearIfClose.GetRef(this.Handle);
 
 	// m_lookAtSpotAttack
+	private static readonly SchemaField<bool> __m_lookAtSpotAttack = new("CCSBot", "m_lookAtSpotAttack");
 	[SchemaMember("CCSBot", "m_lookAtSpotAttack")]
-	public ref bool LookAtSpotAttack => ref Schema.GetRef<bool>(this.Handle, "CCSBot", "m_lookAtSpotAttack");
+	public ref bool LookAtSpotAttack => ref __m_lookAtSpotAttack.GetRef(this.Handle);
 
 	// m_lookAtDesc
 	[SchemaMember("CCSBot", "m_lookAtDesc")]
@@ -307,12 +348,14 @@ public partial class CCSBot : CBot
 	}
 
 	// m_peripheralTimestamp
+	private static readonly SchemaField<float> __m_peripheralTimestamp = new("CCSBot", "m_peripheralTimestamp");
 	[SchemaMember("CCSBot", "m_peripheralTimestamp")]
-	public ref float PeripheralTimestamp => ref Schema.GetRef<float>(this.Handle, "CCSBot", "m_peripheralTimestamp");
+	public ref float PeripheralTimestamp => ref __m_peripheralTimestamp.GetRef(this.Handle);
 
 	// m_approachPointCount
+	private static readonly SchemaField<byte> __m_approachPointCount = new("CCSBot", "m_approachPointCount");
 	[SchemaMember("CCSBot", "m_approachPointCount")]
-	public ref byte ApproachPointCount => ref Schema.GetRef<byte>(this.Handle, "CCSBot", "m_approachPointCount");
+	public ref byte ApproachPointCount => ref __m_approachPointCount.GetRef(this.Handle);
 
 	// m_approachPointViewPosition
 	[SchemaMember("CCSBot", "m_approachPointViewPosition")]
@@ -331,28 +374,34 @@ public partial class CCSBot : CBot
 	public CountdownTimer IsAvoidingGrenade => Schema.GetDeclaredClass<CountdownTimer>(this.Handle, "CCSBot", "m_isAvoidingGrenade");
 
 	// m_spotCheckTimestamp
+	private static readonly SchemaField<float> __m_spotCheckTimestamp = new("CCSBot", "m_spotCheckTimestamp");
 	[SchemaMember("CCSBot", "m_spotCheckTimestamp")]
-	public ref float SpotCheckTimestamp => ref Schema.GetRef<float>(this.Handle, "CCSBot", "m_spotCheckTimestamp");
+	public ref float SpotCheckTimestamp => ref __m_spotCheckTimestamp.GetRef(this.Handle);
 
 	// m_checkedHidingSpotCount
+	private static readonly SchemaField<Int32> __m_checkedHidingSpotCount = new("CCSBot", "m_checkedHidingSpotCount");
 	[SchemaMember("CCSBot", "m_checkedHidingSpotCount")]
-	public ref Int32 CheckedHidingSpotCount => ref Schema.GetRef<Int32>(this.Handle, "CCSBot", "m_checkedHidingSpotCount");
+	public ref Int32 CheckedHidingSpotCount => ref __m_checkedHidingSpotCount.GetRef(this.Handle);
 
 	// m_lookPitch
+	private static readonly SchemaField<float> __m_lookPitch = new("CCSBot", "m_lookPitch");
 	[SchemaMember("CCSBot", "m_lookPitch")]
-	public ref float LookPitch => ref Schema.GetRef<float>(this.Handle, "CCSBot", "m_lookPitch");
+	public ref float LookPitch => ref __m_lookPitch.GetRef(this.Handle);
 
 	// m_lookPitchVel
+	private static readonly SchemaField<float> __m_lookPitchVel = new("CCSBot", "m_lookPitchVel");
 	[SchemaMember("CCSBot", "m_lookPitchVel")]
-	public ref float LookPitchVel => ref Schema.GetRef<float>(this.Handle, "CCSBot", "m_lookPitchVel");
+	public ref float LookPitchVel => ref __m_lookPitchVel.GetRef(this.Handle);
 
 	// m_lookYaw
+	private static readonly SchemaField<float> __m_lookYaw = new("CCSBot", "m_lookYaw");
 	[SchemaMember("CCSBot", "m_lookYaw")]
-	public ref float LookYaw => ref Schema.GetRef<float>(this.Handle, "CCSBot", "m_lookYaw");
+	public ref float LookYaw => ref __m_lookYaw.GetRef(this.Handle);
 
 	// m_lookYawVel
+	private static readonly SchemaField<float> __m_lookYawVel = new("CCSBot", "m_lookYawVel");
 	[SchemaMember("CCSBot", "m_lookYawVel")]
-	public ref float LookYawVel => ref Schema.GetRef<float>(this.Handle, "CCSBot", "m_lookYawVel");
+	public ref float LookYawVel => ref __m_lookYawVel.GetRef(this.Handle);
 
 	// m_targetSpot
 	[SchemaMember("CCSBot", "m_targetSpot")]
@@ -375,20 +424,24 @@ public partial class CCSBot : CBot
 	public QAngle AimGoal => Schema.GetDeclaredClass<QAngle>(this.Handle, "CCSBot", "m_aimGoal");
 
 	// m_targetSpotTime
+	private static readonly SchemaField<float> __m_targetSpotTime = new("CCSBot", "m_targetSpotTime");
 	[SchemaMember("CCSBot", "m_targetSpotTime")]
-	public ref float TargetSpotTime => ref Schema.GetRef<float>(this.Handle, "CCSBot", "m_targetSpotTime");
+	public ref float TargetSpotTime => ref __m_targetSpotTime.GetRef(this.Handle);
 
 	// m_aimFocus
+	private static readonly SchemaField<float> __m_aimFocus = new("CCSBot", "m_aimFocus");
 	[SchemaMember("CCSBot", "m_aimFocus")]
-	public ref float AimFocus => ref Schema.GetRef<float>(this.Handle, "CCSBot", "m_aimFocus");
+	public ref float AimFocus => ref __m_aimFocus.GetRef(this.Handle);
 
 	// m_aimFocusInterval
+	private static readonly SchemaField<float> __m_aimFocusInterval = new("CCSBot", "m_aimFocusInterval");
 	[SchemaMember("CCSBot", "m_aimFocusInterval")]
-	public ref float AimFocusInterval => ref Schema.GetRef<float>(this.Handle, "CCSBot", "m_aimFocusInterval");
+	public ref float AimFocusInterval => ref __m_aimFocusInterval.GetRef(this.Handle);
 
 	// m_aimFocusNextUpdate
+	private static readonly SchemaField<float> __m_aimFocusNextUpdate = new("CCSBot", "m_aimFocusNextUpdate");
 	[SchemaMember("CCSBot", "m_aimFocusNextUpdate")]
-	public ref float AimFocusNextUpdate => ref Schema.GetRef<float>(this.Handle, "CCSBot", "m_aimFocusNextUpdate");
+	public ref float AimFocusNextUpdate => ref __m_aimFocusNextUpdate.GetRef(this.Handle);
 
 	// m_ignoreEnemiesTimer
 	[SchemaMember("CCSBot", "m_ignoreEnemiesTimer")]
@@ -399,52 +452,62 @@ public partial class CCSBot : CBot
 	public CHandle<CCSPlayerPawn> Enemy => Schema.GetDeclaredClass<CHandle<CCSPlayerPawn>>(this.Handle, "CCSBot", "m_enemy");
 
 	// m_isEnemyVisible
+	private static readonly SchemaField<bool> __m_isEnemyVisible = new("CCSBot", "m_isEnemyVisible");
 	[SchemaMember("CCSBot", "m_isEnemyVisible")]
-	public ref bool IsEnemyVisible => ref Schema.GetRef<bool>(this.Handle, "CCSBot", "m_isEnemyVisible");
+	public ref bool IsEnemyVisible => ref __m_isEnemyVisible.GetRef(this.Handle);
 
 	// m_visibleEnemyParts
+	private static readonly SchemaField<byte> __m_visibleEnemyParts = new("CCSBot", "m_visibleEnemyParts");
 	[SchemaMember("CCSBot", "m_visibleEnemyParts")]
-	public ref byte VisibleEnemyParts => ref Schema.GetRef<byte>(this.Handle, "CCSBot", "m_visibleEnemyParts");
+	public ref byte VisibleEnemyParts => ref __m_visibleEnemyParts.GetRef(this.Handle);
 
 	// m_lastEnemyPosition
 	[SchemaMember("CCSBot", "m_lastEnemyPosition")]
 	public Vector LastEnemyPosition => Schema.GetDeclaredClass<Vector>(this.Handle, "CCSBot", "m_lastEnemyPosition");
 
 	// m_lastSawEnemyTimestamp
+	private static readonly SchemaField<float> __m_lastSawEnemyTimestamp = new("CCSBot", "m_lastSawEnemyTimestamp");
 	[SchemaMember("CCSBot", "m_lastSawEnemyTimestamp")]
-	public ref float LastSawEnemyTimestamp => ref Schema.GetRef<float>(this.Handle, "CCSBot", "m_lastSawEnemyTimestamp");
+	public ref float LastSawEnemyTimestamp => ref __m_lastSawEnemyTimestamp.GetRef(this.Handle);
 
 	// m_firstSawEnemyTimestamp
+	private static readonly SchemaField<float> __m_firstSawEnemyTimestamp = new("CCSBot", "m_firstSawEnemyTimestamp");
 	[SchemaMember("CCSBot", "m_firstSawEnemyTimestamp")]
-	public ref float FirstSawEnemyTimestamp => ref Schema.GetRef<float>(this.Handle, "CCSBot", "m_firstSawEnemyTimestamp");
+	public ref float FirstSawEnemyTimestamp => ref __m_firstSawEnemyTimestamp.GetRef(this.Handle);
 
 	// m_currentEnemyAcquireTimestamp
+	private static readonly SchemaField<float> __m_currentEnemyAcquireTimestamp = new("CCSBot", "m_currentEnemyAcquireTimestamp");
 	[SchemaMember("CCSBot", "m_currentEnemyAcquireTimestamp")]
-	public ref float CurrentEnemyAcquireTimestamp => ref Schema.GetRef<float>(this.Handle, "CCSBot", "m_currentEnemyAcquireTimestamp");
+	public ref float CurrentEnemyAcquireTimestamp => ref __m_currentEnemyAcquireTimestamp.GetRef(this.Handle);
 
 	// m_enemyDeathTimestamp
+	private static readonly SchemaField<float> __m_enemyDeathTimestamp = new("CCSBot", "m_enemyDeathTimestamp");
 	[SchemaMember("CCSBot", "m_enemyDeathTimestamp")]
-	public ref float EnemyDeathTimestamp => ref Schema.GetRef<float>(this.Handle, "CCSBot", "m_enemyDeathTimestamp");
+	public ref float EnemyDeathTimestamp => ref __m_enemyDeathTimestamp.GetRef(this.Handle);
 
 	// m_friendDeathTimestamp
+	private static readonly SchemaField<float> __m_friendDeathTimestamp = new("CCSBot", "m_friendDeathTimestamp");
 	[SchemaMember("CCSBot", "m_friendDeathTimestamp")]
-	public ref float FriendDeathTimestamp => ref Schema.GetRef<float>(this.Handle, "CCSBot", "m_friendDeathTimestamp");
+	public ref float FriendDeathTimestamp => ref __m_friendDeathTimestamp.GetRef(this.Handle);
 
 	// m_isLastEnemyDead
+	private static readonly SchemaField<bool> __m_isLastEnemyDead = new("CCSBot", "m_isLastEnemyDead");
 	[SchemaMember("CCSBot", "m_isLastEnemyDead")]
-	public ref bool IsLastEnemyDead => ref Schema.GetRef<bool>(this.Handle, "CCSBot", "m_isLastEnemyDead");
+	public ref bool IsLastEnemyDead => ref __m_isLastEnemyDead.GetRef(this.Handle);
 
 	// m_nearbyEnemyCount
+	private static readonly SchemaField<Int32> __m_nearbyEnemyCount = new("CCSBot", "m_nearbyEnemyCount");
 	[SchemaMember("CCSBot", "m_nearbyEnemyCount")]
-	public ref Int32 NearbyEnemyCount => ref Schema.GetRef<Int32>(this.Handle, "CCSBot", "m_nearbyEnemyCount");
+	public ref Int32 NearbyEnemyCount => ref __m_nearbyEnemyCount.GetRef(this.Handle);
 
 	// m_bomber
 	[SchemaMember("CCSBot", "m_bomber")]
 	public CHandle<CCSPlayerPawn> Bomber => Schema.GetDeclaredClass<CHandle<CCSPlayerPawn>>(this.Handle, "CCSBot", "m_bomber");
 
 	// m_nearbyFriendCount
+	private static readonly SchemaField<Int32> __m_nearbyFriendCount = new("CCSBot", "m_nearbyFriendCount");
 	[SchemaMember("CCSBot", "m_nearbyFriendCount")]
-	public ref Int32 NearbyFriendCount => ref Schema.GetRef<Int32>(this.Handle, "CCSBot", "m_nearbyFriendCount");
+	public ref Int32 NearbyFriendCount => ref __m_nearbyFriendCount.GetRef(this.Handle);
 
 	// m_closestVisibleFriend
 	[SchemaMember("CCSBot", "m_closestVisibleFriend")]
@@ -463,24 +526,28 @@ public partial class CCSBot : CBot
 	public CHandle<CCSPlayerPawn> Attacker => Schema.GetDeclaredClass<CHandle<CCSPlayerPawn>>(this.Handle, "CCSBot", "m_attacker");
 
 	// m_attackedTimestamp
+	private static readonly SchemaField<float> __m_attackedTimestamp = new("CCSBot", "m_attackedTimestamp");
 	[SchemaMember("CCSBot", "m_attackedTimestamp")]
-	public ref float AttackedTimestamp => ref Schema.GetRef<float>(this.Handle, "CCSBot", "m_attackedTimestamp");
+	public ref float AttackedTimestamp => ref __m_attackedTimestamp.GetRef(this.Handle);
 
 	// m_burnedByFlamesTimer
 	[SchemaMember("CCSBot", "m_burnedByFlamesTimer")]
 	public IntervalTimer BurnedByFlamesTimer => Schema.GetDeclaredClass<IntervalTimer>(this.Handle, "CCSBot", "m_burnedByFlamesTimer");
 
 	// m_lastVictimID
+	private static readonly SchemaField<Int32> __m_lastVictimID = new("CCSBot", "m_lastVictimID");
 	[SchemaMember("CCSBot", "m_lastVictimID")]
-	public ref Int32 LastVictimID => ref Schema.GetRef<Int32>(this.Handle, "CCSBot", "m_lastVictimID");
+	public ref Int32 LastVictimID => ref __m_lastVictimID.GetRef(this.Handle);
 
 	// m_isAimingAtEnemy
+	private static readonly SchemaField<bool> __m_isAimingAtEnemy = new("CCSBot", "m_isAimingAtEnemy");
 	[SchemaMember("CCSBot", "m_isAimingAtEnemy")]
-	public ref bool IsAimingAtEnemy => ref Schema.GetRef<bool>(this.Handle, "CCSBot", "m_isAimingAtEnemy");
+	public ref bool IsAimingAtEnemy => ref __m_isAimingAtEnemy.GetRef(this.Handle);
 
 	// m_isRapidFiring
+	private static readonly SchemaField<bool> __m_isRapidFiring = new("CCSBot", "m_isRapidFiring");
 	[SchemaMember("CCSBot", "m_isRapidFiring")]
-	public ref bool IsRapidFiring => ref Schema.GetRef<bool>(this.Handle, "CCSBot", "m_isRapidFiring");
+	public ref bool IsRapidFiring => ref __m_isRapidFiring.GetRef(this.Handle);
 
 	// m_equipTimer
 	[SchemaMember("CCSBot", "m_equipTimer")]
@@ -491,44 +558,52 @@ public partial class CCSBot : CBot
 	public CountdownTimer ZoomTimer => Schema.GetDeclaredClass<CountdownTimer>(this.Handle, "CCSBot", "m_zoomTimer");
 
 	// m_fireWeaponTimestamp
+	private static readonly SchemaField<float> __m_fireWeaponTimestamp = new("CCSBot", "m_fireWeaponTimestamp");
 	[SchemaMember("CCSBot", "m_fireWeaponTimestamp")]
-	public ref float FireWeaponTimestamp => ref Schema.GetRef<float>(this.Handle, "CCSBot", "m_fireWeaponTimestamp");
+	public ref float FireWeaponTimestamp => ref __m_fireWeaponTimestamp.GetRef(this.Handle);
 
 	// m_lookForWeaponsOnGroundTimer
 	[SchemaMember("CCSBot", "m_lookForWeaponsOnGroundTimer")]
 	public CountdownTimer LookForWeaponsOnGroundTimer => Schema.GetDeclaredClass<CountdownTimer>(this.Handle, "CCSBot", "m_lookForWeaponsOnGroundTimer");
 
 	// m_bIsSleeping
+	private static readonly SchemaField<bool> __m_bIsSleeping = new("CCSBot", "m_bIsSleeping");
 	[SchemaMember("CCSBot", "m_bIsSleeping")]
-	public ref bool IsSleeping => ref Schema.GetRef<bool>(this.Handle, "CCSBot", "m_bIsSleeping");
+	public ref bool IsSleeping => ref __m_bIsSleeping.GetRef(this.Handle);
 
 	// m_isEnemySniperVisible
+	private static readonly SchemaField<bool> __m_isEnemySniperVisible = new("CCSBot", "m_isEnemySniperVisible");
 	[SchemaMember("CCSBot", "m_isEnemySniperVisible")]
-	public ref bool IsEnemySniperVisible => ref Schema.GetRef<bool>(this.Handle, "CCSBot", "m_isEnemySniperVisible");
+	public ref bool IsEnemySniperVisible => ref __m_isEnemySniperVisible.GetRef(this.Handle);
 
 	// m_sawEnemySniperTimer
 	[SchemaMember("CCSBot", "m_sawEnemySniperTimer")]
 	public CountdownTimer SawEnemySniperTimer => Schema.GetDeclaredClass<CountdownTimer>(this.Handle, "CCSBot", "m_sawEnemySniperTimer");
 
 	// m_enemyQueueIndex
+	private static readonly SchemaField<byte> __m_enemyQueueIndex = new("CCSBot", "m_enemyQueueIndex");
 	[SchemaMember("CCSBot", "m_enemyQueueIndex")]
-	public ref byte EnemyQueueIndex => ref Schema.GetRef<byte>(this.Handle, "CCSBot", "m_enemyQueueIndex");
+	public ref byte EnemyQueueIndex => ref __m_enemyQueueIndex.GetRef(this.Handle);
 
 	// m_enemyQueueCount
+	private static readonly SchemaField<byte> __m_enemyQueueCount = new("CCSBot", "m_enemyQueueCount");
 	[SchemaMember("CCSBot", "m_enemyQueueCount")]
-	public ref byte EnemyQueueCount => ref Schema.GetRef<byte>(this.Handle, "CCSBot", "m_enemyQueueCount");
+	public ref byte EnemyQueueCount => ref __m_enemyQueueCount.GetRef(this.Handle);
 
 	// m_enemyQueueAttendIndex
+	private static readonly SchemaField<byte> __m_enemyQueueAttendIndex = new("CCSBot", "m_enemyQueueAttendIndex");
 	[SchemaMember("CCSBot", "m_enemyQueueAttendIndex")]
-	public ref byte EnemyQueueAttendIndex => ref Schema.GetRef<byte>(this.Handle, "CCSBot", "m_enemyQueueAttendIndex");
+	public ref byte EnemyQueueAttendIndex => ref __m_enemyQueueAttendIndex.GetRef(this.Handle);
 
 	// m_isStuck
+	private static readonly SchemaField<bool> __m_isStuck = new("CCSBot", "m_isStuck");
 	[SchemaMember("CCSBot", "m_isStuck")]
-	public ref bool IsStuck => ref Schema.GetRef<bool>(this.Handle, "CCSBot", "m_isStuck");
+	public ref bool IsStuck => ref __m_isStuck.GetRef(this.Handle);
 
 	// m_stuckTimestamp
+	private static readonly SchemaField<float> __m_stuckTimestamp = new("CCSBot", "m_stuckTimestamp");
 	[SchemaMember("CCSBot", "m_stuckTimestamp")]
-	public ref float StuckTimestamp => ref Schema.GetRef<float>(this.Handle, "CCSBot", "m_stuckTimestamp");
+	public ref float StuckTimestamp => ref __m_stuckTimestamp.GetRef(this.Handle);
 
 	// m_stuckSpot
 	[SchemaMember("CCSBot", "m_stuckSpot")]
@@ -543,32 +618,37 @@ public partial class CCSBot : CBot
 	public CountdownTimer StuckJumpTimer => Schema.GetDeclaredClass<CountdownTimer>(this.Handle, "CCSBot", "m_stuckJumpTimer");
 
 	// m_nextCleanupCheckTimestamp
+	private static readonly SchemaField<float> __m_nextCleanupCheckTimestamp = new("CCSBot", "m_nextCleanupCheckTimestamp");
 	[SchemaMember("CCSBot", "m_nextCleanupCheckTimestamp")]
-	public ref float NextCleanupCheckTimestamp => ref Schema.GetRef<float>(this.Handle, "CCSBot", "m_nextCleanupCheckTimestamp");
+	public ref float NextCleanupCheckTimestamp => ref __m_nextCleanupCheckTimestamp.GetRef(this.Handle);
 
 	// m_avgVel
 	[SchemaMember("CCSBot", "m_avgVel")]
 	public Span<float> AvgVel => Schema.GetFixedArray<float>(this.Handle, "CCSBot", "m_avgVel", 10);
 
 	// m_avgVelIndex
+	private static readonly SchemaField<Int32> __m_avgVelIndex = new("CCSBot", "m_avgVelIndex");
 	[SchemaMember("CCSBot", "m_avgVelIndex")]
-	public ref Int32 AvgVelIndex => ref Schema.GetRef<Int32>(this.Handle, "CCSBot", "m_avgVelIndex");
+	public ref Int32 AvgVelIndex => ref __m_avgVelIndex.GetRef(this.Handle);
 
 	// m_avgVelCount
+	private static readonly SchemaField<Int32> __m_avgVelCount = new("CCSBot", "m_avgVelCount");
 	[SchemaMember("CCSBot", "m_avgVelCount")]
-	public ref Int32 AvgVelCount => ref Schema.GetRef<Int32>(this.Handle, "CCSBot", "m_avgVelCount");
+	public ref Int32 AvgVelCount => ref __m_avgVelCount.GetRef(this.Handle);
 
 	// m_lastOrigin
 	[SchemaMember("CCSBot", "m_lastOrigin")]
 	public Vector LastOrigin => Schema.GetDeclaredClass<Vector>(this.Handle, "CCSBot", "m_lastOrigin");
 
 	// m_lastRadioRecievedTimestamp
+	private static readonly SchemaField<float> __m_lastRadioRecievedTimestamp = new("CCSBot", "m_lastRadioRecievedTimestamp");
 	[SchemaMember("CCSBot", "m_lastRadioRecievedTimestamp")]
-	public ref float LastRadioRecievedTimestamp => ref Schema.GetRef<float>(this.Handle, "CCSBot", "m_lastRadioRecievedTimestamp");
+	public ref float LastRadioRecievedTimestamp => ref __m_lastRadioRecievedTimestamp.GetRef(this.Handle);
 
 	// m_lastRadioSentTimestamp
+	private static readonly SchemaField<float> __m_lastRadioSentTimestamp = new("CCSBot", "m_lastRadioSentTimestamp");
 	[SchemaMember("CCSBot", "m_lastRadioSentTimestamp")]
-	public ref float LastRadioSentTimestamp => ref Schema.GetRef<float>(this.Handle, "CCSBot", "m_lastRadioSentTimestamp");
+	public ref float LastRadioSentTimestamp => ref __m_lastRadioSentTimestamp.GetRef(this.Handle);
 
 	// m_radioSubject
 	[SchemaMember("CCSBot", "m_radioSubject")]
@@ -579,11 +659,13 @@ public partial class CCSBot : CBot
 	public Vector RadioPosition => Schema.GetDeclaredClass<Vector>(this.Handle, "CCSBot", "m_radioPosition");
 
 	// m_voiceEndTimestamp
+	private static readonly SchemaField<float> __m_voiceEndTimestamp = new("CCSBot", "m_voiceEndTimestamp");
 	[SchemaMember("CCSBot", "m_voiceEndTimestamp")]
-	public ref float VoiceEndTimestamp => ref Schema.GetRef<float>(this.Handle, "CCSBot", "m_voiceEndTimestamp");
+	public ref float VoiceEndTimestamp => ref __m_voiceEndTimestamp.GetRef(this.Handle);
 
 	// m_lastValidReactionQueueFrame
+	private static readonly SchemaField<Int32> __m_lastValidReactionQueueFrame = new("CCSBot", "m_lastValidReactionQueueFrame");
 	[SchemaMember("CCSBot", "m_lastValidReactionQueueFrame")]
-	public ref Int32 LastValidReactionQueueFrame => ref Schema.GetRef<Int32>(this.Handle, "CCSBot", "m_lastValidReactionQueueFrame");
+	public ref Int32 LastValidReactionQueueFrame => ref __m_lastValidReactionQueueFrame.GetRef(this.Handle);
 
 }

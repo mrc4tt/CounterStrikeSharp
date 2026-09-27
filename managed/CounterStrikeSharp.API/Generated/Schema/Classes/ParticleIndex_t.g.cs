@@ -19,7 +19,8 @@ public partial class ParticleIndex_t : NativeObject
     public ParticleIndex_t (IntPtr pointer) : base(pointer) {}
 
 	// m_Value
+	private static readonly SchemaField<Int32> __m_Value = new("ParticleIndex_t", "m_Value");
 	[SchemaMember("ParticleIndex_t", "m_Value")]
-	public ref Int32 Value => ref Schema.GetRef<Int32>(this.Handle, "ParticleIndex_t", "m_Value");
+	public ref Int32 Value => ref __m_Value.GetRef(this.Handle);
 
 }

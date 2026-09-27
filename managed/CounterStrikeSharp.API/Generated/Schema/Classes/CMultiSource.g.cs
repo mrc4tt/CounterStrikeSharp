@@ -31,8 +31,9 @@ public partial class CMultiSource : CLogicalEntity
 	public CEntityIOOutput OnTrigger => Schema.GetDeclaredClass<CEntityIOOutput>(this.Handle, "CMultiSource", "m_OnTrigger");
 
 	// m_iTotal
+	private static readonly SchemaField<Int32> __m_iTotal = new("CMultiSource", "m_iTotal");
 	[SchemaMember("CMultiSource", "m_iTotal")]
-	public ref Int32 Total => ref Schema.GetRef<Int32>(this.Handle, "CMultiSource", "m_iTotal");
+	public ref Int32 Total => ref __m_iTotal.GetRef(this.Handle);
 
 	// m_globalstate
 	[SchemaMember("CMultiSource", "m_globalstate")]

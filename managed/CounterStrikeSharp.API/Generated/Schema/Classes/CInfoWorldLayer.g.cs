@@ -39,19 +39,23 @@ public partial class CInfoWorldLayer : CBaseEntity
 	}
 
 	// m_bWorldLayerVisible
+	private static readonly SchemaField<bool> __m_bWorldLayerVisible = new("CInfoWorldLayer", "m_bWorldLayerVisible");
 	[SchemaMember("CInfoWorldLayer", "m_bWorldLayerVisible")]
-	public ref bool WorldLayerVisible => ref Schema.GetRef<bool>(this.Handle, "CInfoWorldLayer", "m_bWorldLayerVisible");
+	public ref bool WorldLayerVisible => ref __m_bWorldLayerVisible.GetRef(this.Handle);
 
 	// m_bEntitiesSpawned
+	private static readonly SchemaField<bool> __m_bEntitiesSpawned = new("CInfoWorldLayer", "m_bEntitiesSpawned");
 	[SchemaMember("CInfoWorldLayer", "m_bEntitiesSpawned")]
-	public ref bool EntitiesSpawned => ref Schema.GetRef<bool>(this.Handle, "CInfoWorldLayer", "m_bEntitiesSpawned");
+	public ref bool EntitiesSpawned => ref __m_bEntitiesSpawned.GetRef(this.Handle);
 
 	// m_bCreateAsChildSpawnGroup
+	private static readonly SchemaField<bool> __m_bCreateAsChildSpawnGroup = new("CInfoWorldLayer", "m_bCreateAsChildSpawnGroup");
 	[SchemaMember("CInfoWorldLayer", "m_bCreateAsChildSpawnGroup")]
-	public ref bool CreateAsChildSpawnGroup => ref Schema.GetRef<bool>(this.Handle, "CInfoWorldLayer", "m_bCreateAsChildSpawnGroup");
+	public ref bool CreateAsChildSpawnGroup => ref __m_bCreateAsChildSpawnGroup.GetRef(this.Handle);
 
 	// m_hLayerSpawnGroup
+	private static readonly SchemaField<UInt32> __m_hLayerSpawnGroup = new("CInfoWorldLayer", "m_hLayerSpawnGroup");
 	[SchemaMember("CInfoWorldLayer", "m_hLayerSpawnGroup")]
-	public ref UInt32 LayerSpawnGroup => ref Schema.GetRef<UInt32>(this.Handle, "CInfoWorldLayer", "m_hLayerSpawnGroup");
+	public ref UInt32 LayerSpawnGroup => ref __m_hLayerSpawnGroup.GetRef(this.Handle);
 
 }

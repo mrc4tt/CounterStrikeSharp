@@ -23,11 +23,13 @@ public partial class CCSPlayer_UseServices : CPlayer_UseServices
 	public CHandle<CBaseEntity> LastKnownUseEntity => Schema.GetDeclaredClass<CHandle<CBaseEntity>>(this.Handle, "CCSPlayer_UseServices", "m_hLastKnownUseEntity");
 
 	// m_flLastUseTimeStamp
+	private static readonly SchemaField<float> __m_flLastUseTimeStamp = new("CCSPlayer_UseServices", "m_flLastUseTimeStamp");
 	[SchemaMember("CCSPlayer_UseServices", "m_flLastUseTimeStamp")]
-	public ref float LastUseTimeStamp => ref Schema.GetRef<float>(this.Handle, "CCSPlayer_UseServices", "m_flLastUseTimeStamp");
+	public ref float LastUseTimeStamp => ref __m_flLastUseTimeStamp.GetRef(this.Handle);
 
 	// m_flTimeLastUsedWindow
+	private static readonly SchemaField<float> __m_flTimeLastUsedWindow = new("CCSPlayer_UseServices", "m_flTimeLastUsedWindow");
 	[SchemaMember("CCSPlayer_UseServices", "m_flTimeLastUsedWindow")]
-	public ref float TimeLastUsedWindow => ref Schema.GetRef<float>(this.Handle, "CCSPlayer_UseServices", "m_flTimeLastUsedWindow");
+	public ref float TimeLastUsedWindow => ref __m_flTimeLastUsedWindow.GetRef(this.Handle);
 
 }

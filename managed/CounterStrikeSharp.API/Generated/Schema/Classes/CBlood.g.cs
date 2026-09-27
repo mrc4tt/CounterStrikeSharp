@@ -27,11 +27,13 @@ public partial class CBlood : CPointEntity
 	public Vector SprayDir => Schema.GetDeclaredClass<Vector>(this.Handle, "CBlood", "m_vecSprayDir");
 
 	// m_flAmount
+	private static readonly SchemaField<float> __m_flAmount = new("CBlood", "m_flAmount");
 	[SchemaMember("CBlood", "m_flAmount")]
-	public ref float Amount => ref Schema.GetRef<float>(this.Handle, "CBlood", "m_flAmount");
+	public ref float Amount => ref __m_flAmount.GetRef(this.Handle);
 
 	// m_Color
+	private static readonly SchemaField<BloodType> __m_Color = new("CBlood", "m_Color");
 	[SchemaMember("CBlood", "m_Color")]
-	public ref BloodType Color => ref Schema.GetRef<BloodType>(this.Handle, "CBlood", "m_Color");
+	public ref BloodType Color => ref __m_Color.GetRef(this.Handle);
 
 }

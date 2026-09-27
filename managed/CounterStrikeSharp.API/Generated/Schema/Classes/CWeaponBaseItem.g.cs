@@ -19,11 +19,13 @@ public partial class CWeaponBaseItem : CCSWeaponBase
     public CWeaponBaseItem (IntPtr pointer) : base(pointer) {}
 
 	// m_bSequenceInProgress
+	private static readonly SchemaField<bool> __m_bSequenceInProgress = new("CWeaponBaseItem", "m_bSequenceInProgress");
 	[SchemaMember("CWeaponBaseItem", "m_bSequenceInProgress")]
-	public ref bool SequenceInProgress => ref Schema.GetRef<bool>(this.Handle, "CWeaponBaseItem", "m_bSequenceInProgress");
+	public ref bool SequenceInProgress => ref __m_bSequenceInProgress.GetRef(this.Handle);
 
 	// m_bRedraw
+	private static readonly SchemaField<bool> __m_bRedraw = new("CWeaponBaseItem", "m_bRedraw");
 	[SchemaMember("CWeaponBaseItem", "m_bRedraw")]
-	public ref bool Redraw => ref Schema.GetRef<bool>(this.Handle, "CWeaponBaseItem", "m_bRedraw");
+	public ref bool Redraw => ref __m_bRedraw.GetRef(this.Handle);
 
 }

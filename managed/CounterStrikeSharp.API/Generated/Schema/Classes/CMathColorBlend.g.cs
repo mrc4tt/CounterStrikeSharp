@@ -19,12 +19,14 @@ public partial class CMathColorBlend : CLogicalEntity
     public CMathColorBlend (IntPtr pointer) : base(pointer) {}
 
 	// m_flInMin
+	private static readonly SchemaField<float> __m_flInMin = new("CMathColorBlend", "m_flInMin");
 	[SchemaMember("CMathColorBlend", "m_flInMin")]
-	public ref float InMin => ref Schema.GetRef<float>(this.Handle, "CMathColorBlend", "m_flInMin");
+	public ref float InMin => ref __m_flInMin.GetRef(this.Handle);
 
 	// m_flInMax
+	private static readonly SchemaField<float> __m_flInMax = new("CMathColorBlend", "m_flInMax");
 	[SchemaMember("CMathColorBlend", "m_flInMax")]
-	public ref float InMax => ref Schema.GetRef<float>(this.Handle, "CMathColorBlend", "m_flInMax");
+	public ref float InMax => ref __m_flInMax.GetRef(this.Handle);
 
 	// m_OutColor1
 	[SchemaMember("CMathColorBlend", "m_OutColor1")]

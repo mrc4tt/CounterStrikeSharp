@@ -27,23 +27,28 @@ public partial class CMarkupVolumeTagged : CMarkupVolume
 	public NetworkedVector<string> Tags => Schema.GetDeclaredClass<NetworkedVector<string>>(this.Handle, "CMarkupVolumeTagged", "m_Tags");
 
 	// m_bIsGroup
+	private static readonly SchemaField<bool> __m_bIsGroup = new("CMarkupVolumeTagged", "m_bIsGroup");
 	[SchemaMember("CMarkupVolumeTagged", "m_bIsGroup")]
-	public ref bool IsGroup => ref Schema.GetRef<bool>(this.Handle, "CMarkupVolumeTagged", "m_bIsGroup");
+	public ref bool IsGroup => ref __m_bIsGroup.GetRef(this.Handle);
 
 	// m_bGroupByPrefab
+	private static readonly SchemaField<bool> __m_bGroupByPrefab = new("CMarkupVolumeTagged", "m_bGroupByPrefab");
 	[SchemaMember("CMarkupVolumeTagged", "m_bGroupByPrefab")]
-	public ref bool GroupByPrefab => ref Schema.GetRef<bool>(this.Handle, "CMarkupVolumeTagged", "m_bGroupByPrefab");
+	public ref bool GroupByPrefab => ref __m_bGroupByPrefab.GetRef(this.Handle);
 
 	// m_bGroupByVolume
+	private static readonly SchemaField<bool> __m_bGroupByVolume = new("CMarkupVolumeTagged", "m_bGroupByVolume");
 	[SchemaMember("CMarkupVolumeTagged", "m_bGroupByVolume")]
-	public ref bool GroupByVolume => ref Schema.GetRef<bool>(this.Handle, "CMarkupVolumeTagged", "m_bGroupByVolume");
+	public ref bool GroupByVolume => ref __m_bGroupByVolume.GetRef(this.Handle);
 
 	// m_bGroupOtherGroups
+	private static readonly SchemaField<bool> __m_bGroupOtherGroups = new("CMarkupVolumeTagged", "m_bGroupOtherGroups");
 	[SchemaMember("CMarkupVolumeTagged", "m_bGroupOtherGroups")]
-	public ref bool GroupOtherGroups => ref Schema.GetRef<bool>(this.Handle, "CMarkupVolumeTagged", "m_bGroupOtherGroups");
+	public ref bool GroupOtherGroups => ref __m_bGroupOtherGroups.GetRef(this.Handle);
 
 	// m_bIsInGroup
+	private static readonly SchemaField<bool> __m_bIsInGroup = new("CMarkupVolumeTagged", "m_bIsInGroup");
 	[SchemaMember("CMarkupVolumeTagged", "m_bIsInGroup")]
-	public ref bool IsInGroup => ref Schema.GetRef<bool>(this.Handle, "CMarkupVolumeTagged", "m_bIsInGroup");
+	public ref bool IsInGroup => ref __m_bIsInGroup.GetRef(this.Handle);
 
 }

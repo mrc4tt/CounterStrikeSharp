@@ -51,11 +51,13 @@ public partial class CCSPlayerResource : CBaseEntity
 	public Span<Int32> HostageRescueZ => Schema.GetFixedArray<Int32>(this.Handle, "CCSPlayerResource", "m_hostageRescueZ", 4);
 
 	// m_bEndMatchNextMapAllVoted
+	private static readonly SchemaField<bool> __m_bEndMatchNextMapAllVoted = new("CCSPlayerResource", "m_bEndMatchNextMapAllVoted");
 	[SchemaMember("CCSPlayerResource", "m_bEndMatchNextMapAllVoted")]
-	public ref bool EndMatchNextMapAllVoted => ref Schema.GetRef<bool>(this.Handle, "CCSPlayerResource", "m_bEndMatchNextMapAllVoted");
+	public ref bool EndMatchNextMapAllVoted => ref __m_bEndMatchNextMapAllVoted.GetRef(this.Handle);
 
 	// m_foundGoalPositions
+	private static readonly SchemaField<bool> __m_foundGoalPositions = new("CCSPlayerResource", "m_foundGoalPositions");
 	[SchemaMember("CCSPlayerResource", "m_foundGoalPositions")]
-	public ref bool FoundGoalPositions => ref Schema.GetRef<bool>(this.Handle, "CCSPlayerResource", "m_foundGoalPositions");
+	public ref bool FoundGoalPositions => ref __m_foundGoalPositions.GetRef(this.Handle);
 
 }

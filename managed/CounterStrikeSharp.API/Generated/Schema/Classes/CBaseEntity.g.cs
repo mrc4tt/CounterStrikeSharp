@@ -31,24 +31,28 @@ public partial class CBaseEntity : CEntityInstance
 	public NetworkedVector<thinkfunc_t> ThinkFunctions => Schema.GetDeclaredClass<NetworkedVector<thinkfunc_t>>(this.Handle, "CBaseEntity", "m_aThinkFunctions");
 
 	// m_iCurrentThinkContext
+	private static readonly SchemaField<Int32> __m_iCurrentThinkContext = new("CBaseEntity", "m_iCurrentThinkContext");
 	[SchemaMember("CBaseEntity", "m_iCurrentThinkContext")]
-	public ref Int32 CurrentThinkContext => ref Schema.GetRef<Int32>(this.Handle, "CBaseEntity", "m_iCurrentThinkContext");
+	public ref Int32 CurrentThinkContext => ref __m_iCurrentThinkContext.GetRef(this.Handle);
 
 	// m_nLastThinkTick
+	private static readonly SchemaField<Int32> __m_nLastThinkTick = new("CBaseEntity", "m_nLastThinkTick");
 	[SchemaMember("CBaseEntity", "m_nLastThinkTick")]
-	public ref Int32 LastThinkTick => ref Schema.GetRef<Int32>(this.Handle, "CBaseEntity", "m_nLastThinkTick");
+	public ref Int32 LastThinkTick => ref __m_nLastThinkTick.GetRef(this.Handle);
 
 	// m_bDisabledContextThinks
+	private static readonly SchemaField<bool> __m_bDisabledContextThinks = new("CBaseEntity", "m_bDisabledContextThinks");
 	[SchemaMember("CBaseEntity", "m_bDisabledContextThinks")]
-	public ref bool DisabledContextThinks => ref Schema.GetRef<bool>(this.Handle, "CBaseEntity", "m_bDisabledContextThinks");
+	public ref bool DisabledContextThinks => ref __m_bDisabledContextThinks.GetRef(this.Handle);
 
 	// m_isSteadyState
 	[SchemaMember("CBaseEntity", "m_isSteadyState")]
 	public Span<byte> IsSteadyState => Schema.GetFixedArray<byte>(this.Handle, "CBaseEntity", "m_isSteadyState", 8);
 
 	// m_lastNetworkChange
+	private static readonly SchemaField<float> __m_lastNetworkChange = new("CBaseEntity", "m_lastNetworkChange");
 	[SchemaMember("CBaseEntity", "m_lastNetworkChange")]
-	public ref float LastNetworkChange => ref Schema.GetRef<float>(this.Handle, "CBaseEntity", "m_lastNetworkChange");
+	public ref float LastNetworkChange => ref __m_lastNetworkChange.GetRef(this.Handle);
 
 	// m_ResponseContexts
 	[SchemaMember("CBaseEntity", "m_ResponseContexts")]
@@ -63,60 +67,74 @@ public partial class CBaseEntity : CEntityInstance
 	}
 
 	// m_iHealth
+	private static readonly SchemaField<Int32> __m_iHealth = new("CBaseEntity", "m_iHealth");
 	[SchemaMember("CBaseEntity", "m_iHealth")]
-	public ref Int32 Health => ref Schema.GetRef<Int32>(this.Handle, "CBaseEntity", "m_iHealth");
+	public ref Int32 Health => ref __m_iHealth.GetRef(this.Handle);
 
 	// m_iMaxHealth
+	private static readonly SchemaField<Int32> __m_iMaxHealth = new("CBaseEntity", "m_iMaxHealth");
 	[SchemaMember("CBaseEntity", "m_iMaxHealth")]
-	public ref Int32 MaxHealth => ref Schema.GetRef<Int32>(this.Handle, "CBaseEntity", "m_iMaxHealth");
+	public ref Int32 MaxHealth => ref __m_iMaxHealth.GetRef(this.Handle);
 
 	// m_lifeState
+	private static readonly SchemaField<byte> __m_lifeState = new("CBaseEntity", "m_lifeState");
 	[SchemaMember("CBaseEntity", "m_lifeState")]
-	public ref byte LifeState => ref Schema.GetRef<byte>(this.Handle, "CBaseEntity", "m_lifeState");
+	public ref byte LifeState => ref __m_lifeState.GetRef(this.Handle);
 
 	// m_flDamageAccumulator
+	private static readonly SchemaField<float> __m_flDamageAccumulator = new("CBaseEntity", "m_flDamageAccumulator");
 	[SchemaMember("CBaseEntity", "m_flDamageAccumulator")]
-	public ref float DamageAccumulator => ref Schema.GetRef<float>(this.Handle, "CBaseEntity", "m_flDamageAccumulator");
+	public ref float DamageAccumulator => ref __m_flDamageAccumulator.GetRef(this.Handle);
 
 	// m_bTakesDamage
+	private static readonly SchemaField<bool> __m_bTakesDamage = new("CBaseEntity", "m_bTakesDamage");
 	[SchemaMember("CBaseEntity", "m_bTakesDamage")]
-	public ref bool TakesDamage => ref Schema.GetRef<bool>(this.Handle, "CBaseEntity", "m_bTakesDamage");
+	public ref bool TakesDamage => ref __m_bTakesDamage.GetRef(this.Handle);
 
 	// m_nTakeDamageFlags
+	private static readonly SchemaField<TakeDamageFlags_t> __m_nTakeDamageFlags = new("CBaseEntity", "m_nTakeDamageFlags");
 	[SchemaMember("CBaseEntity", "m_nTakeDamageFlags")]
-	public ref TakeDamageFlags_t TakeDamageFlags => ref Schema.GetRef<TakeDamageFlags_t>(this.Handle, "CBaseEntity", "m_nTakeDamageFlags");
+	public ref TakeDamageFlags_t TakeDamageFlags => ref __m_nTakeDamageFlags.GetRef(this.Handle);
 
 	// m_nPlatformType
+	private static readonly SchemaField<EntityPlatformTypes_t> __m_nPlatformType = new("CBaseEntity", "m_nPlatformType");
 	[SchemaMember("CBaseEntity", "m_nPlatformType")]
-	public ref EntityPlatformTypes_t PlatformType => ref Schema.GetRef<EntityPlatformTypes_t>(this.Handle, "CBaseEntity", "m_nPlatformType");
+	public ref EntityPlatformTypes_t PlatformType => ref __m_nPlatformType.GetRef(this.Handle);
 
 	// m_MoveCollide
+	private static readonly SchemaField<MoveCollide_t> __m_MoveCollide = new("CBaseEntity", "m_MoveCollide");
 	[SchemaMember("CBaseEntity", "m_MoveCollide")]
-	public ref MoveCollide_t MoveCollide => ref Schema.GetRef<MoveCollide_t>(this.Handle, "CBaseEntity", "m_MoveCollide");
+	public ref MoveCollide_t MoveCollide => ref __m_MoveCollide.GetRef(this.Handle);
 
 	// m_MoveType
+	private static readonly SchemaField<MoveType_t> __m_MoveType = new("CBaseEntity", "m_MoveType");
 	[SchemaMember("CBaseEntity", "m_MoveType")]
-	public ref MoveType_t MoveType => ref Schema.GetRef<MoveType_t>(this.Handle, "CBaseEntity", "m_MoveType");
+	public ref MoveType_t MoveType => ref __m_MoveType.GetRef(this.Handle);
 
 	// m_nPreviouslySetMoveType
+	private static readonly SchemaField<MoveType_t> __m_nPreviouslySetMoveType = new("CBaseEntity", "m_nPreviouslySetMoveType");
 	[SchemaMember("CBaseEntity", "m_nPreviouslySetMoveType")]
-	public ref MoveType_t PreviouslySetMoveType => ref Schema.GetRef<MoveType_t>(this.Handle, "CBaseEntity", "m_nPreviouslySetMoveType");
+	public ref MoveType_t PreviouslySetMoveType => ref __m_nPreviouslySetMoveType.GetRef(this.Handle);
 
 	// m_nActualMoveType
+	private static readonly SchemaField<MoveType_t> __m_nActualMoveType = new("CBaseEntity", "m_nActualMoveType");
 	[SchemaMember("CBaseEntity", "m_nActualMoveType")]
-	public ref MoveType_t ActualMoveType => ref Schema.GetRef<MoveType_t>(this.Handle, "CBaseEntity", "m_nActualMoveType");
+	public ref MoveType_t ActualMoveType => ref __m_nActualMoveType.GetRef(this.Handle);
 
 	// m_nWaterTouch
+	private static readonly SchemaField<byte> __m_nWaterTouch = new("CBaseEntity", "m_nWaterTouch");
 	[SchemaMember("CBaseEntity", "m_nWaterTouch")]
-	public ref byte WaterTouch => ref Schema.GetRef<byte>(this.Handle, "CBaseEntity", "m_nWaterTouch");
+	public ref byte WaterTouch => ref __m_nWaterTouch.GetRef(this.Handle);
 
 	// m_nSlimeTouch
+	private static readonly SchemaField<byte> __m_nSlimeTouch = new("CBaseEntity", "m_nSlimeTouch");
 	[SchemaMember("CBaseEntity", "m_nSlimeTouch")]
-	public ref byte SlimeTouch => ref Schema.GetRef<byte>(this.Handle, "CBaseEntity", "m_nSlimeTouch");
+	public ref byte SlimeTouch => ref __m_nSlimeTouch.GetRef(this.Handle);
 
 	// m_bRestoreInHierarchy
+	private static readonly SchemaField<bool> __m_bRestoreInHierarchy = new("CBaseEntity", "m_bRestoreInHierarchy");
 	[SchemaMember("CBaseEntity", "m_bRestoreInHierarchy")]
-	public ref bool RestoreInHierarchy => ref Schema.GetRef<bool>(this.Handle, "CBaseEntity", "m_bRestoreInHierarchy");
+	public ref bool RestoreInHierarchy => ref __m_bRestoreInHierarchy.GetRef(this.Handle);
 
 	// m_target
 	[SchemaMember("CBaseEntity", "m_target")]
@@ -139,40 +157,47 @@ public partial class CBaseEntity : CEntityInstance
 	}
 
 	// m_flMoveDoneTime
+	private static readonly SchemaField<float> __m_flMoveDoneTime = new("CBaseEntity", "m_flMoveDoneTime");
 	[SchemaMember("CBaseEntity", "m_flMoveDoneTime")]
-	public ref float MoveDoneTime => ref Schema.GetRef<float>(this.Handle, "CBaseEntity", "m_flMoveDoneTime");
+	public ref float MoveDoneTime => ref __m_flMoveDoneTime.GetRef(this.Handle);
 
 	// m_nSubclassID
 	[SchemaMember("CBaseEntity", "m_nSubclassID")]
 	public CUtlStringToken SubclassID => Schema.GetDeclaredClass<CUtlStringToken>(this.Handle, "CBaseEntity", "m_nSubclassID");
 
 	// m_flAnimTime
+	private static readonly SchemaField<float> __m_flAnimTime = new("CBaseEntity", "m_flAnimTime");
 	[SchemaMember("CBaseEntity", "m_flAnimTime")]
-	public ref float AnimTime => ref Schema.GetRef<float>(this.Handle, "CBaseEntity", "m_flAnimTime");
+	public ref float AnimTime => ref __m_flAnimTime.GetRef(this.Handle);
 
 	// m_flSimulationTime
+	private static readonly SchemaField<float> __m_flSimulationTime = new("CBaseEntity", "m_flSimulationTime");
 	[SchemaMember("CBaseEntity", "m_flSimulationTime")]
-	public ref float SimulationTime => ref Schema.GetRef<float>(this.Handle, "CBaseEntity", "m_flSimulationTime");
+	public ref float SimulationTime => ref __m_flSimulationTime.GetRef(this.Handle);
 
 	// m_flCreateTime
+	private static readonly SchemaField<float> __m_flCreateTime = new("CBaseEntity", "m_flCreateTime");
 	[SchemaMember("CBaseEntity", "m_flCreateTime")]
-	public ref float CreateTime => ref Schema.GetRef<float>(this.Handle, "CBaseEntity", "m_flCreateTime");
+	public ref float CreateTime => ref __m_flCreateTime.GetRef(this.Handle);
 
 	// m_bClientSideRagdoll
+	private static readonly SchemaField<bool> __m_bClientSideRagdoll = new("CBaseEntity", "m_bClientSideRagdoll");
 	[SchemaMember("CBaseEntity", "m_bClientSideRagdoll")]
-	public ref bool ClientSideRagdoll => ref Schema.GetRef<bool>(this.Handle, "CBaseEntity", "m_bClientSideRagdoll");
+	public ref bool ClientSideRagdoll => ref __m_bClientSideRagdoll.GetRef(this.Handle);
 
 	// m_ubInterpolationFrame
+	private static readonly SchemaField<byte> __m_ubInterpolationFrame = new("CBaseEntity", "m_ubInterpolationFrame");
 	[SchemaMember("CBaseEntity", "m_ubInterpolationFrame")]
-	public ref byte InterpolationFrame => ref Schema.GetRef<byte>(this.Handle, "CBaseEntity", "m_ubInterpolationFrame");
+	public ref byte InterpolationFrame => ref __m_ubInterpolationFrame.GetRef(this.Handle);
 
 	// m_vPrevVPhysicsUpdatePos
 	[SchemaMember("CBaseEntity", "m_vPrevVPhysicsUpdatePos")]
 	public Vector PrevVPhysicsUpdatePos => Schema.GetDeclaredClass<Vector>(this.Handle, "CBaseEntity", "m_vPrevVPhysicsUpdatePos");
 
 	// m_iTeamNum
+	private static readonly SchemaField<byte> __m_iTeamNum = new("CBaseEntity", "m_iTeamNum");
 	[SchemaMember("CBaseEntity", "m_iTeamNum")]
-	public ref byte TeamNum => ref Schema.GetRef<byte>(this.Handle, "CBaseEntity", "m_iTeamNum");
+	public ref byte TeamNum => ref __m_iTeamNum.GetRef(this.Handle);
 
 	// m_iGlobalname
 	[SchemaMember("CBaseEntity", "m_iGlobalname")]
@@ -183,8 +208,9 @@ public partial class CBaseEntity : CEntityInstance
 	}
 
 	// m_iSentToClients
+	private static readonly SchemaField<Int32> __m_iSentToClients = new("CBaseEntity", "m_iSentToClients");
 	[SchemaMember("CBaseEntity", "m_iSentToClients")]
-	public ref Int32 SentToClients => ref Schema.GetRef<Int32>(this.Handle, "CBaseEntity", "m_iSentToClients");
+	public ref Int32 SentToClients => ref __m_iSentToClients.GetRef(this.Handle);
 
 	// m_sUniqueHammerID
 	[SchemaMember("CBaseEntity", "m_sUniqueHammerID")]
@@ -195,24 +221,28 @@ public partial class CBaseEntity : CEntityInstance
 	}
 
 	// m_spawnflags
+	private static readonly SchemaField<UInt32> __m_spawnflags = new("CBaseEntity", "m_spawnflags");
 	[SchemaMember("CBaseEntity", "m_spawnflags")]
-	public ref UInt32 Spawnflags => ref Schema.GetRef<UInt32>(this.Handle, "CBaseEntity", "m_spawnflags");
+	public ref UInt32 Spawnflags => ref __m_spawnflags.GetRef(this.Handle);
 
 	// m_nNextThinkTick
+	private static readonly SchemaField<Int32> __m_nNextThinkTick = new("CBaseEntity", "m_nNextThinkTick");
 	[SchemaMember("CBaseEntity", "m_nNextThinkTick")]
-	public ref Int32 NextThinkTick => ref Schema.GetRef<Int32>(this.Handle, "CBaseEntity", "m_nNextThinkTick");
+	public ref Int32 NextThinkTick => ref __m_nNextThinkTick.GetRef(this.Handle);
 
 	// m_nSimulationTick
+	private static readonly SchemaField<Int32> __m_nSimulationTick = new("CBaseEntity", "m_nSimulationTick");
 	[SchemaMember("CBaseEntity", "m_nSimulationTick")]
-	public ref Int32 SimulationTick => ref Schema.GetRef<Int32>(this.Handle, "CBaseEntity", "m_nSimulationTick");
+	public ref Int32 SimulationTick => ref __m_nSimulationTick.GetRef(this.Handle);
 
 	// m_OnKilled
 	[SchemaMember("CBaseEntity", "m_OnKilled")]
 	public CEntityIOOutput OnKilled => Schema.GetDeclaredClass<CEntityIOOutput>(this.Handle, "CBaseEntity", "m_OnKilled");
 
 	// m_fFlags
+	private static readonly SchemaField<UInt32> __m_fFlags = new("CBaseEntity", "m_fFlags");
 	[SchemaMember("CBaseEntity", "m_fFlags")]
-	public ref UInt32 Flags => ref Schema.GetRef<UInt32>(this.Handle, "CBaseEntity", "m_fFlags");
+	public ref UInt32 Flags => ref __m_fFlags.GetRef(this.Handle);
 
 	// m_vecAbsVelocity
 	[SchemaMember("CBaseEntity", "m_vecAbsVelocity")]
@@ -227,8 +257,9 @@ public partial class CBaseEntity : CEntityInstance
 	public Vector BaseVelocity => Schema.GetDeclaredClass<Vector>(this.Handle, "CBaseEntity", "m_vecBaseVelocity");
 
 	// m_nPushEnumCount
+	private static readonly SchemaField<Int32> __m_nPushEnumCount = new("CBaseEntity", "m_nPushEnumCount");
 	[SchemaMember("CBaseEntity", "m_nPushEnumCount")]
-	public ref Int32 PushEnumCount => ref Schema.GetRef<Int32>(this.Handle, "CBaseEntity", "m_nPushEnumCount");
+	public ref Int32 PushEnumCount => ref __m_nPushEnumCount.GetRef(this.Handle);
 
 	// m_pCollision
 	[SchemaMember("CBaseEntity", "m_pCollision")]
@@ -243,64 +274,78 @@ public partial class CBaseEntity : CEntityInstance
 	public CHandle<CBaseEntity> OwnerEntity => Schema.GetDeclaredClass<CHandle<CBaseEntity>>(this.Handle, "CBaseEntity", "m_hOwnerEntity");
 
 	// m_fEffects
+	private static readonly SchemaField<UInt32> __m_fEffects = new("CBaseEntity", "m_fEffects");
 	[SchemaMember("CBaseEntity", "m_fEffects")]
-	public ref UInt32 Effects => ref Schema.GetRef<UInt32>(this.Handle, "CBaseEntity", "m_fEffects");
+	public ref UInt32 Effects => ref __m_fEffects.GetRef(this.Handle);
 
 	// m_hGroundEntity
 	[SchemaMember("CBaseEntity", "m_hGroundEntity")]
 	public CHandle<CBaseEntity> GroundEntity => Schema.GetDeclaredClass<CHandle<CBaseEntity>>(this.Handle, "CBaseEntity", "m_hGroundEntity");
 
 	// m_nGroundBodyIndex
+	private static readonly SchemaField<Int32> __m_nGroundBodyIndex = new("CBaseEntity", "m_nGroundBodyIndex");
 	[SchemaMember("CBaseEntity", "m_nGroundBodyIndex")]
-	public ref Int32 GroundBodyIndex => ref Schema.GetRef<Int32>(this.Handle, "CBaseEntity", "m_nGroundBodyIndex");
+	public ref Int32 GroundBodyIndex => ref __m_nGroundBodyIndex.GetRef(this.Handle);
 
 	// m_flFriction
+	private static readonly SchemaField<float> __m_flFriction = new("CBaseEntity", "m_flFriction");
 	[SchemaMember("CBaseEntity", "m_flFriction")]
-	public ref float Friction => ref Schema.GetRef<float>(this.Handle, "CBaseEntity", "m_flFriction");
+	public ref float Friction => ref __m_flFriction.GetRef(this.Handle);
 
 	// m_flElasticity
+	private static readonly SchemaField<float> __m_flElasticity = new("CBaseEntity", "m_flElasticity");
 	[SchemaMember("CBaseEntity", "m_flElasticity")]
-	public ref float Elasticity => ref Schema.GetRef<float>(this.Handle, "CBaseEntity", "m_flElasticity");
+	public ref float Elasticity => ref __m_flElasticity.GetRef(this.Handle);
 
 	// m_flGravityScale
+	private static readonly SchemaField<float> __m_flGravityScale = new("CBaseEntity", "m_flGravityScale");
 	[SchemaMember("CBaseEntity", "m_flGravityScale")]
-	public ref float GravityScale => ref Schema.GetRef<float>(this.Handle, "CBaseEntity", "m_flGravityScale");
+	public ref float GravityScale => ref __m_flGravityScale.GetRef(this.Handle);
 
 	// m_flTimeScale
+	private static readonly SchemaField<float> __m_flTimeScale = new("CBaseEntity", "m_flTimeScale");
 	[SchemaMember("CBaseEntity", "m_flTimeScale")]
-	public ref float TimeScale => ref Schema.GetRef<float>(this.Handle, "CBaseEntity", "m_flTimeScale");
+	public ref float TimeScale => ref __m_flTimeScale.GetRef(this.Handle);
 
 	// m_flWaterLevel
+	private static readonly SchemaField<float> __m_flWaterLevel = new("CBaseEntity", "m_flWaterLevel");
 	[SchemaMember("CBaseEntity", "m_flWaterLevel")]
-	public ref float WaterLevel => ref Schema.GetRef<float>(this.Handle, "CBaseEntity", "m_flWaterLevel");
+	public ref float WaterLevel => ref __m_flWaterLevel.GetRef(this.Handle);
 
 	// m_bGravityDisabled
+	private static readonly SchemaField<bool> __m_bGravityDisabled = new("CBaseEntity", "m_bGravityDisabled");
 	[SchemaMember("CBaseEntity", "m_bGravityDisabled")]
-	public ref bool GravityDisabled => ref Schema.GetRef<bool>(this.Handle, "CBaseEntity", "m_bGravityDisabled");
+	public ref bool GravityDisabled => ref __m_bGravityDisabled.GetRef(this.Handle);
 
 	// m_bAnimatedEveryTick
+	private static readonly SchemaField<bool> __m_bAnimatedEveryTick = new("CBaseEntity", "m_bAnimatedEveryTick");
 	[SchemaMember("CBaseEntity", "m_bAnimatedEveryTick")]
-	public ref bool AnimatedEveryTick => ref Schema.GetRef<bool>(this.Handle, "CBaseEntity", "m_bAnimatedEveryTick");
+	public ref bool AnimatedEveryTick => ref __m_bAnimatedEveryTick.GetRef(this.Handle);
 
 	// m_flActualGravityScale
+	private static readonly SchemaField<float> __m_flActualGravityScale = new("CBaseEntity", "m_flActualGravityScale");
 	[SchemaMember("CBaseEntity", "m_flActualGravityScale")]
-	public ref float ActualGravityScale => ref Schema.GetRef<float>(this.Handle, "CBaseEntity", "m_flActualGravityScale");
+	public ref float ActualGravityScale => ref __m_flActualGravityScale.GetRef(this.Handle);
 
 	// m_bGravityActuallyDisabled
+	private static readonly SchemaField<bool> __m_bGravityActuallyDisabled = new("CBaseEntity", "m_bGravityActuallyDisabled");
 	[SchemaMember("CBaseEntity", "m_bGravityActuallyDisabled")]
-	public ref bool GravityActuallyDisabled => ref Schema.GetRef<bool>(this.Handle, "CBaseEntity", "m_bGravityActuallyDisabled");
+	public ref bool GravityActuallyDisabled => ref __m_bGravityActuallyDisabled.GetRef(this.Handle);
 
 	// m_bDisableLowViolence
+	private static readonly SchemaField<bool> __m_bDisableLowViolence = new("CBaseEntity", "m_bDisableLowViolence");
 	[SchemaMember("CBaseEntity", "m_bDisableLowViolence")]
-	public ref bool DisableLowViolence => ref Schema.GetRef<bool>(this.Handle, "CBaseEntity", "m_bDisableLowViolence");
+	public ref bool DisableLowViolence => ref __m_bDisableLowViolence.GetRef(this.Handle);
 
 	// m_nWaterType
+	private static readonly SchemaField<byte> __m_nWaterType = new("CBaseEntity", "m_nWaterType");
 	[SchemaMember("CBaseEntity", "m_nWaterType")]
-	public ref byte WaterType => ref Schema.GetRef<byte>(this.Handle, "CBaseEntity", "m_nWaterType");
+	public ref byte WaterType => ref __m_nWaterType.GetRef(this.Handle);
 
 	// m_iEFlags
+	private static readonly SchemaField<Int32> __m_iEFlags = new("CBaseEntity", "m_iEFlags");
 	[SchemaMember("CBaseEntity", "m_iEFlags")]
-	public ref Int32 EFlags => ref Schema.GetRef<Int32>(this.Handle, "CBaseEntity", "m_iEFlags");
+	public ref Int32 EFlags => ref __m_iEFlags.GetRef(this.Handle);
 
 	// m_OnUser1
 	[SchemaMember("CBaseEntity", "m_OnUser1")]
@@ -319,40 +364,47 @@ public partial class CBaseEntity : CEntityInstance
 	public CEntityIOOutput OnUser4 => Schema.GetDeclaredClass<CEntityIOOutput>(this.Handle, "CBaseEntity", "m_OnUser4");
 
 	// m_iInitialTeamNum
+	private static readonly SchemaField<Int32> __m_iInitialTeamNum = new("CBaseEntity", "m_iInitialTeamNum");
 	[SchemaMember("CBaseEntity", "m_iInitialTeamNum")]
-	public ref Int32 InitialTeamNum => ref Schema.GetRef<Int32>(this.Handle, "CBaseEntity", "m_iInitialTeamNum");
+	public ref Int32 InitialTeamNum => ref __m_iInitialTeamNum.GetRef(this.Handle);
 
 	// m_flNavIgnoreUntilTime
+	private static readonly SchemaField<float> __m_flNavIgnoreUntilTime = new("CBaseEntity", "m_flNavIgnoreUntilTime");
 	[SchemaMember("CBaseEntity", "m_flNavIgnoreUntilTime")]
-	public ref float NavIgnoreUntilTime => ref Schema.GetRef<float>(this.Handle, "CBaseEntity", "m_flNavIgnoreUntilTime");
+	public ref float NavIgnoreUntilTime => ref __m_flNavIgnoreUntilTime.GetRef(this.Handle);
 
 	// m_vecAngVelocity
 	[SchemaMember("CBaseEntity", "m_vecAngVelocity")]
 	public QAngle AngVelocity => Schema.GetDeclaredClass<QAngle>(this.Handle, "CBaseEntity", "m_vecAngVelocity");
 
 	// m_bNetworkQuantizeOriginAndAngles
+	private static readonly SchemaField<bool> __m_bNetworkQuantizeOriginAndAngles = new("CBaseEntity", "m_bNetworkQuantizeOriginAndAngles");
 	[SchemaMember("CBaseEntity", "m_bNetworkQuantizeOriginAndAngles")]
-	public ref bool NetworkQuantizeOriginAndAngles => ref Schema.GetRef<bool>(this.Handle, "CBaseEntity", "m_bNetworkQuantizeOriginAndAngles");
+	public ref bool NetworkQuantizeOriginAndAngles => ref __m_bNetworkQuantizeOriginAndAngles.GetRef(this.Handle);
 
 	// m_bLagCompensate
+	private static readonly SchemaField<bool> __m_bLagCompensate = new("CBaseEntity", "m_bLagCompensate");
 	[SchemaMember("CBaseEntity", "m_bLagCompensate")]
-	public ref bool LagCompensate => ref Schema.GetRef<bool>(this.Handle, "CBaseEntity", "m_bLagCompensate");
+	public ref bool LagCompensate => ref __m_bLagCompensate.GetRef(this.Handle);
 
 	// m_pBlocker
 	[SchemaMember("CBaseEntity", "m_pBlocker")]
 	public CHandle<CBaseEntity> Blocker => Schema.GetDeclaredClass<CHandle<CBaseEntity>>(this.Handle, "CBaseEntity", "m_pBlocker");
 
 	// m_flLocalTime
+	private static readonly SchemaField<float> __m_flLocalTime = new("CBaseEntity", "m_flLocalTime");
 	[SchemaMember("CBaseEntity", "m_flLocalTime")]
-	public ref float LocalTime => ref Schema.GetRef<float>(this.Handle, "CBaseEntity", "m_flLocalTime");
+	public ref float LocalTime => ref __m_flLocalTime.GetRef(this.Handle);
 
 	// m_flVPhysicsUpdateLocalTime
+	private static readonly SchemaField<float> __m_flVPhysicsUpdateLocalTime = new("CBaseEntity", "m_flVPhysicsUpdateLocalTime");
 	[SchemaMember("CBaseEntity", "m_flVPhysicsUpdateLocalTime")]
-	public ref float VPhysicsUpdateLocalTime => ref Schema.GetRef<float>(this.Handle, "CBaseEntity", "m_flVPhysicsUpdateLocalTime");
+	public ref float VPhysicsUpdateLocalTime => ref __m_flVPhysicsUpdateLocalTime.GetRef(this.Handle);
 
 	// m_nBloodType
+	private static readonly SchemaField<BloodType> __m_nBloodType = new("CBaseEntity", "m_nBloodType");
 	[SchemaMember("CBaseEntity", "m_nBloodType")]
-	public ref BloodType BloodType => ref Schema.GetRef<BloodType>(this.Handle, "CBaseEntity", "m_nBloodType");
+	public ref BloodType BloodType => ref __m_nBloodType.GetRef(this.Handle);
 
 	// m_pPulseGraphInstance
 	[SchemaMember("CBaseEntity", "m_pPulseGraphInstance")]

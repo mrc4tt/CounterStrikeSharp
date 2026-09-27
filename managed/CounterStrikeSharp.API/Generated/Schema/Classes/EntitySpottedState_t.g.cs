@@ -19,8 +19,9 @@ public partial class EntitySpottedState_t : NativeObject
     public EntitySpottedState_t (IntPtr pointer) : base(pointer) {}
 
 	// m_bSpotted
+	private static readonly SchemaField<bool> __m_bSpotted = new("EntitySpottedState_t", "m_bSpotted");
 	[SchemaMember("EntitySpottedState_t", "m_bSpotted")]
-	public ref bool Spotted => ref Schema.GetRef<bool>(this.Handle, "EntitySpottedState_t", "m_bSpotted");
+	public ref bool Spotted => ref __m_bSpotted.GetRef(this.Handle);
 
 	// m_bSpottedByMask
 	[SchemaMember("EntitySpottedState_t", "m_bSpottedByMask")]

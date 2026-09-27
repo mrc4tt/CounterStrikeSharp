@@ -35,7 +35,8 @@ public partial class CPlayer_WeaponServices : CPlayerPawnComponent
 	public Span<UInt16> Ammo => Schema.GetFixedArray<UInt16>(this.Handle, "CPlayer_WeaponServices", "m_iAmmo", 32);
 
 	// m_bPreventWeaponPickup
+	private static readonly SchemaField<bool> __m_bPreventWeaponPickup = new("CPlayer_WeaponServices", "m_bPreventWeaponPickup");
 	[SchemaMember("CPlayer_WeaponServices", "m_bPreventWeaponPickup")]
-	public ref bool PreventWeaponPickup => ref Schema.GetRef<bool>(this.Handle, "CPlayer_WeaponServices", "m_bPreventWeaponPickup");
+	public ref bool PreventWeaponPickup => ref __m_bPreventWeaponPickup.GetRef(this.Handle);
 
 }

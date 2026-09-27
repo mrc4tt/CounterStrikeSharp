@@ -19,28 +19,34 @@ public partial class CBasePlayerWeapon : CEconEntity
     public CBasePlayerWeapon (IntPtr pointer) : base(pointer) {}
 
 	// m_nNextPrimaryAttackTick
+	private static readonly SchemaField<Int32> __m_nNextPrimaryAttackTick = new("CBasePlayerWeapon", "m_nNextPrimaryAttackTick");
 	[SchemaMember("CBasePlayerWeapon", "m_nNextPrimaryAttackTick")]
-	public ref Int32 NextPrimaryAttackTick => ref Schema.GetRef<Int32>(this.Handle, "CBasePlayerWeapon", "m_nNextPrimaryAttackTick");
+	public ref Int32 NextPrimaryAttackTick => ref __m_nNextPrimaryAttackTick.GetRef(this.Handle);
 
 	// m_flNextPrimaryAttackTickRatio
+	private static readonly SchemaField<float> __m_flNextPrimaryAttackTickRatio = new("CBasePlayerWeapon", "m_flNextPrimaryAttackTickRatio");
 	[SchemaMember("CBasePlayerWeapon", "m_flNextPrimaryAttackTickRatio")]
-	public ref float NextPrimaryAttackTickRatio => ref Schema.GetRef<float>(this.Handle, "CBasePlayerWeapon", "m_flNextPrimaryAttackTickRatio");
+	public ref float NextPrimaryAttackTickRatio => ref __m_flNextPrimaryAttackTickRatio.GetRef(this.Handle);
 
 	// m_nNextSecondaryAttackTick
+	private static readonly SchemaField<Int32> __m_nNextSecondaryAttackTick = new("CBasePlayerWeapon", "m_nNextSecondaryAttackTick");
 	[SchemaMember("CBasePlayerWeapon", "m_nNextSecondaryAttackTick")]
-	public ref Int32 NextSecondaryAttackTick => ref Schema.GetRef<Int32>(this.Handle, "CBasePlayerWeapon", "m_nNextSecondaryAttackTick");
+	public ref Int32 NextSecondaryAttackTick => ref __m_nNextSecondaryAttackTick.GetRef(this.Handle);
 
 	// m_flNextSecondaryAttackTickRatio
+	private static readonly SchemaField<float> __m_flNextSecondaryAttackTickRatio = new("CBasePlayerWeapon", "m_flNextSecondaryAttackTickRatio");
 	[SchemaMember("CBasePlayerWeapon", "m_flNextSecondaryAttackTickRatio")]
-	public ref float NextSecondaryAttackTickRatio => ref Schema.GetRef<float>(this.Handle, "CBasePlayerWeapon", "m_flNextSecondaryAttackTickRatio");
+	public ref float NextSecondaryAttackTickRatio => ref __m_flNextSecondaryAttackTickRatio.GetRef(this.Handle);
 
 	// m_iClip1
+	private static readonly SchemaField<Int32> __m_iClip1 = new("CBasePlayerWeapon", "m_iClip1");
 	[SchemaMember("CBasePlayerWeapon", "m_iClip1")]
-	public ref Int32 Clip1 => ref Schema.GetRef<Int32>(this.Handle, "CBasePlayerWeapon", "m_iClip1");
+	public ref Int32 Clip1 => ref __m_iClip1.GetRef(this.Handle);
 
 	// m_iClip2
+	private static readonly SchemaField<Int32> __m_iClip2 = new("CBasePlayerWeapon", "m_iClip2");
 	[SchemaMember("CBasePlayerWeapon", "m_iClip2")]
-	public ref Int32 Clip2 => ref Schema.GetRef<Int32>(this.Handle, "CBasePlayerWeapon", "m_iClip2");
+	public ref Int32 Clip2 => ref __m_iClip2.GetRef(this.Handle);
 
 	// m_pReserveAmmo
 	[SchemaMember("CBasePlayerWeapon", "m_pReserveAmmo")]

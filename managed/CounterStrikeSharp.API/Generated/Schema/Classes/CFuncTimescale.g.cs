@@ -19,23 +19,28 @@ public partial class CFuncTimescale : CBaseEntity
     public CFuncTimescale (IntPtr pointer) : base(pointer) {}
 
 	// m_flDesiredTimescale
+	private static readonly SchemaField<float> __m_flDesiredTimescale = new("CFuncTimescale", "m_flDesiredTimescale");
 	[SchemaMember("CFuncTimescale", "m_flDesiredTimescale")]
-	public ref float DesiredTimescale => ref Schema.GetRef<float>(this.Handle, "CFuncTimescale", "m_flDesiredTimescale");
+	public ref float DesiredTimescale => ref __m_flDesiredTimescale.GetRef(this.Handle);
 
 	// m_flAcceleration
+	private static readonly SchemaField<float> __m_flAcceleration = new("CFuncTimescale", "m_flAcceleration");
 	[SchemaMember("CFuncTimescale", "m_flAcceleration")]
-	public ref float Acceleration => ref Schema.GetRef<float>(this.Handle, "CFuncTimescale", "m_flAcceleration");
+	public ref float Acceleration => ref __m_flAcceleration.GetRef(this.Handle);
 
 	// m_flMinBlendRate
+	private static readonly SchemaField<float> __m_flMinBlendRate = new("CFuncTimescale", "m_flMinBlendRate");
 	[SchemaMember("CFuncTimescale", "m_flMinBlendRate")]
-	public ref float MinBlendRate => ref Schema.GetRef<float>(this.Handle, "CFuncTimescale", "m_flMinBlendRate");
+	public ref float MinBlendRate => ref __m_flMinBlendRate.GetRef(this.Handle);
 
 	// m_flBlendDeltaMultiplier
+	private static readonly SchemaField<float> __m_flBlendDeltaMultiplier = new("CFuncTimescale", "m_flBlendDeltaMultiplier");
 	[SchemaMember("CFuncTimescale", "m_flBlendDeltaMultiplier")]
-	public ref float BlendDeltaMultiplier => ref Schema.GetRef<float>(this.Handle, "CFuncTimescale", "m_flBlendDeltaMultiplier");
+	public ref float BlendDeltaMultiplier => ref __m_flBlendDeltaMultiplier.GetRef(this.Handle);
 
 	// m_isStarted
+	private static readonly SchemaField<bool> __m_isStarted = new("CFuncTimescale", "m_isStarted");
 	[SchemaMember("CFuncTimescale", "m_isStarted")]
-	public ref bool IsStarted => ref Schema.GetRef<bool>(this.Handle, "CFuncTimescale", "m_isStarted");
+	public ref bool IsStarted => ref __m_isStarted.GetRef(this.Handle);
 
 }

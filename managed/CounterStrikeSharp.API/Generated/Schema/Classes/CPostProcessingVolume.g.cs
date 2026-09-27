@@ -23,47 +23,58 @@ public partial class CPostProcessingVolume : CBaseTrigger
 	public CStrongHandle<InfoForResourceTypeCPostProcessingResource> PostSettings => Schema.GetDeclaredClass<CStrongHandle<InfoForResourceTypeCPostProcessingResource>>(this.Handle, "CPostProcessingVolume", "m_hPostSettings");
 
 	// m_flFadeDuration
+	private static readonly SchemaField<float> __m_flFadeDuration = new("CPostProcessingVolume", "m_flFadeDuration");
 	[SchemaMember("CPostProcessingVolume", "m_flFadeDuration")]
-	public ref float FadeDuration => ref Schema.GetRef<float>(this.Handle, "CPostProcessingVolume", "m_flFadeDuration");
+	public ref float FadeDuration => ref __m_flFadeDuration.GetRef(this.Handle);
 
 	// m_flMinLogExposure
+	private static readonly SchemaField<float> __m_flMinLogExposure = new("CPostProcessingVolume", "m_flMinLogExposure");
 	[SchemaMember("CPostProcessingVolume", "m_flMinLogExposure")]
-	public ref float MinLogExposure => ref Schema.GetRef<float>(this.Handle, "CPostProcessingVolume", "m_flMinLogExposure");
+	public ref float MinLogExposure => ref __m_flMinLogExposure.GetRef(this.Handle);
 
 	// m_flMaxLogExposure
+	private static readonly SchemaField<float> __m_flMaxLogExposure = new("CPostProcessingVolume", "m_flMaxLogExposure");
 	[SchemaMember("CPostProcessingVolume", "m_flMaxLogExposure")]
-	public ref float MaxLogExposure => ref Schema.GetRef<float>(this.Handle, "CPostProcessingVolume", "m_flMaxLogExposure");
+	public ref float MaxLogExposure => ref __m_flMaxLogExposure.GetRef(this.Handle);
 
 	// m_flMinExposure
+	private static readonly SchemaField<float> __m_flMinExposure = new("CPostProcessingVolume", "m_flMinExposure");
 	[SchemaMember("CPostProcessingVolume", "m_flMinExposure")]
-	public ref float MinExposure => ref Schema.GetRef<float>(this.Handle, "CPostProcessingVolume", "m_flMinExposure");
+	public ref float MinExposure => ref __m_flMinExposure.GetRef(this.Handle);
 
 	// m_flMaxExposure
+	private static readonly SchemaField<float> __m_flMaxExposure = new("CPostProcessingVolume", "m_flMaxExposure");
 	[SchemaMember("CPostProcessingVolume", "m_flMaxExposure")]
-	public ref float MaxExposure => ref Schema.GetRef<float>(this.Handle, "CPostProcessingVolume", "m_flMaxExposure");
+	public ref float MaxExposure => ref __m_flMaxExposure.GetRef(this.Handle);
 
 	// m_flExposureCompensation
+	private static readonly SchemaField<float> __m_flExposureCompensation = new("CPostProcessingVolume", "m_flExposureCompensation");
 	[SchemaMember("CPostProcessingVolume", "m_flExposureCompensation")]
-	public ref float ExposureCompensation => ref Schema.GetRef<float>(this.Handle, "CPostProcessingVolume", "m_flExposureCompensation");
+	public ref float ExposureCompensation => ref __m_flExposureCompensation.GetRef(this.Handle);
 
 	// m_flExposureFadeSpeedUp
+	private static readonly SchemaField<float> __m_flExposureFadeSpeedUp = new("CPostProcessingVolume", "m_flExposureFadeSpeedUp");
 	[SchemaMember("CPostProcessingVolume", "m_flExposureFadeSpeedUp")]
-	public ref float ExposureFadeSpeedUp => ref Schema.GetRef<float>(this.Handle, "CPostProcessingVolume", "m_flExposureFadeSpeedUp");
+	public ref float ExposureFadeSpeedUp => ref __m_flExposureFadeSpeedUp.GetRef(this.Handle);
 
 	// m_flExposureFadeSpeedDown
+	private static readonly SchemaField<float> __m_flExposureFadeSpeedDown = new("CPostProcessingVolume", "m_flExposureFadeSpeedDown");
 	[SchemaMember("CPostProcessingVolume", "m_flExposureFadeSpeedDown")]
-	public ref float ExposureFadeSpeedDown => ref Schema.GetRef<float>(this.Handle, "CPostProcessingVolume", "m_flExposureFadeSpeedDown");
+	public ref float ExposureFadeSpeedDown => ref __m_flExposureFadeSpeedDown.GetRef(this.Handle);
 
 	// m_flTonemapEVSmoothingRange
+	private static readonly SchemaField<float> __m_flTonemapEVSmoothingRange = new("CPostProcessingVolume", "m_flTonemapEVSmoothingRange");
 	[SchemaMember("CPostProcessingVolume", "m_flTonemapEVSmoothingRange")]
-	public ref float TonemapEVSmoothingRange => ref Schema.GetRef<float>(this.Handle, "CPostProcessingVolume", "m_flTonemapEVSmoothingRange");
+	public ref float TonemapEVSmoothingRange => ref __m_flTonemapEVSmoothingRange.GetRef(this.Handle);
 
 	// m_bMaster
+	private static readonly SchemaField<bool> __m_bMaster = new("CPostProcessingVolume", "m_bMaster");
 	[SchemaMember("CPostProcessingVolume", "m_bMaster")]
-	public new ref bool Master => ref Schema.GetRef<bool>(this.Handle, "CPostProcessingVolume", "m_bMaster");
+	public new ref bool Master => ref __m_bMaster.GetRef(this.Handle);
 
 	// m_bExposureControl
+	private static readonly SchemaField<bool> __m_bExposureControl = new("CPostProcessingVolume", "m_bExposureControl");
 	[SchemaMember("CPostProcessingVolume", "m_bExposureControl")]
-	public ref bool ExposureControl => ref Schema.GetRef<bool>(this.Handle, "CPostProcessingVolume", "m_bExposureControl");
+	public ref bool ExposureControl => ref __m_bExposureControl.GetRef(this.Handle);
 
 }

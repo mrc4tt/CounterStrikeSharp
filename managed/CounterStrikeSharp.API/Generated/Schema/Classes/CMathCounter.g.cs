@@ -19,24 +19,29 @@ public partial class CMathCounter : CLogicalEntity
     public CMathCounter (IntPtr pointer) : base(pointer) {}
 
 	// m_flMin
+	private static readonly SchemaField<float> __m_flMin = new("CMathCounter", "m_flMin");
 	[SchemaMember("CMathCounter", "m_flMin")]
-	public ref float Min => ref Schema.GetRef<float>(this.Handle, "CMathCounter", "m_flMin");
+	public ref float Min => ref __m_flMin.GetRef(this.Handle);
 
 	// m_flMax
+	private static readonly SchemaField<float> __m_flMax = new("CMathCounter", "m_flMax");
 	[SchemaMember("CMathCounter", "m_flMax")]
-	public ref float Max => ref Schema.GetRef<float>(this.Handle, "CMathCounter", "m_flMax");
+	public ref float Max => ref __m_flMax.GetRef(this.Handle);
 
 	// m_bHitMin
+	private static readonly SchemaField<bool> __m_bHitMin = new("CMathCounter", "m_bHitMin");
 	[SchemaMember("CMathCounter", "m_bHitMin")]
-	public ref bool HitMin => ref Schema.GetRef<bool>(this.Handle, "CMathCounter", "m_bHitMin");
+	public ref bool HitMin => ref __m_bHitMin.GetRef(this.Handle);
 
 	// m_bHitMax
+	private static readonly SchemaField<bool> __m_bHitMax = new("CMathCounter", "m_bHitMax");
 	[SchemaMember("CMathCounter", "m_bHitMax")]
-	public ref bool HitMax => ref Schema.GetRef<bool>(this.Handle, "CMathCounter", "m_bHitMax");
+	public ref bool HitMax => ref __m_bHitMax.GetRef(this.Handle);
 
 	// m_bDisabled
+	private static readonly SchemaField<bool> __m_bDisabled = new("CMathCounter", "m_bDisabled");
 	[SchemaMember("CMathCounter", "m_bDisabled")]
-	public ref bool Disabled => ref Schema.GetRef<bool>(this.Handle, "CMathCounter", "m_bDisabled");
+	public ref bool Disabled => ref __m_bDisabled.GetRef(this.Handle);
 
 	// m_OnHitMin
 	[SchemaMember("CMathCounter", "m_OnHitMin")]

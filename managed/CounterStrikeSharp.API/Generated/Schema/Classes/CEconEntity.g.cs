@@ -23,35 +23,42 @@ public partial class CEconEntity : CBaseAnimGraph
 	public CAttributeContainer AttributeManager => Schema.GetDeclaredClass<CAttributeContainer>(this.Handle, "CEconEntity", "m_AttributeManager");
 
 	// m_OriginalOwnerXuidLow
+	private static readonly SchemaField<UInt32> __m_OriginalOwnerXuidLow = new("CEconEntity", "m_OriginalOwnerXuidLow");
 	[SchemaMember("CEconEntity", "m_OriginalOwnerXuidLow")]
-	public ref UInt32 OriginalOwnerXuidLow => ref Schema.GetRef<UInt32>(this.Handle, "CEconEntity", "m_OriginalOwnerXuidLow");
+	public ref UInt32 OriginalOwnerXuidLow => ref __m_OriginalOwnerXuidLow.GetRef(this.Handle);
 
 	// m_OriginalOwnerXuidHigh
+	private static readonly SchemaField<UInt32> __m_OriginalOwnerXuidHigh = new("CEconEntity", "m_OriginalOwnerXuidHigh");
 	[SchemaMember("CEconEntity", "m_OriginalOwnerXuidHigh")]
-	public ref UInt32 OriginalOwnerXuidHigh => ref Schema.GetRef<UInt32>(this.Handle, "CEconEntity", "m_OriginalOwnerXuidHigh");
+	public ref UInt32 OriginalOwnerXuidHigh => ref __m_OriginalOwnerXuidHigh.GetRef(this.Handle);
 
 	// m_nFallbackPaintKit
+	private static readonly SchemaField<Int32> __m_nFallbackPaintKit = new("CEconEntity", "m_nFallbackPaintKit");
 	[SchemaMember("CEconEntity", "m_nFallbackPaintKit")]
-	public ref Int32 FallbackPaintKit => ref Schema.GetRef<Int32>(this.Handle, "CEconEntity", "m_nFallbackPaintKit");
+	public ref Int32 FallbackPaintKit => ref __m_nFallbackPaintKit.GetRef(this.Handle);
 
 	// m_nFallbackSeed
+	private static readonly SchemaField<Int32> __m_nFallbackSeed = new("CEconEntity", "m_nFallbackSeed");
 	[SchemaMember("CEconEntity", "m_nFallbackSeed")]
-	public ref Int32 FallbackSeed => ref Schema.GetRef<Int32>(this.Handle, "CEconEntity", "m_nFallbackSeed");
+	public ref Int32 FallbackSeed => ref __m_nFallbackSeed.GetRef(this.Handle);
 
 	// m_flFallbackWear
+	private static readonly SchemaField<float> __m_flFallbackWear = new("CEconEntity", "m_flFallbackWear");
 	[SchemaMember("CEconEntity", "m_flFallbackWear")]
-	public ref float FallbackWear => ref Schema.GetRef<float>(this.Handle, "CEconEntity", "m_flFallbackWear");
+	public ref float FallbackWear => ref __m_flFallbackWear.GetRef(this.Handle);
 
 	// m_nFallbackStatTrak
+	private static readonly SchemaField<Int32> __m_nFallbackStatTrak = new("CEconEntity", "m_nFallbackStatTrak");
 	[SchemaMember("CEconEntity", "m_nFallbackStatTrak")]
-	public ref Int32 FallbackStatTrak => ref Schema.GetRef<Int32>(this.Handle, "CEconEntity", "m_nFallbackStatTrak");
+	public ref Int32 FallbackStatTrak => ref __m_nFallbackStatTrak.GetRef(this.Handle);
 
 	// m_hOldProvidee
 	[SchemaMember("CEconEntity", "m_hOldProvidee")]
 	public CHandle<CBaseEntity> OldProvidee => Schema.GetDeclaredClass<CHandle<CBaseEntity>>(this.Handle, "CEconEntity", "m_hOldProvidee");
 
 	// m_iOldOwnerClass
+	private static readonly SchemaField<Int32> __m_iOldOwnerClass = new("CEconEntity", "m_iOldOwnerClass");
 	[SchemaMember("CEconEntity", "m_iOldOwnerClass")]
-	public ref Int32 OldOwnerClass => ref Schema.GetRef<Int32>(this.Handle, "CEconEntity", "m_iOldOwnerClass");
+	public ref Int32 OldOwnerClass => ref __m_iOldOwnerClass.GetRef(this.Handle);
 
 }

@@ -19,7 +19,8 @@ public partial class CRectLight : CBarnLight
     public CRectLight (IntPtr pointer) : base(pointer) {}
 
 	// m_bShowLight
+	private static readonly SchemaField<bool> __m_bShowLight = new("CRectLight", "m_bShowLight");
 	[SchemaMember("CRectLight", "m_bShowLight")]
-	public ref bool ShowLight => ref Schema.GetRef<bool>(this.Handle, "CRectLight", "m_bShowLight");
+	public ref bool ShowLight => ref __m_bShowLight.GetRef(this.Handle);
 
 }

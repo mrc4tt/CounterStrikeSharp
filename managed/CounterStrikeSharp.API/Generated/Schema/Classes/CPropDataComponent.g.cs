@@ -19,20 +19,24 @@ public partial class CPropDataComponent : CEntityComponent
     public CPropDataComponent (IntPtr pointer) : base(pointer) {}
 
 	// m_flDmgModBullet
+	private static readonly SchemaField<float> __m_flDmgModBullet = new("CPropDataComponent", "m_flDmgModBullet");
 	[SchemaMember("CPropDataComponent", "m_flDmgModBullet")]
-	public ref float DmgModBullet => ref Schema.GetRef<float>(this.Handle, "CPropDataComponent", "m_flDmgModBullet");
+	public ref float DmgModBullet => ref __m_flDmgModBullet.GetRef(this.Handle);
 
 	// m_flDmgModClub
+	private static readonly SchemaField<float> __m_flDmgModClub = new("CPropDataComponent", "m_flDmgModClub");
 	[SchemaMember("CPropDataComponent", "m_flDmgModClub")]
-	public ref float DmgModClub => ref Schema.GetRef<float>(this.Handle, "CPropDataComponent", "m_flDmgModClub");
+	public ref float DmgModClub => ref __m_flDmgModClub.GetRef(this.Handle);
 
 	// m_flDmgModExplosive
+	private static readonly SchemaField<float> __m_flDmgModExplosive = new("CPropDataComponent", "m_flDmgModExplosive");
 	[SchemaMember("CPropDataComponent", "m_flDmgModExplosive")]
-	public ref float DmgModExplosive => ref Schema.GetRef<float>(this.Handle, "CPropDataComponent", "m_flDmgModExplosive");
+	public ref float DmgModExplosive => ref __m_flDmgModExplosive.GetRef(this.Handle);
 
 	// m_flDmgModFire
+	private static readonly SchemaField<float> __m_flDmgModFire = new("CPropDataComponent", "m_flDmgModFire");
 	[SchemaMember("CPropDataComponent", "m_flDmgModFire")]
-	public ref float DmgModFire => ref Schema.GetRef<float>(this.Handle, "CPropDataComponent", "m_flDmgModFire");
+	public ref float DmgModFire => ref __m_flDmgModFire.GetRef(this.Handle);
 
 	// m_iszPhysicsDamageTableName
 	[SchemaMember("CPropDataComponent", "m_iszPhysicsDamageTableName")]
@@ -51,19 +55,23 @@ public partial class CPropDataComponent : CEntityComponent
 	}
 
 	// m_nInteractions
+	private static readonly SchemaField<Int32> __m_nInteractions = new("CPropDataComponent", "m_nInteractions");
 	[SchemaMember("CPropDataComponent", "m_nInteractions")]
-	public ref Int32 Interactions => ref Schema.GetRef<Int32>(this.Handle, "CPropDataComponent", "m_nInteractions");
+	public ref Int32 Interactions => ref __m_nInteractions.GetRef(this.Handle);
 
 	// m_bSpawnMotionDisabled
+	private static readonly SchemaField<bool> __m_bSpawnMotionDisabled = new("CPropDataComponent", "m_bSpawnMotionDisabled");
 	[SchemaMember("CPropDataComponent", "m_bSpawnMotionDisabled")]
-	public ref bool SpawnMotionDisabled => ref Schema.GetRef<bool>(this.Handle, "CPropDataComponent", "m_bSpawnMotionDisabled");
+	public ref bool SpawnMotionDisabled => ref __m_bSpawnMotionDisabled.GetRef(this.Handle);
 
 	// m_nDisableTakePhysicsDamageSpawnFlag
+	private static readonly SchemaField<Int32> __m_nDisableTakePhysicsDamageSpawnFlag = new("CPropDataComponent", "m_nDisableTakePhysicsDamageSpawnFlag");
 	[SchemaMember("CPropDataComponent", "m_nDisableTakePhysicsDamageSpawnFlag")]
-	public ref Int32 DisableTakePhysicsDamageSpawnFlag => ref Schema.GetRef<Int32>(this.Handle, "CPropDataComponent", "m_nDisableTakePhysicsDamageSpawnFlag");
+	public ref Int32 DisableTakePhysicsDamageSpawnFlag => ref __m_nDisableTakePhysicsDamageSpawnFlag.GetRef(this.Handle);
 
 	// m_nMotionDisabledSpawnFlag
+	private static readonly SchemaField<Int32> __m_nMotionDisabledSpawnFlag = new("CPropDataComponent", "m_nMotionDisabledSpawnFlag");
 	[SchemaMember("CPropDataComponent", "m_nMotionDisabledSpawnFlag")]
-	public ref Int32 MotionDisabledSpawnFlag => ref Schema.GetRef<Int32>(this.Handle, "CPropDataComponent", "m_nMotionDisabledSpawnFlag");
+	public ref Int32 MotionDisabledSpawnFlag => ref __m_nMotionDisabledSpawnFlag.GetRef(this.Handle);
 
 }

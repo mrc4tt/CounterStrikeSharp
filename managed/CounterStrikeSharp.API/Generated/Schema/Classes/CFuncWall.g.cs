@@ -19,7 +19,8 @@ public partial class CFuncWall : CBaseModelEntity
     public CFuncWall (IntPtr pointer) : base(pointer) {}
 
 	// m_nState
+	private static readonly SchemaField<Int32> __m_nState = new("CFuncWall", "m_nState");
 	[SchemaMember("CFuncWall", "m_nState")]
-	public ref Int32 State => ref Schema.GetRef<Int32>(this.Handle, "CFuncWall", "m_nState");
+	public ref Int32 State => ref __m_nState.GetRef(this.Handle);
 
 }

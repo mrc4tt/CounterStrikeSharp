@@ -19,20 +19,24 @@ public partial class CPlayerSprayDecal : CModelPointEntity
     public CPlayerSprayDecal (IntPtr pointer) : base(pointer) {}
 
 	// m_nUniqueID
+	private static readonly SchemaField<Int32> __m_nUniqueID = new("CPlayerSprayDecal", "m_nUniqueID");
 	[SchemaMember("CPlayerSprayDecal", "m_nUniqueID")]
-	public ref Int32 UniqueID => ref Schema.GetRef<Int32>(this.Handle, "CPlayerSprayDecal", "m_nUniqueID");
+	public ref Int32 UniqueID => ref __m_nUniqueID.GetRef(this.Handle);
 
 	// m_unAccountID
+	private static readonly SchemaField<UInt32> __m_unAccountID = new("CPlayerSprayDecal", "m_unAccountID");
 	[SchemaMember("CPlayerSprayDecal", "m_unAccountID")]
-	public ref UInt32 AccountID => ref Schema.GetRef<UInt32>(this.Handle, "CPlayerSprayDecal", "m_unAccountID");
+	public ref UInt32 AccountID => ref __m_unAccountID.GetRef(this.Handle);
 
 	// m_unTraceID
+	private static readonly SchemaField<UInt32> __m_unTraceID = new("CPlayerSprayDecal", "m_unTraceID");
 	[SchemaMember("CPlayerSprayDecal", "m_unTraceID")]
-	public ref UInt32 TraceID => ref Schema.GetRef<UInt32>(this.Handle, "CPlayerSprayDecal", "m_unTraceID");
+	public ref UInt32 TraceID => ref __m_unTraceID.GetRef(this.Handle);
 
 	// m_rtGcTime
+	private static readonly SchemaField<UInt32> __m_rtGcTime = new("CPlayerSprayDecal", "m_rtGcTime");
 	[SchemaMember("CPlayerSprayDecal", "m_rtGcTime")]
-	public ref UInt32 RtGcTime => ref Schema.GetRef<UInt32>(this.Handle, "CPlayerSprayDecal", "m_rtGcTime");
+	public ref UInt32 RtGcTime => ref __m_rtGcTime.GetRef(this.Handle);
 
 	// m_vecEndPos
 	[SchemaMember("CPlayerSprayDecal", "m_vecEndPos")]
@@ -51,28 +55,34 @@ public partial class CPlayerSprayDecal : CModelPointEntity
 	public Vector Normal => Schema.GetDeclaredClass<Vector>(this.Handle, "CPlayerSprayDecal", "m_vecNormal");
 
 	// m_nPlayer
+	private static readonly SchemaField<Int32> __m_nPlayer = new("CPlayerSprayDecal", "m_nPlayer");
 	[SchemaMember("CPlayerSprayDecal", "m_nPlayer")]
-	public ref Int32 Player => ref Schema.GetRef<Int32>(this.Handle, "CPlayerSprayDecal", "m_nPlayer");
+	public ref Int32 Player => ref __m_nPlayer.GetRef(this.Handle);
 
 	// m_nEntity
+	private static readonly SchemaField<Int32> __m_nEntity = new("CPlayerSprayDecal", "m_nEntity");
 	[SchemaMember("CPlayerSprayDecal", "m_nEntity")]
-	public ref Int32 DecalEntity => ref Schema.GetRef<Int32>(this.Handle, "CPlayerSprayDecal", "m_nEntity");
+	public ref Int32 DecalEntity => ref __m_nEntity.GetRef(this.Handle);
 
 	// m_nHitbox
+	private static readonly SchemaField<Int32> __m_nHitbox = new("CPlayerSprayDecal", "m_nHitbox");
 	[SchemaMember("CPlayerSprayDecal", "m_nHitbox")]
-	public ref Int32 Hitbox => ref Schema.GetRef<Int32>(this.Handle, "CPlayerSprayDecal", "m_nHitbox");
+	public ref Int32 Hitbox => ref __m_nHitbox.GetRef(this.Handle);
 
 	// m_flCreationTime
+	private static readonly SchemaField<float> __m_flCreationTime = new("CPlayerSprayDecal", "m_flCreationTime");
 	[SchemaMember("CPlayerSprayDecal", "m_flCreationTime")]
-	public ref float CreationTime => ref Schema.GetRef<float>(this.Handle, "CPlayerSprayDecal", "m_flCreationTime");
+	public ref float CreationTime => ref __m_flCreationTime.GetRef(this.Handle);
 
 	// m_nTintID
+	private static readonly SchemaField<Int32> __m_nTintID = new("CPlayerSprayDecal", "m_nTintID");
 	[SchemaMember("CPlayerSprayDecal", "m_nTintID")]
-	public ref Int32 TintID => ref Schema.GetRef<Int32>(this.Handle, "CPlayerSprayDecal", "m_nTintID");
+	public ref Int32 TintID => ref __m_nTintID.GetRef(this.Handle);
 
 	// m_nVersion
+	private static readonly SchemaField<byte> __m_nVersion = new("CPlayerSprayDecal", "m_nVersion");
 	[SchemaMember("CPlayerSprayDecal", "m_nVersion")]
-	public ref byte Version => ref Schema.GetRef<byte>(this.Handle, "CPlayerSprayDecal", "m_nVersion");
+	public ref byte Version => ref __m_nVersion.GetRef(this.Handle);
 
 	// m_ubSignature
 	[SchemaMember("CPlayerSprayDecal", "m_ubSignature")]

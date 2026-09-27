@@ -23,7 +23,8 @@ public partial class CPointClientUIDialog : CBaseClientUIEntity
 	public CHandle<CBaseEntity> Activator => Schema.GetDeclaredClass<CHandle<CBaseEntity>>(this.Handle, "CPointClientUIDialog", "m_hActivator");
 
 	// m_bStartEnabled
+	private static readonly SchemaField<bool> __m_bStartEnabled = new("CPointClientUIDialog", "m_bStartEnabled");
 	[SchemaMember("CPointClientUIDialog", "m_bStartEnabled")]
-	public ref bool StartEnabled => ref Schema.GetRef<bool>(this.Handle, "CPointClientUIDialog", "m_bStartEnabled");
+	public ref bool StartEnabled => ref __m_bStartEnabled.GetRef(this.Handle);
 
 }

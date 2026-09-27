@@ -19,8 +19,9 @@ public partial class CEnvVolumetricFogController : CBaseEntity
     public CEnvVolumetricFogController (IntPtr pointer) : base(pointer) {}
 
 	// m_flScattering
+	private static readonly SchemaField<float> __m_flScattering = new("CEnvVolumetricFogController", "m_flScattering");
 	[SchemaMember("CEnvVolumetricFogController", "m_flScattering")]
-	public ref float Scattering => ref Schema.GetRef<float>(this.Handle, "CEnvVolumetricFogController", "m_flScattering");
+	public ref float Scattering => ref __m_flScattering.GetRef(this.Handle);
 
 	// m_TintColor
 	[SchemaMember("CEnvVolumetricFogController", "m_TintColor")]
@@ -31,48 +32,59 @@ public partial class CEnvVolumetricFogController : CBaseEntity
 	}
 
 	// m_flAnisotropy
+	private static readonly SchemaField<float> __m_flAnisotropy = new("CEnvVolumetricFogController", "m_flAnisotropy");
 	[SchemaMember("CEnvVolumetricFogController", "m_flAnisotropy")]
-	public ref float Anisotropy => ref Schema.GetRef<float>(this.Handle, "CEnvVolumetricFogController", "m_flAnisotropy");
+	public ref float Anisotropy => ref __m_flAnisotropy.GetRef(this.Handle);
 
 	// m_flFadeSpeed
+	private static readonly SchemaField<float> __m_flFadeSpeed = new("CEnvVolumetricFogController", "m_flFadeSpeed");
 	[SchemaMember("CEnvVolumetricFogController", "m_flFadeSpeed")]
-	public ref float FadeSpeed => ref Schema.GetRef<float>(this.Handle, "CEnvVolumetricFogController", "m_flFadeSpeed");
+	public ref float FadeSpeed => ref __m_flFadeSpeed.GetRef(this.Handle);
 
 	// m_flDrawDistance
+	private static readonly SchemaField<float> __m_flDrawDistance = new("CEnvVolumetricFogController", "m_flDrawDistance");
 	[SchemaMember("CEnvVolumetricFogController", "m_flDrawDistance")]
-	public ref float DrawDistance => ref Schema.GetRef<float>(this.Handle, "CEnvVolumetricFogController", "m_flDrawDistance");
+	public ref float DrawDistance => ref __m_flDrawDistance.GetRef(this.Handle);
 
 	// m_flFadeInStart
+	private static readonly SchemaField<float> __m_flFadeInStart = new("CEnvVolumetricFogController", "m_flFadeInStart");
 	[SchemaMember("CEnvVolumetricFogController", "m_flFadeInStart")]
-	public ref float FadeInStart => ref Schema.GetRef<float>(this.Handle, "CEnvVolumetricFogController", "m_flFadeInStart");
+	public ref float FadeInStart => ref __m_flFadeInStart.GetRef(this.Handle);
 
 	// m_flFadeInEnd
+	private static readonly SchemaField<float> __m_flFadeInEnd = new("CEnvVolumetricFogController", "m_flFadeInEnd");
 	[SchemaMember("CEnvVolumetricFogController", "m_flFadeInEnd")]
-	public ref float FadeInEnd => ref Schema.GetRef<float>(this.Handle, "CEnvVolumetricFogController", "m_flFadeInEnd");
+	public ref float FadeInEnd => ref __m_flFadeInEnd.GetRef(this.Handle);
 
 	// m_flIndirectStrength
+	private static readonly SchemaField<float> __m_flIndirectStrength = new("CEnvVolumetricFogController", "m_flIndirectStrength");
 	[SchemaMember("CEnvVolumetricFogController", "m_flIndirectStrength")]
-	public ref float IndirectStrength => ref Schema.GetRef<float>(this.Handle, "CEnvVolumetricFogController", "m_flIndirectStrength");
+	public ref float IndirectStrength => ref __m_flIndirectStrength.GetRef(this.Handle);
 
 	// m_nVolumeDepth
+	private static readonly SchemaField<Int32> __m_nVolumeDepth = new("CEnvVolumetricFogController", "m_nVolumeDepth");
 	[SchemaMember("CEnvVolumetricFogController", "m_nVolumeDepth")]
-	public ref Int32 VolumeDepth => ref Schema.GetRef<Int32>(this.Handle, "CEnvVolumetricFogController", "m_nVolumeDepth");
+	public ref Int32 VolumeDepth => ref __m_nVolumeDepth.GetRef(this.Handle);
 
 	// m_fFirstVolumeSliceThickness
+	private static readonly SchemaField<float> __m_fFirstVolumeSliceThickness = new("CEnvVolumetricFogController", "m_fFirstVolumeSliceThickness");
 	[SchemaMember("CEnvVolumetricFogController", "m_fFirstVolumeSliceThickness")]
-	public ref float FirstVolumeSliceThickness => ref Schema.GetRef<float>(this.Handle, "CEnvVolumetricFogController", "m_fFirstVolumeSliceThickness");
+	public ref float FirstVolumeSliceThickness => ref __m_fFirstVolumeSliceThickness.GetRef(this.Handle);
 
 	// m_nIndirectTextureDimX
+	private static readonly SchemaField<Int32> __m_nIndirectTextureDimX = new("CEnvVolumetricFogController", "m_nIndirectTextureDimX");
 	[SchemaMember("CEnvVolumetricFogController", "m_nIndirectTextureDimX")]
-	public ref Int32 IndirectTextureDimX => ref Schema.GetRef<Int32>(this.Handle, "CEnvVolumetricFogController", "m_nIndirectTextureDimX");
+	public ref Int32 IndirectTextureDimX => ref __m_nIndirectTextureDimX.GetRef(this.Handle);
 
 	// m_nIndirectTextureDimY
+	private static readonly SchemaField<Int32> __m_nIndirectTextureDimY = new("CEnvVolumetricFogController", "m_nIndirectTextureDimY");
 	[SchemaMember("CEnvVolumetricFogController", "m_nIndirectTextureDimY")]
-	public ref Int32 IndirectTextureDimY => ref Schema.GetRef<Int32>(this.Handle, "CEnvVolumetricFogController", "m_nIndirectTextureDimY");
+	public ref Int32 IndirectTextureDimY => ref __m_nIndirectTextureDimY.GetRef(this.Handle);
 
 	// m_nIndirectTextureDimZ
+	private static readonly SchemaField<Int32> __m_nIndirectTextureDimZ = new("CEnvVolumetricFogController", "m_nIndirectTextureDimZ");
 	[SchemaMember("CEnvVolumetricFogController", "m_nIndirectTextureDimZ")]
-	public ref Int32 IndirectTextureDimZ => ref Schema.GetRef<Int32>(this.Handle, "CEnvVolumetricFogController", "m_nIndirectTextureDimZ");
+	public ref Int32 IndirectTextureDimZ => ref __m_nIndirectTextureDimZ.GetRef(this.Handle);
 
 	// m_vBoxMins
 	[SchemaMember("CEnvVolumetricFogController", "m_vBoxMins")]
@@ -83,87 +95,105 @@ public partial class CEnvVolumetricFogController : CBaseEntity
 	public Vector BoxMaxs => Schema.GetDeclaredClass<Vector>(this.Handle, "CEnvVolumetricFogController", "m_vBoxMaxs");
 
 	// m_bActive
+	private static readonly SchemaField<bool> __m_bActive = new("CEnvVolumetricFogController", "m_bActive");
 	[SchemaMember("CEnvVolumetricFogController", "m_bActive")]
-	public ref bool Active => ref Schema.GetRef<bool>(this.Handle, "CEnvVolumetricFogController", "m_bActive");
+	public ref bool Active => ref __m_bActive.GetRef(this.Handle);
 
 	// m_flStartAnisoTime
+	private static readonly SchemaField<float> __m_flStartAnisoTime = new("CEnvVolumetricFogController", "m_flStartAnisoTime");
 	[SchemaMember("CEnvVolumetricFogController", "m_flStartAnisoTime")]
-	public ref float StartAnisoTime => ref Schema.GetRef<float>(this.Handle, "CEnvVolumetricFogController", "m_flStartAnisoTime");
+	public ref float StartAnisoTime => ref __m_flStartAnisoTime.GetRef(this.Handle);
 
 	// m_flStartScatterTime
+	private static readonly SchemaField<float> __m_flStartScatterTime = new("CEnvVolumetricFogController", "m_flStartScatterTime");
 	[SchemaMember("CEnvVolumetricFogController", "m_flStartScatterTime")]
-	public ref float StartScatterTime => ref Schema.GetRef<float>(this.Handle, "CEnvVolumetricFogController", "m_flStartScatterTime");
+	public ref float StartScatterTime => ref __m_flStartScatterTime.GetRef(this.Handle);
 
 	// m_flStartDrawDistanceTime
+	private static readonly SchemaField<float> __m_flStartDrawDistanceTime = new("CEnvVolumetricFogController", "m_flStartDrawDistanceTime");
 	[SchemaMember("CEnvVolumetricFogController", "m_flStartDrawDistanceTime")]
-	public ref float StartDrawDistanceTime => ref Schema.GetRef<float>(this.Handle, "CEnvVolumetricFogController", "m_flStartDrawDistanceTime");
+	public ref float StartDrawDistanceTime => ref __m_flStartDrawDistanceTime.GetRef(this.Handle);
 
 	// m_flStartAnisotropy
+	private static readonly SchemaField<float> __m_flStartAnisotropy = new("CEnvVolumetricFogController", "m_flStartAnisotropy");
 	[SchemaMember("CEnvVolumetricFogController", "m_flStartAnisotropy")]
-	public ref float StartAnisotropy => ref Schema.GetRef<float>(this.Handle, "CEnvVolumetricFogController", "m_flStartAnisotropy");
+	public ref float StartAnisotropy => ref __m_flStartAnisotropy.GetRef(this.Handle);
 
 	// m_flStartScattering
+	private static readonly SchemaField<float> __m_flStartScattering = new("CEnvVolumetricFogController", "m_flStartScattering");
 	[SchemaMember("CEnvVolumetricFogController", "m_flStartScattering")]
-	public ref float StartScattering => ref Schema.GetRef<float>(this.Handle, "CEnvVolumetricFogController", "m_flStartScattering");
+	public ref float StartScattering => ref __m_flStartScattering.GetRef(this.Handle);
 
 	// m_flStartDrawDistance
+	private static readonly SchemaField<float> __m_flStartDrawDistance = new("CEnvVolumetricFogController", "m_flStartDrawDistance");
 	[SchemaMember("CEnvVolumetricFogController", "m_flStartDrawDistance")]
-	public ref float StartDrawDistance => ref Schema.GetRef<float>(this.Handle, "CEnvVolumetricFogController", "m_flStartDrawDistance");
+	public ref float StartDrawDistance => ref __m_flStartDrawDistance.GetRef(this.Handle);
 
 	// m_flDefaultAnisotropy
+	private static readonly SchemaField<float> __m_flDefaultAnisotropy = new("CEnvVolumetricFogController", "m_flDefaultAnisotropy");
 	[SchemaMember("CEnvVolumetricFogController", "m_flDefaultAnisotropy")]
-	public ref float DefaultAnisotropy => ref Schema.GetRef<float>(this.Handle, "CEnvVolumetricFogController", "m_flDefaultAnisotropy");
+	public ref float DefaultAnisotropy => ref __m_flDefaultAnisotropy.GetRef(this.Handle);
 
 	// m_flDefaultScattering
+	private static readonly SchemaField<float> __m_flDefaultScattering = new("CEnvVolumetricFogController", "m_flDefaultScattering");
 	[SchemaMember("CEnvVolumetricFogController", "m_flDefaultScattering")]
-	public ref float DefaultScattering => ref Schema.GetRef<float>(this.Handle, "CEnvVolumetricFogController", "m_flDefaultScattering");
+	public ref float DefaultScattering => ref __m_flDefaultScattering.GetRef(this.Handle);
 
 	// m_flDefaultDrawDistance
+	private static readonly SchemaField<float> __m_flDefaultDrawDistance = new("CEnvVolumetricFogController", "m_flDefaultDrawDistance");
 	[SchemaMember("CEnvVolumetricFogController", "m_flDefaultDrawDistance")]
-	public ref float DefaultDrawDistance => ref Schema.GetRef<float>(this.Handle, "CEnvVolumetricFogController", "m_flDefaultDrawDistance");
+	public ref float DefaultDrawDistance => ref __m_flDefaultDrawDistance.GetRef(this.Handle);
 
 	// m_bStartDisabled
+	private static readonly SchemaField<bool> __m_bStartDisabled = new("CEnvVolumetricFogController", "m_bStartDisabled");
 	[SchemaMember("CEnvVolumetricFogController", "m_bStartDisabled")]
-	public ref bool StartDisabled => ref Schema.GetRef<bool>(this.Handle, "CEnvVolumetricFogController", "m_bStartDisabled");
+	public ref bool StartDisabled => ref __m_bStartDisabled.GetRef(this.Handle);
 
 	// m_bEnableIndirect
+	private static readonly SchemaField<bool> __m_bEnableIndirect = new("CEnvVolumetricFogController", "m_bEnableIndirect");
 	[SchemaMember("CEnvVolumetricFogController", "m_bEnableIndirect")]
-	public ref bool EnableIndirect => ref Schema.GetRef<bool>(this.Handle, "CEnvVolumetricFogController", "m_bEnableIndirect");
+	public ref bool EnableIndirect => ref __m_bEnableIndirect.GetRef(this.Handle);
 
 	// m_bIsMaster
+	private static readonly SchemaField<bool> __m_bIsMaster = new("CEnvVolumetricFogController", "m_bIsMaster");
 	[SchemaMember("CEnvVolumetricFogController", "m_bIsMaster")]
-	public ref bool IsMaster => ref Schema.GetRef<bool>(this.Handle, "CEnvVolumetricFogController", "m_bIsMaster");
+	public ref bool IsMaster => ref __m_bIsMaster.GetRef(this.Handle);
 
 	// m_hFogIndirectTexture
 	[SchemaMember("CEnvVolumetricFogController", "m_hFogIndirectTexture")]
 	public CStrongHandle<InfoForResourceTypeCTextureBase> FogIndirectTexture => Schema.GetDeclaredClass<CStrongHandle<InfoForResourceTypeCTextureBase>>(this.Handle, "CEnvVolumetricFogController", "m_hFogIndirectTexture");
 
 	// m_nForceRefreshCount
+	private static readonly SchemaField<Int32> __m_nForceRefreshCount = new("CEnvVolumetricFogController", "m_nForceRefreshCount");
 	[SchemaMember("CEnvVolumetricFogController", "m_nForceRefreshCount")]
-	public ref Int32 ForceRefreshCount => ref Schema.GetRef<Int32>(this.Handle, "CEnvVolumetricFogController", "m_nForceRefreshCount");
+	public ref Int32 ForceRefreshCount => ref __m_nForceRefreshCount.GetRef(this.Handle);
 
 	// m_fNoiseSpeed
+	private static readonly SchemaField<float> __m_fNoiseSpeed = new("CEnvVolumetricFogController", "m_fNoiseSpeed");
 	[SchemaMember("CEnvVolumetricFogController", "m_fNoiseSpeed")]
-	public ref float NoiseSpeed => ref Schema.GetRef<float>(this.Handle, "CEnvVolumetricFogController", "m_fNoiseSpeed");
+	public ref float NoiseSpeed => ref __m_fNoiseSpeed.GetRef(this.Handle);
 
 	// m_fNoiseStrength
+	private static readonly SchemaField<float> __m_fNoiseStrength = new("CEnvVolumetricFogController", "m_fNoiseStrength");
 	[SchemaMember("CEnvVolumetricFogController", "m_fNoiseStrength")]
-	public ref float NoiseStrength => ref Schema.GetRef<float>(this.Handle, "CEnvVolumetricFogController", "m_fNoiseStrength");
+	public ref float NoiseStrength => ref __m_fNoiseStrength.GetRef(this.Handle);
 
 	// m_vNoiseScale
 	[SchemaMember("CEnvVolumetricFogController", "m_vNoiseScale")]
 	public Vector NoiseScale => Schema.GetDeclaredClass<Vector>(this.Handle, "CEnvVolumetricFogController", "m_vNoiseScale");
 
 	// m_fWindSpeed
+	private static readonly SchemaField<float> __m_fWindSpeed = new("CEnvVolumetricFogController", "m_fWindSpeed");
 	[SchemaMember("CEnvVolumetricFogController", "m_fWindSpeed")]
-	public ref float WindSpeed => ref Schema.GetRef<float>(this.Handle, "CEnvVolumetricFogController", "m_fWindSpeed");
+	public ref float WindSpeed => ref __m_fWindSpeed.GetRef(this.Handle);
 
 	// m_vWindDirection
 	[SchemaMember("CEnvVolumetricFogController", "m_vWindDirection")]
 	public Vector WindDirection => Schema.GetDeclaredClass<Vector>(this.Handle, "CEnvVolumetricFogController", "m_vWindDirection");
 
 	// m_bFirstTime
+	private static readonly SchemaField<bool> __m_bFirstTime = new("CEnvVolumetricFogController", "m_bFirstTime");
 	[SchemaMember("CEnvVolumetricFogController", "m_bFirstTime")]
-	public ref bool FirstTime => ref Schema.GetRef<bool>(this.Handle, "CEnvVolumetricFogController", "m_bFirstTime");
+	public ref bool FirstTime => ref __m_bFirstTime.GetRef(this.Handle);
 
 }

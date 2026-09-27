@@ -19,8 +19,9 @@ public partial class CMarkupVolumeWithRef : CMarkupVolumeTagged
     public CMarkupVolumeWithRef (IntPtr pointer) : base(pointer) {}
 
 	// m_bUseRef
+	private static readonly SchemaField<bool> __m_bUseRef = new("CMarkupVolumeWithRef", "m_bUseRef");
 	[SchemaMember("CMarkupVolumeWithRef", "m_bUseRef")]
-	public ref bool UseRef => ref Schema.GetRef<bool>(this.Handle, "CMarkupVolumeWithRef", "m_bUseRef");
+	public ref bool UseRef => ref __m_bUseRef.GetRef(this.Handle);
 
 	// m_vRefPosEntitySpace
 	[SchemaMember("CMarkupVolumeWithRef", "m_vRefPosEntitySpace")]
@@ -31,7 +32,8 @@ public partial class CMarkupVolumeWithRef : CMarkupVolumeTagged
 	public Vector RefPosWorldSpace => Schema.GetDeclaredClass<Vector>(this.Handle, "CMarkupVolumeWithRef", "m_vRefPosWorldSpace");
 
 	// m_flRefDot
+	private static readonly SchemaField<float> __m_flRefDot = new("CMarkupVolumeWithRef", "m_flRefDot");
 	[SchemaMember("CMarkupVolumeWithRef", "m_flRefDot")]
-	public ref float RefDot => ref Schema.GetRef<float>(this.Handle, "CMarkupVolumeWithRef", "m_flRefDot");
+	public ref float RefDot => ref __m_flRefDot.GetRef(this.Handle);
 
 }

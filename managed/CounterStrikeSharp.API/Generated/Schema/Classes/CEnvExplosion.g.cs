@@ -19,40 +19,48 @@ public partial class CEnvExplosion : CModelPointEntity
     public CEnvExplosion (IntPtr pointer) : base(pointer) {}
 
 	// m_iMagnitude
+	private static readonly SchemaField<Int32> __m_iMagnitude = new("CEnvExplosion", "m_iMagnitude");
 	[SchemaMember("CEnvExplosion", "m_iMagnitude")]
-	public ref Int32 Magnitude => ref Schema.GetRef<Int32>(this.Handle, "CEnvExplosion", "m_iMagnitude");
+	public ref Int32 Magnitude => ref __m_iMagnitude.GetRef(this.Handle);
 
 	// m_flPlayerDamage
+	private static readonly SchemaField<float> __m_flPlayerDamage = new("CEnvExplosion", "m_flPlayerDamage");
 	[SchemaMember("CEnvExplosion", "m_flPlayerDamage")]
-	public ref float PlayerDamage => ref Schema.GetRef<float>(this.Handle, "CEnvExplosion", "m_flPlayerDamage");
+	public ref float PlayerDamage => ref __m_flPlayerDamage.GetRef(this.Handle);
 
 	// m_iRadiusOverride
+	private static readonly SchemaField<Int32> __m_iRadiusOverride = new("CEnvExplosion", "m_iRadiusOverride");
 	[SchemaMember("CEnvExplosion", "m_iRadiusOverride")]
-	public ref Int32 RadiusOverride => ref Schema.GetRef<Int32>(this.Handle, "CEnvExplosion", "m_iRadiusOverride");
+	public ref Int32 RadiusOverride => ref __m_iRadiusOverride.GetRef(this.Handle);
 
 	// m_flInnerRadius
+	private static readonly SchemaField<float> __m_flInnerRadius = new("CEnvExplosion", "m_flInnerRadius");
 	[SchemaMember("CEnvExplosion", "m_flInnerRadius")]
-	public ref float InnerRadius => ref Schema.GetRef<float>(this.Handle, "CEnvExplosion", "m_flInnerRadius");
+	public ref float InnerRadius => ref __m_flInnerRadius.GetRef(this.Handle);
 
 	// m_flDamageForce
+	private static readonly SchemaField<float> __m_flDamageForce = new("CEnvExplosion", "m_flDamageForce");
 	[SchemaMember("CEnvExplosion", "m_flDamageForce")]
-	public ref float DamageForce => ref Schema.GetRef<float>(this.Handle, "CEnvExplosion", "m_flDamageForce");
+	public ref float DamageForce => ref __m_flDamageForce.GetRef(this.Handle);
 
 	// m_hInflictor
 	[SchemaMember("CEnvExplosion", "m_hInflictor")]
 	public CHandle<CBaseEntity> Inflictor => Schema.GetDeclaredClass<CHandle<CBaseEntity>>(this.Handle, "CEnvExplosion", "m_hInflictor");
 
 	// m_iCustomDamageType
+	private static readonly SchemaField<DamageTypes_t> __m_iCustomDamageType = new("CEnvExplosion", "m_iCustomDamageType");
 	[SchemaMember("CEnvExplosion", "m_iCustomDamageType")]
-	public ref DamageTypes_t CustomDamageType => ref Schema.GetRef<DamageTypes_t>(this.Handle, "CEnvExplosion", "m_iCustomDamageType");
+	public ref DamageTypes_t CustomDamageType => ref __m_iCustomDamageType.GetRef(this.Handle);
 
 	// m_bHasCustomDamageType
+	private static readonly SchemaField<bool> __m_bHasCustomDamageType = new("CEnvExplosion", "m_bHasCustomDamageType");
 	[SchemaMember("CEnvExplosion", "m_bHasCustomDamageType")]
-	public ref bool HasCustomDamageType => ref Schema.GetRef<bool>(this.Handle, "CEnvExplosion", "m_bHasCustomDamageType");
+	public ref bool HasCustomDamageType => ref __m_bHasCustomDamageType.GetRef(this.Handle);
 
 	// m_bCreateDebris
+	private static readonly SchemaField<bool> __m_bCreateDebris = new("CEnvExplosion", "m_bCreateDebris");
 	[SchemaMember("CEnvExplosion", "m_bCreateDebris")]
-	public ref bool CreateDebris => ref Schema.GetRef<bool>(this.Handle, "CEnvExplosion", "m_bCreateDebris");
+	public ref bool CreateDebris => ref __m_bCreateDebris.GetRef(this.Handle);
 
 	// m_iszCustomEffectName
 	[SchemaMember("CEnvExplosion", "m_iszCustomEffectName")]
@@ -71,16 +79,19 @@ public partial class CEnvExplosion : CModelPointEntity
 	}
 
 	// m_bSuppressParticleImpulse
+	private static readonly SchemaField<bool> __m_bSuppressParticleImpulse = new("CEnvExplosion", "m_bSuppressParticleImpulse");
 	[SchemaMember("CEnvExplosion", "m_bSuppressParticleImpulse")]
-	public ref bool SuppressParticleImpulse => ref Schema.GetRef<bool>(this.Handle, "CEnvExplosion", "m_bSuppressParticleImpulse");
+	public ref bool SuppressParticleImpulse => ref __m_bSuppressParticleImpulse.GetRef(this.Handle);
 
 	// m_iClassIgnore
+	private static readonly SchemaField<Class_T> __m_iClassIgnore = new("CEnvExplosion", "m_iClassIgnore");
 	[SchemaMember("CEnvExplosion", "m_iClassIgnore")]
-	public ref Class_T ClassIgnore => ref Schema.GetRef<Class_T>(this.Handle, "CEnvExplosion", "m_iClassIgnore");
+	public ref Class_T ClassIgnore => ref __m_iClassIgnore.GetRef(this.Handle);
 
 	// m_iClassIgnore2
+	private static readonly SchemaField<Class_T> __m_iClassIgnore2 = new("CEnvExplosion", "m_iClassIgnore2");
 	[SchemaMember("CEnvExplosion", "m_iClassIgnore2")]
-	public ref Class_T ClassIgnore2 => ref Schema.GetRef<Class_T>(this.Handle, "CEnvExplosion", "m_iClassIgnore2");
+	public ref Class_T ClassIgnore2 => ref __m_iClassIgnore2.GetRef(this.Handle);
 
 	// m_iszEntityIgnoreName
 	[SchemaMember("CEnvExplosion", "m_iszEntityIgnoreName")]

@@ -27,8 +27,9 @@ public partial class CItem : CBaseAnimGraph
 	public CEntityIOOutput OnPlayerPickup => Schema.GetDeclaredClass<CEntityIOOutput>(this.Handle, "CItem", "m_OnPlayerPickup");
 
 	// m_bActivateWhenAtRest
+	private static readonly SchemaField<bool> __m_bActivateWhenAtRest = new("CItem", "m_bActivateWhenAtRest");
 	[SchemaMember("CItem", "m_bActivateWhenAtRest")]
-	public ref bool ActivateWhenAtRest => ref Schema.GetRef<bool>(this.Handle, "CItem", "m_bActivateWhenAtRest");
+	public ref bool ActivateWhenAtRest => ref __m_bActivateWhenAtRest.GetRef(this.Handle);
 
 	// m_OnCacheInteraction
 	[SchemaMember("CItem", "m_OnCacheInteraction")]
@@ -47,7 +48,8 @@ public partial class CItem : CBaseAnimGraph
 	public QAngle OriginalSpawnAngles => Schema.GetDeclaredClass<QAngle>(this.Handle, "CItem", "m_vOriginalSpawnAngles");
 
 	// m_bPhysStartAsleep
+	private static readonly SchemaField<bool> __m_bPhysStartAsleep = new("CItem", "m_bPhysStartAsleep");
 	[SchemaMember("CItem", "m_bPhysStartAsleep")]
-	public ref bool PhysStartAsleep => ref Schema.GetRef<bool>(this.Handle, "CItem", "m_bPhysStartAsleep");
+	public ref bool PhysStartAsleep => ref __m_bPhysStartAsleep.GetRef(this.Handle);
 
 }

@@ -31,23 +31,28 @@ public partial class CPointOrient : CBaseEntity
 	public new CHandle<CBaseEntity> Target => Schema.GetDeclaredClass<CHandle<CBaseEntity>>(this.Handle, "CPointOrient", "m_hTarget");
 
 	// m_bActive
+	private static readonly SchemaField<bool> __m_bActive = new("CPointOrient", "m_bActive");
 	[SchemaMember("CPointOrient", "m_bActive")]
-	public ref bool Active => ref Schema.GetRef<bool>(this.Handle, "CPointOrient", "m_bActive");
+	public ref bool Active => ref __m_bActive.GetRef(this.Handle);
 
 	// m_nGoalDirection
+	private static readonly SchemaField<PointOrientGoalDirectionType_t> __m_nGoalDirection = new("CPointOrient", "m_nGoalDirection");
 	[SchemaMember("CPointOrient", "m_nGoalDirection")]
-	public ref PointOrientGoalDirectionType_t GoalDirection => ref Schema.GetRef<PointOrientGoalDirectionType_t>(this.Handle, "CPointOrient", "m_nGoalDirection");
+	public ref PointOrientGoalDirectionType_t GoalDirection => ref __m_nGoalDirection.GetRef(this.Handle);
 
 	// m_nConstraint
+	private static readonly SchemaField<PointOrientConstraint_t> __m_nConstraint = new("CPointOrient", "m_nConstraint");
 	[SchemaMember("CPointOrient", "m_nConstraint")]
-	public ref PointOrientConstraint_t Constraint => ref Schema.GetRef<PointOrientConstraint_t>(this.Handle, "CPointOrient", "m_nConstraint");
+	public ref PointOrientConstraint_t Constraint => ref __m_nConstraint.GetRef(this.Handle);
 
 	// m_flMaxTurnRate
+	private static readonly SchemaField<float> __m_flMaxTurnRate = new("CPointOrient", "m_flMaxTurnRate");
 	[SchemaMember("CPointOrient", "m_flMaxTurnRate")]
-	public ref float MaxTurnRate => ref Schema.GetRef<float>(this.Handle, "CPointOrient", "m_flMaxTurnRate");
+	public ref float MaxTurnRate => ref __m_flMaxTurnRate.GetRef(this.Handle);
 
 	// m_flLastGameTime
+	private static readonly SchemaField<float> __m_flLastGameTime = new("CPointOrient", "m_flLastGameTime");
 	[SchemaMember("CPointOrient", "m_flLastGameTime")]
-	public ref float LastGameTime => ref Schema.GetRef<float>(this.Handle, "CPointOrient", "m_flLastGameTime");
+	public ref float LastGameTime => ref __m_flLastGameTime.GetRef(this.Handle);
 
 }

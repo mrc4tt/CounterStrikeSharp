@@ -19,7 +19,8 @@ public partial class CDebugHistory : CBaseEntity
     public CDebugHistory (IntPtr pointer) : base(pointer) {}
 
 	// m_nNpcEvents
+	private static readonly SchemaField<Int32> __m_nNpcEvents = new("CDebugHistory", "m_nNpcEvents");
 	[SchemaMember("CDebugHistory", "m_nNpcEvents")]
-	public ref Int32 NpcEvents => ref Schema.GetRef<Int32>(this.Handle, "CDebugHistory", "m_nNpcEvents");
+	public ref Int32 NpcEvents => ref __m_nNpcEvents.GetRef(this.Handle);
 
 }

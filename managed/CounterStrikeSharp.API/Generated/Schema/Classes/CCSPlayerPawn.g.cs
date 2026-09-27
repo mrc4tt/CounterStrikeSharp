@@ -47,12 +47,14 @@ public partial class CCSPlayerPawn : CCSPlayerPawnBase
 	public CCSPlayer_DamageReactServices? DamageReactServices => Schema.GetPointer<CCSPlayer_DamageReactServices>(this.Handle, "CCSPlayerPawn", "m_pDamageReactServices");
 
 	// m_nCharacterDefIndex
+	private static readonly SchemaField<UInt16> __m_nCharacterDefIndex = new("CCSPlayerPawn", "m_nCharacterDefIndex");
 	[SchemaMember("CCSPlayerPawn", "m_nCharacterDefIndex")]
-	public ref UInt16 CharacterDefIndex => ref Schema.GetRef<UInt16>(this.Handle, "CCSPlayerPawn", "m_nCharacterDefIndex");
+	public ref UInt16 CharacterDefIndex => ref __m_nCharacterDefIndex.GetRef(this.Handle);
 
 	// m_bHasFemaleVoice
+	private static readonly SchemaField<bool> __m_bHasFemaleVoice = new("CCSPlayerPawn", "m_bHasFemaleVoice");
 	[SchemaMember("CCSPlayerPawn", "m_bHasFemaleVoice")]
-	public ref bool HasFemaleVoice => ref Schema.GetRef<bool>(this.Handle, "CCSPlayerPawn", "m_bHasFemaleVoice");
+	public ref bool HasFemaleVoice => ref __m_bHasFemaleVoice.GetRef(this.Handle);
 
 	// m_strVOPrefix
 	[SchemaMember("CCSPlayerPawn", "m_strVOPrefix")]
@@ -71,96 +73,118 @@ public partial class CCSPlayerPawn : CCSPlayerPawnBase
 	}
 
 	// m_bInHostageResetZone
+	private static readonly SchemaField<bool> __m_bInHostageResetZone = new("CCSPlayerPawn", "m_bInHostageResetZone");
 	[SchemaMember("CCSPlayerPawn", "m_bInHostageResetZone")]
-	public ref bool InHostageResetZone => ref Schema.GetRef<bool>(this.Handle, "CCSPlayerPawn", "m_bInHostageResetZone");
+	public ref bool InHostageResetZone => ref __m_bInHostageResetZone.GetRef(this.Handle);
 
 	// m_bInBuyZone
+	private static readonly SchemaField<bool> __m_bInBuyZone = new("CCSPlayerPawn", "m_bInBuyZone");
 	[SchemaMember("CCSPlayerPawn", "m_bInBuyZone")]
-	public ref bool InBuyZone => ref Schema.GetRef<bool>(this.Handle, "CCSPlayerPawn", "m_bInBuyZone");
+	public ref bool InBuyZone => ref __m_bInBuyZone.GetRef(this.Handle);
 
 	// m_TouchingBuyZones
 	[SchemaMember("CCSPlayerPawn", "m_TouchingBuyZones")]
 	public NetworkedVector<CHandle<CBaseEntity>> TouchingBuyZones => Schema.GetDeclaredClass<NetworkedVector<CHandle<CBaseEntity>>>(this.Handle, "CCSPlayerPawn", "m_TouchingBuyZones");
 
 	// m_bWasInBuyZone
+	private static readonly SchemaField<bool> __m_bWasInBuyZone = new("CCSPlayerPawn", "m_bWasInBuyZone");
 	[SchemaMember("CCSPlayerPawn", "m_bWasInBuyZone")]
-	public ref bool WasInBuyZone => ref Schema.GetRef<bool>(this.Handle, "CCSPlayerPawn", "m_bWasInBuyZone");
+	public ref bool WasInBuyZone => ref __m_bWasInBuyZone.GetRef(this.Handle);
 
 	// m_bInHostageRescueZone
+	private static readonly SchemaField<bool> __m_bInHostageRescueZone = new("CCSPlayerPawn", "m_bInHostageRescueZone");
 	[SchemaMember("CCSPlayerPawn", "m_bInHostageRescueZone")]
-	public ref bool InHostageRescueZone => ref Schema.GetRef<bool>(this.Handle, "CCSPlayerPawn", "m_bInHostageRescueZone");
+	public ref bool InHostageRescueZone => ref __m_bInHostageRescueZone.GetRef(this.Handle);
 
 	// m_bInBombZone
+	private static readonly SchemaField<bool> __m_bInBombZone = new("CCSPlayerPawn", "m_bInBombZone");
 	[SchemaMember("CCSPlayerPawn", "m_bInBombZone")]
-	public ref bool InBombZone => ref Schema.GetRef<bool>(this.Handle, "CCSPlayerPawn", "m_bInBombZone");
+	public ref bool InBombZone => ref __m_bInBombZone.GetRef(this.Handle);
 
 	// m_bWasInHostageRescueZone
+	private static readonly SchemaField<bool> __m_bWasInHostageRescueZone = new("CCSPlayerPawn", "m_bWasInHostageRescueZone");
 	[SchemaMember("CCSPlayerPawn", "m_bWasInHostageRescueZone")]
-	public ref bool WasInHostageRescueZone => ref Schema.GetRef<bool>(this.Handle, "CCSPlayerPawn", "m_bWasInHostageRescueZone");
+	public ref bool WasInHostageRescueZone => ref __m_bWasInHostageRescueZone.GetRef(this.Handle);
 
 	// m_iRetakesOffering
+	private static readonly SchemaField<Int32> __m_iRetakesOffering = new("CCSPlayerPawn", "m_iRetakesOffering");
 	[SchemaMember("CCSPlayerPawn", "m_iRetakesOffering")]
-	public ref Int32 RetakesOffering => ref Schema.GetRef<Int32>(this.Handle, "CCSPlayerPawn", "m_iRetakesOffering");
+	public ref Int32 RetakesOffering => ref __m_iRetakesOffering.GetRef(this.Handle);
 
 	// m_iRetakesOfferingCard
+	private static readonly SchemaField<Int32> __m_iRetakesOfferingCard = new("CCSPlayerPawn", "m_iRetakesOfferingCard");
 	[SchemaMember("CCSPlayerPawn", "m_iRetakesOfferingCard")]
-	public ref Int32 RetakesOfferingCard => ref Schema.GetRef<Int32>(this.Handle, "CCSPlayerPawn", "m_iRetakesOfferingCard");
+	public ref Int32 RetakesOfferingCard => ref __m_iRetakesOfferingCard.GetRef(this.Handle);
 
 	// m_bRetakesHasDefuseKit
+	private static readonly SchemaField<bool> __m_bRetakesHasDefuseKit = new("CCSPlayerPawn", "m_bRetakesHasDefuseKit");
 	[SchemaMember("CCSPlayerPawn", "m_bRetakesHasDefuseKit")]
-	public ref bool RetakesHasDefuseKit => ref Schema.GetRef<bool>(this.Handle, "CCSPlayerPawn", "m_bRetakesHasDefuseKit");
+	public ref bool RetakesHasDefuseKit => ref __m_bRetakesHasDefuseKit.GetRef(this.Handle);
 
 	// m_bRetakesMVPLastRound
+	private static readonly SchemaField<bool> __m_bRetakesMVPLastRound = new("CCSPlayerPawn", "m_bRetakesMVPLastRound");
 	[SchemaMember("CCSPlayerPawn", "m_bRetakesMVPLastRound")]
-	public ref bool RetakesMVPLastRound => ref Schema.GetRef<bool>(this.Handle, "CCSPlayerPawn", "m_bRetakesMVPLastRound");
+	public ref bool RetakesMVPLastRound => ref __m_bRetakesMVPLastRound.GetRef(this.Handle);
 
 	// m_iRetakesMVPBoostItem
+	private static readonly SchemaField<Int32> __m_iRetakesMVPBoostItem = new("CCSPlayerPawn", "m_iRetakesMVPBoostItem");
 	[SchemaMember("CCSPlayerPawn", "m_iRetakesMVPBoostItem")]
-	public ref Int32 RetakesMVPBoostItem => ref Schema.GetRef<Int32>(this.Handle, "CCSPlayerPawn", "m_iRetakesMVPBoostItem");
+	public ref Int32 RetakesMVPBoostItem => ref __m_iRetakesMVPBoostItem.GetRef(this.Handle);
 
 	// m_RetakesMVPBoostExtraUtility
+	private static readonly SchemaField<loadout_slot_t> __m_RetakesMVPBoostExtraUtility = new("CCSPlayerPawn", "m_RetakesMVPBoostExtraUtility");
 	[SchemaMember("CCSPlayerPawn", "m_RetakesMVPBoostExtraUtility")]
-	public ref loadout_slot_t RetakesMVPBoostExtraUtility => ref Schema.GetRef<loadout_slot_t>(this.Handle, "CCSPlayerPawn", "m_RetakesMVPBoostExtraUtility");
+	public ref loadout_slot_t RetakesMVPBoostExtraUtility => ref __m_RetakesMVPBoostExtraUtility.GetRef(this.Handle);
 
 	// m_flHealthShotBoostExpirationTime
+	private static readonly SchemaField<float> __m_flHealthShotBoostExpirationTime = new("CCSPlayerPawn", "m_flHealthShotBoostExpirationTime");
 	[SchemaMember("CCSPlayerPawn", "m_flHealthShotBoostExpirationTime")]
-	public ref float HealthShotBoostExpirationTime => ref Schema.GetRef<float>(this.Handle, "CCSPlayerPawn", "m_flHealthShotBoostExpirationTime");
+	public ref float HealthShotBoostExpirationTime => ref __m_flHealthShotBoostExpirationTime.GetRef(this.Handle);
 
 	// m_flLandingTimeSeconds
+	private static readonly SchemaField<float> __m_flLandingTimeSeconds = new("CCSPlayerPawn", "m_flLandingTimeSeconds");
 	[SchemaMember("CCSPlayerPawn", "m_flLandingTimeSeconds")]
-	public ref float LandingTimeSeconds => ref Schema.GetRef<float>(this.Handle, "CCSPlayerPawn", "m_flLandingTimeSeconds");
+	public ref float LandingTimeSeconds => ref __m_flLandingTimeSeconds.GetRef(this.Handle);
 
 	// m_bIsBuyMenuOpen
+	private static readonly SchemaField<bool> __m_bIsBuyMenuOpen = new("CCSPlayerPawn", "m_bIsBuyMenuOpen");
 	[SchemaMember("CCSPlayerPawn", "m_bIsBuyMenuOpen")]
-	public ref bool IsBuyMenuOpen => ref Schema.GetRef<bool>(this.Handle, "CCSPlayerPawn", "m_bIsBuyMenuOpen");
+	public ref bool IsBuyMenuOpen => ref __m_bIsBuyMenuOpen.GetRef(this.Handle);
 
 	// m_lastLandTime
+	private static readonly SchemaField<float> __m_lastLandTime = new("CCSPlayerPawn", "m_lastLandTime");
 	[SchemaMember("CCSPlayerPawn", "m_lastLandTime")]
-	public ref float LastLandTime => ref Schema.GetRef<float>(this.Handle, "CCSPlayerPawn", "m_lastLandTime");
+	public ref float LastLandTime => ref __m_lastLandTime.GetRef(this.Handle);
 
 	// m_bOnGroundLastTick
+	private static readonly SchemaField<bool> __m_bOnGroundLastTick = new("CCSPlayerPawn", "m_bOnGroundLastTick");
 	[SchemaMember("CCSPlayerPawn", "m_bOnGroundLastTick")]
-	public ref bool OnGroundLastTick => ref Schema.GetRef<bool>(this.Handle, "CCSPlayerPawn", "m_bOnGroundLastTick");
+	public ref bool OnGroundLastTick => ref __m_bOnGroundLastTick.GetRef(this.Handle);
 
 	// m_iPlayerLocked
+	private static readonly SchemaField<Int32> __m_iPlayerLocked = new("CCSPlayerPawn", "m_iPlayerLocked");
 	[SchemaMember("CCSPlayerPawn", "m_iPlayerLocked")]
-	public ref Int32 PlayerLocked => ref Schema.GetRef<Int32>(this.Handle, "CCSPlayerPawn", "m_iPlayerLocked");
+	public ref Int32 PlayerLocked => ref __m_iPlayerLocked.GetRef(this.Handle);
 
 	// m_flTimeOfLastInjury
+	private static readonly SchemaField<float> __m_flTimeOfLastInjury = new("CCSPlayerPawn", "m_flTimeOfLastInjury");
 	[SchemaMember("CCSPlayerPawn", "m_flTimeOfLastInjury")]
-	public ref float TimeOfLastInjury => ref Schema.GetRef<float>(this.Handle, "CCSPlayerPawn", "m_flTimeOfLastInjury");
+	public ref float TimeOfLastInjury => ref __m_flTimeOfLastInjury.GetRef(this.Handle);
 
 	// m_flNextSprayDecalTime
+	private static readonly SchemaField<float> __m_flNextSprayDecalTime = new("CCSPlayerPawn", "m_flNextSprayDecalTime");
 	[SchemaMember("CCSPlayerPawn", "m_flNextSprayDecalTime")]
-	public ref float NextSprayDecalTime => ref Schema.GetRef<float>(this.Handle, "CCSPlayerPawn", "m_flNextSprayDecalTime");
+	public ref float NextSprayDecalTime => ref __m_flNextSprayDecalTime.GetRef(this.Handle);
 
 	// m_bNextSprayDecalTimeExpedited
+	private static readonly SchemaField<bool> __m_bNextSprayDecalTimeExpedited = new("CCSPlayerPawn", "m_bNextSprayDecalTimeExpedited");
 	[SchemaMember("CCSPlayerPawn", "m_bNextSprayDecalTimeExpedited")]
-	public ref bool NextSprayDecalTimeExpedited => ref Schema.GetRef<bool>(this.Handle, "CCSPlayerPawn", "m_bNextSprayDecalTimeExpedited");
+	public ref bool NextSprayDecalTimeExpedited => ref __m_bNextSprayDecalTimeExpedited.GetRef(this.Handle);
 
 	// m_nRagdollDamageBone
+	private static readonly SchemaField<Int32> __m_nRagdollDamageBone = new("CCSPlayerPawn", "m_nRagdollDamageBone");
 	[SchemaMember("CCSPlayerPawn", "m_nRagdollDamageBone")]
-	public ref Int32 RagdollDamageBone => ref Schema.GetRef<Int32>(this.Handle, "CCSPlayerPawn", "m_nRagdollDamageBone");
+	public ref Int32 RagdollDamageBone => ref __m_nRagdollDamageBone.GetRef(this.Handle);
 
 	// m_vRagdollDamageForce
 	[SchemaMember("CCSPlayerPawn", "m_vRagdollDamageForce")]
@@ -175,8 +199,9 @@ public partial class CCSPlayerPawn : CCSPlayerPawnBase
 	}
 
 	// m_bRagdollDamageHeadshot
+	private static readonly SchemaField<bool> __m_bRagdollDamageHeadshot = new("CCSPlayerPawn", "m_bRagdollDamageHeadshot");
 	[SchemaMember("CCSPlayerPawn", "m_bRagdollDamageHeadshot")]
-	public ref bool RagdollDamageHeadshot => ref Schema.GetRef<bool>(this.Handle, "CCSPlayerPawn", "m_bRagdollDamageHeadshot");
+	public ref bool RagdollDamageHeadshot => ref __m_bRagdollDamageHeadshot.GetRef(this.Handle);
 
 	// m_vRagdollServerOrigin
 	[SchemaMember("CCSPlayerPawn", "m_vRagdollServerOrigin")]
@@ -187,8 +212,9 @@ public partial class CCSPlayerPawn : CCSPlayerPawnBase
 	public CEconItemView EconGloves => Schema.GetDeclaredClass<CEconItemView>(this.Handle, "CCSPlayerPawn", "m_EconGloves");
 
 	// m_nEconGlovesChanged
+	private static readonly SchemaField<byte> __m_nEconGlovesChanged = new("CCSPlayerPawn", "m_nEconGlovesChanged");
 	[SchemaMember("CCSPlayerPawn", "m_nEconGlovesChanged")]
-	public ref byte EconGlovesChanged => ref Schema.GetRef<byte>(this.Handle, "CCSPlayerPawn", "m_nEconGlovesChanged");
+	public ref byte EconGlovesChanged => ref __m_nEconGlovesChanged.GetRef(this.Handle);
 
 	// m_vecCurrentMinimapVolumes
 	[SchemaMember("CCSPlayerPawn", "m_vecCurrentMinimapVolumes")]
@@ -203,60 +229,74 @@ public partial class CCSPlayerPawn : CCSPlayerPawnBase
 	public QAngle DeathEyeAngles => Schema.GetDeclaredClass<QAngle>(this.Handle, "CCSPlayerPawn", "m_qDeathEyeAngles");
 
 	// m_bLeftHanded
+	private static readonly SchemaField<bool> __m_bLeftHanded = new("CCSPlayerPawn", "m_bLeftHanded");
 	[SchemaMember("CCSPlayerPawn", "m_bLeftHanded")]
-	public ref bool LeftHanded => ref Schema.GetRef<bool>(this.Handle, "CCSPlayerPawn", "m_bLeftHanded");
+	public ref bool LeftHanded => ref __m_bLeftHanded.GetRef(this.Handle);
 
 	// m_fSwitchedHandednessTime
+	private static readonly SchemaField<float> __m_fSwitchedHandednessTime = new("CCSPlayerPawn", "m_fSwitchedHandednessTime");
 	[SchemaMember("CCSPlayerPawn", "m_fSwitchedHandednessTime")]
-	public ref float SwitchedHandednessTime => ref Schema.GetRef<float>(this.Handle, "CCSPlayerPawn", "m_fSwitchedHandednessTime");
+	public ref float SwitchedHandednessTime => ref __m_fSwitchedHandednessTime.GetRef(this.Handle);
 
 	// m_flViewmodelOffsetX
+	private static readonly SchemaField<float> __m_flViewmodelOffsetX = new("CCSPlayerPawn", "m_flViewmodelOffsetX");
 	[SchemaMember("CCSPlayerPawn", "m_flViewmodelOffsetX")]
-	public ref float ViewmodelOffsetX => ref Schema.GetRef<float>(this.Handle, "CCSPlayerPawn", "m_flViewmodelOffsetX");
+	public ref float ViewmodelOffsetX => ref __m_flViewmodelOffsetX.GetRef(this.Handle);
 
 	// m_flViewmodelOffsetY
+	private static readonly SchemaField<float> __m_flViewmodelOffsetY = new("CCSPlayerPawn", "m_flViewmodelOffsetY");
 	[SchemaMember("CCSPlayerPawn", "m_flViewmodelOffsetY")]
-	public ref float ViewmodelOffsetY => ref Schema.GetRef<float>(this.Handle, "CCSPlayerPawn", "m_flViewmodelOffsetY");
+	public ref float ViewmodelOffsetY => ref __m_flViewmodelOffsetY.GetRef(this.Handle);
 
 	// m_flViewmodelOffsetZ
+	private static readonly SchemaField<float> __m_flViewmodelOffsetZ = new("CCSPlayerPawn", "m_flViewmodelOffsetZ");
 	[SchemaMember("CCSPlayerPawn", "m_flViewmodelOffsetZ")]
-	public ref float ViewmodelOffsetZ => ref Schema.GetRef<float>(this.Handle, "CCSPlayerPawn", "m_flViewmodelOffsetZ");
+	public ref float ViewmodelOffsetZ => ref __m_flViewmodelOffsetZ.GetRef(this.Handle);
 
 	// m_flViewmodelFOV
+	private static readonly SchemaField<float> __m_flViewmodelFOV = new("CCSPlayerPawn", "m_flViewmodelFOV");
 	[SchemaMember("CCSPlayerPawn", "m_flViewmodelFOV")]
-	public ref float ViewmodelFOV => ref Schema.GetRef<float>(this.Handle, "CCSPlayerPawn", "m_flViewmodelFOV");
+	public ref float ViewmodelFOV => ref __m_flViewmodelFOV.GetRef(this.Handle);
 
 	// m_bIsWalking
+	private static readonly SchemaField<bool> __m_bIsWalking = new("CCSPlayerPawn", "m_bIsWalking");
 	[SchemaMember("CCSPlayerPawn", "m_bIsWalking")]
-	public ref bool IsWalking => ref Schema.GetRef<bool>(this.Handle, "CCSPlayerPawn", "m_bIsWalking");
+	public ref bool IsWalking => ref __m_bIsWalking.GetRef(this.Handle);
 
 	// m_fLastGivenDefuserTime
+	private static readonly SchemaField<float> __m_fLastGivenDefuserTime = new("CCSPlayerPawn", "m_fLastGivenDefuserTime");
 	[SchemaMember("CCSPlayerPawn", "m_fLastGivenDefuserTime")]
-	public ref float LastGivenDefuserTime => ref Schema.GetRef<float>(this.Handle, "CCSPlayerPawn", "m_fLastGivenDefuserTime");
+	public ref float LastGivenDefuserTime => ref __m_fLastGivenDefuserTime.GetRef(this.Handle);
 
 	// m_fLastGivenBombTime
+	private static readonly SchemaField<float> __m_fLastGivenBombTime = new("CCSPlayerPawn", "m_fLastGivenBombTime");
 	[SchemaMember("CCSPlayerPawn", "m_fLastGivenBombTime")]
-	public ref float LastGivenBombTime => ref Schema.GetRef<float>(this.Handle, "CCSPlayerPawn", "m_fLastGivenBombTime");
+	public ref float LastGivenBombTime => ref __m_fLastGivenBombTime.GetRef(this.Handle);
 
 	// m_flDealtDamageToEnemyMostRecentTimestamp
+	private static readonly SchemaField<float> __m_flDealtDamageToEnemyMostRecentTimestamp = new("CCSPlayerPawn", "m_flDealtDamageToEnemyMostRecentTimestamp");
 	[SchemaMember("CCSPlayerPawn", "m_flDealtDamageToEnemyMostRecentTimestamp")]
-	public ref float DealtDamageToEnemyMostRecentTimestamp => ref Schema.GetRef<float>(this.Handle, "CCSPlayerPawn", "m_flDealtDamageToEnemyMostRecentTimestamp");
+	public ref float DealtDamageToEnemyMostRecentTimestamp => ref __m_flDealtDamageToEnemyMostRecentTimestamp.GetRef(this.Handle);
 
 	// m_iDisplayHistoryBits
+	private static readonly SchemaField<UInt32> __m_iDisplayHistoryBits = new("CCSPlayerPawn", "m_iDisplayHistoryBits");
 	[SchemaMember("CCSPlayerPawn", "m_iDisplayHistoryBits")]
-	public ref UInt32 DisplayHistoryBits => ref Schema.GetRef<UInt32>(this.Handle, "CCSPlayerPawn", "m_iDisplayHistoryBits");
+	public ref UInt32 DisplayHistoryBits => ref __m_iDisplayHistoryBits.GetRef(this.Handle);
 
 	// m_flLastAttackedTeammate
+	private static readonly SchemaField<float> __m_flLastAttackedTeammate = new("CCSPlayerPawn", "m_flLastAttackedTeammate");
 	[SchemaMember("CCSPlayerPawn", "m_flLastAttackedTeammate")]
-	public ref float LastAttackedTeammate => ref Schema.GetRef<float>(this.Handle, "CCSPlayerPawn", "m_flLastAttackedTeammate");
+	public ref float LastAttackedTeammate => ref __m_flLastAttackedTeammate.GetRef(this.Handle);
 
 	// m_allowAutoFollowTime
+	private static readonly SchemaField<float> __m_allowAutoFollowTime = new("CCSPlayerPawn", "m_allowAutoFollowTime");
 	[SchemaMember("CCSPlayerPawn", "m_allowAutoFollowTime")]
-	public ref float AllowAutoFollowTime => ref Schema.GetRef<float>(this.Handle, "CCSPlayerPawn", "m_allowAutoFollowTime");
+	public ref float AllowAutoFollowTime => ref __m_allowAutoFollowTime.GetRef(this.Handle);
 
 	// m_bResetArmorNextSpawn
+	private static readonly SchemaField<bool> __m_bResetArmorNextSpawn = new("CCSPlayerPawn", "m_bResetArmorNextSpawn");
 	[SchemaMember("CCSPlayerPawn", "m_bResetArmorNextSpawn")]
-	public ref bool ResetArmorNextSpawn => ref Schema.GetRef<bool>(this.Handle, "CCSPlayerPawn", "m_bResetArmorNextSpawn");
+	public ref bool ResetArmorNextSpawn => ref __m_bResetArmorNextSpawn.GetRef(this.Handle);
 
 	// m_nLastKillerIndex
 	[SchemaMember("CCSPlayerPawn", "m_nLastKillerIndex")]
@@ -267,136 +307,166 @@ public partial class CCSPlayerPawn : CCSPlayerPawnBase
 	public EntitySpottedState_t EntitySpottedState => Schema.GetDeclaredClass<EntitySpottedState_t>(this.Handle, "CCSPlayerPawn", "m_entitySpottedState");
 
 	// m_nSpotRules
+	private static readonly SchemaField<Int32> __m_nSpotRules = new("CCSPlayerPawn", "m_nSpotRules");
 	[SchemaMember("CCSPlayerPawn", "m_nSpotRules")]
-	public ref Int32 SpotRules => ref Schema.GetRef<Int32>(this.Handle, "CCSPlayerPawn", "m_nSpotRules");
+	public ref Int32 SpotRules => ref __m_nSpotRules.GetRef(this.Handle);
 
 	// m_bIsScoped
+	private static readonly SchemaField<bool> __m_bIsScoped = new("CCSPlayerPawn", "m_bIsScoped");
 	[SchemaMember("CCSPlayerPawn", "m_bIsScoped")]
-	public ref bool IsScoped => ref Schema.GetRef<bool>(this.Handle, "CCSPlayerPawn", "m_bIsScoped");
+	public ref bool IsScoped => ref __m_bIsScoped.GetRef(this.Handle);
 
 	// m_bResumeZoom
+	private static readonly SchemaField<bool> __m_bResumeZoom = new("CCSPlayerPawn", "m_bResumeZoom");
 	[SchemaMember("CCSPlayerPawn", "m_bResumeZoom")]
-	public ref bool ResumeZoom => ref Schema.GetRef<bool>(this.Handle, "CCSPlayerPawn", "m_bResumeZoom");
+	public ref bool ResumeZoom => ref __m_bResumeZoom.GetRef(this.Handle);
 
 	// m_bIsDefusing
+	private static readonly SchemaField<bool> __m_bIsDefusing = new("CCSPlayerPawn", "m_bIsDefusing");
 	[SchemaMember("CCSPlayerPawn", "m_bIsDefusing")]
-	public ref bool IsDefusing => ref Schema.GetRef<bool>(this.Handle, "CCSPlayerPawn", "m_bIsDefusing");
+	public ref bool IsDefusing => ref __m_bIsDefusing.GetRef(this.Handle);
 
 	// m_bIsGrabbingHostage
+	private static readonly SchemaField<bool> __m_bIsGrabbingHostage = new("CCSPlayerPawn", "m_bIsGrabbingHostage");
 	[SchemaMember("CCSPlayerPawn", "m_bIsGrabbingHostage")]
-	public ref bool IsGrabbingHostage => ref Schema.GetRef<bool>(this.Handle, "CCSPlayerPawn", "m_bIsGrabbingHostage");
+	public ref bool IsGrabbingHostage => ref __m_bIsGrabbingHostage.GetRef(this.Handle);
 
 	// m_iBlockingUseActionInProgress
+	private static readonly SchemaField<CSPlayerBlockingUseAction_t> __m_iBlockingUseActionInProgress = new("CCSPlayerPawn", "m_iBlockingUseActionInProgress");
 	[SchemaMember("CCSPlayerPawn", "m_iBlockingUseActionInProgress")]
-	public ref CSPlayerBlockingUseAction_t BlockingUseActionInProgress => ref Schema.GetRef<CSPlayerBlockingUseAction_t>(this.Handle, "CCSPlayerPawn", "m_iBlockingUseActionInProgress");
+	public ref CSPlayerBlockingUseAction_t BlockingUseActionInProgress => ref __m_iBlockingUseActionInProgress.GetRef(this.Handle);
 
 	// m_flEmitSoundTime
+	private static readonly SchemaField<float> __m_flEmitSoundTime = new("CCSPlayerPawn", "m_flEmitSoundTime");
 	[SchemaMember("CCSPlayerPawn", "m_flEmitSoundTime")]
-	public ref float EmitSoundTime => ref Schema.GetRef<float>(this.Handle, "CCSPlayerPawn", "m_flEmitSoundTime");
+	public ref float EmitSoundTime => ref __m_flEmitSoundTime.GetRef(this.Handle);
 
 	// m_bInNoDefuseArea
+	private static readonly SchemaField<bool> __m_bInNoDefuseArea = new("CCSPlayerPawn", "m_bInNoDefuseArea");
 	[SchemaMember("CCSPlayerPawn", "m_bInNoDefuseArea")]
-	public ref bool InNoDefuseArea => ref Schema.GetRef<bool>(this.Handle, "CCSPlayerPawn", "m_bInNoDefuseArea");
+	public ref bool InNoDefuseArea => ref __m_bInNoDefuseArea.GetRef(this.Handle);
 
 	// m_iBombSiteIndex
 	[SchemaMember("CCSPlayerPawn", "m_iBombSiteIndex")]
 	public CEntityIndex BombSiteIndex => Schema.GetDeclaredClass<CEntityIndex>(this.Handle, "CCSPlayerPawn", "m_iBombSiteIndex");
 
 	// m_nWhichBombZone
+	private static readonly SchemaField<Int32> __m_nWhichBombZone = new("CCSPlayerPawn", "m_nWhichBombZone");
 	[SchemaMember("CCSPlayerPawn", "m_nWhichBombZone")]
-	public ref Int32 WhichBombZone => ref Schema.GetRef<Int32>(this.Handle, "CCSPlayerPawn", "m_nWhichBombZone");
+	public ref Int32 WhichBombZone => ref __m_nWhichBombZone.GetRef(this.Handle);
 
 	// m_bInBombZoneTrigger
+	private static readonly SchemaField<bool> __m_bInBombZoneTrigger = new("CCSPlayerPawn", "m_bInBombZoneTrigger");
 	[SchemaMember("CCSPlayerPawn", "m_bInBombZoneTrigger")]
-	public ref bool InBombZoneTrigger => ref Schema.GetRef<bool>(this.Handle, "CCSPlayerPawn", "m_bInBombZoneTrigger");
+	public ref bool InBombZoneTrigger => ref __m_bInBombZoneTrigger.GetRef(this.Handle);
 
 	// m_bWasInBombZoneTrigger
+	private static readonly SchemaField<bool> __m_bWasInBombZoneTrigger = new("CCSPlayerPawn", "m_bWasInBombZoneTrigger");
 	[SchemaMember("CCSPlayerPawn", "m_bWasInBombZoneTrigger")]
-	public ref bool WasInBombZoneTrigger => ref Schema.GetRef<bool>(this.Handle, "CCSPlayerPawn", "m_bWasInBombZoneTrigger");
+	public ref bool WasInBombZoneTrigger => ref __m_bWasInBombZoneTrigger.GetRef(this.Handle);
 
 	// m_iShotsFired
+	private static readonly SchemaField<Int32> __m_iShotsFired = new("CCSPlayerPawn", "m_iShotsFired");
 	[SchemaMember("CCSPlayerPawn", "m_iShotsFired")]
-	public ref Int32 ShotsFired => ref Schema.GetRef<Int32>(this.Handle, "CCSPlayerPawn", "m_iShotsFired");
+	public ref Int32 ShotsFired => ref __m_iShotsFired.GetRef(this.Handle);
 
 	// m_flFlinchStack
+	private static readonly SchemaField<float> __m_flFlinchStack = new("CCSPlayerPawn", "m_flFlinchStack");
 	[SchemaMember("CCSPlayerPawn", "m_flFlinchStack")]
-	public ref float FlinchStack => ref Schema.GetRef<float>(this.Handle, "CCSPlayerPawn", "m_flFlinchStack");
+	public ref float FlinchStack => ref __m_flFlinchStack.GetRef(this.Handle);
 
 	// m_flVelocityModifier
+	private static readonly SchemaField<float> __m_flVelocityModifier = new("CCSPlayerPawn", "m_flVelocityModifier");
 	[SchemaMember("CCSPlayerPawn", "m_flVelocityModifier")]
-	public ref float VelocityModifier => ref Schema.GetRef<float>(this.Handle, "CCSPlayerPawn", "m_flVelocityModifier");
+	public ref float VelocityModifier => ref __m_flVelocityModifier.GetRef(this.Handle);
 
 	// m_vecTotalBulletForce
 	[SchemaMember("CCSPlayerPawn", "m_vecTotalBulletForce")]
 	public Vector TotalBulletForce => Schema.GetDeclaredClass<Vector>(this.Handle, "CCSPlayerPawn", "m_vecTotalBulletForce");
 
 	// m_bWaitForNoAttack
+	private static readonly SchemaField<bool> __m_bWaitForNoAttack = new("CCSPlayerPawn", "m_bWaitForNoAttack");
 	[SchemaMember("CCSPlayerPawn", "m_bWaitForNoAttack")]
-	public ref bool WaitForNoAttack => ref Schema.GetRef<bool>(this.Handle, "CCSPlayerPawn", "m_bWaitForNoAttack");
+	public ref bool WaitForNoAttack => ref __m_bWaitForNoAttack.GetRef(this.Handle);
 
 	// m_ignoreLadderJumpTime
+	private static readonly SchemaField<float> __m_ignoreLadderJumpTime = new("CCSPlayerPawn", "m_ignoreLadderJumpTime");
 	[SchemaMember("CCSPlayerPawn", "m_ignoreLadderJumpTime")]
-	public ref float IgnoreLadderJumpTime => ref Schema.GetRef<float>(this.Handle, "CCSPlayerPawn", "m_ignoreLadderJumpTime");
+	public ref float IgnoreLadderJumpTime => ref __m_ignoreLadderJumpTime.GetRef(this.Handle);
 
 	// m_bKilledByHeadshot
+	private static readonly SchemaField<bool> __m_bKilledByHeadshot = new("CCSPlayerPawn", "m_bKilledByHeadshot");
 	[SchemaMember("CCSPlayerPawn", "m_bKilledByHeadshot")]
-	public ref bool KilledByHeadshot => ref Schema.GetRef<bool>(this.Handle, "CCSPlayerPawn", "m_bKilledByHeadshot");
+	public ref bool KilledByHeadshot => ref __m_bKilledByHeadshot.GetRef(this.Handle);
 
 	// m_LastHitBox
+	private static readonly SchemaField<Int32> __m_LastHitBox = new("CCSPlayerPawn", "m_LastHitBox");
 	[SchemaMember("CCSPlayerPawn", "m_LastHitBox")]
-	public ref Int32 LastHitBox => ref Schema.GetRef<Int32>(this.Handle, "CCSPlayerPawn", "m_LastHitBox");
+	public ref Int32 LastHitBox => ref __m_LastHitBox.GetRef(this.Handle);
 
 	// m_pBot
 	[SchemaMember("CCSPlayerPawn", "m_pBot")]
 	public CCSBot? Bot => Schema.GetPointer<CCSBot>(this.Handle, "CCSPlayerPawn", "m_pBot");
 
 	// m_bBotAllowActive
+	private static readonly SchemaField<bool> __m_bBotAllowActive = new("CCSPlayerPawn", "m_bBotAllowActive");
 	[SchemaMember("CCSPlayerPawn", "m_bBotAllowActive")]
-	public ref bool BotAllowActive => ref Schema.GetRef<bool>(this.Handle, "CCSPlayerPawn", "m_bBotAllowActive");
+	public ref bool BotAllowActive => ref __m_bBotAllowActive.GetRef(this.Handle);
 
 	// m_nLastPickupPriority
+	private static readonly SchemaField<Int32> __m_nLastPickupPriority = new("CCSPlayerPawn", "m_nLastPickupPriority");
 	[SchemaMember("CCSPlayerPawn", "m_nLastPickupPriority")]
-	public ref Int32 LastPickupPriority => ref Schema.GetRef<Int32>(this.Handle, "CCSPlayerPawn", "m_nLastPickupPriority");
+	public ref Int32 LastPickupPriority => ref __m_nLastPickupPriority.GetRef(this.Handle);
 
 	// m_flLastPickupPriorityTime
+	private static readonly SchemaField<float> __m_flLastPickupPriorityTime = new("CCSPlayerPawn", "m_flLastPickupPriorityTime");
 	[SchemaMember("CCSPlayerPawn", "m_flLastPickupPriorityTime")]
-	public ref float LastPickupPriorityTime => ref Schema.GetRef<float>(this.Handle, "CCSPlayerPawn", "m_flLastPickupPriorityTime");
+	public ref float LastPickupPriorityTime => ref __m_flLastPickupPriorityTime.GetRef(this.Handle);
 
 	// m_ArmorValue
+	private static readonly SchemaField<Int32> __m_ArmorValue = new("CCSPlayerPawn", "m_ArmorValue");
 	[SchemaMember("CCSPlayerPawn", "m_ArmorValue")]
-	public ref Int32 ArmorValue => ref Schema.GetRef<Int32>(this.Handle, "CCSPlayerPawn", "m_ArmorValue");
+	public ref Int32 ArmorValue => ref __m_ArmorValue.GetRef(this.Handle);
 
 	// m_unCurrentEquipmentValue
+	private static readonly SchemaField<UInt16> __m_unCurrentEquipmentValue = new("CCSPlayerPawn", "m_unCurrentEquipmentValue");
 	[SchemaMember("CCSPlayerPawn", "m_unCurrentEquipmentValue")]
-	public ref UInt16 CurrentEquipmentValue => ref Schema.GetRef<UInt16>(this.Handle, "CCSPlayerPawn", "m_unCurrentEquipmentValue");
+	public ref UInt16 CurrentEquipmentValue => ref __m_unCurrentEquipmentValue.GetRef(this.Handle);
 
 	// m_unRoundStartEquipmentValue
+	private static readonly SchemaField<UInt16> __m_unRoundStartEquipmentValue = new("CCSPlayerPawn", "m_unRoundStartEquipmentValue");
 	[SchemaMember("CCSPlayerPawn", "m_unRoundStartEquipmentValue")]
-	public ref UInt16 RoundStartEquipmentValue => ref Schema.GetRef<UInt16>(this.Handle, "CCSPlayerPawn", "m_unRoundStartEquipmentValue");
+	public ref UInt16 RoundStartEquipmentValue => ref __m_unRoundStartEquipmentValue.GetRef(this.Handle);
 
 	// m_unFreezetimeEndEquipmentValue
+	private static readonly SchemaField<UInt16> __m_unFreezetimeEndEquipmentValue = new("CCSPlayerPawn", "m_unFreezetimeEndEquipmentValue");
 	[SchemaMember("CCSPlayerPawn", "m_unFreezetimeEndEquipmentValue")]
-	public ref UInt16 FreezetimeEndEquipmentValue => ref Schema.GetRef<UInt16>(this.Handle, "CCSPlayerPawn", "m_unFreezetimeEndEquipmentValue");
+	public ref UInt16 FreezetimeEndEquipmentValue => ref __m_unFreezetimeEndEquipmentValue.GetRef(this.Handle);
 
 	// m_iLastWeaponFireUsercmd
+	private static readonly SchemaField<Int32> __m_iLastWeaponFireUsercmd = new("CCSPlayerPawn", "m_iLastWeaponFireUsercmd");
 	[SchemaMember("CCSPlayerPawn", "m_iLastWeaponFireUsercmd")]
-	public ref Int32 LastWeaponFireUsercmd => ref Schema.GetRef<Int32>(this.Handle, "CCSPlayerPawn", "m_iLastWeaponFireUsercmd");
+	public ref Int32 LastWeaponFireUsercmd => ref __m_iLastWeaponFireUsercmd.GetRef(this.Handle);
 
 	// m_bIsSpawning
+	private static readonly SchemaField<bool> __m_bIsSpawning = new("CCSPlayerPawn", "m_bIsSpawning");
 	[SchemaMember("CCSPlayerPawn", "m_bIsSpawning")]
-	public ref bool IsSpawning => ref Schema.GetRef<bool>(this.Handle, "CCSPlayerPawn", "m_bIsSpawning");
+	public ref bool IsSpawning => ref __m_bIsSpawning.GetRef(this.Handle);
 
 	// m_iDeathFlags
+	private static readonly SchemaField<Int32> __m_iDeathFlags = new("CCSPlayerPawn", "m_iDeathFlags");
 	[SchemaMember("CCSPlayerPawn", "m_iDeathFlags")]
-	public ref Int32 DeathFlags => ref Schema.GetRef<Int32>(this.Handle, "CCSPlayerPawn", "m_iDeathFlags");
+	public ref Int32 DeathFlags => ref __m_iDeathFlags.GetRef(this.Handle);
 
 	// m_bHasDeathInfo
+	private static readonly SchemaField<bool> __m_bHasDeathInfo = new("CCSPlayerPawn", "m_bHasDeathInfo");
 	[SchemaMember("CCSPlayerPawn", "m_bHasDeathInfo")]
-	public ref bool HasDeathInfo => ref Schema.GetRef<bool>(this.Handle, "CCSPlayerPawn", "m_bHasDeathInfo");
+	public ref bool HasDeathInfo => ref __m_bHasDeathInfo.GetRef(this.Handle);
 
 	// m_flDeathInfoTime
+	private static readonly SchemaField<float> __m_flDeathInfoTime = new("CCSPlayerPawn", "m_flDeathInfoTime");
 	[SchemaMember("CCSPlayerPawn", "m_flDeathInfoTime")]
-	public ref float DeathInfoTime => ref Schema.GetRef<float>(this.Handle, "CCSPlayerPawn", "m_flDeathInfoTime");
+	public ref float DeathInfoTime => ref __m_flDeathInfoTime.GetRef(this.Handle);
 
 	// m_vecDeathInfoOrigin
 	[SchemaMember("CCSPlayerPawn", "m_vecDeathInfoOrigin")]
@@ -415,12 +485,14 @@ public partial class CCSPlayerPawn : CCSPlayerPawnBase
 	}
 
 	// m_grenadeParameterStashTime
+	private static readonly SchemaField<float> __m_grenadeParameterStashTime = new("CCSPlayerPawn", "m_grenadeParameterStashTime");
 	[SchemaMember("CCSPlayerPawn", "m_grenadeParameterStashTime")]
-	public ref float GrenadeParameterStashTime => ref Schema.GetRef<float>(this.Handle, "CCSPlayerPawn", "m_grenadeParameterStashTime");
+	public ref float GrenadeParameterStashTime => ref __m_grenadeParameterStashTime.GetRef(this.Handle);
 
 	// m_bGrenadeParametersStashed
+	private static readonly SchemaField<bool> __m_bGrenadeParametersStashed = new("CCSPlayerPawn", "m_bGrenadeParametersStashed");
 	[SchemaMember("CCSPlayerPawn", "m_bGrenadeParametersStashed")]
-	public ref bool GrenadeParametersStashed => ref Schema.GetRef<bool>(this.Handle, "CCSPlayerPawn", "m_bGrenadeParametersStashed");
+	public ref bool GrenadeParametersStashed => ref __m_bGrenadeParametersStashed.GetRef(this.Handle);
 
 	// m_angStashedShootAngles
 	[SchemaMember("CCSPlayerPawn", "m_angStashedShootAngles")]
@@ -439,24 +511,29 @@ public partial class CCSPlayerPawn : CCSPlayerPawnBase
 	public Vector StashedVelocity => Schema.GetDeclaredClass<Vector>(this.Handle, "CCSPlayerPawn", "m_vecStashedVelocity");
 
 	// m_bCommittingSuicideOnTeamChange
+	private static readonly SchemaField<bool> __m_bCommittingSuicideOnTeamChange = new("CCSPlayerPawn", "m_bCommittingSuicideOnTeamChange");
 	[SchemaMember("CCSPlayerPawn", "m_bCommittingSuicideOnTeamChange")]
-	public ref bool CommittingSuicideOnTeamChange => ref Schema.GetRef<bool>(this.Handle, "CCSPlayerPawn", "m_bCommittingSuicideOnTeamChange");
+	public ref bool CommittingSuicideOnTeamChange => ref __m_bCommittingSuicideOnTeamChange.GetRef(this.Handle);
 
 	// m_wasNotKilledNaturally
+	private static readonly SchemaField<bool> __m_wasNotKilledNaturally = new("CCSPlayerPawn", "m_wasNotKilledNaturally");
 	[SchemaMember("CCSPlayerPawn", "m_wasNotKilledNaturally")]
-	public ref bool WasNotKilledNaturally => ref Schema.GetRef<bool>(this.Handle, "CCSPlayerPawn", "m_wasNotKilledNaturally");
+	public ref bool WasNotKilledNaturally => ref __m_wasNotKilledNaturally.GetRef(this.Handle);
 
 	// m_fImmuneToGunGameDamageTime
+	private static readonly SchemaField<float> __m_fImmuneToGunGameDamageTime = new("CCSPlayerPawn", "m_fImmuneToGunGameDamageTime");
 	[SchemaMember("CCSPlayerPawn", "m_fImmuneToGunGameDamageTime")]
-	public ref float ImmuneToGunGameDamageTime => ref Schema.GetRef<float>(this.Handle, "CCSPlayerPawn", "m_fImmuneToGunGameDamageTime");
+	public ref float ImmuneToGunGameDamageTime => ref __m_fImmuneToGunGameDamageTime.GetRef(this.Handle);
 
 	// m_bGunGameImmunity
+	private static readonly SchemaField<bool> __m_bGunGameImmunity = new("CCSPlayerPawn", "m_bGunGameImmunity");
 	[SchemaMember("CCSPlayerPawn", "m_bGunGameImmunity")]
-	public ref bool GunGameImmunity => ref Schema.GetRef<bool>(this.Handle, "CCSPlayerPawn", "m_bGunGameImmunity");
+	public ref bool GunGameImmunity => ref __m_bGunGameImmunity.GetRef(this.Handle);
 
 	// m_fMolotovDamageTime
+	private static readonly SchemaField<float> __m_fMolotovDamageTime = new("CCSPlayerPawn", "m_fMolotovDamageTime");
 	[SchemaMember("CCSPlayerPawn", "m_fMolotovDamageTime")]
-	public ref float MolotovDamageTime => ref Schema.GetRef<float>(this.Handle, "CCSPlayerPawn", "m_fMolotovDamageTime");
+	public ref float MolotovDamageTime => ref __m_fMolotovDamageTime.GetRef(this.Handle);
 
 	// m_angEyeAngles
 	[SchemaMember("CCSPlayerPawn", "m_angEyeAngles")]

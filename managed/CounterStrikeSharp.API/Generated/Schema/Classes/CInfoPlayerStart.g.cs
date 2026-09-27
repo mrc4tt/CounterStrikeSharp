@@ -19,12 +19,14 @@ public partial class CInfoPlayerStart : CPointEntity
     public CInfoPlayerStart (IntPtr pointer) : base(pointer) {}
 
 	// m_bDisabled
+	private static readonly SchemaField<bool> __m_bDisabled = new("CInfoPlayerStart", "m_bDisabled");
 	[SchemaMember("CInfoPlayerStart", "m_bDisabled")]
-	public ref bool Disabled => ref Schema.GetRef<bool>(this.Handle, "CInfoPlayerStart", "m_bDisabled");
+	public ref bool Disabled => ref __m_bDisabled.GetRef(this.Handle);
 
 	// m_bIsMaster
+	private static readonly SchemaField<bool> __m_bIsMaster = new("CInfoPlayerStart", "m_bIsMaster");
 	[SchemaMember("CInfoPlayerStart", "m_bIsMaster")]
-	public ref bool IsMaster => ref Schema.GetRef<bool>(this.Handle, "CInfoPlayerStart", "m_bIsMaster");
+	public ref bool IsMaster => ref __m_bIsMaster.GetRef(this.Handle);
 
 	// m_pPawnSubclass
 	[SchemaMember("CInfoPlayerStart", "m_pPawnSubclass")]

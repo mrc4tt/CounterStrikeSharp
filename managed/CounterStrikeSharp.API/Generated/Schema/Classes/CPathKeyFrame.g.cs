@@ -39,8 +39,9 @@ public partial class CPathKeyFrame : CLogicalEntity
 	}
 
 	// m_flNextTime
+	private static readonly SchemaField<float> __m_flNextTime = new("CPathKeyFrame", "m_flNextTime");
 	[SchemaMember("CPathKeyFrame", "m_flNextTime")]
-	public ref float NextTime => ref Schema.GetRef<float>(this.Handle, "CPathKeyFrame", "m_flNextTime");
+	public ref float NextTime => ref __m_flNextTime.GetRef(this.Handle);
 
 	// m_pNextKey
 	[SchemaMember("CPathKeyFrame", "m_pNextKey")]
@@ -51,7 +52,8 @@ public partial class CPathKeyFrame : CLogicalEntity
 	public CHandle<CPathKeyFrame> PrevKey => Schema.GetDeclaredClass<CHandle<CPathKeyFrame>>(this.Handle, "CPathKeyFrame", "m_pPrevKey");
 
 	// m_flMoveSpeed
+	private static readonly SchemaField<float> __m_flMoveSpeed = new("CPathKeyFrame", "m_flMoveSpeed");
 	[SchemaMember("CPathKeyFrame", "m_flMoveSpeed")]
-	public ref float MoveSpeed => ref Schema.GetRef<float>(this.Handle, "CPathKeyFrame", "m_flMoveSpeed");
+	public ref float MoveSpeed => ref __m_flMoveSpeed.GetRef(this.Handle);
 
 }

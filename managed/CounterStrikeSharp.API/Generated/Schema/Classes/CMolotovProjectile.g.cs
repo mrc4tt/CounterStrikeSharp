@@ -19,12 +19,14 @@ public partial class CMolotovProjectile : CBaseCSGrenadeProjectile
     public CMolotovProjectile (IntPtr pointer) : base(pointer) {}
 
 	// m_bIsIncGrenade
+	private static readonly SchemaField<bool> __m_bIsIncGrenade = new("CMolotovProjectile", "m_bIsIncGrenade");
 	[SchemaMember("CMolotovProjectile", "m_bIsIncGrenade")]
-	public ref bool IsIncGrenade => ref Schema.GetRef<bool>(this.Handle, "CMolotovProjectile", "m_bIsIncGrenade");
+	public ref bool IsIncGrenade => ref __m_bIsIncGrenade.GetRef(this.Handle);
 
 	// m_bDetonated
+	private static readonly SchemaField<bool> __m_bDetonated = new("CMolotovProjectile", "m_bDetonated");
 	[SchemaMember("CMolotovProjectile", "m_bDetonated")]
-	public ref bool Detonated => ref Schema.GetRef<bool>(this.Handle, "CMolotovProjectile", "m_bDetonated");
+	public ref bool Detonated => ref __m_bDetonated.GetRef(this.Handle);
 
 	// m_stillTimer
 	[SchemaMember("CMolotovProjectile", "m_stillTimer")]

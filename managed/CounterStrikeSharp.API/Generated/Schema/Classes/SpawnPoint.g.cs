@@ -19,15 +19,18 @@ public partial class SpawnPoint : CServerOnlyPointEntity
     public SpawnPoint (IntPtr pointer) : base(pointer) {}
 
 	// m_iPriority
+	private static readonly SchemaField<Int32> __m_iPriority = new("SpawnPoint", "m_iPriority");
 	[SchemaMember("SpawnPoint", "m_iPriority")]
-	public ref Int32 Priority => ref Schema.GetRef<Int32>(this.Handle, "SpawnPoint", "m_iPriority");
+	public ref Int32 Priority => ref __m_iPriority.GetRef(this.Handle);
 
 	// m_bEnabled
+	private static readonly SchemaField<bool> __m_bEnabled = new("SpawnPoint", "m_bEnabled");
 	[SchemaMember("SpawnPoint", "m_bEnabled")]
-	public ref bool Enabled => ref Schema.GetRef<bool>(this.Handle, "SpawnPoint", "m_bEnabled");
+	public ref bool Enabled => ref __m_bEnabled.GetRef(this.Handle);
 
 	// m_nType
+	private static readonly SchemaField<Int32> __m_nType = new("SpawnPoint", "m_nType");
 	[SchemaMember("SpawnPoint", "m_nType")]
-	public ref Int32 Type => ref Schema.GetRef<Int32>(this.Handle, "SpawnPoint", "m_nType");
+	public ref Int32 Type => ref __m_nType.GetRef(this.Handle);
 
 }

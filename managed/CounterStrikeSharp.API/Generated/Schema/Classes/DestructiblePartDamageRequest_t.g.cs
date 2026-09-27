@@ -19,32 +19,39 @@ public partial class DestructiblePartDamageRequest_t : NativeObject
     public DestructiblePartDamageRequest_t (IntPtr pointer) : base(pointer) {}
 
 	// m_nHitGroup
+	private static readonly SchemaField<HitGroup_t> __m_nHitGroup = new("DestructiblePartDamageRequest_t", "m_nHitGroup");
 	[SchemaMember("DestructiblePartDamageRequest_t", "m_nHitGroup")]
-	public ref HitGroup_t HitGroup => ref Schema.GetRef<HitGroup_t>(this.Handle, "DestructiblePartDamageRequest_t", "m_nHitGroup");
+	public ref HitGroup_t HitGroup => ref __m_nHitGroup.GetRef(this.Handle);
 
 	// m_nDamageLevel
+	private static readonly SchemaField<Int32> __m_nDamageLevel = new("DestructiblePartDamageRequest_t", "m_nDamageLevel");
 	[SchemaMember("DestructiblePartDamageRequest_t", "m_nDamageLevel")]
-	public ref Int32 DamageLevel => ref Schema.GetRef<Int32>(this.Handle, "DestructiblePartDamageRequest_t", "m_nDamageLevel");
+	public ref Int32 DamageLevel => ref __m_nDamageLevel.GetRef(this.Handle);
 
 	// m_nDesiredHealth
+	private static readonly SchemaField<UInt16> __m_nDesiredHealth = new("DestructiblePartDamageRequest_t", "m_nDesiredHealth");
 	[SchemaMember("DestructiblePartDamageRequest_t", "m_nDesiredHealth")]
-	public ref UInt16 DesiredHealth => ref Schema.GetRef<UInt16>(this.Handle, "DestructiblePartDamageRequest_t", "m_nDesiredHealth");
+	public ref UInt16 DesiredHealth => ref __m_nDesiredHealth.GetRef(this.Handle);
 
 	// m_nDestroyFlags
+	private static readonly SchemaField<EDestructibleParts_DestroyParameterFlags> __m_nDestroyFlags = new("DestructiblePartDamageRequest_t", "m_nDestroyFlags");
 	[SchemaMember("DestructiblePartDamageRequest_t", "m_nDestroyFlags")]
-	public ref EDestructibleParts_DestroyParameterFlags DestroyFlags => ref Schema.GetRef<EDestructibleParts_DestroyParameterFlags>(this.Handle, "DestructiblePartDamageRequest_t", "m_nDestroyFlags");
+	public ref EDestructibleParts_DestroyParameterFlags DestroyFlags => ref __m_nDestroyFlags.GetRef(this.Handle);
 
 	// m_nDamageType
+	private static readonly SchemaField<DamageTypes_t> __m_nDamageType = new("DestructiblePartDamageRequest_t", "m_nDamageType");
 	[SchemaMember("DestructiblePartDamageRequest_t", "m_nDamageType")]
-	public ref DamageTypes_t DamageType => ref Schema.GetRef<DamageTypes_t>(this.Handle, "DestructiblePartDamageRequest_t", "m_nDamageType");
+	public ref DamageTypes_t DamageType => ref __m_nDamageType.GetRef(this.Handle);
 
 	// m_flBreakDamage
+	private static readonly SchemaField<float> __m_flBreakDamage = new("DestructiblePartDamageRequest_t", "m_flBreakDamage");
 	[SchemaMember("DestructiblePartDamageRequest_t", "m_flBreakDamage")]
-	public ref float BreakDamage => ref Schema.GetRef<float>(this.Handle, "DestructiblePartDamageRequest_t", "m_flBreakDamage");
+	public ref float BreakDamage => ref __m_flBreakDamage.GetRef(this.Handle);
 
 	// m_flBreakDamageRadius
+	private static readonly SchemaField<float> __m_flBreakDamageRadius = new("DestructiblePartDamageRequest_t", "m_flBreakDamageRadius");
 	[SchemaMember("DestructiblePartDamageRequest_t", "m_flBreakDamageRadius")]
-	public ref float BreakDamageRadius => ref Schema.GetRef<float>(this.Handle, "DestructiblePartDamageRequest_t", "m_flBreakDamageRadius");
+	public ref float BreakDamageRadius => ref __m_flBreakDamageRadius.GetRef(this.Handle);
 
 	// m_hAttacker
 	[SchemaMember("DestructiblePartDamageRequest_t", "m_hAttacker")]

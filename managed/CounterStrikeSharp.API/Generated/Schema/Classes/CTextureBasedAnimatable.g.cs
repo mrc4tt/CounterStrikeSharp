@@ -19,12 +19,14 @@ public partial class CTextureBasedAnimatable : CBaseModelEntity
     public CTextureBasedAnimatable (IntPtr pointer) : base(pointer) {}
 
 	// m_bLoop
+	private static readonly SchemaField<bool> __m_bLoop = new("CTextureBasedAnimatable", "m_bLoop");
 	[SchemaMember("CTextureBasedAnimatable", "m_bLoop")]
-	public ref bool Loop => ref Schema.GetRef<bool>(this.Handle, "CTextureBasedAnimatable", "m_bLoop");
+	public ref bool Loop => ref __m_bLoop.GetRef(this.Handle);
 
 	// m_flFPS
+	private static readonly SchemaField<float> __m_flFPS = new("CTextureBasedAnimatable", "m_flFPS");
 	[SchemaMember("CTextureBasedAnimatable", "m_flFPS")]
-	public ref float FPS => ref Schema.GetRef<float>(this.Handle, "CTextureBasedAnimatable", "m_flFPS");
+	public ref float FPS => ref __m_flFPS.GetRef(this.Handle);
 
 	// m_hPositionKeys
 	[SchemaMember("CTextureBasedAnimatable", "m_hPositionKeys")]
@@ -43,11 +45,13 @@ public partial class CTextureBasedAnimatable : CBaseModelEntity
 	public Vector AnimationBoundsMax => Schema.GetDeclaredClass<Vector>(this.Handle, "CTextureBasedAnimatable", "m_vAnimationBoundsMax");
 
 	// m_flStartTime
+	private static readonly SchemaField<float> __m_flStartTime = new("CTextureBasedAnimatable", "m_flStartTime");
 	[SchemaMember("CTextureBasedAnimatable", "m_flStartTime")]
-	public ref float StartTime => ref Schema.GetRef<float>(this.Handle, "CTextureBasedAnimatable", "m_flStartTime");
+	public ref float StartTime => ref __m_flStartTime.GetRef(this.Handle);
 
 	// m_flStartFrame
+	private static readonly SchemaField<float> __m_flStartFrame = new("CTextureBasedAnimatable", "m_flStartFrame");
 	[SchemaMember("CTextureBasedAnimatable", "m_flStartFrame")]
-	public ref float StartFrame => ref Schema.GetRef<float>(this.Handle, "CTextureBasedAnimatable", "m_flStartFrame");
+	public ref float StartFrame => ref __m_flStartFrame.GetRef(this.Handle);
 
 }

@@ -19,7 +19,8 @@ public partial class CCS2ChickenGraphController : CAnimGraphControllerBase
     public CCS2ChickenGraphController (IntPtr pointer) : base(pointer) {}
 
 	// m_bHasActionCompletedEvent
+	private static readonly SchemaField<bool> __m_bHasActionCompletedEvent = new("CCS2ChickenGraphController", "m_bHasActionCompletedEvent");
 	[SchemaMember("CCS2ChickenGraphController", "m_bHasActionCompletedEvent")]
-	public ref bool HasActionCompletedEvent => ref Schema.GetRef<bool>(this.Handle, "CCS2ChickenGraphController", "m_bHasActionCompletedEvent");
+	public ref bool HasActionCompletedEvent => ref __m_bHasActionCompletedEvent.GetRef(this.Handle);
 
 }

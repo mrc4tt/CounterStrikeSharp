@@ -19,12 +19,14 @@ public partial class CGunTarget : CBaseToggle
     public CGunTarget (IntPtr pointer) : base(pointer) {}
 
 	// m_flSpeed
+	private static readonly SchemaField<float> __m_flSpeed = new("CGunTarget", "m_flSpeed");
 	[SchemaMember("CGunTarget", "m_flSpeed")]
-	public ref float Speed => ref Schema.GetRef<float>(this.Handle, "CGunTarget", "m_flSpeed");
+	public ref float Speed => ref __m_flSpeed.GetRef(this.Handle);
 
 	// m_on
+	private static readonly SchemaField<bool> __m_on = new("CGunTarget", "m_on");
 	[SchemaMember("CGunTarget", "m_on")]
-	public ref bool On => ref Schema.GetRef<bool>(this.Handle, "CGunTarget", "m_on");
+	public ref bool On => ref __m_on.GetRef(this.Handle);
 
 	// m_hTargetEnt
 	[SchemaMember("CGunTarget", "m_hTargetEnt")]

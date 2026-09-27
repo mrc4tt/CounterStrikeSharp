@@ -39,88 +39,108 @@ public partial class CLightComponent : CEntityComponent
 	}
 
 	// m_flBrightness
+	private static readonly SchemaField<float> __m_flBrightness = new("CLightComponent", "m_flBrightness");
 	[SchemaMember("CLightComponent", "m_flBrightness")]
-	public ref float Brightness => ref Schema.GetRef<float>(this.Handle, "CLightComponent", "m_flBrightness");
+	public ref float Brightness => ref __m_flBrightness.GetRef(this.Handle);
 
 	// m_flBrightnessScale
+	private static readonly SchemaField<float> __m_flBrightnessScale = new("CLightComponent", "m_flBrightnessScale");
 	[SchemaMember("CLightComponent", "m_flBrightnessScale")]
-	public ref float BrightnessScale => ref Schema.GetRef<float>(this.Handle, "CLightComponent", "m_flBrightnessScale");
+	public ref float BrightnessScale => ref __m_flBrightnessScale.GetRef(this.Handle);
 
 	// m_flBrightnessMult
+	private static readonly SchemaField<float> __m_flBrightnessMult = new("CLightComponent", "m_flBrightnessMult");
 	[SchemaMember("CLightComponent", "m_flBrightnessMult")]
-	public ref float BrightnessMult => ref Schema.GetRef<float>(this.Handle, "CLightComponent", "m_flBrightnessMult");
+	public ref float BrightnessMult => ref __m_flBrightnessMult.GetRef(this.Handle);
 
 	// m_flRange
+	private static readonly SchemaField<float> __m_flRange = new("CLightComponent", "m_flRange");
 	[SchemaMember("CLightComponent", "m_flRange")]
-	public ref float Range => ref Schema.GetRef<float>(this.Handle, "CLightComponent", "m_flRange");
+	public ref float Range => ref __m_flRange.GetRef(this.Handle);
 
 	// m_flFalloff
+	private static readonly SchemaField<float> __m_flFalloff = new("CLightComponent", "m_flFalloff");
 	[SchemaMember("CLightComponent", "m_flFalloff")]
-	public ref float Falloff => ref Schema.GetRef<float>(this.Handle, "CLightComponent", "m_flFalloff");
+	public ref float Falloff => ref __m_flFalloff.GetRef(this.Handle);
 
 	// m_flAttenuation0
+	private static readonly SchemaField<float> __m_flAttenuation0 = new("CLightComponent", "m_flAttenuation0");
 	[SchemaMember("CLightComponent", "m_flAttenuation0")]
-	public ref float Attenuation0 => ref Schema.GetRef<float>(this.Handle, "CLightComponent", "m_flAttenuation0");
+	public ref float Attenuation0 => ref __m_flAttenuation0.GetRef(this.Handle);
 
 	// m_flAttenuation1
+	private static readonly SchemaField<float> __m_flAttenuation1 = new("CLightComponent", "m_flAttenuation1");
 	[SchemaMember("CLightComponent", "m_flAttenuation1")]
-	public ref float Attenuation1 => ref Schema.GetRef<float>(this.Handle, "CLightComponent", "m_flAttenuation1");
+	public ref float Attenuation1 => ref __m_flAttenuation1.GetRef(this.Handle);
 
 	// m_flAttenuation2
+	private static readonly SchemaField<float> __m_flAttenuation2 = new("CLightComponent", "m_flAttenuation2");
 	[SchemaMember("CLightComponent", "m_flAttenuation2")]
-	public ref float Attenuation2 => ref Schema.GetRef<float>(this.Handle, "CLightComponent", "m_flAttenuation2");
+	public ref float Attenuation2 => ref __m_flAttenuation2.GetRef(this.Handle);
 
 	// m_flTheta
+	private static readonly SchemaField<float> __m_flTheta = new("CLightComponent", "m_flTheta");
 	[SchemaMember("CLightComponent", "m_flTheta")]
-	public ref float Theta => ref Schema.GetRef<float>(this.Handle, "CLightComponent", "m_flTheta");
+	public ref float Theta => ref __m_flTheta.GetRef(this.Handle);
 
 	// m_flPhi
+	private static readonly SchemaField<float> __m_flPhi = new("CLightComponent", "m_flPhi");
 	[SchemaMember("CLightComponent", "m_flPhi")]
-	public ref float Phi => ref Schema.GetRef<float>(this.Handle, "CLightComponent", "m_flPhi");
+	public ref float Phi => ref __m_flPhi.GetRef(this.Handle);
 
 	// m_hLightCookie
 	[SchemaMember("CLightComponent", "m_hLightCookie")]
 	public CStrongHandle<InfoForResourceTypeCTextureBase> LightCookie => Schema.GetDeclaredClass<CStrongHandle<InfoForResourceTypeCTextureBase>>(this.Handle, "CLightComponent", "m_hLightCookie");
 
 	// m_nCascades
+	private static readonly SchemaField<Int32> __m_nCascades = new("CLightComponent", "m_nCascades");
 	[SchemaMember("CLightComponent", "m_nCascades")]
-	public ref Int32 Cascades => ref Schema.GetRef<Int32>(this.Handle, "CLightComponent", "m_nCascades");
+	public ref Int32 Cascades => ref __m_nCascades.GetRef(this.Handle);
 
 	// m_nCastShadows
+	private static readonly SchemaField<Int32> __m_nCastShadows = new("CLightComponent", "m_nCastShadows");
 	[SchemaMember("CLightComponent", "m_nCastShadows")]
-	public ref Int32 CastShadows => ref Schema.GetRef<Int32>(this.Handle, "CLightComponent", "m_nCastShadows");
+	public ref Int32 CastShadows => ref __m_nCastShadows.GetRef(this.Handle);
 
 	// m_nShadowWidth
+	private static readonly SchemaField<Int32> __m_nShadowWidth = new("CLightComponent", "m_nShadowWidth");
 	[SchemaMember("CLightComponent", "m_nShadowWidth")]
-	public ref Int32 ShadowWidth => ref Schema.GetRef<Int32>(this.Handle, "CLightComponent", "m_nShadowWidth");
+	public ref Int32 ShadowWidth => ref __m_nShadowWidth.GetRef(this.Handle);
 
 	// m_nShadowHeight
+	private static readonly SchemaField<Int32> __m_nShadowHeight = new("CLightComponent", "m_nShadowHeight");
 	[SchemaMember("CLightComponent", "m_nShadowHeight")]
-	public ref Int32 ShadowHeight => ref Schema.GetRef<Int32>(this.Handle, "CLightComponent", "m_nShadowHeight");
+	public ref Int32 ShadowHeight => ref __m_nShadowHeight.GetRef(this.Handle);
 
 	// m_bRenderDiffuse
+	private static readonly SchemaField<bool> __m_bRenderDiffuse = new("CLightComponent", "m_bRenderDiffuse");
 	[SchemaMember("CLightComponent", "m_bRenderDiffuse")]
-	public ref bool RenderDiffuse => ref Schema.GetRef<bool>(this.Handle, "CLightComponent", "m_bRenderDiffuse");
+	public ref bool RenderDiffuse => ref __m_bRenderDiffuse.GetRef(this.Handle);
 
 	// m_nRenderSpecular
+	private static readonly SchemaField<Int32> __m_nRenderSpecular = new("CLightComponent", "m_nRenderSpecular");
 	[SchemaMember("CLightComponent", "m_nRenderSpecular")]
-	public ref Int32 RenderSpecular => ref Schema.GetRef<Int32>(this.Handle, "CLightComponent", "m_nRenderSpecular");
+	public ref Int32 RenderSpecular => ref __m_nRenderSpecular.GetRef(this.Handle);
 
 	// m_bRenderTransmissive
+	private static readonly SchemaField<bool> __m_bRenderTransmissive = new("CLightComponent", "m_bRenderTransmissive");
 	[SchemaMember("CLightComponent", "m_bRenderTransmissive")]
-	public ref bool RenderTransmissive => ref Schema.GetRef<bool>(this.Handle, "CLightComponent", "m_bRenderTransmissive");
+	public ref bool RenderTransmissive => ref __m_bRenderTransmissive.GetRef(this.Handle);
 
 	// m_flOrthoLightWidth
+	private static readonly SchemaField<float> __m_flOrthoLightWidth = new("CLightComponent", "m_flOrthoLightWidth");
 	[SchemaMember("CLightComponent", "m_flOrthoLightWidth")]
-	public ref float OrthoLightWidth => ref Schema.GetRef<float>(this.Handle, "CLightComponent", "m_flOrthoLightWidth");
+	public ref float OrthoLightWidth => ref __m_flOrthoLightWidth.GetRef(this.Handle);
 
 	// m_flOrthoLightHeight
+	private static readonly SchemaField<float> __m_flOrthoLightHeight = new("CLightComponent", "m_flOrthoLightHeight");
 	[SchemaMember("CLightComponent", "m_flOrthoLightHeight")]
-	public ref float OrthoLightHeight => ref Schema.GetRef<float>(this.Handle, "CLightComponent", "m_flOrthoLightHeight");
+	public ref float OrthoLightHeight => ref __m_flOrthoLightHeight.GetRef(this.Handle);
 
 	// m_nStyle
+	private static readonly SchemaField<Int32> __m_nStyle = new("CLightComponent", "m_nStyle");
 	[SchemaMember("CLightComponent", "m_nStyle")]
-	public ref Int32 Style => ref Schema.GetRef<Int32>(this.Handle, "CLightComponent", "m_nStyle");
+	public ref Int32 Style => ref __m_nStyle.GetRef(this.Handle);
 
 	// m_Pattern
 	[SchemaMember("CLightComponent", "m_Pattern")]
@@ -131,116 +151,144 @@ public partial class CLightComponent : CEntityComponent
 	}
 
 	// m_nCascadeRenderStaticObjects
+	private static readonly SchemaField<Int32> __m_nCascadeRenderStaticObjects = new("CLightComponent", "m_nCascadeRenderStaticObjects");
 	[SchemaMember("CLightComponent", "m_nCascadeRenderStaticObjects")]
-	public ref Int32 CascadeRenderStaticObjects => ref Schema.GetRef<Int32>(this.Handle, "CLightComponent", "m_nCascadeRenderStaticObjects");
+	public ref Int32 CascadeRenderStaticObjects => ref __m_nCascadeRenderStaticObjects.GetRef(this.Handle);
 
 	// m_flShadowCascadeCrossFade
+	private static readonly SchemaField<float> __m_flShadowCascadeCrossFade = new("CLightComponent", "m_flShadowCascadeCrossFade");
 	[SchemaMember("CLightComponent", "m_flShadowCascadeCrossFade")]
-	public ref float ShadowCascadeCrossFade => ref Schema.GetRef<float>(this.Handle, "CLightComponent", "m_flShadowCascadeCrossFade");
+	public ref float ShadowCascadeCrossFade => ref __m_flShadowCascadeCrossFade.GetRef(this.Handle);
 
 	// m_flShadowCascadeDistanceFade
+	private static readonly SchemaField<float> __m_flShadowCascadeDistanceFade = new("CLightComponent", "m_flShadowCascadeDistanceFade");
 	[SchemaMember("CLightComponent", "m_flShadowCascadeDistanceFade")]
-	public ref float ShadowCascadeDistanceFade => ref Schema.GetRef<float>(this.Handle, "CLightComponent", "m_flShadowCascadeDistanceFade");
+	public ref float ShadowCascadeDistanceFade => ref __m_flShadowCascadeDistanceFade.GetRef(this.Handle);
 
 	// m_flShadowCascadeDistance0
+	private static readonly SchemaField<float> __m_flShadowCascadeDistance0 = new("CLightComponent", "m_flShadowCascadeDistance0");
 	[SchemaMember("CLightComponent", "m_flShadowCascadeDistance0")]
-	public ref float ShadowCascadeDistance0 => ref Schema.GetRef<float>(this.Handle, "CLightComponent", "m_flShadowCascadeDistance0");
+	public ref float ShadowCascadeDistance0 => ref __m_flShadowCascadeDistance0.GetRef(this.Handle);
 
 	// m_flShadowCascadeDistance1
+	private static readonly SchemaField<float> __m_flShadowCascadeDistance1 = new("CLightComponent", "m_flShadowCascadeDistance1");
 	[SchemaMember("CLightComponent", "m_flShadowCascadeDistance1")]
-	public ref float ShadowCascadeDistance1 => ref Schema.GetRef<float>(this.Handle, "CLightComponent", "m_flShadowCascadeDistance1");
+	public ref float ShadowCascadeDistance1 => ref __m_flShadowCascadeDistance1.GetRef(this.Handle);
 
 	// m_flShadowCascadeDistance2
+	private static readonly SchemaField<float> __m_flShadowCascadeDistance2 = new("CLightComponent", "m_flShadowCascadeDistance2");
 	[SchemaMember("CLightComponent", "m_flShadowCascadeDistance2")]
-	public ref float ShadowCascadeDistance2 => ref Schema.GetRef<float>(this.Handle, "CLightComponent", "m_flShadowCascadeDistance2");
+	public ref float ShadowCascadeDistance2 => ref __m_flShadowCascadeDistance2.GetRef(this.Handle);
 
 	// m_flShadowCascadeDistance3
+	private static readonly SchemaField<float> __m_flShadowCascadeDistance3 = new("CLightComponent", "m_flShadowCascadeDistance3");
 	[SchemaMember("CLightComponent", "m_flShadowCascadeDistance3")]
-	public ref float ShadowCascadeDistance3 => ref Schema.GetRef<float>(this.Handle, "CLightComponent", "m_flShadowCascadeDistance3");
+	public ref float ShadowCascadeDistance3 => ref __m_flShadowCascadeDistance3.GetRef(this.Handle);
 
 	// m_nShadowCascadeResolution0
+	private static readonly SchemaField<Int32> __m_nShadowCascadeResolution0 = new("CLightComponent", "m_nShadowCascadeResolution0");
 	[SchemaMember("CLightComponent", "m_nShadowCascadeResolution0")]
-	public ref Int32 ShadowCascadeResolution0 => ref Schema.GetRef<Int32>(this.Handle, "CLightComponent", "m_nShadowCascadeResolution0");
+	public ref Int32 ShadowCascadeResolution0 => ref __m_nShadowCascadeResolution0.GetRef(this.Handle);
 
 	// m_nShadowCascadeResolution1
+	private static readonly SchemaField<Int32> __m_nShadowCascadeResolution1 = new("CLightComponent", "m_nShadowCascadeResolution1");
 	[SchemaMember("CLightComponent", "m_nShadowCascadeResolution1")]
-	public ref Int32 ShadowCascadeResolution1 => ref Schema.GetRef<Int32>(this.Handle, "CLightComponent", "m_nShadowCascadeResolution1");
+	public ref Int32 ShadowCascadeResolution1 => ref __m_nShadowCascadeResolution1.GetRef(this.Handle);
 
 	// m_nShadowCascadeResolution2
+	private static readonly SchemaField<Int32> __m_nShadowCascadeResolution2 = new("CLightComponent", "m_nShadowCascadeResolution2");
 	[SchemaMember("CLightComponent", "m_nShadowCascadeResolution2")]
-	public ref Int32 ShadowCascadeResolution2 => ref Schema.GetRef<Int32>(this.Handle, "CLightComponent", "m_nShadowCascadeResolution2");
+	public ref Int32 ShadowCascadeResolution2 => ref __m_nShadowCascadeResolution2.GetRef(this.Handle);
 
 	// m_nShadowCascadeResolution3
+	private static readonly SchemaField<Int32> __m_nShadowCascadeResolution3 = new("CLightComponent", "m_nShadowCascadeResolution3");
 	[SchemaMember("CLightComponent", "m_nShadowCascadeResolution3")]
-	public ref Int32 ShadowCascadeResolution3 => ref Schema.GetRef<Int32>(this.Handle, "CLightComponent", "m_nShadowCascadeResolution3");
+	public ref Int32 ShadowCascadeResolution3 => ref __m_nShadowCascadeResolution3.GetRef(this.Handle);
 
 	// m_bUsesBakedShadowing
+	private static readonly SchemaField<bool> __m_bUsesBakedShadowing = new("CLightComponent", "m_bUsesBakedShadowing");
 	[SchemaMember("CLightComponent", "m_bUsesBakedShadowing")]
-	public ref bool UsesBakedShadowing => ref Schema.GetRef<bool>(this.Handle, "CLightComponent", "m_bUsesBakedShadowing");
+	public ref bool UsesBakedShadowing => ref __m_bUsesBakedShadowing.GetRef(this.Handle);
 
 	// m_nShadowPriority
+	private static readonly SchemaField<Int32> __m_nShadowPriority = new("CLightComponent", "m_nShadowPriority");
 	[SchemaMember("CLightComponent", "m_nShadowPriority")]
-	public ref Int32 ShadowPriority => ref Schema.GetRef<Int32>(this.Handle, "CLightComponent", "m_nShadowPriority");
+	public ref Int32 ShadowPriority => ref __m_nShadowPriority.GetRef(this.Handle);
 
 	// m_nBakedShadowIndex
+	private static readonly SchemaField<Int32> __m_nBakedShadowIndex = new("CLightComponent", "m_nBakedShadowIndex");
 	[SchemaMember("CLightComponent", "m_nBakedShadowIndex")]
-	public ref Int32 BakedShadowIndex => ref Schema.GetRef<Int32>(this.Handle, "CLightComponent", "m_nBakedShadowIndex");
+	public ref Int32 BakedShadowIndex => ref __m_nBakedShadowIndex.GetRef(this.Handle);
 
 	// m_nLightPathUniqueId
+	private static readonly SchemaField<Int32> __m_nLightPathUniqueId = new("CLightComponent", "m_nLightPathUniqueId");
 	[SchemaMember("CLightComponent", "m_nLightPathUniqueId")]
-	public ref Int32 LightPathUniqueId => ref Schema.GetRef<Int32>(this.Handle, "CLightComponent", "m_nLightPathUniqueId");
+	public ref Int32 LightPathUniqueId => ref __m_nLightPathUniqueId.GetRef(this.Handle);
 
 	// m_nLightMapUniqueId
+	private static readonly SchemaField<Int32> __m_nLightMapUniqueId = new("CLightComponent", "m_nLightMapUniqueId");
 	[SchemaMember("CLightComponent", "m_nLightMapUniqueId")]
-	public ref Int32 LightMapUniqueId => ref Schema.GetRef<Int32>(this.Handle, "CLightComponent", "m_nLightMapUniqueId");
+	public ref Int32 LightMapUniqueId => ref __m_nLightMapUniqueId.GetRef(this.Handle);
 
 	// m_bRenderToCubemaps
+	private static readonly SchemaField<bool> __m_bRenderToCubemaps = new("CLightComponent", "m_bRenderToCubemaps");
 	[SchemaMember("CLightComponent", "m_bRenderToCubemaps")]
-	public ref bool RenderToCubemaps => ref Schema.GetRef<bool>(this.Handle, "CLightComponent", "m_bRenderToCubemaps");
+	public ref bool RenderToCubemaps => ref __m_bRenderToCubemaps.GetRef(this.Handle);
 
 	// m_bAllowSSTGeneration
+	private static readonly SchemaField<bool> __m_bAllowSSTGeneration = new("CLightComponent", "m_bAllowSSTGeneration");
 	[SchemaMember("CLightComponent", "m_bAllowSSTGeneration")]
-	public ref bool AllowSSTGeneration => ref Schema.GetRef<bool>(this.Handle, "CLightComponent", "m_bAllowSSTGeneration");
+	public ref bool AllowSSTGeneration => ref __m_bAllowSSTGeneration.GetRef(this.Handle);
 
 	// m_nDirectLight
+	private static readonly SchemaField<Int32> __m_nDirectLight = new("CLightComponent", "m_nDirectLight");
 	[SchemaMember("CLightComponent", "m_nDirectLight")]
-	public ref Int32 DirectLight => ref Schema.GetRef<Int32>(this.Handle, "CLightComponent", "m_nDirectLight");
+	public ref Int32 DirectLight => ref __m_nDirectLight.GetRef(this.Handle);
 
 	// m_nBounceLight
+	private static readonly SchemaField<Int32> __m_nBounceLight = new("CLightComponent", "m_nBounceLight");
 	[SchemaMember("CLightComponent", "m_nBounceLight")]
-	public ref Int32 BounceLight => ref Schema.GetRef<Int32>(this.Handle, "CLightComponent", "m_nBounceLight");
+	public ref Int32 BounceLight => ref __m_nBounceLight.GetRef(this.Handle);
 
 	// m_flBounceScale
+	private static readonly SchemaField<float> __m_flBounceScale = new("CLightComponent", "m_flBounceScale");
 	[SchemaMember("CLightComponent", "m_flBounceScale")]
-	public ref float BounceScale => ref Schema.GetRef<float>(this.Handle, "CLightComponent", "m_flBounceScale");
+	public ref float BounceScale => ref __m_flBounceScale.GetRef(this.Handle);
 
 	// m_flFadeMinDist
+	private static readonly SchemaField<float> __m_flFadeMinDist = new("CLightComponent", "m_flFadeMinDist");
 	[SchemaMember("CLightComponent", "m_flFadeMinDist")]
-	public ref float FadeMinDist => ref Schema.GetRef<float>(this.Handle, "CLightComponent", "m_flFadeMinDist");
+	public ref float FadeMinDist => ref __m_flFadeMinDist.GetRef(this.Handle);
 
 	// m_flFadeMaxDist
+	private static readonly SchemaField<float> __m_flFadeMaxDist = new("CLightComponent", "m_flFadeMaxDist");
 	[SchemaMember("CLightComponent", "m_flFadeMaxDist")]
-	public ref float FadeMaxDist => ref Schema.GetRef<float>(this.Handle, "CLightComponent", "m_flFadeMaxDist");
+	public ref float FadeMaxDist => ref __m_flFadeMaxDist.GetRef(this.Handle);
 
 	// m_flShadowFadeMinDist
+	private static readonly SchemaField<float> __m_flShadowFadeMinDist = new("CLightComponent", "m_flShadowFadeMinDist");
 	[SchemaMember("CLightComponent", "m_flShadowFadeMinDist")]
-	public ref float ShadowFadeMinDist => ref Schema.GetRef<float>(this.Handle, "CLightComponent", "m_flShadowFadeMinDist");
+	public ref float ShadowFadeMinDist => ref __m_flShadowFadeMinDist.GetRef(this.Handle);
 
 	// m_flShadowFadeMaxDist
+	private static readonly SchemaField<float> __m_flShadowFadeMaxDist = new("CLightComponent", "m_flShadowFadeMaxDist");
 	[SchemaMember("CLightComponent", "m_flShadowFadeMaxDist")]
-	public ref float ShadowFadeMaxDist => ref Schema.GetRef<float>(this.Handle, "CLightComponent", "m_flShadowFadeMaxDist");
+	public ref float ShadowFadeMaxDist => ref __m_flShadowFadeMaxDist.GetRef(this.Handle);
 
 	// m_bEnabled
+	private static readonly SchemaField<bool> __m_bEnabled = new("CLightComponent", "m_bEnabled");
 	[SchemaMember("CLightComponent", "m_bEnabled")]
-	public ref bool Enabled => ref Schema.GetRef<bool>(this.Handle, "CLightComponent", "m_bEnabled");
+	public ref bool Enabled => ref __m_bEnabled.GetRef(this.Handle);
 
 	// m_bFlicker
+	private static readonly SchemaField<bool> __m_bFlicker = new("CLightComponent", "m_bFlicker");
 	[SchemaMember("CLightComponent", "m_bFlicker")]
-	public ref bool Flicker => ref Schema.GetRef<bool>(this.Handle, "CLightComponent", "m_bFlicker");
+	public ref bool Flicker => ref __m_bFlicker.GetRef(this.Handle);
 
 	// m_bPrecomputedFieldsValid
+	private static readonly SchemaField<bool> __m_bPrecomputedFieldsValid = new("CLightComponent", "m_bPrecomputedFieldsValid");
 	[SchemaMember("CLightComponent", "m_bPrecomputedFieldsValid")]
-	public ref bool PrecomputedFieldsValid => ref Schema.GetRef<bool>(this.Handle, "CLightComponent", "m_bPrecomputedFieldsValid");
+	public ref bool PrecomputedFieldsValid => ref __m_bPrecomputedFieldsValid.GetRef(this.Handle);
 
 	// m_vPrecomputedBoundsMins
 	[SchemaMember("CLightComponent", "m_vPrecomputedBoundsMins")]
@@ -263,20 +311,24 @@ public partial class CLightComponent : CEntityComponent
 	public Vector PrecomputedOBBExtent => Schema.GetDeclaredClass<Vector>(this.Handle, "CLightComponent", "m_vPrecomputedOBBExtent");
 
 	// m_flPrecomputedMaxRange
+	private static readonly SchemaField<float> __m_flPrecomputedMaxRange = new("CLightComponent", "m_flPrecomputedMaxRange");
 	[SchemaMember("CLightComponent", "m_flPrecomputedMaxRange")]
-	public ref float PrecomputedMaxRange => ref Schema.GetRef<float>(this.Handle, "CLightComponent", "m_flPrecomputedMaxRange");
+	public ref float PrecomputedMaxRange => ref __m_flPrecomputedMaxRange.GetRef(this.Handle);
 
 	// m_nFogLightingMode
+	private static readonly SchemaField<Int32> __m_nFogLightingMode = new("CLightComponent", "m_nFogLightingMode");
 	[SchemaMember("CLightComponent", "m_nFogLightingMode")]
-	public ref Int32 FogLightingMode => ref Schema.GetRef<Int32>(this.Handle, "CLightComponent", "m_nFogLightingMode");
+	public ref Int32 FogLightingMode => ref __m_nFogLightingMode.GetRef(this.Handle);
 
 	// m_flFogContributionStength
+	private static readonly SchemaField<float> __m_flFogContributionStength = new("CLightComponent", "m_flFogContributionStength");
 	[SchemaMember("CLightComponent", "m_flFogContributionStength")]
-	public ref float FogContributionStength => ref Schema.GetRef<float>(this.Handle, "CLightComponent", "m_flFogContributionStength");
+	public ref float FogContributionStength => ref __m_flFogContributionStength.GetRef(this.Handle);
 
 	// m_flNearClipPlane
+	private static readonly SchemaField<float> __m_flNearClipPlane = new("CLightComponent", "m_flNearClipPlane");
 	[SchemaMember("CLightComponent", "m_flNearClipPlane")]
-	public ref float NearClipPlane => ref Schema.GetRef<float>(this.Handle, "CLightComponent", "m_flNearClipPlane");
+	public ref float NearClipPlane => ref __m_flNearClipPlane.GetRef(this.Handle);
 
 	// m_SkyColor
 	[SchemaMember("CLightComponent", "m_SkyColor")]
@@ -287,8 +339,9 @@ public partial class CLightComponent : CEntityComponent
 	}
 
 	// m_flSkyIntensity
+	private static readonly SchemaField<float> __m_flSkyIntensity = new("CLightComponent", "m_flSkyIntensity");
 	[SchemaMember("CLightComponent", "m_flSkyIntensity")]
-	public ref float SkyIntensity => ref Schema.GetRef<float>(this.Handle, "CLightComponent", "m_flSkyIntensity");
+	public ref float SkyIntensity => ref __m_flSkyIntensity.GetRef(this.Handle);
 
 	// m_SkyAmbientBounce
 	[SchemaMember("CLightComponent", "m_SkyAmbientBounce")]
@@ -299,27 +352,33 @@ public partial class CLightComponent : CEntityComponent
 	}
 
 	// m_bUseSecondaryColor
+	private static readonly SchemaField<bool> __m_bUseSecondaryColor = new("CLightComponent", "m_bUseSecondaryColor");
 	[SchemaMember("CLightComponent", "m_bUseSecondaryColor")]
-	public ref bool UseSecondaryColor => ref Schema.GetRef<bool>(this.Handle, "CLightComponent", "m_bUseSecondaryColor");
+	public ref bool UseSecondaryColor => ref __m_bUseSecondaryColor.GetRef(this.Handle);
 
 	// m_bMixedShadows
+	private static readonly SchemaField<bool> __m_bMixedShadows = new("CLightComponent", "m_bMixedShadows");
 	[SchemaMember("CLightComponent", "m_bMixedShadows")]
-	public ref bool MixedShadows => ref Schema.GetRef<bool>(this.Handle, "CLightComponent", "m_bMixedShadows");
+	public ref bool MixedShadows => ref __m_bMixedShadows.GetRef(this.Handle);
 
 	// m_flLightStyleStartTime
+	private static readonly SchemaField<float> __m_flLightStyleStartTime = new("CLightComponent", "m_flLightStyleStartTime");
 	[SchemaMember("CLightComponent", "m_flLightStyleStartTime")]
-	public ref float LightStyleStartTime => ref Schema.GetRef<float>(this.Handle, "CLightComponent", "m_flLightStyleStartTime");
+	public ref float LightStyleStartTime => ref __m_flLightStyleStartTime.GetRef(this.Handle);
 
 	// m_flCapsuleLength
+	private static readonly SchemaField<float> __m_flCapsuleLength = new("CLightComponent", "m_flCapsuleLength");
 	[SchemaMember("CLightComponent", "m_flCapsuleLength")]
-	public ref float CapsuleLength => ref Schema.GetRef<float>(this.Handle, "CLightComponent", "m_flCapsuleLength");
+	public ref float CapsuleLength => ref __m_flCapsuleLength.GetRef(this.Handle);
 
 	// m_flMinRoughness
+	private static readonly SchemaField<float> __m_flMinRoughness = new("CLightComponent", "m_flMinRoughness");
 	[SchemaMember("CLightComponent", "m_flMinRoughness")]
-	public ref float MinRoughness => ref Schema.GetRef<float>(this.Handle, "CLightComponent", "m_flMinRoughness");
+	public ref float MinRoughness => ref __m_flMinRoughness.GetRef(this.Handle);
 
 	// m_bPvsModifyEntity
+	private static readonly SchemaField<bool> __m_bPvsModifyEntity = new("CLightComponent", "m_bPvsModifyEntity");
 	[SchemaMember("CLightComponent", "m_bPvsModifyEntity")]
-	public ref bool PvsModifyEntity => ref Schema.GetRef<bool>(this.Handle, "CLightComponent", "m_bPvsModifyEntity");
+	public ref bool PvsModifyEntity => ref __m_bPvsModifyEntity.GetRef(this.Handle);
 
 }

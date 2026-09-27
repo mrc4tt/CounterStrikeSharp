@@ -19,7 +19,8 @@ public partial class SceneEventId_t : NativeObject
     public SceneEventId_t (IntPtr pointer) : base(pointer) {}
 
 	// m_Value
+	private static readonly SchemaField<UInt32> __m_Value = new("SceneEventId_t", "m_Value");
 	[SchemaMember("SceneEventId_t", "m_Value")]
-	public ref UInt32 Value => ref Schema.GetRef<UInt32>(this.Handle, "SceneEventId_t", "m_Value");
+	public ref UInt32 Value => ref __m_Value.GetRef(this.Handle);
 
 }

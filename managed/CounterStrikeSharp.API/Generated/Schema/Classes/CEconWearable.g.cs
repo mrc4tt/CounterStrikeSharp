@@ -19,11 +19,13 @@ public partial class CEconWearable : CEconEntity
     public CEconWearable (IntPtr pointer) : base(pointer) {}
 
 	// m_nForceSkin
+	private static readonly SchemaField<Int32> __m_nForceSkin = new("CEconWearable", "m_nForceSkin");
 	[SchemaMember("CEconWearable", "m_nForceSkin")]
-	public ref Int32 ForceSkin => ref Schema.GetRef<Int32>(this.Handle, "CEconWearable", "m_nForceSkin");
+	public ref Int32 ForceSkin => ref __m_nForceSkin.GetRef(this.Handle);
 
 	// m_bAlwaysAllow
+	private static readonly SchemaField<bool> __m_bAlwaysAllow = new("CEconWearable", "m_bAlwaysAllow");
 	[SchemaMember("CEconWearable", "m_bAlwaysAllow")]
-	public ref bool AlwaysAllow => ref Schema.GetRef<bool>(this.Handle, "CEconWearable", "m_bAlwaysAllow");
+	public ref bool AlwaysAllow => ref __m_bAlwaysAllow.GetRef(this.Handle);
 
 }

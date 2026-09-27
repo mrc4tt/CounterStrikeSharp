@@ -19,23 +19,28 @@ public partial class CSoundEventMultiPointEntity : CSoundEventEntity
     public CSoundEventMultiPointEntity (IntPtr pointer) : base(pointer) {}
 
 	// m_iCountMax
+	private static readonly SchemaField<Int32> __m_iCountMax = new("CSoundEventMultiPointEntity", "m_iCountMax");
 	[SchemaMember("CSoundEventMultiPointEntity", "m_iCountMax")]
-	public ref Int32 CountMax => ref Schema.GetRef<Int32>(this.Handle, "CSoundEventMultiPointEntity", "m_iCountMax");
+	public ref Int32 CountMax => ref __m_iCountMax.GetRef(this.Handle);
 
 	// m_flDistanceMax
+	private static readonly SchemaField<float> __m_flDistanceMax = new("CSoundEventMultiPointEntity", "m_flDistanceMax");
 	[SchemaMember("CSoundEventMultiPointEntity", "m_flDistanceMax")]
-	public ref float DistanceMax => ref Schema.GetRef<float>(this.Handle, "CSoundEventMultiPointEntity", "m_flDistanceMax");
+	public ref float DistanceMax => ref __m_flDistanceMax.GetRef(this.Handle);
 
 	// m_flDistMaxSqr
+	private static readonly SchemaField<float> __m_flDistMaxSqr = new("CSoundEventMultiPointEntity", "m_flDistMaxSqr");
 	[SchemaMember("CSoundEventMultiPointEntity", "m_flDistMaxSqr")]
-	public ref float DistMaxSqr => ref Schema.GetRef<float>(this.Handle, "CSoundEventMultiPointEntity", "m_flDistMaxSqr");
+	public ref float DistMaxSqr => ref __m_flDistMaxSqr.GetRef(this.Handle);
 
 	// m_flDotProductMax
+	private static readonly SchemaField<float> __m_flDotProductMax = new("CSoundEventMultiPointEntity", "m_flDotProductMax");
 	[SchemaMember("CSoundEventMultiPointEntity", "m_flDotProductMax")]
-	public ref float DotProductMax => ref Schema.GetRef<float>(this.Handle, "CSoundEventMultiPointEntity", "m_flDotProductMax");
+	public ref float DotProductMax => ref __m_flDotProductMax.GetRef(this.Handle);
 
 	// m_bPlaying
+	private static readonly SchemaField<bool> __m_bPlaying = new("CSoundEventMultiPointEntity", "m_bPlaying");
 	[SchemaMember("CSoundEventMultiPointEntity", "m_bPlaying")]
-	public ref bool Playing => ref Schema.GetRef<bool>(this.Handle, "CSoundEventMultiPointEntity", "m_bPlaying");
+	public ref bool Playing => ref __m_bPlaying.GetRef(this.Handle);
 
 }

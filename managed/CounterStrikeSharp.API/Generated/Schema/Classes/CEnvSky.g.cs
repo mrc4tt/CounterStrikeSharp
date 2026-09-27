@@ -27,8 +27,9 @@ public partial class CEnvSky : CBaseModelEntity
 	public CStrongHandle<InfoForResourceTypeIMaterial2> SkyMaterialLightingOnly => Schema.GetDeclaredClass<CStrongHandle<InfoForResourceTypeIMaterial2>>(this.Handle, "CEnvSky", "m_hSkyMaterialLightingOnly");
 
 	// m_bStartDisabled
+	private static readonly SchemaField<bool> __m_bStartDisabled = new("CEnvSky", "m_bStartDisabled");
 	[SchemaMember("CEnvSky", "m_bStartDisabled")]
-	public ref bool StartDisabled => ref Schema.GetRef<bool>(this.Handle, "CEnvSky", "m_bStartDisabled");
+	public ref bool StartDisabled => ref __m_bStartDisabled.GetRef(this.Handle);
 
 	// m_vTintColor
 	[SchemaMember("CEnvSky", "m_vTintColor")]
@@ -47,31 +48,38 @@ public partial class CEnvSky : CBaseModelEntity
 	}
 
 	// m_flBrightnessScale
+	private static readonly SchemaField<float> __m_flBrightnessScale = new("CEnvSky", "m_flBrightnessScale");
 	[SchemaMember("CEnvSky", "m_flBrightnessScale")]
-	public ref float BrightnessScale => ref Schema.GetRef<float>(this.Handle, "CEnvSky", "m_flBrightnessScale");
+	public ref float BrightnessScale => ref __m_flBrightnessScale.GetRef(this.Handle);
 
 	// m_nFogType
+	private static readonly SchemaField<Int32> __m_nFogType = new("CEnvSky", "m_nFogType");
 	[SchemaMember("CEnvSky", "m_nFogType")]
-	public ref Int32 FogType => ref Schema.GetRef<Int32>(this.Handle, "CEnvSky", "m_nFogType");
+	public ref Int32 FogType => ref __m_nFogType.GetRef(this.Handle);
 
 	// m_flFogMinStart
+	private static readonly SchemaField<float> __m_flFogMinStart = new("CEnvSky", "m_flFogMinStart");
 	[SchemaMember("CEnvSky", "m_flFogMinStart")]
-	public ref float FogMinStart => ref Schema.GetRef<float>(this.Handle, "CEnvSky", "m_flFogMinStart");
+	public ref float FogMinStart => ref __m_flFogMinStart.GetRef(this.Handle);
 
 	// m_flFogMinEnd
+	private static readonly SchemaField<float> __m_flFogMinEnd = new("CEnvSky", "m_flFogMinEnd");
 	[SchemaMember("CEnvSky", "m_flFogMinEnd")]
-	public ref float FogMinEnd => ref Schema.GetRef<float>(this.Handle, "CEnvSky", "m_flFogMinEnd");
+	public ref float FogMinEnd => ref __m_flFogMinEnd.GetRef(this.Handle);
 
 	// m_flFogMaxStart
+	private static readonly SchemaField<float> __m_flFogMaxStart = new("CEnvSky", "m_flFogMaxStart");
 	[SchemaMember("CEnvSky", "m_flFogMaxStart")]
-	public ref float FogMaxStart => ref Schema.GetRef<float>(this.Handle, "CEnvSky", "m_flFogMaxStart");
+	public ref float FogMaxStart => ref __m_flFogMaxStart.GetRef(this.Handle);
 
 	// m_flFogMaxEnd
+	private static readonly SchemaField<float> __m_flFogMaxEnd = new("CEnvSky", "m_flFogMaxEnd");
 	[SchemaMember("CEnvSky", "m_flFogMaxEnd")]
-	public ref float FogMaxEnd => ref Schema.GetRef<float>(this.Handle, "CEnvSky", "m_flFogMaxEnd");
+	public ref float FogMaxEnd => ref __m_flFogMaxEnd.GetRef(this.Handle);
 
 	// m_bEnabled
+	private static readonly SchemaField<bool> __m_bEnabled = new("CEnvSky", "m_bEnabled");
 	[SchemaMember("CEnvSky", "m_bEnabled")]
-	public ref bool Enabled => ref Schema.GetRef<bool>(this.Handle, "CEnvSky", "m_bEnabled");
+	public ref bool Enabled => ref __m_bEnabled.GetRef(this.Handle);
 
 }

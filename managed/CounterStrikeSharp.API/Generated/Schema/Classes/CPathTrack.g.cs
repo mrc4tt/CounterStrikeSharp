@@ -31,16 +31,19 @@ public partial class CPathTrack : CPointEntity
 	public CHandle<CPathTrack> Paltpath => Schema.GetDeclaredClass<CHandle<CPathTrack>>(this.Handle, "CPathTrack", "m_paltpath");
 
 	// m_flSpeed
+	private static readonly SchemaField<float> __m_flSpeed = new("CPathTrack", "m_flSpeed");
 	[SchemaMember("CPathTrack", "m_flSpeed")]
-	public ref float Speed => ref Schema.GetRef<float>(this.Handle, "CPathTrack", "m_flSpeed");
+	public ref float Speed => ref __m_flSpeed.GetRef(this.Handle);
 
 	// m_flRadius
+	private static readonly SchemaField<float> __m_flRadius = new("CPathTrack", "m_flRadius");
 	[SchemaMember("CPathTrack", "m_flRadius")]
-	public ref float Radius => ref Schema.GetRef<float>(this.Handle, "CPathTrack", "m_flRadius");
+	public ref float Radius => ref __m_flRadius.GetRef(this.Handle);
 
 	// m_length
+	private static readonly SchemaField<float> __m_length = new("CPathTrack", "m_length");
 	[SchemaMember("CPathTrack", "m_length")]
-	public ref float Length => ref Schema.GetRef<float>(this.Handle, "CPathTrack", "m_length");
+	public ref float Length => ref __m_length.GetRef(this.Handle);
 
 	// m_altName
 	[SchemaMember("CPathTrack", "m_altName")]
@@ -51,12 +54,14 @@ public partial class CPathTrack : CPointEntity
 	}
 
 	// m_nIterVal
+	private static readonly SchemaField<Int32> __m_nIterVal = new("CPathTrack", "m_nIterVal");
 	[SchemaMember("CPathTrack", "m_nIterVal")]
-	public ref Int32 IterVal => ref Schema.GetRef<Int32>(this.Handle, "CPathTrack", "m_nIterVal");
+	public ref Int32 IterVal => ref __m_nIterVal.GetRef(this.Handle);
 
 	// m_eOrientationType
+	private static readonly SchemaField<TrackOrientationType_t> __m_eOrientationType = new("CPathTrack", "m_eOrientationType");
 	[SchemaMember("CPathTrack", "m_eOrientationType")]
-	public ref TrackOrientationType_t OrientationType => ref Schema.GetRef<TrackOrientationType_t>(this.Handle, "CPathTrack", "m_eOrientationType");
+	public ref TrackOrientationType_t OrientationType => ref __m_eOrientationType.GetRef(this.Handle);
 
 	// m_OnPass
 	[SchemaMember("CPathTrack", "m_OnPass")]

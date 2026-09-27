@@ -19,15 +19,18 @@ public partial class CRevertSaved : CModelPointEntity
     public CRevertSaved (IntPtr pointer) : base(pointer) {}
 
 	// m_loadTime
+	private static readonly SchemaField<float> __m_loadTime = new("CRevertSaved", "m_loadTime");
 	[SchemaMember("CRevertSaved", "m_loadTime")]
-	public ref float LoadTime => ref Schema.GetRef<float>(this.Handle, "CRevertSaved", "m_loadTime");
+	public ref float LoadTime => ref __m_loadTime.GetRef(this.Handle);
 
 	// m_Duration
+	private static readonly SchemaField<float> __m_Duration = new("CRevertSaved", "m_Duration");
 	[SchemaMember("CRevertSaved", "m_Duration")]
-	public ref float Duration => ref Schema.GetRef<float>(this.Handle, "CRevertSaved", "m_Duration");
+	public ref float Duration => ref __m_Duration.GetRef(this.Handle);
 
 	// m_HoldTime
+	private static readonly SchemaField<float> __m_HoldTime = new("CRevertSaved", "m_HoldTime");
 	[SchemaMember("CRevertSaved", "m_HoldTime")]
-	public ref float HoldTime => ref Schema.GetRef<float>(this.Handle, "CRevertSaved", "m_HoldTime");
+	public ref float HoldTime => ref __m_HoldTime.GetRef(this.Handle);
 
 }

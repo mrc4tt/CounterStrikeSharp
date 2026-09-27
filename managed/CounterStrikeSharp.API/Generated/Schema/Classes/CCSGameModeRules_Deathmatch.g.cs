@@ -19,12 +19,14 @@ public partial class CCSGameModeRules_Deathmatch : CCSGameModeRules
     public CCSGameModeRules_Deathmatch (IntPtr pointer) : base(pointer) {}
 
 	// m_flDMBonusStartTime
+	private static readonly SchemaField<float> __m_flDMBonusStartTime = new("CCSGameModeRules_Deathmatch", "m_flDMBonusStartTime");
 	[SchemaMember("CCSGameModeRules_Deathmatch", "m_flDMBonusStartTime")]
-	public ref float DMBonusStartTime => ref Schema.GetRef<float>(this.Handle, "CCSGameModeRules_Deathmatch", "m_flDMBonusStartTime");
+	public ref float DMBonusStartTime => ref __m_flDMBonusStartTime.GetRef(this.Handle);
 
 	// m_flDMBonusTimeLength
+	private static readonly SchemaField<float> __m_flDMBonusTimeLength = new("CCSGameModeRules_Deathmatch", "m_flDMBonusTimeLength");
 	[SchemaMember("CCSGameModeRules_Deathmatch", "m_flDMBonusTimeLength")]
-	public ref float DMBonusTimeLength => ref Schema.GetRef<float>(this.Handle, "CCSGameModeRules_Deathmatch", "m_flDMBonusTimeLength");
+	public ref float DMBonusTimeLength => ref __m_flDMBonusTimeLength.GetRef(this.Handle);
 
 	// m_sDMBonusWeapon
 	[SchemaMember("CCSGameModeRules_Deathmatch", "m_sDMBonusWeapon")]

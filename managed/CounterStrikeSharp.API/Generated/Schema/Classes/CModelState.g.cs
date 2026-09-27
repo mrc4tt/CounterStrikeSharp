@@ -35,47 +35,57 @@ public partial class CModelState : NativeObject
 	public IPhysAggregateInstance? VPhysicsAggregate => Schema.GetPointer<IPhysAggregateInstance>(this.Handle, "CModelState", "m_pVPhysicsAggregate");
 
 	// m_flRootBoneOffset_x
+	private static readonly SchemaField<float> __m_flRootBoneOffset_x = new("CModelState", "m_flRootBoneOffset_x");
 	[SchemaMember("CModelState", "m_flRootBoneOffset_x")]
-	public ref float RootBoneOffset_x => ref Schema.GetRef<float>(this.Handle, "CModelState", "m_flRootBoneOffset_x");
+	public ref float RootBoneOffset_x => ref __m_flRootBoneOffset_x.GetRef(this.Handle);
 
 	// m_flRootBoneOffset_y
+	private static readonly SchemaField<float> __m_flRootBoneOffset_y = new("CModelState", "m_flRootBoneOffset_y");
 	[SchemaMember("CModelState", "m_flRootBoneOffset_y")]
-	public ref float RootBoneOffset_y => ref Schema.GetRef<float>(this.Handle, "CModelState", "m_flRootBoneOffset_y");
+	public ref float RootBoneOffset_y => ref __m_flRootBoneOffset_y.GetRef(this.Handle);
 
 	// m_flRootBoneOffset_z
+	private static readonly SchemaField<float> __m_flRootBoneOffset_z = new("CModelState", "m_flRootBoneOffset_z");
 	[SchemaMember("CModelState", "m_flRootBoneOffset_z")]
-	public ref float RootBoneOffset_z => ref Schema.GetRef<float>(this.Handle, "CModelState", "m_flRootBoneOffset_z");
+	public ref float RootBoneOffset_z => ref __m_flRootBoneOffset_z.GetRef(this.Handle);
 
 	// m_nRootBoneOffsetResetSerialNumber
+	private static readonly SchemaField<byte> __m_nRootBoneOffsetResetSerialNumber = new("CModelState", "m_nRootBoneOffsetResetSerialNumber");
 	[SchemaMember("CModelState", "m_nRootBoneOffsetResetSerialNumber")]
-	public ref byte RootBoneOffsetResetSerialNumber => ref Schema.GetRef<byte>(this.Handle, "CModelState", "m_nRootBoneOffsetResetSerialNumber");
+	public ref byte RootBoneOffsetResetSerialNumber => ref __m_nRootBoneOffsetResetSerialNumber.GetRef(this.Handle);
 
 	// m_bClientClothCreationSuppressed
+	private static readonly SchemaField<bool> __m_bClientClothCreationSuppressed = new("CModelState", "m_bClientClothCreationSuppressed");
 	[SchemaMember("CModelState", "m_bClientClothCreationSuppressed")]
-	public ref bool ClientClothCreationSuppressed => ref Schema.GetRef<bool>(this.Handle, "CModelState", "m_bClientClothCreationSuppressed");
+	public ref bool ClientClothCreationSuppressed => ref __m_bClientClothCreationSuppressed.GetRef(this.Handle);
 
 	// m_nAnimStateNoInterpSerialNumber
+	private static readonly SchemaField<byte> __m_nAnimStateNoInterpSerialNumber = new("CModelState", "m_nAnimStateNoInterpSerialNumber");
 	[SchemaMember("CModelState", "m_nAnimStateNoInterpSerialNumber")]
-	public ref byte AnimStateNoInterpSerialNumber => ref Schema.GetRef<byte>(this.Handle, "CModelState", "m_nAnimStateNoInterpSerialNumber");
+	public ref byte AnimStateNoInterpSerialNumber => ref __m_nAnimStateNoInterpSerialNumber.GetRef(this.Handle);
 
 	// m_MeshGroupMask
+	private static readonly SchemaField<UInt64> __m_MeshGroupMask = new("CModelState", "m_MeshGroupMask");
 	[SchemaMember("CModelState", "m_MeshGroupMask")]
-	public ref UInt64 MeshGroupMask => ref Schema.GetRef<UInt64>(this.Handle, "CModelState", "m_MeshGroupMask");
+	public ref UInt64 MeshGroupMask => ref __m_MeshGroupMask.GetRef(this.Handle);
 
 	// m_nBodyGroupChoices
 	[SchemaMember("CModelState", "m_nBodyGroupChoices")]
 	public NetworkedVector<Int32> BodyGroupChoices => Schema.GetDeclaredClass<NetworkedVector<Int32>>(this.Handle, "CModelState", "m_nBodyGroupChoices");
 
 	// m_nIdealMotionType
+	private static readonly SchemaField<sbyte> __m_nIdealMotionType = new("CModelState", "m_nIdealMotionType");
 	[SchemaMember("CModelState", "m_nIdealMotionType")]
-	public ref sbyte IdealMotionType => ref Schema.GetRef<sbyte>(this.Handle, "CModelState", "m_nIdealMotionType");
+	public ref sbyte IdealMotionType => ref __m_nIdealMotionType.GetRef(this.Handle);
 
 	// m_nForceLOD
+	private static readonly SchemaField<sbyte> __m_nForceLOD = new("CModelState", "m_nForceLOD");
 	[SchemaMember("CModelState", "m_nForceLOD")]
-	public ref sbyte ForceLOD => ref Schema.GetRef<sbyte>(this.Handle, "CModelState", "m_nForceLOD");
+	public ref sbyte ForceLOD => ref __m_nForceLOD.GetRef(this.Handle);
 
 	// m_nClothUpdateFlags
+	private static readonly SchemaField<sbyte> __m_nClothUpdateFlags = new("CModelState", "m_nClothUpdateFlags");
 	[SchemaMember("CModelState", "m_nClothUpdateFlags")]
-	public ref sbyte ClothUpdateFlags => ref Schema.GetRef<sbyte>(this.Handle, "CModelState", "m_nClothUpdateFlags");
+	public ref sbyte ClothUpdateFlags => ref __m_nClothUpdateFlags.GetRef(this.Handle);
 
 }

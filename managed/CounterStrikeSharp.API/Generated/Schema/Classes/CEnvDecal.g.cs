@@ -23,35 +23,43 @@ public partial class CEnvDecal : CBaseModelEntity
 	public CStrongHandle<InfoForResourceTypeIMaterial2> DecalMaterial => Schema.GetDeclaredClass<CStrongHandle<InfoForResourceTypeIMaterial2>>(this.Handle, "CEnvDecal", "m_hDecalMaterial");
 
 	// m_flWidth
+	private static readonly SchemaField<float> __m_flWidth = new("CEnvDecal", "m_flWidth");
 	[SchemaMember("CEnvDecal", "m_flWidth")]
-	public ref float Width => ref Schema.GetRef<float>(this.Handle, "CEnvDecal", "m_flWidth");
+	public ref float Width => ref __m_flWidth.GetRef(this.Handle);
 
 	// m_flHeight
+	private static readonly SchemaField<float> __m_flHeight = new("CEnvDecal", "m_flHeight");
 	[SchemaMember("CEnvDecal", "m_flHeight")]
-	public ref float Height => ref Schema.GetRef<float>(this.Handle, "CEnvDecal", "m_flHeight");
+	public ref float Height => ref __m_flHeight.GetRef(this.Handle);
 
 	// m_flDepth
+	private static readonly SchemaField<float> __m_flDepth = new("CEnvDecal", "m_flDepth");
 	[SchemaMember("CEnvDecal", "m_flDepth")]
-	public ref float Depth => ref Schema.GetRef<float>(this.Handle, "CEnvDecal", "m_flDepth");
+	public ref float Depth => ref __m_flDepth.GetRef(this.Handle);
 
 	// m_nRenderOrder
+	private static readonly SchemaField<UInt32> __m_nRenderOrder = new("CEnvDecal", "m_nRenderOrder");
 	[SchemaMember("CEnvDecal", "m_nRenderOrder")]
-	public ref UInt32 RenderOrder => ref Schema.GetRef<UInt32>(this.Handle, "CEnvDecal", "m_nRenderOrder");
+	public ref UInt32 RenderOrder => ref __m_nRenderOrder.GetRef(this.Handle);
 
 	// m_bProjectOnWorld
+	private static readonly SchemaField<bool> __m_bProjectOnWorld = new("CEnvDecal", "m_bProjectOnWorld");
 	[SchemaMember("CEnvDecal", "m_bProjectOnWorld")]
-	public ref bool ProjectOnWorld => ref Schema.GetRef<bool>(this.Handle, "CEnvDecal", "m_bProjectOnWorld");
+	public ref bool ProjectOnWorld => ref __m_bProjectOnWorld.GetRef(this.Handle);
 
 	// m_bProjectOnCharacters
+	private static readonly SchemaField<bool> __m_bProjectOnCharacters = new("CEnvDecal", "m_bProjectOnCharacters");
 	[SchemaMember("CEnvDecal", "m_bProjectOnCharacters")]
-	public ref bool ProjectOnCharacters => ref Schema.GetRef<bool>(this.Handle, "CEnvDecal", "m_bProjectOnCharacters");
+	public ref bool ProjectOnCharacters => ref __m_bProjectOnCharacters.GetRef(this.Handle);
 
 	// m_bProjectOnWater
+	private static readonly SchemaField<bool> __m_bProjectOnWater = new("CEnvDecal", "m_bProjectOnWater");
 	[SchemaMember("CEnvDecal", "m_bProjectOnWater")]
-	public ref bool ProjectOnWater => ref Schema.GetRef<bool>(this.Handle, "CEnvDecal", "m_bProjectOnWater");
+	public ref bool ProjectOnWater => ref __m_bProjectOnWater.GetRef(this.Handle);
 
 	// m_flDepthSortBias
+	private static readonly SchemaField<float> __m_flDepthSortBias = new("CEnvDecal", "m_flDepthSortBias");
 	[SchemaMember("CEnvDecal", "m_flDepthSortBias")]
-	public ref float DepthSortBias => ref Schema.GetRef<float>(this.Handle, "CEnvDecal", "m_flDepthSortBias");
+	public ref float DepthSortBias => ref __m_flDepthSortBias.GetRef(this.Handle);
 
 }

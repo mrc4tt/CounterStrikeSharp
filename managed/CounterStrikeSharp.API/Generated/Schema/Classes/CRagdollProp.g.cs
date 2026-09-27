@@ -27,16 +27,19 @@ public partial class CRagdollProp : CBaseAnimGraph
 	public ragdoll_t Ragdoll => Schema.GetDeclaredClass<ragdoll_t>(this.Handle, "CRagdollProp", "m_ragdoll");
 
 	// m_bStartDisabled
+	private static readonly SchemaField<bool> __m_bStartDisabled = new("CRagdollProp", "m_bStartDisabled");
 	[SchemaMember("CRagdollProp", "m_bStartDisabled")]
-	public ref bool StartDisabled => ref Schema.GetRef<bool>(this.Handle, "CRagdollProp", "m_bStartDisabled");
+	public ref bool StartDisabled => ref __m_bStartDisabled.GetRef(this.Handle);
 
 	// m_massScale
+	private static readonly SchemaField<float> __m_massScale = new("CRagdollProp", "m_massScale");
 	[SchemaMember("CRagdollProp", "m_massScale")]
-	public ref float MassScale => ref Schema.GetRef<float>(this.Handle, "CRagdollProp", "m_massScale");
+	public ref float MassScale => ref __m_massScale.GetRef(this.Handle);
 
 	// m_buoyancyScale
+	private static readonly SchemaField<float> __m_buoyancyScale = new("CRagdollProp", "m_buoyancyScale");
 	[SchemaMember("CRagdollProp", "m_buoyancyScale")]
-	public ref float BuoyancyScale => ref Schema.GetRef<float>(this.Handle, "CRagdollProp", "m_buoyancyScale");
+	public ref float BuoyancyScale => ref __m_buoyancyScale.GetRef(this.Handle);
 
 	// m_ragEnabled
 	[SchemaMember("CRagdollProp", "m_ragEnabled")]
@@ -51,32 +54,39 @@ public partial class CRagdollProp : CBaseAnimGraph
 	public NetworkedVector<QAngle> RagAngles => Schema.GetDeclaredClass<NetworkedVector<QAngle>>(this.Handle, "CRagdollProp", "m_ragAngles");
 
 	// m_lastUpdateTickCount
+	private static readonly SchemaField<UInt32> __m_lastUpdateTickCount = new("CRagdollProp", "m_lastUpdateTickCount");
 	[SchemaMember("CRagdollProp", "m_lastUpdateTickCount")]
-	public ref UInt32 LastUpdateTickCount => ref Schema.GetRef<UInt32>(this.Handle, "CRagdollProp", "m_lastUpdateTickCount");
+	public ref UInt32 LastUpdateTickCount => ref __m_lastUpdateTickCount.GetRef(this.Handle);
 
 	// m_allAsleep
+	private static readonly SchemaField<bool> __m_allAsleep = new("CRagdollProp", "m_allAsleep");
 	[SchemaMember("CRagdollProp", "m_allAsleep")]
-	public ref bool AllAsleep => ref Schema.GetRef<bool>(this.Handle, "CRagdollProp", "m_allAsleep");
+	public ref bool AllAsleep => ref __m_allAsleep.GetRef(this.Handle);
 
 	// m_bFirstCollisionAfterLaunch
+	private static readonly SchemaField<bool> __m_bFirstCollisionAfterLaunch = new("CRagdollProp", "m_bFirstCollisionAfterLaunch");
 	[SchemaMember("CRagdollProp", "m_bFirstCollisionAfterLaunch")]
-	public ref bool FirstCollisionAfterLaunch => ref Schema.GetRef<bool>(this.Handle, "CRagdollProp", "m_bFirstCollisionAfterLaunch");
+	public ref bool FirstCollisionAfterLaunch => ref __m_bFirstCollisionAfterLaunch.GetRef(this.Handle);
 
 	// m_nNavObstacleType
+	private static readonly SchemaField<INavObstacleNavObstacleType_t> __m_nNavObstacleType = new("CRagdollProp", "m_nNavObstacleType");
 	[SchemaMember("CRagdollProp", "m_nNavObstacleType")]
-	public ref INavObstacleNavObstacleType_t NavObstacleType => ref Schema.GetRef<INavObstacleNavObstacleType_t>(this.Handle, "CRagdollProp", "m_nNavObstacleType");
+	public ref INavObstacleNavObstacleType_t NavObstacleType => ref __m_nNavObstacleType.GetRef(this.Handle);
 
 	// m_bUpdateNavWhenMoving
+	private static readonly SchemaField<bool> __m_bUpdateNavWhenMoving = new("CRagdollProp", "m_bUpdateNavWhenMoving");
 	[SchemaMember("CRagdollProp", "m_bUpdateNavWhenMoving")]
-	public ref bool UpdateNavWhenMoving => ref Schema.GetRef<bool>(this.Handle, "CRagdollProp", "m_bUpdateNavWhenMoving");
+	public ref bool UpdateNavWhenMoving => ref __m_bUpdateNavWhenMoving.GetRef(this.Handle);
 
 	// m_bForceNavObstacleCut
+	private static readonly SchemaField<bool> __m_bForceNavObstacleCut = new("CRagdollProp", "m_bForceNavObstacleCut");
 	[SchemaMember("CRagdollProp", "m_bForceNavObstacleCut")]
-	public ref bool ForceNavObstacleCut => ref Schema.GetRef<bool>(this.Handle, "CRagdollProp", "m_bForceNavObstacleCut");
+	public ref bool ForceNavObstacleCut => ref __m_bForceNavObstacleCut.GetRef(this.Handle);
 
 	// m_bAttachedToReferenceFrame
+	private static readonly SchemaField<bool> __m_bAttachedToReferenceFrame = new("CRagdollProp", "m_bAttachedToReferenceFrame");
 	[SchemaMember("CRagdollProp", "m_bAttachedToReferenceFrame")]
-	public ref bool AttachedToReferenceFrame => ref Schema.GetRef<bool>(this.Handle, "CRagdollProp", "m_bAttachedToReferenceFrame");
+	public ref bool AttachedToReferenceFrame => ref __m_bAttachedToReferenceFrame.GetRef(this.Handle);
 
 	// m_hDamageEntity
 	[SchemaMember("CRagdollProp", "m_hDamageEntity")]
@@ -91,28 +101,33 @@ public partial class CRagdollProp : CBaseAnimGraph
 	public CHandle<CBasePlayerPawn> PhysicsAttacker => Schema.GetDeclaredClass<CHandle<CBasePlayerPawn>>(this.Handle, "CRagdollProp", "m_hPhysicsAttacker");
 
 	// m_flLastPhysicsInfluenceTime
+	private static readonly SchemaField<float> __m_flLastPhysicsInfluenceTime = new("CRagdollProp", "m_flLastPhysicsInfluenceTime");
 	[SchemaMember("CRagdollProp", "m_flLastPhysicsInfluenceTime")]
-	public ref float LastPhysicsInfluenceTime => ref Schema.GetRef<float>(this.Handle, "CRagdollProp", "m_flLastPhysicsInfluenceTime");
+	public ref float LastPhysicsInfluenceTime => ref __m_flLastPhysicsInfluenceTime.GetRef(this.Handle);
 
 	// m_flFadeOutStartTime
+	private static readonly SchemaField<float> __m_flFadeOutStartTime = new("CRagdollProp", "m_flFadeOutStartTime");
 	[SchemaMember("CRagdollProp", "m_flFadeOutStartTime")]
-	public ref float FadeOutStartTime => ref Schema.GetRef<float>(this.Handle, "CRagdollProp", "m_flFadeOutStartTime");
+	public ref float FadeOutStartTime => ref __m_flFadeOutStartTime.GetRef(this.Handle);
 
 	// m_flFadeTime
+	private static readonly SchemaField<float> __m_flFadeTime = new("CRagdollProp", "m_flFadeTime");
 	[SchemaMember("CRagdollProp", "m_flFadeTime")]
-	public ref float FadeTime => ref Schema.GetRef<float>(this.Handle, "CRagdollProp", "m_flFadeTime");
+	public ref float FadeTime => ref __m_flFadeTime.GetRef(this.Handle);
 
 	// m_vecLastOrigin
 	[SchemaMember("CRagdollProp", "m_vecLastOrigin")]
 	public Vector LastOrigin => Schema.GetDeclaredClass<Vector>(this.Handle, "CRagdollProp", "m_vecLastOrigin");
 
 	// m_flAwakeTime
+	private static readonly SchemaField<float> __m_flAwakeTime = new("CRagdollProp", "m_flAwakeTime");
 	[SchemaMember("CRagdollProp", "m_flAwakeTime")]
-	public ref float AwakeTime => ref Schema.GetRef<float>(this.Handle, "CRagdollProp", "m_flAwakeTime");
+	public ref float AwakeTime => ref __m_flAwakeTime.GetRef(this.Handle);
 
 	// m_flLastOriginChangeTime
+	private static readonly SchemaField<float> __m_flLastOriginChangeTime = new("CRagdollProp", "m_flLastOriginChangeTime");
 	[SchemaMember("CRagdollProp", "m_flLastOriginChangeTime")]
-	public ref float LastOriginChangeTime => ref Schema.GetRef<float>(this.Handle, "CRagdollProp", "m_flLastOriginChangeTime");
+	public ref float LastOriginChangeTime => ref __m_flLastOriginChangeTime.GetRef(this.Handle);
 
 	// m_strOriginClassName
 	[SchemaMember("CRagdollProp", "m_strOriginClassName")]
@@ -131,20 +146,24 @@ public partial class CRagdollProp : CBaseAnimGraph
 	}
 
 	// m_bHasBeenPhysgunned
+	private static readonly SchemaField<bool> __m_bHasBeenPhysgunned = new("CRagdollProp", "m_bHasBeenPhysgunned");
 	[SchemaMember("CRagdollProp", "m_bHasBeenPhysgunned")]
-	public ref bool HasBeenPhysgunned => ref Schema.GetRef<bool>(this.Handle, "CRagdollProp", "m_bHasBeenPhysgunned");
+	public ref bool HasBeenPhysgunned => ref __m_bHasBeenPhysgunned.GetRef(this.Handle);
 
 	// m_bAllowStretch
+	private static readonly SchemaField<bool> __m_bAllowStretch = new("CRagdollProp", "m_bAllowStretch");
 	[SchemaMember("CRagdollProp", "m_bAllowStretch")]
-	public ref bool AllowStretch => ref Schema.GetRef<bool>(this.Handle, "CRagdollProp", "m_bAllowStretch");
+	public ref bool AllowStretch => ref __m_bAllowStretch.GetRef(this.Handle);
 
 	// m_flBlendWeight
+	private static readonly SchemaField<float> __m_flBlendWeight = new("CRagdollProp", "m_flBlendWeight");
 	[SchemaMember("CRagdollProp", "m_flBlendWeight")]
-	public ref float BlendWeight => ref Schema.GetRef<float>(this.Handle, "CRagdollProp", "m_flBlendWeight");
+	public ref float BlendWeight => ref __m_flBlendWeight.GetRef(this.Handle);
 
 	// m_flDefaultFadeScale
+	private static readonly SchemaField<float> __m_flDefaultFadeScale = new("CRagdollProp", "m_flDefaultFadeScale");
 	[SchemaMember("CRagdollProp", "m_flDefaultFadeScale")]
-	public ref float DefaultFadeScale => ref Schema.GetRef<float>(this.Handle, "CRagdollProp", "m_flDefaultFadeScale");
+	public ref float DefaultFadeScale => ref __m_flDefaultFadeScale.GetRef(this.Handle);
 
 	// m_ragdollMins
 	[SchemaMember("CRagdollProp", "m_ragdollMins")]
@@ -155,8 +174,9 @@ public partial class CRagdollProp : CBaseAnimGraph
 	public NetworkedVector<Vector> RagdollMaxs => Schema.GetDeclaredClass<NetworkedVector<Vector>>(this.Handle, "CRagdollProp", "m_ragdollMaxs");
 
 	// m_bShouldDeleteActivationRecord
+	private static readonly SchemaField<bool> __m_bShouldDeleteActivationRecord = new("CRagdollProp", "m_bShouldDeleteActivationRecord");
 	[SchemaMember("CRagdollProp", "m_bShouldDeleteActivationRecord")]
-	public ref bool ShouldDeleteActivationRecord => ref Schema.GetRef<bool>(this.Handle, "CRagdollProp", "m_bShouldDeleteActivationRecord");
+	public ref bool ShouldDeleteActivationRecord => ref __m_bShouldDeleteActivationRecord.GetRef(this.Handle);
 
 	// m_vecNavObstacles
 	[SchemaMember("CRagdollProp", "m_vecNavObstacles")]

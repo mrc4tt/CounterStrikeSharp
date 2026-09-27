@@ -23,19 +23,23 @@ public partial class audioparams_t : NativeObject
 	public Span<Vector> LocalSound => Schema.GetFixedArray<Vector>(this.Handle, "audioparams_t", "localSound", 8);
 
 	// soundscapeIndex
+	private static readonly SchemaField<Int32> __soundscapeIndex = new("audioparams_t", "soundscapeIndex");
 	[SchemaMember("audioparams_t", "soundscapeIndex")]
-	public ref Int32 SoundscapeIndex => ref Schema.GetRef<Int32>(this.Handle, "audioparams_t", "soundscapeIndex");
+	public ref Int32 SoundscapeIndex => ref __soundscapeIndex.GetRef(this.Handle);
 
 	// localBits
+	private static readonly SchemaField<byte> __localBits = new("audioparams_t", "localBits");
 	[SchemaMember("audioparams_t", "localBits")]
-	public ref byte LocalBits => ref Schema.GetRef<byte>(this.Handle, "audioparams_t", "localBits");
+	public ref byte LocalBits => ref __localBits.GetRef(this.Handle);
 
 	// soundscapeEntityListIndex
+	private static readonly SchemaField<Int32> __soundscapeEntityListIndex = new("audioparams_t", "soundscapeEntityListIndex");
 	[SchemaMember("audioparams_t", "soundscapeEntityListIndex")]
-	public ref Int32 SoundscapeEntityListIndex => ref Schema.GetRef<Int32>(this.Handle, "audioparams_t", "soundscapeEntityListIndex");
+	public ref Int32 SoundscapeEntityListIndex => ref __soundscapeEntityListIndex.GetRef(this.Handle);
 
 	// soundEventHash
+	private static readonly SchemaField<UInt32> __soundEventHash = new("audioparams_t", "soundEventHash");
 	[SchemaMember("audioparams_t", "soundEventHash")]
-	public ref UInt32 SoundEventHash => ref Schema.GetRef<UInt32>(this.Handle, "audioparams_t", "soundEventHash");
+	public ref UInt32 SoundEventHash => ref __soundEventHash.GetRef(this.Handle);
 
 }

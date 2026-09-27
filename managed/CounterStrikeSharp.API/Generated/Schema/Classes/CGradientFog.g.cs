@@ -23,40 +23,49 @@ public partial class CGradientFog : CBaseEntity
 	public CStrongHandle<InfoForResourceTypeCTextureBase> GradientFogTexture => Schema.GetDeclaredClass<CStrongHandle<InfoForResourceTypeCTextureBase>>(this.Handle, "CGradientFog", "m_hGradientFogTexture");
 
 	// m_flFogStartDistance
+	private static readonly SchemaField<float> __m_flFogStartDistance = new("CGradientFog", "m_flFogStartDistance");
 	[SchemaMember("CGradientFog", "m_flFogStartDistance")]
-	public ref float FogStartDistance => ref Schema.GetRef<float>(this.Handle, "CGradientFog", "m_flFogStartDistance");
+	public ref float FogStartDistance => ref __m_flFogStartDistance.GetRef(this.Handle);
 
 	// m_flFogEndDistance
+	private static readonly SchemaField<float> __m_flFogEndDistance = new("CGradientFog", "m_flFogEndDistance");
 	[SchemaMember("CGradientFog", "m_flFogEndDistance")]
-	public ref float FogEndDistance => ref Schema.GetRef<float>(this.Handle, "CGradientFog", "m_flFogEndDistance");
+	public ref float FogEndDistance => ref __m_flFogEndDistance.GetRef(this.Handle);
 
 	// m_bHeightFogEnabled
+	private static readonly SchemaField<bool> __m_bHeightFogEnabled = new("CGradientFog", "m_bHeightFogEnabled");
 	[SchemaMember("CGradientFog", "m_bHeightFogEnabled")]
-	public ref bool HeightFogEnabled => ref Schema.GetRef<bool>(this.Handle, "CGradientFog", "m_bHeightFogEnabled");
+	public ref bool HeightFogEnabled => ref __m_bHeightFogEnabled.GetRef(this.Handle);
 
 	// m_flFogStartHeight
+	private static readonly SchemaField<float> __m_flFogStartHeight = new("CGradientFog", "m_flFogStartHeight");
 	[SchemaMember("CGradientFog", "m_flFogStartHeight")]
-	public ref float FogStartHeight => ref Schema.GetRef<float>(this.Handle, "CGradientFog", "m_flFogStartHeight");
+	public ref float FogStartHeight => ref __m_flFogStartHeight.GetRef(this.Handle);
 
 	// m_flFogEndHeight
+	private static readonly SchemaField<float> __m_flFogEndHeight = new("CGradientFog", "m_flFogEndHeight");
 	[SchemaMember("CGradientFog", "m_flFogEndHeight")]
-	public ref float FogEndHeight => ref Schema.GetRef<float>(this.Handle, "CGradientFog", "m_flFogEndHeight");
+	public ref float FogEndHeight => ref __m_flFogEndHeight.GetRef(this.Handle);
 
 	// m_flFarZ
+	private static readonly SchemaField<float> __m_flFarZ = new("CGradientFog", "m_flFarZ");
 	[SchemaMember("CGradientFog", "m_flFarZ")]
-	public ref float FarZ => ref Schema.GetRef<float>(this.Handle, "CGradientFog", "m_flFarZ");
+	public ref float FarZ => ref __m_flFarZ.GetRef(this.Handle);
 
 	// m_flFogMaxOpacity
+	private static readonly SchemaField<float> __m_flFogMaxOpacity = new("CGradientFog", "m_flFogMaxOpacity");
 	[SchemaMember("CGradientFog", "m_flFogMaxOpacity")]
-	public ref float FogMaxOpacity => ref Schema.GetRef<float>(this.Handle, "CGradientFog", "m_flFogMaxOpacity");
+	public ref float FogMaxOpacity => ref __m_flFogMaxOpacity.GetRef(this.Handle);
 
 	// m_flFogFalloffExponent
+	private static readonly SchemaField<float> __m_flFogFalloffExponent = new("CGradientFog", "m_flFogFalloffExponent");
 	[SchemaMember("CGradientFog", "m_flFogFalloffExponent")]
-	public ref float FogFalloffExponent => ref Schema.GetRef<float>(this.Handle, "CGradientFog", "m_flFogFalloffExponent");
+	public ref float FogFalloffExponent => ref __m_flFogFalloffExponent.GetRef(this.Handle);
 
 	// m_flFogVerticalExponent
+	private static readonly SchemaField<float> __m_flFogVerticalExponent = new("CGradientFog", "m_flFogVerticalExponent");
 	[SchemaMember("CGradientFog", "m_flFogVerticalExponent")]
-	public ref float FogVerticalExponent => ref Schema.GetRef<float>(this.Handle, "CGradientFog", "m_flFogVerticalExponent");
+	public ref float FogVerticalExponent => ref __m_flFogVerticalExponent.GetRef(this.Handle);
 
 	// m_fogColor
 	[SchemaMember("CGradientFog", "m_fogColor")]
@@ -67,23 +76,28 @@ public partial class CGradientFog : CBaseEntity
 	}
 
 	// m_flFogStrength
+	private static readonly SchemaField<float> __m_flFogStrength = new("CGradientFog", "m_flFogStrength");
 	[SchemaMember("CGradientFog", "m_flFogStrength")]
-	public ref float FogStrength => ref Schema.GetRef<float>(this.Handle, "CGradientFog", "m_flFogStrength");
+	public ref float FogStrength => ref __m_flFogStrength.GetRef(this.Handle);
 
 	// m_flFadeTime
+	private static readonly SchemaField<float> __m_flFadeTime = new("CGradientFog", "m_flFadeTime");
 	[SchemaMember("CGradientFog", "m_flFadeTime")]
-	public ref float FadeTime => ref Schema.GetRef<float>(this.Handle, "CGradientFog", "m_flFadeTime");
+	public ref float FadeTime => ref __m_flFadeTime.GetRef(this.Handle);
 
 	// m_bStartDisabled
+	private static readonly SchemaField<bool> __m_bStartDisabled = new("CGradientFog", "m_bStartDisabled");
 	[SchemaMember("CGradientFog", "m_bStartDisabled")]
-	public ref bool StartDisabled => ref Schema.GetRef<bool>(this.Handle, "CGradientFog", "m_bStartDisabled");
+	public ref bool StartDisabled => ref __m_bStartDisabled.GetRef(this.Handle);
 
 	// m_bIsEnabled
+	private static readonly SchemaField<bool> __m_bIsEnabled = new("CGradientFog", "m_bIsEnabled");
 	[SchemaMember("CGradientFog", "m_bIsEnabled")]
-	public ref bool IsEnabled => ref Schema.GetRef<bool>(this.Handle, "CGradientFog", "m_bIsEnabled");
+	public ref bool IsEnabled => ref __m_bIsEnabled.GetRef(this.Handle);
 
 	// m_bGradientFogNeedsTextures
+	private static readonly SchemaField<bool> __m_bGradientFogNeedsTextures = new("CGradientFog", "m_bGradientFogNeedsTextures");
 	[SchemaMember("CGradientFog", "m_bGradientFogNeedsTextures")]
-	public ref bool GradientFogNeedsTextures => ref Schema.GetRef<bool>(this.Handle, "CGradientFog", "m_bGradientFogNeedsTextures");
+	public ref bool GradientFogNeedsTextures => ref __m_bGradientFogNeedsTextures.GetRef(this.Handle);
 
 }

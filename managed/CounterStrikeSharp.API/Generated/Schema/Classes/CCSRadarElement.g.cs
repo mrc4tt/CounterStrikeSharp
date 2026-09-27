@@ -19,15 +19,18 @@ public partial class CCSRadarElement : CBaseEntity
     public CCSRadarElement (IntPtr pointer) : base(pointer) {}
 
 	// m_nElementType
+	private static readonly SchemaField<UInt32> __m_nElementType = new("CCSRadarElement", "m_nElementType");
 	[SchemaMember("CCSRadarElement", "m_nElementType")]
-	public ref UInt32 ElementType => ref Schema.GetRef<UInt32>(this.Handle, "CCSRadarElement", "m_nElementType");
+	public ref UInt32 ElementType => ref __m_nElementType.GetRef(this.Handle);
 
 	// m_nElementColor
+	private static readonly SchemaField<UInt32> __m_nElementColor = new("CCSRadarElement", "m_nElementColor");
 	[SchemaMember("CCSRadarElement", "m_nElementColor")]
-	public ref UInt32 ElementColor => ref Schema.GetRef<UInt32>(this.Handle, "CCSRadarElement", "m_nElementColor");
+	public ref UInt32 ElementColor => ref __m_nElementColor.GetRef(this.Handle);
 
 	// m_nTeamFilter
+	private static readonly SchemaField<UInt32> __m_nTeamFilter = new("CCSRadarElement", "m_nTeamFilter");
 	[SchemaMember("CCSRadarElement", "m_nTeamFilter")]
-	public ref UInt32 TeamFilter => ref Schema.GetRef<UInt32>(this.Handle, "CCSRadarElement", "m_nTeamFilter");
+	public ref UInt32 TeamFilter => ref __m_nTeamFilter.GetRef(this.Handle);
 
 }

@@ -19,23 +19,28 @@ public partial class SimpleConstraintSoundProfile : NativeObject
     public SimpleConstraintSoundProfile (IntPtr pointer) : base(pointer) {}
 
 	// m_flKeyPointMinSoundThreshold
+	private static readonly SchemaField<float> __m_flKeyPointMinSoundThreshold = new("SimpleConstraintSoundProfile", "m_flKeyPointMinSoundThreshold");
 	[SchemaMember("SimpleConstraintSoundProfile", "m_flKeyPointMinSoundThreshold")]
-	public ref float KeyPointMinSoundThreshold => ref Schema.GetRef<float>(this.Handle, "SimpleConstraintSoundProfile", "m_flKeyPointMinSoundThreshold");
+	public ref float KeyPointMinSoundThreshold => ref __m_flKeyPointMinSoundThreshold.GetRef(this.Handle);
 
 	// m_flKeyPointMaxSoundThreshold
+	private static readonly SchemaField<float> __m_flKeyPointMaxSoundThreshold = new("SimpleConstraintSoundProfile", "m_flKeyPointMaxSoundThreshold");
 	[SchemaMember("SimpleConstraintSoundProfile", "m_flKeyPointMaxSoundThreshold")]
-	public ref float KeyPointMaxSoundThreshold => ref Schema.GetRef<float>(this.Handle, "SimpleConstraintSoundProfile", "m_flKeyPointMaxSoundThreshold");
+	public ref float KeyPointMaxSoundThreshold => ref __m_flKeyPointMaxSoundThreshold.GetRef(this.Handle);
 
 	// m_reversalSoundThresholdSmall
+	private static readonly SchemaField<float> __m_reversalSoundThresholdSmall = new("SimpleConstraintSoundProfile", "m_reversalSoundThresholdSmall");
 	[SchemaMember("SimpleConstraintSoundProfile", "m_reversalSoundThresholdSmall")]
-	public ref float ReversalSoundThresholdSmall => ref Schema.GetRef<float>(this.Handle, "SimpleConstraintSoundProfile", "m_reversalSoundThresholdSmall");
+	public ref float ReversalSoundThresholdSmall => ref __m_reversalSoundThresholdSmall.GetRef(this.Handle);
 
 	// m_reversalSoundThresholdMedium
+	private static readonly SchemaField<float> __m_reversalSoundThresholdMedium = new("SimpleConstraintSoundProfile", "m_reversalSoundThresholdMedium");
 	[SchemaMember("SimpleConstraintSoundProfile", "m_reversalSoundThresholdMedium")]
-	public ref float ReversalSoundThresholdMedium => ref Schema.GetRef<float>(this.Handle, "SimpleConstraintSoundProfile", "m_reversalSoundThresholdMedium");
+	public ref float ReversalSoundThresholdMedium => ref __m_reversalSoundThresholdMedium.GetRef(this.Handle);
 
 	// m_reversalSoundThresholdLarge
+	private static readonly SchemaField<float> __m_reversalSoundThresholdLarge = new("SimpleConstraintSoundProfile", "m_reversalSoundThresholdLarge");
 	[SchemaMember("SimpleConstraintSoundProfile", "m_reversalSoundThresholdLarge")]
-	public ref float ReversalSoundThresholdLarge => ref Schema.GetRef<float>(this.Handle, "SimpleConstraintSoundProfile", "m_reversalSoundThresholdLarge");
+	public ref float ReversalSoundThresholdLarge => ref __m_reversalSoundThresholdLarge.GetRef(this.Handle);
 
 }

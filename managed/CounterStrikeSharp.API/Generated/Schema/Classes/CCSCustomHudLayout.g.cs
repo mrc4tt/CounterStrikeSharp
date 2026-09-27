@@ -27,8 +27,9 @@ public partial class CCSCustomHudLayout : CBaseEntity
 	}
 
 	// m_bObservable
+	private static readonly SchemaField<bool> __m_bObservable = new("CCSCustomHudLayout", "m_bObservable");
 	[SchemaMember("CCSCustomHudLayout", "m_bObservable")]
-	public ref bool Observable => ref Schema.GetRef<bool>(this.Handle, "CCSCustomHudLayout", "m_bObservable");
+	public ref bool Observable => ref __m_bObservable.GetRef(this.Handle);
 
 	// m_vecPlayerLayoutStates
 	[SchemaMember("CCSCustomHudLayout", "m_vecPlayerLayoutStates")]

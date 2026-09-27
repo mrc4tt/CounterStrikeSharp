@@ -35,23 +35,28 @@ public partial class CLogicCollisionPair : CLogicalEntity
 	}
 
 	// m_includeHierarchy
+	private static readonly SchemaField<bool> __m_includeHierarchy = new("CLogicCollisionPair", "m_includeHierarchy");
 	[SchemaMember("CLogicCollisionPair", "m_includeHierarchy")]
-	public ref bool IncludeHierarchy => ref Schema.GetRef<bool>(this.Handle, "CLogicCollisionPair", "m_includeHierarchy");
+	public ref bool IncludeHierarchy => ref __m_includeHierarchy.GetRef(this.Handle);
 
 	// m_supportMultipleEntitiesWithSameName
+	private static readonly SchemaField<bool> __m_supportMultipleEntitiesWithSameName = new("CLogicCollisionPair", "m_supportMultipleEntitiesWithSameName");
 	[SchemaMember("CLogicCollisionPair", "m_supportMultipleEntitiesWithSameName")]
-	public ref bool SupportMultipleEntitiesWithSameName => ref Schema.GetRef<bool>(this.Handle, "CLogicCollisionPair", "m_supportMultipleEntitiesWithSameName");
+	public ref bool SupportMultipleEntitiesWithSameName => ref __m_supportMultipleEntitiesWithSameName.GetRef(this.Handle);
 
 	// m_disabled
+	private static readonly SchemaField<bool> __m_disabled = new("CLogicCollisionPair", "m_disabled");
 	[SchemaMember("CLogicCollisionPair", "m_disabled")]
-	public ref bool Disabled => ref Schema.GetRef<bool>(this.Handle, "CLogicCollisionPair", "m_disabled");
+	public ref bool Disabled => ref __m_disabled.GetRef(this.Handle);
 
 	// m_succeeded
+	private static readonly SchemaField<bool> __m_succeeded = new("CLogicCollisionPair", "m_succeeded");
 	[SchemaMember("CLogicCollisionPair", "m_succeeded")]
-	public ref bool Succeeded => ref Schema.GetRef<bool>(this.Handle, "CLogicCollisionPair", "m_succeeded");
+	public ref bool Succeeded => ref __m_succeeded.GetRef(this.Handle);
 
 	// m_allowMissing
+	private static readonly SchemaField<bool> __m_allowMissing = new("CLogicCollisionPair", "m_allowMissing");
 	[SchemaMember("CLogicCollisionPair", "m_allowMissing")]
-	public ref bool AllowMissing => ref Schema.GetRef<bool>(this.Handle, "CLogicCollisionPair", "m_allowMissing");
+	public ref bool AllowMissing => ref __m_allowMissing.GetRef(this.Handle);
 
 }

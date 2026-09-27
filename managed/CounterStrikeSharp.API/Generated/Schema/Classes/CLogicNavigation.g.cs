@@ -19,11 +19,13 @@ public partial class CLogicNavigation : CLogicalEntity
     public CLogicNavigation (IntPtr pointer) : base(pointer) {}
 
 	// m_isOn
+	private static readonly SchemaField<bool> __m_isOn = new("CLogicNavigation", "m_isOn");
 	[SchemaMember("CLogicNavigation", "m_isOn")]
-	public ref bool IsOn => ref Schema.GetRef<bool>(this.Handle, "CLogicNavigation", "m_isOn");
+	public ref bool IsOn => ref __m_isOn.GetRef(this.Handle);
 
 	// m_navProperty
+	private static readonly SchemaField<navproperties_t> __m_navProperty = new("CLogicNavigation", "m_navProperty");
 	[SchemaMember("CLogicNavigation", "m_navProperty")]
-	public ref navproperties_t NavProperty => ref Schema.GetRef<navproperties_t>(this.Handle, "CLogicNavigation", "m_navProperty");
+	public ref navproperties_t NavProperty => ref __m_navProperty.GetRef(this.Handle);
 
 }

@@ -19,16 +19,19 @@ public partial class CCSTeam : CTeam
     public CCSTeam (IntPtr pointer) : base(pointer) {}
 
 	// m_nLastRecievedShorthandedRoundBonus
+	private static readonly SchemaField<Int32> __m_nLastRecievedShorthandedRoundBonus = new("CCSTeam", "m_nLastRecievedShorthandedRoundBonus");
 	[SchemaMember("CCSTeam", "m_nLastRecievedShorthandedRoundBonus")]
-	public ref Int32 LastRecievedShorthandedRoundBonus => ref Schema.GetRef<Int32>(this.Handle, "CCSTeam", "m_nLastRecievedShorthandedRoundBonus");
+	public ref Int32 LastRecievedShorthandedRoundBonus => ref __m_nLastRecievedShorthandedRoundBonus.GetRef(this.Handle);
 
 	// m_nShorthandedRoundBonusStartRound
+	private static readonly SchemaField<Int32> __m_nShorthandedRoundBonusStartRound = new("CCSTeam", "m_nShorthandedRoundBonusStartRound");
 	[SchemaMember("CCSTeam", "m_nShorthandedRoundBonusStartRound")]
-	public ref Int32 ShorthandedRoundBonusStartRound => ref Schema.GetRef<Int32>(this.Handle, "CCSTeam", "m_nShorthandedRoundBonusStartRound");
+	public ref Int32 ShorthandedRoundBonusStartRound => ref __m_nShorthandedRoundBonusStartRound.GetRef(this.Handle);
 
 	// m_bSurrendered
+	private static readonly SchemaField<bool> __m_bSurrendered = new("CCSTeam", "m_bSurrendered");
 	[SchemaMember("CCSTeam", "m_bSurrendered")]
-	public ref bool Surrendered => ref Schema.GetRef<bool>(this.Handle, "CCSTeam", "m_bSurrendered");
+	public ref bool Surrendered => ref __m_bSurrendered.GetRef(this.Handle);
 
 	// m_szTeamMatchStat
 	[SchemaMember("CCSTeam", "m_szTeamMatchStat")]
@@ -39,20 +42,24 @@ public partial class CCSTeam : CTeam
 	}
 
 	// m_numMapVictories
+	private static readonly SchemaField<Int32> __m_numMapVictories = new("CCSTeam", "m_numMapVictories");
 	[SchemaMember("CCSTeam", "m_numMapVictories")]
-	public ref Int32 NumMapVictories => ref Schema.GetRef<Int32>(this.Handle, "CCSTeam", "m_numMapVictories");
+	public ref Int32 NumMapVictories => ref __m_numMapVictories.GetRef(this.Handle);
 
 	// m_scoreFirstHalf
+	private static readonly SchemaField<Int32> __m_scoreFirstHalf = new("CCSTeam", "m_scoreFirstHalf");
 	[SchemaMember("CCSTeam", "m_scoreFirstHalf")]
-	public ref Int32 ScoreFirstHalf => ref Schema.GetRef<Int32>(this.Handle, "CCSTeam", "m_scoreFirstHalf");
+	public ref Int32 ScoreFirstHalf => ref __m_scoreFirstHalf.GetRef(this.Handle);
 
 	// m_scoreSecondHalf
+	private static readonly SchemaField<Int32> __m_scoreSecondHalf = new("CCSTeam", "m_scoreSecondHalf");
 	[SchemaMember("CCSTeam", "m_scoreSecondHalf")]
-	public ref Int32 ScoreSecondHalf => ref Schema.GetRef<Int32>(this.Handle, "CCSTeam", "m_scoreSecondHalf");
+	public ref Int32 ScoreSecondHalf => ref __m_scoreSecondHalf.GetRef(this.Handle);
 
 	// m_scoreOvertime
+	private static readonly SchemaField<Int32> __m_scoreOvertime = new("CCSTeam", "m_scoreOvertime");
 	[SchemaMember("CCSTeam", "m_scoreOvertime")]
-	public ref Int32 ScoreOvertime => ref Schema.GetRef<Int32>(this.Handle, "CCSTeam", "m_scoreOvertime");
+	public ref Int32 ScoreOvertime => ref __m_scoreOvertime.GetRef(this.Handle);
 
 	// m_szClanTeamname
 	[SchemaMember("CCSTeam", "m_szClanTeamname")]
@@ -63,8 +70,9 @@ public partial class CCSTeam : CTeam
 	}
 
 	// m_iClanID
+	private static readonly SchemaField<UInt32> __m_iClanID = new("CCSTeam", "m_iClanID");
 	[SchemaMember("CCSTeam", "m_iClanID")]
-	public ref UInt32 ClanID => ref Schema.GetRef<UInt32>(this.Handle, "CCSTeam", "m_iClanID");
+	public ref UInt32 ClanID => ref __m_iClanID.GetRef(this.Handle);
 
 	// m_szTeamFlagImage
 	[SchemaMember("CCSTeam", "m_szTeamFlagImage")]
@@ -83,11 +91,13 @@ public partial class CCSTeam : CTeam
 	}
 
 	// m_flNextResourceTime
+	private static readonly SchemaField<float> __m_flNextResourceTime = new("CCSTeam", "m_flNextResourceTime");
 	[SchemaMember("CCSTeam", "m_flNextResourceTime")]
-	public ref float NextResourceTime => ref Schema.GetRef<float>(this.Handle, "CCSTeam", "m_flNextResourceTime");
+	public ref float NextResourceTime => ref __m_flNextResourceTime.GetRef(this.Handle);
 
 	// m_iLastUpdateSentAt
+	private static readonly SchemaField<Int32> __m_iLastUpdateSentAt = new("CCSTeam", "m_iLastUpdateSentAt");
 	[SchemaMember("CCSTeam", "m_iLastUpdateSentAt")]
-	public ref Int32 LastUpdateSentAt => ref Schema.GetRef<Int32>(this.Handle, "CCSTeam", "m_iLastUpdateSentAt");
+	public ref Int32 LastUpdateSentAt => ref __m_iLastUpdateSentAt.GetRef(this.Handle);
 
 }

@@ -27,16 +27,19 @@ public partial class CFilterEnemy : CBaseFilter
 	}
 
 	// m_flRadius
+	private static readonly SchemaField<float> __m_flRadius = new("CFilterEnemy", "m_flRadius");
 	[SchemaMember("CFilterEnemy", "m_flRadius")]
-	public ref float Radius => ref Schema.GetRef<float>(this.Handle, "CFilterEnemy", "m_flRadius");
+	public ref float Radius => ref __m_flRadius.GetRef(this.Handle);
 
 	// m_flOuterRadius
+	private static readonly SchemaField<float> __m_flOuterRadius = new("CFilterEnemy", "m_flOuterRadius");
 	[SchemaMember("CFilterEnemy", "m_flOuterRadius")]
-	public ref float OuterRadius => ref Schema.GetRef<float>(this.Handle, "CFilterEnemy", "m_flOuterRadius");
+	public ref float OuterRadius => ref __m_flOuterRadius.GetRef(this.Handle);
 
 	// m_nMaxSquadmatesPerEnemy
+	private static readonly SchemaField<Int32> __m_nMaxSquadmatesPerEnemy = new("CFilterEnemy", "m_nMaxSquadmatesPerEnemy");
 	[SchemaMember("CFilterEnemy", "m_nMaxSquadmatesPerEnemy")]
-	public ref Int32 MaxSquadmatesPerEnemy => ref Schema.GetRef<Int32>(this.Handle, "CFilterEnemy", "m_nMaxSquadmatesPerEnemy");
+	public ref Int32 MaxSquadmatesPerEnemy => ref __m_nMaxSquadmatesPerEnemy.GetRef(this.Handle);
 
 	// m_iszPlayerName
 	[SchemaMember("CFilterEnemy", "m_iszPlayerName")]

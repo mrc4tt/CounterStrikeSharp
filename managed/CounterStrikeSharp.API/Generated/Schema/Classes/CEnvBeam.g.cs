@@ -19,8 +19,9 @@ public partial class CEnvBeam : CBeam
     public CEnvBeam (IntPtr pointer) : base(pointer) {}
 
 	// m_active
+	private static readonly SchemaField<Int32> __m_active = new("CEnvBeam", "m_active");
 	[SchemaMember("CEnvBeam", "m_active")]
-	public ref Int32 Active => ref Schema.GetRef<Int32>(this.Handle, "CEnvBeam", "m_active");
+	public ref Int32 Active => ref __m_active.GetRef(this.Handle);
 
 	// m_spriteTexture
 	[SchemaMember("CEnvBeam", "m_spriteTexture")]
@@ -43,24 +44,29 @@ public partial class CEnvBeam : CBeam
 	}
 
 	// m_life
+	private static readonly SchemaField<float> __m_life = new("CEnvBeam", "m_life");
 	[SchemaMember("CEnvBeam", "m_life")]
-	public ref float Life => ref Schema.GetRef<float>(this.Handle, "CEnvBeam", "m_life");
+	public ref float Life => ref __m_life.GetRef(this.Handle);
 
 	// m_boltWidth
+	private static readonly SchemaField<float> __m_boltWidth = new("CEnvBeam", "m_boltWidth");
 	[SchemaMember("CEnvBeam", "m_boltWidth")]
-	public ref float BoltWidth => ref Schema.GetRef<float>(this.Handle, "CEnvBeam", "m_boltWidth");
+	public ref float BoltWidth => ref __m_boltWidth.GetRef(this.Handle);
 
 	// m_noiseAmplitude
+	private static readonly SchemaField<float> __m_noiseAmplitude = new("CEnvBeam", "m_noiseAmplitude");
 	[SchemaMember("CEnvBeam", "m_noiseAmplitude")]
-	public ref float NoiseAmplitude => ref Schema.GetRef<float>(this.Handle, "CEnvBeam", "m_noiseAmplitude");
+	public ref float NoiseAmplitude => ref __m_noiseAmplitude.GetRef(this.Handle);
 
 	// m_speed
+	private static readonly SchemaField<Int32> __m_speed = new("CEnvBeam", "m_speed");
 	[SchemaMember("CEnvBeam", "m_speed")]
-	public new ref Int32 Speed => ref Schema.GetRef<Int32>(this.Handle, "CEnvBeam", "m_speed");
+	public new ref Int32 Speed => ref __m_speed.GetRef(this.Handle);
 
 	// m_restrike
+	private static readonly SchemaField<float> __m_restrike = new("CEnvBeam", "m_restrike");
 	[SchemaMember("CEnvBeam", "m_restrike")]
-	public ref float Restrike => ref Schema.GetRef<float>(this.Handle, "CEnvBeam", "m_restrike");
+	public ref float Restrike => ref __m_restrike.GetRef(this.Handle);
 
 	// m_iszSpriteName
 	[SchemaMember("CEnvBeam", "m_iszSpriteName")]
@@ -71,8 +77,9 @@ public partial class CEnvBeam : CBeam
 	}
 
 	// m_frameStart
+	private static readonly SchemaField<Int32> __m_frameStart = new("CEnvBeam", "m_frameStart");
 	[SchemaMember("CEnvBeam", "m_frameStart")]
-	public ref Int32 FrameStart => ref Schema.GetRef<Int32>(this.Handle, "CEnvBeam", "m_frameStart");
+	public ref Int32 FrameStart => ref __m_frameStart.GetRef(this.Handle);
 
 	// m_vEndPointWorld
 	[SchemaMember("CEnvBeam", "m_vEndPointWorld")]
@@ -83,12 +90,14 @@ public partial class CEnvBeam : CBeam
 	public Vector EndPointRelative => Schema.GetDeclaredClass<Vector>(this.Handle, "CEnvBeam", "m_vEndPointRelative");
 
 	// m_radius
+	private static readonly SchemaField<float> __m_radius = new("CEnvBeam", "m_radius");
 	[SchemaMember("CEnvBeam", "m_radius")]
-	public ref float Radius => ref Schema.GetRef<float>(this.Handle, "CEnvBeam", "m_radius");
+	public ref float Radius => ref __m_radius.GetRef(this.Handle);
 
 	// m_TouchType
+	private static readonly SchemaField<Touch_t> __m_TouchType = new("CEnvBeam", "m_TouchType");
 	[SchemaMember("CEnvBeam", "m_TouchType")]
-	public ref Touch_t TouchType => ref Schema.GetRef<Touch_t>(this.Handle, "CEnvBeam", "m_TouchType");
+	public ref Touch_t TouchType => ref __m_TouchType.GetRef(this.Handle);
 
 	// m_iFilterName
 	[SchemaMember("CEnvBeam", "m_iFilterName")]

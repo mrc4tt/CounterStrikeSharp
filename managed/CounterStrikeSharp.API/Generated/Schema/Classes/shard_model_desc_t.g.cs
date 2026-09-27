@@ -19,8 +19,9 @@ public partial class shard_model_desc_t : NativeObject
     public shard_model_desc_t (IntPtr pointer) : base(pointer) {}
 
 	// m_nModelID
+	private static readonly SchemaField<Int32> __m_nModelID = new("shard_model_desc_t", "m_nModelID");
 	[SchemaMember("shard_model_desc_t", "m_nModelID")]
-	public ref Int32 ModelID => ref Schema.GetRef<Int32>(this.Handle, "shard_model_desc_t", "m_nModelID");
+	public ref Int32 ModelID => ref __m_nModelID.GetRef(this.Handle);
 
 	// m_hMaterialBase
 	[SchemaMember("shard_model_desc_t", "m_hMaterialBase")]
@@ -31,8 +32,9 @@ public partial class shard_model_desc_t : NativeObject
 	public CStrongHandle<InfoForResourceTypeIMaterial2> MaterialDamageOverlay => Schema.GetDeclaredClass<CStrongHandle<InfoForResourceTypeIMaterial2>>(this.Handle, "shard_model_desc_t", "m_hMaterialDamageOverlay");
 
 	// m_solid
+	private static readonly SchemaField<ShardSolid_t> __m_solid = new("shard_model_desc_t", "m_solid");
 	[SchemaMember("shard_model_desc_t", "m_solid")]
-	public ref ShardSolid_t Solid => ref Schema.GetRef<ShardSolid_t>(this.Handle, "shard_model_desc_t", "m_solid");
+	public ref ShardSolid_t Solid => ref __m_solid.GetRef(this.Handle);
 
 	// m_vecPanelSize
 	[SchemaMember("shard_model_desc_t", "m_vecPanelSize")]
@@ -55,16 +57,19 @@ public partial class shard_model_desc_t : NativeObject
 	public NetworkedVector<Vector4D> InitialPanelVertices => Schema.GetDeclaredClass<NetworkedVector<Vector4D>>(this.Handle, "shard_model_desc_t", "m_vInitialPanelVertices");
 
 	// m_flGlassHalfThickness
+	private static readonly SchemaField<float> __m_flGlassHalfThickness = new("shard_model_desc_t", "m_flGlassHalfThickness");
 	[SchemaMember("shard_model_desc_t", "m_flGlassHalfThickness")]
-	public ref float GlassHalfThickness => ref Schema.GetRef<float>(this.Handle, "shard_model_desc_t", "m_flGlassHalfThickness");
+	public ref float GlassHalfThickness => ref __m_flGlassHalfThickness.GetRef(this.Handle);
 
 	// m_bHasParent
+	private static readonly SchemaField<bool> __m_bHasParent = new("shard_model_desc_t", "m_bHasParent");
 	[SchemaMember("shard_model_desc_t", "m_bHasParent")]
-	public ref bool HasParent => ref Schema.GetRef<bool>(this.Handle, "shard_model_desc_t", "m_bHasParent");
+	public ref bool HasParent => ref __m_bHasParent.GetRef(this.Handle);
 
 	// m_bParentFrozen
+	private static readonly SchemaField<bool> __m_bParentFrozen = new("shard_model_desc_t", "m_bParentFrozen");
 	[SchemaMember("shard_model_desc_t", "m_bParentFrozen")]
-	public ref bool ParentFrozen => ref Schema.GetRef<bool>(this.Handle, "shard_model_desc_t", "m_bParentFrozen");
+	public ref bool ParentFrozen => ref __m_bParentFrozen.GetRef(this.Handle);
 
 	// m_SurfacePropStringToken
 	[SchemaMember("shard_model_desc_t", "m_SurfacePropStringToken")]

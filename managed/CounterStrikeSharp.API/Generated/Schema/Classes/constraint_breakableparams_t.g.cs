@@ -19,23 +19,27 @@ public partial class constraint_breakableparams_t : NativeObject
     public constraint_breakableparams_t (IntPtr pointer) : base(pointer) {}
 
 	// strength
+	private static readonly SchemaField<float> __strength = new("constraint_breakableparams_t", "strength");
 	[SchemaMember("constraint_breakableparams_t", "strength")]
-	public ref float Strength => ref Schema.GetRef<float>(this.Handle, "constraint_breakableparams_t", "strength");
+	public ref float Strength => ref __strength.GetRef(this.Handle);
 
 	// forceLimit
+	private static readonly SchemaField<float> __forceLimit = new("constraint_breakableparams_t", "forceLimit");
 	[SchemaMember("constraint_breakableparams_t", "forceLimit")]
-	public ref float ForceLimit => ref Schema.GetRef<float>(this.Handle, "constraint_breakableparams_t", "forceLimit");
+	public ref float ForceLimit => ref __forceLimit.GetRef(this.Handle);
 
 	// torqueLimit
+	private static readonly SchemaField<float> __torqueLimit = new("constraint_breakableparams_t", "torqueLimit");
 	[SchemaMember("constraint_breakableparams_t", "torqueLimit")]
-	public ref float TorqueLimit => ref Schema.GetRef<float>(this.Handle, "constraint_breakableparams_t", "torqueLimit");
+	public ref float TorqueLimit => ref __torqueLimit.GetRef(this.Handle);
 
 	// bodyMassScale
 	[SchemaMember("constraint_breakableparams_t", "bodyMassScale")]
 	public Span<float> BodyMassScale => Schema.GetFixedArray<float>(this.Handle, "constraint_breakableparams_t", "bodyMassScale", 2);
 
 	// isActive
+	private static readonly SchemaField<bool> __isActive = new("constraint_breakableparams_t", "isActive");
 	[SchemaMember("constraint_breakableparams_t", "isActive")]
-	public ref bool IsActive => ref Schema.GetRef<bool>(this.Handle, "constraint_breakableparams_t", "isActive");
+	public ref bool IsActive => ref __isActive.GetRef(this.Handle);
 
 }

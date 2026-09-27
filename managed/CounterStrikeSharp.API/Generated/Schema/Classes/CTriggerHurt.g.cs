@@ -19,48 +19,58 @@ public partial class CTriggerHurt : CBaseTrigger
     public CTriggerHurt (IntPtr pointer) : base(pointer) {}
 
 	// m_flOriginalDamage
+	private static readonly SchemaField<float> __m_flOriginalDamage = new("CTriggerHurt", "m_flOriginalDamage");
 	[SchemaMember("CTriggerHurt", "m_flOriginalDamage")]
-	public ref float OriginalDamage => ref Schema.GetRef<float>(this.Handle, "CTriggerHurt", "m_flOriginalDamage");
+	public ref float OriginalDamage => ref __m_flOriginalDamage.GetRef(this.Handle);
 
 	// m_flDamage
+	private static readonly SchemaField<float> __m_flDamage = new("CTriggerHurt", "m_flDamage");
 	[SchemaMember("CTriggerHurt", "m_flDamage")]
-	public ref float Damage => ref Schema.GetRef<float>(this.Handle, "CTriggerHurt", "m_flDamage");
+	public ref float Damage => ref __m_flDamage.GetRef(this.Handle);
 
 	// m_flDamageCap
+	private static readonly SchemaField<float> __m_flDamageCap = new("CTriggerHurt", "m_flDamageCap");
 	[SchemaMember("CTriggerHurt", "m_flDamageCap")]
-	public ref float DamageCap => ref Schema.GetRef<float>(this.Handle, "CTriggerHurt", "m_flDamageCap");
+	public ref float DamageCap => ref __m_flDamageCap.GetRef(this.Handle);
 
 	// m_flLastDmgTime
+	private static readonly SchemaField<float> __m_flLastDmgTime = new("CTriggerHurt", "m_flLastDmgTime");
 	[SchemaMember("CTriggerHurt", "m_flLastDmgTime")]
-	public ref float LastDmgTime => ref Schema.GetRef<float>(this.Handle, "CTriggerHurt", "m_flLastDmgTime");
+	public ref float LastDmgTime => ref __m_flLastDmgTime.GetRef(this.Handle);
 
 	// m_flForgivenessDelay
+	private static readonly SchemaField<float> __m_flForgivenessDelay = new("CTriggerHurt", "m_flForgivenessDelay");
 	[SchemaMember("CTriggerHurt", "m_flForgivenessDelay")]
-	public ref float ForgivenessDelay => ref Schema.GetRef<float>(this.Handle, "CTriggerHurt", "m_flForgivenessDelay");
+	public ref float ForgivenessDelay => ref __m_flForgivenessDelay.GetRef(this.Handle);
 
 	// m_bitsDamageInflict
+	private static readonly SchemaField<DamageTypes_t> __m_bitsDamageInflict = new("CTriggerHurt", "m_bitsDamageInflict");
 	[SchemaMember("CTriggerHurt", "m_bitsDamageInflict")]
-	public ref DamageTypes_t BitsDamageInflict => ref Schema.GetRef<DamageTypes_t>(this.Handle, "CTriggerHurt", "m_bitsDamageInflict");
+	public ref DamageTypes_t BitsDamageInflict => ref __m_bitsDamageInflict.GetRef(this.Handle);
 
 	// m_damageModel
+	private static readonly SchemaField<Int32> __m_damageModel = new("CTriggerHurt", "m_damageModel");
 	[SchemaMember("CTriggerHurt", "m_damageModel")]
-	public ref Int32 DamageModel => ref Schema.GetRef<Int32>(this.Handle, "CTriggerHurt", "m_damageModel");
+	public ref Int32 DamageModel => ref __m_damageModel.GetRef(this.Handle);
 
 	// m_bNoDmgForce
+	private static readonly SchemaField<bool> __m_bNoDmgForce = new("CTriggerHurt", "m_bNoDmgForce");
 	[SchemaMember("CTriggerHurt", "m_bNoDmgForce")]
-	public ref bool NoDmgForce => ref Schema.GetRef<bool>(this.Handle, "CTriggerHurt", "m_bNoDmgForce");
+	public ref bool NoDmgForce => ref __m_bNoDmgForce.GetRef(this.Handle);
 
 	// m_vDamageForce
 	[SchemaMember("CTriggerHurt", "m_vDamageForce")]
 	public Vector DamageForce => Schema.GetDeclaredClass<Vector>(this.Handle, "CTriggerHurt", "m_vDamageForce");
 
 	// m_thinkAlways
+	private static readonly SchemaField<bool> __m_thinkAlways = new("CTriggerHurt", "m_thinkAlways");
 	[SchemaMember("CTriggerHurt", "m_thinkAlways")]
-	public ref bool ThinkAlways => ref Schema.GetRef<bool>(this.Handle, "CTriggerHurt", "m_thinkAlways");
+	public ref bool ThinkAlways => ref __m_thinkAlways.GetRef(this.Handle);
 
 	// m_hurtThinkPeriod
+	private static readonly SchemaField<float> __m_hurtThinkPeriod = new("CTriggerHurt", "m_hurtThinkPeriod");
 	[SchemaMember("CTriggerHurt", "m_hurtThinkPeriod")]
-	public ref float HurtThinkPeriod => ref Schema.GetRef<float>(this.Handle, "CTriggerHurt", "m_hurtThinkPeriod");
+	public ref float HurtThinkPeriod => ref __m_hurtThinkPeriod.GetRef(this.Handle);
 
 	// m_OnHurt
 	[SchemaMember("CTriggerHurt", "m_OnHurt")]

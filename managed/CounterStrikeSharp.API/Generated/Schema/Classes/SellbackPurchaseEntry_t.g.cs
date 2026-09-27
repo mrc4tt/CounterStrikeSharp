@@ -19,20 +19,24 @@ public partial class SellbackPurchaseEntry_t : NativeObject
     public SellbackPurchaseEntry_t (IntPtr pointer) : base(pointer) {}
 
 	// m_unDefIdx
+	private static readonly SchemaField<UInt16> __m_unDefIdx = new("SellbackPurchaseEntry_t", "m_unDefIdx");
 	[SchemaMember("SellbackPurchaseEntry_t", "m_unDefIdx")]
-	public ref UInt16 DefIdx => ref Schema.GetRef<UInt16>(this.Handle, "SellbackPurchaseEntry_t", "m_unDefIdx");
+	public ref UInt16 DefIdx => ref __m_unDefIdx.GetRef(this.Handle);
 
 	// m_nCost
+	private static readonly SchemaField<Int32> __m_nCost = new("SellbackPurchaseEntry_t", "m_nCost");
 	[SchemaMember("SellbackPurchaseEntry_t", "m_nCost")]
-	public ref Int32 Cost => ref Schema.GetRef<Int32>(this.Handle, "SellbackPurchaseEntry_t", "m_nCost");
+	public ref Int32 Cost => ref __m_nCost.GetRef(this.Handle);
 
 	// m_nPrevArmor
+	private static readonly SchemaField<Int32> __m_nPrevArmor = new("SellbackPurchaseEntry_t", "m_nPrevArmor");
 	[SchemaMember("SellbackPurchaseEntry_t", "m_nPrevArmor")]
-	public ref Int32 PrevArmor => ref Schema.GetRef<Int32>(this.Handle, "SellbackPurchaseEntry_t", "m_nPrevArmor");
+	public ref Int32 PrevArmor => ref __m_nPrevArmor.GetRef(this.Handle);
 
 	// m_bPrevHelmet
+	private static readonly SchemaField<bool> __m_bPrevHelmet = new("SellbackPurchaseEntry_t", "m_bPrevHelmet");
 	[SchemaMember("SellbackPurchaseEntry_t", "m_bPrevHelmet")]
-	public ref bool PrevHelmet => ref Schema.GetRef<bool>(this.Handle, "SellbackPurchaseEntry_t", "m_bPrevHelmet");
+	public ref bool PrevHelmet => ref __m_bPrevHelmet.GetRef(this.Handle);
 
 	// m_hItem
 	[SchemaMember("SellbackPurchaseEntry_t", "m_hItem")]

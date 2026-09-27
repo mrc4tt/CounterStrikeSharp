@@ -23,7 +23,8 @@ public partial class CAnimGraphControllerManager : NativeObject
 	public NetworkedVector<CAnimGraphControllerBase?> Controllers => Schema.GetDeclaredClass<NetworkedVector<CAnimGraphControllerBase?>>(this.Handle, "CAnimGraphControllerManager", "m_controllers");
 
 	// m_bGraphBindingsCreated
+	private static readonly SchemaField<bool> __m_bGraphBindingsCreated = new("CAnimGraphControllerManager", "m_bGraphBindingsCreated");
 	[SchemaMember("CAnimGraphControllerManager", "m_bGraphBindingsCreated")]
-	public ref bool GraphBindingsCreated => ref Schema.GetRef<bool>(this.Handle, "CAnimGraphControllerManager", "m_bGraphBindingsCreated");
+	public ref bool GraphBindingsCreated => ref __m_bGraphBindingsCreated.GetRef(this.Handle);
 
 }

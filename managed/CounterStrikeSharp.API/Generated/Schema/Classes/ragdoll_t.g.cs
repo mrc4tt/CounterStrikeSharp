@@ -31,11 +31,13 @@ public partial class ragdoll_t : NativeObject
 	public NetworkedVector<Int32> BoneIndex => Schema.GetDeclaredClass<NetworkedVector<Int32>>(this.Handle, "ragdoll_t", "boneIndex");
 
 	// allowStretch
+	private static readonly SchemaField<bool> __allowStretch = new("ragdoll_t", "allowStretch");
 	[SchemaMember("ragdoll_t", "allowStretch")]
-	public ref bool AllowStretch => ref Schema.GetRef<bool>(this.Handle, "ragdoll_t", "allowStretch");
+	public ref bool AllowStretch => ref __allowStretch.GetRef(this.Handle);
 
 	// unused
+	private static readonly SchemaField<bool> __unused = new("ragdoll_t", "unused");
 	[SchemaMember("ragdoll_t", "unused")]
-	public ref bool Unused => ref Schema.GetRef<bool>(this.Handle, "ragdoll_t", "unused");
+	public ref bool Unused => ref __unused.GetRef(this.Handle);
 
 }

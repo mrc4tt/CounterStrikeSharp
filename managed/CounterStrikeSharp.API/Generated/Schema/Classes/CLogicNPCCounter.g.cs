@@ -63,28 +63,34 @@ public partial class CLogicNPCCounter : CBaseEntity
 	}
 
 	// m_flDistanceMax
+	private static readonly SchemaField<float> __m_flDistanceMax = new("CLogicNPCCounter", "m_flDistanceMax");
 	[SchemaMember("CLogicNPCCounter", "m_flDistanceMax")]
-	public ref float DistanceMax => ref Schema.GetRef<float>(this.Handle, "CLogicNPCCounter", "m_flDistanceMax");
+	public ref float DistanceMax => ref __m_flDistanceMax.GetRef(this.Handle);
 
 	// m_bDisabled
+	private static readonly SchemaField<bool> __m_bDisabled = new("CLogicNPCCounter", "m_bDisabled");
 	[SchemaMember("CLogicNPCCounter", "m_bDisabled")]
-	public ref bool Disabled => ref Schema.GetRef<bool>(this.Handle, "CLogicNPCCounter", "m_bDisabled");
+	public ref bool Disabled => ref __m_bDisabled.GetRef(this.Handle);
 
 	// m_nMinCountAll
+	private static readonly SchemaField<Int32> __m_nMinCountAll = new("CLogicNPCCounter", "m_nMinCountAll");
 	[SchemaMember("CLogicNPCCounter", "m_nMinCountAll")]
-	public ref Int32 MinCountAll => ref Schema.GetRef<Int32>(this.Handle, "CLogicNPCCounter", "m_nMinCountAll");
+	public ref Int32 MinCountAll => ref __m_nMinCountAll.GetRef(this.Handle);
 
 	// m_nMaxCountAll
+	private static readonly SchemaField<Int32> __m_nMaxCountAll = new("CLogicNPCCounter", "m_nMaxCountAll");
 	[SchemaMember("CLogicNPCCounter", "m_nMaxCountAll")]
-	public ref Int32 MaxCountAll => ref Schema.GetRef<Int32>(this.Handle, "CLogicNPCCounter", "m_nMaxCountAll");
+	public ref Int32 MaxCountAll => ref __m_nMaxCountAll.GetRef(this.Handle);
 
 	// m_nMinFactorAll
+	private static readonly SchemaField<Int32> __m_nMinFactorAll = new("CLogicNPCCounter", "m_nMinFactorAll");
 	[SchemaMember("CLogicNPCCounter", "m_nMinFactorAll")]
-	public ref Int32 MinFactorAll => ref Schema.GetRef<Int32>(this.Handle, "CLogicNPCCounter", "m_nMinFactorAll");
+	public ref Int32 MinFactorAll => ref __m_nMinFactorAll.GetRef(this.Handle);
 
 	// m_nMaxFactorAll
+	private static readonly SchemaField<Int32> __m_nMaxFactorAll = new("CLogicNPCCounter", "m_nMaxFactorAll");
 	[SchemaMember("CLogicNPCCounter", "m_nMaxFactorAll")]
-	public ref Int32 MaxFactorAll => ref Schema.GetRef<Int32>(this.Handle, "CLogicNPCCounter", "m_nMaxFactorAll");
+	public ref Int32 MaxFactorAll => ref __m_nMaxFactorAll.GetRef(this.Handle);
 
 	// m_iszNPCClassname_1
 	[SchemaMember("CLogicNPCCounter", "m_iszNPCClassname_1")]
@@ -95,32 +101,39 @@ public partial class CLogicNPCCounter : CBaseEntity
 	}
 
 	// m_nNPCState_1
+	private static readonly SchemaField<Int32> __m_nNPCState_1 = new("CLogicNPCCounter", "m_nNPCState_1");
 	[SchemaMember("CLogicNPCCounter", "m_nNPCState_1")]
-	public ref Int32 NPCState_1 => ref Schema.GetRef<Int32>(this.Handle, "CLogicNPCCounter", "m_nNPCState_1");
+	public ref Int32 NPCState_1 => ref __m_nNPCState_1.GetRef(this.Handle);
 
 	// m_bInvertState_1
+	private static readonly SchemaField<bool> __m_bInvertState_1 = new("CLogicNPCCounter", "m_bInvertState_1");
 	[SchemaMember("CLogicNPCCounter", "m_bInvertState_1")]
-	public ref bool InvertState_1 => ref Schema.GetRef<bool>(this.Handle, "CLogicNPCCounter", "m_bInvertState_1");
+	public ref bool InvertState_1 => ref __m_bInvertState_1.GetRef(this.Handle);
 
 	// m_nMinCount_1
+	private static readonly SchemaField<Int32> __m_nMinCount_1 = new("CLogicNPCCounter", "m_nMinCount_1");
 	[SchemaMember("CLogicNPCCounter", "m_nMinCount_1")]
-	public ref Int32 MinCount_1 => ref Schema.GetRef<Int32>(this.Handle, "CLogicNPCCounter", "m_nMinCount_1");
+	public ref Int32 MinCount_1 => ref __m_nMinCount_1.GetRef(this.Handle);
 
 	// m_nMaxCount_1
+	private static readonly SchemaField<Int32> __m_nMaxCount_1 = new("CLogicNPCCounter", "m_nMaxCount_1");
 	[SchemaMember("CLogicNPCCounter", "m_nMaxCount_1")]
-	public ref Int32 MaxCount_1 => ref Schema.GetRef<Int32>(this.Handle, "CLogicNPCCounter", "m_nMaxCount_1");
+	public ref Int32 MaxCount_1 => ref __m_nMaxCount_1.GetRef(this.Handle);
 
 	// m_nMinFactor_1
+	private static readonly SchemaField<Int32> __m_nMinFactor_1 = new("CLogicNPCCounter", "m_nMinFactor_1");
 	[SchemaMember("CLogicNPCCounter", "m_nMinFactor_1")]
-	public ref Int32 MinFactor_1 => ref Schema.GetRef<Int32>(this.Handle, "CLogicNPCCounter", "m_nMinFactor_1");
+	public ref Int32 MinFactor_1 => ref __m_nMinFactor_1.GetRef(this.Handle);
 
 	// m_nMaxFactor_1
+	private static readonly SchemaField<Int32> __m_nMaxFactor_1 = new("CLogicNPCCounter", "m_nMaxFactor_1");
 	[SchemaMember("CLogicNPCCounter", "m_nMaxFactor_1")]
-	public ref Int32 MaxFactor_1 => ref Schema.GetRef<Int32>(this.Handle, "CLogicNPCCounter", "m_nMaxFactor_1");
+	public ref Int32 MaxFactor_1 => ref __m_nMaxFactor_1.GetRef(this.Handle);
 
 	// m_flDefaultDist_1
+	private static readonly SchemaField<float> __m_flDefaultDist_1 = new("CLogicNPCCounter", "m_flDefaultDist_1");
 	[SchemaMember("CLogicNPCCounter", "m_flDefaultDist_1")]
-	public ref float DefaultDist_1 => ref Schema.GetRef<float>(this.Handle, "CLogicNPCCounter", "m_flDefaultDist_1");
+	public ref float DefaultDist_1 => ref __m_flDefaultDist_1.GetRef(this.Handle);
 
 	// m_iszNPCClassname_2
 	[SchemaMember("CLogicNPCCounter", "m_iszNPCClassname_2")]
@@ -131,32 +144,39 @@ public partial class CLogicNPCCounter : CBaseEntity
 	}
 
 	// m_nNPCState_2
+	private static readonly SchemaField<Int32> __m_nNPCState_2 = new("CLogicNPCCounter", "m_nNPCState_2");
 	[SchemaMember("CLogicNPCCounter", "m_nNPCState_2")]
-	public ref Int32 NPCState_2 => ref Schema.GetRef<Int32>(this.Handle, "CLogicNPCCounter", "m_nNPCState_2");
+	public ref Int32 NPCState_2 => ref __m_nNPCState_2.GetRef(this.Handle);
 
 	// m_bInvertState_2
+	private static readonly SchemaField<bool> __m_bInvertState_2 = new("CLogicNPCCounter", "m_bInvertState_2");
 	[SchemaMember("CLogicNPCCounter", "m_bInvertState_2")]
-	public ref bool InvertState_2 => ref Schema.GetRef<bool>(this.Handle, "CLogicNPCCounter", "m_bInvertState_2");
+	public ref bool InvertState_2 => ref __m_bInvertState_2.GetRef(this.Handle);
 
 	// m_nMinCount_2
+	private static readonly SchemaField<Int32> __m_nMinCount_2 = new("CLogicNPCCounter", "m_nMinCount_2");
 	[SchemaMember("CLogicNPCCounter", "m_nMinCount_2")]
-	public ref Int32 MinCount_2 => ref Schema.GetRef<Int32>(this.Handle, "CLogicNPCCounter", "m_nMinCount_2");
+	public ref Int32 MinCount_2 => ref __m_nMinCount_2.GetRef(this.Handle);
 
 	// m_nMaxCount_2
+	private static readonly SchemaField<Int32> __m_nMaxCount_2 = new("CLogicNPCCounter", "m_nMaxCount_2");
 	[SchemaMember("CLogicNPCCounter", "m_nMaxCount_2")]
-	public ref Int32 MaxCount_2 => ref Schema.GetRef<Int32>(this.Handle, "CLogicNPCCounter", "m_nMaxCount_2");
+	public ref Int32 MaxCount_2 => ref __m_nMaxCount_2.GetRef(this.Handle);
 
 	// m_nMinFactor_2
+	private static readonly SchemaField<Int32> __m_nMinFactor_2 = new("CLogicNPCCounter", "m_nMinFactor_2");
 	[SchemaMember("CLogicNPCCounter", "m_nMinFactor_2")]
-	public ref Int32 MinFactor_2 => ref Schema.GetRef<Int32>(this.Handle, "CLogicNPCCounter", "m_nMinFactor_2");
+	public ref Int32 MinFactor_2 => ref __m_nMinFactor_2.GetRef(this.Handle);
 
 	// m_nMaxFactor_2
+	private static readonly SchemaField<Int32> __m_nMaxFactor_2 = new("CLogicNPCCounter", "m_nMaxFactor_2");
 	[SchemaMember("CLogicNPCCounter", "m_nMaxFactor_2")]
-	public ref Int32 MaxFactor_2 => ref Schema.GetRef<Int32>(this.Handle, "CLogicNPCCounter", "m_nMaxFactor_2");
+	public ref Int32 MaxFactor_2 => ref __m_nMaxFactor_2.GetRef(this.Handle);
 
 	// m_flDefaultDist_2
+	private static readonly SchemaField<float> __m_flDefaultDist_2 = new("CLogicNPCCounter", "m_flDefaultDist_2");
 	[SchemaMember("CLogicNPCCounter", "m_flDefaultDist_2")]
-	public ref float DefaultDist_2 => ref Schema.GetRef<float>(this.Handle, "CLogicNPCCounter", "m_flDefaultDist_2");
+	public ref float DefaultDist_2 => ref __m_flDefaultDist_2.GetRef(this.Handle);
 
 	// m_iszNPCClassname_3
 	[SchemaMember("CLogicNPCCounter", "m_iszNPCClassname_3")]
@@ -167,31 +187,38 @@ public partial class CLogicNPCCounter : CBaseEntity
 	}
 
 	// m_nNPCState_3
+	private static readonly SchemaField<Int32> __m_nNPCState_3 = new("CLogicNPCCounter", "m_nNPCState_3");
 	[SchemaMember("CLogicNPCCounter", "m_nNPCState_3")]
-	public ref Int32 NPCState_3 => ref Schema.GetRef<Int32>(this.Handle, "CLogicNPCCounter", "m_nNPCState_3");
+	public ref Int32 NPCState_3 => ref __m_nNPCState_3.GetRef(this.Handle);
 
 	// m_bInvertState_3
+	private static readonly SchemaField<bool> __m_bInvertState_3 = new("CLogicNPCCounter", "m_bInvertState_3");
 	[SchemaMember("CLogicNPCCounter", "m_bInvertState_3")]
-	public ref bool InvertState_3 => ref Schema.GetRef<bool>(this.Handle, "CLogicNPCCounter", "m_bInvertState_3");
+	public ref bool InvertState_3 => ref __m_bInvertState_3.GetRef(this.Handle);
 
 	// m_nMinCount_3
+	private static readonly SchemaField<Int32> __m_nMinCount_3 = new("CLogicNPCCounter", "m_nMinCount_3");
 	[SchemaMember("CLogicNPCCounter", "m_nMinCount_3")]
-	public ref Int32 MinCount_3 => ref Schema.GetRef<Int32>(this.Handle, "CLogicNPCCounter", "m_nMinCount_3");
+	public ref Int32 MinCount_3 => ref __m_nMinCount_3.GetRef(this.Handle);
 
 	// m_nMaxCount_3
+	private static readonly SchemaField<Int32> __m_nMaxCount_3 = new("CLogicNPCCounter", "m_nMaxCount_3");
 	[SchemaMember("CLogicNPCCounter", "m_nMaxCount_3")]
-	public ref Int32 MaxCount_3 => ref Schema.GetRef<Int32>(this.Handle, "CLogicNPCCounter", "m_nMaxCount_3");
+	public ref Int32 MaxCount_3 => ref __m_nMaxCount_3.GetRef(this.Handle);
 
 	// m_nMinFactor_3
+	private static readonly SchemaField<Int32> __m_nMinFactor_3 = new("CLogicNPCCounter", "m_nMinFactor_3");
 	[SchemaMember("CLogicNPCCounter", "m_nMinFactor_3")]
-	public ref Int32 MinFactor_3 => ref Schema.GetRef<Int32>(this.Handle, "CLogicNPCCounter", "m_nMinFactor_3");
+	public ref Int32 MinFactor_3 => ref __m_nMinFactor_3.GetRef(this.Handle);
 
 	// m_nMaxFactor_3
+	private static readonly SchemaField<Int32> __m_nMaxFactor_3 = new("CLogicNPCCounter", "m_nMaxFactor_3");
 	[SchemaMember("CLogicNPCCounter", "m_nMaxFactor_3")]
-	public ref Int32 MaxFactor_3 => ref Schema.GetRef<Int32>(this.Handle, "CLogicNPCCounter", "m_nMaxFactor_3");
+	public ref Int32 MaxFactor_3 => ref __m_nMaxFactor_3.GetRef(this.Handle);
 
 	// m_flDefaultDist_3
+	private static readonly SchemaField<float> __m_flDefaultDist_3 = new("CLogicNPCCounter", "m_flDefaultDist_3");
 	[SchemaMember("CLogicNPCCounter", "m_flDefaultDist_3")]
-	public ref float DefaultDist_3 => ref Schema.GetRef<float>(this.Handle, "CLogicNPCCounter", "m_flDefaultDist_3");
+	public ref float DefaultDist_3 => ref __m_flDefaultDist_3.GetRef(this.Handle);
 
 }

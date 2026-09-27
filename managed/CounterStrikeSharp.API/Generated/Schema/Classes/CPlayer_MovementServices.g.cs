@@ -19,68 +19,81 @@ public partial class CPlayer_MovementServices : CPlayerPawnComponent
     public CPlayer_MovementServices (IntPtr pointer) : base(pointer) {}
 
 	// m_nImpulse
+	private static readonly SchemaField<Int32> __m_nImpulse = new("CPlayer_MovementServices", "m_nImpulse");
 	[SchemaMember("CPlayer_MovementServices", "m_nImpulse")]
-	public ref Int32 Impulse => ref Schema.GetRef<Int32>(this.Handle, "CPlayer_MovementServices", "m_nImpulse");
+	public ref Int32 Impulse => ref __m_nImpulse.GetRef(this.Handle);
 
 	// m_nButtons
 	[SchemaMember("CPlayer_MovementServices", "m_nButtons")]
 	public CInButtonState Buttons => Schema.GetDeclaredClass<CInButtonState>(this.Handle, "CPlayer_MovementServices", "m_nButtons");
 
 	// m_nQueuedButtonDownMask
+	private static readonly SchemaField<UInt64> __m_nQueuedButtonDownMask = new("CPlayer_MovementServices", "m_nQueuedButtonDownMask");
 	[SchemaMember("CPlayer_MovementServices", "m_nQueuedButtonDownMask")]
-	public ref UInt64 QueuedButtonDownMask => ref Schema.GetRef<UInt64>(this.Handle, "CPlayer_MovementServices", "m_nQueuedButtonDownMask");
+	public ref UInt64 QueuedButtonDownMask => ref __m_nQueuedButtonDownMask.GetRef(this.Handle);
 
 	// m_nQueuedButtonChangeMask
+	private static readonly SchemaField<UInt64> __m_nQueuedButtonChangeMask = new("CPlayer_MovementServices", "m_nQueuedButtonChangeMask");
 	[SchemaMember("CPlayer_MovementServices", "m_nQueuedButtonChangeMask")]
-	public ref UInt64 QueuedButtonChangeMask => ref Schema.GetRef<UInt64>(this.Handle, "CPlayer_MovementServices", "m_nQueuedButtonChangeMask");
+	public ref UInt64 QueuedButtonChangeMask => ref __m_nQueuedButtonChangeMask.GetRef(this.Handle);
 
 	// m_nButtonDoublePressed
+	private static readonly SchemaField<UInt64> __m_nButtonDoublePressed = new("CPlayer_MovementServices", "m_nButtonDoublePressed");
 	[SchemaMember("CPlayer_MovementServices", "m_nButtonDoublePressed")]
-	public ref UInt64 ButtonDoublePressed => ref Schema.GetRef<UInt64>(this.Handle, "CPlayer_MovementServices", "m_nButtonDoublePressed");
+	public ref UInt64 ButtonDoublePressed => ref __m_nButtonDoublePressed.GetRef(this.Handle);
 
 	// m_pButtonPressedCmdNumber
 	[SchemaMember("CPlayer_MovementServices", "m_pButtonPressedCmdNumber")]
 	public Span<UInt32> ButtonPressedCmdNumber => Schema.GetFixedArray<UInt32>(this.Handle, "CPlayer_MovementServices", "m_pButtonPressedCmdNumber", 64);
 
 	// m_nLastCommandNumberProcessed
+	private static readonly SchemaField<UInt32> __m_nLastCommandNumberProcessed = new("CPlayer_MovementServices", "m_nLastCommandNumberProcessed");
 	[SchemaMember("CPlayer_MovementServices", "m_nLastCommandNumberProcessed")]
-	public ref UInt32 LastCommandNumberProcessed => ref Schema.GetRef<UInt32>(this.Handle, "CPlayer_MovementServices", "m_nLastCommandNumberProcessed");
+	public ref UInt32 LastCommandNumberProcessed => ref __m_nLastCommandNumberProcessed.GetRef(this.Handle);
 
 	// m_nToggleButtonDownMask
+	private static readonly SchemaField<UInt64> __m_nToggleButtonDownMask = new("CPlayer_MovementServices", "m_nToggleButtonDownMask");
 	[SchemaMember("CPlayer_MovementServices", "m_nToggleButtonDownMask")]
-	public ref UInt64 ToggleButtonDownMask => ref Schema.GetRef<UInt64>(this.Handle, "CPlayer_MovementServices", "m_nToggleButtonDownMask");
+	public ref UInt64 ToggleButtonDownMask => ref __m_nToggleButtonDownMask.GetRef(this.Handle);
 
 	// m_flCmdForwardMove
+	private static readonly SchemaField<float> __m_flCmdForwardMove = new("CPlayer_MovementServices", "m_flCmdForwardMove");
 	[SchemaMember("CPlayer_MovementServices", "m_flCmdForwardMove")]
-	public ref float CmdForwardMove => ref Schema.GetRef<float>(this.Handle, "CPlayer_MovementServices", "m_flCmdForwardMove");
+	public ref float CmdForwardMove => ref __m_flCmdForwardMove.GetRef(this.Handle);
 
 	// m_flCmdLeftMove
+	private static readonly SchemaField<float> __m_flCmdLeftMove = new("CPlayer_MovementServices", "m_flCmdLeftMove");
 	[SchemaMember("CPlayer_MovementServices", "m_flCmdLeftMove")]
-	public ref float CmdLeftMove => ref Schema.GetRef<float>(this.Handle, "CPlayer_MovementServices", "m_flCmdLeftMove");
+	public ref float CmdLeftMove => ref __m_flCmdLeftMove.GetRef(this.Handle);
 
 	// m_flCmdUpMove
+	private static readonly SchemaField<float> __m_flCmdUpMove = new("CPlayer_MovementServices", "m_flCmdUpMove");
 	[SchemaMember("CPlayer_MovementServices", "m_flCmdUpMove")]
-	public ref float CmdUpMove => ref Schema.GetRef<float>(this.Handle, "CPlayer_MovementServices", "m_flCmdUpMove");
+	public ref float CmdUpMove => ref __m_flCmdUpMove.GetRef(this.Handle);
 
 	// m_flMaxspeed
+	private static readonly SchemaField<float> __m_flMaxspeed = new("CPlayer_MovementServices", "m_flMaxspeed");
 	[SchemaMember("CPlayer_MovementServices", "m_flMaxspeed")]
-	public ref float Maxspeed => ref Schema.GetRef<float>(this.Handle, "CPlayer_MovementServices", "m_flMaxspeed");
+	public ref float Maxspeed => ref __m_flMaxspeed.GetRef(this.Handle);
 
 	// m_arrForceSubtickMoveWhen
 	[SchemaMember("CPlayer_MovementServices", "m_arrForceSubtickMoveWhen")]
 	public Span<float> ForceSubtickMoveWhen => Schema.GetFixedArray<float>(this.Handle, "CPlayer_MovementServices", "m_arrForceSubtickMoveWhen", 4);
 
 	// m_flForwardMove
+	private static readonly SchemaField<float> __m_flForwardMove = new("CPlayer_MovementServices", "m_flForwardMove");
 	[SchemaMember("CPlayer_MovementServices", "m_flForwardMove")]
-	public ref float ForwardMove => ref Schema.GetRef<float>(this.Handle, "CPlayer_MovementServices", "m_flForwardMove");
+	public ref float ForwardMove => ref __m_flForwardMove.GetRef(this.Handle);
 
 	// m_flLeftMove
+	private static readonly SchemaField<float> __m_flLeftMove = new("CPlayer_MovementServices", "m_flLeftMove");
 	[SchemaMember("CPlayer_MovementServices", "m_flLeftMove")]
-	public ref float LeftMove => ref Schema.GetRef<float>(this.Handle, "CPlayer_MovementServices", "m_flLeftMove");
+	public ref float LeftMove => ref __m_flLeftMove.GetRef(this.Handle);
 
 	// m_flUpMove
+	private static readonly SchemaField<float> __m_flUpMove = new("CPlayer_MovementServices", "m_flUpMove");
 	[SchemaMember("CPlayer_MovementServices", "m_flUpMove")]
-	public ref float UpMove => ref Schema.GetRef<float>(this.Handle, "CPlayer_MovementServices", "m_flUpMove");
+	public ref float UpMove => ref __m_flUpMove.GetRef(this.Handle);
 
 	// m_vecLastMovementImpulses
 	[SchemaMember("CPlayer_MovementServices", "m_vecLastMovementImpulses")]

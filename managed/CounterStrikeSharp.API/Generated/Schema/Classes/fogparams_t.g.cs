@@ -55,83 +55,103 @@ public partial class fogparams_t : NativeObject
 	}
 
 	// start
+	private static readonly SchemaField<float> __start = new("fogparams_t", "start");
 	[SchemaMember("fogparams_t", "start")]
-	public ref float Start => ref Schema.GetRef<float>(this.Handle, "fogparams_t", "start");
+	public ref float Start => ref __start.GetRef(this.Handle);
 
 	// end
+	private static readonly SchemaField<float> __end = new("fogparams_t", "end");
 	[SchemaMember("fogparams_t", "end")]
-	public ref float End => ref Schema.GetRef<float>(this.Handle, "fogparams_t", "end");
+	public ref float End => ref __end.GetRef(this.Handle);
 
 	// farz
+	private static readonly SchemaField<float> __farz = new("fogparams_t", "farz");
 	[SchemaMember("fogparams_t", "farz")]
-	public ref float Farz => ref Schema.GetRef<float>(this.Handle, "fogparams_t", "farz");
+	public ref float Farz => ref __farz.GetRef(this.Handle);
 
 	// maxdensity
+	private static readonly SchemaField<float> __maxdensity = new("fogparams_t", "maxdensity");
 	[SchemaMember("fogparams_t", "maxdensity")]
-	public ref float Maxdensity => ref Schema.GetRef<float>(this.Handle, "fogparams_t", "maxdensity");
+	public ref float Maxdensity => ref __maxdensity.GetRef(this.Handle);
 
 	// exponent
+	private static readonly SchemaField<float> __exponent = new("fogparams_t", "exponent");
 	[SchemaMember("fogparams_t", "exponent")]
-	public ref float Exponent => ref Schema.GetRef<float>(this.Handle, "fogparams_t", "exponent");
+	public ref float Exponent => ref __exponent.GetRef(this.Handle);
 
 	// HDRColorScale
+	private static readonly SchemaField<float> __HDRColorScale = new("fogparams_t", "HDRColorScale");
 	[SchemaMember("fogparams_t", "HDRColorScale")]
-	public ref float HDRColorScale => ref Schema.GetRef<float>(this.Handle, "fogparams_t", "HDRColorScale");
+	public ref float HDRColorScale => ref __HDRColorScale.GetRef(this.Handle);
 
 	// skyboxFogFactor
+	private static readonly SchemaField<float> __skyboxFogFactor = new("fogparams_t", "skyboxFogFactor");
 	[SchemaMember("fogparams_t", "skyboxFogFactor")]
-	public ref float SkyboxFogFactor => ref Schema.GetRef<float>(this.Handle, "fogparams_t", "skyboxFogFactor");
+	public ref float SkyboxFogFactor => ref __skyboxFogFactor.GetRef(this.Handle);
 
 	// skyboxFogFactorLerpTo
+	private static readonly SchemaField<float> __skyboxFogFactorLerpTo = new("fogparams_t", "skyboxFogFactorLerpTo");
 	[SchemaMember("fogparams_t", "skyboxFogFactorLerpTo")]
-	public ref float SkyboxFogFactorLerpTo => ref Schema.GetRef<float>(this.Handle, "fogparams_t", "skyboxFogFactorLerpTo");
+	public ref float SkyboxFogFactorLerpTo => ref __skyboxFogFactorLerpTo.GetRef(this.Handle);
 
 	// startLerpTo
+	private static readonly SchemaField<float> __startLerpTo = new("fogparams_t", "startLerpTo");
 	[SchemaMember("fogparams_t", "startLerpTo")]
-	public ref float StartLerpTo => ref Schema.GetRef<float>(this.Handle, "fogparams_t", "startLerpTo");
+	public ref float StartLerpTo => ref __startLerpTo.GetRef(this.Handle);
 
 	// endLerpTo
+	private static readonly SchemaField<float> __endLerpTo = new("fogparams_t", "endLerpTo");
 	[SchemaMember("fogparams_t", "endLerpTo")]
-	public ref float EndLerpTo => ref Schema.GetRef<float>(this.Handle, "fogparams_t", "endLerpTo");
+	public ref float EndLerpTo => ref __endLerpTo.GetRef(this.Handle);
 
 	// maxdensityLerpTo
+	private static readonly SchemaField<float> __maxdensityLerpTo = new("fogparams_t", "maxdensityLerpTo");
 	[SchemaMember("fogparams_t", "maxdensityLerpTo")]
-	public ref float MaxdensityLerpTo => ref Schema.GetRef<float>(this.Handle, "fogparams_t", "maxdensityLerpTo");
+	public ref float MaxdensityLerpTo => ref __maxdensityLerpTo.GetRef(this.Handle);
 
 	// lerptime
+	private static readonly SchemaField<float> __lerptime = new("fogparams_t", "lerptime");
 	[SchemaMember("fogparams_t", "lerptime")]
-	public ref float Lerptime => ref Schema.GetRef<float>(this.Handle, "fogparams_t", "lerptime");
+	public ref float Lerptime => ref __lerptime.GetRef(this.Handle);
 
 	// duration
+	private static readonly SchemaField<float> __duration = new("fogparams_t", "duration");
 	[SchemaMember("fogparams_t", "duration")]
-	public ref float Duration => ref Schema.GetRef<float>(this.Handle, "fogparams_t", "duration");
+	public ref float Duration => ref __duration.GetRef(this.Handle);
 
 	// blendtobackground
+	private static readonly SchemaField<float> __blendtobackground = new("fogparams_t", "blendtobackground");
 	[SchemaMember("fogparams_t", "blendtobackground")]
-	public ref float Blendtobackground => ref Schema.GetRef<float>(this.Handle, "fogparams_t", "blendtobackground");
+	public ref float Blendtobackground => ref __blendtobackground.GetRef(this.Handle);
 
 	// scattering
+	private static readonly SchemaField<float> __scattering = new("fogparams_t", "scattering");
 	[SchemaMember("fogparams_t", "scattering")]
-	public ref float Scattering => ref Schema.GetRef<float>(this.Handle, "fogparams_t", "scattering");
+	public ref float Scattering => ref __scattering.GetRef(this.Handle);
 
 	// locallightscale
+	private static readonly SchemaField<float> __locallightscale = new("fogparams_t", "locallightscale");
 	[SchemaMember("fogparams_t", "locallightscale")]
-	public ref float Locallightscale => ref Schema.GetRef<float>(this.Handle, "fogparams_t", "locallightscale");
+	public ref float Locallightscale => ref __locallightscale.GetRef(this.Handle);
 
 	// enable
+	private static readonly SchemaField<bool> __enable = new("fogparams_t", "enable");
 	[SchemaMember("fogparams_t", "enable")]
-	public ref bool Enable => ref Schema.GetRef<bool>(this.Handle, "fogparams_t", "enable");
+	public ref bool Enable => ref __enable.GetRef(this.Handle);
 
 	// blend
+	private static readonly SchemaField<bool> __blend = new("fogparams_t", "blend");
 	[SchemaMember("fogparams_t", "blend")]
-	public ref bool Blend => ref Schema.GetRef<bool>(this.Handle, "fogparams_t", "blend");
+	public ref bool Blend => ref __blend.GetRef(this.Handle);
 
 	// m_bPadding2
+	private static readonly SchemaField<bool> __m_bPadding2 = new("fogparams_t", "m_bPadding2");
 	[SchemaMember("fogparams_t", "m_bPadding2")]
-	public ref bool Padding2 => ref Schema.GetRef<bool>(this.Handle, "fogparams_t", "m_bPadding2");
+	public ref bool Padding2 => ref __m_bPadding2.GetRef(this.Handle);
 
 	// m_bPadding
+	private static readonly SchemaField<bool> __m_bPadding = new("fogparams_t", "m_bPadding");
 	[SchemaMember("fogparams_t", "m_bPadding")]
-	public ref bool Padding => ref Schema.GetRef<bool>(this.Handle, "fogparams_t", "m_bPadding");
+	public ref bool Padding => ref __m_bPadding.GetRef(this.Handle);
 
 }

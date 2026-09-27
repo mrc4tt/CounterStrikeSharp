@@ -23,7 +23,8 @@ public partial class CDecalGroupVData : NativeObject
 	public NetworkedVector<DecalGroupOption_t> Options => Schema.GetDeclaredClass<NetworkedVector<DecalGroupOption_t>>(this.Handle, "CDecalGroupVData", "m_vecOptions");
 
 	// m_flTotalProbability
+	private static readonly SchemaField<float> __m_flTotalProbability = new("CDecalGroupVData", "m_flTotalProbability");
 	[SchemaMember("CDecalGroupVData", "m_flTotalProbability")]
-	public ref float TotalProbability => ref Schema.GetRef<float>(this.Handle, "CDecalGroupVData", "m_flTotalProbability");
+	public ref float TotalProbability => ref __m_flTotalProbability.GetRef(this.Handle);
 
 }

@@ -43,12 +43,14 @@ public partial class CPointPrefab : CServerOnlyPointEntity
 	}
 
 	// m_fixupNames
+	private static readonly SchemaField<bool> __m_fixupNames = new("CPointPrefab", "m_fixupNames");
 	[SchemaMember("CPointPrefab", "m_fixupNames")]
-	public ref bool FixupNames => ref Schema.GetRef<bool>(this.Handle, "CPointPrefab", "m_fixupNames");
+	public ref bool FixupNames => ref __m_fixupNames.GetRef(this.Handle);
 
 	// m_bLoadDynamic
+	private static readonly SchemaField<bool> __m_bLoadDynamic = new("CPointPrefab", "m_bLoadDynamic");
 	[SchemaMember("CPointPrefab", "m_bLoadDynamic")]
-	public ref bool LoadDynamic => ref Schema.GetRef<bool>(this.Handle, "CPointPrefab", "m_bLoadDynamic");
+	public ref bool LoadDynamic => ref __m_bLoadDynamic.GetRef(this.Handle);
 
 	// m_associatedRelayEntity
 	[SchemaMember("CPointPrefab", "m_associatedRelayEntity")]

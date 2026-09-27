@@ -19,7 +19,8 @@ public partial class CEnvEntityIgniter : CBaseEntity
     public CEnvEntityIgniter (IntPtr pointer) : base(pointer) {}
 
 	// m_flLifetime
+	private static readonly SchemaField<float> __m_flLifetime = new("CEnvEntityIgniter", "m_flLifetime");
 	[SchemaMember("CEnvEntityIgniter", "m_flLifetime")]
-	public ref float Lifetime => ref Schema.GetRef<float>(this.Handle, "CEnvEntityIgniter", "m_flLifetime");
+	public ref float Lifetime => ref __m_flLifetime.GetRef(this.Handle);
 
 }

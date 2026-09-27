@@ -19,7 +19,8 @@ public partial class CHitboxComponent : CEntityComponent
     public CHitboxComponent (IntPtr pointer) : base(pointer) {}
 
 	// m_flBoundsExpandRadius
+	private static readonly SchemaField<float> __m_flBoundsExpandRadius = new("CHitboxComponent", "m_flBoundsExpandRadius");
 	[SchemaMember("CHitboxComponent", "m_flBoundsExpandRadius")]
-	public ref float BoundsExpandRadius => ref Schema.GetRef<float>(this.Handle, "CHitboxComponent", "m_flBoundsExpandRadius");
+	public ref float BoundsExpandRadius => ref __m_flBoundsExpandRadius.GetRef(this.Handle);
 
 }

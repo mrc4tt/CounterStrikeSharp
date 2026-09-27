@@ -19,8 +19,9 @@ public partial class CTestPulseIOFloatStringArgs_t : NativeObject
     public CTestPulseIOFloatStringArgs_t (IntPtr pointer) : base(pointer) {}
 
 	// flOutFloat
+	private static readonly SchemaField<float> __flOutFloat = new("CTestPulseIO::FloatStringArgs_t", "flOutFloat");
 	[SchemaMember("CTestPulseIO::FloatStringArgs_t", "flOutFloat")]
-	public ref float FlOutFloat => ref Schema.GetRef<float>(this.Handle, "CTestPulseIO::FloatStringArgs_t", "flOutFloat");
+	public ref float FlOutFloat => ref __flOutFloat.GetRef(this.Handle);
 
 	// strOutString
 	[SchemaMember("CTestPulseIO::FloatStringArgs_t", "strOutString")]

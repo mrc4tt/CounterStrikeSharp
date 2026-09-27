@@ -19,24 +19,29 @@ public partial class CBeam : CBaseModelEntity
     public CBeam (IntPtr pointer) : base(pointer) {}
 
 	// m_flFrameRate
+	private static readonly SchemaField<float> __m_flFrameRate = new("CBeam", "m_flFrameRate");
 	[SchemaMember("CBeam", "m_flFrameRate")]
-	public ref float FrameRate => ref Schema.GetRef<float>(this.Handle, "CBeam", "m_flFrameRate");
+	public ref float FrameRate => ref __m_flFrameRate.GetRef(this.Handle);
 
 	// m_flHDRColorScale
+	private static readonly SchemaField<float> __m_flHDRColorScale = new("CBeam", "m_flHDRColorScale");
 	[SchemaMember("CBeam", "m_flHDRColorScale")]
-	public ref float HDRColorScale => ref Schema.GetRef<float>(this.Handle, "CBeam", "m_flHDRColorScale");
+	public ref float HDRColorScale => ref __m_flHDRColorScale.GetRef(this.Handle);
 
 	// m_flFireTime
+	private static readonly SchemaField<float> __m_flFireTime = new("CBeam", "m_flFireTime");
 	[SchemaMember("CBeam", "m_flFireTime")]
-	public ref float FireTime => ref Schema.GetRef<float>(this.Handle, "CBeam", "m_flFireTime");
+	public ref float FireTime => ref __m_flFireTime.GetRef(this.Handle);
 
 	// m_flDamage
+	private static readonly SchemaField<float> __m_flDamage = new("CBeam", "m_flDamage");
 	[SchemaMember("CBeam", "m_flDamage")]
-	public ref float Damage => ref Schema.GetRef<float>(this.Handle, "CBeam", "m_flDamage");
+	public ref float Damage => ref __m_flDamage.GetRef(this.Handle);
 
 	// m_nNumBeamEnts
+	private static readonly SchemaField<byte> __m_nNumBeamEnts = new("CBeam", "m_nNumBeamEnts");
 	[SchemaMember("CBeam", "m_nNumBeamEnts")]
-	public ref byte NumBeamEnts => ref Schema.GetRef<byte>(this.Handle, "CBeam", "m_nNumBeamEnts");
+	public ref byte NumBeamEnts => ref __m_nNumBeamEnts.GetRef(this.Handle);
 
 	// m_hBaseMaterial
 	[SchemaMember("CBeam", "m_hBaseMaterial")]
@@ -47,12 +52,14 @@ public partial class CBeam : CBaseModelEntity
 	public CStrongHandle<InfoForResourceTypeIMaterial2> HaloIndex => Schema.GetDeclaredClass<CStrongHandle<InfoForResourceTypeIMaterial2>>(this.Handle, "CBeam", "m_nHaloIndex");
 
 	// m_nBeamType
+	private static readonly SchemaField<BeamType_t> __m_nBeamType = new("CBeam", "m_nBeamType");
 	[SchemaMember("CBeam", "m_nBeamType")]
-	public ref BeamType_t BeamType => ref Schema.GetRef<BeamType_t>(this.Handle, "CBeam", "m_nBeamType");
+	public ref BeamType_t BeamType => ref __m_nBeamType.GetRef(this.Handle);
 
 	// m_nBeamFlags
+	private static readonly SchemaField<UInt32> __m_nBeamFlags = new("CBeam", "m_nBeamFlags");
 	[SchemaMember("CBeam", "m_nBeamFlags")]
-	public ref UInt32 BeamFlags => ref Schema.GetRef<UInt32>(this.Handle, "CBeam", "m_nBeamFlags");
+	public ref UInt32 BeamFlags => ref __m_nBeamFlags.GetRef(this.Handle);
 
 	// m_hAttachEntity
 	[SchemaMember("CBeam", "m_hAttachEntity")]
@@ -63,40 +70,49 @@ public partial class CBeam : CBaseModelEntity
 	public Span<AttachmentHandle_t> AttachIndex => Schema.GetFixedArray<AttachmentHandle_t>(this.Handle, "CBeam", "m_nAttachIndex", 10);
 
 	// m_fWidth
+	private static readonly SchemaField<float> __m_fWidth = new("CBeam", "m_fWidth");
 	[SchemaMember("CBeam", "m_fWidth")]
-	public ref float Width => ref Schema.GetRef<float>(this.Handle, "CBeam", "m_fWidth");
+	public ref float Width => ref __m_fWidth.GetRef(this.Handle);
 
 	// m_fEndWidth
+	private static readonly SchemaField<float> __m_fEndWidth = new("CBeam", "m_fEndWidth");
 	[SchemaMember("CBeam", "m_fEndWidth")]
-	public ref float EndWidth => ref Schema.GetRef<float>(this.Handle, "CBeam", "m_fEndWidth");
+	public ref float EndWidth => ref __m_fEndWidth.GetRef(this.Handle);
 
 	// m_fFadeLength
+	private static readonly SchemaField<float> __m_fFadeLength = new("CBeam", "m_fFadeLength");
 	[SchemaMember("CBeam", "m_fFadeLength")]
-	public ref float FadeLength => ref Schema.GetRef<float>(this.Handle, "CBeam", "m_fFadeLength");
+	public ref float FadeLength => ref __m_fFadeLength.GetRef(this.Handle);
 
 	// m_fHaloScale
+	private static readonly SchemaField<float> __m_fHaloScale = new("CBeam", "m_fHaloScale");
 	[SchemaMember("CBeam", "m_fHaloScale")]
-	public ref float HaloScale => ref Schema.GetRef<float>(this.Handle, "CBeam", "m_fHaloScale");
+	public ref float HaloScale => ref __m_fHaloScale.GetRef(this.Handle);
 
 	// m_fAmplitude
+	private static readonly SchemaField<float> __m_fAmplitude = new("CBeam", "m_fAmplitude");
 	[SchemaMember("CBeam", "m_fAmplitude")]
-	public ref float Amplitude => ref Schema.GetRef<float>(this.Handle, "CBeam", "m_fAmplitude");
+	public ref float Amplitude => ref __m_fAmplitude.GetRef(this.Handle);
 
 	// m_fStartFrame
+	private static readonly SchemaField<float> __m_fStartFrame = new("CBeam", "m_fStartFrame");
 	[SchemaMember("CBeam", "m_fStartFrame")]
-	public ref float StartFrame => ref Schema.GetRef<float>(this.Handle, "CBeam", "m_fStartFrame");
+	public ref float StartFrame => ref __m_fStartFrame.GetRef(this.Handle);
 
 	// m_fSpeed
+	private static readonly SchemaField<float> __m_fSpeed = new("CBeam", "m_fSpeed");
 	[SchemaMember("CBeam", "m_fSpeed")]
-	public ref float Speed => ref Schema.GetRef<float>(this.Handle, "CBeam", "m_fSpeed");
+	public ref float Speed => ref __m_fSpeed.GetRef(this.Handle);
 
 	// m_flFrame
+	private static readonly SchemaField<float> __m_flFrame = new("CBeam", "m_flFrame");
 	[SchemaMember("CBeam", "m_flFrame")]
-	public ref float Frame => ref Schema.GetRef<float>(this.Handle, "CBeam", "m_flFrame");
+	public ref float Frame => ref __m_flFrame.GetRef(this.Handle);
 
 	// m_bTurnedOff
+	private static readonly SchemaField<bool> __m_bTurnedOff = new("CBeam", "m_bTurnedOff");
 	[SchemaMember("CBeam", "m_bTurnedOff")]
-	public ref bool TurnedOff => ref Schema.GetRef<bool>(this.Handle, "CBeam", "m_bTurnedOff");
+	public ref bool TurnedOff => ref __m_bTurnedOff.GetRef(this.Handle);
 
 	// m_vecEndPos
 	[SchemaMember("CBeam", "m_vecEndPos")]
@@ -107,7 +123,8 @@ public partial class CBeam : CBaseModelEntity
 	public CHandle<CBaseEntity> EndEntity => Schema.GetDeclaredClass<CHandle<CBaseEntity>>(this.Handle, "CBeam", "m_hEndEntity");
 
 	// m_nDissolveType
+	private static readonly SchemaField<Int32> __m_nDissolveType = new("CBeam", "m_nDissolveType");
 	[SchemaMember("CBeam", "m_nDissolveType")]
-	public ref Int32 DissolveType => ref Schema.GetRef<Int32>(this.Handle, "CBeam", "m_nDissolveType");
+	public ref Int32 DissolveType => ref __m_nDissolveType.GetRef(this.Handle);
 
 }

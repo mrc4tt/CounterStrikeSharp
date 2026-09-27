@@ -19,7 +19,8 @@ public partial class CRotDoor : CBaseDoor
     public CRotDoor (IntPtr pointer) : base(pointer) {}
 
 	// m_bSolidBsp
+	private static readonly SchemaField<bool> __m_bSolidBsp = new("CRotDoor", "m_bSolidBsp");
 	[SchemaMember("CRotDoor", "m_bSolidBsp")]
-	public ref bool SolidBsp => ref Schema.GetRef<bool>(this.Handle, "CRotDoor", "m_bSolidBsp");
+	public ref bool SolidBsp => ref __m_bSolidBsp.GetRef(this.Handle);
 
 }

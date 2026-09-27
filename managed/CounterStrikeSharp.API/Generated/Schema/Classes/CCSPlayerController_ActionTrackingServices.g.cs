@@ -27,15 +27,18 @@ public partial class CCSPlayerController_ActionTrackingServices : CPlayerControl
 	public CSMatchStats_t MatchStats => Schema.GetDeclaredClass<CSMatchStats_t>(this.Handle, "CCSPlayerController_ActionTrackingServices", "m_matchStats");
 
 	// m_iNumRoundKills
+	private static readonly SchemaField<Int32> __m_iNumRoundKills = new("CCSPlayerController_ActionTrackingServices", "m_iNumRoundKills");
 	[SchemaMember("CCSPlayerController_ActionTrackingServices", "m_iNumRoundKills")]
-	public ref Int32 NumRoundKills => ref Schema.GetRef<Int32>(this.Handle, "CCSPlayerController_ActionTrackingServices", "m_iNumRoundKills");
+	public ref Int32 NumRoundKills => ref __m_iNumRoundKills.GetRef(this.Handle);
 
 	// m_iNumRoundKillsHeadshots
+	private static readonly SchemaField<Int32> __m_iNumRoundKillsHeadshots = new("CCSPlayerController_ActionTrackingServices", "m_iNumRoundKillsHeadshots");
 	[SchemaMember("CCSPlayerController_ActionTrackingServices", "m_iNumRoundKillsHeadshots")]
-	public ref Int32 NumRoundKillsHeadshots => ref Schema.GetRef<Int32>(this.Handle, "CCSPlayerController_ActionTrackingServices", "m_iNumRoundKillsHeadshots");
+	public ref Int32 NumRoundKillsHeadshots => ref __m_iNumRoundKillsHeadshots.GetRef(this.Handle);
 
 	// m_flTotalRoundDamageDealt
+	private static readonly SchemaField<float> __m_flTotalRoundDamageDealt = new("CCSPlayerController_ActionTrackingServices", "m_flTotalRoundDamageDealt");
 	[SchemaMember("CCSPlayerController_ActionTrackingServices", "m_flTotalRoundDamageDealt")]
-	public ref float TotalRoundDamageDealt => ref Schema.GetRef<float>(this.Handle, "CCSPlayerController_ActionTrackingServices", "m_flTotalRoundDamageDealt");
+	public ref float TotalRoundDamageDealt => ref __m_flTotalRoundDamageDealt.GetRef(this.Handle);
 
 }

@@ -19,11 +19,13 @@ public partial class ragdollhierarchyjoint_t : NativeObject
     public ragdollhierarchyjoint_t (IntPtr pointer) : base(pointer) {}
 
 	// parentIndex
+	private static readonly SchemaField<Int32> __parentIndex = new("ragdollhierarchyjoint_t", "parentIndex");
 	[SchemaMember("ragdollhierarchyjoint_t", "parentIndex")]
-	public ref Int32 ParentIndex => ref Schema.GetRef<Int32>(this.Handle, "ragdollhierarchyjoint_t", "parentIndex");
+	public ref Int32 ParentIndex => ref __parentIndex.GetRef(this.Handle);
 
 	// childIndex
+	private static readonly SchemaField<Int32> __childIndex = new("ragdollhierarchyjoint_t", "childIndex");
 	[SchemaMember("ragdollhierarchyjoint_t", "childIndex")]
-	public ref Int32 ChildIndex => ref Schema.GetRef<Int32>(this.Handle, "ragdollhierarchyjoint_t", "childIndex");
+	public ref Int32 ChildIndex => ref __childIndex.GetRef(this.Handle);
 
 }

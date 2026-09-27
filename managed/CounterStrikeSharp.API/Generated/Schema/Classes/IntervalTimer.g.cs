@@ -19,8 +19,9 @@ public partial class IntervalTimer : NativeObject
     public IntervalTimer (IntPtr pointer) : base(pointer) {}
 
 	// m_timestamp
+	private static readonly SchemaField<float> __m_timestamp = new("IntervalTimer", "m_timestamp");
 	[SchemaMember("IntervalTimer", "m_timestamp")]
-	public ref float Timestamp => ref Schema.GetRef<float>(this.Handle, "IntervalTimer", "m_timestamp");
+	public ref float Timestamp => ref __m_timestamp.GetRef(this.Handle);
 
 	// m_nWorldGroupId
 	[SchemaMember("IntervalTimer", "m_nWorldGroupId")]

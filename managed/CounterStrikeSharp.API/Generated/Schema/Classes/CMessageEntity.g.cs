@@ -19,8 +19,9 @@ public partial class CMessageEntity : CPointEntity
     public CMessageEntity (IntPtr pointer) : base(pointer) {}
 
 	// m_radius
+	private static readonly SchemaField<Int32> __m_radius = new("CMessageEntity", "m_radius");
 	[SchemaMember("CMessageEntity", "m_radius")]
-	public ref Int32 Radius => ref Schema.GetRef<Int32>(this.Handle, "CMessageEntity", "m_radius");
+	public ref Int32 Radius => ref __m_radius.GetRef(this.Handle);
 
 	// m_messageText
 	[SchemaMember("CMessageEntity", "m_messageText")]
@@ -31,15 +32,18 @@ public partial class CMessageEntity : CPointEntity
 	}
 
 	// m_drawText
+	private static readonly SchemaField<bool> __m_drawText = new("CMessageEntity", "m_drawText");
 	[SchemaMember("CMessageEntity", "m_drawText")]
-	public ref bool DrawText => ref Schema.GetRef<bool>(this.Handle, "CMessageEntity", "m_drawText");
+	public ref bool DrawText => ref __m_drawText.GetRef(this.Handle);
 
 	// m_bDeveloperOnly
+	private static readonly SchemaField<bool> __m_bDeveloperOnly = new("CMessageEntity", "m_bDeveloperOnly");
 	[SchemaMember("CMessageEntity", "m_bDeveloperOnly")]
-	public ref bool DeveloperOnly => ref Schema.GetRef<bool>(this.Handle, "CMessageEntity", "m_bDeveloperOnly");
+	public ref bool DeveloperOnly => ref __m_bDeveloperOnly.GetRef(this.Handle);
 
 	// m_bEnabled
+	private static readonly SchemaField<bool> __m_bEnabled = new("CMessageEntity", "m_bEnabled");
 	[SchemaMember("CMessageEntity", "m_bEnabled")]
-	public ref bool Enabled => ref Schema.GetRef<bool>(this.Handle, "CMessageEntity", "m_bEnabled");
+	public ref bool Enabled => ref __m_bEnabled.GetRef(this.Handle);
 
 }

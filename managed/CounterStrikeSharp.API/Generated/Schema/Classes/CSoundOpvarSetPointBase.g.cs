@@ -19,8 +19,9 @@ public partial class CSoundOpvarSetPointBase : CBaseEntity
     public CSoundOpvarSetPointBase (IntPtr pointer) : base(pointer) {}
 
 	// m_bDisabled
+	private static readonly SchemaField<bool> __m_bDisabled = new("CSoundOpvarSetPointBase", "m_bDisabled");
 	[SchemaMember("CSoundOpvarSetPointBase", "m_bDisabled")]
-	public ref bool Disabled => ref Schema.GetRef<bool>(this.Handle, "CSoundOpvarSetPointBase", "m_bDisabled");
+	public ref bool Disabled => ref __m_bDisabled.GetRef(this.Handle);
 
 	// m_hSource
 	[SchemaMember("CSoundOpvarSetPointBase", "m_hSource")]
@@ -39,8 +40,9 @@ public partial class CSoundOpvarSetPointBase : CBaseEntity
 	public Vector LastPosition => Schema.GetDeclaredClass<Vector>(this.Handle, "CSoundOpvarSetPointBase", "m_vLastPosition");
 
 	// m_flRefreshTime
+	private static readonly SchemaField<float> __m_flRefreshTime = new("CSoundOpvarSetPointBase", "m_flRefreshTime");
 	[SchemaMember("CSoundOpvarSetPointBase", "m_flRefreshTime")]
-	public ref float RefreshTime => ref Schema.GetRef<float>(this.Handle, "CSoundOpvarSetPointBase", "m_flRefreshTime");
+	public ref float RefreshTime => ref __m_flRefreshTime.GetRef(this.Handle);
 
 	// m_iszStackName
 	[SchemaMember("CSoundOpvarSetPointBase", "m_iszStackName")]
@@ -67,15 +69,18 @@ public partial class CSoundOpvarSetPointBase : CBaseEntity
 	}
 
 	// m_iOpvarIndex
+	private static readonly SchemaField<Int32> __m_iOpvarIndex = new("CSoundOpvarSetPointBase", "m_iOpvarIndex");
 	[SchemaMember("CSoundOpvarSetPointBase", "m_iOpvarIndex")]
-	public ref Int32 OpvarIndex => ref Schema.GetRef<Int32>(this.Handle, "CSoundOpvarSetPointBase", "m_iOpvarIndex");
+	public ref Int32 OpvarIndex => ref __m_iOpvarIndex.GetRef(this.Handle);
 
 	// m_bUseAutoCompare
+	private static readonly SchemaField<bool> __m_bUseAutoCompare = new("CSoundOpvarSetPointBase", "m_bUseAutoCompare");
 	[SchemaMember("CSoundOpvarSetPointBase", "m_bUseAutoCompare")]
-	public ref bool UseAutoCompare => ref Schema.GetRef<bool>(this.Handle, "CSoundOpvarSetPointBase", "m_bUseAutoCompare");
+	public ref bool UseAutoCompare => ref __m_bUseAutoCompare.GetRef(this.Handle);
 
 	// m_bFastRefresh
+	private static readonly SchemaField<bool> __m_bFastRefresh = new("CSoundOpvarSetPointBase", "m_bFastRefresh");
 	[SchemaMember("CSoundOpvarSetPointBase", "m_bFastRefresh")]
-	public ref bool FastRefresh => ref Schema.GetRef<bool>(this.Handle, "CSoundOpvarSetPointBase", "m_bFastRefresh");
+	public ref bool FastRefresh => ref __m_bFastRefresh.GetRef(this.Handle);
 
 }

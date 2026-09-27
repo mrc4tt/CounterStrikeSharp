@@ -19,8 +19,9 @@ public partial class CEntityIdentity : NativeObject
     public CEntityIdentity (IntPtr pointer) : base(pointer) {}
 
 	// m_nameStringTableIndex
+	private static readonly SchemaField<Int32> __m_nameStringTableIndex = new("CEntityIdentity", "m_nameStringTableIndex");
 	[SchemaMember("CEntityIdentity", "m_nameStringTableIndex")]
-	public ref Int32 NameStringTableIndex => ref Schema.GetRef<Int32>(this.Handle, "CEntityIdentity", "m_nameStringTableIndex");
+	public ref Int32 NameStringTableIndex => ref __m_nameStringTableIndex.GetRef(this.Handle);
 
 	// m_name
 	[SchemaMember("CEntityIdentity", "m_name")]
@@ -39,16 +40,18 @@ public partial class CEntityIdentity : NativeObject
 	}
 
 	// m_flags
+	private static readonly SchemaField<UInt32> __m_flags = new("CEntityIdentity", "m_flags");
 	[SchemaMember("CEntityIdentity", "m_flags")]
-	public ref UInt32 Flags => ref Schema.GetRef<UInt32>(this.Handle, "CEntityIdentity", "m_flags");
+	public ref UInt32 Flags => ref __m_flags.GetRef(this.Handle);
 
 	// m_worldGroupId
 	[SchemaMember("CEntityIdentity", "m_worldGroupId")]
 	public WorldGroupId_t WorldGroupId => Schema.GetDeclaredClass<WorldGroupId_t>(this.Handle, "CEntityIdentity", "m_worldGroupId");
 
 	// m_fDataObjectTypes
+	private static readonly SchemaField<UInt32> __m_fDataObjectTypes = new("CEntityIdentity", "m_fDataObjectTypes");
 	[SchemaMember("CEntityIdentity", "m_fDataObjectTypes")]
-	public ref UInt32 DataObjectTypes => ref Schema.GetRef<UInt32>(this.Handle, "CEntityIdentity", "m_fDataObjectTypes");
+	public ref UInt32 DataObjectTypes => ref __m_fDataObjectTypes.GetRef(this.Handle);
 
 	// m_PathIndex
 	[SchemaMember("CEntityIdentity", "m_PathIndex")]

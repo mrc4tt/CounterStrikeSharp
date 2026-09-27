@@ -27,15 +27,18 @@ public partial class CEnvGlobal : CLogicalEntity
 	}
 
 	// m_triggermode
+	private static readonly SchemaField<Int32> __m_triggermode = new("CEnvGlobal", "m_triggermode");
 	[SchemaMember("CEnvGlobal", "m_triggermode")]
-	public ref Int32 Triggermode => ref Schema.GetRef<Int32>(this.Handle, "CEnvGlobal", "m_triggermode");
+	public ref Int32 Triggermode => ref __m_triggermode.GetRef(this.Handle);
 
 	// m_initialstate
+	private static readonly SchemaField<Int32> __m_initialstate = new("CEnvGlobal", "m_initialstate");
 	[SchemaMember("CEnvGlobal", "m_initialstate")]
-	public ref Int32 Initialstate => ref Schema.GetRef<Int32>(this.Handle, "CEnvGlobal", "m_initialstate");
+	public ref Int32 Initialstate => ref __m_initialstate.GetRef(this.Handle);
 
 	// m_counter
+	private static readonly SchemaField<Int32> __m_counter = new("CEnvGlobal", "m_counter");
 	[SchemaMember("CEnvGlobal", "m_counter")]
-	public ref Int32 Counter => ref Schema.GetRef<Int32>(this.Handle, "CEnvGlobal", "m_counter");
+	public ref Int32 Counter => ref __m_counter.GetRef(this.Handle);
 
 }

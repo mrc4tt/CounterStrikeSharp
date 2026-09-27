@@ -493,6 +493,23 @@ internal static partial class Program
             var handleParams = $"this.Handle, \"{schemaClassName}\", \"{field.Name}\"";
 
             builder.AppendLine($"\t// {field.Name}");
+
+            // Builtin/enum fields read through a per-field SchemaField<T>: the offset is
+            // resolved once (lazily, on first access) and cached, instead of a dictionary
+            // lookup keyed by the two name strings on every property access. Private, so a
+            // derived class declaring the same field name does not hide it (no CS0108), and
+            // the public property is unchanged, so this is binary-compatible for plugins.
+            var usesSchemaField = (field.Type.Category == SchemaTypeCategory.Builtin ||
+                                   field.Type.Category == SchemaTypeCategory.DeclaredEnum) &&
+                                  !IgnoreClasses.Contains(field.Type.Name) &&
+                                  field.Type.Category != SchemaTypeCategory.FixedArray;
+            var schemaFieldName = $"__{field.Name}";
+            if (usesSchemaField)
+            {
+                builder.AppendLine(
+                    $"\tprivate static readonly SchemaField<{SanitiseTypeName(field.Type.CsTypeName)}> {schemaFieldName} = new(\"{schemaClassName}\", \"{field.Name}\");");
+            }
+
             builder.AppendLine($"\t[SchemaMember(\"{schemaClassName}\", \"{field.Name}\")]");
 
             if (field.Type is { Category: SchemaTypeCategory.Ptr, CsTypeName: "string" })
@@ -559,7 +576,7 @@ internal static partial class Program
                       field.Type.Category == SchemaTypeCategory.DeclaredEnum) &&
                      !IgnoreClasses.Contains(field.Type.Name))
             {
-                var getter = $"ref Schema.GetRef<{SanitiseTypeName(field.Type.CsTypeName)}>({handleParams});";
+                var getter = $"ref {schemaFieldName}.GetRef(this.Handle);";
                 builder.AppendLine(
                     $"\tpublic {(requiresNewKeyword ? "new " : "")}ref {SanitiseTypeName(field.Type.CsTypeName)} {schemaClass.CsPropertyNameForField(schemaClassName, field)} => {getter}");
                 builder.AppendLine();

@@ -27,64 +27,78 @@ public partial class CSoundOpvarSetPointEntity : CSoundOpvarSetPointBase
 	public CEntityIOOutput OnExit => Schema.GetDeclaredClass<CEntityIOOutput>(this.Handle, "CSoundOpvarSetPointEntity", "m_OnExit");
 
 	// m_bAutoDisable
+	private static readonly SchemaField<bool> __m_bAutoDisable = new("CSoundOpvarSetPointEntity", "m_bAutoDisable");
 	[SchemaMember("CSoundOpvarSetPointEntity", "m_bAutoDisable")]
-	public ref bool AutoDisable => ref Schema.GetRef<bool>(this.Handle, "CSoundOpvarSetPointEntity", "m_bAutoDisable");
+	public ref bool AutoDisable => ref __m_bAutoDisable.GetRef(this.Handle);
 
 	// m_flDistanceMin
+	private static readonly SchemaField<float> __m_flDistanceMin = new("CSoundOpvarSetPointEntity", "m_flDistanceMin");
 	[SchemaMember("CSoundOpvarSetPointEntity", "m_flDistanceMin")]
-	public ref float DistanceMin => ref Schema.GetRef<float>(this.Handle, "CSoundOpvarSetPointEntity", "m_flDistanceMin");
+	public ref float DistanceMin => ref __m_flDistanceMin.GetRef(this.Handle);
 
 	// m_flDistanceMax
+	private static readonly SchemaField<float> __m_flDistanceMax = new("CSoundOpvarSetPointEntity", "m_flDistanceMax");
 	[SchemaMember("CSoundOpvarSetPointEntity", "m_flDistanceMax")]
-	public ref float DistanceMax => ref Schema.GetRef<float>(this.Handle, "CSoundOpvarSetPointEntity", "m_flDistanceMax");
+	public ref float DistanceMax => ref __m_flDistanceMax.GetRef(this.Handle);
 
 	// m_flDistanceMapMin
+	private static readonly SchemaField<float> __m_flDistanceMapMin = new("CSoundOpvarSetPointEntity", "m_flDistanceMapMin");
 	[SchemaMember("CSoundOpvarSetPointEntity", "m_flDistanceMapMin")]
-	public ref float DistanceMapMin => ref Schema.GetRef<float>(this.Handle, "CSoundOpvarSetPointEntity", "m_flDistanceMapMin");
+	public ref float DistanceMapMin => ref __m_flDistanceMapMin.GetRef(this.Handle);
 
 	// m_flDistanceMapMax
+	private static readonly SchemaField<float> __m_flDistanceMapMax = new("CSoundOpvarSetPointEntity", "m_flDistanceMapMax");
 	[SchemaMember("CSoundOpvarSetPointEntity", "m_flDistanceMapMax")]
-	public ref float DistanceMapMax => ref Schema.GetRef<float>(this.Handle, "CSoundOpvarSetPointEntity", "m_flDistanceMapMax");
+	public ref float DistanceMapMax => ref __m_flDistanceMapMax.GetRef(this.Handle);
 
 	// m_flOcclusionRadius
+	private static readonly SchemaField<float> __m_flOcclusionRadius = new("CSoundOpvarSetPointEntity", "m_flOcclusionRadius");
 	[SchemaMember("CSoundOpvarSetPointEntity", "m_flOcclusionRadius")]
-	public ref float OcclusionRadius => ref Schema.GetRef<float>(this.Handle, "CSoundOpvarSetPointEntity", "m_flOcclusionRadius");
+	public ref float OcclusionRadius => ref __m_flOcclusionRadius.GetRef(this.Handle);
 
 	// m_flOcclusionMin
+	private static readonly SchemaField<float> __m_flOcclusionMin = new("CSoundOpvarSetPointEntity", "m_flOcclusionMin");
 	[SchemaMember("CSoundOpvarSetPointEntity", "m_flOcclusionMin")]
-	public ref float OcclusionMin => ref Schema.GetRef<float>(this.Handle, "CSoundOpvarSetPointEntity", "m_flOcclusionMin");
+	public ref float OcclusionMin => ref __m_flOcclusionMin.GetRef(this.Handle);
 
 	// m_flOcclusionMax
+	private static readonly SchemaField<float> __m_flOcclusionMax = new("CSoundOpvarSetPointEntity", "m_flOcclusionMax");
 	[SchemaMember("CSoundOpvarSetPointEntity", "m_flOcclusionMax")]
-	public ref float OcclusionMax => ref Schema.GetRef<float>(this.Handle, "CSoundOpvarSetPointEntity", "m_flOcclusionMax");
+	public ref float OcclusionMax => ref __m_flOcclusionMax.GetRef(this.Handle);
 
 	// m_flValSetOnDisable
+	private static readonly SchemaField<float> __m_flValSetOnDisable = new("CSoundOpvarSetPointEntity", "m_flValSetOnDisable");
 	[SchemaMember("CSoundOpvarSetPointEntity", "m_flValSetOnDisable")]
-	public ref float ValSetOnDisable => ref Schema.GetRef<float>(this.Handle, "CSoundOpvarSetPointEntity", "m_flValSetOnDisable");
+	public ref float ValSetOnDisable => ref __m_flValSetOnDisable.GetRef(this.Handle);
 
 	// m_bSetValueOnDisable
+	private static readonly SchemaField<bool> __m_bSetValueOnDisable = new("CSoundOpvarSetPointEntity", "m_bSetValueOnDisable");
 	[SchemaMember("CSoundOpvarSetPointEntity", "m_bSetValueOnDisable")]
-	public ref bool SetValueOnDisable => ref Schema.GetRef<bool>(this.Handle, "CSoundOpvarSetPointEntity", "m_bSetValueOnDisable");
+	public ref bool SetValueOnDisable => ref __m_bSetValueOnDisable.GetRef(this.Handle);
 
 	// m_bReloading
+	private static readonly SchemaField<bool> __m_bReloading = new("CSoundOpvarSetPointEntity", "m_bReloading");
 	[SchemaMember("CSoundOpvarSetPointEntity", "m_bReloading")]
-	public ref bool Reloading => ref Schema.GetRef<bool>(this.Handle, "CSoundOpvarSetPointEntity", "m_bReloading");
+	public ref bool Reloading => ref __m_bReloading.GetRef(this.Handle);
 
 	// m_nSimulationMode
+	private static readonly SchemaField<Int32> __m_nSimulationMode = new("CSoundOpvarSetPointEntity", "m_nSimulationMode");
 	[SchemaMember("CSoundOpvarSetPointEntity", "m_nSimulationMode")]
-	public ref Int32 SimulationMode => ref Schema.GetRef<Int32>(this.Handle, "CSoundOpvarSetPointEntity", "m_nSimulationMode");
+	public ref Int32 SimulationMode => ref __m_nSimulationMode.GetRef(this.Handle);
 
 	// m_nVisibilitySamples
+	private static readonly SchemaField<Int32> __m_nVisibilitySamples = new("CSoundOpvarSetPointEntity", "m_nVisibilitySamples");
 	[SchemaMember("CSoundOpvarSetPointEntity", "m_nVisibilitySamples")]
-	public ref Int32 VisibilitySamples => ref Schema.GetRef<Int32>(this.Handle, "CSoundOpvarSetPointEntity", "m_nVisibilitySamples");
+	public ref Int32 VisibilitySamples => ref __m_nVisibilitySamples.GetRef(this.Handle);
 
 	// m_vDynamicProxyPoint
 	[SchemaMember("CSoundOpvarSetPointEntity", "m_vDynamicProxyPoint")]
 	public Vector DynamicProxyPoint => Schema.GetDeclaredClass<Vector>(this.Handle, "CSoundOpvarSetPointEntity", "m_vDynamicProxyPoint");
 
 	// m_flDynamicMaximumOcclusion
+	private static readonly SchemaField<float> __m_flDynamicMaximumOcclusion = new("CSoundOpvarSetPointEntity", "m_flDynamicMaximumOcclusion");
 	[SchemaMember("CSoundOpvarSetPointEntity", "m_flDynamicMaximumOcclusion")]
-	public ref float DynamicMaximumOcclusion => ref Schema.GetRef<float>(this.Handle, "CSoundOpvarSetPointEntity", "m_flDynamicMaximumOcclusion");
+	public ref float DynamicMaximumOcclusion => ref __m_flDynamicMaximumOcclusion.GetRef(this.Handle);
 
 	// m_hDynamicEntity
 	[SchemaMember("CSoundOpvarSetPointEntity", "m_hDynamicEntity")]
@@ -99,8 +113,9 @@ public partial class CSoundOpvarSetPointEntity : CSoundOpvarSetPointBase
 	}
 
 	// m_flPathingDistanceNormFactor
+	private static readonly SchemaField<float> __m_flPathingDistanceNormFactor = new("CSoundOpvarSetPointEntity", "m_flPathingDistanceNormFactor");
 	[SchemaMember("CSoundOpvarSetPointEntity", "m_flPathingDistanceNormFactor")]
-	public ref float PathingDistanceNormFactor => ref Schema.GetRef<float>(this.Handle, "CSoundOpvarSetPointEntity", "m_flPathingDistanceNormFactor");
+	public ref float PathingDistanceNormFactor => ref __m_flPathingDistanceNormFactor.GetRef(this.Handle);
 
 	// m_vPathingSourcePos
 	[SchemaMember("CSoundOpvarSetPointEntity", "m_vPathingSourcePos")]
@@ -115,7 +130,8 @@ public partial class CSoundOpvarSetPointEntity : CSoundOpvarSetPointBase
 	public Vector PathingDirection => Schema.GetDeclaredClass<Vector>(this.Handle, "CSoundOpvarSetPointEntity", "m_vPathingDirection");
 
 	// m_nPathingSourceIndex
+	private static readonly SchemaField<Int32> __m_nPathingSourceIndex = new("CSoundOpvarSetPointEntity", "m_nPathingSourceIndex");
 	[SchemaMember("CSoundOpvarSetPointEntity", "m_nPathingSourceIndex")]
-	public ref Int32 PathingSourceIndex => ref Schema.GetRef<Int32>(this.Handle, "CSoundOpvarSetPointEntity", "m_nPathingSourceIndex");
+	public ref Int32 PathingSourceIndex => ref __m_nPathingSourceIndex.GetRef(this.Handle);
 
 }

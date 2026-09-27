@@ -19,23 +19,27 @@ public partial class CCSPlayer_RadioServices : CPlayerPawnComponent
     public CCSPlayer_RadioServices (IntPtr pointer) : base(pointer) {}
 
 	// m_flGotHostageTalkTimer
+	private static readonly SchemaField<float> __m_flGotHostageTalkTimer = new("CCSPlayer_RadioServices", "m_flGotHostageTalkTimer");
 	[SchemaMember("CCSPlayer_RadioServices", "m_flGotHostageTalkTimer")]
-	public ref float GotHostageTalkTimer => ref Schema.GetRef<float>(this.Handle, "CCSPlayer_RadioServices", "m_flGotHostageTalkTimer");
+	public ref float GotHostageTalkTimer => ref __m_flGotHostageTalkTimer.GetRef(this.Handle);
 
 	// m_flDefusingTalkTimer
+	private static readonly SchemaField<float> __m_flDefusingTalkTimer = new("CCSPlayer_RadioServices", "m_flDefusingTalkTimer");
 	[SchemaMember("CCSPlayer_RadioServices", "m_flDefusingTalkTimer")]
-	public ref float DefusingTalkTimer => ref Schema.GetRef<float>(this.Handle, "CCSPlayer_RadioServices", "m_flDefusingTalkTimer");
+	public ref float DefusingTalkTimer => ref __m_flDefusingTalkTimer.GetRef(this.Handle);
 
 	// m_flC4PlantTalkTimer
+	private static readonly SchemaField<float> __m_flC4PlantTalkTimer = new("CCSPlayer_RadioServices", "m_flC4PlantTalkTimer");
 	[SchemaMember("CCSPlayer_RadioServices", "m_flC4PlantTalkTimer")]
-	public ref float C4PlantTalkTimer => ref Schema.GetRef<float>(this.Handle, "CCSPlayer_RadioServices", "m_flC4PlantTalkTimer");
+	public ref float C4PlantTalkTimer => ref __m_flC4PlantTalkTimer.GetRef(this.Handle);
 
 	// m_flRadioTokenSlots
 	[SchemaMember("CCSPlayer_RadioServices", "m_flRadioTokenSlots")]
 	public Span<float> RadioTokenSlots => Schema.GetFixedArray<float>(this.Handle, "CCSPlayer_RadioServices", "m_flRadioTokenSlots", 3);
 
 	// m_bIgnoreRadio
+	private static readonly SchemaField<bool> __m_bIgnoreRadio = new("CCSPlayer_RadioServices", "m_bIgnoreRadio");
 	[SchemaMember("CCSPlayer_RadioServices", "m_bIgnoreRadio")]
-	public ref bool IgnoreRadio => ref Schema.GetRef<bool>(this.Handle, "CCSPlayer_RadioServices", "m_bIgnoreRadio");
+	public ref bool IgnoreRadio => ref __m_bIgnoreRadio.GetRef(this.Handle);
 
 }

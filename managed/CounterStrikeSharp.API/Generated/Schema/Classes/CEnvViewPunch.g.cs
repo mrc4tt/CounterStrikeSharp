@@ -19,8 +19,9 @@ public partial class CEnvViewPunch : CPointEntity
     public CEnvViewPunch (IntPtr pointer) : base(pointer) {}
 
 	// m_flRadius
+	private static readonly SchemaField<float> __m_flRadius = new("CEnvViewPunch", "m_flRadius");
 	[SchemaMember("CEnvViewPunch", "m_flRadius")]
-	public ref float Radius => ref Schema.GetRef<float>(this.Handle, "CEnvViewPunch", "m_flRadius");
+	public ref float Radius => ref __m_flRadius.GetRef(this.Handle);
 
 	// m_angViewPunch
 	[SchemaMember("CEnvViewPunch", "m_angViewPunch")]

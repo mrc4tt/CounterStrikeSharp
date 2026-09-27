@@ -19,11 +19,13 @@ public partial class CEnvDetailController : CBaseEntity
     public CEnvDetailController (IntPtr pointer) : base(pointer) {}
 
 	// m_flFadeStartDist
+	private static readonly SchemaField<float> __m_flFadeStartDist = new("CEnvDetailController", "m_flFadeStartDist");
 	[SchemaMember("CEnvDetailController", "m_flFadeStartDist")]
-	public ref float FadeStartDist => ref Schema.GetRef<float>(this.Handle, "CEnvDetailController", "m_flFadeStartDist");
+	public ref float FadeStartDist => ref __m_flFadeStartDist.GetRef(this.Handle);
 
 	// m_flFadeEndDist
+	private static readonly SchemaField<float> __m_flFadeEndDist = new("CEnvDetailController", "m_flFadeEndDist");
 	[SchemaMember("CEnvDetailController", "m_flFadeEndDist")]
-	public ref float FadeEndDist => ref Schema.GetRef<float>(this.Handle, "CEnvDetailController", "m_flFadeEndDist");
+	public ref float FadeEndDist => ref __m_flFadeEndDist.GetRef(this.Handle);
 
 }

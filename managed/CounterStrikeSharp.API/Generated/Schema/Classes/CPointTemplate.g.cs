@@ -43,20 +43,24 @@ public partial class CPointTemplate : CLogicalEntity
 	}
 
 	// m_flTimeoutInterval
+	private static readonly SchemaField<float> __m_flTimeoutInterval = new("CPointTemplate", "m_flTimeoutInterval");
 	[SchemaMember("CPointTemplate", "m_flTimeoutInterval")]
-	public ref float TimeoutInterval => ref Schema.GetRef<float>(this.Handle, "CPointTemplate", "m_flTimeoutInterval");
+	public ref float TimeoutInterval => ref __m_flTimeoutInterval.GetRef(this.Handle);
 
 	// m_bAsynchronouslySpawnEntities
+	private static readonly SchemaField<bool> __m_bAsynchronouslySpawnEntities = new("CPointTemplate", "m_bAsynchronouslySpawnEntities");
 	[SchemaMember("CPointTemplate", "m_bAsynchronouslySpawnEntities")]
-	public ref bool AsynchronouslySpawnEntities => ref Schema.GetRef<bool>(this.Handle, "CPointTemplate", "m_bAsynchronouslySpawnEntities");
+	public ref bool AsynchronouslySpawnEntities => ref __m_bAsynchronouslySpawnEntities.GetRef(this.Handle);
 
 	// m_clientOnlyEntityBehavior
+	private static readonly SchemaField<PointTemplateClientOnlyEntityBehavior_t> __m_clientOnlyEntityBehavior = new("CPointTemplate", "m_clientOnlyEntityBehavior");
 	[SchemaMember("CPointTemplate", "m_clientOnlyEntityBehavior")]
-	public ref PointTemplateClientOnlyEntityBehavior_t ClientOnlyEntityBehavior => ref Schema.GetRef<PointTemplateClientOnlyEntityBehavior_t>(this.Handle, "CPointTemplate", "m_clientOnlyEntityBehavior");
+	public ref PointTemplateClientOnlyEntityBehavior_t ClientOnlyEntityBehavior => ref __m_clientOnlyEntityBehavior.GetRef(this.Handle);
 
 	// m_ownerSpawnGroupType
+	private static readonly SchemaField<PointTemplateOwnerSpawnGroupType_t> __m_ownerSpawnGroupType = new("CPointTemplate", "m_ownerSpawnGroupType");
 	[SchemaMember("CPointTemplate", "m_ownerSpawnGroupType")]
-	public ref PointTemplateOwnerSpawnGroupType_t OwnerSpawnGroupType => ref Schema.GetRef<PointTemplateOwnerSpawnGroupType_t>(this.Handle, "CPointTemplate", "m_ownerSpawnGroupType");
+	public ref PointTemplateOwnerSpawnGroupType_t OwnerSpawnGroupType => ref __m_ownerSpawnGroupType.GetRef(this.Handle);
 
 	// m_createdSpawnGroupHandles
 	[SchemaMember("CPointTemplate", "m_createdSpawnGroupHandles")]

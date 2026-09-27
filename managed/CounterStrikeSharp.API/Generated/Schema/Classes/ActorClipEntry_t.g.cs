@@ -27,7 +27,8 @@ public partial class ActorClipEntry_t : NativeObject
 	}
 
 	// m_bLooping
+	private static readonly SchemaField<bool> __m_bLooping = new("ActorClipEntry_t", "m_bLooping");
 	[SchemaMember("ActorClipEntry_t", "m_bLooping")]
-	public ref bool Looping => ref Schema.GetRef<bool>(this.Handle, "ActorClipEntry_t", "m_bLooping");
+	public ref bool Looping => ref __m_bLooping.GetRef(this.Handle);
 
 }

@@ -27,11 +27,13 @@ public partial class CLogicEventListener : CLogicalEntity
 	}
 
 	// m_bIsEnabled
+	private static readonly SchemaField<bool> __m_bIsEnabled = new("CLogicEventListener", "m_bIsEnabled");
 	[SchemaMember("CLogicEventListener", "m_bIsEnabled")]
-	public ref bool IsEnabled => ref Schema.GetRef<bool>(this.Handle, "CLogicEventListener", "m_bIsEnabled");
+	public ref bool IsEnabled => ref __m_bIsEnabled.GetRef(this.Handle);
 
 	// m_nTeam
+	private static readonly SchemaField<Int32> __m_nTeam = new("CLogicEventListener", "m_nTeam");
 	[SchemaMember("CLogicEventListener", "m_nTeam")]
-	public ref Int32 Team => ref Schema.GetRef<Int32>(this.Handle, "CLogicEventListener", "m_nTeam");
+	public ref Int32 Team => ref __m_nTeam.GetRef(this.Handle);
 
 }

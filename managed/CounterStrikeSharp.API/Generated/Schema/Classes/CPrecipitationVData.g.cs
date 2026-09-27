@@ -19,24 +19,29 @@ public partial class CPrecipitationVData : CEntitySubclassVDataBase
     public CPrecipitationVData (IntPtr pointer) : base(pointer) {}
 
 	// m_flInnerDistance
+	private static readonly SchemaField<float> __m_flInnerDistance = new("CPrecipitationVData", "m_flInnerDistance");
 	[SchemaMember("CPrecipitationVData", "m_flInnerDistance")]
-	public ref float InnerDistance => ref Schema.GetRef<float>(this.Handle, "CPrecipitationVData", "m_flInnerDistance");
+	public ref float InnerDistance => ref __m_flInnerDistance.GetRef(this.Handle);
 
 	// m_nAttachType
+	private static readonly SchemaField<ParticleAttachment_t> __m_nAttachType = new("CPrecipitationVData", "m_nAttachType");
 	[SchemaMember("CPrecipitationVData", "m_nAttachType")]
-	public ref ParticleAttachment_t AttachType => ref Schema.GetRef<ParticleAttachment_t>(this.Handle, "CPrecipitationVData", "m_nAttachType");
+	public ref ParticleAttachment_t AttachType => ref __m_nAttachType.GetRef(this.Handle);
 
 	// m_bBatchSameVolumeType
+	private static readonly SchemaField<bool> __m_bBatchSameVolumeType = new("CPrecipitationVData", "m_bBatchSameVolumeType");
 	[SchemaMember("CPrecipitationVData", "m_bBatchSameVolumeType")]
-	public ref bool BatchSameVolumeType => ref Schema.GetRef<bool>(this.Handle, "CPrecipitationVData", "m_bBatchSameVolumeType");
+	public ref bool BatchSameVolumeType => ref __m_bBatchSameVolumeType.GetRef(this.Handle);
 
 	// m_nRTEnvCP
+	private static readonly SchemaField<Int32> __m_nRTEnvCP = new("CPrecipitationVData", "m_nRTEnvCP");
 	[SchemaMember("CPrecipitationVData", "m_nRTEnvCP")]
-	public ref Int32 RTEnvCP => ref Schema.GetRef<Int32>(this.Handle, "CPrecipitationVData", "m_nRTEnvCP");
+	public ref Int32 RTEnvCP => ref __m_nRTEnvCP.GetRef(this.Handle);
 
 	// m_nRTEnvCPComponent
+	private static readonly SchemaField<Int32> __m_nRTEnvCPComponent = new("CPrecipitationVData", "m_nRTEnvCPComponent");
 	[SchemaMember("CPrecipitationVData", "m_nRTEnvCPComponent")]
-	public ref Int32 RTEnvCPComponent => ref Schema.GetRef<Int32>(this.Handle, "CPrecipitationVData", "m_nRTEnvCPComponent");
+	public ref Int32 RTEnvCPComponent => ref __m_nRTEnvCPComponent.GetRef(this.Handle);
 
 	// m_szModifier
 	[SchemaMember("CPrecipitationVData", "m_szModifier")]
@@ -47,8 +52,9 @@ public partial class CPrecipitationVData : CEntitySubclassVDataBase
 	}
 
 	// m_nUseSnapshotFromSurfaceGraph
+	private static readonly SchemaField<Int32> __m_nUseSnapshotFromSurfaceGraph = new("CPrecipitationVData", "m_nUseSnapshotFromSurfaceGraph");
 	[SchemaMember("CPrecipitationVData", "m_nUseSnapshotFromSurfaceGraph")]
-	public ref Int32 UseSnapshotFromSurfaceGraph => ref Schema.GetRef<Int32>(this.Handle, "CPrecipitationVData", "m_nUseSnapshotFromSurfaceGraph");
+	public ref Int32 UseSnapshotFromSurfaceGraph => ref __m_nUseSnapshotFromSurfaceGraph.GetRef(this.Handle);
 
 	// m_snapshotFilter
 	[SchemaMember("CPrecipitationVData", "m_snapshotFilter")]

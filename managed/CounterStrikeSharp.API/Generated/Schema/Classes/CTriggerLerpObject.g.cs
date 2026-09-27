@@ -39,20 +39,24 @@ public partial class CTriggerLerpObject : CBaseTrigger
 	}
 
 	// m_flLerpDuration
+	private static readonly SchemaField<float> __m_flLerpDuration = new("CTriggerLerpObject", "m_flLerpDuration");
 	[SchemaMember("CTriggerLerpObject", "m_flLerpDuration")]
-	public ref float LerpDuration => ref Schema.GetRef<float>(this.Handle, "CTriggerLerpObject", "m_flLerpDuration");
+	public ref float LerpDuration => ref __m_flLerpDuration.GetRef(this.Handle);
 
 	// m_bAttachedEntityWasParented
+	private static readonly SchemaField<bool> __m_bAttachedEntityWasParented = new("CTriggerLerpObject", "m_bAttachedEntityWasParented");
 	[SchemaMember("CTriggerLerpObject", "m_bAttachedEntityWasParented")]
-	public ref bool AttachedEntityWasParented => ref Schema.GetRef<bool>(this.Handle, "CTriggerLerpObject", "m_bAttachedEntityWasParented");
+	public ref bool AttachedEntityWasParented => ref __m_bAttachedEntityWasParented.GetRef(this.Handle);
 
 	// m_bLerpRestoreMoveType
+	private static readonly SchemaField<bool> __m_bLerpRestoreMoveType = new("CTriggerLerpObject", "m_bLerpRestoreMoveType");
 	[SchemaMember("CTriggerLerpObject", "m_bLerpRestoreMoveType")]
-	public ref bool LerpRestoreMoveType => ref Schema.GetRef<bool>(this.Handle, "CTriggerLerpObject", "m_bLerpRestoreMoveType");
+	public ref bool LerpRestoreMoveType => ref __m_bLerpRestoreMoveType.GetRef(this.Handle);
 
 	// m_bSingleLerpObject
+	private static readonly SchemaField<bool> __m_bSingleLerpObject = new("CTriggerLerpObject", "m_bSingleLerpObject");
 	[SchemaMember("CTriggerLerpObject", "m_bSingleLerpObject")]
-	public ref bool SingleLerpObject => ref Schema.GetRef<bool>(this.Handle, "CTriggerLerpObject", "m_bSingleLerpObject");
+	public ref bool SingleLerpObject => ref __m_bSingleLerpObject.GetRef(this.Handle);
 
 	// m_vecLerpingObjects
 	[SchemaMember("CTriggerLerpObject", "m_vecLerpingObjects")]
@@ -75,8 +79,9 @@ public partial class CTriggerLerpObject : CBaseTrigger
 	}
 
 	// m_bAttachTouchingObject
+	private static readonly SchemaField<bool> __m_bAttachTouchingObject = new("CTriggerLerpObject", "m_bAttachTouchingObject");
 	[SchemaMember("CTriggerLerpObject", "m_bAttachTouchingObject")]
-	public ref bool AttachTouchingObject => ref Schema.GetRef<bool>(this.Handle, "CTriggerLerpObject", "m_bAttachTouchingObject");
+	public ref bool AttachTouchingObject => ref __m_bAttachTouchingObject.GetRef(this.Handle);
 
 	// m_hEntityToWaitForDisconnect
 	[SchemaMember("CTriggerLerpObject", "m_hEntityToWaitForDisconnect")]

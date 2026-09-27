@@ -27,52 +27,64 @@ public partial class CCSPlayerPawnBase : CBasePlayerPawn
 	public CCSPlayer_PingServices? PingServices => Schema.GetPointer<CCSPlayer_PingServices>(this.Handle, "CCSPlayerPawnBase", "m_pPingServices");
 
 	// m_blindUntilTime
+	private static readonly SchemaField<float> __m_blindUntilTime = new("CCSPlayerPawnBase", "m_blindUntilTime");
 	[SchemaMember("CCSPlayerPawnBase", "m_blindUntilTime")]
-	public ref float BlindUntilTime => ref Schema.GetRef<float>(this.Handle, "CCSPlayerPawnBase", "m_blindUntilTime");
+	public ref float BlindUntilTime => ref __m_blindUntilTime.GetRef(this.Handle);
 
 	// m_blindStartTime
+	private static readonly SchemaField<float> __m_blindStartTime = new("CCSPlayerPawnBase", "m_blindStartTime");
 	[SchemaMember("CCSPlayerPawnBase", "m_blindStartTime")]
-	public ref float BlindStartTime => ref Schema.GetRef<float>(this.Handle, "CCSPlayerPawnBase", "m_blindStartTime");
+	public ref float BlindStartTime => ref __m_blindStartTime.GetRef(this.Handle);
 
 	// m_iPlayerState
+	private static readonly SchemaField<CSPlayerState> __m_iPlayerState = new("CCSPlayerPawnBase", "m_iPlayerState");
 	[SchemaMember("CCSPlayerPawnBase", "m_iPlayerState")]
-	public ref CSPlayerState PlayerState => ref Schema.GetRef<CSPlayerState>(this.Handle, "CCSPlayerPawnBase", "m_iPlayerState");
+	public ref CSPlayerState PlayerState => ref __m_iPlayerState.GetRef(this.Handle);
 
 	// m_bRespawning
+	private static readonly SchemaField<bool> __m_bRespawning = new("CCSPlayerPawnBase", "m_bRespawning");
 	[SchemaMember("CCSPlayerPawnBase", "m_bRespawning")]
-	public ref bool Respawning => ref Schema.GetRef<bool>(this.Handle, "CCSPlayerPawnBase", "m_bRespawning");
+	public ref bool Respawning => ref __m_bRespawning.GetRef(this.Handle);
 
 	// m_bHasMovedSinceSpawn
+	private static readonly SchemaField<bool> __m_bHasMovedSinceSpawn = new("CCSPlayerPawnBase", "m_bHasMovedSinceSpawn");
 	[SchemaMember("CCSPlayerPawnBase", "m_bHasMovedSinceSpawn")]
-	public ref bool HasMovedSinceSpawn => ref Schema.GetRef<bool>(this.Handle, "CCSPlayerPawnBase", "m_bHasMovedSinceSpawn");
+	public ref bool HasMovedSinceSpawn => ref __m_bHasMovedSinceSpawn.GetRef(this.Handle);
 
 	// m_iNumSpawns
+	private static readonly SchemaField<Int32> __m_iNumSpawns = new("CCSPlayerPawnBase", "m_iNumSpawns");
 	[SchemaMember("CCSPlayerPawnBase", "m_iNumSpawns")]
-	public ref Int32 NumSpawns => ref Schema.GetRef<Int32>(this.Handle, "CCSPlayerPawnBase", "m_iNumSpawns");
+	public ref Int32 NumSpawns => ref __m_iNumSpawns.GetRef(this.Handle);
 
 	// m_flIdleTimeSinceLastAction
+	private static readonly SchemaField<float> __m_flIdleTimeSinceLastAction = new("CCSPlayerPawnBase", "m_flIdleTimeSinceLastAction");
 	[SchemaMember("CCSPlayerPawnBase", "m_flIdleTimeSinceLastAction")]
-	public ref float IdleTimeSinceLastAction => ref Schema.GetRef<float>(this.Handle, "CCSPlayerPawnBase", "m_flIdleTimeSinceLastAction");
+	public ref float IdleTimeSinceLastAction => ref __m_flIdleTimeSinceLastAction.GetRef(this.Handle);
 
 	// m_fNextRadarUpdateTime
+	private static readonly SchemaField<float> __m_fNextRadarUpdateTime = new("CCSPlayerPawnBase", "m_fNextRadarUpdateTime");
 	[SchemaMember("CCSPlayerPawnBase", "m_fNextRadarUpdateTime")]
-	public ref float NextRadarUpdateTime => ref Schema.GetRef<float>(this.Handle, "CCSPlayerPawnBase", "m_fNextRadarUpdateTime");
+	public ref float NextRadarUpdateTime => ref __m_fNextRadarUpdateTime.GetRef(this.Handle);
 
 	// m_flFlashDuration
+	private static readonly SchemaField<float> __m_flFlashDuration = new("CCSPlayerPawnBase", "m_flFlashDuration");
 	[SchemaMember("CCSPlayerPawnBase", "m_flFlashDuration")]
-	public ref float FlashDuration => ref Schema.GetRef<float>(this.Handle, "CCSPlayerPawnBase", "m_flFlashDuration");
+	public ref float FlashDuration => ref __m_flFlashDuration.GetRef(this.Handle);
 
 	// m_flFlashMaxAlpha
+	private static readonly SchemaField<float> __m_flFlashMaxAlpha = new("CCSPlayerPawnBase", "m_flFlashMaxAlpha");
 	[SchemaMember("CCSPlayerPawnBase", "m_flFlashMaxAlpha")]
-	public ref float FlashMaxAlpha => ref Schema.GetRef<float>(this.Handle, "CCSPlayerPawnBase", "m_flFlashMaxAlpha");
+	public ref float FlashMaxAlpha => ref __m_flFlashMaxAlpha.GetRef(this.Handle);
 
 	// m_flProgressBarStartTime
+	private static readonly SchemaField<float> __m_flProgressBarStartTime = new("CCSPlayerPawnBase", "m_flProgressBarStartTime");
 	[SchemaMember("CCSPlayerPawnBase", "m_flProgressBarStartTime")]
-	public ref float ProgressBarStartTime => ref Schema.GetRef<float>(this.Handle, "CCSPlayerPawnBase", "m_flProgressBarStartTime");
+	public ref float ProgressBarStartTime => ref __m_flProgressBarStartTime.GetRef(this.Handle);
 
 	// m_iProgressBarDuration
+	private static readonly SchemaField<Int32> __m_iProgressBarDuration = new("CCSPlayerPawnBase", "m_iProgressBarDuration");
 	[SchemaMember("CCSPlayerPawnBase", "m_iProgressBarDuration")]
-	public ref Int32 ProgressBarDuration => ref Schema.GetRef<Int32>(this.Handle, "CCSPlayerPawnBase", "m_iProgressBarDuration");
+	public ref Int32 ProgressBarDuration => ref __m_iProgressBarDuration.GetRef(this.Handle);
 
 	// m_hOriginalController
 	[SchemaMember("CCSPlayerPawnBase", "m_hOriginalController")]

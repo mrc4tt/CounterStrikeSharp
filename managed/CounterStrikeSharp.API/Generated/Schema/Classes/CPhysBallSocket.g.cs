@@ -19,27 +19,33 @@ public partial class CPhysBallSocket : CPhysConstraint
     public CPhysBallSocket (IntPtr pointer) : base(pointer) {}
 
 	// m_flJointFriction
+	private static readonly SchemaField<float> __m_flJointFriction = new("CPhysBallSocket", "m_flJointFriction");
 	[SchemaMember("CPhysBallSocket", "m_flJointFriction")]
-	public ref float JointFriction => ref Schema.GetRef<float>(this.Handle, "CPhysBallSocket", "m_flJointFriction");
+	public ref float JointFriction => ref __m_flJointFriction.GetRef(this.Handle);
 
 	// m_bEnableSwingLimit
+	private static readonly SchemaField<bool> __m_bEnableSwingLimit = new("CPhysBallSocket", "m_bEnableSwingLimit");
 	[SchemaMember("CPhysBallSocket", "m_bEnableSwingLimit")]
-	public ref bool EnableSwingLimit => ref Schema.GetRef<bool>(this.Handle, "CPhysBallSocket", "m_bEnableSwingLimit");
+	public ref bool EnableSwingLimit => ref __m_bEnableSwingLimit.GetRef(this.Handle);
 
 	// m_flSwingLimit
+	private static readonly SchemaField<float> __m_flSwingLimit = new("CPhysBallSocket", "m_flSwingLimit");
 	[SchemaMember("CPhysBallSocket", "m_flSwingLimit")]
-	public ref float SwingLimit => ref Schema.GetRef<float>(this.Handle, "CPhysBallSocket", "m_flSwingLimit");
+	public ref float SwingLimit => ref __m_flSwingLimit.GetRef(this.Handle);
 
 	// m_bEnableTwistLimit
+	private static readonly SchemaField<bool> __m_bEnableTwistLimit = new("CPhysBallSocket", "m_bEnableTwistLimit");
 	[SchemaMember("CPhysBallSocket", "m_bEnableTwistLimit")]
-	public ref bool EnableTwistLimit => ref Schema.GetRef<bool>(this.Handle, "CPhysBallSocket", "m_bEnableTwistLimit");
+	public ref bool EnableTwistLimit => ref __m_bEnableTwistLimit.GetRef(this.Handle);
 
 	// m_flMinTwistAngle
+	private static readonly SchemaField<float> __m_flMinTwistAngle = new("CPhysBallSocket", "m_flMinTwistAngle");
 	[SchemaMember("CPhysBallSocket", "m_flMinTwistAngle")]
-	public ref float MinTwistAngle => ref Schema.GetRef<float>(this.Handle, "CPhysBallSocket", "m_flMinTwistAngle");
+	public ref float MinTwistAngle => ref __m_flMinTwistAngle.GetRef(this.Handle);
 
 	// m_flMaxTwistAngle
+	private static readonly SchemaField<float> __m_flMaxTwistAngle = new("CPhysBallSocket", "m_flMaxTwistAngle");
 	[SchemaMember("CPhysBallSocket", "m_flMaxTwistAngle")]
-	public ref float MaxTwistAngle => ref Schema.GetRef<float>(this.Handle, "CPhysBallSocket", "m_flMaxTwistAngle");
+	public ref float MaxTwistAngle => ref __m_flMaxTwistAngle.GetRef(this.Handle);
 
 }

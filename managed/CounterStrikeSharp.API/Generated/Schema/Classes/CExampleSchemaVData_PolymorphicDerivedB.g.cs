@@ -19,7 +19,8 @@ public partial class CExampleSchemaVData_PolymorphicDerivedB : CExampleSchemaVDa
     public CExampleSchemaVData_PolymorphicDerivedB (IntPtr pointer) : base(pointer) {}
 
 	// m_nDerivedB
+	private static readonly SchemaField<Int32> __m_nDerivedB = new("CExampleSchemaVData_PolymorphicDerivedB", "m_nDerivedB");
 	[SchemaMember("CExampleSchemaVData_PolymorphicDerivedB", "m_nDerivedB")]
-	public ref Int32 DerivedB => ref Schema.GetRef<Int32>(this.Handle, "CExampleSchemaVData_PolymorphicDerivedB", "m_nDerivedB");
+	public ref Int32 DerivedB => ref __m_nDerivedB.GetRef(this.Handle);
 
 }

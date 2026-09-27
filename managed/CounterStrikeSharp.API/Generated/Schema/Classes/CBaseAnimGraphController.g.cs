@@ -19,8 +19,9 @@ public partial class CBaseAnimGraphController : CSkeletonAnimationController
     public CBaseAnimGraphController (IntPtr pointer) : base(pointer) {}
 
 	// m_nAnimationAlgorithm
+	private static readonly SchemaField<AnimationAlgorithm_t> __m_nAnimationAlgorithm = new("CBaseAnimGraphController", "m_nAnimationAlgorithm");
 	[SchemaMember("CBaseAnimGraphController", "m_nAnimationAlgorithm")]
-	public ref AnimationAlgorithm_t AnimationAlgorithm => ref Schema.GetRef<AnimationAlgorithm_t>(this.Handle, "CBaseAnimGraphController", "m_nAnimationAlgorithm");
+	public ref AnimationAlgorithm_t AnimationAlgorithm => ref __m_nAnimationAlgorithm.GetRef(this.Handle);
 
 	// m_nNextExternalGraphHandle
 	[SchemaMember("CBaseAnimGraphController", "m_nNextExternalGraphHandle")]
@@ -35,60 +36,74 @@ public partial class CBaseAnimGraphController : CSkeletonAnimationController
 	public NetworkedVector<CHandle<CBaseAnimGraph>> SecondarySkeletons => Schema.GetDeclaredClass<NetworkedVector<CHandle<CBaseAnimGraph>>>(this.Handle, "CBaseAnimGraphController", "m_vecSecondarySkeletons");
 
 	// m_nSecondarySkeletonMasterCount
+	private static readonly SchemaField<Int32> __m_nSecondarySkeletonMasterCount = new("CBaseAnimGraphController", "m_nSecondarySkeletonMasterCount");
 	[SchemaMember("CBaseAnimGraphController", "m_nSecondarySkeletonMasterCount")]
-	public ref Int32 SecondarySkeletonMasterCount => ref Schema.GetRef<Int32>(this.Handle, "CBaseAnimGraphController", "m_nSecondarySkeletonMasterCount");
+	public ref Int32 SecondarySkeletonMasterCount => ref __m_nSecondarySkeletonMasterCount.GetRef(this.Handle);
 
 	// m_flSoundSyncTime
+	private static readonly SchemaField<float> __m_flSoundSyncTime = new("CBaseAnimGraphController", "m_flSoundSyncTime");
 	[SchemaMember("CBaseAnimGraphController", "m_flSoundSyncTime")]
-	public ref float SoundSyncTime => ref Schema.GetRef<float>(this.Handle, "CBaseAnimGraphController", "m_flSoundSyncTime");
+	public ref float SoundSyncTime => ref __m_flSoundSyncTime.GetRef(this.Handle);
 
 	// m_nActiveIKChainMask
+	private static readonly SchemaField<UInt32> __m_nActiveIKChainMask = new("CBaseAnimGraphController", "m_nActiveIKChainMask");
 	[SchemaMember("CBaseAnimGraphController", "m_nActiveIKChainMask")]
-	public ref UInt32 ActiveIKChainMask => ref Schema.GetRef<UInt32>(this.Handle, "CBaseAnimGraphController", "m_nActiveIKChainMask");
+	public ref UInt32 ActiveIKChainMask => ref __m_nActiveIKChainMask.GetRef(this.Handle);
 
 	// m_hSequence
+	private static readonly SchemaField<Int32> __m_hSequence = new("CBaseAnimGraphController", "m_hSequence");
 	[SchemaMember("CBaseAnimGraphController", "m_hSequence")]
-	public ref Int32 Sequence => ref Schema.GetRef<Int32>(this.Handle, "CBaseAnimGraphController", "m_hSequence");
+	public ref Int32 Sequence => ref __m_hSequence.GetRef(this.Handle);
 
 	// m_flSeqStartTime
+	private static readonly SchemaField<float> __m_flSeqStartTime = new("CBaseAnimGraphController", "m_flSeqStartTime");
 	[SchemaMember("CBaseAnimGraphController", "m_flSeqStartTime")]
-	public ref float SeqStartTime => ref Schema.GetRef<float>(this.Handle, "CBaseAnimGraphController", "m_flSeqStartTime");
+	public ref float SeqStartTime => ref __m_flSeqStartTime.GetRef(this.Handle);
 
 	// m_flSeqFixedCycle
+	private static readonly SchemaField<float> __m_flSeqFixedCycle = new("CBaseAnimGraphController", "m_flSeqFixedCycle");
 	[SchemaMember("CBaseAnimGraphController", "m_flSeqFixedCycle")]
-	public ref float SeqFixedCycle => ref Schema.GetRef<float>(this.Handle, "CBaseAnimGraphController", "m_flSeqFixedCycle");
+	public ref float SeqFixedCycle => ref __m_flSeqFixedCycle.GetRef(this.Handle);
 
 	// m_nAnimLoopMode
+	private static readonly SchemaField<AnimLoopMode_t> __m_nAnimLoopMode = new("CBaseAnimGraphController", "m_nAnimLoopMode");
 	[SchemaMember("CBaseAnimGraphController", "m_nAnimLoopMode")]
-	public ref AnimLoopMode_t AnimLoopMode => ref Schema.GetRef<AnimLoopMode_t>(this.Handle, "CBaseAnimGraphController", "m_nAnimLoopMode");
+	public ref AnimLoopMode_t AnimLoopMode => ref __m_nAnimLoopMode.GetRef(this.Handle);
 
 	// m_flPlaybackRate
+	private static readonly SchemaField<float> __m_flPlaybackRate = new("CBaseAnimGraphController", "m_flPlaybackRate");
 	[SchemaMember("CBaseAnimGraphController", "m_flPlaybackRate")]
-	public ref float PlaybackRate => ref Schema.GetRef<float>(this.Handle, "CBaseAnimGraphController", "m_flPlaybackRate");
+	public ref float PlaybackRate => ref __m_flPlaybackRate.GetRef(this.Handle);
 
 	// m_nNotifyState
+	private static readonly SchemaField<SequenceFinishNotifyState_t> __m_nNotifyState = new("CBaseAnimGraphController", "m_nNotifyState");
 	[SchemaMember("CBaseAnimGraphController", "m_nNotifyState")]
-	public ref SequenceFinishNotifyState_t NotifyState => ref Schema.GetRef<SequenceFinishNotifyState_t>(this.Handle, "CBaseAnimGraphController", "m_nNotifyState");
+	public ref SequenceFinishNotifyState_t NotifyState => ref __m_nNotifyState.GetRef(this.Handle);
 
 	// m_bNetworkedAnimationInputsChanged
+	private static readonly SchemaField<bool> __m_bNetworkedAnimationInputsChanged = new("CBaseAnimGraphController", "m_bNetworkedAnimationInputsChanged");
 	[SchemaMember("CBaseAnimGraphController", "m_bNetworkedAnimationInputsChanged")]
-	public ref bool NetworkedAnimationInputsChanged => ref Schema.GetRef<bool>(this.Handle, "CBaseAnimGraphController", "m_bNetworkedAnimationInputsChanged");
+	public ref bool NetworkedAnimationInputsChanged => ref __m_bNetworkedAnimationInputsChanged.GetRef(this.Handle);
 
 	// m_bNetworkedSequenceChanged
+	private static readonly SchemaField<bool> __m_bNetworkedSequenceChanged = new("CBaseAnimGraphController", "m_bNetworkedSequenceChanged");
 	[SchemaMember("CBaseAnimGraphController", "m_bNetworkedSequenceChanged")]
-	public ref bool NetworkedSequenceChanged => ref Schema.GetRef<bool>(this.Handle, "CBaseAnimGraphController", "m_bNetworkedSequenceChanged");
+	public ref bool NetworkedSequenceChanged => ref __m_bNetworkedSequenceChanged.GetRef(this.Handle);
 
 	// m_bLastUpdateSkipped
+	private static readonly SchemaField<bool> __m_bLastUpdateSkipped = new("CBaseAnimGraphController", "m_bLastUpdateSkipped");
 	[SchemaMember("CBaseAnimGraphController", "m_bLastUpdateSkipped")]
-	public ref bool LastUpdateSkipped => ref Schema.GetRef<bool>(this.Handle, "CBaseAnimGraphController", "m_bLastUpdateSkipped");
+	public ref bool LastUpdateSkipped => ref __m_bLastUpdateSkipped.GetRef(this.Handle);
 
 	// m_bSequenceFinished
+	private static readonly SchemaField<bool> __m_bSequenceFinished = new("CBaseAnimGraphController", "m_bSequenceFinished");
 	[SchemaMember("CBaseAnimGraphController", "m_bSequenceFinished")]
-	public ref bool SequenceFinished => ref Schema.GetRef<bool>(this.Handle, "CBaseAnimGraphController", "m_bSequenceFinished");
+	public ref bool SequenceFinished => ref __m_bSequenceFinished.GetRef(this.Handle);
 
 	// m_nPrevAnimUpdateTick
+	private static readonly SchemaField<Int32> __m_nPrevAnimUpdateTick = new("CBaseAnimGraphController", "m_nPrevAnimUpdateTick");
 	[SchemaMember("CBaseAnimGraphController", "m_nPrevAnimUpdateTick")]
-	public ref Int32 PrevAnimUpdateTick => ref Schema.GetRef<Int32>(this.Handle, "CBaseAnimGraphController", "m_nPrevAnimUpdateTick");
+	public ref Int32 PrevAnimUpdateTick => ref __m_nPrevAnimUpdateTick.GetRef(this.Handle);
 
 	// m_hGraphDefinitionAG2
 	[SchemaMember("CBaseAnimGraphController", "m_hGraphDefinitionAG2")]
@@ -103,20 +118,24 @@ public partial class CBaseAnimGraphController : CSkeletonAnimationController
 	public NetworkedVector<byte> SerializePoseRecipeAG2Dynamic => Schema.GetDeclaredClass<NetworkedVector<byte>>(this.Handle, "CBaseAnimGraphController", "m_SerializePoseRecipeAG2Dynamic");
 
 	// m_nSerializePoseRecipeAG2ActiveSlot
+	private static readonly SchemaField<UInt32> __m_nSerializePoseRecipeAG2ActiveSlot = new("CBaseAnimGraphController", "m_nSerializePoseRecipeAG2ActiveSlot");
 	[SchemaMember("CBaseAnimGraphController", "m_nSerializePoseRecipeAG2ActiveSlot")]
-	public ref UInt32 SerializePoseRecipeAG2ActiveSlot => ref Schema.GetRef<UInt32>(this.Handle, "CBaseAnimGraphController", "m_nSerializePoseRecipeAG2ActiveSlot");
+	public ref UInt32 SerializePoseRecipeAG2ActiveSlot => ref __m_nSerializePoseRecipeAG2ActiveSlot.GetRef(this.Handle);
 
 	// m_nSerializePoseRecipeVersionAG2
+	private static readonly SchemaField<Int32> __m_nSerializePoseRecipeVersionAG2 = new("CBaseAnimGraphController", "m_nSerializePoseRecipeVersionAG2");
 	[SchemaMember("CBaseAnimGraphController", "m_nSerializePoseRecipeVersionAG2")]
-	public ref Int32 SerializePoseRecipeVersionAG2 => ref Schema.GetRef<Int32>(this.Handle, "CBaseAnimGraphController", "m_nSerializePoseRecipeVersionAG2");
+	public ref Int32 SerializePoseRecipeVersionAG2 => ref __m_nSerializePoseRecipeVersionAG2.GetRef(this.Handle);
 
 	// m_nServerGraphInstanceIteration
+	private static readonly SchemaField<Int32> __m_nServerGraphInstanceIteration = new("CBaseAnimGraphController", "m_nServerGraphInstanceIteration");
 	[SchemaMember("CBaseAnimGraphController", "m_nServerGraphInstanceIteration")]
-	public ref Int32 ServerGraphInstanceIteration => ref Schema.GetRef<Int32>(this.Handle, "CBaseAnimGraphController", "m_nServerGraphInstanceIteration");
+	public ref Int32 ServerGraphInstanceIteration => ref __m_nServerGraphInstanceIteration.GetRef(this.Handle);
 
 	// m_nServerSerializationContextIteration
+	private static readonly SchemaField<Int32> __m_nServerSerializationContextIteration = new("CBaseAnimGraphController", "m_nServerSerializationContextIteration");
 	[SchemaMember("CBaseAnimGraphController", "m_nServerSerializationContextIteration")]
-	public ref Int32 ServerSerializationContextIteration => ref Schema.GetRef<Int32>(this.Handle, "CBaseAnimGraphController", "m_nServerSerializationContextIteration");
+	public ref Int32 ServerSerializationContextIteration => ref __m_nServerSerializationContextIteration.GetRef(this.Handle);
 
 	// m_primaryGraphId
 	[SchemaMember("CBaseAnimGraphController", "m_primaryGraphId")]

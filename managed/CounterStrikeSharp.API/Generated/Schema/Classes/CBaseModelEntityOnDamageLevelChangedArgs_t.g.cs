@@ -19,19 +19,23 @@ public partial class CBaseModelEntityOnDamageLevelChangedArgs_t : NativeObject
     public CBaseModelEntityOnDamageLevelChangedArgs_t (IntPtr pointer) : base(pointer) {}
 
 	// nHitGroup
+	private static readonly SchemaField<HitGroup_t> __nHitGroup = new("CBaseModelEntity::OnDamageLevelChangedArgs_t", "nHitGroup");
 	[SchemaMember("CBaseModelEntity::OnDamageLevelChangedArgs_t", "nHitGroup")]
-	public ref HitGroup_t NHitGroup => ref Schema.GetRef<HitGroup_t>(this.Handle, "CBaseModelEntity::OnDamageLevelChangedArgs_t", "nHitGroup");
+	public ref HitGroup_t NHitGroup => ref __nHitGroup.GetRef(this.Handle);
 
 	// nDamageLevel
+	private static readonly SchemaField<Int32> __nDamageLevel = new("CBaseModelEntity::OnDamageLevelChangedArgs_t", "nDamageLevel");
 	[SchemaMember("CBaseModelEntity::OnDamageLevelChangedArgs_t", "nDamageLevel")]
-	public ref Int32 NDamageLevel => ref Schema.GetRef<Int32>(this.Handle, "CBaseModelEntity::OnDamageLevelChangedArgs_t", "nDamageLevel");
+	public ref Int32 NDamageLevel => ref __nDamageLevel.GetRef(this.Handle);
 
 	// nDamageLevelsRemaining
+	private static readonly SchemaField<Int32> __nDamageLevelsRemaining = new("CBaseModelEntity::OnDamageLevelChangedArgs_t", "nDamageLevelsRemaining");
 	[SchemaMember("CBaseModelEntity::OnDamageLevelChangedArgs_t", "nDamageLevelsRemaining")]
-	public ref Int32 NDamageLevelsRemaining => ref Schema.GetRef<Int32>(this.Handle, "CBaseModelEntity::OnDamageLevelChangedArgs_t", "nDamageLevelsRemaining");
+	public ref Int32 NDamageLevelsRemaining => ref __nDamageLevelsRemaining.GetRef(this.Handle);
 
 	// nPrevDamageLevel
+	private static readonly SchemaField<Int32> __nPrevDamageLevel = new("CBaseModelEntity::OnDamageLevelChangedArgs_t", "nPrevDamageLevel");
 	[SchemaMember("CBaseModelEntity::OnDamageLevelChangedArgs_t", "nPrevDamageLevel")]
-	public ref Int32 NPrevDamageLevel => ref Schema.GetRef<Int32>(this.Handle, "CBaseModelEntity::OnDamageLevelChangedArgs_t", "nPrevDamageLevel");
+	public ref Int32 NPrevDamageLevel => ref __nPrevDamageLevel.GetRef(this.Handle);
 
 }

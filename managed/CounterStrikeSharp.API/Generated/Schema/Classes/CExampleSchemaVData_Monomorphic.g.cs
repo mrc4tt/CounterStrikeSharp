@@ -19,11 +19,13 @@ public partial class CExampleSchemaVData_Monomorphic : NativeObject
     public CExampleSchemaVData_Monomorphic (IntPtr pointer) : base(pointer) {}
 
 	// m_nExample1
+	private static readonly SchemaField<Int32> __m_nExample1 = new("CExampleSchemaVData_Monomorphic", "m_nExample1");
 	[SchemaMember("CExampleSchemaVData_Monomorphic", "m_nExample1")]
-	public ref Int32 Example1 => ref Schema.GetRef<Int32>(this.Handle, "CExampleSchemaVData_Monomorphic", "m_nExample1");
+	public ref Int32 Example1 => ref __m_nExample1.GetRef(this.Handle);
 
 	// m_nExample2
+	private static readonly SchemaField<Int32> __m_nExample2 = new("CExampleSchemaVData_Monomorphic", "m_nExample2");
 	[SchemaMember("CExampleSchemaVData_Monomorphic", "m_nExample2")]
-	public ref Int32 Example2 => ref Schema.GetRef<Int32>(this.Handle, "CExampleSchemaVData_Monomorphic", "m_nExample2");
+	public ref Int32 Example2 => ref __m_nExample2.GetRef(this.Handle);
 
 }

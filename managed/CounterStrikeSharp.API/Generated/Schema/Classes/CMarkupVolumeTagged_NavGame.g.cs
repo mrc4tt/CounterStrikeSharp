@@ -19,15 +19,18 @@ public partial class CMarkupVolumeTagged_NavGame : CMarkupVolumeWithRef
     public CMarkupVolumeTagged_NavGame (IntPtr pointer) : base(pointer) {}
 
 	// m_nScopes
+	private static readonly SchemaField<NavScopeFlags_t> __m_nScopes = new("CMarkupVolumeTagged_NavGame", "m_nScopes");
 	[SchemaMember("CMarkupVolumeTagged_NavGame", "m_nScopes")]
-	public ref NavScopeFlags_t Scopes => ref Schema.GetRef<NavScopeFlags_t>(this.Handle, "CMarkupVolumeTagged_NavGame", "m_nScopes");
+	public ref NavScopeFlags_t Scopes => ref __m_nScopes.GetRef(this.Handle);
 
 	// m_bFloodFillAttribute
+	private static readonly SchemaField<bool> __m_bFloodFillAttribute = new("CMarkupVolumeTagged_NavGame", "m_bFloodFillAttribute");
 	[SchemaMember("CMarkupVolumeTagged_NavGame", "m_bFloodFillAttribute")]
-	public ref bool FloodFillAttribute => ref Schema.GetRef<bool>(this.Handle, "CMarkupVolumeTagged_NavGame", "m_bFloodFillAttribute");
+	public ref bool FloodFillAttribute => ref __m_bFloodFillAttribute.GetRef(this.Handle);
 
 	// m_bSplitNavSpace
+	private static readonly SchemaField<bool> __m_bSplitNavSpace = new("CMarkupVolumeTagged_NavGame", "m_bSplitNavSpace");
 	[SchemaMember("CMarkupVolumeTagged_NavGame", "m_bSplitNavSpace")]
-	public ref bool SplitNavSpace => ref Schema.GetRef<bool>(this.Handle, "CMarkupVolumeTagged_NavGame", "m_bSplitNavSpace");
+	public ref bool SplitNavSpace => ref __m_bSplitNavSpace.GetRef(this.Handle);
 
 }

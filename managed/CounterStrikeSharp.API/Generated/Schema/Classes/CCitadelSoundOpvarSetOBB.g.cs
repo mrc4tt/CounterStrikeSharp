@@ -59,7 +59,8 @@ public partial class CCitadelSoundOpvarSetOBB : CBaseEntity
 	public Vector DistanceOuterMaxs => Schema.GetDeclaredClass<Vector>(this.Handle, "CCitadelSoundOpvarSetOBB", "m_vDistanceOuterMaxs");
 
 	// m_nAABBDirection
+	private static readonly SchemaField<Int32> __m_nAABBDirection = new("CCitadelSoundOpvarSetOBB", "m_nAABBDirection");
 	[SchemaMember("CCitadelSoundOpvarSetOBB", "m_nAABBDirection")]
-	public ref Int32 AABBDirection => ref Schema.GetRef<Int32>(this.Handle, "CCitadelSoundOpvarSetOBB", "m_nAABBDirection");
+	public ref Int32 AABBDirection => ref __m_nAABBDirection.GetRef(this.Handle);
 
 }

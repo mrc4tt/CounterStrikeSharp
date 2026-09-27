@@ -27,7 +27,8 @@ public partial class CSoundEventParameter : CBaseEntity
 	}
 
 	// m_flFloatValue
+	private static readonly SchemaField<float> __m_flFloatValue = new("CSoundEventParameter", "m_flFloatValue");
 	[SchemaMember("CSoundEventParameter", "m_flFloatValue")]
-	public ref float FloatValue => ref Schema.GetRef<float>(this.Handle, "CSoundEventParameter", "m_flFloatValue");
+	public ref float FloatValue => ref __m_flFloatValue.GetRef(this.Handle);
 
 }

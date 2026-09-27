@@ -19,15 +19,17 @@ public partial class CInfoVisibilityBox : CBaseEntity
     public CInfoVisibilityBox (IntPtr pointer) : base(pointer) {}
 
 	// m_nMode
+	private static readonly SchemaField<Int32> __m_nMode = new("CInfoVisibilityBox", "m_nMode");
 	[SchemaMember("CInfoVisibilityBox", "m_nMode")]
-	public ref Int32 Mode => ref Schema.GetRef<Int32>(this.Handle, "CInfoVisibilityBox", "m_nMode");
+	public ref Int32 Mode => ref __m_nMode.GetRef(this.Handle);
 
 	// m_vBoxSize
 	[SchemaMember("CInfoVisibilityBox", "m_vBoxSize")]
 	public Vector BoxSize => Schema.GetDeclaredClass<Vector>(this.Handle, "CInfoVisibilityBox", "m_vBoxSize");
 
 	// m_bEnabled
+	private static readonly SchemaField<bool> __m_bEnabled = new("CInfoVisibilityBox", "m_bEnabled");
 	[SchemaMember("CInfoVisibilityBox", "m_bEnabled")]
-	public ref bool Enabled => ref Schema.GetRef<bool>(this.Handle, "CInfoVisibilityBox", "m_bEnabled");
+	public ref bool Enabled => ref __m_bEnabled.GetRef(this.Handle);
 
 }

@@ -19,11 +19,13 @@ public partial class Relationship_t : NativeObject
     public Relationship_t (IntPtr pointer) : base(pointer) {}
 
 	// disposition
+	private static readonly SchemaField<Disposition_t> __disposition = new("Relationship_t", "disposition");
 	[SchemaMember("Relationship_t", "disposition")]
-	public ref Disposition_t Disposition => ref Schema.GetRef<Disposition_t>(this.Handle, "Relationship_t", "disposition");
+	public ref Disposition_t Disposition => ref __disposition.GetRef(this.Handle);
 
 	// priority
+	private static readonly SchemaField<Int32> __priority = new("Relationship_t", "priority");
 	[SchemaMember("Relationship_t", "priority")]
-	public ref Int32 Priority => ref Schema.GetRef<Int32>(this.Handle, "Relationship_t", "priority");
+	public ref Int32 Priority => ref __priority.GetRef(this.Handle);
 
 }

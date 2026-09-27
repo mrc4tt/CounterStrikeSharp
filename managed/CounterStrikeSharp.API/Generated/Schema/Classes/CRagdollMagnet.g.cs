@@ -19,16 +19,19 @@ public partial class CRagdollMagnet : CPointEntity
     public CRagdollMagnet (IntPtr pointer) : base(pointer) {}
 
 	// m_bDisabled
+	private static readonly SchemaField<bool> __m_bDisabled = new("CRagdollMagnet", "m_bDisabled");
 	[SchemaMember("CRagdollMagnet", "m_bDisabled")]
-	public ref bool Disabled => ref Schema.GetRef<bool>(this.Handle, "CRagdollMagnet", "m_bDisabled");
+	public ref bool Disabled => ref __m_bDisabled.GetRef(this.Handle);
 
 	// m_radius
+	private static readonly SchemaField<float> __m_radius = new("CRagdollMagnet", "m_radius");
 	[SchemaMember("CRagdollMagnet", "m_radius")]
-	public ref float Radius => ref Schema.GetRef<float>(this.Handle, "CRagdollMagnet", "m_radius");
+	public ref float Radius => ref __m_radius.GetRef(this.Handle);
 
 	// m_force
+	private static readonly SchemaField<float> __m_force = new("CRagdollMagnet", "m_force");
 	[SchemaMember("CRagdollMagnet", "m_force")]
-	public ref float Force => ref Schema.GetRef<float>(this.Handle, "CRagdollMagnet", "m_force");
+	public ref float Force => ref __m_force.GetRef(this.Handle);
 
 	// m_axis
 	[SchemaMember("CRagdollMagnet", "m_axis")]

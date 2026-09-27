@@ -19,7 +19,8 @@ public partial class CScriptItem : CItem
     public CScriptItem (IntPtr pointer) : base(pointer) {}
 
 	// m_MoveTypeOverride
+	private static readonly SchemaField<MoveType_t> __m_MoveTypeOverride = new("CScriptItem", "m_MoveTypeOverride");
 	[SchemaMember("CScriptItem", "m_MoveTypeOverride")]
-	public ref MoveType_t MoveTypeOverride => ref Schema.GetRef<MoveType_t>(this.Handle, "CScriptItem", "m_MoveTypeOverride");
+	public ref MoveType_t MoveTypeOverride => ref __m_MoveTypeOverride.GetRef(this.Handle);
 
 }

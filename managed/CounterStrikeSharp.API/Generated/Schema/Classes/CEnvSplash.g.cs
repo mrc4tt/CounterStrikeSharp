@@ -19,7 +19,8 @@ public partial class CEnvSplash : CPointEntity
     public CEnvSplash (IntPtr pointer) : base(pointer) {}
 
 	// m_flScale
+	private static readonly SchemaField<float> __m_flScale = new("CEnvSplash", "m_flScale");
 	[SchemaMember("CEnvSplash", "m_flScale")]
-	public ref float Scale => ref Schema.GetRef<float>(this.Handle, "CEnvSplash", "m_flScale");
+	public ref float Scale => ref __m_flScale.GetRef(this.Handle);
 
 }

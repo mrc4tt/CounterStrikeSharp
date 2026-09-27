@@ -19,7 +19,8 @@ public partial class CCashStack : CBaseModelEntity
     public CCashStack (IntPtr pointer) : base(pointer) {}
 
 	// m_nCashStackValue
+	private static readonly SchemaField<Int32> __m_nCashStackValue = new("CCashStack", "m_nCashStackValue");
 	[SchemaMember("CCashStack", "m_nCashStackValue")]
-	public ref Int32 CashStackValue => ref Schema.GetRef<Int32>(this.Handle, "CCashStack", "m_nCashStackValue");
+	public ref Int32 CashStackValue => ref __m_nCashStackValue.GetRef(this.Handle);
 
 }

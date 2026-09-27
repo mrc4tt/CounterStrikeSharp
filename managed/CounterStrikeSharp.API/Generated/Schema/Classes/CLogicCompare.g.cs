@@ -19,11 +19,13 @@ public partial class CLogicCompare : CLogicalEntity
     public CLogicCompare (IntPtr pointer) : base(pointer) {}
 
 	// m_flInValue
+	private static readonly SchemaField<float> __m_flInValue = new("CLogicCompare", "m_flInValue");
 	[SchemaMember("CLogicCompare", "m_flInValue")]
-	public ref float InValue => ref Schema.GetRef<float>(this.Handle, "CLogicCompare", "m_flInValue");
+	public ref float InValue => ref __m_flInValue.GetRef(this.Handle);
 
 	// m_flCompareValue
+	private static readonly SchemaField<float> __m_flCompareValue = new("CLogicCompare", "m_flCompareValue");
 	[SchemaMember("CLogicCompare", "m_flCompareValue")]
-	public ref float CompareValue => ref Schema.GetRef<float>(this.Handle, "CLogicCompare", "m_flCompareValue");
+	public ref float CompareValue => ref __m_flCompareValue.GetRef(this.Handle);
 
 }

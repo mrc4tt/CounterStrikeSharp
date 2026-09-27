@@ -19,63 +19,78 @@ public partial class CNavHullVData : NativeObject
     public CNavHullVData (IntPtr pointer) : base(pointer) {}
 
 	// m_bAgentEnabled
+	private static readonly SchemaField<bool> __m_bAgentEnabled = new("CNavHullVData", "m_bAgentEnabled");
 	[SchemaMember("CNavHullVData", "m_bAgentEnabled")]
-	public ref bool AgentEnabled => ref Schema.GetRef<bool>(this.Handle, "CNavHullVData", "m_bAgentEnabled");
+	public ref bool AgentEnabled => ref __m_bAgentEnabled.GetRef(this.Handle);
 
 	// m_agentRadius
+	private static readonly SchemaField<float> __m_agentRadius = new("CNavHullVData", "m_agentRadius");
 	[SchemaMember("CNavHullVData", "m_agentRadius")]
-	public ref float AgentRadius => ref Schema.GetRef<float>(this.Handle, "CNavHullVData", "m_agentRadius");
+	public ref float AgentRadius => ref __m_agentRadius.GetRef(this.Handle);
 
 	// m_agentHeight
+	private static readonly SchemaField<float> __m_agentHeight = new("CNavHullVData", "m_agentHeight");
 	[SchemaMember("CNavHullVData", "m_agentHeight")]
-	public ref float AgentHeight => ref Schema.GetRef<float>(this.Handle, "CNavHullVData", "m_agentHeight");
+	public ref float AgentHeight => ref __m_agentHeight.GetRef(this.Handle);
 
 	// m_agentShortHeightEnabled
+	private static readonly SchemaField<bool> __m_agentShortHeightEnabled = new("CNavHullVData", "m_agentShortHeightEnabled");
 	[SchemaMember("CNavHullVData", "m_agentShortHeightEnabled")]
-	public ref bool AgentShortHeightEnabled => ref Schema.GetRef<bool>(this.Handle, "CNavHullVData", "m_agentShortHeightEnabled");
+	public ref bool AgentShortHeightEnabled => ref __m_agentShortHeightEnabled.GetRef(this.Handle);
 
 	// m_agentShortHeight
+	private static readonly SchemaField<float> __m_agentShortHeight = new("CNavHullVData", "m_agentShortHeight");
 	[SchemaMember("CNavHullVData", "m_agentShortHeight")]
-	public ref float AgentShortHeight => ref Schema.GetRef<float>(this.Handle, "CNavHullVData", "m_agentShortHeight");
+	public ref float AgentShortHeight => ref __m_agentShortHeight.GetRef(this.Handle);
 
 	// m_agentCrawlEnabled
+	private static readonly SchemaField<bool> __m_agentCrawlEnabled = new("CNavHullVData", "m_agentCrawlEnabled");
 	[SchemaMember("CNavHullVData", "m_agentCrawlEnabled")]
-	public ref bool AgentCrawlEnabled => ref Schema.GetRef<bool>(this.Handle, "CNavHullVData", "m_agentCrawlEnabled");
+	public ref bool AgentCrawlEnabled => ref __m_agentCrawlEnabled.GetRef(this.Handle);
 
 	// m_agentCrawlHeight
+	private static readonly SchemaField<float> __m_agentCrawlHeight = new("CNavHullVData", "m_agentCrawlHeight");
 	[SchemaMember("CNavHullVData", "m_agentCrawlHeight")]
-	public ref float AgentCrawlHeight => ref Schema.GetRef<float>(this.Handle, "CNavHullVData", "m_agentCrawlHeight");
+	public ref float AgentCrawlHeight => ref __m_agentCrawlHeight.GetRef(this.Handle);
 
 	// m_agentMaxClimb
+	private static readonly SchemaField<float> __m_agentMaxClimb = new("CNavHullVData", "m_agentMaxClimb");
 	[SchemaMember("CNavHullVData", "m_agentMaxClimb")]
-	public ref float AgentMaxClimb => ref Schema.GetRef<float>(this.Handle, "CNavHullVData", "m_agentMaxClimb");
+	public ref float AgentMaxClimb => ref __m_agentMaxClimb.GetRef(this.Handle);
 
 	// m_agentMaxSlope
+	private static readonly SchemaField<Int32> __m_agentMaxSlope = new("CNavHullVData", "m_agentMaxSlope");
 	[SchemaMember("CNavHullVData", "m_agentMaxSlope")]
-	public ref Int32 AgentMaxSlope => ref Schema.GetRef<Int32>(this.Handle, "CNavHullVData", "m_agentMaxSlope");
+	public ref Int32 AgentMaxSlope => ref __m_agentMaxSlope.GetRef(this.Handle);
 
 	// m_agentMaxJumpDownDist
+	private static readonly SchemaField<float> __m_agentMaxJumpDownDist = new("CNavHullVData", "m_agentMaxJumpDownDist");
 	[SchemaMember("CNavHullVData", "m_agentMaxJumpDownDist")]
-	public ref float AgentMaxJumpDownDist => ref Schema.GetRef<float>(this.Handle, "CNavHullVData", "m_agentMaxJumpDownDist");
+	public ref float AgentMaxJumpDownDist => ref __m_agentMaxJumpDownDist.GetRef(this.Handle);
 
 	// m_agentMaxJumpHorizDistBase
+	private static readonly SchemaField<float> __m_agentMaxJumpHorizDistBase = new("CNavHullVData", "m_agentMaxJumpHorizDistBase");
 	[SchemaMember("CNavHullVData", "m_agentMaxJumpHorizDistBase")]
-	public ref float AgentMaxJumpHorizDistBase => ref Schema.GetRef<float>(this.Handle, "CNavHullVData", "m_agentMaxJumpHorizDistBase");
+	public ref float AgentMaxJumpHorizDistBase => ref __m_agentMaxJumpHorizDistBase.GetRef(this.Handle);
 
 	// m_agentMaxJumpUpDist
+	private static readonly SchemaField<float> __m_agentMaxJumpUpDist = new("CNavHullVData", "m_agentMaxJumpUpDist");
 	[SchemaMember("CNavHullVData", "m_agentMaxJumpUpDist")]
-	public ref float AgentMaxJumpUpDist => ref Schema.GetRef<float>(this.Handle, "CNavHullVData", "m_agentMaxJumpUpDist");
+	public ref float AgentMaxJumpUpDist => ref __m_agentMaxJumpUpDist.GetRef(this.Handle);
 
 	// m_agentBorderErosion
+	private static readonly SchemaField<Int32> __m_agentBorderErosion = new("CNavHullVData", "m_agentBorderErosion");
 	[SchemaMember("CNavHullVData", "m_agentBorderErosion")]
-	public ref Int32 AgentBorderErosion => ref Schema.GetRef<Int32>(this.Handle, "CNavHullVData", "m_agentBorderErosion");
+	public ref Int32 AgentBorderErosion => ref __m_agentBorderErosion.GetRef(this.Handle);
 
 	// m_flowMapGenerationEnabled
+	private static readonly SchemaField<bool> __m_flowMapGenerationEnabled = new("CNavHullVData", "m_flowMapGenerationEnabled");
 	[SchemaMember("CNavHullVData", "m_flowMapGenerationEnabled")]
-	public ref bool FlowMapGenerationEnabled => ref Schema.GetRef<bool>(this.Handle, "CNavHullVData", "m_flowMapGenerationEnabled");
+	public ref bool FlowMapGenerationEnabled => ref __m_flowMapGenerationEnabled.GetRef(this.Handle);
 
 	// m_flowMapNodeMaxRadius
+	private static readonly SchemaField<float> __m_flowMapNodeMaxRadius = new("CNavHullVData", "m_flowMapNodeMaxRadius");
 	[SchemaMember("CNavHullVData", "m_flowMapNodeMaxRadius")]
-	public ref float FlowMapNodeMaxRadius => ref Schema.GetRef<float>(this.Handle, "CNavHullVData", "m_flowMapNodeMaxRadius");
+	public ref float FlowMapNodeMaxRadius => ref __m_flowMapNodeMaxRadius.GetRef(this.Handle);
 
 }

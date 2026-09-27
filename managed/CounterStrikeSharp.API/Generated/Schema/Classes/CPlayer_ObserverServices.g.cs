@@ -19,19 +19,22 @@ public partial class CPlayer_ObserverServices : CPlayerPawnComponent
     public CPlayer_ObserverServices (IntPtr pointer) : base(pointer) {}
 
 	// m_iObserverMode
+	private static readonly SchemaField<byte> __m_iObserverMode = new("CPlayer_ObserverServices", "m_iObserverMode");
 	[SchemaMember("CPlayer_ObserverServices", "m_iObserverMode")]
-	public ref byte ObserverMode => ref Schema.GetRef<byte>(this.Handle, "CPlayer_ObserverServices", "m_iObserverMode");
+	public ref byte ObserverMode => ref __m_iObserverMode.GetRef(this.Handle);
 
 	// m_hObserverTarget
 	[SchemaMember("CPlayer_ObserverServices", "m_hObserverTarget")]
 	public CHandle<CBaseEntity> ObserverTarget => Schema.GetDeclaredClass<CHandle<CBaseEntity>>(this.Handle, "CPlayer_ObserverServices", "m_hObserverTarget");
 
 	// m_iObserverLastMode
+	private static readonly SchemaField<ObserverMode_t> __m_iObserverLastMode = new("CPlayer_ObserverServices", "m_iObserverLastMode");
 	[SchemaMember("CPlayer_ObserverServices", "m_iObserverLastMode")]
-	public ref ObserverMode_t ObserverLastMode => ref Schema.GetRef<ObserverMode_t>(this.Handle, "CPlayer_ObserverServices", "m_iObserverLastMode");
+	public ref ObserverMode_t ObserverLastMode => ref __m_iObserverLastMode.GetRef(this.Handle);
 
 	// m_bForcedObserverMode
+	private static readonly SchemaField<bool> __m_bForcedObserverMode = new("CPlayer_ObserverServices", "m_bForcedObserverMode");
 	[SchemaMember("CPlayer_ObserverServices", "m_bForcedObserverMode")]
-	public ref bool ForcedObserverMode => ref Schema.GetRef<bool>(this.Handle, "CPlayer_ObserverServices", "m_bForcedObserverMode");
+	public ref bool ForcedObserverMode => ref __m_bForcedObserverMode.GetRef(this.Handle);
 
 }

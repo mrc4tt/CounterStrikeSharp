@@ -19,12 +19,14 @@ public partial class CSpotlightEnd : CBaseModelEntity
     public CSpotlightEnd (IntPtr pointer) : base(pointer) {}
 
 	// m_flLightScale
+	private static readonly SchemaField<float> __m_flLightScale = new("CSpotlightEnd", "m_flLightScale");
 	[SchemaMember("CSpotlightEnd", "m_flLightScale")]
-	public ref float LightScale => ref Schema.GetRef<float>(this.Handle, "CSpotlightEnd", "m_flLightScale");
+	public ref float LightScale => ref __m_flLightScale.GetRef(this.Handle);
 
 	// m_Radius
+	private static readonly SchemaField<float> __m_Radius = new("CSpotlightEnd", "m_Radius");
 	[SchemaMember("CSpotlightEnd", "m_Radius")]
-	public ref float Radius => ref Schema.GetRef<float>(this.Handle, "CSpotlightEnd", "m_Radius");
+	public ref float Radius => ref __m_Radius.GetRef(this.Handle);
 
 	// m_vSpotlightDir
 	[SchemaMember("CSpotlightEnd", "m_vSpotlightDir")]

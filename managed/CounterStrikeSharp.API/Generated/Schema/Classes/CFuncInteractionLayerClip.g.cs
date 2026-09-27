@@ -19,8 +19,9 @@ public partial class CFuncInteractionLayerClip : CBaseModelEntity
     public CFuncInteractionLayerClip (IntPtr pointer) : base(pointer) {}
 
 	// m_bDisabled
+	private static readonly SchemaField<bool> __m_bDisabled = new("CFuncInteractionLayerClip", "m_bDisabled");
 	[SchemaMember("CFuncInteractionLayerClip", "m_bDisabled")]
-	public ref bool Disabled => ref Schema.GetRef<bool>(this.Handle, "CFuncInteractionLayerClip", "m_bDisabled");
+	public ref bool Disabled => ref __m_bDisabled.GetRef(this.Handle);
 
 	// m_iszInteractsAs
 	[SchemaMember("CFuncInteractionLayerClip", "m_iszInteractsAs")]

@@ -19,8 +19,9 @@ public partial class CCSPlayerController_DamageServices : CPlayerControllerCompo
     public CCSPlayerController_DamageServices (IntPtr pointer) : base(pointer) {}
 
 	// m_nSendUpdate
+	private static readonly SchemaField<Int32> __m_nSendUpdate = new("CCSPlayerController_DamageServices", "m_nSendUpdate");
 	[SchemaMember("CCSPlayerController_DamageServices", "m_nSendUpdate")]
-	public ref Int32 SendUpdate => ref Schema.GetRef<Int32>(this.Handle, "CCSPlayerController_DamageServices", "m_nSendUpdate");
+	public ref Int32 SendUpdate => ref __m_nSendUpdate.GetRef(this.Handle);
 
 	// m_DamageList
 	[SchemaMember("CCSPlayerController_DamageServices", "m_DamageList")]

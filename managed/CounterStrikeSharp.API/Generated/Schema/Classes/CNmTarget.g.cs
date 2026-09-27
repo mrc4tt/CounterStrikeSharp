@@ -31,19 +31,23 @@ public partial class CNmTarget : NativeObject
 	}
 
 	// m_bIsBoneTarget
+	private static readonly SchemaField<bool> __m_bIsBoneTarget = new("CNmTarget", "m_bIsBoneTarget");
 	[SchemaMember("CNmTarget", "m_bIsBoneTarget")]
-	public ref bool IsBoneTarget => ref Schema.GetRef<bool>(this.Handle, "CNmTarget", "m_bIsBoneTarget");
+	public ref bool IsBoneTarget => ref __m_bIsBoneTarget.GetRef(this.Handle);
 
 	// m_bIsUsingBoneSpaceOffsets
+	private static readonly SchemaField<bool> __m_bIsUsingBoneSpaceOffsets = new("CNmTarget", "m_bIsUsingBoneSpaceOffsets");
 	[SchemaMember("CNmTarget", "m_bIsUsingBoneSpaceOffsets")]
-	public ref bool IsUsingBoneSpaceOffsets => ref Schema.GetRef<bool>(this.Handle, "CNmTarget", "m_bIsUsingBoneSpaceOffsets");
+	public ref bool IsUsingBoneSpaceOffsets => ref __m_bIsUsingBoneSpaceOffsets.GetRef(this.Handle);
 
 	// m_bHasOffsets
+	private static readonly SchemaField<bool> __m_bHasOffsets = new("CNmTarget", "m_bHasOffsets");
 	[SchemaMember("CNmTarget", "m_bHasOffsets")]
-	public ref bool HasOffsets => ref Schema.GetRef<bool>(this.Handle, "CNmTarget", "m_bHasOffsets");
+	public ref bool HasOffsets => ref __m_bHasOffsets.GetRef(this.Handle);
 
 	// m_bIsSet
+	private static readonly SchemaField<bool> __m_bIsSet = new("CNmTarget", "m_bIsSet");
 	[SchemaMember("CNmTarget", "m_bIsSet")]
-	public ref bool IsSet => ref Schema.GetRef<bool>(this.Handle, "CNmTarget", "m_bIsSet");
+	public ref bool IsSet => ref __m_bIsSet.GetRef(this.Handle);
 
 }

@@ -19,7 +19,8 @@ public partial class CFilterTeam : CBaseFilter
     public CFilterTeam (IntPtr pointer) : base(pointer) {}
 
 	// m_iFilterTeam
+	private static readonly SchemaField<Int32> __m_iFilterTeam = new("CFilterTeam", "m_iFilterTeam");
 	[SchemaMember("CFilterTeam", "m_iFilterTeam")]
-	public ref Int32 FilterTeam => ref Schema.GetRef<Int32>(this.Handle, "CFilterTeam", "m_iFilterTeam");
+	public ref Int32 FilterTeam => ref __m_iFilterTeam.GetRef(this.Handle);
 
 }

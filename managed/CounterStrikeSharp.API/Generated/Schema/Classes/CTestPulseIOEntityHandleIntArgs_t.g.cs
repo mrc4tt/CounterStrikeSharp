@@ -23,7 +23,8 @@ public partial class CTestPulseIOEntityHandleIntArgs_t : NativeObject
 	public CHandle<CEntityInstance> HandleA => Schema.GetDeclaredClass<CHandle<CEntityInstance>>(this.Handle, "CTestPulseIO::EntityHandleIntArgs_t", "handleA");
 
 	// valueB
+	private static readonly SchemaField<Int32> __valueB = new("CTestPulseIO::EntityHandleIntArgs_t", "valueB");
 	[SchemaMember("CTestPulseIO::EntityHandleIntArgs_t", "valueB")]
-	public ref Int32 ValueB => ref Schema.GetRef<Int32>(this.Handle, "CTestPulseIO::EntityHandleIntArgs_t", "valueB");
+	public ref Int32 ValueB => ref __valueB.GetRef(this.Handle);
 
 }

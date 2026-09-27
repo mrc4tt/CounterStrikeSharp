@@ -23,16 +23,19 @@ public partial class CPhysicsSpring : CBaseEntity
 	public IPhysicsJoint? SpringJoint => Schema.GetPointer<IPhysicsJoint>(this.Handle, "CPhysicsSpring", "m_pSpringJoint");
 
 	// m_flFrequency
+	private static readonly SchemaField<float> __m_flFrequency = new("CPhysicsSpring", "m_flFrequency");
 	[SchemaMember("CPhysicsSpring", "m_flFrequency")]
-	public ref float Frequency => ref Schema.GetRef<float>(this.Handle, "CPhysicsSpring", "m_flFrequency");
+	public ref float Frequency => ref __m_flFrequency.GetRef(this.Handle);
 
 	// m_flDampingRatio
+	private static readonly SchemaField<float> __m_flDampingRatio = new("CPhysicsSpring", "m_flDampingRatio");
 	[SchemaMember("CPhysicsSpring", "m_flDampingRatio")]
-	public ref float DampingRatio => ref Schema.GetRef<float>(this.Handle, "CPhysicsSpring", "m_flDampingRatio");
+	public ref float DampingRatio => ref __m_flDampingRatio.GetRef(this.Handle);
 
 	// m_flRestLength
+	private static readonly SchemaField<float> __m_flRestLength = new("CPhysicsSpring", "m_flRestLength");
 	[SchemaMember("CPhysicsSpring", "m_flRestLength")]
-	public ref float RestLength => ref Schema.GetRef<float>(this.Handle, "CPhysicsSpring", "m_flRestLength");
+	public ref float RestLength => ref __m_flRestLength.GetRef(this.Handle);
 
 	// m_nameAttachStart
 	[SchemaMember("CPhysicsSpring", "m_nameAttachStart")]
@@ -59,7 +62,8 @@ public partial class CPhysicsSpring : CBaseEntity
 	public Vector End => Schema.GetDeclaredClass<Vector>(this.Handle, "CPhysicsSpring", "m_end");
 
 	// m_teleportTick
+	private static readonly SchemaField<UInt32> __m_teleportTick = new("CPhysicsSpring", "m_teleportTick");
 	[SchemaMember("CPhysicsSpring", "m_teleportTick")]
-	public ref UInt32 TeleportTick => ref Schema.GetRef<UInt32>(this.Handle, "CPhysicsSpring", "m_teleportTick");
+	public ref UInt32 TeleportTick => ref __m_teleportTick.GetRef(this.Handle);
 
 }

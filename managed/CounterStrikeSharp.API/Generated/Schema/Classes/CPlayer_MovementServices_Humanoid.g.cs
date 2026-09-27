@@ -19,28 +19,32 @@ public partial class CPlayer_MovementServices_Humanoid : CPlayer_MovementService
     public CPlayer_MovementServices_Humanoid (IntPtr pointer) : base(pointer) {}
 
 	// m_flStepSoundTime
+	private static readonly SchemaField<float> __m_flStepSoundTime = new("CPlayer_MovementServices_Humanoid", "m_flStepSoundTime");
 	[SchemaMember("CPlayer_MovementServices_Humanoid", "m_flStepSoundTime")]
-	public ref float StepSoundTime => ref Schema.GetRef<float>(this.Handle, "CPlayer_MovementServices_Humanoid", "m_flStepSoundTime");
+	public ref float StepSoundTime => ref __m_flStepSoundTime.GetRef(this.Handle);
 
 	// m_flFallVelocity
+	private static readonly SchemaField<float> __m_flFallVelocity = new("CPlayer_MovementServices_Humanoid", "m_flFallVelocity");
 	[SchemaMember("CPlayer_MovementServices_Humanoid", "m_flFallVelocity")]
-	public ref float FallVelocity => ref Schema.GetRef<float>(this.Handle, "CPlayer_MovementServices_Humanoid", "m_flFallVelocity");
+	public ref float FallVelocity => ref __m_flFallVelocity.GetRef(this.Handle);
 
 	// m_groundNormal
 	[SchemaMember("CPlayer_MovementServices_Humanoid", "m_groundNormal")]
 	public Vector GroundNormal => Schema.GetDeclaredClass<Vector>(this.Handle, "CPlayer_MovementServices_Humanoid", "m_groundNormal");
 
 	// m_flSurfaceFriction
+	private static readonly SchemaField<float> __m_flSurfaceFriction = new("CPlayer_MovementServices_Humanoid", "m_flSurfaceFriction");
 	[SchemaMember("CPlayer_MovementServices_Humanoid", "m_flSurfaceFriction")]
-	public ref float SurfaceFriction => ref Schema.GetRef<float>(this.Handle, "CPlayer_MovementServices_Humanoid", "m_flSurfaceFriction");
+	public ref float SurfaceFriction => ref __m_flSurfaceFriction.GetRef(this.Handle);
 
 	// m_surfaceProps
 	[SchemaMember("CPlayer_MovementServices_Humanoid", "m_surfaceProps")]
 	public CUtlStringToken SurfaceProps => Schema.GetDeclaredClass<CUtlStringToken>(this.Handle, "CPlayer_MovementServices_Humanoid", "m_surfaceProps");
 
 	// m_nStepside
+	private static readonly SchemaField<Int32> __m_nStepside = new("CPlayer_MovementServices_Humanoid", "m_nStepside");
 	[SchemaMember("CPlayer_MovementServices_Humanoid", "m_nStepside")]
-	public ref Int32 Stepside => ref Schema.GetRef<Int32>(this.Handle, "CPlayer_MovementServices_Humanoid", "m_nStepside");
+	public ref Int32 Stepside => ref __m_nStepside.GetRef(this.Handle);
 
 	// m_vecSmoothedVelocity
 	[SchemaMember("CPlayer_MovementServices_Humanoid", "m_vecSmoothedVelocity")]

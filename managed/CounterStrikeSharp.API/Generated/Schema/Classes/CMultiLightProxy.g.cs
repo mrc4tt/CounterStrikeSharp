@@ -35,24 +35,29 @@ public partial class CMultiLightProxy : CLogicalEntity
 	}
 
 	// m_flLightRadiusFilter
+	private static readonly SchemaField<float> __m_flLightRadiusFilter = new("CMultiLightProxy", "m_flLightRadiusFilter");
 	[SchemaMember("CMultiLightProxy", "m_flLightRadiusFilter")]
-	public ref float LightRadiusFilter => ref Schema.GetRef<float>(this.Handle, "CMultiLightProxy", "m_flLightRadiusFilter");
+	public ref float LightRadiusFilter => ref __m_flLightRadiusFilter.GetRef(this.Handle);
 
 	// m_flBrightnessDelta
+	private static readonly SchemaField<float> __m_flBrightnessDelta = new("CMultiLightProxy", "m_flBrightnessDelta");
 	[SchemaMember("CMultiLightProxy", "m_flBrightnessDelta")]
-	public ref float BrightnessDelta => ref Schema.GetRef<float>(this.Handle, "CMultiLightProxy", "m_flBrightnessDelta");
+	public ref float BrightnessDelta => ref __m_flBrightnessDelta.GetRef(this.Handle);
 
 	// m_bPerformScreenFade
+	private static readonly SchemaField<bool> __m_bPerformScreenFade = new("CMultiLightProxy", "m_bPerformScreenFade");
 	[SchemaMember("CMultiLightProxy", "m_bPerformScreenFade")]
-	public ref bool PerformScreenFade => ref Schema.GetRef<bool>(this.Handle, "CMultiLightProxy", "m_bPerformScreenFade");
+	public ref bool PerformScreenFade => ref __m_bPerformScreenFade.GetRef(this.Handle);
 
 	// m_flTargetBrightnessMultiplier
+	private static readonly SchemaField<float> __m_flTargetBrightnessMultiplier = new("CMultiLightProxy", "m_flTargetBrightnessMultiplier");
 	[SchemaMember("CMultiLightProxy", "m_flTargetBrightnessMultiplier")]
-	public ref float TargetBrightnessMultiplier => ref Schema.GetRef<float>(this.Handle, "CMultiLightProxy", "m_flTargetBrightnessMultiplier");
+	public ref float TargetBrightnessMultiplier => ref __m_flTargetBrightnessMultiplier.GetRef(this.Handle);
 
 	// m_flCurrentBrightnessMultiplier
+	private static readonly SchemaField<float> __m_flCurrentBrightnessMultiplier = new("CMultiLightProxy", "m_flCurrentBrightnessMultiplier");
 	[SchemaMember("CMultiLightProxy", "m_flCurrentBrightnessMultiplier")]
-	public ref float CurrentBrightnessMultiplier => ref Schema.GetRef<float>(this.Handle, "CMultiLightProxy", "m_flCurrentBrightnessMultiplier");
+	public ref float CurrentBrightnessMultiplier => ref __m_flCurrentBrightnessMultiplier.GetRef(this.Handle);
 
 	// m_vecLights
 	[SchemaMember("CMultiLightProxy", "m_vecLights")]

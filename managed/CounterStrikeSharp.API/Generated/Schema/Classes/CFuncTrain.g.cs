@@ -23,20 +23,23 @@ public partial class CFuncTrain : CBasePlatTrain
 	public CHandle<CBaseEntity> CurrentTarget => Schema.GetDeclaredClass<CHandle<CBaseEntity>>(this.Handle, "CFuncTrain", "m_hCurrentTarget");
 
 	// m_activated
+	private static readonly SchemaField<bool> __m_activated = new("CFuncTrain", "m_activated");
 	[SchemaMember("CFuncTrain", "m_activated")]
-	public ref bool Activated => ref Schema.GetRef<bool>(this.Handle, "CFuncTrain", "m_activated");
+	public ref bool Activated => ref __m_activated.GetRef(this.Handle);
 
 	// m_hEnemy
 	[SchemaMember("CFuncTrain", "m_hEnemy")]
 	public CHandle<CBaseEntity> Enemy => Schema.GetDeclaredClass<CHandle<CBaseEntity>>(this.Handle, "CFuncTrain", "m_hEnemy");
 
 	// m_flBlockDamage
+	private static readonly SchemaField<float> __m_flBlockDamage = new("CFuncTrain", "m_flBlockDamage");
 	[SchemaMember("CFuncTrain", "m_flBlockDamage")]
-	public ref float BlockDamage => ref Schema.GetRef<float>(this.Handle, "CFuncTrain", "m_flBlockDamage");
+	public ref float BlockDamage => ref __m_flBlockDamage.GetRef(this.Handle);
 
 	// m_flNextBlockTime
+	private static readonly SchemaField<float> __m_flNextBlockTime = new("CFuncTrain", "m_flNextBlockTime");
 	[SchemaMember("CFuncTrain", "m_flNextBlockTime")]
-	public ref float NextBlockTime => ref Schema.GetRef<float>(this.Handle, "CFuncTrain", "m_flNextBlockTime");
+	public ref float NextBlockTime => ref __m_flNextBlockTime.GetRef(this.Handle);
 
 	// m_iszLastTarget
 	[SchemaMember("CFuncTrain", "m_iszLastTarget")]
@@ -47,7 +50,8 @@ public partial class CFuncTrain : CBasePlatTrain
 	}
 
 	// m_flSpeed
+	private static readonly SchemaField<float> __m_flSpeed = new("CFuncTrain", "m_flSpeed");
 	[SchemaMember("CFuncTrain", "m_flSpeed")]
-	public ref float Speed => ref Schema.GetRef<float>(this.Handle, "CFuncTrain", "m_flSpeed");
+	public ref float Speed => ref __m_flSpeed.GetRef(this.Handle);
 
 }

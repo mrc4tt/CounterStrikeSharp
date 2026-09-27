@@ -39,11 +39,13 @@ public partial class CLogicGameEventListener : CLogicalEntity
 	}
 
 	// m_bEnabled
+	private static readonly SchemaField<bool> __m_bEnabled = new("CLogicGameEventListener", "m_bEnabled");
 	[SchemaMember("CLogicGameEventListener", "m_bEnabled")]
-	public ref bool Enabled => ref Schema.GetRef<bool>(this.Handle, "CLogicGameEventListener", "m_bEnabled");
+	public ref bool Enabled => ref __m_bEnabled.GetRef(this.Handle);
 
 	// m_bStartDisabled
+	private static readonly SchemaField<bool> __m_bStartDisabled = new("CLogicGameEventListener", "m_bStartDisabled");
 	[SchemaMember("CLogicGameEventListener", "m_bStartDisabled")]
-	public ref bool StartDisabled => ref Schema.GetRef<bool>(this.Handle, "CLogicGameEventListener", "m_bStartDisabled");
+	public ref bool StartDisabled => ref __m_bStartDisabled.GetRef(this.Handle);
 
 }

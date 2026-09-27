@@ -19,8 +19,9 @@ public partial class CLogicAchievement : CLogicalEntity
     public CLogicAchievement (IntPtr pointer) : base(pointer) {}
 
 	// m_bDisabled
+	private static readonly SchemaField<bool> __m_bDisabled = new("CLogicAchievement", "m_bDisabled");
 	[SchemaMember("CLogicAchievement", "m_bDisabled")]
-	public ref bool Disabled => ref Schema.GetRef<bool>(this.Handle, "CLogicAchievement", "m_bDisabled");
+	public ref bool Disabled => ref __m_bDisabled.GetRef(this.Handle);
 
 	// m_iszAchievementEventID
 	[SchemaMember("CLogicAchievement", "m_iszAchievementEventID")]

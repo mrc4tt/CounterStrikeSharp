@@ -35,24 +35,28 @@ public partial class CBreakableProp : CBaseProp
 	public CEntityIOOutput OnTakeDamage => Schema.GetDeclaredClass<CEntityIOOutput>(this.Handle, "CBreakableProp", "m_OnTakeDamage");
 
 	// m_impactEnergyScale
+	private static readonly SchemaField<float> __m_impactEnergyScale = new("CBreakableProp", "m_impactEnergyScale");
 	[SchemaMember("CBreakableProp", "m_impactEnergyScale")]
-	public ref float ImpactEnergyScale => ref Schema.GetRef<float>(this.Handle, "CBreakableProp", "m_impactEnergyScale");
+	public ref float ImpactEnergyScale => ref __m_impactEnergyScale.GetRef(this.Handle);
 
 	// m_iMinHealthDmg
+	private static readonly SchemaField<Int32> __m_iMinHealthDmg = new("CBreakableProp", "m_iMinHealthDmg");
 	[SchemaMember("CBreakableProp", "m_iMinHealthDmg")]
-	public ref Int32 MinHealthDmg => ref Schema.GetRef<Int32>(this.Handle, "CBreakableProp", "m_iMinHealthDmg");
+	public ref Int32 MinHealthDmg => ref __m_iMinHealthDmg.GetRef(this.Handle);
 
 	// m_preferredCarryAngles
 	[SchemaMember("CBreakableProp", "m_preferredCarryAngles")]
 	public QAngle PreferredCarryAngles => Schema.GetDeclaredClass<QAngle>(this.Handle, "CBreakableProp", "m_preferredCarryAngles");
 
 	// m_flPressureDelay
+	private static readonly SchemaField<float> __m_flPressureDelay = new("CBreakableProp", "m_flPressureDelay");
 	[SchemaMember("CBreakableProp", "m_flPressureDelay")]
-	public ref float PressureDelay => ref Schema.GetRef<float>(this.Handle, "CBreakableProp", "m_flPressureDelay");
+	public ref float PressureDelay => ref __m_flPressureDelay.GetRef(this.Handle);
 
 	// m_flDefBurstScale
+	private static readonly SchemaField<float> __m_flDefBurstScale = new("CBreakableProp", "m_flDefBurstScale");
 	[SchemaMember("CBreakableProp", "m_flDefBurstScale")]
-	public ref float DefBurstScale => ref Schema.GetRef<float>(this.Handle, "CBreakableProp", "m_flDefBurstScale");
+	public ref float DefBurstScale => ref __m_flDefBurstScale.GetRef(this.Handle);
 
 	// m_vDefBurstOffset
 	[SchemaMember("CBreakableProp", "m_vDefBurstOffset")]
@@ -63,16 +67,19 @@ public partial class CBreakableProp : CBaseProp
 	public CHandle<CBaseEntity> Breaker => Schema.GetDeclaredClass<CHandle<CBaseEntity>>(this.Handle, "CBreakableProp", "m_hBreaker");
 
 	// m_PerformanceMode
+	private static readonly SchemaField<PerformanceMode_t> __m_PerformanceMode = new("CBreakableProp", "m_PerformanceMode");
 	[SchemaMember("CBreakableProp", "m_PerformanceMode")]
-	public ref PerformanceMode_t PerformanceMode => ref Schema.GetRef<PerformanceMode_t>(this.Handle, "CBreakableProp", "m_PerformanceMode");
+	public ref PerformanceMode_t PerformanceMode => ref __m_PerformanceMode.GetRef(this.Handle);
 
 	// m_flPreventDamageBeforeTime
+	private static readonly SchemaField<float> __m_flPreventDamageBeforeTime = new("CBreakableProp", "m_flPreventDamageBeforeTime");
 	[SchemaMember("CBreakableProp", "m_flPreventDamageBeforeTime")]
-	public ref float PreventDamageBeforeTime => ref Schema.GetRef<float>(this.Handle, "CBreakableProp", "m_flPreventDamageBeforeTime");
+	public ref float PreventDamageBeforeTime => ref __m_flPreventDamageBeforeTime.GetRef(this.Handle);
 
 	// m_BreakableContentsType
+	private static readonly SchemaField<BreakableContentsType_t> __m_BreakableContentsType = new("CBreakableProp", "m_BreakableContentsType");
 	[SchemaMember("CBreakableProp", "m_BreakableContentsType")]
-	public ref BreakableContentsType_t BreakableContentsType => ref Schema.GetRef<BreakableContentsType_t>(this.Handle, "CBreakableProp", "m_BreakableContentsType");
+	public ref BreakableContentsType_t BreakableContentsType => ref __m_BreakableContentsType.GetRef(this.Handle);
 
 	// m_strBreakableContentsPropGroupOverride
 	[SchemaMember("CBreakableProp", "m_strBreakableContentsPropGroupOverride")]
@@ -91,16 +98,19 @@ public partial class CBreakableProp : CBaseProp
 	}
 
 	// m_bHasBreakPiecesOrCommands
+	private static readonly SchemaField<bool> __m_bHasBreakPiecesOrCommands = new("CBreakableProp", "m_bHasBreakPiecesOrCommands");
 	[SchemaMember("CBreakableProp", "m_bHasBreakPiecesOrCommands")]
-	public ref bool HasBreakPiecesOrCommands => ref Schema.GetRef<bool>(this.Handle, "CBreakableProp", "m_bHasBreakPiecesOrCommands");
+	public ref bool HasBreakPiecesOrCommands => ref __m_bHasBreakPiecesOrCommands.GetRef(this.Handle);
 
 	// m_explodeDamage
+	private static readonly SchemaField<float> __m_explodeDamage = new("CBreakableProp", "m_explodeDamage");
 	[SchemaMember("CBreakableProp", "m_explodeDamage")]
-	public ref float ExplodeDamage => ref Schema.GetRef<float>(this.Handle, "CBreakableProp", "m_explodeDamage");
+	public ref float ExplodeDamage => ref __m_explodeDamage.GetRef(this.Handle);
 
 	// m_explodeRadius
+	private static readonly SchemaField<float> __m_explodeRadius = new("CBreakableProp", "m_explodeRadius");
 	[SchemaMember("CBreakableProp", "m_explodeRadius")]
-	public ref float ExplodeRadius => ref Schema.GetRef<float>(this.Handle, "CBreakableProp", "m_explodeRadius");
+	public ref float ExplodeRadius => ref __m_explodeRadius.GetRef(this.Handle);
 
 	// m_sExplosionType
 	[SchemaMember("CBreakableProp", "m_sExplosionType")]
@@ -111,8 +121,9 @@ public partial class CBreakableProp : CBaseProp
 	}
 
 	// m_explosionDelay
+	private static readonly SchemaField<float> __m_explosionDelay = new("CBreakableProp", "m_explosionDelay");
 	[SchemaMember("CBreakableProp", "m_explosionDelay")]
-	public ref float ExplosionDelay => ref Schema.GetRef<float>(this.Handle, "CBreakableProp", "m_explosionDelay");
+	public ref float ExplosionDelay => ref __m_explosionDelay.GetRef(this.Handle);
 
 	// m_explosionBuildupSound
 	[SchemaMember("CBreakableProp", "m_explosionBuildupSound")]
@@ -151,12 +162,14 @@ public partial class CBreakableProp : CBaseProp
 	public CHandle<CBasePlayerPawn> PhysicsAttacker => Schema.GetDeclaredClass<CHandle<CBasePlayerPawn>>(this.Handle, "CBreakableProp", "m_hPhysicsAttacker");
 
 	// m_flLastPhysicsInfluenceTime
+	private static readonly SchemaField<float> __m_flLastPhysicsInfluenceTime = new("CBreakableProp", "m_flLastPhysicsInfluenceTime");
 	[SchemaMember("CBreakableProp", "m_flLastPhysicsInfluenceTime")]
-	public ref float LastPhysicsInfluenceTime => ref Schema.GetRef<float>(this.Handle, "CBreakableProp", "m_flLastPhysicsInfluenceTime");
+	public ref float LastPhysicsInfluenceTime => ref __m_flLastPhysicsInfluenceTime.GetRef(this.Handle);
 
 	// m_flDefaultFadeScale
+	private static readonly SchemaField<float> __m_flDefaultFadeScale = new("CBreakableProp", "m_flDefaultFadeScale");
 	[SchemaMember("CBreakableProp", "m_flDefaultFadeScale")]
-	public ref float DefaultFadeScale => ref Schema.GetRef<float>(this.Handle, "CBreakableProp", "m_flDefaultFadeScale");
+	public ref float DefaultFadeScale => ref __m_flDefaultFadeScale.GetRef(this.Handle);
 
 	// m_hLastAttacker
 	[SchemaMember("CBreakableProp", "m_hLastAttacker")]
@@ -171,11 +184,13 @@ public partial class CBreakableProp : CBaseProp
 	}
 
 	// m_bUsePuntSound
+	private static readonly SchemaField<bool> __m_bUsePuntSound = new("CBreakableProp", "m_bUsePuntSound");
 	[SchemaMember("CBreakableProp", "m_bUsePuntSound")]
-	public ref bool UsePuntSound => ref Schema.GetRef<bool>(this.Handle, "CBreakableProp", "m_bUsePuntSound");
+	public ref bool UsePuntSound => ref __m_bUsePuntSound.GetRef(this.Handle);
 
 	// m_bOriginalBlockLOS
+	private static readonly SchemaField<bool> __m_bOriginalBlockLOS = new("CBreakableProp", "m_bOriginalBlockLOS");
 	[SchemaMember("CBreakableProp", "m_bOriginalBlockLOS")]
-	public ref bool OriginalBlockLOS => ref Schema.GetRef<bool>(this.Handle, "CBreakableProp", "m_bOriginalBlockLOS");
+	public ref bool OriginalBlockLOS => ref __m_bOriginalBlockLOS.GetRef(this.Handle);
 
 }

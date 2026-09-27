@@ -27,23 +27,28 @@ public partial class CLogicDistanceAutosave : CLogicalEntity
 	}
 
 	// m_flDistanceToPlayer
+	private static readonly SchemaField<float> __m_flDistanceToPlayer = new("CLogicDistanceAutosave", "m_flDistanceToPlayer");
 	[SchemaMember("CLogicDistanceAutosave", "m_flDistanceToPlayer")]
-	public ref float DistanceToPlayer => ref Schema.GetRef<float>(this.Handle, "CLogicDistanceAutosave", "m_flDistanceToPlayer");
+	public ref float DistanceToPlayer => ref __m_flDistanceToPlayer.GetRef(this.Handle);
 
 	// m_bForceNewLevelUnit
+	private static readonly SchemaField<bool> __m_bForceNewLevelUnit = new("CLogicDistanceAutosave", "m_bForceNewLevelUnit");
 	[SchemaMember("CLogicDistanceAutosave", "m_bForceNewLevelUnit")]
-	public ref bool ForceNewLevelUnit => ref Schema.GetRef<bool>(this.Handle, "CLogicDistanceAutosave", "m_bForceNewLevelUnit");
+	public ref bool ForceNewLevelUnit => ref __m_bForceNewLevelUnit.GetRef(this.Handle);
 
 	// m_bCheckCough
+	private static readonly SchemaField<bool> __m_bCheckCough = new("CLogicDistanceAutosave", "m_bCheckCough");
 	[SchemaMember("CLogicDistanceAutosave", "m_bCheckCough")]
-	public ref bool CheckCough => ref Schema.GetRef<bool>(this.Handle, "CLogicDistanceAutosave", "m_bCheckCough");
+	public ref bool CheckCough => ref __m_bCheckCough.GetRef(this.Handle);
 
 	// m_bThinkDangerous
+	private static readonly SchemaField<bool> __m_bThinkDangerous = new("CLogicDistanceAutosave", "m_bThinkDangerous");
 	[SchemaMember("CLogicDistanceAutosave", "m_bThinkDangerous")]
-	public ref bool ThinkDangerous => ref Schema.GetRef<bool>(this.Handle, "CLogicDistanceAutosave", "m_bThinkDangerous");
+	public ref bool ThinkDangerous => ref __m_bThinkDangerous.GetRef(this.Handle);
 
 	// m_flDangerousTime
+	private static readonly SchemaField<float> __m_flDangerousTime = new("CLogicDistanceAutosave", "m_flDangerousTime");
 	[SchemaMember("CLogicDistanceAutosave", "m_flDangerousTime")]
-	public ref float DangerousTime => ref Schema.GetRef<float>(this.Handle, "CLogicDistanceAutosave", "m_flDangerousTime");
+	public ref float DangerousTime => ref __m_flDangerousTime.GetRef(this.Handle);
 
 }

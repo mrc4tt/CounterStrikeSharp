@@ -27,12 +27,14 @@ public partial class CEnvFade : CLogicalEntity
 	}
 
 	// m_Duration
+	private static readonly SchemaField<float> __m_Duration = new("CEnvFade", "m_Duration");
 	[SchemaMember("CEnvFade", "m_Duration")]
-	public ref float Duration => ref Schema.GetRef<float>(this.Handle, "CEnvFade", "m_Duration");
+	public ref float Duration => ref __m_Duration.GetRef(this.Handle);
 
 	// m_HoldDuration
+	private static readonly SchemaField<float> __m_HoldDuration = new("CEnvFade", "m_HoldDuration");
 	[SchemaMember("CEnvFade", "m_HoldDuration")]
-	public ref float HoldDuration => ref Schema.GetRef<float>(this.Handle, "CEnvFade", "m_HoldDuration");
+	public ref float HoldDuration => ref __m_HoldDuration.GetRef(this.Handle);
 
 	// m_OnBeginFade
 	[SchemaMember("CEnvFade", "m_OnBeginFade")]

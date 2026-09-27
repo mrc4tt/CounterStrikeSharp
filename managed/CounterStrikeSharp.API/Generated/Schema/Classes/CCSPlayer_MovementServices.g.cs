@@ -23,96 +23,117 @@ public partial class CCSPlayer_MovementServices : CPlayer_MovementServices_Human
 	public CCSPlayerAnimationState AnimationState => Schema.GetDeclaredClass<CCSPlayerAnimationState>(this.Handle, "CCSPlayer_MovementServices", "m_AnimationState");
 
 	// m_bUsingGroundTopologyOffset
+	private static readonly SchemaField<bool> __m_bUsingGroundTopologyOffset = new("CCSPlayer_MovementServices", "m_bUsingGroundTopologyOffset");
 	[SchemaMember("CCSPlayer_MovementServices", "m_bUsingGroundTopologyOffset")]
-	public ref bool UsingGroundTopologyOffset => ref Schema.GetRef<bool>(this.Handle, "CCSPlayer_MovementServices", "m_bUsingGroundTopologyOffset");
+	public ref bool UsingGroundTopologyOffset => ref __m_bUsingGroundTopologyOffset.GetRef(this.Handle);
 
 	// m_flUsingGroundTopologyOffsetTransitionSmoothing
+	private static readonly SchemaField<float> __m_flUsingGroundTopologyOffsetTransitionSmoothing = new("CCSPlayer_MovementServices", "m_flUsingGroundTopologyOffsetTransitionSmoothing");
 	[SchemaMember("CCSPlayer_MovementServices", "m_flUsingGroundTopologyOffsetTransitionSmoothing")]
-	public ref float UsingGroundTopologyOffsetTransitionSmoothing => ref Schema.GetRef<float>(this.Handle, "CCSPlayer_MovementServices", "m_flUsingGroundTopologyOffsetTransitionSmoothing");
+	public ref float UsingGroundTopologyOffsetTransitionSmoothing => ref __m_flUsingGroundTopologyOffsetTransitionSmoothing.GetRef(this.Handle);
 
 	// m_vecLadderNormal
 	[SchemaMember("CCSPlayer_MovementServices", "m_vecLadderNormal")]
 	public Vector LadderNormal => Schema.GetDeclaredClass<Vector>(this.Handle, "CCSPlayer_MovementServices", "m_vecLadderNormal");
 
 	// m_nLadderSurfacePropIndex
+	private static readonly SchemaField<Int32> __m_nLadderSurfacePropIndex = new("CCSPlayer_MovementServices", "m_nLadderSurfacePropIndex");
 	[SchemaMember("CCSPlayer_MovementServices", "m_nLadderSurfacePropIndex")]
-	public ref Int32 LadderSurfacePropIndex => ref Schema.GetRef<Int32>(this.Handle, "CCSPlayer_MovementServices", "m_nLadderSurfacePropIndex");
+	public ref Int32 LadderSurfacePropIndex => ref __m_nLadderSurfacePropIndex.GetRef(this.Handle);
 
 	// m_bDucked
+	private static readonly SchemaField<bool> __m_bDucked = new("CCSPlayer_MovementServices", "m_bDucked");
 	[SchemaMember("CCSPlayer_MovementServices", "m_bDucked")]
-	public ref bool Ducked => ref Schema.GetRef<bool>(this.Handle, "CCSPlayer_MovementServices", "m_bDucked");
+	public ref bool Ducked => ref __m_bDucked.GetRef(this.Handle);
 
 	// m_flDuckAmount
+	private static readonly SchemaField<float> __m_flDuckAmount = new("CCSPlayer_MovementServices", "m_flDuckAmount");
 	[SchemaMember("CCSPlayer_MovementServices", "m_flDuckAmount")]
-	public ref float DuckAmount => ref Schema.GetRef<float>(this.Handle, "CCSPlayer_MovementServices", "m_flDuckAmount");
+	public ref float DuckAmount => ref __m_flDuckAmount.GetRef(this.Handle);
 
 	// m_flDuckSpeed
+	private static readonly SchemaField<float> __m_flDuckSpeed = new("CCSPlayer_MovementServices", "m_flDuckSpeed");
 	[SchemaMember("CCSPlayer_MovementServices", "m_flDuckSpeed")]
-	public ref float DuckSpeed => ref Schema.GetRef<float>(this.Handle, "CCSPlayer_MovementServices", "m_flDuckSpeed");
+	public ref float DuckSpeed => ref __m_flDuckSpeed.GetRef(this.Handle);
 
 	// m_bDuckOverride
+	private static readonly SchemaField<bool> __m_bDuckOverride = new("CCSPlayer_MovementServices", "m_bDuckOverride");
 	[SchemaMember("CCSPlayer_MovementServices", "m_bDuckOverride")]
-	public ref bool DuckOverride => ref Schema.GetRef<bool>(this.Handle, "CCSPlayer_MovementServices", "m_bDuckOverride");
+	public ref bool DuckOverride => ref __m_bDuckOverride.GetRef(this.Handle);
 
 	// m_bDesiresDuck
+	private static readonly SchemaField<bool> __m_bDesiresDuck = new("CCSPlayer_MovementServices", "m_bDesiresDuck");
 	[SchemaMember("CCSPlayer_MovementServices", "m_bDesiresDuck")]
-	public ref bool DesiresDuck => ref Schema.GetRef<bool>(this.Handle, "CCSPlayer_MovementServices", "m_bDesiresDuck");
+	public ref bool DesiresDuck => ref __m_bDesiresDuck.GetRef(this.Handle);
 
 	// m_bDucking
+	private static readonly SchemaField<bool> __m_bDucking = new("CCSPlayer_MovementServices", "m_bDucking");
 	[SchemaMember("CCSPlayer_MovementServices", "m_bDucking")]
-	public ref bool Ducking => ref Schema.GetRef<bool>(this.Handle, "CCSPlayer_MovementServices", "m_bDucking");
+	public ref bool Ducking => ref __m_bDucking.GetRef(this.Handle);
 
 	// m_flDuckRootOffset
+	private static readonly SchemaField<float> __m_flDuckRootOffset = new("CCSPlayer_MovementServices", "m_flDuckRootOffset");
 	[SchemaMember("CCSPlayer_MovementServices", "m_flDuckRootOffset")]
-	public ref float DuckRootOffset => ref Schema.GetRef<float>(this.Handle, "CCSPlayer_MovementServices", "m_flDuckRootOffset");
+	public ref float DuckRootOffset => ref __m_flDuckRootOffset.GetRef(this.Handle);
 
 	// m_flDuckViewOffset
+	private static readonly SchemaField<float> __m_flDuckViewOffset = new("CCSPlayer_MovementServices", "m_flDuckViewOffset");
 	[SchemaMember("CCSPlayer_MovementServices", "m_flDuckViewOffset")]
-	public ref float DuckViewOffset => ref Schema.GetRef<float>(this.Handle, "CCSPlayer_MovementServices", "m_flDuckViewOffset");
+	public ref float DuckViewOffset => ref __m_flDuckViewOffset.GetRef(this.Handle);
 
 	// m_flLastDuckTime
+	private static readonly SchemaField<float> __m_flLastDuckTime = new("CCSPlayer_MovementServices", "m_flLastDuckTime");
 	[SchemaMember("CCSPlayer_MovementServices", "m_flLastDuckTime")]
-	public ref float LastDuckTime => ref Schema.GetRef<float>(this.Handle, "CCSPlayer_MovementServices", "m_flLastDuckTime");
+	public ref float LastDuckTime => ref __m_flLastDuckTime.GetRef(this.Handle);
 
 	// m_flBombPlantViewOffset
+	private static readonly SchemaField<float> __m_flBombPlantViewOffset = new("CCSPlayer_MovementServices", "m_flBombPlantViewOffset");
 	[SchemaMember("CCSPlayer_MovementServices", "m_flBombPlantViewOffset")]
-	public ref float BombPlantViewOffset => ref Schema.GetRef<float>(this.Handle, "CCSPlayer_MovementServices", "m_flBombPlantViewOffset");
+	public ref float BombPlantViewOffset => ref __m_flBombPlantViewOffset.GetRef(this.Handle);
 
 	// m_vecLastPositionAtFullCrouchSpeed
 	[SchemaMember("CCSPlayer_MovementServices", "m_vecLastPositionAtFullCrouchSpeed")]
 	public Vector2D LastPositionAtFullCrouchSpeed => Schema.GetDeclaredClass<Vector2D>(this.Handle, "CCSPlayer_MovementServices", "m_vecLastPositionAtFullCrouchSpeed");
 
 	// m_duckUntilOnGround
+	private static readonly SchemaField<bool> __m_duckUntilOnGround = new("CCSPlayer_MovementServices", "m_duckUntilOnGround");
 	[SchemaMember("CCSPlayer_MovementServices", "m_duckUntilOnGround")]
-	public ref bool DuckUntilOnGround => ref Schema.GetRef<bool>(this.Handle, "CCSPlayer_MovementServices", "m_duckUntilOnGround");
+	public ref bool DuckUntilOnGround => ref __m_duckUntilOnGround.GetRef(this.Handle);
 
 	// m_bHasWalkMovedSinceLastJump
+	private static readonly SchemaField<bool> __m_bHasWalkMovedSinceLastJump = new("CCSPlayer_MovementServices", "m_bHasWalkMovedSinceLastJump");
 	[SchemaMember("CCSPlayer_MovementServices", "m_bHasWalkMovedSinceLastJump")]
-	public ref bool HasWalkMovedSinceLastJump => ref Schema.GetRef<bool>(this.Handle, "CCSPlayer_MovementServices", "m_bHasWalkMovedSinceLastJump");
+	public ref bool HasWalkMovedSinceLastJump => ref __m_bHasWalkMovedSinceLastJump.GetRef(this.Handle);
 
 	// m_bInStuckTest
+	private static readonly SchemaField<bool> __m_bInStuckTest = new("CCSPlayer_MovementServices", "m_bInStuckTest");
 	[SchemaMember("CCSPlayer_MovementServices", "m_bInStuckTest")]
-	public ref bool InStuckTest => ref Schema.GetRef<bool>(this.Handle, "CCSPlayer_MovementServices", "m_bInStuckTest");
+	public ref bool InStuckTest => ref __m_bInStuckTest.GetRef(this.Handle);
 
 	// m_nTraceCount
+	private static readonly SchemaField<Int32> __m_nTraceCount = new("CCSPlayer_MovementServices", "m_nTraceCount");
 	[SchemaMember("CCSPlayer_MovementServices", "m_nTraceCount")]
-	public ref Int32 TraceCount => ref Schema.GetRef<Int32>(this.Handle, "CCSPlayer_MovementServices", "m_nTraceCount");
+	public ref Int32 TraceCount => ref __m_nTraceCount.GetRef(this.Handle);
 
 	// m_StuckLast
+	private static readonly SchemaField<Int32> __m_StuckLast = new("CCSPlayer_MovementServices", "m_StuckLast");
 	[SchemaMember("CCSPlayer_MovementServices", "m_StuckLast")]
-	public ref Int32 StuckLast => ref Schema.GetRef<Int32>(this.Handle, "CCSPlayer_MovementServices", "m_StuckLast");
+	public ref Int32 StuckLast => ref __m_StuckLast.GetRef(this.Handle);
 
 	// m_bSpeedCropped
+	private static readonly SchemaField<bool> __m_bSpeedCropped = new("CCSPlayer_MovementServices", "m_bSpeedCropped");
 	[SchemaMember("CCSPlayer_MovementServices", "m_bSpeedCropped")]
-	public ref bool SpeedCropped => ref Schema.GetRef<bool>(this.Handle, "CCSPlayer_MovementServices", "m_bSpeedCropped");
+	public ref bool SpeedCropped => ref __m_bSpeedCropped.GetRef(this.Handle);
 
 	// m_nOldWaterLevel
+	private static readonly SchemaField<Int32> __m_nOldWaterLevel = new("CCSPlayer_MovementServices", "m_nOldWaterLevel");
 	[SchemaMember("CCSPlayer_MovementServices", "m_nOldWaterLevel")]
-	public ref Int32 OldWaterLevel => ref Schema.GetRef<Int32>(this.Handle, "CCSPlayer_MovementServices", "m_nOldWaterLevel");
+	public ref Int32 OldWaterLevel => ref __m_nOldWaterLevel.GetRef(this.Handle);
 
 	// m_flWaterEntryTime
+	private static readonly SchemaField<float> __m_flWaterEntryTime = new("CCSPlayer_MovementServices", "m_flWaterEntryTime");
 	[SchemaMember("CCSPlayer_MovementServices", "m_flWaterEntryTime")]
-	public ref float WaterEntryTime => ref Schema.GetRef<float>(this.Handle, "CCSPlayer_MovementServices", "m_flWaterEntryTime");
+	public ref float WaterEntryTime => ref __m_flWaterEntryTime.GetRef(this.Handle);
 
 	// m_vecForward
 	[SchemaMember("CCSPlayer_MovementServices", "m_vecForward")]
@@ -127,60 +148,74 @@ public partial class CCSPlayer_MovementServices : CPlayer_MovementServices_Human
 	public Vector Up => Schema.GetDeclaredClass<Vector>(this.Handle, "CCSPlayer_MovementServices", "m_vecUp");
 
 	// m_nGameCodeHasMovedPlayerAfterCommand
+	private static readonly SchemaField<Int32> __m_nGameCodeHasMovedPlayerAfterCommand = new("CCSPlayer_MovementServices", "m_nGameCodeHasMovedPlayerAfterCommand");
 	[SchemaMember("CCSPlayer_MovementServices", "m_nGameCodeHasMovedPlayerAfterCommand")]
-	public ref Int32 GameCodeHasMovedPlayerAfterCommand => ref Schema.GetRef<Int32>(this.Handle, "CCSPlayer_MovementServices", "m_nGameCodeHasMovedPlayerAfterCommand");
+	public ref Int32 GameCodeHasMovedPlayerAfterCommand => ref __m_nGameCodeHasMovedPlayerAfterCommand.GetRef(this.Handle);
 
 	// m_bMadeFootstepNoise
+	private static readonly SchemaField<bool> __m_bMadeFootstepNoise = new("CCSPlayer_MovementServices", "m_bMadeFootstepNoise");
 	[SchemaMember("CCSPlayer_MovementServices", "m_bMadeFootstepNoise")]
-	public ref bool MadeFootstepNoise => ref Schema.GetRef<bool>(this.Handle, "CCSPlayer_MovementServices", "m_bMadeFootstepNoise");
+	public ref bool MadeFootstepNoise => ref __m_bMadeFootstepNoise.GetRef(this.Handle);
 
 	// m_iFootsteps
+	private static readonly SchemaField<Int32> __m_iFootsteps = new("CCSPlayer_MovementServices", "m_iFootsteps");
 	[SchemaMember("CCSPlayer_MovementServices", "m_iFootsteps")]
-	public ref Int32 Footsteps => ref Schema.GetRef<Int32>(this.Handle, "CCSPlayer_MovementServices", "m_iFootsteps");
+	public ref Int32 Footsteps => ref __m_iFootsteps.GetRef(this.Handle);
 
 	// m_fStashGrenadeParameterWhen
+	private static readonly SchemaField<float> __m_fStashGrenadeParameterWhen = new("CCSPlayer_MovementServices", "m_fStashGrenadeParameterWhen");
 	[SchemaMember("CCSPlayer_MovementServices", "m_fStashGrenadeParameterWhen")]
-	public ref float StashGrenadeParameterWhen => ref Schema.GetRef<float>(this.Handle, "CCSPlayer_MovementServices", "m_fStashGrenadeParameterWhen");
+	public ref float StashGrenadeParameterWhen => ref __m_fStashGrenadeParameterWhen.GetRef(this.Handle);
 
 	// m_bUseFrictionStashedSpeed
+	private static readonly SchemaField<bool> __m_bUseFrictionStashedSpeed = new("CCSPlayer_MovementServices", "m_bUseFrictionStashedSpeed");
 	[SchemaMember("CCSPlayer_MovementServices", "m_bUseFrictionStashedSpeed")]
-	public ref bool UseFrictionStashedSpeed => ref Schema.GetRef<bool>(this.Handle, "CCSPlayer_MovementServices", "m_bUseFrictionStashedSpeed");
+	public ref bool UseFrictionStashedSpeed => ref __m_bUseFrictionStashedSpeed.GetRef(this.Handle);
 
 	// m_flUseFrictionStashedSpeedUntilFrac
+	private static readonly SchemaField<float> __m_flUseFrictionStashedSpeedUntilFrac = new("CCSPlayer_MovementServices", "m_flUseFrictionStashedSpeedUntilFrac");
 	[SchemaMember("CCSPlayer_MovementServices", "m_flUseFrictionStashedSpeedUntilFrac")]
-	public ref float UseFrictionStashedSpeedUntilFrac => ref Schema.GetRef<float>(this.Handle, "CCSPlayer_MovementServices", "m_flUseFrictionStashedSpeedUntilFrac");
+	public ref float UseFrictionStashedSpeedUntilFrac => ref __m_flUseFrictionStashedSpeedUntilFrac.GetRef(this.Handle);
 
 	// m_flFrictionStashedSpeed
+	private static readonly SchemaField<float> __m_flFrictionStashedSpeed = new("CCSPlayer_MovementServices", "m_flFrictionStashedSpeed");
 	[SchemaMember("CCSPlayer_MovementServices", "m_flFrictionStashedSpeed")]
-	public ref float FrictionStashedSpeed => ref Schema.GetRef<float>(this.Handle, "CCSPlayer_MovementServices", "m_flFrictionStashedSpeed");
+	public ref float FrictionStashedSpeed => ref __m_flFrictionStashedSpeed.GetRef(this.Handle);
 
 	// m_flStamina
+	private static readonly SchemaField<float> __m_flStamina = new("CCSPlayer_MovementServices", "m_flStamina");
 	[SchemaMember("CCSPlayer_MovementServices", "m_flStamina")]
-	public ref float Stamina => ref Schema.GetRef<float>(this.Handle, "CCSPlayer_MovementServices", "m_flStamina");
+	public ref float Stamina => ref __m_flStamina.GetRef(this.Handle);
 
 	// m_flHeightAtJumpStart
+	private static readonly SchemaField<float> __m_flHeightAtJumpStart = new("CCSPlayer_MovementServices", "m_flHeightAtJumpStart");
 	[SchemaMember("CCSPlayer_MovementServices", "m_flHeightAtJumpStart")]
-	public ref float HeightAtJumpStart => ref Schema.GetRef<float>(this.Handle, "CCSPlayer_MovementServices", "m_flHeightAtJumpStart");
+	public ref float HeightAtJumpStart => ref __m_flHeightAtJumpStart.GetRef(this.Handle);
 
 	// m_flMaxJumpHeightThisJump
+	private static readonly SchemaField<float> __m_flMaxJumpHeightThisJump = new("CCSPlayer_MovementServices", "m_flMaxJumpHeightThisJump");
 	[SchemaMember("CCSPlayer_MovementServices", "m_flMaxJumpHeightThisJump")]
-	public ref float MaxJumpHeightThisJump => ref Schema.GetRef<float>(this.Handle, "CCSPlayer_MovementServices", "m_flMaxJumpHeightThisJump");
+	public ref float MaxJumpHeightThisJump => ref __m_flMaxJumpHeightThisJump.GetRef(this.Handle);
 
 	// m_flMaxJumpHeightLastJump
+	private static readonly SchemaField<float> __m_flMaxJumpHeightLastJump = new("CCSPlayer_MovementServices", "m_flMaxJumpHeightLastJump");
 	[SchemaMember("CCSPlayer_MovementServices", "m_flMaxJumpHeightLastJump")]
-	public ref float MaxJumpHeightLastJump => ref Schema.GetRef<float>(this.Handle, "CCSPlayer_MovementServices", "m_flMaxJumpHeightLastJump");
+	public ref float MaxJumpHeightLastJump => ref __m_flMaxJumpHeightLastJump.GetRef(this.Handle);
 
 	// m_flStaminaAtJumpStart
+	private static readonly SchemaField<float> __m_flStaminaAtJumpStart = new("CCSPlayer_MovementServices", "m_flStaminaAtJumpStart");
 	[SchemaMember("CCSPlayer_MovementServices", "m_flStaminaAtJumpStart")]
-	public ref float StaminaAtJumpStart => ref Schema.GetRef<float>(this.Handle, "CCSPlayer_MovementServices", "m_flStaminaAtJumpStart");
+	public ref float StaminaAtJumpStart => ref __m_flStaminaAtJumpStart.GetRef(this.Handle);
 
 	// m_flVelMulAtJumpStart
+	private static readonly SchemaField<float> __m_flVelMulAtJumpStart = new("CCSPlayer_MovementServices", "m_flVelMulAtJumpStart");
 	[SchemaMember("CCSPlayer_MovementServices", "m_flVelMulAtJumpStart")]
-	public ref float VelMulAtJumpStart => ref Schema.GetRef<float>(this.Handle, "CCSPlayer_MovementServices", "m_flVelMulAtJumpStart");
+	public ref float VelMulAtJumpStart => ref __m_flVelMulAtJumpStart.GetRef(this.Handle);
 
 	// m_flAccumulatedJumpError
+	private static readonly SchemaField<float> __m_flAccumulatedJumpError = new("CCSPlayer_MovementServices", "m_flAccumulatedJumpError");
 	[SchemaMember("CCSPlayer_MovementServices", "m_flAccumulatedJumpError")]
-	public ref float AccumulatedJumpError => ref Schema.GetRef<float>(this.Handle, "CCSPlayer_MovementServices", "m_flAccumulatedJumpError");
+	public ref float AccumulatedJumpError => ref __m_flAccumulatedJumpError.GetRef(this.Handle);
 
 	// m_LegacyJump
 	[SchemaMember("CCSPlayer_MovementServices", "m_LegacyJump")]
@@ -191,31 +226,37 @@ public partial class CCSPlayer_MovementServices : CPlayer_MovementServices_Human
 	public CCSPlayerModernJump ModernJump => Schema.GetDeclaredClass<CCSPlayerModernJump>(this.Handle, "CCSPlayer_MovementServices", "m_ModernJump");
 
 	// m_nLastJumpTick
+	private static readonly SchemaField<Int32> __m_nLastJumpTick = new("CCSPlayer_MovementServices", "m_nLastJumpTick");
 	[SchemaMember("CCSPlayer_MovementServices", "m_nLastJumpTick")]
-	public ref Int32 LastJumpTick => ref Schema.GetRef<Int32>(this.Handle, "CCSPlayer_MovementServices", "m_nLastJumpTick");
+	public ref Int32 LastJumpTick => ref __m_nLastJumpTick.GetRef(this.Handle);
 
 	// m_flLastJumpFrac
+	private static readonly SchemaField<float> __m_flLastJumpFrac = new("CCSPlayer_MovementServices", "m_flLastJumpFrac");
 	[SchemaMember("CCSPlayer_MovementServices", "m_flLastJumpFrac")]
-	public ref float LastJumpFrac => ref Schema.GetRef<float>(this.Handle, "CCSPlayer_MovementServices", "m_flLastJumpFrac");
+	public ref float LastJumpFrac => ref __m_flLastJumpFrac.GetRef(this.Handle);
 
 	// m_flLastJumpVelocityZ
+	private static readonly SchemaField<float> __m_flLastJumpVelocityZ = new("CCSPlayer_MovementServices", "m_flLastJumpVelocityZ");
 	[SchemaMember("CCSPlayer_MovementServices", "m_flLastJumpVelocityZ")]
-	public ref float LastJumpVelocityZ => ref Schema.GetRef<float>(this.Handle, "CCSPlayer_MovementServices", "m_flLastJumpVelocityZ");
+	public ref float LastJumpVelocityZ => ref __m_flLastJumpVelocityZ.GetRef(this.Handle);
 
 	// m_bJumpApexPending
+	private static readonly SchemaField<bool> __m_bJumpApexPending = new("CCSPlayer_MovementServices", "m_bJumpApexPending");
 	[SchemaMember("CCSPlayer_MovementServices", "m_bJumpApexPending")]
-	public ref bool JumpApexPending => ref Schema.GetRef<bool>(this.Handle, "CCSPlayer_MovementServices", "m_bJumpApexPending");
+	public ref bool JumpApexPending => ref __m_bJumpApexPending.GetRef(this.Handle);
 
 	// m_flTicksSinceLastSurfingDetected
+	private static readonly SchemaField<float> __m_flTicksSinceLastSurfingDetected = new("CCSPlayer_MovementServices", "m_flTicksSinceLastSurfingDetected");
 	[SchemaMember("CCSPlayer_MovementServices", "m_flTicksSinceLastSurfingDetected")]
-	public ref float TicksSinceLastSurfingDetected => ref Schema.GetRef<float>(this.Handle, "CCSPlayer_MovementServices", "m_flTicksSinceLastSurfingDetected");
+	public ref float TicksSinceLastSurfingDetected => ref __m_flTicksSinceLastSurfingDetected.GetRef(this.Handle);
 
 	// m_vecWalkWishVel
 	[SchemaMember("CCSPlayer_MovementServices", "m_vecWalkWishVel")]
 	public Vector2D WalkWishVel => Schema.GetDeclaredClass<Vector2D>(this.Handle, "CCSPlayer_MovementServices", "m_vecWalkWishVel");
 
 	// m_bHasEverProcessedCommand
+	private static readonly SchemaField<bool> __m_bHasEverProcessedCommand = new("CCSPlayer_MovementServices", "m_bHasEverProcessedCommand");
 	[SchemaMember("CCSPlayer_MovementServices", "m_bHasEverProcessedCommand")]
-	public ref bool HasEverProcessedCommand => ref Schema.GetRef<bool>(this.Handle, "CCSPlayer_MovementServices", "m_bHasEverProcessedCommand");
+	public ref bool HasEverProcessedCommand => ref __m_bHasEverProcessedCommand.GetRef(this.Handle);
 
 }

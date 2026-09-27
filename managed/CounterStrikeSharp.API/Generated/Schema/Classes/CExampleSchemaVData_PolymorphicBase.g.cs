@@ -19,7 +19,8 @@ public partial class CExampleSchemaVData_PolymorphicBase : NativeObject
     public CExampleSchemaVData_PolymorphicBase (IntPtr pointer) : base(pointer) {}
 
 	// m_nBase
+	private static readonly SchemaField<Int32> __m_nBase = new("CExampleSchemaVData_PolymorphicBase", "m_nBase");
 	[SchemaMember("CExampleSchemaVData_PolymorphicBase", "m_nBase")]
-	public ref Int32 Base => ref Schema.GetRef<Int32>(this.Handle, "CExampleSchemaVData_PolymorphicBase", "m_nBase");
+	public ref Int32 Base => ref __m_nBase.GetRef(this.Handle);
 
 }

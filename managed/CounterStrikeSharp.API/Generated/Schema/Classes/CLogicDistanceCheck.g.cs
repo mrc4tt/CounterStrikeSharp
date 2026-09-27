@@ -35,12 +35,14 @@ public partial class CLogicDistanceCheck : CLogicalEntity
 	}
 
 	// m_flZone1Distance
+	private static readonly SchemaField<float> __m_flZone1Distance = new("CLogicDistanceCheck", "m_flZone1Distance");
 	[SchemaMember("CLogicDistanceCheck", "m_flZone1Distance")]
-	public ref float Zone1Distance => ref Schema.GetRef<float>(this.Handle, "CLogicDistanceCheck", "m_flZone1Distance");
+	public ref float Zone1Distance => ref __m_flZone1Distance.GetRef(this.Handle);
 
 	// m_flZone2Distance
+	private static readonly SchemaField<float> __m_flZone2Distance = new("CLogicDistanceCheck", "m_flZone2Distance");
 	[SchemaMember("CLogicDistanceCheck", "m_flZone2Distance")]
-	public ref float Zone2Distance => ref Schema.GetRef<float>(this.Handle, "CLogicDistanceCheck", "m_flZone2Distance");
+	public ref float Zone2Distance => ref __m_flZone2Distance.GetRef(this.Handle);
 
 	// m_InZone1
 	[SchemaMember("CLogicDistanceCheck", "m_InZone1")]

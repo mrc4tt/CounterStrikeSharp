@@ -23,11 +23,13 @@ public partial class CCredits : CPointEntity
 	public CEntityIOOutput OnCreditsDone => Schema.GetDeclaredClass<CEntityIOOutput>(this.Handle, "CCredits", "m_OnCreditsDone");
 
 	// m_bRolledOutroCredits
+	private static readonly SchemaField<bool> __m_bRolledOutroCredits = new("CCredits", "m_bRolledOutroCredits");
 	[SchemaMember("CCredits", "m_bRolledOutroCredits")]
-	public ref bool RolledOutroCredits => ref Schema.GetRef<bool>(this.Handle, "CCredits", "m_bRolledOutroCredits");
+	public ref bool RolledOutroCredits => ref __m_bRolledOutroCredits.GetRef(this.Handle);
 
 	// m_flLogoLength
+	private static readonly SchemaField<float> __m_flLogoLength = new("CCredits", "m_flLogoLength");
 	[SchemaMember("CCredits", "m_flLogoLength")]
-	public ref float LogoLength => ref Schema.GetRef<float>(this.Handle, "CCredits", "m_flLogoLength");
+	public ref float LogoLength => ref __m_flLogoLength.GetRef(this.Handle);
 
 }

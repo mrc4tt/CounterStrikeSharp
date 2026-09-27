@@ -19,47 +19,58 @@ public partial class VPhysicsCollisionAttribute_t : NativeObject
     public VPhysicsCollisionAttribute_t (IntPtr pointer) : base(pointer) {}
 
 	// m_nInteractsAs
+	private static readonly SchemaField<UInt64> __m_nInteractsAs = new("VPhysicsCollisionAttribute_t", "m_nInteractsAs");
 	[SchemaMember("VPhysicsCollisionAttribute_t", "m_nInteractsAs")]
-	public ref UInt64 InteractsAs => ref Schema.GetRef<UInt64>(this.Handle, "VPhysicsCollisionAttribute_t", "m_nInteractsAs");
+	public ref UInt64 InteractsAs => ref __m_nInteractsAs.GetRef(this.Handle);
 
 	// m_nInteractsWith
+	private static readonly SchemaField<UInt64> __m_nInteractsWith = new("VPhysicsCollisionAttribute_t", "m_nInteractsWith");
 	[SchemaMember("VPhysicsCollisionAttribute_t", "m_nInteractsWith")]
-	public ref UInt64 InteractsWith => ref Schema.GetRef<UInt64>(this.Handle, "VPhysicsCollisionAttribute_t", "m_nInteractsWith");
+	public ref UInt64 InteractsWith => ref __m_nInteractsWith.GetRef(this.Handle);
 
 	// m_nInteractsExclude
+	private static readonly SchemaField<UInt64> __m_nInteractsExclude = new("VPhysicsCollisionAttribute_t", "m_nInteractsExclude");
 	[SchemaMember("VPhysicsCollisionAttribute_t", "m_nInteractsExclude")]
-	public ref UInt64 InteractsExclude => ref Schema.GetRef<UInt64>(this.Handle, "VPhysicsCollisionAttribute_t", "m_nInteractsExclude");
+	public ref UInt64 InteractsExclude => ref __m_nInteractsExclude.GetRef(this.Handle);
 
 	// m_nEntityId
+	private static readonly SchemaField<UInt32> __m_nEntityId = new("VPhysicsCollisionAttribute_t", "m_nEntityId");
 	[SchemaMember("VPhysicsCollisionAttribute_t", "m_nEntityId")]
-	public ref UInt32 EntityId => ref Schema.GetRef<UInt32>(this.Handle, "VPhysicsCollisionAttribute_t", "m_nEntityId");
+	public ref UInt32 EntityId => ref __m_nEntityId.GetRef(this.Handle);
 
 	// m_nOwnerId
+	private static readonly SchemaField<UInt32> __m_nOwnerId = new("VPhysicsCollisionAttribute_t", "m_nOwnerId");
 	[SchemaMember("VPhysicsCollisionAttribute_t", "m_nOwnerId")]
-	public ref UInt32 OwnerId => ref Schema.GetRef<UInt32>(this.Handle, "VPhysicsCollisionAttribute_t", "m_nOwnerId");
+	public ref UInt32 OwnerId => ref __m_nOwnerId.GetRef(this.Handle);
 
 	// m_nHierarchyId
+	private static readonly SchemaField<UInt16> __m_nHierarchyId = new("VPhysicsCollisionAttribute_t", "m_nHierarchyId");
 	[SchemaMember("VPhysicsCollisionAttribute_t", "m_nHierarchyId")]
-	public ref UInt16 HierarchyId => ref Schema.GetRef<UInt16>(this.Handle, "VPhysicsCollisionAttribute_t", "m_nHierarchyId");
+	public ref UInt16 HierarchyId => ref __m_nHierarchyId.GetRef(this.Handle);
 
 	// m_nDetailLayerMask
+	private static readonly SchemaField<UInt16> __m_nDetailLayerMask = new("VPhysicsCollisionAttribute_t", "m_nDetailLayerMask");
 	[SchemaMember("VPhysicsCollisionAttribute_t", "m_nDetailLayerMask")]
-	public ref UInt16 DetailLayerMask => ref Schema.GetRef<UInt16>(this.Handle, "VPhysicsCollisionAttribute_t", "m_nDetailLayerMask");
+	public ref UInt16 DetailLayerMask => ref __m_nDetailLayerMask.GetRef(this.Handle);
 
 	// m_nDetailLayerMaskType
+	private static readonly SchemaField<byte> __m_nDetailLayerMaskType = new("VPhysicsCollisionAttribute_t", "m_nDetailLayerMaskType");
 	[SchemaMember("VPhysicsCollisionAttribute_t", "m_nDetailLayerMaskType")]
-	public ref byte DetailLayerMaskType => ref Schema.GetRef<byte>(this.Handle, "VPhysicsCollisionAttribute_t", "m_nDetailLayerMaskType");
+	public ref byte DetailLayerMaskType => ref __m_nDetailLayerMaskType.GetRef(this.Handle);
 
 	// m_nTargetDetailLayer
+	private static readonly SchemaField<byte> __m_nTargetDetailLayer = new("VPhysicsCollisionAttribute_t", "m_nTargetDetailLayer");
 	[SchemaMember("VPhysicsCollisionAttribute_t", "m_nTargetDetailLayer")]
-	public ref byte TargetDetailLayer => ref Schema.GetRef<byte>(this.Handle, "VPhysicsCollisionAttribute_t", "m_nTargetDetailLayer");
+	public ref byte TargetDetailLayer => ref __m_nTargetDetailLayer.GetRef(this.Handle);
 
 	// m_nCollisionGroup
+	private static readonly SchemaField<byte> __m_nCollisionGroup = new("VPhysicsCollisionAttribute_t", "m_nCollisionGroup");
 	[SchemaMember("VPhysicsCollisionAttribute_t", "m_nCollisionGroup")]
-	public ref byte CollisionGroup => ref Schema.GetRef<byte>(this.Handle, "VPhysicsCollisionAttribute_t", "m_nCollisionGroup");
+	public ref byte CollisionGroup => ref __m_nCollisionGroup.GetRef(this.Handle);
 
 	// m_nCollisionFunctionMask
+	private static readonly SchemaField<byte> __m_nCollisionFunctionMask = new("VPhysicsCollisionAttribute_t", "m_nCollisionFunctionMask");
 	[SchemaMember("VPhysicsCollisionAttribute_t", "m_nCollisionFunctionMask")]
-	public ref byte CollisionFunctionMask => ref Schema.GetRef<byte>(this.Handle, "VPhysicsCollisionAttribute_t", "m_nCollisionFunctionMask");
+	public ref byte CollisionFunctionMask => ref __m_nCollisionFunctionMask.GetRef(this.Handle);
 
 }

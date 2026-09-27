@@ -19,16 +19,19 @@ public partial class CPropDoorRotatingBreakable : CPropDoorRotating
     public CPropDoorRotatingBreakable (IntPtr pointer) : base(pointer) {}
 
 	// m_bBreakable
+	private static readonly SchemaField<bool> __m_bBreakable = new("CPropDoorRotatingBreakable", "m_bBreakable");
 	[SchemaMember("CPropDoorRotatingBreakable", "m_bBreakable")]
-	public ref bool Breakable => ref Schema.GetRef<bool>(this.Handle, "CPropDoorRotatingBreakable", "m_bBreakable");
+	public ref bool Breakable => ref __m_bBreakable.GetRef(this.Handle);
 
 	// m_isAbleToCloseAreaPortals
+	private static readonly SchemaField<bool> __m_isAbleToCloseAreaPortals = new("CPropDoorRotatingBreakable", "m_isAbleToCloseAreaPortals");
 	[SchemaMember("CPropDoorRotatingBreakable", "m_isAbleToCloseAreaPortals")]
-	public ref bool IsAbleToCloseAreaPortals => ref Schema.GetRef<bool>(this.Handle, "CPropDoorRotatingBreakable", "m_isAbleToCloseAreaPortals");
+	public ref bool IsAbleToCloseAreaPortals => ref __m_isAbleToCloseAreaPortals.GetRef(this.Handle);
 
 	// m_currentDamageState
+	private static readonly SchemaField<Int32> __m_currentDamageState = new("CPropDoorRotatingBreakable", "m_currentDamageState");
 	[SchemaMember("CPropDoorRotatingBreakable", "m_currentDamageState")]
-	public ref Int32 CurrentDamageState => ref Schema.GetRef<Int32>(this.Handle, "CPropDoorRotatingBreakable", "m_currentDamageState");
+	public ref Int32 CurrentDamageState => ref __m_currentDamageState.GetRef(this.Handle);
 
 	// m_damageStates
 	[SchemaMember("CPropDoorRotatingBreakable", "m_damageStates")]

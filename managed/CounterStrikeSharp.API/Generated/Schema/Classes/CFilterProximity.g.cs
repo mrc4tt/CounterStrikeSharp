@@ -19,7 +19,8 @@ public partial class CFilterProximity : CBaseFilter
     public CFilterProximity (IntPtr pointer) : base(pointer) {}
 
 	// m_flRadius
+	private static readonly SchemaField<float> __m_flRadius = new("CFilterProximity", "m_flRadius");
 	[SchemaMember("CFilterProximity", "m_flRadius")]
-	public ref float Radius => ref Schema.GetRef<float>(this.Handle, "CFilterProximity", "m_flRadius");
+	public ref float Radius => ref __m_flRadius.GetRef(this.Handle);
 
 }

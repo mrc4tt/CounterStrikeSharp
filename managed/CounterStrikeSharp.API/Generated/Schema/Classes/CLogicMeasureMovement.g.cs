@@ -59,11 +59,13 @@ public partial class CLogicMeasureMovement : CLogicalEntity
 	public CHandle<CBaseEntity> TargetReference => Schema.GetDeclaredClass<CHandle<CBaseEntity>>(this.Handle, "CLogicMeasureMovement", "m_hTargetReference");
 
 	// m_flScale
+	private static readonly SchemaField<float> __m_flScale = new("CLogicMeasureMovement", "m_flScale");
 	[SchemaMember("CLogicMeasureMovement", "m_flScale")]
-	public ref float Scale => ref Schema.GetRef<float>(this.Handle, "CLogicMeasureMovement", "m_flScale");
+	public ref float Scale => ref __m_flScale.GetRef(this.Handle);
 
 	// m_nMeasureType
+	private static readonly SchemaField<Int32> __m_nMeasureType = new("CLogicMeasureMovement", "m_nMeasureType");
 	[SchemaMember("CLogicMeasureMovement", "m_nMeasureType")]
-	public ref Int32 MeasureType => ref Schema.GetRef<Int32>(this.Handle, "CLogicMeasureMovement", "m_nMeasureType");
+	public ref Int32 MeasureType => ref __m_nMeasureType.GetRef(this.Handle);
 
 }

@@ -19,15 +19,17 @@ public partial class ViewAngleServerChange_t : NativeObject
     public ViewAngleServerChange_t (IntPtr pointer) : base(pointer) {}
 
 	// nType
+	private static readonly SchemaField<FixAngleSet_t> __nType = new("ViewAngleServerChange_t", "nType");
 	[SchemaMember("ViewAngleServerChange_t", "nType")]
-	public ref FixAngleSet_t NType => ref Schema.GetRef<FixAngleSet_t>(this.Handle, "ViewAngleServerChange_t", "nType");
+	public ref FixAngleSet_t NType => ref __nType.GetRef(this.Handle);
 
 	// qAngle
 	[SchemaMember("ViewAngleServerChange_t", "qAngle")]
 	public QAngle QAngle => Schema.GetDeclaredClass<QAngle>(this.Handle, "ViewAngleServerChange_t", "qAngle");
 
 	// nIndex
+	private static readonly SchemaField<UInt32> __nIndex = new("ViewAngleServerChange_t", "nIndex");
 	[SchemaMember("ViewAngleServerChange_t", "nIndex")]
-	public ref UInt32 NIndex => ref Schema.GetRef<UInt32>(this.Handle, "ViewAngleServerChange_t", "nIndex");
+	public ref UInt32 NIndex => ref __nIndex.GetRef(this.Handle);
 
 }

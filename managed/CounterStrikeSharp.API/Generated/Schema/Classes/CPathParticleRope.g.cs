@@ -19,12 +19,14 @@ public partial class CPathParticleRope : CBaseEntity
     public CPathParticleRope (IntPtr pointer) : base(pointer) {}
 
 	// m_bStartActive
+	private static readonly SchemaField<bool> __m_bStartActive = new("CPathParticleRope", "m_bStartActive");
 	[SchemaMember("CPathParticleRope", "m_bStartActive")]
-	public ref bool StartActive => ref Schema.GetRef<bool>(this.Handle, "CPathParticleRope", "m_bStartActive");
+	public ref bool StartActive => ref __m_bStartActive.GetRef(this.Handle);
 
 	// m_flMaxSimulationTime
+	private static readonly SchemaField<float> __m_flMaxSimulationTime = new("CPathParticleRope", "m_flMaxSimulationTime");
 	[SchemaMember("CPathParticleRope", "m_flMaxSimulationTime")]
-	public ref float MaxSimulationTime => ref Schema.GetRef<float>(this.Handle, "CPathParticleRope", "m_flMaxSimulationTime");
+	public ref float MaxSimulationTime => ref __m_flMaxSimulationTime.GetRef(this.Handle);
 
 	// m_iszEffectName
 	[SchemaMember("CPathParticleRope", "m_iszEffectName")]
@@ -39,16 +41,19 @@ public partial class CPathParticleRope : CBaseEntity
 	public NetworkedVector<string> PathNodes_Name => Schema.GetDeclaredClass<NetworkedVector<string>>(this.Handle, "CPathParticleRope", "m_PathNodes_Name");
 
 	// m_flParticleSpacing
+	private static readonly SchemaField<float> __m_flParticleSpacing = new("CPathParticleRope", "m_flParticleSpacing");
 	[SchemaMember("CPathParticleRope", "m_flParticleSpacing")]
-	public ref float ParticleSpacing => ref Schema.GetRef<float>(this.Handle, "CPathParticleRope", "m_flParticleSpacing");
+	public ref float ParticleSpacing => ref __m_flParticleSpacing.GetRef(this.Handle);
 
 	// m_flSlack
+	private static readonly SchemaField<float> __m_flSlack = new("CPathParticleRope", "m_flSlack");
 	[SchemaMember("CPathParticleRope", "m_flSlack")]
-	public ref float Slack => ref Schema.GetRef<float>(this.Handle, "CPathParticleRope", "m_flSlack");
+	public ref float Slack => ref __m_flSlack.GetRef(this.Handle);
 
 	// m_flRadius
+	private static readonly SchemaField<float> __m_flRadius = new("CPathParticleRope", "m_flRadius");
 	[SchemaMember("CPathParticleRope", "m_flRadius")]
-	public ref float Radius => ref Schema.GetRef<float>(this.Handle, "CPathParticleRope", "m_flRadius");
+	public ref float Radius => ref __m_flRadius.GetRef(this.Handle);
 
 	// m_ColorTint
 	[SchemaMember("CPathParticleRope", "m_ColorTint")]
@@ -59,8 +64,9 @@ public partial class CPathParticleRope : CBaseEntity
 	}
 
 	// m_nEffectState
+	private static readonly SchemaField<Int32> __m_nEffectState = new("CPathParticleRope", "m_nEffectState");
 	[SchemaMember("CPathParticleRope", "m_nEffectState")]
-	public ref Int32 EffectState => ref Schema.GetRef<Int32>(this.Handle, "CPathParticleRope", "m_nEffectState");
+	public ref Int32 EffectState => ref __m_nEffectState.GetRef(this.Handle);
 
 	// m_iEffectIndex
 	[SchemaMember("CPathParticleRope", "m_iEffectIndex")]

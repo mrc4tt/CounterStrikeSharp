@@ -19,40 +19,47 @@ public partial class CCSPlayerController_InventoryServices : CPlayerControllerCo
     public CCSPlayerController_InventoryServices (IntPtr pointer) : base(pointer) {}
 
 	// m_unMusicID
+	private static readonly SchemaField<UInt16> __m_unMusicID = new("CCSPlayerController_InventoryServices", "m_unMusicID");
 	[SchemaMember("CCSPlayerController_InventoryServices", "m_unMusicID")]
-	public ref UInt16 MusicID => ref Schema.GetRef<UInt16>(this.Handle, "CCSPlayerController_InventoryServices", "m_unMusicID");
+	public ref UInt16 MusicID => ref __m_unMusicID.GetRef(this.Handle);
 
 	// m_rank
 	[SchemaMember("CCSPlayerController_InventoryServices", "m_rank")]
 	public Span<MedalRank_t> Rank => Schema.GetFixedArray<MedalRank_t>(this.Handle, "CCSPlayerController_InventoryServices", "m_rank", 6);
 
 	// m_nPersonaDataPublicLevel
+	private static readonly SchemaField<Int32> __m_nPersonaDataPublicLevel = new("CCSPlayerController_InventoryServices", "m_nPersonaDataPublicLevel");
 	[SchemaMember("CCSPlayerController_InventoryServices", "m_nPersonaDataPublicLevel")]
-	public ref Int32 PersonaDataPublicLevel => ref Schema.GetRef<Int32>(this.Handle, "CCSPlayerController_InventoryServices", "m_nPersonaDataPublicLevel");
+	public ref Int32 PersonaDataPublicLevel => ref __m_nPersonaDataPublicLevel.GetRef(this.Handle);
 
 	// m_nPersonaDataPublicCommendsLeader
+	private static readonly SchemaField<Int32> __m_nPersonaDataPublicCommendsLeader = new("CCSPlayerController_InventoryServices", "m_nPersonaDataPublicCommendsLeader");
 	[SchemaMember("CCSPlayerController_InventoryServices", "m_nPersonaDataPublicCommendsLeader")]
-	public ref Int32 PersonaDataPublicCommendsLeader => ref Schema.GetRef<Int32>(this.Handle, "CCSPlayerController_InventoryServices", "m_nPersonaDataPublicCommendsLeader");
+	public ref Int32 PersonaDataPublicCommendsLeader => ref __m_nPersonaDataPublicCommendsLeader.GetRef(this.Handle);
 
 	// m_nPersonaDataPublicCommendsTeacher
+	private static readonly SchemaField<Int32> __m_nPersonaDataPublicCommendsTeacher = new("CCSPlayerController_InventoryServices", "m_nPersonaDataPublicCommendsTeacher");
 	[SchemaMember("CCSPlayerController_InventoryServices", "m_nPersonaDataPublicCommendsTeacher")]
-	public ref Int32 PersonaDataPublicCommendsTeacher => ref Schema.GetRef<Int32>(this.Handle, "CCSPlayerController_InventoryServices", "m_nPersonaDataPublicCommendsTeacher");
+	public ref Int32 PersonaDataPublicCommendsTeacher => ref __m_nPersonaDataPublicCommendsTeacher.GetRef(this.Handle);
 
 	// m_nPersonaDataPublicCommendsFriendly
+	private static readonly SchemaField<Int32> __m_nPersonaDataPublicCommendsFriendly = new("CCSPlayerController_InventoryServices", "m_nPersonaDataPublicCommendsFriendly");
 	[SchemaMember("CCSPlayerController_InventoryServices", "m_nPersonaDataPublicCommendsFriendly")]
-	public ref Int32 PersonaDataPublicCommendsFriendly => ref Schema.GetRef<Int32>(this.Handle, "CCSPlayerController_InventoryServices", "m_nPersonaDataPublicCommendsFriendly");
+	public ref Int32 PersonaDataPublicCommendsFriendly => ref __m_nPersonaDataPublicCommendsFriendly.GetRef(this.Handle);
 
 	// m_nPersonaDataXpTrailLevel
+	private static readonly SchemaField<Int32> __m_nPersonaDataXpTrailLevel = new("CCSPlayerController_InventoryServices", "m_nPersonaDataXpTrailLevel");
 	[SchemaMember("CCSPlayerController_InventoryServices", "m_nPersonaDataXpTrailLevel")]
-	public ref Int32 PersonaDataXpTrailLevel => ref Schema.GetRef<Int32>(this.Handle, "CCSPlayerController_InventoryServices", "m_nPersonaDataXpTrailLevel");
+	public ref Int32 PersonaDataXpTrailLevel => ref __m_nPersonaDataXpTrailLevel.GetRef(this.Handle);
 
 	// m_unEquippedPlayerSprayIDs
 	[SchemaMember("CCSPlayerController_InventoryServices", "m_unEquippedPlayerSprayIDs")]
 	public Span<UInt32> EquippedPlayerSprayIDs => Schema.GetFixedArray<UInt32>(this.Handle, "CCSPlayerController_InventoryServices", "m_unEquippedPlayerSprayIDs", 1);
 
 	// m_unCurrentLoadoutHash
+	private static readonly SchemaField<UInt64> __m_unCurrentLoadoutHash = new("CCSPlayerController_InventoryServices", "m_unCurrentLoadoutHash");
 	[SchemaMember("CCSPlayerController_InventoryServices", "m_unCurrentLoadoutHash")]
-	public ref UInt64 CurrentLoadoutHash => ref Schema.GetRef<UInt64>(this.Handle, "CCSPlayerController_InventoryServices", "m_unCurrentLoadoutHash");
+	public ref UInt64 CurrentLoadoutHash => ref __m_unCurrentLoadoutHash.GetRef(this.Handle);
 
 	// m_vecServerAuthoritativeWeaponSlots
 	[SchemaMember("CCSPlayerController_InventoryServices", "m_vecServerAuthoritativeWeaponSlots")]

@@ -19,12 +19,14 @@ public partial class CPhysImpact : CPointEntity
     public CPhysImpact (IntPtr pointer) : base(pointer) {}
 
 	// m_damage
+	private static readonly SchemaField<float> __m_damage = new("CPhysImpact", "m_damage");
 	[SchemaMember("CPhysImpact", "m_damage")]
-	public ref float Damage => ref Schema.GetRef<float>(this.Handle, "CPhysImpact", "m_damage");
+	public ref float Damage => ref __m_damage.GetRef(this.Handle);
 
 	// m_distance
+	private static readonly SchemaField<float> __m_distance = new("CPhysImpact", "m_distance");
 	[SchemaMember("CPhysImpact", "m_distance")]
-	public ref float Distance => ref Schema.GetRef<float>(this.Handle, "CPhysImpact", "m_distance");
+	public ref float Distance => ref __m_distance.GetRef(this.Handle);
 
 	// m_directionEntityName
 	[SchemaMember("CPhysImpact", "m_directionEntityName")]

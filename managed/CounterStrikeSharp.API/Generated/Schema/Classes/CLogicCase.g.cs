@@ -23,12 +23,14 @@ public partial class CLogicCase : CLogicalEntity
 	public Span<string> Case => Schema.GetFixedArray<string>(this.Handle, "CLogicCase", "m_nCase", 32);
 
 	// m_nShuffleCases
+	private static readonly SchemaField<Int32> __m_nShuffleCases = new("CLogicCase", "m_nShuffleCases");
 	[SchemaMember("CLogicCase", "m_nShuffleCases")]
-	public ref Int32 ShuffleCases => ref Schema.GetRef<Int32>(this.Handle, "CLogicCase", "m_nShuffleCases");
+	public ref Int32 ShuffleCases => ref __m_nShuffleCases.GetRef(this.Handle);
 
 	// m_nLastShuffleCase
+	private static readonly SchemaField<Int32> __m_nLastShuffleCase = new("CLogicCase", "m_nLastShuffleCase");
 	[SchemaMember("CLogicCase", "m_nLastShuffleCase")]
-	public ref Int32 LastShuffleCase => ref Schema.GetRef<Int32>(this.Handle, "CLogicCase", "m_nLastShuffleCase");
+	public ref Int32 LastShuffleCase => ref __m_nLastShuffleCase.GetRef(this.Handle);
 
 	// m_uchShuffleCaseMap
 	[SchemaMember("CLogicCase", "m_uchShuffleCaseMap")]

@@ -19,87 +19,108 @@ public partial class CSMatchStats_t : CSPerRoundStats_t
     public CSMatchStats_t (IntPtr pointer) : base(pointer) {}
 
 	// m_iEnemy5Ks
+	private static readonly SchemaField<Int32> __m_iEnemy5Ks = new("CSMatchStats_t", "m_iEnemy5Ks");
 	[SchemaMember("CSMatchStats_t", "m_iEnemy5Ks")]
-	public ref Int32 Enemy5Ks => ref Schema.GetRef<Int32>(this.Handle, "CSMatchStats_t", "m_iEnemy5Ks");
+	public ref Int32 Enemy5Ks => ref __m_iEnemy5Ks.GetRef(this.Handle);
 
 	// m_iEnemy4Ks
+	private static readonly SchemaField<Int32> __m_iEnemy4Ks = new("CSMatchStats_t", "m_iEnemy4Ks");
 	[SchemaMember("CSMatchStats_t", "m_iEnemy4Ks")]
-	public ref Int32 Enemy4Ks => ref Schema.GetRef<Int32>(this.Handle, "CSMatchStats_t", "m_iEnemy4Ks");
+	public ref Int32 Enemy4Ks => ref __m_iEnemy4Ks.GetRef(this.Handle);
 
 	// m_iEnemy3Ks
+	private static readonly SchemaField<Int32> __m_iEnemy3Ks = new("CSMatchStats_t", "m_iEnemy3Ks");
 	[SchemaMember("CSMatchStats_t", "m_iEnemy3Ks")]
-	public ref Int32 Enemy3Ks => ref Schema.GetRef<Int32>(this.Handle, "CSMatchStats_t", "m_iEnemy3Ks");
+	public ref Int32 Enemy3Ks => ref __m_iEnemy3Ks.GetRef(this.Handle);
 
 	// m_iEnemyKnifeKills
+	private static readonly SchemaField<Int32> __m_iEnemyKnifeKills = new("CSMatchStats_t", "m_iEnemyKnifeKills");
 	[SchemaMember("CSMatchStats_t", "m_iEnemyKnifeKills")]
-	public ref Int32 EnemyKnifeKills => ref Schema.GetRef<Int32>(this.Handle, "CSMatchStats_t", "m_iEnemyKnifeKills");
+	public ref Int32 EnemyKnifeKills => ref __m_iEnemyKnifeKills.GetRef(this.Handle);
 
 	// m_iEnemyTaserKills
+	private static readonly SchemaField<Int32> __m_iEnemyTaserKills = new("CSMatchStats_t", "m_iEnemyTaserKills");
 	[SchemaMember("CSMatchStats_t", "m_iEnemyTaserKills")]
-	public ref Int32 EnemyTaserKills => ref Schema.GetRef<Int32>(this.Handle, "CSMatchStats_t", "m_iEnemyTaserKills");
+	public ref Int32 EnemyTaserKills => ref __m_iEnemyTaserKills.GetRef(this.Handle);
 
 	// m_iEnemy2Ks
+	private static readonly SchemaField<Int32> __m_iEnemy2Ks = new("CSMatchStats_t", "m_iEnemy2Ks");
 	[SchemaMember("CSMatchStats_t", "m_iEnemy2Ks")]
-	public ref Int32 Enemy2Ks => ref Schema.GetRef<Int32>(this.Handle, "CSMatchStats_t", "m_iEnemy2Ks");
+	public ref Int32 Enemy2Ks => ref __m_iEnemy2Ks.GetRef(this.Handle);
 
 	// m_iUtility_Count
+	private static readonly SchemaField<Int32> __m_iUtility_Count = new("CSMatchStats_t", "m_iUtility_Count");
 	[SchemaMember("CSMatchStats_t", "m_iUtility_Count")]
-	public ref Int32 Utility_Count => ref Schema.GetRef<Int32>(this.Handle, "CSMatchStats_t", "m_iUtility_Count");
+	public ref Int32 Utility_Count => ref __m_iUtility_Count.GetRef(this.Handle);
 
 	// m_iUtility_Successes
+	private static readonly SchemaField<Int32> __m_iUtility_Successes = new("CSMatchStats_t", "m_iUtility_Successes");
 	[SchemaMember("CSMatchStats_t", "m_iUtility_Successes")]
-	public ref Int32 Utility_Successes => ref Schema.GetRef<Int32>(this.Handle, "CSMatchStats_t", "m_iUtility_Successes");
+	public ref Int32 Utility_Successes => ref __m_iUtility_Successes.GetRef(this.Handle);
 
 	// m_iUtility_Enemies
+	private static readonly SchemaField<Int32> __m_iUtility_Enemies = new("CSMatchStats_t", "m_iUtility_Enemies");
 	[SchemaMember("CSMatchStats_t", "m_iUtility_Enemies")]
-	public ref Int32 Utility_Enemies => ref Schema.GetRef<Int32>(this.Handle, "CSMatchStats_t", "m_iUtility_Enemies");
+	public ref Int32 Utility_Enemies => ref __m_iUtility_Enemies.GetRef(this.Handle);
 
 	// m_iFlash_Count
+	private static readonly SchemaField<Int32> __m_iFlash_Count = new("CSMatchStats_t", "m_iFlash_Count");
 	[SchemaMember("CSMatchStats_t", "m_iFlash_Count")]
-	public ref Int32 Flash_Count => ref Schema.GetRef<Int32>(this.Handle, "CSMatchStats_t", "m_iFlash_Count");
+	public ref Int32 Flash_Count => ref __m_iFlash_Count.GetRef(this.Handle);
 
 	// m_iFlash_Successes
+	private static readonly SchemaField<Int32> __m_iFlash_Successes = new("CSMatchStats_t", "m_iFlash_Successes");
 	[SchemaMember("CSMatchStats_t", "m_iFlash_Successes")]
-	public ref Int32 Flash_Successes => ref Schema.GetRef<Int32>(this.Handle, "CSMatchStats_t", "m_iFlash_Successes");
+	public ref Int32 Flash_Successes => ref __m_iFlash_Successes.GetRef(this.Handle);
 
 	// m_flHealthPointsRemovedTotal
+	private static readonly SchemaField<float> __m_flHealthPointsRemovedTotal = new("CSMatchStats_t", "m_flHealthPointsRemovedTotal");
 	[SchemaMember("CSMatchStats_t", "m_flHealthPointsRemovedTotal")]
-	public ref float HealthPointsRemovedTotal => ref Schema.GetRef<float>(this.Handle, "CSMatchStats_t", "m_flHealthPointsRemovedTotal");
+	public ref float HealthPointsRemovedTotal => ref __m_flHealthPointsRemovedTotal.GetRef(this.Handle);
 
 	// m_flHealthPointsDealtTotal
+	private static readonly SchemaField<float> __m_flHealthPointsDealtTotal = new("CSMatchStats_t", "m_flHealthPointsDealtTotal");
 	[SchemaMember("CSMatchStats_t", "m_flHealthPointsDealtTotal")]
-	public ref float HealthPointsDealtTotal => ref Schema.GetRef<float>(this.Handle, "CSMatchStats_t", "m_flHealthPointsDealtTotal");
+	public ref float HealthPointsDealtTotal => ref __m_flHealthPointsDealtTotal.GetRef(this.Handle);
 
 	// m_nShotsFiredTotal
+	private static readonly SchemaField<Int32> __m_nShotsFiredTotal = new("CSMatchStats_t", "m_nShotsFiredTotal");
 	[SchemaMember("CSMatchStats_t", "m_nShotsFiredTotal")]
-	public ref Int32 ShotsFiredTotal => ref Schema.GetRef<Int32>(this.Handle, "CSMatchStats_t", "m_nShotsFiredTotal");
+	public ref Int32 ShotsFiredTotal => ref __m_nShotsFiredTotal.GetRef(this.Handle);
 
 	// m_nShotsOnTargetTotal
+	private static readonly SchemaField<Int32> __m_nShotsOnTargetTotal = new("CSMatchStats_t", "m_nShotsOnTargetTotal");
 	[SchemaMember("CSMatchStats_t", "m_nShotsOnTargetTotal")]
-	public ref Int32 ShotsOnTargetTotal => ref Schema.GetRef<Int32>(this.Handle, "CSMatchStats_t", "m_nShotsOnTargetTotal");
+	public ref Int32 ShotsOnTargetTotal => ref __m_nShotsOnTargetTotal.GetRef(this.Handle);
 
 	// m_i1v1Count
+	private static readonly SchemaField<Int32> __m_i1v1Count = new("CSMatchStats_t", "m_i1v1Count");
 	[SchemaMember("CSMatchStats_t", "m_i1v1Count")]
-	public ref Int32 I1v1Count => ref Schema.GetRef<Int32>(this.Handle, "CSMatchStats_t", "m_i1v1Count");
+	public ref Int32 I1v1Count => ref __m_i1v1Count.GetRef(this.Handle);
 
 	// m_i1v1Wins
+	private static readonly SchemaField<Int32> __m_i1v1Wins = new("CSMatchStats_t", "m_i1v1Wins");
 	[SchemaMember("CSMatchStats_t", "m_i1v1Wins")]
-	public ref Int32 I1v1Wins => ref Schema.GetRef<Int32>(this.Handle, "CSMatchStats_t", "m_i1v1Wins");
+	public ref Int32 I1v1Wins => ref __m_i1v1Wins.GetRef(this.Handle);
 
 	// m_i1v2Count
+	private static readonly SchemaField<Int32> __m_i1v2Count = new("CSMatchStats_t", "m_i1v2Count");
 	[SchemaMember("CSMatchStats_t", "m_i1v2Count")]
-	public ref Int32 I1v2Count => ref Schema.GetRef<Int32>(this.Handle, "CSMatchStats_t", "m_i1v2Count");
+	public ref Int32 I1v2Count => ref __m_i1v2Count.GetRef(this.Handle);
 
 	// m_i1v2Wins
+	private static readonly SchemaField<Int32> __m_i1v2Wins = new("CSMatchStats_t", "m_i1v2Wins");
 	[SchemaMember("CSMatchStats_t", "m_i1v2Wins")]
-	public ref Int32 I1v2Wins => ref Schema.GetRef<Int32>(this.Handle, "CSMatchStats_t", "m_i1v2Wins");
+	public ref Int32 I1v2Wins => ref __m_i1v2Wins.GetRef(this.Handle);
 
 	// m_iEntryCount
+	private static readonly SchemaField<Int32> __m_iEntryCount = new("CSMatchStats_t", "m_iEntryCount");
 	[SchemaMember("CSMatchStats_t", "m_iEntryCount")]
-	public ref Int32 EntryCount => ref Schema.GetRef<Int32>(this.Handle, "CSMatchStats_t", "m_iEntryCount");
+	public ref Int32 EntryCount => ref __m_iEntryCount.GetRef(this.Handle);
 
 	// m_iEntryWins
+	private static readonly SchemaField<Int32> __m_iEntryWins = new("CSMatchStats_t", "m_iEntryWins");
 	[SchemaMember("CSMatchStats_t", "m_iEntryWins")]
-	public ref Int32 EntryWins => ref Schema.GetRef<Int32>(this.Handle, "CSMatchStats_t", "m_iEntryWins");
+	public ref Int32 EntryWins => ref __m_iEntryWins.GetRef(this.Handle);
 
 }

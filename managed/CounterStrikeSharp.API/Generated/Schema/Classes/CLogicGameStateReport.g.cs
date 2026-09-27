@@ -19,7 +19,8 @@ public partial class CLogicGameStateReport : CBaseEntity
     public CLogicGameStateReport (IntPtr pointer) : base(pointer) {}
 
 	// m_bDisabled
+	private static readonly SchemaField<bool> __m_bDisabled = new("CLogicGameStateReport", "m_bDisabled");
 	[SchemaMember("CLogicGameStateReport", "m_bDisabled")]
-	public ref bool Disabled => ref Schema.GetRef<bool>(this.Handle, "CLogicGameStateReport", "m_bDisabled");
+	public ref bool Disabled => ref __m_bDisabled.GetRef(this.Handle);
 
 }

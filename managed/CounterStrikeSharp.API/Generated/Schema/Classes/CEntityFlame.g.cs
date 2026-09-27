@@ -23,39 +23,47 @@ public partial class CEntityFlame : CBaseEntity
 	public CHandle<CBaseEntity> EntAttached => Schema.GetDeclaredClass<CHandle<CBaseEntity>>(this.Handle, "CEntityFlame", "m_hEntAttached");
 
 	// m_bCheapEffect
+	private static readonly SchemaField<bool> __m_bCheapEffect = new("CEntityFlame", "m_bCheapEffect");
 	[SchemaMember("CEntityFlame", "m_bCheapEffect")]
-	public ref bool CheapEffect => ref Schema.GetRef<bool>(this.Handle, "CEntityFlame", "m_bCheapEffect");
+	public ref bool CheapEffect => ref __m_bCheapEffect.GetRef(this.Handle);
 
 	// m_flSize
+	private static readonly SchemaField<float> __m_flSize = new("CEntityFlame", "m_flSize");
 	[SchemaMember("CEntityFlame", "m_flSize")]
-	public ref float Size => ref Schema.GetRef<float>(this.Handle, "CEntityFlame", "m_flSize");
+	public ref float Size => ref __m_flSize.GetRef(this.Handle);
 
 	// m_bUseHitboxes
+	private static readonly SchemaField<bool> __m_bUseHitboxes = new("CEntityFlame", "m_bUseHitboxes");
 	[SchemaMember("CEntityFlame", "m_bUseHitboxes")]
-	public ref bool UseHitboxes => ref Schema.GetRef<bool>(this.Handle, "CEntityFlame", "m_bUseHitboxes");
+	public ref bool UseHitboxes => ref __m_bUseHitboxes.GetRef(this.Handle);
 
 	// m_iNumHitboxFires
+	private static readonly SchemaField<Int32> __m_iNumHitboxFires = new("CEntityFlame", "m_iNumHitboxFires");
 	[SchemaMember("CEntityFlame", "m_iNumHitboxFires")]
-	public ref Int32 NumHitboxFires => ref Schema.GetRef<Int32>(this.Handle, "CEntityFlame", "m_iNumHitboxFires");
+	public ref Int32 NumHitboxFires => ref __m_iNumHitboxFires.GetRef(this.Handle);
 
 	// m_flHitboxFireScale
+	private static readonly SchemaField<float> __m_flHitboxFireScale = new("CEntityFlame", "m_flHitboxFireScale");
 	[SchemaMember("CEntityFlame", "m_flHitboxFireScale")]
-	public ref float HitboxFireScale => ref Schema.GetRef<float>(this.Handle, "CEntityFlame", "m_flHitboxFireScale");
+	public ref float HitboxFireScale => ref __m_flHitboxFireScale.GetRef(this.Handle);
 
 	// m_flLifetime
+	private static readonly SchemaField<float> __m_flLifetime = new("CEntityFlame", "m_flLifetime");
 	[SchemaMember("CEntityFlame", "m_flLifetime")]
-	public ref float Lifetime => ref Schema.GetRef<float>(this.Handle, "CEntityFlame", "m_flLifetime");
+	public ref float Lifetime => ref __m_flLifetime.GetRef(this.Handle);
 
 	// m_hAttacker
 	[SchemaMember("CEntityFlame", "m_hAttacker")]
 	public CHandle<CBaseEntity> Attacker => Schema.GetDeclaredClass<CHandle<CBaseEntity>>(this.Handle, "CEntityFlame", "m_hAttacker");
 
 	// m_flDirectDamagePerSecond
+	private static readonly SchemaField<float> __m_flDirectDamagePerSecond = new("CEntityFlame", "m_flDirectDamagePerSecond");
 	[SchemaMember("CEntityFlame", "m_flDirectDamagePerSecond")]
-	public ref float DirectDamagePerSecond => ref Schema.GetRef<float>(this.Handle, "CEntityFlame", "m_flDirectDamagePerSecond");
+	public ref float DirectDamagePerSecond => ref __m_flDirectDamagePerSecond.GetRef(this.Handle);
 
 	// m_iCustomDamageType
+	private static readonly SchemaField<Int32> __m_iCustomDamageType = new("CEntityFlame", "m_iCustomDamageType");
 	[SchemaMember("CEntityFlame", "m_iCustomDamageType")]
-	public ref Int32 CustomDamageType => ref Schema.GetRef<Int32>(this.Handle, "CEntityFlame", "m_iCustomDamageType");
+	public ref Int32 CustomDamageType => ref __m_iCustomDamageType.GetRef(this.Handle);
 
 }

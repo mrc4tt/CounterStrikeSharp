@@ -39,20 +39,24 @@ public partial class CFuncLadder : CBaseModelEntity
 	public Vector PlayerMountPositionBottom => Schema.GetDeclaredClass<Vector>(this.Handle, "CFuncLadder", "m_vecPlayerMountPositionBottom");
 
 	// m_flAutoRideSpeed
+	private static readonly SchemaField<float> __m_flAutoRideSpeed = new("CFuncLadder", "m_flAutoRideSpeed");
 	[SchemaMember("CFuncLadder", "m_flAutoRideSpeed")]
-	public ref float AutoRideSpeed => ref Schema.GetRef<float>(this.Handle, "CFuncLadder", "m_flAutoRideSpeed");
+	public ref float AutoRideSpeed => ref __m_flAutoRideSpeed.GetRef(this.Handle);
 
 	// m_bDisabled
+	private static readonly SchemaField<bool> __m_bDisabled = new("CFuncLadder", "m_bDisabled");
 	[SchemaMember("CFuncLadder", "m_bDisabled")]
-	public ref bool Disabled => ref Schema.GetRef<bool>(this.Handle, "CFuncLadder", "m_bDisabled");
+	public ref bool Disabled => ref __m_bDisabled.GetRef(this.Handle);
 
 	// m_bFakeLadder
+	private static readonly SchemaField<bool> __m_bFakeLadder = new("CFuncLadder", "m_bFakeLadder");
 	[SchemaMember("CFuncLadder", "m_bFakeLadder")]
-	public ref bool FakeLadder => ref Schema.GetRef<bool>(this.Handle, "CFuncLadder", "m_bFakeLadder");
+	public ref bool FakeLadder => ref __m_bFakeLadder.GetRef(this.Handle);
 
 	// m_bHasSlack
+	private static readonly SchemaField<bool> __m_bHasSlack = new("CFuncLadder", "m_bHasSlack");
 	[SchemaMember("CFuncLadder", "m_bHasSlack")]
-	public ref bool HasSlack => ref Schema.GetRef<bool>(this.Handle, "CFuncLadder", "m_bHasSlack");
+	public ref bool HasSlack => ref __m_bHasSlack.GetRef(this.Handle);
 
 	// m_surfacePropName
 	[SchemaMember("CFuncLadder", "m_surfacePropName")]

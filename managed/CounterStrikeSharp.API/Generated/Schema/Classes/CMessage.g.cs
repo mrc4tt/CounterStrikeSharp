@@ -27,16 +27,19 @@ public partial class CMessage : CPointEntity
 	}
 
 	// m_MessageVolume
+	private static readonly SchemaField<float> __m_MessageVolume = new("CMessage", "m_MessageVolume");
 	[SchemaMember("CMessage", "m_MessageVolume")]
-	public ref float MessageVolume => ref Schema.GetRef<float>(this.Handle, "CMessage", "m_MessageVolume");
+	public ref float MessageVolume => ref __m_MessageVolume.GetRef(this.Handle);
 
 	// m_MessageAttenuation
+	private static readonly SchemaField<Int32> __m_MessageAttenuation = new("CMessage", "m_MessageAttenuation");
 	[SchemaMember("CMessage", "m_MessageAttenuation")]
-	public ref Int32 MessageAttenuation => ref Schema.GetRef<Int32>(this.Handle, "CMessage", "m_MessageAttenuation");
+	public ref Int32 MessageAttenuation => ref __m_MessageAttenuation.GetRef(this.Handle);
 
 	// m_Radius
+	private static readonly SchemaField<float> __m_Radius = new("CMessage", "m_Radius");
 	[SchemaMember("CMessage", "m_Radius")]
-	public ref float Radius => ref Schema.GetRef<float>(this.Handle, "CMessage", "m_Radius");
+	public ref float Radius => ref __m_Radius.GetRef(this.Handle);
 
 	// m_sNoise
 	[SchemaMember("CMessage", "m_sNoise")]

@@ -31,32 +31,39 @@ public partial class CCollisionProperty : NativeObject
 	public Vector Maxs => Schema.GetDeclaredClass<Vector>(this.Handle, "CCollisionProperty", "m_vecMaxs");
 
 	// m_usSolidFlags
+	private static readonly SchemaField<byte> __m_usSolidFlags = new("CCollisionProperty", "m_usSolidFlags");
 	[SchemaMember("CCollisionProperty", "m_usSolidFlags")]
-	public ref byte SolidFlags => ref Schema.GetRef<byte>(this.Handle, "CCollisionProperty", "m_usSolidFlags");
+	public ref byte SolidFlags => ref __m_usSolidFlags.GetRef(this.Handle);
 
 	// m_nSolidType
+	private static readonly SchemaField<SolidType_t> __m_nSolidType = new("CCollisionProperty", "m_nSolidType");
 	[SchemaMember("CCollisionProperty", "m_nSolidType")]
-	public ref SolidType_t SolidType => ref Schema.GetRef<SolidType_t>(this.Handle, "CCollisionProperty", "m_nSolidType");
+	public ref SolidType_t SolidType => ref __m_nSolidType.GetRef(this.Handle);
 
 	// m_triggerBloat
+	private static readonly SchemaField<byte> __m_triggerBloat = new("CCollisionProperty", "m_triggerBloat");
 	[SchemaMember("CCollisionProperty", "m_triggerBloat")]
-	public ref byte TriggerBloat => ref Schema.GetRef<byte>(this.Handle, "CCollisionProperty", "m_triggerBloat");
+	public ref byte TriggerBloat => ref __m_triggerBloat.GetRef(this.Handle);
 
 	// m_nSurroundType
+	private static readonly SchemaField<SurroundingBoundsType_t> __m_nSurroundType = new("CCollisionProperty", "m_nSurroundType");
 	[SchemaMember("CCollisionProperty", "m_nSurroundType")]
-	public ref SurroundingBoundsType_t SurroundType => ref Schema.GetRef<SurroundingBoundsType_t>(this.Handle, "CCollisionProperty", "m_nSurroundType");
+	public ref SurroundingBoundsType_t SurroundType => ref __m_nSurroundType.GetRef(this.Handle);
 
 	// m_CollisionGroup
+	private static readonly SchemaField<byte> __m_CollisionGroup = new("CCollisionProperty", "m_CollisionGroup");
 	[SchemaMember("CCollisionProperty", "m_CollisionGroup")]
-	public ref byte CollisionGroup => ref Schema.GetRef<byte>(this.Handle, "CCollisionProperty", "m_CollisionGroup");
+	public ref byte CollisionGroup => ref __m_CollisionGroup.GetRef(this.Handle);
 
 	// m_nEnablePhysics
+	private static readonly SchemaField<byte> __m_nEnablePhysics = new("CCollisionProperty", "m_nEnablePhysics");
 	[SchemaMember("CCollisionProperty", "m_nEnablePhysics")]
-	public ref byte EnablePhysics => ref Schema.GetRef<byte>(this.Handle, "CCollisionProperty", "m_nEnablePhysics");
+	public ref byte EnablePhysics => ref __m_nEnablePhysics.GetRef(this.Handle);
 
 	// m_flBoundingRadius
+	private static readonly SchemaField<float> __m_flBoundingRadius = new("CCollisionProperty", "m_flBoundingRadius");
 	[SchemaMember("CCollisionProperty", "m_flBoundingRadius")]
-	public ref float BoundingRadius => ref Schema.GetRef<float>(this.Handle, "CCollisionProperty", "m_flBoundingRadius");
+	public ref float BoundingRadius => ref __m_flBoundingRadius.GetRef(this.Handle);
 
 	// m_vecSpecifiedSurroundingMins
 	[SchemaMember("CCollisionProperty", "m_vecSpecifiedSurroundingMins")]
@@ -83,7 +90,8 @@ public partial class CCollisionProperty : NativeObject
 	public Vector CapsuleCenter2 => Schema.GetDeclaredClass<Vector>(this.Handle, "CCollisionProperty", "m_vCapsuleCenter2");
 
 	// m_flCapsuleRadius
+	private static readonly SchemaField<float> __m_flCapsuleRadius = new("CCollisionProperty", "m_flCapsuleRadius");
 	[SchemaMember("CCollisionProperty", "m_flCapsuleRadius")]
-	public ref float CapsuleRadius => ref Schema.GetRef<float>(this.Handle, "CCollisionProperty", "m_flCapsuleRadius");
+	public ref float CapsuleRadius => ref __m_flCapsuleRadius.GetRef(this.Handle);
 
 }

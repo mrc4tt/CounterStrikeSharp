@@ -35,7 +35,8 @@ public partial class CCSObservableElement : CBaseEntity
 	public CHandle<CBaseEntity> ObservableModelEntity2 => Schema.GetDeclaredClass<CHandle<CBaseEntity>>(this.Handle, "CCSObservableElement", "m_hObservableModelEntity2");
 
 	// m_nTeamFilter
+	private static readonly SchemaField<UInt32> __m_nTeamFilter = new("CCSObservableElement", "m_nTeamFilter");
 	[SchemaMember("CCSObservableElement", "m_nTeamFilter")]
-	public ref UInt32 TeamFilter => ref Schema.GetRef<UInt32>(this.Handle, "CCSObservableElement", "m_nTeamFilter");
+	public ref UInt32 TeamFilter => ref __m_nTeamFilter.GetRef(this.Handle);
 
 }

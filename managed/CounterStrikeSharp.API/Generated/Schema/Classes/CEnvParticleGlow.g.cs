@@ -19,16 +19,19 @@ public partial class CEnvParticleGlow : CParticleSystem
     public CEnvParticleGlow (IntPtr pointer) : base(pointer) {}
 
 	// m_flAlphaScale
+	private static readonly SchemaField<float> __m_flAlphaScale = new("CEnvParticleGlow", "m_flAlphaScale");
 	[SchemaMember("CEnvParticleGlow", "m_flAlphaScale")]
-	public ref float AlphaScale => ref Schema.GetRef<float>(this.Handle, "CEnvParticleGlow", "m_flAlphaScale");
+	public ref float AlphaScale => ref __m_flAlphaScale.GetRef(this.Handle);
 
 	// m_flRadiusScale
+	private static readonly SchemaField<float> __m_flRadiusScale = new("CEnvParticleGlow", "m_flRadiusScale");
 	[SchemaMember("CEnvParticleGlow", "m_flRadiusScale")]
-	public ref float RadiusScale => ref Schema.GetRef<float>(this.Handle, "CEnvParticleGlow", "m_flRadiusScale");
+	public ref float RadiusScale => ref __m_flRadiusScale.GetRef(this.Handle);
 
 	// m_flSelfIllumScale
+	private static readonly SchemaField<float> __m_flSelfIllumScale = new("CEnvParticleGlow", "m_flSelfIllumScale");
 	[SchemaMember("CEnvParticleGlow", "m_flSelfIllumScale")]
-	public ref float SelfIllumScale => ref Schema.GetRef<float>(this.Handle, "CEnvParticleGlow", "m_flSelfIllumScale");
+	public ref float SelfIllumScale => ref __m_flSelfIllumScale.GetRef(this.Handle);
 
 	// m_ColorTint
 	[SchemaMember("CEnvParticleGlow", "m_ColorTint")]

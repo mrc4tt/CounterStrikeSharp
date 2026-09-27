@@ -31,11 +31,13 @@ public partial class CTriggerBrush : CBaseModelEntity
 	public CEntityIOOutput OnUse => Schema.GetDeclaredClass<CEntityIOOutput>(this.Handle, "CTriggerBrush", "m_OnUse");
 
 	// m_iInputFilter
+	private static readonly SchemaField<Int32> __m_iInputFilter = new("CTriggerBrush", "m_iInputFilter");
 	[SchemaMember("CTriggerBrush", "m_iInputFilter")]
-	public ref Int32 InputFilter => ref Schema.GetRef<Int32>(this.Handle, "CTriggerBrush", "m_iInputFilter");
+	public ref Int32 InputFilter => ref __m_iInputFilter.GetRef(this.Handle);
 
 	// m_iDontMessageParent
+	private static readonly SchemaField<Int32> __m_iDontMessageParent = new("CTriggerBrush", "m_iDontMessageParent");
 	[SchemaMember("CTriggerBrush", "m_iDontMessageParent")]
-	public ref Int32 DontMessageParent => ref Schema.GetRef<Int32>(this.Handle, "CTriggerBrush", "m_iDontMessageParent");
+	public ref Int32 DontMessageParent => ref __m_iDontMessageParent.GetRef(this.Handle);
 
 }

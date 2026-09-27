@@ -19,19 +19,23 @@ public partial class CTriggerSave : CBaseTrigger
     public CTriggerSave (IntPtr pointer) : base(pointer) {}
 
 	// m_bForceNewLevelUnit
+	private static readonly SchemaField<bool> __m_bForceNewLevelUnit = new("CTriggerSave", "m_bForceNewLevelUnit");
 	[SchemaMember("CTriggerSave", "m_bForceNewLevelUnit")]
-	public ref bool ForceNewLevelUnit => ref Schema.GetRef<bool>(this.Handle, "CTriggerSave", "m_bForceNewLevelUnit");
+	public ref bool ForceNewLevelUnit => ref __m_bForceNewLevelUnit.GetRef(this.Handle);
 
 	// m_fDangerousTimer
+	private static readonly SchemaField<float> __m_fDangerousTimer = new("CTriggerSave", "m_fDangerousTimer");
 	[SchemaMember("CTriggerSave", "m_fDangerousTimer")]
-	public ref float DangerousTimer => ref Schema.GetRef<float>(this.Handle, "CTriggerSave", "m_fDangerousTimer");
+	public ref float DangerousTimer => ref __m_fDangerousTimer.GetRef(this.Handle);
 
 	// m_minHitPoints
+	private static readonly SchemaField<Int32> __m_minHitPoints = new("CTriggerSave", "m_minHitPoints");
 	[SchemaMember("CTriggerSave", "m_minHitPoints")]
-	public ref Int32 MinHitPoints => ref Schema.GetRef<Int32>(this.Handle, "CTriggerSave", "m_minHitPoints");
+	public ref Int32 MinHitPoints => ref __m_minHitPoints.GetRef(this.Handle);
 
 	// m_flRetriggerDelay
+	private static readonly SchemaField<float> __m_flRetriggerDelay = new("CTriggerSave", "m_flRetriggerDelay");
 	[SchemaMember("CTriggerSave", "m_flRetriggerDelay")]
-	public ref float RetriggerDelay => ref Schema.GetRef<float>(this.Handle, "CTriggerSave", "m_flRetriggerDelay");
+	public ref float RetriggerDelay => ref __m_flRetriggerDelay.GetRef(this.Handle);
 
 }

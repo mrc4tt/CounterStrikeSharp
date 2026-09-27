@@ -19,156 +19,194 @@ public partial class CCSGameRules : CTeamplayRules
     public CCSGameRules (IntPtr pointer) : base(pointer) {}
 
 	// m_bFreezePeriod
+	private static readonly SchemaField<bool> __m_bFreezePeriod = new("CCSGameRules", "m_bFreezePeriod");
 	[SchemaMember("CCSGameRules", "m_bFreezePeriod")]
-	public ref bool FreezePeriod => ref Schema.GetRef<bool>(this.Handle, "CCSGameRules", "m_bFreezePeriod");
+	public ref bool FreezePeriod => ref __m_bFreezePeriod.GetRef(this.Handle);
 
 	// m_bWarmupPeriod
+	private static readonly SchemaField<bool> __m_bWarmupPeriod = new("CCSGameRules", "m_bWarmupPeriod");
 	[SchemaMember("CCSGameRules", "m_bWarmupPeriod")]
-	public ref bool WarmupPeriod => ref Schema.GetRef<bool>(this.Handle, "CCSGameRules", "m_bWarmupPeriod");
+	public ref bool WarmupPeriod => ref __m_bWarmupPeriod.GetRef(this.Handle);
 
 	// m_fWarmupPeriodEnd
+	private static readonly SchemaField<float> __m_fWarmupPeriodEnd = new("CCSGameRules", "m_fWarmupPeriodEnd");
 	[SchemaMember("CCSGameRules", "m_fWarmupPeriodEnd")]
-	public ref float WarmupPeriodEnd => ref Schema.GetRef<float>(this.Handle, "CCSGameRules", "m_fWarmupPeriodEnd");
+	public ref float WarmupPeriodEnd => ref __m_fWarmupPeriodEnd.GetRef(this.Handle);
 
 	// m_fWarmupPeriodStart
+	private static readonly SchemaField<float> __m_fWarmupPeriodStart = new("CCSGameRules", "m_fWarmupPeriodStart");
 	[SchemaMember("CCSGameRules", "m_fWarmupPeriodStart")]
-	public ref float WarmupPeriodStart => ref Schema.GetRef<float>(this.Handle, "CCSGameRules", "m_fWarmupPeriodStart");
+	public ref float WarmupPeriodStart => ref __m_fWarmupPeriodStart.GetRef(this.Handle);
 
 	// m_bTerroristTimeOutActive
+	private static readonly SchemaField<bool> __m_bTerroristTimeOutActive = new("CCSGameRules", "m_bTerroristTimeOutActive");
 	[SchemaMember("CCSGameRules", "m_bTerroristTimeOutActive")]
-	public ref bool TerroristTimeOutActive => ref Schema.GetRef<bool>(this.Handle, "CCSGameRules", "m_bTerroristTimeOutActive");
+	public ref bool TerroristTimeOutActive => ref __m_bTerroristTimeOutActive.GetRef(this.Handle);
 
 	// m_bCTTimeOutActive
+	private static readonly SchemaField<bool> __m_bCTTimeOutActive = new("CCSGameRules", "m_bCTTimeOutActive");
 	[SchemaMember("CCSGameRules", "m_bCTTimeOutActive")]
-	public ref bool CTTimeOutActive => ref Schema.GetRef<bool>(this.Handle, "CCSGameRules", "m_bCTTimeOutActive");
+	public ref bool CTTimeOutActive => ref __m_bCTTimeOutActive.GetRef(this.Handle);
 
 	// m_flTerroristTimeOutRemaining
+	private static readonly SchemaField<float> __m_flTerroristTimeOutRemaining = new("CCSGameRules", "m_flTerroristTimeOutRemaining");
 	[SchemaMember("CCSGameRules", "m_flTerroristTimeOutRemaining")]
-	public ref float TerroristTimeOutRemaining => ref Schema.GetRef<float>(this.Handle, "CCSGameRules", "m_flTerroristTimeOutRemaining");
+	public ref float TerroristTimeOutRemaining => ref __m_flTerroristTimeOutRemaining.GetRef(this.Handle);
 
 	// m_flCTTimeOutRemaining
+	private static readonly SchemaField<float> __m_flCTTimeOutRemaining = new("CCSGameRules", "m_flCTTimeOutRemaining");
 	[SchemaMember("CCSGameRules", "m_flCTTimeOutRemaining")]
-	public ref float CTTimeOutRemaining => ref Schema.GetRef<float>(this.Handle, "CCSGameRules", "m_flCTTimeOutRemaining");
+	public ref float CTTimeOutRemaining => ref __m_flCTTimeOutRemaining.GetRef(this.Handle);
 
 	// m_nTerroristTimeOuts
+	private static readonly SchemaField<Int32> __m_nTerroristTimeOuts = new("CCSGameRules", "m_nTerroristTimeOuts");
 	[SchemaMember("CCSGameRules", "m_nTerroristTimeOuts")]
-	public ref Int32 TerroristTimeOuts => ref Schema.GetRef<Int32>(this.Handle, "CCSGameRules", "m_nTerroristTimeOuts");
+	public ref Int32 TerroristTimeOuts => ref __m_nTerroristTimeOuts.GetRef(this.Handle);
 
 	// m_nCTTimeOuts
+	private static readonly SchemaField<Int32> __m_nCTTimeOuts = new("CCSGameRules", "m_nCTTimeOuts");
 	[SchemaMember("CCSGameRules", "m_nCTTimeOuts")]
-	public ref Int32 CTTimeOuts => ref Schema.GetRef<Int32>(this.Handle, "CCSGameRules", "m_nCTTimeOuts");
+	public ref Int32 CTTimeOuts => ref __m_nCTTimeOuts.GetRef(this.Handle);
 
 	// m_bTechnicalTimeOut
+	private static readonly SchemaField<bool> __m_bTechnicalTimeOut = new("CCSGameRules", "m_bTechnicalTimeOut");
 	[SchemaMember("CCSGameRules", "m_bTechnicalTimeOut")]
-	public ref bool TechnicalTimeOut => ref Schema.GetRef<bool>(this.Handle, "CCSGameRules", "m_bTechnicalTimeOut");
+	public ref bool TechnicalTimeOut => ref __m_bTechnicalTimeOut.GetRef(this.Handle);
 
 	// m_bMatchWaitingForResume
+	private static readonly SchemaField<bool> __m_bMatchWaitingForResume = new("CCSGameRules", "m_bMatchWaitingForResume");
 	[SchemaMember("CCSGameRules", "m_bMatchWaitingForResume")]
-	public ref bool MatchWaitingForResume => ref Schema.GetRef<bool>(this.Handle, "CCSGameRules", "m_bMatchWaitingForResume");
+	public ref bool MatchWaitingForResume => ref __m_bMatchWaitingForResume.GetRef(this.Handle);
 
 	// m_iFreezeTime
+	private static readonly SchemaField<Int32> __m_iFreezeTime = new("CCSGameRules", "m_iFreezeTime");
 	[SchemaMember("CCSGameRules", "m_iFreezeTime")]
-	public ref Int32 FreezeTime => ref Schema.GetRef<Int32>(this.Handle, "CCSGameRules", "m_iFreezeTime");
+	public ref Int32 FreezeTime => ref __m_iFreezeTime.GetRef(this.Handle);
 
 	// m_iRoundTime
+	private static readonly SchemaField<Int32> __m_iRoundTime = new("CCSGameRules", "m_iRoundTime");
 	[SchemaMember("CCSGameRules", "m_iRoundTime")]
-	public ref Int32 RoundTime => ref Schema.GetRef<Int32>(this.Handle, "CCSGameRules", "m_iRoundTime");
+	public ref Int32 RoundTime => ref __m_iRoundTime.GetRef(this.Handle);
 
 	// m_fMatchStartTime
+	private static readonly SchemaField<float> __m_fMatchStartTime = new("CCSGameRules", "m_fMatchStartTime");
 	[SchemaMember("CCSGameRules", "m_fMatchStartTime")]
-	public ref float MatchStartTime => ref Schema.GetRef<float>(this.Handle, "CCSGameRules", "m_fMatchStartTime");
+	public ref float MatchStartTime => ref __m_fMatchStartTime.GetRef(this.Handle);
 
 	// m_fRoundStartTime
+	private static readonly SchemaField<float> __m_fRoundStartTime = new("CCSGameRules", "m_fRoundStartTime");
 	[SchemaMember("CCSGameRules", "m_fRoundStartTime")]
-	public ref float RoundStartTime => ref Schema.GetRef<float>(this.Handle, "CCSGameRules", "m_fRoundStartTime");
+	public ref float RoundStartTime => ref __m_fRoundStartTime.GetRef(this.Handle);
 
 	// m_flRestartRoundTime
+	private static readonly SchemaField<float> __m_flRestartRoundTime = new("CCSGameRules", "m_flRestartRoundTime");
 	[SchemaMember("CCSGameRules", "m_flRestartRoundTime")]
-	public ref float RestartRoundTime => ref Schema.GetRef<float>(this.Handle, "CCSGameRules", "m_flRestartRoundTime");
+	public ref float RestartRoundTime => ref __m_flRestartRoundTime.GetRef(this.Handle);
 
 	// m_bGameRestart
+	private static readonly SchemaField<bool> __m_bGameRestart = new("CCSGameRules", "m_bGameRestart");
 	[SchemaMember("CCSGameRules", "m_bGameRestart")]
-	public ref bool GameRestart => ref Schema.GetRef<bool>(this.Handle, "CCSGameRules", "m_bGameRestart");
+	public ref bool GameRestart => ref __m_bGameRestart.GetRef(this.Handle);
 
 	// m_flGameStartTime
+	private static readonly SchemaField<float> __m_flGameStartTime = new("CCSGameRules", "m_flGameStartTime");
 	[SchemaMember("CCSGameRules", "m_flGameStartTime")]
-	public ref float GameStartTime => ref Schema.GetRef<float>(this.Handle, "CCSGameRules", "m_flGameStartTime");
+	public ref float GameStartTime => ref __m_flGameStartTime.GetRef(this.Handle);
 
 	// m_timeUntilNextPhaseStarts
+	private static readonly SchemaField<float> __m_timeUntilNextPhaseStarts = new("CCSGameRules", "m_timeUntilNextPhaseStarts");
 	[SchemaMember("CCSGameRules", "m_timeUntilNextPhaseStarts")]
-	public ref float TimeUntilNextPhaseStarts => ref Schema.GetRef<float>(this.Handle, "CCSGameRules", "m_timeUntilNextPhaseStarts");
+	public ref float TimeUntilNextPhaseStarts => ref __m_timeUntilNextPhaseStarts.GetRef(this.Handle);
 
 	// m_gamePhase
+	private static readonly SchemaField<Int32> __m_gamePhase = new("CCSGameRules", "m_gamePhase");
 	[SchemaMember("CCSGameRules", "m_gamePhase")]
-	public ref Int32 GamePhase => ref Schema.GetRef<Int32>(this.Handle, "CCSGameRules", "m_gamePhase");
+	public ref Int32 GamePhase => ref __m_gamePhase.GetRef(this.Handle);
 
 	// m_totalRoundsPlayed
+	private static readonly SchemaField<Int32> __m_totalRoundsPlayed = new("CCSGameRules", "m_totalRoundsPlayed");
 	[SchemaMember("CCSGameRules", "m_totalRoundsPlayed")]
-	public ref Int32 TotalRoundsPlayed => ref Schema.GetRef<Int32>(this.Handle, "CCSGameRules", "m_totalRoundsPlayed");
+	public ref Int32 TotalRoundsPlayed => ref __m_totalRoundsPlayed.GetRef(this.Handle);
 
 	// m_nRoundsPlayedThisPhase
+	private static readonly SchemaField<Int32> __m_nRoundsPlayedThisPhase = new("CCSGameRules", "m_nRoundsPlayedThisPhase");
 	[SchemaMember("CCSGameRules", "m_nRoundsPlayedThisPhase")]
-	public ref Int32 RoundsPlayedThisPhase => ref Schema.GetRef<Int32>(this.Handle, "CCSGameRules", "m_nRoundsPlayedThisPhase");
+	public ref Int32 RoundsPlayedThisPhase => ref __m_nRoundsPlayedThisPhase.GetRef(this.Handle);
 
 	// m_nOvertimePlaying
+	private static readonly SchemaField<Int32> __m_nOvertimePlaying = new("CCSGameRules", "m_nOvertimePlaying");
 	[SchemaMember("CCSGameRules", "m_nOvertimePlaying")]
-	public ref Int32 OvertimePlaying => ref Schema.GetRef<Int32>(this.Handle, "CCSGameRules", "m_nOvertimePlaying");
+	public ref Int32 OvertimePlaying => ref __m_nOvertimePlaying.GetRef(this.Handle);
 
 	// m_iHostagesRemaining
+	private static readonly SchemaField<Int32> __m_iHostagesRemaining = new("CCSGameRules", "m_iHostagesRemaining");
 	[SchemaMember("CCSGameRules", "m_iHostagesRemaining")]
-	public ref Int32 HostagesRemaining => ref Schema.GetRef<Int32>(this.Handle, "CCSGameRules", "m_iHostagesRemaining");
+	public ref Int32 HostagesRemaining => ref __m_iHostagesRemaining.GetRef(this.Handle);
 
 	// m_bAnyHostageReached
+	private static readonly SchemaField<bool> __m_bAnyHostageReached = new("CCSGameRules", "m_bAnyHostageReached");
 	[SchemaMember("CCSGameRules", "m_bAnyHostageReached")]
-	public ref bool AnyHostageReached => ref Schema.GetRef<bool>(this.Handle, "CCSGameRules", "m_bAnyHostageReached");
+	public ref bool AnyHostageReached => ref __m_bAnyHostageReached.GetRef(this.Handle);
 
 	// m_bMapHasBombTarget
+	private static readonly SchemaField<bool> __m_bMapHasBombTarget = new("CCSGameRules", "m_bMapHasBombTarget");
 	[SchemaMember("CCSGameRules", "m_bMapHasBombTarget")]
-	public ref bool MapHasBombTarget => ref Schema.GetRef<bool>(this.Handle, "CCSGameRules", "m_bMapHasBombTarget");
+	public ref bool MapHasBombTarget => ref __m_bMapHasBombTarget.GetRef(this.Handle);
 
 	// m_bMapHasRescueZone
+	private static readonly SchemaField<bool> __m_bMapHasRescueZone = new("CCSGameRules", "m_bMapHasRescueZone");
 	[SchemaMember("CCSGameRules", "m_bMapHasRescueZone")]
-	public ref bool MapHasRescueZone => ref Schema.GetRef<bool>(this.Handle, "CCSGameRules", "m_bMapHasRescueZone");
+	public ref bool MapHasRescueZone => ref __m_bMapHasRescueZone.GetRef(this.Handle);
 
 	// m_bMapHasBuyZone
+	private static readonly SchemaField<bool> __m_bMapHasBuyZone = new("CCSGameRules", "m_bMapHasBuyZone");
 	[SchemaMember("CCSGameRules", "m_bMapHasBuyZone")]
-	public ref bool MapHasBuyZone => ref Schema.GetRef<bool>(this.Handle, "CCSGameRules", "m_bMapHasBuyZone");
+	public ref bool MapHasBuyZone => ref __m_bMapHasBuyZone.GetRef(this.Handle);
 
 	// m_bIsQueuedMatchmaking
+	private static readonly SchemaField<bool> __m_bIsQueuedMatchmaking = new("CCSGameRules", "m_bIsQueuedMatchmaking");
 	[SchemaMember("CCSGameRules", "m_bIsQueuedMatchmaking")]
-	public ref bool IsQueuedMatchmaking => ref Schema.GetRef<bool>(this.Handle, "CCSGameRules", "m_bIsQueuedMatchmaking");
+	public ref bool IsQueuedMatchmaking => ref __m_bIsQueuedMatchmaking.GetRef(this.Handle);
 
 	// m_nQueuedMatchmakingMode
+	private static readonly SchemaField<Int32> __m_nQueuedMatchmakingMode = new("CCSGameRules", "m_nQueuedMatchmakingMode");
 	[SchemaMember("CCSGameRules", "m_nQueuedMatchmakingMode")]
-	public ref Int32 QueuedMatchmakingMode => ref Schema.GetRef<Int32>(this.Handle, "CCSGameRules", "m_nQueuedMatchmakingMode");
+	public ref Int32 QueuedMatchmakingMode => ref __m_nQueuedMatchmakingMode.GetRef(this.Handle);
 
 	// m_bIsValveDS
+	private static readonly SchemaField<bool> __m_bIsValveDS = new("CCSGameRules", "m_bIsValveDS");
 	[SchemaMember("CCSGameRules", "m_bIsValveDS")]
-	public ref bool IsValveDS => ref Schema.GetRef<bool>(this.Handle, "CCSGameRules", "m_bIsValveDS");
+	public ref bool IsValveDS => ref __m_bIsValveDS.GetRef(this.Handle);
 
 	// m_bLogoMap
+	private static readonly SchemaField<bool> __m_bLogoMap = new("CCSGameRules", "m_bLogoMap");
 	[SchemaMember("CCSGameRules", "m_bLogoMap")]
-	public ref bool LogoMap => ref Schema.GetRef<bool>(this.Handle, "CCSGameRules", "m_bLogoMap");
+	public ref bool LogoMap => ref __m_bLogoMap.GetRef(this.Handle);
 
 	// m_bPlayAllStepSoundsOnServer
+	private static readonly SchemaField<bool> __m_bPlayAllStepSoundsOnServer = new("CCSGameRules", "m_bPlayAllStepSoundsOnServer");
 	[SchemaMember("CCSGameRules", "m_bPlayAllStepSoundsOnServer")]
-	public ref bool PlayAllStepSoundsOnServer => ref Schema.GetRef<bool>(this.Handle, "CCSGameRules", "m_bPlayAllStepSoundsOnServer");
+	public ref bool PlayAllStepSoundsOnServer => ref __m_bPlayAllStepSoundsOnServer.GetRef(this.Handle);
 
 	// m_iSpectatorSlotCount
+	private static readonly SchemaField<Int32> __m_iSpectatorSlotCount = new("CCSGameRules", "m_iSpectatorSlotCount");
 	[SchemaMember("CCSGameRules", "m_iSpectatorSlotCount")]
-	public ref Int32 SpectatorSlotCount => ref Schema.GetRef<Int32>(this.Handle, "CCSGameRules", "m_iSpectatorSlotCount");
+	public ref Int32 SpectatorSlotCount => ref __m_iSpectatorSlotCount.GetRef(this.Handle);
 
 	// m_MatchDevice
+	private static readonly SchemaField<Int32> __m_MatchDevice = new("CCSGameRules", "m_MatchDevice");
 	[SchemaMember("CCSGameRules", "m_MatchDevice")]
-	public ref Int32 MatchDevice => ref Schema.GetRef<Int32>(this.Handle, "CCSGameRules", "m_MatchDevice");
+	public ref Int32 MatchDevice => ref __m_MatchDevice.GetRef(this.Handle);
 
 	// m_bHasMatchStarted
+	private static readonly SchemaField<bool> __m_bHasMatchStarted = new("CCSGameRules", "m_bHasMatchStarted");
 	[SchemaMember("CCSGameRules", "m_bHasMatchStarted")]
-	public ref bool HasMatchStarted => ref Schema.GetRef<bool>(this.Handle, "CCSGameRules", "m_bHasMatchStarted");
+	public ref bool HasMatchStarted => ref __m_bHasMatchStarted.GetRef(this.Handle);
 
 	// m_nNextMapInMapgroup
+	private static readonly SchemaField<Int32> __m_nNextMapInMapgroup = new("CCSGameRules", "m_nNextMapInMapgroup");
 	[SchemaMember("CCSGameRules", "m_nNextMapInMapgroup")]
-	public ref Int32 NextMapInMapgroup => ref Schema.GetRef<Int32>(this.Handle, "CCSGameRules", "m_nNextMapInMapgroup");
+	public ref Int32 NextMapInMapgroup => ref __m_nNextMapInMapgroup.GetRef(this.Handle);
 
 	// m_szTournamentEventName
 	[SchemaMember("CCSGameRules", "m_szTournamentEventName")]
@@ -203,32 +241,39 @@ public partial class CCSGameRules : CTeamplayRules
 	}
 
 	// m_nTournamentPredictionsPct
+	private static readonly SchemaField<Int32> __m_nTournamentPredictionsPct = new("CCSGameRules", "m_nTournamentPredictionsPct");
 	[SchemaMember("CCSGameRules", "m_nTournamentPredictionsPct")]
-	public ref Int32 TournamentPredictionsPct => ref Schema.GetRef<Int32>(this.Handle, "CCSGameRules", "m_nTournamentPredictionsPct");
+	public ref Int32 TournamentPredictionsPct => ref __m_nTournamentPredictionsPct.GetRef(this.Handle);
 
 	// m_flCMMItemDropRevealStartTime
+	private static readonly SchemaField<float> __m_flCMMItemDropRevealStartTime = new("CCSGameRules", "m_flCMMItemDropRevealStartTime");
 	[SchemaMember("CCSGameRules", "m_flCMMItemDropRevealStartTime")]
-	public ref float CMMItemDropRevealStartTime => ref Schema.GetRef<float>(this.Handle, "CCSGameRules", "m_flCMMItemDropRevealStartTime");
+	public ref float CMMItemDropRevealStartTime => ref __m_flCMMItemDropRevealStartTime.GetRef(this.Handle);
 
 	// m_flCMMItemDropRevealEndTime
+	private static readonly SchemaField<float> __m_flCMMItemDropRevealEndTime = new("CCSGameRules", "m_flCMMItemDropRevealEndTime");
 	[SchemaMember("CCSGameRules", "m_flCMMItemDropRevealEndTime")]
-	public ref float CMMItemDropRevealEndTime => ref Schema.GetRef<float>(this.Handle, "CCSGameRules", "m_flCMMItemDropRevealEndTime");
+	public ref float CMMItemDropRevealEndTime => ref __m_flCMMItemDropRevealEndTime.GetRef(this.Handle);
 
 	// m_bIsDroppingItems
+	private static readonly SchemaField<bool> __m_bIsDroppingItems = new("CCSGameRules", "m_bIsDroppingItems");
 	[SchemaMember("CCSGameRules", "m_bIsDroppingItems")]
-	public ref bool IsDroppingItems => ref Schema.GetRef<bool>(this.Handle, "CCSGameRules", "m_bIsDroppingItems");
+	public ref bool IsDroppingItems => ref __m_bIsDroppingItems.GetRef(this.Handle);
 
 	// m_bIsQuestEligible
+	private static readonly SchemaField<bool> __m_bIsQuestEligible = new("CCSGameRules", "m_bIsQuestEligible");
 	[SchemaMember("CCSGameRules", "m_bIsQuestEligible")]
-	public ref bool IsQuestEligible => ref Schema.GetRef<bool>(this.Handle, "CCSGameRules", "m_bIsQuestEligible");
+	public ref bool IsQuestEligible => ref __m_bIsQuestEligible.GetRef(this.Handle);
 
 	// m_bIsHltvActive
+	private static readonly SchemaField<bool> __m_bIsHltvActive = new("CCSGameRules", "m_bIsHltvActive");
 	[SchemaMember("CCSGameRules", "m_bIsHltvActive")]
-	public ref bool IsHltvActive => ref Schema.GetRef<bool>(this.Handle, "CCSGameRules", "m_bIsHltvActive");
+	public ref bool IsHltvActive => ref __m_bIsHltvActive.GetRef(this.Handle);
 
 	// m_bBombPlanted
+	private static readonly SchemaField<bool> __m_bBombPlanted = new("CCSGameRules", "m_bBombPlanted");
 	[SchemaMember("CCSGameRules", "m_bBombPlanted")]
-	public ref bool BombPlanted => ref Schema.GetRef<bool>(this.Handle, "CCSGameRules", "m_bBombPlanted");
+	public ref bool BombPlanted => ref __m_bBombPlanted.GetRef(this.Handle);
 
 	// m_arrProhibitedItemIndices
 	[SchemaMember("CCSGameRules", "m_arrProhibitedItemIndices")]
@@ -239,32 +284,39 @@ public partial class CCSGameRules : CTeamplayRules
 	public Span<UInt32> TournamentActiveCasterAccounts => Schema.GetFixedArray<UInt32>(this.Handle, "CCSGameRules", "m_arrTournamentActiveCasterAccounts", 4);
 
 	// m_numBestOfMaps
+	private static readonly SchemaField<Int32> __m_numBestOfMaps = new("CCSGameRules", "m_numBestOfMaps");
 	[SchemaMember("CCSGameRules", "m_numBestOfMaps")]
-	public ref Int32 NumBestOfMaps => ref Schema.GetRef<Int32>(this.Handle, "CCSGameRules", "m_numBestOfMaps");
+	public ref Int32 NumBestOfMaps => ref __m_numBestOfMaps.GetRef(this.Handle);
 
 	// m_nHalloweenMaskListSeed
+	private static readonly SchemaField<Int32> __m_nHalloweenMaskListSeed = new("CCSGameRules", "m_nHalloweenMaskListSeed");
 	[SchemaMember("CCSGameRules", "m_nHalloweenMaskListSeed")]
-	public ref Int32 HalloweenMaskListSeed => ref Schema.GetRef<Int32>(this.Handle, "CCSGameRules", "m_nHalloweenMaskListSeed");
+	public ref Int32 HalloweenMaskListSeed => ref __m_nHalloweenMaskListSeed.GetRef(this.Handle);
 
 	// m_bBombDropped
+	private static readonly SchemaField<bool> __m_bBombDropped = new("CCSGameRules", "m_bBombDropped");
 	[SchemaMember("CCSGameRules", "m_bBombDropped")]
-	public ref bool BombDropped => ref Schema.GetRef<bool>(this.Handle, "CCSGameRules", "m_bBombDropped");
+	public ref bool BombDropped => ref __m_bBombDropped.GetRef(this.Handle);
 
 	// m_iRoundWinStatus
+	private static readonly SchemaField<Int32> __m_iRoundWinStatus = new("CCSGameRules", "m_iRoundWinStatus");
 	[SchemaMember("CCSGameRules", "m_iRoundWinStatus")]
-	public ref Int32 RoundWinStatus => ref Schema.GetRef<Int32>(this.Handle, "CCSGameRules", "m_iRoundWinStatus");
+	public ref Int32 RoundWinStatus => ref __m_iRoundWinStatus.GetRef(this.Handle);
 
 	// m_eRoundWinReason
+	private static readonly SchemaField<Int32> __m_eRoundWinReason = new("CCSGameRules", "m_eRoundWinReason");
 	[SchemaMember("CCSGameRules", "m_eRoundWinReason")]
-	public ref Int32 RoundWinReason => ref Schema.GetRef<Int32>(this.Handle, "CCSGameRules", "m_eRoundWinReason");
+	public ref Int32 RoundWinReason => ref __m_eRoundWinReason.GetRef(this.Handle);
 
 	// m_bTCantBuy
+	private static readonly SchemaField<bool> __m_bTCantBuy = new("CCSGameRules", "m_bTCantBuy");
 	[SchemaMember("CCSGameRules", "m_bTCantBuy")]
-	public ref bool TCantBuy => ref Schema.GetRef<bool>(this.Handle, "CCSGameRules", "m_bTCantBuy");
+	public ref bool TCantBuy => ref __m_bTCantBuy.GetRef(this.Handle);
 
 	// m_bCTCantBuy
+	private static readonly SchemaField<bool> __m_bCTCantBuy = new("CCSGameRules", "m_bCTCantBuy");
 	[SchemaMember("CCSGameRules", "m_bCTCantBuy")]
-	public ref bool CTCantBuy => ref Schema.GetRef<bool>(this.Handle, "CCSGameRules", "m_bCTCantBuy");
+	public ref bool CTCantBuy => ref __m_bCTCantBuy.GetRef(this.Handle);
 
 	// m_iMatchStats_RoundResults
 	[SchemaMember("CCSGameRules", "m_iMatchStats_RoundResults")]
@@ -299,8 +351,9 @@ public partial class CCSGameRules : CTeamplayRules
 	public Span<float> MinimapVerticalSectionHeights => Schema.GetFixedArray<float>(this.Handle, "CCSGameRules", "m_MinimapVerticalSectionHeights", 8);
 
 	// m_ullLocalMatchID
+	private static readonly SchemaField<UInt64> __m_ullLocalMatchID = new("CCSGameRules", "m_ullLocalMatchID");
 	[SchemaMember("CCSGameRules", "m_ullLocalMatchID")]
-	public ref UInt64 UllLocalMatchID => ref Schema.GetRef<UInt64>(this.Handle, "CCSGameRules", "m_ullLocalMatchID");
+	public ref UInt64 UllLocalMatchID => ref __m_ullLocalMatchID.GetRef(this.Handle);
 
 	// m_nEndMatchMapGroupVoteTypes
 	[SchemaMember("CCSGameRules", "m_nEndMatchMapGroupVoteTypes")]
@@ -311,108 +364,132 @@ public partial class CCSGameRules : CTeamplayRules
 	public Span<Int32> EndMatchMapGroupVoteOptions => Schema.GetFixedArray<Int32>(this.Handle, "CCSGameRules", "m_nEndMatchMapGroupVoteOptions", 10);
 
 	// m_nEndMatchMapVoteWinner
+	private static readonly SchemaField<Int32> __m_nEndMatchMapVoteWinner = new("CCSGameRules", "m_nEndMatchMapVoteWinner");
 	[SchemaMember("CCSGameRules", "m_nEndMatchMapVoteWinner")]
-	public ref Int32 EndMatchMapVoteWinner => ref Schema.GetRef<Int32>(this.Handle, "CCSGameRules", "m_nEndMatchMapVoteWinner");
+	public ref Int32 EndMatchMapVoteWinner => ref __m_nEndMatchMapVoteWinner.GetRef(this.Handle);
 
 	// m_iNumConsecutiveCTLoses
+	private static readonly SchemaField<Int32> __m_iNumConsecutiveCTLoses = new("CCSGameRules", "m_iNumConsecutiveCTLoses");
 	[SchemaMember("CCSGameRules", "m_iNumConsecutiveCTLoses")]
-	public ref Int32 NumConsecutiveCTLoses => ref Schema.GetRef<Int32>(this.Handle, "CCSGameRules", "m_iNumConsecutiveCTLoses");
+	public ref Int32 NumConsecutiveCTLoses => ref __m_iNumConsecutiveCTLoses.GetRef(this.Handle);
 
 	// m_iNumConsecutiveTerroristLoses
+	private static readonly SchemaField<Int32> __m_iNumConsecutiveTerroristLoses = new("CCSGameRules", "m_iNumConsecutiveTerroristLoses");
 	[SchemaMember("CCSGameRules", "m_iNumConsecutiveTerroristLoses")]
-	public ref Int32 NumConsecutiveTerroristLoses => ref Schema.GetRef<Int32>(this.Handle, "CCSGameRules", "m_iNumConsecutiveTerroristLoses");
+	public ref Int32 NumConsecutiveTerroristLoses => ref __m_iNumConsecutiveTerroristLoses.GetRef(this.Handle);
 
 	// m_bHasHostageBeenTouched
+	private static readonly SchemaField<bool> __m_bHasHostageBeenTouched = new("CCSGameRules", "m_bHasHostageBeenTouched");
 	[SchemaMember("CCSGameRules", "m_bHasHostageBeenTouched")]
-	public ref bool HasHostageBeenTouched => ref Schema.GetRef<bool>(this.Handle, "CCSGameRules", "m_bHasHostageBeenTouched");
+	public ref bool HasHostageBeenTouched => ref __m_bHasHostageBeenTouched.GetRef(this.Handle);
 
 	// m_flIntermissionStartTime
+	private static readonly SchemaField<float> __m_flIntermissionStartTime = new("CCSGameRules", "m_flIntermissionStartTime");
 	[SchemaMember("CCSGameRules", "m_flIntermissionStartTime")]
-	public ref float IntermissionStartTime => ref Schema.GetRef<float>(this.Handle, "CCSGameRules", "m_flIntermissionStartTime");
+	public ref float IntermissionStartTime => ref __m_flIntermissionStartTime.GetRef(this.Handle);
 
 	// m_flIntermissionEndTime
+	private static readonly SchemaField<float> __m_flIntermissionEndTime = new("CCSGameRules", "m_flIntermissionEndTime");
 	[SchemaMember("CCSGameRules", "m_flIntermissionEndTime")]
-	public ref float IntermissionEndTime => ref Schema.GetRef<float>(this.Handle, "CCSGameRules", "m_flIntermissionEndTime");
+	public ref float IntermissionEndTime => ref __m_flIntermissionEndTime.GetRef(this.Handle);
 
 	// m_bLevelInitialized
+	private static readonly SchemaField<bool> __m_bLevelInitialized = new("CCSGameRules", "m_bLevelInitialized");
 	[SchemaMember("CCSGameRules", "m_bLevelInitialized")]
-	public ref bool LevelInitialized => ref Schema.GetRef<bool>(this.Handle, "CCSGameRules", "m_bLevelInitialized");
+	public ref bool LevelInitialized => ref __m_bLevelInitialized.GetRef(this.Handle);
 
 	// m_iTotalRoundsPlayed
+	private static readonly SchemaField<Int32> __m_iTotalRoundsPlayed = new("CCSGameRules", "m_iTotalRoundsPlayed");
 	[SchemaMember("CCSGameRules", "m_iTotalRoundsPlayed")]
-	public ref Int32 ITotalRoundsPlayed => ref Schema.GetRef<Int32>(this.Handle, "CCSGameRules", "m_iTotalRoundsPlayed");
+	public ref Int32 ITotalRoundsPlayed => ref __m_iTotalRoundsPlayed.GetRef(this.Handle);
 
 	// m_iUnBalancedRounds
+	private static readonly SchemaField<Int32> __m_iUnBalancedRounds = new("CCSGameRules", "m_iUnBalancedRounds");
 	[SchemaMember("CCSGameRules", "m_iUnBalancedRounds")]
-	public ref Int32 UnBalancedRounds => ref Schema.GetRef<Int32>(this.Handle, "CCSGameRules", "m_iUnBalancedRounds");
+	public ref Int32 UnBalancedRounds => ref __m_iUnBalancedRounds.GetRef(this.Handle);
 
 	// m_endMatchOnRoundReset
+	private static readonly SchemaField<bool> __m_endMatchOnRoundReset = new("CCSGameRules", "m_endMatchOnRoundReset");
 	[SchemaMember("CCSGameRules", "m_endMatchOnRoundReset")]
-	public ref bool EndMatchOnRoundReset => ref Schema.GetRef<bool>(this.Handle, "CCSGameRules", "m_endMatchOnRoundReset");
+	public ref bool EndMatchOnRoundReset => ref __m_endMatchOnRoundReset.GetRef(this.Handle);
 
 	// m_endMatchOnThink
+	private static readonly SchemaField<bool> __m_endMatchOnThink = new("CCSGameRules", "m_endMatchOnThink");
 	[SchemaMember("CCSGameRules", "m_endMatchOnThink")]
-	public ref bool EndMatchOnThink => ref Schema.GetRef<bool>(this.Handle, "CCSGameRules", "m_endMatchOnThink");
+	public ref bool EndMatchOnThink => ref __m_endMatchOnThink.GetRef(this.Handle);
 
 	// m_iNumTerrorist
+	private static readonly SchemaField<Int32> __m_iNumTerrorist = new("CCSGameRules", "m_iNumTerrorist");
 	[SchemaMember("CCSGameRules", "m_iNumTerrorist")]
-	public ref Int32 NumTerrorist => ref Schema.GetRef<Int32>(this.Handle, "CCSGameRules", "m_iNumTerrorist");
+	public ref Int32 NumTerrorist => ref __m_iNumTerrorist.GetRef(this.Handle);
 
 	// m_iNumCT
+	private static readonly SchemaField<Int32> __m_iNumCT = new("CCSGameRules", "m_iNumCT");
 	[SchemaMember("CCSGameRules", "m_iNumCT")]
-	public ref Int32 NumCT => ref Schema.GetRef<Int32>(this.Handle, "CCSGameRules", "m_iNumCT");
+	public ref Int32 NumCT => ref __m_iNumCT.GetRef(this.Handle);
 
 	// m_iNumSpawnableTerrorist
+	private static readonly SchemaField<Int32> __m_iNumSpawnableTerrorist = new("CCSGameRules", "m_iNumSpawnableTerrorist");
 	[SchemaMember("CCSGameRules", "m_iNumSpawnableTerrorist")]
-	public ref Int32 NumSpawnableTerrorist => ref Schema.GetRef<Int32>(this.Handle, "CCSGameRules", "m_iNumSpawnableTerrorist");
+	public ref Int32 NumSpawnableTerrorist => ref __m_iNumSpawnableTerrorist.GetRef(this.Handle);
 
 	// m_iNumSpawnableCT
+	private static readonly SchemaField<Int32> __m_iNumSpawnableCT = new("CCSGameRules", "m_iNumSpawnableCT");
 	[SchemaMember("CCSGameRules", "m_iNumSpawnableCT")]
-	public ref Int32 NumSpawnableCT => ref Schema.GetRef<Int32>(this.Handle, "CCSGameRules", "m_iNumSpawnableCT");
+	public ref Int32 NumSpawnableCT => ref __m_iNumSpawnableCT.GetRef(this.Handle);
 
 	// m_arrSelectedHostageSpawnIndices
 	[SchemaMember("CCSGameRules", "m_arrSelectedHostageSpawnIndices")]
 	public NetworkedVector<Int32> SelectedHostageSpawnIndices => Schema.GetDeclaredClass<NetworkedVector<Int32>>(this.Handle, "CCSGameRules", "m_arrSelectedHostageSpawnIndices");
 
 	// m_nSpawnPointsRandomSeed
+	private static readonly SchemaField<Int32> __m_nSpawnPointsRandomSeed = new("CCSGameRules", "m_nSpawnPointsRandomSeed");
 	[SchemaMember("CCSGameRules", "m_nSpawnPointsRandomSeed")]
-	public ref Int32 SpawnPointsRandomSeed => ref Schema.GetRef<Int32>(this.Handle, "CCSGameRules", "m_nSpawnPointsRandomSeed");
+	public ref Int32 SpawnPointsRandomSeed => ref __m_nSpawnPointsRandomSeed.GetRef(this.Handle);
 
 	// m_bFirstConnected
+	private static readonly SchemaField<bool> __m_bFirstConnected = new("CCSGameRules", "m_bFirstConnected");
 	[SchemaMember("CCSGameRules", "m_bFirstConnected")]
-	public ref bool FirstConnected => ref Schema.GetRef<bool>(this.Handle, "CCSGameRules", "m_bFirstConnected");
+	public ref bool FirstConnected => ref __m_bFirstConnected.GetRef(this.Handle);
 
 	// m_bCompleteReset
+	private static readonly SchemaField<bool> __m_bCompleteReset = new("CCSGameRules", "m_bCompleteReset");
 	[SchemaMember("CCSGameRules", "m_bCompleteReset")]
-	public ref bool CompleteReset => ref Schema.GetRef<bool>(this.Handle, "CCSGameRules", "m_bCompleteReset");
+	public ref bool CompleteReset => ref __m_bCompleteReset.GetRef(this.Handle);
 
 	// m_bPickNewTeamsOnReset
+	private static readonly SchemaField<bool> __m_bPickNewTeamsOnReset = new("CCSGameRules", "m_bPickNewTeamsOnReset");
 	[SchemaMember("CCSGameRules", "m_bPickNewTeamsOnReset")]
-	public ref bool PickNewTeamsOnReset => ref Schema.GetRef<bool>(this.Handle, "CCSGameRules", "m_bPickNewTeamsOnReset");
+	public ref bool PickNewTeamsOnReset => ref __m_bPickNewTeamsOnReset.GetRef(this.Handle);
 
 	// m_bScrambleTeamsOnRestart
+	private static readonly SchemaField<bool> __m_bScrambleTeamsOnRestart = new("CCSGameRules", "m_bScrambleTeamsOnRestart");
 	[SchemaMember("CCSGameRules", "m_bScrambleTeamsOnRestart")]
-	public ref bool ScrambleTeamsOnRestart => ref Schema.GetRef<bool>(this.Handle, "CCSGameRules", "m_bScrambleTeamsOnRestart");
+	public ref bool ScrambleTeamsOnRestart => ref __m_bScrambleTeamsOnRestart.GetRef(this.Handle);
 
 	// m_bSwapTeamsOnRestart
+	private static readonly SchemaField<bool> __m_bSwapTeamsOnRestart = new("CCSGameRules", "m_bSwapTeamsOnRestart");
 	[SchemaMember("CCSGameRules", "m_bSwapTeamsOnRestart")]
-	public ref bool SwapTeamsOnRestart => ref Schema.GetRef<bool>(this.Handle, "CCSGameRules", "m_bSwapTeamsOnRestart");
+	public ref bool SwapTeamsOnRestart => ref __m_bSwapTeamsOnRestart.GetRef(this.Handle);
 
 	// m_nEndMatchTiedVotes
 	[SchemaMember("CCSGameRules", "m_nEndMatchTiedVotes")]
 	public NetworkedVector<Int32> EndMatchTiedVotes => Schema.GetDeclaredClass<NetworkedVector<Int32>>(this.Handle, "CCSGameRules", "m_nEndMatchTiedVotes");
 
 	// m_bNeedToAskPlayersForContinueVote
+	private static readonly SchemaField<bool> __m_bNeedToAskPlayersForContinueVote = new("CCSGameRules", "m_bNeedToAskPlayersForContinueVote");
 	[SchemaMember("CCSGameRules", "m_bNeedToAskPlayersForContinueVote")]
-	public ref bool NeedToAskPlayersForContinueVote => ref Schema.GetRef<bool>(this.Handle, "CCSGameRules", "m_bNeedToAskPlayersForContinueVote");
+	public ref bool NeedToAskPlayersForContinueVote => ref __m_bNeedToAskPlayersForContinueVote.GetRef(this.Handle);
 
 	// m_numQueuedMatchmakingAccounts
+	private static readonly SchemaField<UInt32> __m_numQueuedMatchmakingAccounts = new("CCSGameRules", "m_numQueuedMatchmakingAccounts");
 	[SchemaMember("CCSGameRules", "m_numQueuedMatchmakingAccounts")]
-	public ref UInt32 NumQueuedMatchmakingAccounts => ref Schema.GetRef<UInt32>(this.Handle, "CCSGameRules", "m_numQueuedMatchmakingAccounts");
+	public ref UInt32 NumQueuedMatchmakingAccounts => ref __m_numQueuedMatchmakingAccounts.GetRef(this.Handle);
 
 	// m_fAvgPlayerRank
+	private static readonly SchemaField<float> __m_fAvgPlayerRank = new("CCSGameRules", "m_fAvgPlayerRank");
 	[SchemaMember("CCSGameRules", "m_fAvgPlayerRank")]
-	public ref float AvgPlayerRank => ref Schema.GetRef<float>(this.Handle, "CCSGameRules", "m_fAvgPlayerRank");
+	public ref float AvgPlayerRank => ref __m_fAvgPlayerRank.GetRef(this.Handle);
 
 	// m_pQueuedMatchmakingReservationString
 	[SchemaMember("CCSGameRules", "m_pQueuedMatchmakingReservationString")]
@@ -423,172 +500,214 @@ public partial class CCSGameRules : CTeamplayRules
 	}
 
 	// m_numTotalTournamentDrops
+	private static readonly SchemaField<UInt32> __m_numTotalTournamentDrops = new("CCSGameRules", "m_numTotalTournamentDrops");
 	[SchemaMember("CCSGameRules", "m_numTotalTournamentDrops")]
-	public ref UInt32 NumTotalTournamentDrops => ref Schema.GetRef<UInt32>(this.Handle, "CCSGameRules", "m_numTotalTournamentDrops");
+	public ref UInt32 NumTotalTournamentDrops => ref __m_numTotalTournamentDrops.GetRef(this.Handle);
 
 	// m_numSpectatorsCountMax
+	private static readonly SchemaField<UInt32> __m_numSpectatorsCountMax = new("CCSGameRules", "m_numSpectatorsCountMax");
 	[SchemaMember("CCSGameRules", "m_numSpectatorsCountMax")]
-	public ref UInt32 NumSpectatorsCountMax => ref Schema.GetRef<UInt32>(this.Handle, "CCSGameRules", "m_numSpectatorsCountMax");
+	public ref UInt32 NumSpectatorsCountMax => ref __m_numSpectatorsCountMax.GetRef(this.Handle);
 
 	// m_numSpectatorsCountMaxTV
+	private static readonly SchemaField<UInt32> __m_numSpectatorsCountMaxTV = new("CCSGameRules", "m_numSpectatorsCountMaxTV");
 	[SchemaMember("CCSGameRules", "m_numSpectatorsCountMaxTV")]
-	public ref UInt32 NumSpectatorsCountMaxTV => ref Schema.GetRef<UInt32>(this.Handle, "CCSGameRules", "m_numSpectatorsCountMaxTV");
+	public ref UInt32 NumSpectatorsCountMaxTV => ref __m_numSpectatorsCountMaxTV.GetRef(this.Handle);
 
 	// m_numSpectatorsCountMaxLnk
+	private static readonly SchemaField<UInt32> __m_numSpectatorsCountMaxLnk = new("CCSGameRules", "m_numSpectatorsCountMaxLnk");
 	[SchemaMember("CCSGameRules", "m_numSpectatorsCountMaxLnk")]
-	public ref UInt32 NumSpectatorsCountMaxLnk => ref Schema.GetRef<UInt32>(this.Handle, "CCSGameRules", "m_numSpectatorsCountMaxLnk");
+	public ref UInt32 NumSpectatorsCountMaxLnk => ref __m_numSpectatorsCountMaxLnk.GetRef(this.Handle);
 
 	// m_nCTsAliveAtFreezetimeEnd
+	private static readonly SchemaField<Int32> __m_nCTsAliveAtFreezetimeEnd = new("CCSGameRules", "m_nCTsAliveAtFreezetimeEnd");
 	[SchemaMember("CCSGameRules", "m_nCTsAliveAtFreezetimeEnd")]
-	public ref Int32 CTsAliveAtFreezetimeEnd => ref Schema.GetRef<Int32>(this.Handle, "CCSGameRules", "m_nCTsAliveAtFreezetimeEnd");
+	public ref Int32 CTsAliveAtFreezetimeEnd => ref __m_nCTsAliveAtFreezetimeEnd.GetRef(this.Handle);
 
 	// m_nTerroristsAliveAtFreezetimeEnd
+	private static readonly SchemaField<Int32> __m_nTerroristsAliveAtFreezetimeEnd = new("CCSGameRules", "m_nTerroristsAliveAtFreezetimeEnd");
 	[SchemaMember("CCSGameRules", "m_nTerroristsAliveAtFreezetimeEnd")]
-	public ref Int32 TerroristsAliveAtFreezetimeEnd => ref Schema.GetRef<Int32>(this.Handle, "CCSGameRules", "m_nTerroristsAliveAtFreezetimeEnd");
+	public ref Int32 TerroristsAliveAtFreezetimeEnd => ref __m_nTerroristsAliveAtFreezetimeEnd.GetRef(this.Handle);
 
 	// m_bForceTeamChangeSilent
+	private static readonly SchemaField<bool> __m_bForceTeamChangeSilent = new("CCSGameRules", "m_bForceTeamChangeSilent");
 	[SchemaMember("CCSGameRules", "m_bForceTeamChangeSilent")]
-	public ref bool ForceTeamChangeSilent => ref Schema.GetRef<bool>(this.Handle, "CCSGameRules", "m_bForceTeamChangeSilent");
+	public ref bool ForceTeamChangeSilent => ref __m_bForceTeamChangeSilent.GetRef(this.Handle);
 
 	// m_bLoadingRoundBackupData
+	private static readonly SchemaField<bool> __m_bLoadingRoundBackupData = new("CCSGameRules", "m_bLoadingRoundBackupData");
 	[SchemaMember("CCSGameRules", "m_bLoadingRoundBackupData")]
-	public ref bool LoadingRoundBackupData => ref Schema.GetRef<bool>(this.Handle, "CCSGameRules", "m_bLoadingRoundBackupData");
+	public ref bool LoadingRoundBackupData => ref __m_bLoadingRoundBackupData.GetRef(this.Handle);
 
 	// m_nMatchInfoShowType
+	private static readonly SchemaField<Int32> __m_nMatchInfoShowType = new("CCSGameRules", "m_nMatchInfoShowType");
 	[SchemaMember("CCSGameRules", "m_nMatchInfoShowType")]
-	public ref Int32 MatchInfoShowType => ref Schema.GetRef<Int32>(this.Handle, "CCSGameRules", "m_nMatchInfoShowType");
+	public ref Int32 MatchInfoShowType => ref __m_nMatchInfoShowType.GetRef(this.Handle);
 
 	// m_flMatchInfoDecidedTime
+	private static readonly SchemaField<float> __m_flMatchInfoDecidedTime = new("CCSGameRules", "m_flMatchInfoDecidedTime");
 	[SchemaMember("CCSGameRules", "m_flMatchInfoDecidedTime")]
-	public ref float MatchInfoDecidedTime => ref Schema.GetRef<float>(this.Handle, "CCSGameRules", "m_flMatchInfoDecidedTime");
+	public ref float MatchInfoDecidedTime => ref __m_flMatchInfoDecidedTime.GetRef(this.Handle);
 
 	// mTeamDMLastWinningTeamNumber
+	private static readonly SchemaField<Int32> __mTeamDMLastWinningTeamNumber = new("CCSGameRules", "mTeamDMLastWinningTeamNumber");
 	[SchemaMember("CCSGameRules", "mTeamDMLastWinningTeamNumber")]
-	public ref Int32 MTeamDMLastWinningTeamNumber => ref Schema.GetRef<Int32>(this.Handle, "CCSGameRules", "mTeamDMLastWinningTeamNumber");
+	public ref Int32 MTeamDMLastWinningTeamNumber => ref __mTeamDMLastWinningTeamNumber.GetRef(this.Handle);
 
 	// mTeamDMLastThinkTime
+	private static readonly SchemaField<float> __mTeamDMLastThinkTime = new("CCSGameRules", "mTeamDMLastThinkTime");
 	[SchemaMember("CCSGameRules", "mTeamDMLastThinkTime")]
-	public ref float MTeamDMLastThinkTime => ref Schema.GetRef<float>(this.Handle, "CCSGameRules", "mTeamDMLastThinkTime");
+	public ref float MTeamDMLastThinkTime => ref __mTeamDMLastThinkTime.GetRef(this.Handle);
 
 	// m_flTeamDMLastAnnouncementTime
+	private static readonly SchemaField<float> __m_flTeamDMLastAnnouncementTime = new("CCSGameRules", "m_flTeamDMLastAnnouncementTime");
 	[SchemaMember("CCSGameRules", "m_flTeamDMLastAnnouncementTime")]
-	public ref float TeamDMLastAnnouncementTime => ref Schema.GetRef<float>(this.Handle, "CCSGameRules", "m_flTeamDMLastAnnouncementTime");
+	public ref float TeamDMLastAnnouncementTime => ref __m_flTeamDMLastAnnouncementTime.GetRef(this.Handle);
 
 	// m_iAccountTerrorist
+	private static readonly SchemaField<Int32> __m_iAccountTerrorist = new("CCSGameRules", "m_iAccountTerrorist");
 	[SchemaMember("CCSGameRules", "m_iAccountTerrorist")]
-	public ref Int32 AccountTerrorist => ref Schema.GetRef<Int32>(this.Handle, "CCSGameRules", "m_iAccountTerrorist");
+	public ref Int32 AccountTerrorist => ref __m_iAccountTerrorist.GetRef(this.Handle);
 
 	// m_iAccountCT
+	private static readonly SchemaField<Int32> __m_iAccountCT = new("CCSGameRules", "m_iAccountCT");
 	[SchemaMember("CCSGameRules", "m_iAccountCT")]
-	public ref Int32 AccountCT => ref Schema.GetRef<Int32>(this.Handle, "CCSGameRules", "m_iAccountCT");
+	public ref Int32 AccountCT => ref __m_iAccountCT.GetRef(this.Handle);
 
 	// m_iSpawnPointCount_Terrorist
+	private static readonly SchemaField<Int32> __m_iSpawnPointCount_Terrorist = new("CCSGameRules", "m_iSpawnPointCount_Terrorist");
 	[SchemaMember("CCSGameRules", "m_iSpawnPointCount_Terrorist")]
-	public ref Int32 SpawnPointCount_Terrorist => ref Schema.GetRef<Int32>(this.Handle, "CCSGameRules", "m_iSpawnPointCount_Terrorist");
+	public ref Int32 SpawnPointCount_Terrorist => ref __m_iSpawnPointCount_Terrorist.GetRef(this.Handle);
 
 	// m_iSpawnPointCount_CT
+	private static readonly SchemaField<Int32> __m_iSpawnPointCount_CT = new("CCSGameRules", "m_iSpawnPointCount_CT");
 	[SchemaMember("CCSGameRules", "m_iSpawnPointCount_CT")]
-	public ref Int32 SpawnPointCount_CT => ref Schema.GetRef<Int32>(this.Handle, "CCSGameRules", "m_iSpawnPointCount_CT");
+	public ref Int32 SpawnPointCount_CT => ref __m_iSpawnPointCount_CT.GetRef(this.Handle);
 
 	// m_iMaxNumTerrorists
+	private static readonly SchemaField<Int32> __m_iMaxNumTerrorists = new("CCSGameRules", "m_iMaxNumTerrorists");
 	[SchemaMember("CCSGameRules", "m_iMaxNumTerrorists")]
-	public ref Int32 MaxNumTerrorists => ref Schema.GetRef<Int32>(this.Handle, "CCSGameRules", "m_iMaxNumTerrorists");
+	public ref Int32 MaxNumTerrorists => ref __m_iMaxNumTerrorists.GetRef(this.Handle);
 
 	// m_iMaxNumCTs
+	private static readonly SchemaField<Int32> __m_iMaxNumCTs = new("CCSGameRules", "m_iMaxNumCTs");
 	[SchemaMember("CCSGameRules", "m_iMaxNumCTs")]
-	public ref Int32 MaxNumCTs => ref Schema.GetRef<Int32>(this.Handle, "CCSGameRules", "m_iMaxNumCTs");
+	public ref Int32 MaxNumCTs => ref __m_iMaxNumCTs.GetRef(this.Handle);
 
 	// m_iLoserBonusMostRecentTeam
+	private static readonly SchemaField<Int32> __m_iLoserBonusMostRecentTeam = new("CCSGameRules", "m_iLoserBonusMostRecentTeam");
 	[SchemaMember("CCSGameRules", "m_iLoserBonusMostRecentTeam")]
-	public ref Int32 LoserBonusMostRecentTeam => ref Schema.GetRef<Int32>(this.Handle, "CCSGameRules", "m_iLoserBonusMostRecentTeam");
+	public ref Int32 LoserBonusMostRecentTeam => ref __m_iLoserBonusMostRecentTeam.GetRef(this.Handle);
 
 	// m_tmNextPeriodicThink
+	private static readonly SchemaField<float> __m_tmNextPeriodicThink = new("CCSGameRules", "m_tmNextPeriodicThink");
 	[SchemaMember("CCSGameRules", "m_tmNextPeriodicThink")]
-	public ref float TmNextPeriodicThink => ref Schema.GetRef<float>(this.Handle, "CCSGameRules", "m_tmNextPeriodicThink");
+	public ref float TmNextPeriodicThink => ref __m_tmNextPeriodicThink.GetRef(this.Handle);
 
 	// m_bVoiceWonMatchBragFired
+	private static readonly SchemaField<bool> __m_bVoiceWonMatchBragFired = new("CCSGameRules", "m_bVoiceWonMatchBragFired");
 	[SchemaMember("CCSGameRules", "m_bVoiceWonMatchBragFired")]
-	public ref bool VoiceWonMatchBragFired => ref Schema.GetRef<bool>(this.Handle, "CCSGameRules", "m_bVoiceWonMatchBragFired");
+	public ref bool VoiceWonMatchBragFired => ref __m_bVoiceWonMatchBragFired.GetRef(this.Handle);
 
 	// m_fWarmupNextChatNoticeTime
+	private static readonly SchemaField<float> __m_fWarmupNextChatNoticeTime = new("CCSGameRules", "m_fWarmupNextChatNoticeTime");
 	[SchemaMember("CCSGameRules", "m_fWarmupNextChatNoticeTime")]
-	public ref float WarmupNextChatNoticeTime => ref Schema.GetRef<float>(this.Handle, "CCSGameRules", "m_fWarmupNextChatNoticeTime");
+	public ref float WarmupNextChatNoticeTime => ref __m_fWarmupNextChatNoticeTime.GetRef(this.Handle);
 
 	// m_iHostagesRescued
+	private static readonly SchemaField<Int32> __m_iHostagesRescued = new("CCSGameRules", "m_iHostagesRescued");
 	[SchemaMember("CCSGameRules", "m_iHostagesRescued")]
-	public ref Int32 HostagesRescued => ref Schema.GetRef<Int32>(this.Handle, "CCSGameRules", "m_iHostagesRescued");
+	public ref Int32 HostagesRescued => ref __m_iHostagesRescued.GetRef(this.Handle);
 
 	// m_iHostagesTouched
+	private static readonly SchemaField<Int32> __m_iHostagesTouched = new("CCSGameRules", "m_iHostagesTouched");
 	[SchemaMember("CCSGameRules", "m_iHostagesTouched")]
-	public ref Int32 HostagesTouched => ref Schema.GetRef<Int32>(this.Handle, "CCSGameRules", "m_iHostagesTouched");
+	public ref Int32 HostagesTouched => ref __m_iHostagesTouched.GetRef(this.Handle);
 
 	// m_flNextHostageAnnouncement
+	private static readonly SchemaField<float> __m_flNextHostageAnnouncement = new("CCSGameRules", "m_flNextHostageAnnouncement");
 	[SchemaMember("CCSGameRules", "m_flNextHostageAnnouncement")]
-	public ref float NextHostageAnnouncement => ref Schema.GetRef<float>(this.Handle, "CCSGameRules", "m_flNextHostageAnnouncement");
+	public ref float NextHostageAnnouncement => ref __m_flNextHostageAnnouncement.GetRef(this.Handle);
 
 	// m_bNoTerroristsKilled
+	private static readonly SchemaField<bool> __m_bNoTerroristsKilled = new("CCSGameRules", "m_bNoTerroristsKilled");
 	[SchemaMember("CCSGameRules", "m_bNoTerroristsKilled")]
-	public ref bool NoTerroristsKilled => ref Schema.GetRef<bool>(this.Handle, "CCSGameRules", "m_bNoTerroristsKilled");
+	public ref bool NoTerroristsKilled => ref __m_bNoTerroristsKilled.GetRef(this.Handle);
 
 	// m_bNoCTsKilled
+	private static readonly SchemaField<bool> __m_bNoCTsKilled = new("CCSGameRules", "m_bNoCTsKilled");
 	[SchemaMember("CCSGameRules", "m_bNoCTsKilled")]
-	public ref bool NoCTsKilled => ref Schema.GetRef<bool>(this.Handle, "CCSGameRules", "m_bNoCTsKilled");
+	public ref bool NoCTsKilled => ref __m_bNoCTsKilled.GetRef(this.Handle);
 
 	// m_bNoEnemiesKilled
+	private static readonly SchemaField<bool> __m_bNoEnemiesKilled = new("CCSGameRules", "m_bNoEnemiesKilled");
 	[SchemaMember("CCSGameRules", "m_bNoEnemiesKilled")]
-	public ref bool NoEnemiesKilled => ref Schema.GetRef<bool>(this.Handle, "CCSGameRules", "m_bNoEnemiesKilled");
+	public ref bool NoEnemiesKilled => ref __m_bNoEnemiesKilled.GetRef(this.Handle);
 
 	// m_bCanDonateWeapons
+	private static readonly SchemaField<bool> __m_bCanDonateWeapons = new("CCSGameRules", "m_bCanDonateWeapons");
 	[SchemaMember("CCSGameRules", "m_bCanDonateWeapons")]
-	public ref bool CanDonateWeapons => ref Schema.GetRef<bool>(this.Handle, "CCSGameRules", "m_bCanDonateWeapons");
+	public ref bool CanDonateWeapons => ref __m_bCanDonateWeapons.GetRef(this.Handle);
 
 	// m_firstKillTime
+	private static readonly SchemaField<float> __m_firstKillTime = new("CCSGameRules", "m_firstKillTime");
 	[SchemaMember("CCSGameRules", "m_firstKillTime")]
-	public ref float FirstKillTime => ref Schema.GetRef<float>(this.Handle, "CCSGameRules", "m_firstKillTime");
+	public ref float FirstKillTime => ref __m_firstKillTime.GetRef(this.Handle);
 
 	// m_firstBloodTime
+	private static readonly SchemaField<float> __m_firstBloodTime = new("CCSGameRules", "m_firstBloodTime");
 	[SchemaMember("CCSGameRules", "m_firstBloodTime")]
-	public ref float FirstBloodTime => ref Schema.GetRef<float>(this.Handle, "CCSGameRules", "m_firstBloodTime");
+	public ref float FirstBloodTime => ref __m_firstBloodTime.GetRef(this.Handle);
 
 	// m_hostageWasInjured
+	private static readonly SchemaField<bool> __m_hostageWasInjured = new("CCSGameRules", "m_hostageWasInjured");
 	[SchemaMember("CCSGameRules", "m_hostageWasInjured")]
-	public ref bool HostageWasInjured => ref Schema.GetRef<bool>(this.Handle, "CCSGameRules", "m_hostageWasInjured");
+	public ref bool HostageWasInjured => ref __m_hostageWasInjured.GetRef(this.Handle);
 
 	// m_hostageWasKilled
+	private static readonly SchemaField<bool> __m_hostageWasKilled = new("CCSGameRules", "m_hostageWasKilled");
 	[SchemaMember("CCSGameRules", "m_hostageWasKilled")]
-	public ref bool HostageWasKilled => ref Schema.GetRef<bool>(this.Handle, "CCSGameRules", "m_hostageWasKilled");
+	public ref bool HostageWasKilled => ref __m_hostageWasKilled.GetRef(this.Handle);
 
 	// m_bVoteCalled
+	private static readonly SchemaField<bool> __m_bVoteCalled = new("CCSGameRules", "m_bVoteCalled");
 	[SchemaMember("CCSGameRules", "m_bVoteCalled")]
-	public ref bool VoteCalled => ref Schema.GetRef<bool>(this.Handle, "CCSGameRules", "m_bVoteCalled");
+	public ref bool VoteCalled => ref __m_bVoteCalled.GetRef(this.Handle);
 
 	// m_bServerVoteOnReset
+	private static readonly SchemaField<bool> __m_bServerVoteOnReset = new("CCSGameRules", "m_bServerVoteOnReset");
 	[SchemaMember("CCSGameRules", "m_bServerVoteOnReset")]
-	public ref bool ServerVoteOnReset => ref Schema.GetRef<bool>(this.Handle, "CCSGameRules", "m_bServerVoteOnReset");
+	public ref bool ServerVoteOnReset => ref __m_bServerVoteOnReset.GetRef(this.Handle);
 
 	// m_flVoteCheckThrottle
+	private static readonly SchemaField<float> __m_flVoteCheckThrottle = new("CCSGameRules", "m_flVoteCheckThrottle");
 	[SchemaMember("CCSGameRules", "m_flVoteCheckThrottle")]
-	public ref float VoteCheckThrottle => ref Schema.GetRef<float>(this.Handle, "CCSGameRules", "m_flVoteCheckThrottle");
+	public ref float VoteCheckThrottle => ref __m_flVoteCheckThrottle.GetRef(this.Handle);
 
 	// m_bBuyTimeEnded
+	private static readonly SchemaField<bool> __m_bBuyTimeEnded = new("CCSGameRules", "m_bBuyTimeEnded");
 	[SchemaMember("CCSGameRules", "m_bBuyTimeEnded")]
-	public ref bool BuyTimeEnded => ref Schema.GetRef<bool>(this.Handle, "CCSGameRules", "m_bBuyTimeEnded");
+	public ref bool BuyTimeEnded => ref __m_bBuyTimeEnded.GetRef(this.Handle);
 
 	// m_nLastFreezeEndBeep
+	private static readonly SchemaField<Int32> __m_nLastFreezeEndBeep = new("CCSGameRules", "m_nLastFreezeEndBeep");
 	[SchemaMember("CCSGameRules", "m_nLastFreezeEndBeep")]
-	public ref Int32 LastFreezeEndBeep => ref Schema.GetRef<Int32>(this.Handle, "CCSGameRules", "m_nLastFreezeEndBeep");
+	public ref Int32 LastFreezeEndBeep => ref __m_nLastFreezeEndBeep.GetRef(this.Handle);
 
 	// m_bTargetBombed
+	private static readonly SchemaField<bool> __m_bTargetBombed = new("CCSGameRules", "m_bTargetBombed");
 	[SchemaMember("CCSGameRules", "m_bTargetBombed")]
-	public ref bool TargetBombed => ref Schema.GetRef<bool>(this.Handle, "CCSGameRules", "m_bTargetBombed");
+	public ref bool TargetBombed => ref __m_bTargetBombed.GetRef(this.Handle);
 
 	// m_bBombDefused
+	private static readonly SchemaField<bool> __m_bBombDefused = new("CCSGameRules", "m_bBombDefused");
 	[SchemaMember("CCSGameRules", "m_bBombDefused")]
-	public ref bool BombDefused => ref Schema.GetRef<bool>(this.Handle, "CCSGameRules", "m_bBombDefused");
+	public ref bool BombDefused => ref __m_bBombDefused.GetRef(this.Handle);
 
 	// m_bMapHasBombZone
+	private static readonly SchemaField<bool> __m_bMapHasBombZone = new("CCSGameRules", "m_bMapHasBombZone");
 	[SchemaMember("CCSGameRules", "m_bMapHasBombZone")]
-	public ref bool MapHasBombZone => ref Schema.GetRef<bool>(this.Handle, "CCSGameRules", "m_bMapHasBombZone");
+	public ref bool MapHasBombZone => ref __m_bMapHasBombZone.GetRef(this.Handle);
 
 	// m_vecMainCTSpawnPos
 	[SchemaMember("CCSGameRules", "m_vecMainCTSpawnPos")]
@@ -603,24 +722,29 @@ public partial class CCSGameRules : CTeamplayRules
 	public NetworkedVector<CHandle<SpawnPoint>> TerroristSpawnPointsMasterList => Schema.GetDeclaredClass<NetworkedVector<CHandle<SpawnPoint>>>(this.Handle, "CCSGameRules", "m_TerroristSpawnPointsMasterList");
 
 	// m_bRespawningAllRespawnablePlayers
+	private static readonly SchemaField<bool> __m_bRespawningAllRespawnablePlayers = new("CCSGameRules", "m_bRespawningAllRespawnablePlayers");
 	[SchemaMember("CCSGameRules", "m_bRespawningAllRespawnablePlayers")]
-	public ref bool RespawningAllRespawnablePlayers => ref Schema.GetRef<bool>(this.Handle, "CCSGameRules", "m_bRespawningAllRespawnablePlayers");
+	public ref bool RespawningAllRespawnablePlayers => ref __m_bRespawningAllRespawnablePlayers.GetRef(this.Handle);
 
 	// m_iNextCTSpawnPoint
+	private static readonly SchemaField<Int32> __m_iNextCTSpawnPoint = new("CCSGameRules", "m_iNextCTSpawnPoint");
 	[SchemaMember("CCSGameRules", "m_iNextCTSpawnPoint")]
-	public ref Int32 NextCTSpawnPoint => ref Schema.GetRef<Int32>(this.Handle, "CCSGameRules", "m_iNextCTSpawnPoint");
+	public ref Int32 NextCTSpawnPoint => ref __m_iNextCTSpawnPoint.GetRef(this.Handle);
 
 	// m_flCTSpawnPointUsedTime
+	private static readonly SchemaField<float> __m_flCTSpawnPointUsedTime = new("CCSGameRules", "m_flCTSpawnPointUsedTime");
 	[SchemaMember("CCSGameRules", "m_flCTSpawnPointUsedTime")]
-	public ref float CTSpawnPointUsedTime => ref Schema.GetRef<float>(this.Handle, "CCSGameRules", "m_flCTSpawnPointUsedTime");
+	public ref float CTSpawnPointUsedTime => ref __m_flCTSpawnPointUsedTime.GetRef(this.Handle);
 
 	// m_iNextTerroristSpawnPoint
+	private static readonly SchemaField<Int32> __m_iNextTerroristSpawnPoint = new("CCSGameRules", "m_iNextTerroristSpawnPoint");
 	[SchemaMember("CCSGameRules", "m_iNextTerroristSpawnPoint")]
-	public ref Int32 NextTerroristSpawnPoint => ref Schema.GetRef<Int32>(this.Handle, "CCSGameRules", "m_iNextTerroristSpawnPoint");
+	public ref Int32 NextTerroristSpawnPoint => ref __m_iNextTerroristSpawnPoint.GetRef(this.Handle);
 
 	// m_flTerroristSpawnPointUsedTime
+	private static readonly SchemaField<float> __m_flTerroristSpawnPointUsedTime = new("CCSGameRules", "m_flTerroristSpawnPointUsedTime");
 	[SchemaMember("CCSGameRules", "m_flTerroristSpawnPointUsedTime")]
-	public ref float TerroristSpawnPointUsedTime => ref Schema.GetRef<float>(this.Handle, "CCSGameRules", "m_flTerroristSpawnPointUsedTime");
+	public ref float TerroristSpawnPointUsedTime => ref __m_flTerroristSpawnPointUsedTime.GetRef(this.Handle);
 
 	// m_CTSpawnPoints
 	[SchemaMember("CCSGameRules", "m_CTSpawnPoints")]
@@ -631,52 +755,64 @@ public partial class CCSGameRules : CTeamplayRules
 	public NetworkedVector<CHandle<SpawnPoint>> TerroristSpawnPoints => Schema.GetDeclaredClass<NetworkedVector<CHandle<SpawnPoint>>>(this.Handle, "CCSGameRules", "m_TerroristSpawnPoints");
 
 	// m_bIsUnreservedGameServer
+	private static readonly SchemaField<bool> __m_bIsUnreservedGameServer = new("CCSGameRules", "m_bIsUnreservedGameServer");
 	[SchemaMember("CCSGameRules", "m_bIsUnreservedGameServer")]
-	public ref bool IsUnreservedGameServer => ref Schema.GetRef<bool>(this.Handle, "CCSGameRules", "m_bIsUnreservedGameServer");
+	public ref bool IsUnreservedGameServer => ref __m_bIsUnreservedGameServer.GetRef(this.Handle);
 
 	// m_fAutobalanceDisplayTime
+	private static readonly SchemaField<float> __m_fAutobalanceDisplayTime = new("CCSGameRules", "m_fAutobalanceDisplayTime");
 	[SchemaMember("CCSGameRules", "m_fAutobalanceDisplayTime")]
-	public ref float AutobalanceDisplayTime => ref Schema.GetRef<float>(this.Handle, "CCSGameRules", "m_fAutobalanceDisplayTime");
+	public ref float AutobalanceDisplayTime => ref __m_fAutobalanceDisplayTime.GetRef(this.Handle);
 
 	// m_bAllowWeaponSwitch
+	private static readonly SchemaField<bool> __m_bAllowWeaponSwitch = new("CCSGameRules", "m_bAllowWeaponSwitch");
 	[SchemaMember("CCSGameRules", "m_bAllowWeaponSwitch")]
-	public ref bool AllowWeaponSwitch => ref Schema.GetRef<bool>(this.Handle, "CCSGameRules", "m_bAllowWeaponSwitch");
+	public ref bool AllowWeaponSwitch => ref __m_bAllowWeaponSwitch.GetRef(this.Handle);
 
 	// m_bRoundTimeWarningTriggered
+	private static readonly SchemaField<bool> __m_bRoundTimeWarningTriggered = new("CCSGameRules", "m_bRoundTimeWarningTriggered");
 	[SchemaMember("CCSGameRules", "m_bRoundTimeWarningTriggered")]
-	public ref bool RoundTimeWarningTriggered => ref Schema.GetRef<bool>(this.Handle, "CCSGameRules", "m_bRoundTimeWarningTriggered");
+	public ref bool RoundTimeWarningTriggered => ref __m_bRoundTimeWarningTriggered.GetRef(this.Handle);
 
 	// m_phaseChangeAnnouncementTime
+	private static readonly SchemaField<float> __m_phaseChangeAnnouncementTime = new("CCSGameRules", "m_phaseChangeAnnouncementTime");
 	[SchemaMember("CCSGameRules", "m_phaseChangeAnnouncementTime")]
-	public ref float PhaseChangeAnnouncementTime => ref Schema.GetRef<float>(this.Handle, "CCSGameRules", "m_phaseChangeAnnouncementTime");
+	public ref float PhaseChangeAnnouncementTime => ref __m_phaseChangeAnnouncementTime.GetRef(this.Handle);
 
 	// m_fNextUpdateTeamClanNamesTime
+	private static readonly SchemaField<float> __m_fNextUpdateTeamClanNamesTime = new("CCSGameRules", "m_fNextUpdateTeamClanNamesTime");
 	[SchemaMember("CCSGameRules", "m_fNextUpdateTeamClanNamesTime")]
-	public ref float NextUpdateTeamClanNamesTime => ref Schema.GetRef<float>(this.Handle, "CCSGameRules", "m_fNextUpdateTeamClanNamesTime");
+	public ref float NextUpdateTeamClanNamesTime => ref __m_fNextUpdateTeamClanNamesTime.GetRef(this.Handle);
 
 	// m_flLastThinkTime
+	private static readonly SchemaField<float> __m_flLastThinkTime = new("CCSGameRules", "m_flLastThinkTime");
 	[SchemaMember("CCSGameRules", "m_flLastThinkTime")]
-	public ref float LastThinkTime => ref Schema.GetRef<float>(this.Handle, "CCSGameRules", "m_flLastThinkTime");
+	public ref float LastThinkTime => ref __m_flLastThinkTime.GetRef(this.Handle);
 
 	// m_fAccumulatedRoundOffDamage
+	private static readonly SchemaField<float> __m_fAccumulatedRoundOffDamage = new("CCSGameRules", "m_fAccumulatedRoundOffDamage");
 	[SchemaMember("CCSGameRules", "m_fAccumulatedRoundOffDamage")]
-	public ref float AccumulatedRoundOffDamage => ref Schema.GetRef<float>(this.Handle, "CCSGameRules", "m_fAccumulatedRoundOffDamage");
+	public ref float AccumulatedRoundOffDamage => ref __m_fAccumulatedRoundOffDamage.GetRef(this.Handle);
 
 	// m_nShorthandedBonusLastEvalRound
+	private static readonly SchemaField<Int32> __m_nShorthandedBonusLastEvalRound = new("CCSGameRules", "m_nShorthandedBonusLastEvalRound");
 	[SchemaMember("CCSGameRules", "m_nShorthandedBonusLastEvalRound")]
-	public ref Int32 ShorthandedBonusLastEvalRound => ref Schema.GetRef<Int32>(this.Handle, "CCSGameRules", "m_nShorthandedBonusLastEvalRound");
+	public ref Int32 ShorthandedBonusLastEvalRound => ref __m_nShorthandedBonusLastEvalRound.GetRef(this.Handle);
 
 	// m_nMatchAbortedEarlyReason
+	private static readonly SchemaField<Int32> __m_nMatchAbortedEarlyReason = new("CCSGameRules", "m_nMatchAbortedEarlyReason");
 	[SchemaMember("CCSGameRules", "m_nMatchAbortedEarlyReason")]
-	public ref Int32 MatchAbortedEarlyReason => ref Schema.GetRef<Int32>(this.Handle, "CCSGameRules", "m_nMatchAbortedEarlyReason");
+	public ref Int32 MatchAbortedEarlyReason => ref __m_nMatchAbortedEarlyReason.GetRef(this.Handle);
 
 	// m_bHasTriggeredRoundStartMusic
+	private static readonly SchemaField<bool> __m_bHasTriggeredRoundStartMusic = new("CCSGameRules", "m_bHasTriggeredRoundStartMusic");
 	[SchemaMember("CCSGameRules", "m_bHasTriggeredRoundStartMusic")]
-	public ref bool HasTriggeredRoundStartMusic => ref Schema.GetRef<bool>(this.Handle, "CCSGameRules", "m_bHasTriggeredRoundStartMusic");
+	public ref bool HasTriggeredRoundStartMusic => ref __m_bHasTriggeredRoundStartMusic.GetRef(this.Handle);
 
 	// m_bSwitchingTeamsAtRoundReset
+	private static readonly SchemaField<bool> __m_bSwitchingTeamsAtRoundReset = new("CCSGameRules", "m_bSwitchingTeamsAtRoundReset");
 	[SchemaMember("CCSGameRules", "m_bSwitchingTeamsAtRoundReset")]
-	public ref bool SwitchingTeamsAtRoundReset => ref Schema.GetRef<bool>(this.Handle, "CCSGameRules", "m_bSwitchingTeamsAtRoundReset");
+	public ref bool SwitchingTeamsAtRoundReset => ref __m_bSwitchingTeamsAtRoundReset.GetRef(this.Handle);
 
 	// m_pGameModeRules
 	[SchemaMember("CCSGameRules", "m_pGameModeRules")]
@@ -699,44 +835,54 @@ public partial class CCSGameRules : CTeamplayRules
 	public Span<bool> TeamLastKillUsedUniqueWeaponMatch => Schema.GetFixedArray<bool>(this.Handle, "CCSGameRules", "m_bTeamLastKillUsedUniqueWeaponMatch", 4);
 
 	// m_nMatchEndCount
+	private static readonly SchemaField<byte> __m_nMatchEndCount = new("CCSGameRules", "m_nMatchEndCount");
 	[SchemaMember("CCSGameRules", "m_nMatchEndCount")]
-	public ref byte MatchEndCount => ref Schema.GetRef<byte>(this.Handle, "CCSGameRules", "m_nMatchEndCount");
+	public ref byte MatchEndCount => ref __m_nMatchEndCount.GetRef(this.Handle);
 
 	// m_nTTeamIntroVariant
+	private static readonly SchemaField<Int32> __m_nTTeamIntroVariant = new("CCSGameRules", "m_nTTeamIntroVariant");
 	[SchemaMember("CCSGameRules", "m_nTTeamIntroVariant")]
-	public ref Int32 TTeamIntroVariant => ref Schema.GetRef<Int32>(this.Handle, "CCSGameRules", "m_nTTeamIntroVariant");
+	public ref Int32 TTeamIntroVariant => ref __m_nTTeamIntroVariant.GetRef(this.Handle);
 
 	// m_nCTTeamIntroVariant
+	private static readonly SchemaField<Int32> __m_nCTTeamIntroVariant = new("CCSGameRules", "m_nCTTeamIntroVariant");
 	[SchemaMember("CCSGameRules", "m_nCTTeamIntroVariant")]
-	public ref Int32 CTTeamIntroVariant => ref Schema.GetRef<Int32>(this.Handle, "CCSGameRules", "m_nCTTeamIntroVariant");
+	public ref Int32 CTTeamIntroVariant => ref __m_nCTTeamIntroVariant.GetRef(this.Handle);
 
 	// m_bTeamIntroPeriod
+	private static readonly SchemaField<bool> __m_bTeamIntroPeriod = new("CCSGameRules", "m_bTeamIntroPeriod");
 	[SchemaMember("CCSGameRules", "m_bTeamIntroPeriod")]
-	public ref bool TeamIntroPeriod => ref Schema.GetRef<bool>(this.Handle, "CCSGameRules", "m_bTeamIntroPeriod");
+	public ref bool TeamIntroPeriod => ref __m_bTeamIntroPeriod.GetRef(this.Handle);
 
 	// m_fTeamIntroPeriodEnd
+	private static readonly SchemaField<float> __m_fTeamIntroPeriodEnd = new("CCSGameRules", "m_fTeamIntroPeriodEnd");
 	[SchemaMember("CCSGameRules", "m_fTeamIntroPeriodEnd")]
-	public ref float TeamIntroPeriodEnd => ref Schema.GetRef<float>(this.Handle, "CCSGameRules", "m_fTeamIntroPeriodEnd");
+	public ref float TeamIntroPeriodEnd => ref __m_fTeamIntroPeriodEnd.GetRef(this.Handle);
 
 	// m_bPlayedTeamIntroVO
+	private static readonly SchemaField<bool> __m_bPlayedTeamIntroVO = new("CCSGameRules", "m_bPlayedTeamIntroVO");
 	[SchemaMember("CCSGameRules", "m_bPlayedTeamIntroVO")]
-	public ref bool PlayedTeamIntroVO => ref Schema.GetRef<bool>(this.Handle, "CCSGameRules", "m_bPlayedTeamIntroVO");
+	public ref bool PlayedTeamIntroVO => ref __m_bPlayedTeamIntroVO.GetRef(this.Handle);
 
 	// m_iRoundEndWinnerTeam
+	private static readonly SchemaField<Int32> __m_iRoundEndWinnerTeam = new("CCSGameRules", "m_iRoundEndWinnerTeam");
 	[SchemaMember("CCSGameRules", "m_iRoundEndWinnerTeam")]
-	public ref Int32 RoundEndWinnerTeam => ref Schema.GetRef<Int32>(this.Handle, "CCSGameRules", "m_iRoundEndWinnerTeam");
+	public ref Int32 RoundEndWinnerTeam => ref __m_iRoundEndWinnerTeam.GetRef(this.Handle);
 
 	// m_eRoundEndReason
+	private static readonly SchemaField<Int32> __m_eRoundEndReason = new("CCSGameRules", "m_eRoundEndReason");
 	[SchemaMember("CCSGameRules", "m_eRoundEndReason")]
-	public ref Int32 RoundEndReason => ref Schema.GetRef<Int32>(this.Handle, "CCSGameRules", "m_eRoundEndReason");
+	public ref Int32 RoundEndReason => ref __m_eRoundEndReason.GetRef(this.Handle);
 
 	// m_bRoundEndShowTimerDefend
+	private static readonly SchemaField<bool> __m_bRoundEndShowTimerDefend = new("CCSGameRules", "m_bRoundEndShowTimerDefend");
 	[SchemaMember("CCSGameRules", "m_bRoundEndShowTimerDefend")]
-	public ref bool RoundEndShowTimerDefend => ref Schema.GetRef<bool>(this.Handle, "CCSGameRules", "m_bRoundEndShowTimerDefend");
+	public ref bool RoundEndShowTimerDefend => ref __m_bRoundEndShowTimerDefend.GetRef(this.Handle);
 
 	// m_iRoundEndTimerTime
+	private static readonly SchemaField<Int32> __m_iRoundEndTimerTime = new("CCSGameRules", "m_iRoundEndTimerTime");
 	[SchemaMember("CCSGameRules", "m_iRoundEndTimerTime")]
-	public ref Int32 RoundEndTimerTime => ref Schema.GetRef<Int32>(this.Handle, "CCSGameRules", "m_iRoundEndTimerTime");
+	public ref Int32 RoundEndTimerTime => ref __m_iRoundEndTimerTime.GetRef(this.Handle);
 
 	// m_sRoundEndFunFactToken
 	[SchemaMember("CCSGameRules", "m_sRoundEndFunFactToken")]
@@ -747,20 +893,24 @@ public partial class CCSGameRules : CTeamplayRules
 	}
 
 	// m_iRoundEndFunFactPlayerSlot
+	private static readonly SchemaField<Int32> __m_iRoundEndFunFactPlayerSlot = new("CCSGameRules", "m_iRoundEndFunFactPlayerSlot");
 	[SchemaMember("CCSGameRules", "m_iRoundEndFunFactPlayerSlot")]
-	public ref Int32 RoundEndFunFactPlayerSlot => ref Schema.GetRef<Int32>(this.Handle, "CCSGameRules", "m_iRoundEndFunFactPlayerSlot");
+	public ref Int32 RoundEndFunFactPlayerSlot => ref __m_iRoundEndFunFactPlayerSlot.GetRef(this.Handle);
 
 	// m_iRoundEndFunFactData1
+	private static readonly SchemaField<Int32> __m_iRoundEndFunFactData1 = new("CCSGameRules", "m_iRoundEndFunFactData1");
 	[SchemaMember("CCSGameRules", "m_iRoundEndFunFactData1")]
-	public ref Int32 RoundEndFunFactData1 => ref Schema.GetRef<Int32>(this.Handle, "CCSGameRules", "m_iRoundEndFunFactData1");
+	public ref Int32 RoundEndFunFactData1 => ref __m_iRoundEndFunFactData1.GetRef(this.Handle);
 
 	// m_iRoundEndFunFactData2
+	private static readonly SchemaField<Int32> __m_iRoundEndFunFactData2 = new("CCSGameRules", "m_iRoundEndFunFactData2");
 	[SchemaMember("CCSGameRules", "m_iRoundEndFunFactData2")]
-	public ref Int32 RoundEndFunFactData2 => ref Schema.GetRef<Int32>(this.Handle, "CCSGameRules", "m_iRoundEndFunFactData2");
+	public ref Int32 RoundEndFunFactData2 => ref __m_iRoundEndFunFactData2.GetRef(this.Handle);
 
 	// m_iRoundEndFunFactData3
+	private static readonly SchemaField<Int32> __m_iRoundEndFunFactData3 = new("CCSGameRules", "m_iRoundEndFunFactData3");
 	[SchemaMember("CCSGameRules", "m_iRoundEndFunFactData3")]
-	public ref Int32 RoundEndFunFactData3 => ref Schema.GetRef<Int32>(this.Handle, "CCSGameRules", "m_iRoundEndFunFactData3");
+	public ref Int32 RoundEndFunFactData3 => ref __m_iRoundEndFunFactData3.GetRef(this.Handle);
 
 	// m_sRoundEndMessage
 	[SchemaMember("CCSGameRules", "m_sRoundEndMessage")]
@@ -771,31 +921,38 @@ public partial class CCSGameRules : CTeamplayRules
 	}
 
 	// m_iRoundEndPlayerCount
+	private static readonly SchemaField<Int32> __m_iRoundEndPlayerCount = new("CCSGameRules", "m_iRoundEndPlayerCount");
 	[SchemaMember("CCSGameRules", "m_iRoundEndPlayerCount")]
-	public ref Int32 RoundEndPlayerCount => ref Schema.GetRef<Int32>(this.Handle, "CCSGameRules", "m_iRoundEndPlayerCount");
+	public ref Int32 RoundEndPlayerCount => ref __m_iRoundEndPlayerCount.GetRef(this.Handle);
 
 	// m_bRoundEndNoMusic
+	private static readonly SchemaField<bool> __m_bRoundEndNoMusic = new("CCSGameRules", "m_bRoundEndNoMusic");
 	[SchemaMember("CCSGameRules", "m_bRoundEndNoMusic")]
-	public ref bool RoundEndNoMusic => ref Schema.GetRef<bool>(this.Handle, "CCSGameRules", "m_bRoundEndNoMusic");
+	public ref bool RoundEndNoMusic => ref __m_bRoundEndNoMusic.GetRef(this.Handle);
 
 	// m_iRoundEndLegacy
+	private static readonly SchemaField<Int32> __m_iRoundEndLegacy = new("CCSGameRules", "m_iRoundEndLegacy");
 	[SchemaMember("CCSGameRules", "m_iRoundEndLegacy")]
-	public ref Int32 RoundEndLegacy => ref Schema.GetRef<Int32>(this.Handle, "CCSGameRules", "m_iRoundEndLegacy");
+	public ref Int32 RoundEndLegacy => ref __m_iRoundEndLegacy.GetRef(this.Handle);
 
 	// m_nRoundEndCount
+	private static readonly SchemaField<byte> __m_nRoundEndCount = new("CCSGameRules", "m_nRoundEndCount");
 	[SchemaMember("CCSGameRules", "m_nRoundEndCount")]
-	public ref byte RoundEndCount => ref Schema.GetRef<byte>(this.Handle, "CCSGameRules", "m_nRoundEndCount");
+	public ref byte RoundEndCount => ref __m_nRoundEndCount.GetRef(this.Handle);
 
 	// m_iRoundStartRoundNumber
+	private static readonly SchemaField<Int32> __m_iRoundStartRoundNumber = new("CCSGameRules", "m_iRoundStartRoundNumber");
 	[SchemaMember("CCSGameRules", "m_iRoundStartRoundNumber")]
-	public ref Int32 RoundStartRoundNumber => ref Schema.GetRef<Int32>(this.Handle, "CCSGameRules", "m_iRoundStartRoundNumber");
+	public ref Int32 RoundStartRoundNumber => ref __m_iRoundStartRoundNumber.GetRef(this.Handle);
 
 	// m_nRoundStartCount
+	private static readonly SchemaField<byte> __m_nRoundStartCount = new("CCSGameRules", "m_nRoundStartCount");
 	[SchemaMember("CCSGameRules", "m_nRoundStartCount")]
-	public ref byte RoundStartCount => ref Schema.GetRef<byte>(this.Handle, "CCSGameRules", "m_nRoundStartCount");
+	public ref byte RoundStartCount => ref __m_nRoundStartCount.GetRef(this.Handle);
 
 	// m_flLastPerfSampleTime
+	private static readonly SchemaField<double> __m_flLastPerfSampleTime = new("CCSGameRules", "m_flLastPerfSampleTime");
 	[SchemaMember("CCSGameRules", "m_flLastPerfSampleTime")]
-	public ref double LastPerfSampleTime => ref Schema.GetRef<double>(this.Handle, "CCSGameRules", "m_flLastPerfSampleTime");
+	public ref double LastPerfSampleTime => ref __m_flLastPerfSampleTime.GetRef(this.Handle);
 
 }

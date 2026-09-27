@@ -19,16 +19,19 @@ public partial class CFuncBrush : CBaseModelEntity
     public CFuncBrush (IntPtr pointer) : base(pointer) {}
 
 	// m_iSolidity
+	private static readonly SchemaField<BrushSolidities_e> __m_iSolidity = new("CFuncBrush", "m_iSolidity");
 	[SchemaMember("CFuncBrush", "m_iSolidity")]
-	public ref BrushSolidities_e Solidity => ref Schema.GetRef<BrushSolidities_e>(this.Handle, "CFuncBrush", "m_iSolidity");
+	public ref BrushSolidities_e Solidity => ref __m_iSolidity.GetRef(this.Handle);
 
 	// m_iDisabled
+	private static readonly SchemaField<Int32> __m_iDisabled = new("CFuncBrush", "m_iDisabled");
 	[SchemaMember("CFuncBrush", "m_iDisabled")]
-	public ref Int32 Disabled => ref Schema.GetRef<Int32>(this.Handle, "CFuncBrush", "m_iDisabled");
+	public ref Int32 Disabled => ref __m_iDisabled.GetRef(this.Handle);
 
 	// m_bSolidBsp
+	private static readonly SchemaField<bool> __m_bSolidBsp = new("CFuncBrush", "m_bSolidBsp");
 	[SchemaMember("CFuncBrush", "m_bSolidBsp")]
-	public ref bool SolidBsp => ref Schema.GetRef<bool>(this.Handle, "CFuncBrush", "m_bSolidBsp");
+	public ref bool SolidBsp => ref __m_bSolidBsp.GetRef(this.Handle);
 
 	// m_iszExcludedClass
 	[SchemaMember("CFuncBrush", "m_iszExcludedClass")]
@@ -39,11 +42,13 @@ public partial class CFuncBrush : CBaseModelEntity
 	}
 
 	// m_bInvertExclusion
+	private static readonly SchemaField<bool> __m_bInvertExclusion = new("CFuncBrush", "m_bInvertExclusion");
 	[SchemaMember("CFuncBrush", "m_bInvertExclusion")]
-	public ref bool InvertExclusion => ref Schema.GetRef<bool>(this.Handle, "CFuncBrush", "m_bInvertExclusion");
+	public ref bool InvertExclusion => ref __m_bInvertExclusion.GetRef(this.Handle);
 
 	// m_bScriptedMovement
+	private static readonly SchemaField<bool> __m_bScriptedMovement = new("CFuncBrush", "m_bScriptedMovement");
 	[SchemaMember("CFuncBrush", "m_bScriptedMovement")]
-	public ref bool ScriptedMovement => ref Schema.GetRef<bool>(this.Handle, "CFuncBrush", "m_bScriptedMovement");
+	public ref bool ScriptedMovement => ref __m_bScriptedMovement.GetRef(this.Handle);
 
 }

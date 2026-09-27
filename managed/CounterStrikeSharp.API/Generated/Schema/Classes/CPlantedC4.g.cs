@@ -19,24 +19,29 @@ public partial class CPlantedC4 : CBaseAnimGraph
     public CPlantedC4 (IntPtr pointer) : base(pointer) {}
 
 	// m_bBombTicking
+	private static readonly SchemaField<bool> __m_bBombTicking = new("CPlantedC4", "m_bBombTicking");
 	[SchemaMember("CPlantedC4", "m_bBombTicking")]
-	public ref bool BombTicking => ref Schema.GetRef<bool>(this.Handle, "CPlantedC4", "m_bBombTicking");
+	public ref bool BombTicking => ref __m_bBombTicking.GetRef(this.Handle);
 
 	// m_flC4Blow
+	private static readonly SchemaField<float> __m_flC4Blow = new("CPlantedC4", "m_flC4Blow");
 	[SchemaMember("CPlantedC4", "m_flC4Blow")]
-	public ref float C4Blow => ref Schema.GetRef<float>(this.Handle, "CPlantedC4", "m_flC4Blow");
+	public ref float C4Blow => ref __m_flC4Blow.GetRef(this.Handle);
 
 	// m_nBombSite
+	private static readonly SchemaField<Int32> __m_nBombSite = new("CPlantedC4", "m_nBombSite");
 	[SchemaMember("CPlantedC4", "m_nBombSite")]
-	public ref Int32 BombSite => ref Schema.GetRef<Int32>(this.Handle, "CPlantedC4", "m_nBombSite");
+	public ref Int32 BombSite => ref __m_nBombSite.GetRef(this.Handle);
 
 	// m_nSourceSoundscapeHash
+	private static readonly SchemaField<Int32> __m_nSourceSoundscapeHash = new("CPlantedC4", "m_nSourceSoundscapeHash");
 	[SchemaMember("CPlantedC4", "m_nSourceSoundscapeHash")]
-	public ref Int32 SourceSoundscapeHash => ref Schema.GetRef<Int32>(this.Handle, "CPlantedC4", "m_nSourceSoundscapeHash");
+	public ref Int32 SourceSoundscapeHash => ref __m_nSourceSoundscapeHash.GetRef(this.Handle);
 
 	// m_bAbortDetonationBecauseWorldIsFrozen
+	private static readonly SchemaField<bool> __m_bAbortDetonationBecauseWorldIsFrozen = new("CPlantedC4", "m_bAbortDetonationBecauseWorldIsFrozen");
 	[SchemaMember("CPlantedC4", "m_bAbortDetonationBecauseWorldIsFrozen")]
-	public ref bool AbortDetonationBecauseWorldIsFrozen => ref Schema.GetRef<bool>(this.Handle, "CPlantedC4", "m_bAbortDetonationBecauseWorldIsFrozen");
+	public ref bool AbortDetonationBecauseWorldIsFrozen => ref __m_bAbortDetonationBecauseWorldIsFrozen.GetRef(this.Handle);
 
 	// m_AttributeManager
 	[SchemaMember("CPlantedC4", "m_AttributeManager")]
@@ -55,75 +60,89 @@ public partial class CPlantedC4 : CBaseAnimGraph
 	public CEntityIOOutput OnBombDefuseAborted => Schema.GetDeclaredClass<CEntityIOOutput>(this.Handle, "CPlantedC4", "m_OnBombDefuseAborted");
 
 	// m_bCannotBeDefused
+	private static readonly SchemaField<bool> __m_bCannotBeDefused = new("CPlantedC4", "m_bCannotBeDefused");
 	[SchemaMember("CPlantedC4", "m_bCannotBeDefused")]
-	public ref bool CannotBeDefused => ref Schema.GetRef<bool>(this.Handle, "CPlantedC4", "m_bCannotBeDefused");
+	public ref bool CannotBeDefused => ref __m_bCannotBeDefused.GetRef(this.Handle);
 
 	// m_entitySpottedState
 	[SchemaMember("CPlantedC4", "m_entitySpottedState")]
 	public EntitySpottedState_t EntitySpottedState => Schema.GetDeclaredClass<EntitySpottedState_t>(this.Handle, "CPlantedC4", "m_entitySpottedState");
 
 	// m_nSpotRules
+	private static readonly SchemaField<Int32> __m_nSpotRules = new("CPlantedC4", "m_nSpotRules");
 	[SchemaMember("CPlantedC4", "m_nSpotRules")]
-	public ref Int32 SpotRules => ref Schema.GetRef<Int32>(this.Handle, "CPlantedC4", "m_nSpotRules");
+	public ref Int32 SpotRules => ref __m_nSpotRules.GetRef(this.Handle);
 
 	// m_bHasExploded
+	private static readonly SchemaField<bool> __m_bHasExploded = new("CPlantedC4", "m_bHasExploded");
 	[SchemaMember("CPlantedC4", "m_bHasExploded")]
-	public ref bool HasExploded => ref Schema.GetRef<bool>(this.Handle, "CPlantedC4", "m_bHasExploded");
+	public ref bool HasExploded => ref __m_bHasExploded.GetRef(this.Handle);
 
 	// m_bBombDefused
+	private static readonly SchemaField<bool> __m_bBombDefused = new("CPlantedC4", "m_bBombDefused");
 	[SchemaMember("CPlantedC4", "m_bBombDefused")]
-	public ref bool BombDefused => ref Schema.GetRef<bool>(this.Handle, "CPlantedC4", "m_bBombDefused");
+	public ref bool BombDefused => ref __m_bBombDefused.GetRef(this.Handle);
 
 	// m_bTrainingPlacedByPlayer
+	private static readonly SchemaField<bool> __m_bTrainingPlacedByPlayer = new("CPlantedC4", "m_bTrainingPlacedByPlayer");
 	[SchemaMember("CPlantedC4", "m_bTrainingPlacedByPlayer")]
-	public ref bool TrainingPlacedByPlayer => ref Schema.GetRef<bool>(this.Handle, "CPlantedC4", "m_bTrainingPlacedByPlayer");
+	public ref bool TrainingPlacedByPlayer => ref __m_bTrainingPlacedByPlayer.GetRef(this.Handle);
 
 	// m_flTimerLength
+	private static readonly SchemaField<float> __m_flTimerLength = new("CPlantedC4", "m_flTimerLength");
 	[SchemaMember("CPlantedC4", "m_flTimerLength")]
-	public ref float TimerLength => ref Schema.GetRef<float>(this.Handle, "CPlantedC4", "m_flTimerLength");
+	public ref float TimerLength => ref __m_flTimerLength.GetRef(this.Handle);
 
 	// m_bBeingDefused
+	private static readonly SchemaField<bool> __m_bBeingDefused = new("CPlantedC4", "m_bBeingDefused");
 	[SchemaMember("CPlantedC4", "m_bBeingDefused")]
-	public ref bool BeingDefused => ref Schema.GetRef<bool>(this.Handle, "CPlantedC4", "m_bBeingDefused");
+	public ref bool BeingDefused => ref __m_bBeingDefused.GetRef(this.Handle);
 
 	// m_fLastDefuseTime
+	private static readonly SchemaField<float> __m_fLastDefuseTime = new("CPlantedC4", "m_fLastDefuseTime");
 	[SchemaMember("CPlantedC4", "m_fLastDefuseTime")]
-	public ref float LastDefuseTime => ref Schema.GetRef<float>(this.Handle, "CPlantedC4", "m_fLastDefuseTime");
+	public ref float LastDefuseTime => ref __m_fLastDefuseTime.GetRef(this.Handle);
 
 	// m_flDefuseLength
+	private static readonly SchemaField<float> __m_flDefuseLength = new("CPlantedC4", "m_flDefuseLength");
 	[SchemaMember("CPlantedC4", "m_flDefuseLength")]
-	public ref float DefuseLength => ref Schema.GetRef<float>(this.Handle, "CPlantedC4", "m_flDefuseLength");
+	public ref float DefuseLength => ref __m_flDefuseLength.GetRef(this.Handle);
 
 	// m_flDefuseCountDown
+	private static readonly SchemaField<float> __m_flDefuseCountDown = new("CPlantedC4", "m_flDefuseCountDown");
 	[SchemaMember("CPlantedC4", "m_flDefuseCountDown")]
-	public ref float DefuseCountDown => ref Schema.GetRef<float>(this.Handle, "CPlantedC4", "m_flDefuseCountDown");
+	public ref float DefuseCountDown => ref __m_flDefuseCountDown.GetRef(this.Handle);
 
 	// m_hBombDefuser
 	[SchemaMember("CPlantedC4", "m_hBombDefuser")]
 	public CHandle<CCSPlayerPawn> BombDefuser => Schema.GetDeclaredClass<CHandle<CCSPlayerPawn>>(this.Handle, "CPlantedC4", "m_hBombDefuser");
 
 	// m_iProgressBarTime
+	private static readonly SchemaField<Int32> __m_iProgressBarTime = new("CPlantedC4", "m_iProgressBarTime");
 	[SchemaMember("CPlantedC4", "m_iProgressBarTime")]
-	public ref Int32 ProgressBarTime => ref Schema.GetRef<Int32>(this.Handle, "CPlantedC4", "m_iProgressBarTime");
+	public ref Int32 ProgressBarTime => ref __m_iProgressBarTime.GetRef(this.Handle);
 
 	// m_bVoiceAlertFired
+	private static readonly SchemaField<bool> __m_bVoiceAlertFired = new("CPlantedC4", "m_bVoiceAlertFired");
 	[SchemaMember("CPlantedC4", "m_bVoiceAlertFired")]
-	public ref bool VoiceAlertFired => ref Schema.GetRef<bool>(this.Handle, "CPlantedC4", "m_bVoiceAlertFired");
+	public ref bool VoiceAlertFired => ref __m_bVoiceAlertFired.GetRef(this.Handle);
 
 	// m_bVoiceAlertPlayed
 	[SchemaMember("CPlantedC4", "m_bVoiceAlertPlayed")]
 	public Span<bool> VoiceAlertPlayed => Schema.GetFixedArray<bool>(this.Handle, "CPlantedC4", "m_bVoiceAlertPlayed", 4);
 
 	// m_flNextBotBeepTime
+	private static readonly SchemaField<float> __m_flNextBotBeepTime = new("CPlantedC4", "m_flNextBotBeepTime");
 	[SchemaMember("CPlantedC4", "m_flNextBotBeepTime")]
-	public ref float NextBotBeepTime => ref Schema.GetRef<float>(this.Handle, "CPlantedC4", "m_flNextBotBeepTime");
+	public ref float NextBotBeepTime => ref __m_flNextBotBeepTime.GetRef(this.Handle);
 
 	// m_angCatchUpToPlayerEye
 	[SchemaMember("CPlantedC4", "m_angCatchUpToPlayerEye")]
 	public QAngle CatchUpToPlayerEye => Schema.GetDeclaredClass<QAngle>(this.Handle, "CPlantedC4", "m_angCatchUpToPlayerEye");
 
 	// m_flLastSpinDetectionTime
+	private static readonly SchemaField<float> __m_flLastSpinDetectionTime = new("CPlantedC4", "m_flLastSpinDetectionTime");
 	[SchemaMember("CPlantedC4", "m_flLastSpinDetectionTime")]
-	public ref float LastSpinDetectionTime => ref Schema.GetRef<float>(this.Handle, "CPlantedC4", "m_flLastSpinDetectionTime");
+	public ref float LastSpinDetectionTime => ref __m_flLastSpinDetectionTime.GetRef(this.Handle);
 
 }

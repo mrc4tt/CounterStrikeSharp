@@ -27,8 +27,9 @@ public partial class CTankTrainAI : CPointEntity
 	public CHandle<CBaseEntity> TargetEntity => Schema.GetDeclaredClass<CHandle<CBaseEntity>>(this.Handle, "CTankTrainAI", "m_hTargetEntity");
 
 	// m_soundPlaying
+	private static readonly SchemaField<Int32> __m_soundPlaying = new("CTankTrainAI", "m_soundPlaying");
 	[SchemaMember("CTankTrainAI", "m_soundPlaying")]
-	public ref Int32 SoundPlaying => ref Schema.GetRef<Int32>(this.Handle, "CTankTrainAI", "m_soundPlaying");
+	public ref Int32 SoundPlaying => ref __m_soundPlaying.GetRef(this.Handle);
 
 	// m_startSoundName
 	[SchemaMember("CTankTrainAI", "m_startSoundName")]

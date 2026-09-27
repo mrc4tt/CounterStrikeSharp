@@ -19,8 +19,9 @@ public partial class CPointAngleSensor : CPointEntity
     public CPointAngleSensor (IntPtr pointer) : base(pointer) {}
 
 	// m_bDisabled
+	private static readonly SchemaField<bool> __m_bDisabled = new("CPointAngleSensor", "m_bDisabled");
 	[SchemaMember("CPointAngleSensor", "m_bDisabled")]
-	public ref bool Disabled => ref Schema.GetRef<bool>(this.Handle, "CPointAngleSensor", "m_bDisabled");
+	public ref bool Disabled => ref __m_bDisabled.GetRef(this.Handle);
 
 	// m_nLookAtName
 	[SchemaMember("CPointAngleSensor", "m_nLookAtName")]
@@ -39,20 +40,24 @@ public partial class CPointAngleSensor : CPointEntity
 	public CHandle<CBaseEntity> LookAtEntity => Schema.GetDeclaredClass<CHandle<CBaseEntity>>(this.Handle, "CPointAngleSensor", "m_hLookAtEntity");
 
 	// m_flDuration
+	private static readonly SchemaField<float> __m_flDuration = new("CPointAngleSensor", "m_flDuration");
 	[SchemaMember("CPointAngleSensor", "m_flDuration")]
-	public ref float Duration => ref Schema.GetRef<float>(this.Handle, "CPointAngleSensor", "m_flDuration");
+	public ref float Duration => ref __m_flDuration.GetRef(this.Handle);
 
 	// m_flDotTolerance
+	private static readonly SchemaField<float> __m_flDotTolerance = new("CPointAngleSensor", "m_flDotTolerance");
 	[SchemaMember("CPointAngleSensor", "m_flDotTolerance")]
-	public ref float DotTolerance => ref Schema.GetRef<float>(this.Handle, "CPointAngleSensor", "m_flDotTolerance");
+	public ref float DotTolerance => ref __m_flDotTolerance.GetRef(this.Handle);
 
 	// m_flFacingTime
+	private static readonly SchemaField<float> __m_flFacingTime = new("CPointAngleSensor", "m_flFacingTime");
 	[SchemaMember("CPointAngleSensor", "m_flFacingTime")]
-	public ref float FacingTime => ref Schema.GetRef<float>(this.Handle, "CPointAngleSensor", "m_flFacingTime");
+	public ref float FacingTime => ref __m_flFacingTime.GetRef(this.Handle);
 
 	// m_bFired
+	private static readonly SchemaField<bool> __m_bFired = new("CPointAngleSensor", "m_bFired");
 	[SchemaMember("CPointAngleSensor", "m_bFired")]
-	public ref bool Fired => ref Schema.GetRef<bool>(this.Handle, "CPointAngleSensor", "m_bFired");
+	public ref bool Fired => ref __m_bFired.GetRef(this.Handle);
 
 	// m_OnFacingLookat
 	[SchemaMember("CPointAngleSensor", "m_OnFacingLookat")]

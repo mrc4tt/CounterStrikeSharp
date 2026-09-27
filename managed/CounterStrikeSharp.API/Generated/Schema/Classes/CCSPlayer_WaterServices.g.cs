@@ -19,27 +19,32 @@ public partial class CCSPlayer_WaterServices : CPlayer_WaterServices
     public CCSPlayer_WaterServices (IntPtr pointer) : base(pointer) {}
 
 	// m_NextDrownDamageTime
+	private static readonly SchemaField<float> __m_NextDrownDamageTime = new("CCSPlayer_WaterServices", "m_NextDrownDamageTime");
 	[SchemaMember("CCSPlayer_WaterServices", "m_NextDrownDamageTime")]
-	public ref float NextDrownDamageTime => ref Schema.GetRef<float>(this.Handle, "CCSPlayer_WaterServices", "m_NextDrownDamageTime");
+	public ref float NextDrownDamageTime => ref __m_NextDrownDamageTime.GetRef(this.Handle);
 
 	// m_nDrownDmgRate
+	private static readonly SchemaField<Int32> __m_nDrownDmgRate = new("CCSPlayer_WaterServices", "m_nDrownDmgRate");
 	[SchemaMember("CCSPlayer_WaterServices", "m_nDrownDmgRate")]
-	public ref Int32 DrownDmgRate => ref Schema.GetRef<Int32>(this.Handle, "CCSPlayer_WaterServices", "m_nDrownDmgRate");
+	public ref Int32 DrownDmgRate => ref __m_nDrownDmgRate.GetRef(this.Handle);
 
 	// m_AirFinishedTime
+	private static readonly SchemaField<float> __m_AirFinishedTime = new("CCSPlayer_WaterServices", "m_AirFinishedTime");
 	[SchemaMember("CCSPlayer_WaterServices", "m_AirFinishedTime")]
-	public ref float AirFinishedTime => ref Schema.GetRef<float>(this.Handle, "CCSPlayer_WaterServices", "m_AirFinishedTime");
+	public ref float AirFinishedTime => ref __m_AirFinishedTime.GetRef(this.Handle);
 
 	// m_flWaterJumpTime
+	private static readonly SchemaField<float> __m_flWaterJumpTime = new("CCSPlayer_WaterServices", "m_flWaterJumpTime");
 	[SchemaMember("CCSPlayer_WaterServices", "m_flWaterJumpTime")]
-	public ref float WaterJumpTime => ref Schema.GetRef<float>(this.Handle, "CCSPlayer_WaterServices", "m_flWaterJumpTime");
+	public ref float WaterJumpTime => ref __m_flWaterJumpTime.GetRef(this.Handle);
 
 	// m_vecWaterJumpVel
 	[SchemaMember("CCSPlayer_WaterServices", "m_vecWaterJumpVel")]
 	public Vector WaterJumpVel => Schema.GetDeclaredClass<Vector>(this.Handle, "CCSPlayer_WaterServices", "m_vecWaterJumpVel");
 
 	// m_flSwimSoundTime
+	private static readonly SchemaField<float> __m_flSwimSoundTime = new("CCSPlayer_WaterServices", "m_flSwimSoundTime");
 	[SchemaMember("CCSPlayer_WaterServices", "m_flSwimSoundTime")]
-	public ref float SwimSoundTime => ref Schema.GetRef<float>(this.Handle, "CCSPlayer_WaterServices", "m_flSwimSoundTime");
+	public ref float SwimSoundTime => ref __m_flSwimSoundTime.GetRef(this.Handle);
 
 }

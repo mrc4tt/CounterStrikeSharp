@@ -23,31 +23,37 @@ public partial class CSkeletonInstance : CGameSceneNode
 	public CModelState ModelState => Schema.GetDeclaredClass<CModelState>(this.Handle, "CSkeletonInstance", "m_modelState");
 
 	// m_bUseParentRenderBounds
+	private static readonly SchemaField<bool> __m_bUseParentRenderBounds = new("CSkeletonInstance", "m_bUseParentRenderBounds");
 	[SchemaMember("CSkeletonInstance", "m_bUseParentRenderBounds")]
-	public ref bool UseParentRenderBounds => ref Schema.GetRef<bool>(this.Handle, "CSkeletonInstance", "m_bUseParentRenderBounds");
+	public ref bool UseParentRenderBounds => ref __m_bUseParentRenderBounds.GetRef(this.Handle);
 
 	// m_bDisableSolidCollisionsForHierarchy
+	private static readonly SchemaField<bool> __m_bDisableSolidCollisionsForHierarchy = new("CSkeletonInstance", "m_bDisableSolidCollisionsForHierarchy");
 	[SchemaMember("CSkeletonInstance", "m_bDisableSolidCollisionsForHierarchy")]
-	public ref bool DisableSolidCollisionsForHierarchy => ref Schema.GetRef<bool>(this.Handle, "CSkeletonInstance", "m_bDisableSolidCollisionsForHierarchy");
+	public ref bool DisableSolidCollisionsForHierarchy => ref __m_bDisableSolidCollisionsForHierarchy.GetRef(this.Handle);
 
 	// m_bDirtyMotionType
+	private static readonly SchemaField<bool> __m_bDirtyMotionType = new("CSkeletonInstance", "m_bDirtyMotionType");
 	[SchemaMember("CSkeletonInstance", "m_bDirtyMotionType")]
-	public ref bool DirtyMotionType => ref Schema.GetRef<bool>(this.Handle, "CSkeletonInstance", "m_bDirtyMotionType");
+	public ref bool DirtyMotionType => ref __m_bDirtyMotionType.GetRef(this.Handle);
 
 	// m_bIsGeneratingLatchedParentSpaceState
+	private static readonly SchemaField<bool> __m_bIsGeneratingLatchedParentSpaceState = new("CSkeletonInstance", "m_bIsGeneratingLatchedParentSpaceState");
 	[SchemaMember("CSkeletonInstance", "m_bIsGeneratingLatchedParentSpaceState")]
-	public ref bool IsGeneratingLatchedParentSpaceState => ref Schema.GetRef<bool>(this.Handle, "CSkeletonInstance", "m_bIsGeneratingLatchedParentSpaceState");
+	public ref bool IsGeneratingLatchedParentSpaceState => ref __m_bIsGeneratingLatchedParentSpaceState.GetRef(this.Handle);
 
 	// m_materialGroup
 	[SchemaMember("CSkeletonInstance", "m_materialGroup")]
 	public CUtlStringToken MaterialGroup => Schema.GetDeclaredClass<CUtlStringToken>(this.Handle, "CSkeletonInstance", "m_materialGroup");
 
 	// m_nHitboxSet
+	private static readonly SchemaField<byte> __m_nHitboxSet = new("CSkeletonInstance", "m_nHitboxSet");
 	[SchemaMember("CSkeletonInstance", "m_nHitboxSet")]
-	public ref byte HitboxSet => ref Schema.GetRef<byte>(this.Handle, "CSkeletonInstance", "m_nHitboxSet");
+	public ref byte HitboxSet => ref __m_nHitboxSet.GetRef(this.Handle);
 
 	// m_bForceServerConstraintsEnabled
+	private static readonly SchemaField<bool> __m_bForceServerConstraintsEnabled = new("CSkeletonInstance", "m_bForceServerConstraintsEnabled");
 	[SchemaMember("CSkeletonInstance", "m_bForceServerConstraintsEnabled")]
-	public ref bool ForceServerConstraintsEnabled => ref Schema.GetRef<bool>(this.Handle, "CSkeletonInstance", "m_bForceServerConstraintsEnabled");
+	public ref bool ForceServerConstraintsEnabled => ref __m_bForceServerConstraintsEnabled.GetRef(this.Handle);
 
 }

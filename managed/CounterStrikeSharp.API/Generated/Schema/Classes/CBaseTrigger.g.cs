@@ -67,11 +67,13 @@ public partial class CBaseTrigger : CBaseToggle
 	public CHandle<CBaseFilter> Filter => Schema.GetDeclaredClass<CHandle<CBaseFilter>>(this.Handle, "CBaseTrigger", "m_hFilter");
 
 	// m_bDisabled
+	private static readonly SchemaField<bool> __m_bDisabled = new("CBaseTrigger", "m_bDisabled");
 	[SchemaMember("CBaseTrigger", "m_bDisabled")]
-	public ref bool Disabled => ref Schema.GetRef<bool>(this.Handle, "CBaseTrigger", "m_bDisabled");
+	public ref bool Disabled => ref __m_bDisabled.GetRef(this.Handle);
 
 	// m_bUseAsyncQueries
+	private static readonly SchemaField<bool> __m_bUseAsyncQueries = new("CBaseTrigger", "m_bUseAsyncQueries");
 	[SchemaMember("CBaseTrigger", "m_bUseAsyncQueries")]
-	public ref bool UseAsyncQueries => ref Schema.GetRef<bool>(this.Handle, "CBaseTrigger", "m_bUseAsyncQueries");
+	public ref bool UseAsyncQueries => ref __m_bUseAsyncQueries.GetRef(this.Handle);
 
 }

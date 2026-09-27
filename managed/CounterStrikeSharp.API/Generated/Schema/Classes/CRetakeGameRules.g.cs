@@ -19,24 +19,29 @@ public partial class CRetakeGameRules : NativeObject
     public CRetakeGameRules (IntPtr pointer) : base(pointer) {}
 
 	// m_nMatchSeed
+	private static readonly SchemaField<Int32> __m_nMatchSeed = new("CRetakeGameRules", "m_nMatchSeed");
 	[SchemaMember("CRetakeGameRules", "m_nMatchSeed")]
-	public ref Int32 MatchSeed => ref Schema.GetRef<Int32>(this.Handle, "CRetakeGameRules", "m_nMatchSeed");
+	public ref Int32 MatchSeed => ref __m_nMatchSeed.GetRef(this.Handle);
 
 	// m_bBlockersPresent
+	private static readonly SchemaField<bool> __m_bBlockersPresent = new("CRetakeGameRules", "m_bBlockersPresent");
 	[SchemaMember("CRetakeGameRules", "m_bBlockersPresent")]
-	public ref bool BlockersPresent => ref Schema.GetRef<bool>(this.Handle, "CRetakeGameRules", "m_bBlockersPresent");
+	public ref bool BlockersPresent => ref __m_bBlockersPresent.GetRef(this.Handle);
 
 	// m_bRoundInProgress
+	private static readonly SchemaField<bool> __m_bRoundInProgress = new("CRetakeGameRules", "m_bRoundInProgress");
 	[SchemaMember("CRetakeGameRules", "m_bRoundInProgress")]
-	public ref bool RoundInProgress => ref Schema.GetRef<bool>(this.Handle, "CRetakeGameRules", "m_bRoundInProgress");
+	public ref bool RoundInProgress => ref __m_bRoundInProgress.GetRef(this.Handle);
 
 	// m_iFirstSecondHalfRound
+	private static readonly SchemaField<Int32> __m_iFirstSecondHalfRound = new("CRetakeGameRules", "m_iFirstSecondHalfRound");
 	[SchemaMember("CRetakeGameRules", "m_iFirstSecondHalfRound")]
-	public ref Int32 FirstSecondHalfRound => ref Schema.GetRef<Int32>(this.Handle, "CRetakeGameRules", "m_iFirstSecondHalfRound");
+	public ref Int32 FirstSecondHalfRound => ref __m_iFirstSecondHalfRound.GetRef(this.Handle);
 
 	// m_iBombSite
+	private static readonly SchemaField<Int32> __m_iBombSite = new("CRetakeGameRules", "m_iBombSite");
 	[SchemaMember("CRetakeGameRules", "m_iBombSite")]
-	public ref Int32 BombSite => ref Schema.GetRef<Int32>(this.Handle, "CRetakeGameRules", "m_iBombSite");
+	public ref Int32 BombSite => ref __m_iBombSite.GetRef(this.Handle);
 
 	// m_hBombPlanter
 	[SchemaMember("CRetakeGameRules", "m_hBombPlanter")]

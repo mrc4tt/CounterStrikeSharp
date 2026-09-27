@@ -19,16 +19,19 @@ public partial class CSoundOpvarSetPathCornerEntity : CSoundOpvarSetPointEntity
     public CSoundOpvarSetPathCornerEntity (IntPtr pointer) : base(pointer) {}
 
 	// m_bUseParentedPath
+	private static readonly SchemaField<bool> __m_bUseParentedPath = new("CSoundOpvarSetPathCornerEntity", "m_bUseParentedPath");
 	[SchemaMember("CSoundOpvarSetPathCornerEntity", "m_bUseParentedPath")]
-	public ref bool UseParentedPath => ref Schema.GetRef<bool>(this.Handle, "CSoundOpvarSetPathCornerEntity", "m_bUseParentedPath");
+	public ref bool UseParentedPath => ref __m_bUseParentedPath.GetRef(this.Handle);
 
 	// m_flDistMinSqr
+	private static readonly SchemaField<float> __m_flDistMinSqr = new("CSoundOpvarSetPathCornerEntity", "m_flDistMinSqr");
 	[SchemaMember("CSoundOpvarSetPathCornerEntity", "m_flDistMinSqr")]
-	public ref float DistMinSqr => ref Schema.GetRef<float>(this.Handle, "CSoundOpvarSetPathCornerEntity", "m_flDistMinSqr");
+	public ref float DistMinSqr => ref __m_flDistMinSqr.GetRef(this.Handle);
 
 	// m_flDistMaxSqr
+	private static readonly SchemaField<float> __m_flDistMaxSqr = new("CSoundOpvarSetPathCornerEntity", "m_flDistMaxSqr");
 	[SchemaMember("CSoundOpvarSetPathCornerEntity", "m_flDistMaxSqr")]
-	public ref float DistMaxSqr => ref Schema.GetRef<float>(this.Handle, "CSoundOpvarSetPathCornerEntity", "m_flDistMaxSqr");
+	public ref float DistMaxSqr => ref __m_flDistMaxSqr.GetRef(this.Handle);
 
 	// m_iszPathCornerEntityName
 	[SchemaMember("CSoundOpvarSetPathCornerEntity", "m_iszPathCornerEntityName")]

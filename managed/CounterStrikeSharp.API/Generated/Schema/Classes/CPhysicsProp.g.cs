@@ -47,80 +47,99 @@ public partial class CPhysicsProp : CBreakableProp
 	public CEntityIOOutput OnPlayerPickup => Schema.GetDeclaredClass<CEntityIOOutput>(this.Handle, "CPhysicsProp", "m_OnPlayerPickup");
 
 	// m_bForceNavIgnore
+	private static readonly SchemaField<bool> __m_bForceNavIgnore = new("CPhysicsProp", "m_bForceNavIgnore");
 	[SchemaMember("CPhysicsProp", "m_bForceNavIgnore")]
-	public ref bool ForceNavIgnore => ref Schema.GetRef<bool>(this.Handle, "CPhysicsProp", "m_bForceNavIgnore");
+	public ref bool ForceNavIgnore => ref __m_bForceNavIgnore.GetRef(this.Handle);
 
 	// m_bNoNavmeshBlocker
+	private static readonly SchemaField<bool> __m_bNoNavmeshBlocker = new("CPhysicsProp", "m_bNoNavmeshBlocker");
 	[SchemaMember("CPhysicsProp", "m_bNoNavmeshBlocker")]
-	public ref bool NoNavmeshBlocker => ref Schema.GetRef<bool>(this.Handle, "CPhysicsProp", "m_bNoNavmeshBlocker");
+	public ref bool NoNavmeshBlocker => ref __m_bNoNavmeshBlocker.GetRef(this.Handle);
 
 	// m_bForceNpcExclude
+	private static readonly SchemaField<bool> __m_bForceNpcExclude = new("CPhysicsProp", "m_bForceNpcExclude");
 	[SchemaMember("CPhysicsProp", "m_bForceNpcExclude")]
-	public ref bool ForceNpcExclude => ref Schema.GetRef<bool>(this.Handle, "CPhysicsProp", "m_bForceNpcExclude");
+	public ref bool ForceNpcExclude => ref __m_bForceNpcExclude.GetRef(this.Handle);
 
 	// m_massScale
+	private static readonly SchemaField<float> __m_massScale = new("CPhysicsProp", "m_massScale");
 	[SchemaMember("CPhysicsProp", "m_massScale")]
-	public ref float MassScale => ref Schema.GetRef<float>(this.Handle, "CPhysicsProp", "m_massScale");
+	public ref float MassScale => ref __m_massScale.GetRef(this.Handle);
 
 	// m_buoyancyScale
+	private static readonly SchemaField<float> __m_buoyancyScale = new("CPhysicsProp", "m_buoyancyScale");
 	[SchemaMember("CPhysicsProp", "m_buoyancyScale")]
-	public ref float BuoyancyScale => ref Schema.GetRef<float>(this.Handle, "CPhysicsProp", "m_buoyancyScale");
+	public ref float BuoyancyScale => ref __m_buoyancyScale.GetRef(this.Handle);
 
 	// m_damageType
+	private static readonly SchemaField<Int32> __m_damageType = new("CPhysicsProp", "m_damageType");
 	[SchemaMember("CPhysicsProp", "m_damageType")]
-	public ref Int32 DamageType => ref Schema.GetRef<Int32>(this.Handle, "CPhysicsProp", "m_damageType");
+	public ref Int32 DamageType => ref __m_damageType.GetRef(this.Handle);
 
 	// m_damageToEnableMotion
+	private static readonly SchemaField<Int32> __m_damageToEnableMotion = new("CPhysicsProp", "m_damageToEnableMotion");
 	[SchemaMember("CPhysicsProp", "m_damageToEnableMotion")]
-	public ref Int32 DamageToEnableMotion => ref Schema.GetRef<Int32>(this.Handle, "CPhysicsProp", "m_damageToEnableMotion");
+	public ref Int32 DamageToEnableMotion => ref __m_damageToEnableMotion.GetRef(this.Handle);
 
 	// m_flForceToEnableMotion
+	private static readonly SchemaField<float> __m_flForceToEnableMotion = new("CPhysicsProp", "m_flForceToEnableMotion");
 	[SchemaMember("CPhysicsProp", "m_flForceToEnableMotion")]
-	public ref float ForceToEnableMotion => ref Schema.GetRef<float>(this.Handle, "CPhysicsProp", "m_flForceToEnableMotion");
+	public ref float ForceToEnableMotion => ref __m_flForceToEnableMotion.GetRef(this.Handle);
 
 	// m_bDroppedByPlayer
+	private static readonly SchemaField<bool> __m_bDroppedByPlayer = new("CPhysicsProp", "m_bDroppedByPlayer");
 	[SchemaMember("CPhysicsProp", "m_bDroppedByPlayer")]
-	public ref bool DroppedByPlayer => ref Schema.GetRef<bool>(this.Handle, "CPhysicsProp", "m_bDroppedByPlayer");
+	public ref bool DroppedByPlayer => ref __m_bDroppedByPlayer.GetRef(this.Handle);
 
 	// m_bTouchedByPlayer
+	private static readonly SchemaField<bool> __m_bTouchedByPlayer = new("CPhysicsProp", "m_bTouchedByPlayer");
 	[SchemaMember("CPhysicsProp", "m_bTouchedByPlayer")]
-	public ref bool TouchedByPlayer => ref Schema.GetRef<bool>(this.Handle, "CPhysicsProp", "m_bTouchedByPlayer");
+	public ref bool TouchedByPlayer => ref __m_bTouchedByPlayer.GetRef(this.Handle);
 
 	// m_bFirstCollisionAfterLaunch
+	private static readonly SchemaField<bool> __m_bFirstCollisionAfterLaunch = new("CPhysicsProp", "m_bFirstCollisionAfterLaunch");
 	[SchemaMember("CPhysicsProp", "m_bFirstCollisionAfterLaunch")]
-	public ref bool FirstCollisionAfterLaunch => ref Schema.GetRef<bool>(this.Handle, "CPhysicsProp", "m_bFirstCollisionAfterLaunch");
+	public ref bool FirstCollisionAfterLaunch => ref __m_bFirstCollisionAfterLaunch.GetRef(this.Handle);
 
 	// m_bHasBeenAwakened
+	private static readonly SchemaField<bool> __m_bHasBeenAwakened = new("CPhysicsProp", "m_bHasBeenAwakened");
 	[SchemaMember("CPhysicsProp", "m_bHasBeenAwakened")]
-	public ref bool HasBeenAwakened => ref Schema.GetRef<bool>(this.Handle, "CPhysicsProp", "m_bHasBeenAwakened");
+	public ref bool HasBeenAwakened => ref __m_bHasBeenAwakened.GetRef(this.Handle);
 
 	// m_bIsOverrideProp
+	private static readonly SchemaField<bool> __m_bIsOverrideProp = new("CPhysicsProp", "m_bIsOverrideProp");
 	[SchemaMember("CPhysicsProp", "m_bIsOverrideProp")]
-	public ref bool IsOverrideProp => ref Schema.GetRef<bool>(this.Handle, "CPhysicsProp", "m_bIsOverrideProp");
+	public ref bool IsOverrideProp => ref __m_bIsOverrideProp.GetRef(this.Handle);
 
 	// m_flLastBurn
+	private static readonly SchemaField<float> __m_flLastBurn = new("CPhysicsProp", "m_flLastBurn");
 	[SchemaMember("CPhysicsProp", "m_flLastBurn")]
-	public ref float LastBurn => ref Schema.GetRef<float>(this.Handle, "CPhysicsProp", "m_flLastBurn");
+	public ref float LastBurn => ref __m_flLastBurn.GetRef(this.Handle);
 
 	// m_nDynamicContinuousContactBehavior
+	private static readonly SchemaField<DynamicContinuousContactBehavior_t> __m_nDynamicContinuousContactBehavior = new("CPhysicsProp", "m_nDynamicContinuousContactBehavior");
 	[SchemaMember("CPhysicsProp", "m_nDynamicContinuousContactBehavior")]
-	public ref DynamicContinuousContactBehavior_t DynamicContinuousContactBehavior => ref Schema.GetRef<DynamicContinuousContactBehavior_t>(this.Handle, "CPhysicsProp", "m_nDynamicContinuousContactBehavior");
+	public ref DynamicContinuousContactBehavior_t DynamicContinuousContactBehavior => ref __m_nDynamicContinuousContactBehavior.GetRef(this.Handle);
 
 	// m_fNextCheckDisableMotionContactsTime
+	private static readonly SchemaField<float> __m_fNextCheckDisableMotionContactsTime = new("CPhysicsProp", "m_fNextCheckDisableMotionContactsTime");
 	[SchemaMember("CPhysicsProp", "m_fNextCheckDisableMotionContactsTime")]
-	public ref float NextCheckDisableMotionContactsTime => ref Schema.GetRef<float>(this.Handle, "CPhysicsProp", "m_fNextCheckDisableMotionContactsTime");
+	public ref float NextCheckDisableMotionContactsTime => ref __m_fNextCheckDisableMotionContactsTime.GetRef(this.Handle);
 
 	// m_iInitialGlowState
+	private static readonly SchemaField<Int32> __m_iInitialGlowState = new("CPhysicsProp", "m_iInitialGlowState");
 	[SchemaMember("CPhysicsProp", "m_iInitialGlowState")]
-	public ref Int32 InitialGlowState => ref Schema.GetRef<Int32>(this.Handle, "CPhysicsProp", "m_iInitialGlowState");
+	public ref Int32 InitialGlowState => ref __m_iInitialGlowState.GetRef(this.Handle);
 
 	// m_nGlowRange
+	private static readonly SchemaField<Int32> __m_nGlowRange = new("CPhysicsProp", "m_nGlowRange");
 	[SchemaMember("CPhysicsProp", "m_nGlowRange")]
-	public ref Int32 GlowRange => ref Schema.GetRef<Int32>(this.Handle, "CPhysicsProp", "m_nGlowRange");
+	public ref Int32 GlowRange => ref __m_nGlowRange.GetRef(this.Handle);
 
 	// m_nGlowRangeMin
+	private static readonly SchemaField<Int32> __m_nGlowRangeMin = new("CPhysicsProp", "m_nGlowRangeMin");
 	[SchemaMember("CPhysicsProp", "m_nGlowRangeMin")]
-	public ref Int32 GlowRangeMin => ref Schema.GetRef<Int32>(this.Handle, "CPhysicsProp", "m_nGlowRangeMin");
+	public ref Int32 GlowRangeMin => ref __m_nGlowRangeMin.GetRef(this.Handle);
 
 	// m_glowColor
 	[SchemaMember("CPhysicsProp", "m_glowColor")]
@@ -131,36 +150,44 @@ public partial class CPhysicsProp : CBreakableProp
 	}
 
 	// m_bShouldAutoConvertBackFromDebris
+	private static readonly SchemaField<bool> __m_bShouldAutoConvertBackFromDebris = new("CPhysicsProp", "m_bShouldAutoConvertBackFromDebris");
 	[SchemaMember("CPhysicsProp", "m_bShouldAutoConvertBackFromDebris")]
-	public ref bool ShouldAutoConvertBackFromDebris => ref Schema.GetRef<bool>(this.Handle, "CPhysicsProp", "m_bShouldAutoConvertBackFromDebris");
+	public ref bool ShouldAutoConvertBackFromDebris => ref __m_bShouldAutoConvertBackFromDebris.GetRef(this.Handle);
 
 	// m_bMuteImpactEffects
+	private static readonly SchemaField<bool> __m_bMuteImpactEffects = new("CPhysicsProp", "m_bMuteImpactEffects");
 	[SchemaMember("CPhysicsProp", "m_bMuteImpactEffects")]
-	public ref bool MuteImpactEffects => ref Schema.GetRef<bool>(this.Handle, "CPhysicsProp", "m_bMuteImpactEffects");
+	public ref bool MuteImpactEffects => ref __m_bMuteImpactEffects.GetRef(this.Handle);
 
 	// m_nNavObstacleType
+	private static readonly SchemaField<INavObstacleNavObstacleType_t> __m_nNavObstacleType = new("CPhysicsProp", "m_nNavObstacleType");
 	[SchemaMember("CPhysicsProp", "m_nNavObstacleType")]
-	public ref INavObstacleNavObstacleType_t NavObstacleType => ref Schema.GetRef<INavObstacleNavObstacleType_t>(this.Handle, "CPhysicsProp", "m_nNavObstacleType");
+	public ref INavObstacleNavObstacleType_t NavObstacleType => ref __m_nNavObstacleType.GetRef(this.Handle);
 
 	// m_bUpdateNavWhenMoving
+	private static readonly SchemaField<bool> __m_bUpdateNavWhenMoving = new("CPhysicsProp", "m_bUpdateNavWhenMoving");
 	[SchemaMember("CPhysicsProp", "m_bUpdateNavWhenMoving")]
-	public ref bool UpdateNavWhenMoving => ref Schema.GetRef<bool>(this.Handle, "CPhysicsProp", "m_bUpdateNavWhenMoving");
+	public ref bool UpdateNavWhenMoving => ref __m_bUpdateNavWhenMoving.GetRef(this.Handle);
 
 	// m_bForceNavObstacleCut
+	private static readonly SchemaField<bool> __m_bForceNavObstacleCut = new("CPhysicsProp", "m_bForceNavObstacleCut");
 	[SchemaMember("CPhysicsProp", "m_bForceNavObstacleCut")]
-	public ref bool ForceNavObstacleCut => ref Schema.GetRef<bool>(this.Handle, "CPhysicsProp", "m_bForceNavObstacleCut");
+	public ref bool ForceNavObstacleCut => ref __m_bForceNavObstacleCut.GetRef(this.Handle);
 
 	// m_bAcceptDamageFromHeldObjects
+	private static readonly SchemaField<bool> __m_bAcceptDamageFromHeldObjects = new("CPhysicsProp", "m_bAcceptDamageFromHeldObjects");
 	[SchemaMember("CPhysicsProp", "m_bAcceptDamageFromHeldObjects")]
-	public ref bool AcceptDamageFromHeldObjects => ref Schema.GetRef<bool>(this.Handle, "CPhysicsProp", "m_bAcceptDamageFromHeldObjects");
+	public ref bool AcceptDamageFromHeldObjects => ref __m_bAcceptDamageFromHeldObjects.GetRef(this.Handle);
 
 	// m_bEnableUseOutput
+	private static readonly SchemaField<bool> __m_bEnableUseOutput = new("CPhysicsProp", "m_bEnableUseOutput");
 	[SchemaMember("CPhysicsProp", "m_bEnableUseOutput")]
-	public ref bool EnableUseOutput => ref Schema.GetRef<bool>(this.Handle, "CPhysicsProp", "m_bEnableUseOutput");
+	public ref bool EnableUseOutput => ref __m_bEnableUseOutput.GetRef(this.Handle);
 
 	// m_CrateType
+	private static readonly SchemaField<CPhysicsPropCrateType_t> __m_CrateType = new("CPhysicsProp", "m_CrateType");
 	[SchemaMember("CPhysicsProp", "m_CrateType")]
-	public ref CPhysicsPropCrateType_t CrateType => ref Schema.GetRef<CPhysicsPropCrateType_t>(this.Handle, "CPhysicsProp", "m_CrateType");
+	public ref CPhysicsPropCrateType_t CrateType => ref __m_CrateType.GetRef(this.Handle);
 
 	// m_strItemClass
 	[SchemaMember("CPhysicsProp", "m_strItemClass")]
@@ -171,15 +198,18 @@ public partial class CPhysicsProp : CBreakableProp
 	public Span<Int32> ItemCount => Schema.GetFixedArray<Int32>(this.Handle, "CPhysicsProp", "m_nItemCount", 4);
 
 	// m_bRemovableForAmmoBalancing
+	private static readonly SchemaField<bool> __m_bRemovableForAmmoBalancing = new("CPhysicsProp", "m_bRemovableForAmmoBalancing");
 	[SchemaMember("CPhysicsProp", "m_bRemovableForAmmoBalancing")]
-	public ref bool RemovableForAmmoBalancing => ref Schema.GetRef<bool>(this.Handle, "CPhysicsProp", "m_bRemovableForAmmoBalancing");
+	public ref bool RemovableForAmmoBalancing => ref __m_bRemovableForAmmoBalancing.GetRef(this.Handle);
 
 	// m_bAwake
+	private static readonly SchemaField<bool> __m_bAwake = new("CPhysicsProp", "m_bAwake");
 	[SchemaMember("CPhysicsProp", "m_bAwake")]
-	public ref bool Awake => ref Schema.GetRef<bool>(this.Handle, "CPhysicsProp", "m_bAwake");
+	public ref bool Awake => ref __m_bAwake.GetRef(this.Handle);
 
 	// m_bAttachedToReferenceFrame
+	private static readonly SchemaField<bool> __m_bAttachedToReferenceFrame = new("CPhysicsProp", "m_bAttachedToReferenceFrame");
 	[SchemaMember("CPhysicsProp", "m_bAttachedToReferenceFrame")]
-	public ref bool AttachedToReferenceFrame => ref Schema.GetRef<bool>(this.Handle, "CPhysicsProp", "m_bAttachedToReferenceFrame");
+	public ref bool AttachedToReferenceFrame => ref __m_bAttachedToReferenceFrame.GetRef(this.Handle);
 
 }

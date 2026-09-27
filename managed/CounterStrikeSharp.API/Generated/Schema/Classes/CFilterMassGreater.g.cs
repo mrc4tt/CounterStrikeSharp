@@ -19,7 +19,8 @@ public partial class CFilterMassGreater : CBaseFilter
     public CFilterMassGreater (IntPtr pointer) : base(pointer) {}
 
 	// m_fFilterMass
+	private static readonly SchemaField<float> __m_fFilterMass = new("CFilterMassGreater", "m_fFilterMass");
 	[SchemaMember("CFilterMassGreater", "m_fFilterMass")]
-	public ref float FilterMass => ref Schema.GetRef<float>(this.Handle, "CFilterMassGreater", "m_fFilterMass");
+	public ref float FilterMass => ref __m_fFilterMass.GetRef(this.Handle);
 
 }

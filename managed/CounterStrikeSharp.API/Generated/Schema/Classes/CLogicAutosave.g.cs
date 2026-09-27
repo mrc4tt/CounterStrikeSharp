@@ -19,15 +19,18 @@ public partial class CLogicAutosave : CLogicalEntity
     public CLogicAutosave (IntPtr pointer) : base(pointer) {}
 
 	// m_bForceNewLevelUnit
+	private static readonly SchemaField<bool> __m_bForceNewLevelUnit = new("CLogicAutosave", "m_bForceNewLevelUnit");
 	[SchemaMember("CLogicAutosave", "m_bForceNewLevelUnit")]
-	public ref bool ForceNewLevelUnit => ref Schema.GetRef<bool>(this.Handle, "CLogicAutosave", "m_bForceNewLevelUnit");
+	public ref bool ForceNewLevelUnit => ref __m_bForceNewLevelUnit.GetRef(this.Handle);
 
 	// m_minHitPoints
+	private static readonly SchemaField<Int32> __m_minHitPoints = new("CLogicAutosave", "m_minHitPoints");
 	[SchemaMember("CLogicAutosave", "m_minHitPoints")]
-	public ref Int32 MinHitPoints => ref Schema.GetRef<Int32>(this.Handle, "CLogicAutosave", "m_minHitPoints");
+	public ref Int32 MinHitPoints => ref __m_minHitPoints.GetRef(this.Handle);
 
 	// m_minHitPointsToCommit
+	private static readonly SchemaField<Int32> __m_minHitPointsToCommit = new("CLogicAutosave", "m_minHitPointsToCommit");
 	[SchemaMember("CLogicAutosave", "m_minHitPointsToCommit")]
-	public ref Int32 MinHitPointsToCommit => ref Schema.GetRef<Int32>(this.Handle, "CLogicAutosave", "m_minHitPointsToCommit");
+	public ref Int32 MinHitPointsToCommit => ref __m_minHitPointsToCommit.GetRef(this.Handle);
 
 }

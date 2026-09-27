@@ -19,20 +19,24 @@ public partial class CInfoOffscreenPanoramaTexture : CPointEntity
     public CInfoOffscreenPanoramaTexture (IntPtr pointer) : base(pointer) {}
 
 	// m_bDisabled
+	private static readonly SchemaField<bool> __m_bDisabled = new("CInfoOffscreenPanoramaTexture", "m_bDisabled");
 	[SchemaMember("CInfoOffscreenPanoramaTexture", "m_bDisabled")]
-	public ref bool Disabled => ref Schema.GetRef<bool>(this.Handle, "CInfoOffscreenPanoramaTexture", "m_bDisabled");
+	public ref bool Disabled => ref __m_bDisabled.GetRef(this.Handle);
 
 	// m_bEnableMipGen
+	private static readonly SchemaField<bool> __m_bEnableMipGen = new("CInfoOffscreenPanoramaTexture", "m_bEnableMipGen");
 	[SchemaMember("CInfoOffscreenPanoramaTexture", "m_bEnableMipGen")]
-	public ref bool EnableMipGen => ref Schema.GetRef<bool>(this.Handle, "CInfoOffscreenPanoramaTexture", "m_bEnableMipGen");
+	public ref bool EnableMipGen => ref __m_bEnableMipGen.GetRef(this.Handle);
 
 	// m_nResolutionX
+	private static readonly SchemaField<Int32> __m_nResolutionX = new("CInfoOffscreenPanoramaTexture", "m_nResolutionX");
 	[SchemaMember("CInfoOffscreenPanoramaTexture", "m_nResolutionX")]
-	public ref Int32 ResolutionX => ref Schema.GetRef<Int32>(this.Handle, "CInfoOffscreenPanoramaTexture", "m_nResolutionX");
+	public ref Int32 ResolutionX => ref __m_nResolutionX.GetRef(this.Handle);
 
 	// m_nResolutionY
+	private static readonly SchemaField<Int32> __m_nResolutionY = new("CInfoOffscreenPanoramaTexture", "m_nResolutionY");
 	[SchemaMember("CInfoOffscreenPanoramaTexture", "m_nResolutionY")]
-	public ref Int32 ResolutionY => ref Schema.GetRef<Int32>(this.Handle, "CInfoOffscreenPanoramaTexture", "m_nResolutionY");
+	public ref Int32 ResolutionY => ref __m_nResolutionY.GetRef(this.Handle);
 
 	// m_szPanelType
 	[SchemaMember("CInfoOffscreenPanoramaTexture", "m_szPanelType")]
@@ -63,8 +67,9 @@ public partial class CInfoOffscreenPanoramaTexture : CPointEntity
 	public NetworkedVector<CHandle<CBaseModelEntity>> TargetEntities => Schema.GetDeclaredClass<NetworkedVector<CHandle<CBaseModelEntity>>>(this.Handle, "CInfoOffscreenPanoramaTexture", "m_TargetEntities");
 
 	// m_nTargetChangeCount
+	private static readonly SchemaField<Int32> __m_nTargetChangeCount = new("CInfoOffscreenPanoramaTexture", "m_nTargetChangeCount");
 	[SchemaMember("CInfoOffscreenPanoramaTexture", "m_nTargetChangeCount")]
-	public ref Int32 TargetChangeCount => ref Schema.GetRef<Int32>(this.Handle, "CInfoOffscreenPanoramaTexture", "m_nTargetChangeCount");
+	public ref Int32 TargetChangeCount => ref __m_nTargetChangeCount.GetRef(this.Handle);
 
 	// m_vecCSSClasses
 	[SchemaMember("CInfoOffscreenPanoramaTexture", "m_vecCSSClasses")]

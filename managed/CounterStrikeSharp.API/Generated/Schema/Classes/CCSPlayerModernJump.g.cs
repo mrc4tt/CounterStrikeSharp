@@ -19,39 +19,48 @@ public partial class CCSPlayerModernJump : NativeObject
     public CCSPlayerModernJump (IntPtr pointer) : base(pointer) {}
 
 	// m_nLastActualJumpPressTick
+	private static readonly SchemaField<Int32> __m_nLastActualJumpPressTick = new("CCSPlayerModernJump", "m_nLastActualJumpPressTick");
 	[SchemaMember("CCSPlayerModernJump", "m_nLastActualJumpPressTick")]
-	public ref Int32 LastActualJumpPressTick => ref Schema.GetRef<Int32>(this.Handle, "CCSPlayerModernJump", "m_nLastActualJumpPressTick");
+	public ref Int32 LastActualJumpPressTick => ref __m_nLastActualJumpPressTick.GetRef(this.Handle);
 
 	// m_flLastActualJumpPressFrac
+	private static readonly SchemaField<float> __m_flLastActualJumpPressFrac = new("CCSPlayerModernJump", "m_flLastActualJumpPressFrac");
 	[SchemaMember("CCSPlayerModernJump", "m_flLastActualJumpPressFrac")]
-	public ref float LastActualJumpPressFrac => ref Schema.GetRef<float>(this.Handle, "CCSPlayerModernJump", "m_flLastActualJumpPressFrac");
+	public ref float LastActualJumpPressFrac => ref __m_flLastActualJumpPressFrac.GetRef(this.Handle);
 
 	// m_nLastUsableJumpPressTick
+	private static readonly SchemaField<Int32> __m_nLastUsableJumpPressTick = new("CCSPlayerModernJump", "m_nLastUsableJumpPressTick");
 	[SchemaMember("CCSPlayerModernJump", "m_nLastUsableJumpPressTick")]
-	public ref Int32 LastUsableJumpPressTick => ref Schema.GetRef<Int32>(this.Handle, "CCSPlayerModernJump", "m_nLastUsableJumpPressTick");
+	public ref Int32 LastUsableJumpPressTick => ref __m_nLastUsableJumpPressTick.GetRef(this.Handle);
 
 	// m_flLastUsableJumpPressFrac
+	private static readonly SchemaField<float> __m_flLastUsableJumpPressFrac = new("CCSPlayerModernJump", "m_flLastUsableJumpPressFrac");
 	[SchemaMember("CCSPlayerModernJump", "m_flLastUsableJumpPressFrac")]
-	public ref float LastUsableJumpPressFrac => ref Schema.GetRef<float>(this.Handle, "CCSPlayerModernJump", "m_flLastUsableJumpPressFrac");
+	public ref float LastUsableJumpPressFrac => ref __m_flLastUsableJumpPressFrac.GetRef(this.Handle);
 
 	// m_nLastLandedTick
+	private static readonly SchemaField<Int32> __m_nLastLandedTick = new("CCSPlayerModernJump", "m_nLastLandedTick");
 	[SchemaMember("CCSPlayerModernJump", "m_nLastLandedTick")]
-	public ref Int32 LastLandedTick => ref Schema.GetRef<Int32>(this.Handle, "CCSPlayerModernJump", "m_nLastLandedTick");
+	public ref Int32 LastLandedTick => ref __m_nLastLandedTick.GetRef(this.Handle);
 
 	// m_flLastLandedFrac
+	private static readonly SchemaField<float> __m_flLastLandedFrac = new("CCSPlayerModernJump", "m_flLastLandedFrac");
 	[SchemaMember("CCSPlayerModernJump", "m_flLastLandedFrac")]
-	public ref float LastLandedFrac => ref Schema.GetRef<float>(this.Handle, "CCSPlayerModernJump", "m_flLastLandedFrac");
+	public ref float LastLandedFrac => ref __m_flLastLandedFrac.GetRef(this.Handle);
 
 	// m_flLastLandedVelocityX
+	private static readonly SchemaField<float> __m_flLastLandedVelocityX = new("CCSPlayerModernJump", "m_flLastLandedVelocityX");
 	[SchemaMember("CCSPlayerModernJump", "m_flLastLandedVelocityX")]
-	public ref float LastLandedVelocityX => ref Schema.GetRef<float>(this.Handle, "CCSPlayerModernJump", "m_flLastLandedVelocityX");
+	public ref float LastLandedVelocityX => ref __m_flLastLandedVelocityX.GetRef(this.Handle);
 
 	// m_flLastLandedVelocityY
+	private static readonly SchemaField<float> __m_flLastLandedVelocityY = new("CCSPlayerModernJump", "m_flLastLandedVelocityY");
 	[SchemaMember("CCSPlayerModernJump", "m_flLastLandedVelocityY")]
-	public ref float LastLandedVelocityY => ref Schema.GetRef<float>(this.Handle, "CCSPlayerModernJump", "m_flLastLandedVelocityY");
+	public ref float LastLandedVelocityY => ref __m_flLastLandedVelocityY.GetRef(this.Handle);
 
 	// m_flLastLandedVelocityZ
+	private static readonly SchemaField<float> __m_flLastLandedVelocityZ = new("CCSPlayerModernJump", "m_flLastLandedVelocityZ");
 	[SchemaMember("CCSPlayerModernJump", "m_flLastLandedVelocityZ")]
-	public ref float LastLandedVelocityZ => ref Schema.GetRef<float>(this.Handle, "CCSPlayerModernJump", "m_flLastLandedVelocityZ");
+	public ref float LastLandedVelocityZ => ref __m_flLastLandedVelocityZ.GetRef(this.Handle);
 
 }

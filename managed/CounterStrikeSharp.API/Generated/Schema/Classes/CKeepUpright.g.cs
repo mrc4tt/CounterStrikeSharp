@@ -43,15 +43,18 @@ public partial class CKeepUpright : CPointEntity
 	public CHandle<CBaseEntity> AttachedObject => Schema.GetDeclaredClass<CHandle<CBaseEntity>>(this.Handle, "CKeepUpright", "m_attachedObject");
 
 	// m_angularLimit
+	private static readonly SchemaField<float> __m_angularLimit = new("CKeepUpright", "m_angularLimit");
 	[SchemaMember("CKeepUpright", "m_angularLimit")]
-	public ref float AngularLimit => ref Schema.GetRef<float>(this.Handle, "CKeepUpright", "m_angularLimit");
+	public ref float AngularLimit => ref __m_angularLimit.GetRef(this.Handle);
 
 	// m_bActive
+	private static readonly SchemaField<bool> __m_bActive = new("CKeepUpright", "m_bActive");
 	[SchemaMember("CKeepUpright", "m_bActive")]
-	public ref bool Active => ref Schema.GetRef<bool>(this.Handle, "CKeepUpright", "m_bActive");
+	public ref bool Active => ref __m_bActive.GetRef(this.Handle);
 
 	// m_bDampAllRotation
+	private static readonly SchemaField<bool> __m_bDampAllRotation = new("CKeepUpright", "m_bDampAllRotation");
 	[SchemaMember("CKeepUpright", "m_bDampAllRotation")]
-	public ref bool DampAllRotation => ref Schema.GetRef<bool>(this.Handle, "CKeepUpright", "m_bDampAllRotation");
+	public ref bool DampAllRotation => ref __m_bDampAllRotation.GetRef(this.Handle);
 
 }

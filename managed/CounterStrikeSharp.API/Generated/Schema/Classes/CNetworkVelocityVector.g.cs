@@ -19,15 +19,18 @@ public partial class CNetworkVelocityVector : NativeObject
     public CNetworkVelocityVector (IntPtr pointer) : base(pointer) {}
 
 	// m_vecX
+	private static readonly SchemaField<float> __m_vecX = new("CNetworkVelocityVector", "m_vecX");
 	[SchemaMember("CNetworkVelocityVector", "m_vecX")]
-	public ref float X => ref Schema.GetRef<float>(this.Handle, "CNetworkVelocityVector", "m_vecX");
+	public ref float X => ref __m_vecX.GetRef(this.Handle);
 
 	// m_vecY
+	private static readonly SchemaField<float> __m_vecY = new("CNetworkVelocityVector", "m_vecY");
 	[SchemaMember("CNetworkVelocityVector", "m_vecY")]
-	public ref float Y => ref Schema.GetRef<float>(this.Handle, "CNetworkVelocityVector", "m_vecY");
+	public ref float Y => ref __m_vecY.GetRef(this.Handle);
 
 	// m_vecZ
+	private static readonly SchemaField<float> __m_vecZ = new("CNetworkVelocityVector", "m_vecZ");
 	[SchemaMember("CNetworkVelocityVector", "m_vecZ")]
-	public ref float Z => ref Schema.GetRef<float>(this.Handle, "CNetworkVelocityVector", "m_vecZ");
+	public ref float Z => ref __m_vecZ.GetRef(this.Handle);
 
 }

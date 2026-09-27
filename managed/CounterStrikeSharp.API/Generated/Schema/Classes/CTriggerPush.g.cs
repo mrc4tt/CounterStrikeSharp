@@ -27,12 +27,14 @@ public partial class CTriggerPush : CBaseTrigger
 	public Vector PushDirEntitySpace => Schema.GetDeclaredClass<Vector>(this.Handle, "CTriggerPush", "m_vecPushDirEntitySpace");
 
 	// m_bTriggerOnStartTouch
+	private static readonly SchemaField<bool> __m_bTriggerOnStartTouch = new("CTriggerPush", "m_bTriggerOnStartTouch");
 	[SchemaMember("CTriggerPush", "m_bTriggerOnStartTouch")]
-	public ref bool TriggerOnStartTouch => ref Schema.GetRef<bool>(this.Handle, "CTriggerPush", "m_bTriggerOnStartTouch");
+	public ref bool TriggerOnStartTouch => ref __m_bTriggerOnStartTouch.GetRef(this.Handle);
 
 	// m_bUsePathSimple
+	private static readonly SchemaField<bool> __m_bUsePathSimple = new("CTriggerPush", "m_bUsePathSimple");
 	[SchemaMember("CTriggerPush", "m_bUsePathSimple")]
-	public ref bool UsePathSimple => ref Schema.GetRef<bool>(this.Handle, "CTriggerPush", "m_bUsePathSimple");
+	public ref bool UsePathSimple => ref __m_bUsePathSimple.GetRef(this.Handle);
 
 	// m_iszPathSimpleName
 	[SchemaMember("CTriggerPush", "m_iszPathSimpleName")]
@@ -47,11 +49,13 @@ public partial class CTriggerPush : CBaseTrigger
 	public CHandle<CPathSimple> PathSimple => Schema.GetDeclaredClass<CHandle<CPathSimple>>(this.Handle, "CTriggerPush", "m_PathSimple");
 
 	// m_splinePushType
+	private static readonly SchemaField<UInt32> __m_splinePushType = new("CTriggerPush", "m_splinePushType");
 	[SchemaMember("CTriggerPush", "m_splinePushType")]
-	public ref UInt32 SplinePushType => ref Schema.GetRef<UInt32>(this.Handle, "CTriggerPush", "m_splinePushType");
+	public ref UInt32 SplinePushType => ref __m_splinePushType.GetRef(this.Handle);
 
 	// m_flSpeed
+	private static readonly SchemaField<float> __m_flSpeed = new("CTriggerPush", "m_flSpeed");
 	[SchemaMember("CTriggerPush", "m_flSpeed")]
-	public ref float Speed => ref Schema.GetRef<float>(this.Handle, "CTriggerPush", "m_flSpeed");
+	public ref float Speed => ref __m_flSpeed.GetRef(this.Handle);
 
 }

@@ -19,27 +19,33 @@ public partial class CPlayerVisibility : CBaseEntity
     public CPlayerVisibility (IntPtr pointer) : base(pointer) {}
 
 	// m_flVisibilityStrength
+	private static readonly SchemaField<float> __m_flVisibilityStrength = new("CPlayerVisibility", "m_flVisibilityStrength");
 	[SchemaMember("CPlayerVisibility", "m_flVisibilityStrength")]
-	public ref float VisibilityStrength => ref Schema.GetRef<float>(this.Handle, "CPlayerVisibility", "m_flVisibilityStrength");
+	public ref float VisibilityStrength => ref __m_flVisibilityStrength.GetRef(this.Handle);
 
 	// m_flFogDistanceMultiplier
+	private static readonly SchemaField<float> __m_flFogDistanceMultiplier = new("CPlayerVisibility", "m_flFogDistanceMultiplier");
 	[SchemaMember("CPlayerVisibility", "m_flFogDistanceMultiplier")]
-	public ref float FogDistanceMultiplier => ref Schema.GetRef<float>(this.Handle, "CPlayerVisibility", "m_flFogDistanceMultiplier");
+	public ref float FogDistanceMultiplier => ref __m_flFogDistanceMultiplier.GetRef(this.Handle);
 
 	// m_flFogMaxDensityMultiplier
+	private static readonly SchemaField<float> __m_flFogMaxDensityMultiplier = new("CPlayerVisibility", "m_flFogMaxDensityMultiplier");
 	[SchemaMember("CPlayerVisibility", "m_flFogMaxDensityMultiplier")]
-	public ref float FogMaxDensityMultiplier => ref Schema.GetRef<float>(this.Handle, "CPlayerVisibility", "m_flFogMaxDensityMultiplier");
+	public ref float FogMaxDensityMultiplier => ref __m_flFogMaxDensityMultiplier.GetRef(this.Handle);
 
 	// m_flFadeTime
+	private static readonly SchemaField<float> __m_flFadeTime = new("CPlayerVisibility", "m_flFadeTime");
 	[SchemaMember("CPlayerVisibility", "m_flFadeTime")]
-	public ref float FadeTime => ref Schema.GetRef<float>(this.Handle, "CPlayerVisibility", "m_flFadeTime");
+	public ref float FadeTime => ref __m_flFadeTime.GetRef(this.Handle);
 
 	// m_bStartDisabled
+	private static readonly SchemaField<bool> __m_bStartDisabled = new("CPlayerVisibility", "m_bStartDisabled");
 	[SchemaMember("CPlayerVisibility", "m_bStartDisabled")]
-	public ref bool StartDisabled => ref Schema.GetRef<bool>(this.Handle, "CPlayerVisibility", "m_bStartDisabled");
+	public ref bool StartDisabled => ref __m_bStartDisabled.GetRef(this.Handle);
 
 	// m_bIsEnabled
+	private static readonly SchemaField<bool> __m_bIsEnabled = new("CPlayerVisibility", "m_bIsEnabled");
 	[SchemaMember("CPlayerVisibility", "m_bIsEnabled")]
-	public ref bool IsEnabled => ref Schema.GetRef<bool>(this.Handle, "CPlayerVisibility", "m_bIsEnabled");
+	public ref bool IsEnabled => ref __m_bIsEnabled.GetRef(this.Handle);
 
 }

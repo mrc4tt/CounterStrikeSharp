@@ -75,20 +75,24 @@ public partial class CPointCommentaryNode : CBaseAnimGraph
 	public CHandle<CBaseEntity> ViewPositionMover => Schema.GetDeclaredClass<CHandle<CBaseEntity>>(this.Handle, "CPointCommentaryNode", "m_hViewPositionMover");
 
 	// m_bPreventMovement
+	private static readonly SchemaField<bool> __m_bPreventMovement = new("CPointCommentaryNode", "m_bPreventMovement");
 	[SchemaMember("CPointCommentaryNode", "m_bPreventMovement")]
-	public ref bool PreventMovement => ref Schema.GetRef<bool>(this.Handle, "CPointCommentaryNode", "m_bPreventMovement");
+	public ref bool PreventMovement => ref __m_bPreventMovement.GetRef(this.Handle);
 
 	// m_bUnderCrosshair
+	private static readonly SchemaField<bool> __m_bUnderCrosshair = new("CPointCommentaryNode", "m_bUnderCrosshair");
 	[SchemaMember("CPointCommentaryNode", "m_bUnderCrosshair")]
-	public ref bool UnderCrosshair => ref Schema.GetRef<bool>(this.Handle, "CPointCommentaryNode", "m_bUnderCrosshair");
+	public ref bool UnderCrosshair => ref __m_bUnderCrosshair.GetRef(this.Handle);
 
 	// m_bUnstoppable
+	private static readonly SchemaField<bool> __m_bUnstoppable = new("CPointCommentaryNode", "m_bUnstoppable");
 	[SchemaMember("CPointCommentaryNode", "m_bUnstoppable")]
-	public ref bool Unstoppable => ref Schema.GetRef<bool>(this.Handle, "CPointCommentaryNode", "m_bUnstoppable");
+	public ref bool Unstoppable => ref __m_bUnstoppable.GetRef(this.Handle);
 
 	// m_flFinishedTime
+	private static readonly SchemaField<float> __m_flFinishedTime = new("CPointCommentaryNode", "m_flFinishedTime");
 	[SchemaMember("CPointCommentaryNode", "m_flFinishedTime")]
-	public ref float FinishedTime => ref Schema.GetRef<float>(this.Handle, "CPointCommentaryNode", "m_flFinishedTime");
+	public ref float FinishedTime => ref __m_flFinishedTime.GetRef(this.Handle);
 
 	// m_vecFinishOrigin
 	[SchemaMember("CPointCommentaryNode", "m_vecFinishOrigin")]
@@ -103,20 +107,23 @@ public partial class CPointCommentaryNode : CBaseAnimGraph
 	public QAngle FinishAngles => Schema.GetDeclaredClass<QAngle>(this.Handle, "CPointCommentaryNode", "m_vecFinishAngles");
 
 	// m_bPreventChangesWhileMoving
+	private static readonly SchemaField<bool> __m_bPreventChangesWhileMoving = new("CPointCommentaryNode", "m_bPreventChangesWhileMoving");
 	[SchemaMember("CPointCommentaryNode", "m_bPreventChangesWhileMoving")]
-	public ref bool PreventChangesWhileMoving => ref Schema.GetRef<bool>(this.Handle, "CPointCommentaryNode", "m_bPreventChangesWhileMoving");
+	public ref bool PreventChangesWhileMoving => ref __m_bPreventChangesWhileMoving.GetRef(this.Handle);
 
 	// m_bDisabled
+	private static readonly SchemaField<bool> __m_bDisabled = new("CPointCommentaryNode", "m_bDisabled");
 	[SchemaMember("CPointCommentaryNode", "m_bDisabled")]
-	public ref bool Disabled => ref Schema.GetRef<bool>(this.Handle, "CPointCommentaryNode", "m_bDisabled");
+	public ref bool Disabled => ref __m_bDisabled.GetRef(this.Handle);
 
 	// m_vecTeleportOrigin
 	[SchemaMember("CPointCommentaryNode", "m_vecTeleportOrigin")]
 	public Vector TeleportOrigin => Schema.GetDeclaredClass<Vector>(this.Handle, "CPointCommentaryNode", "m_vecTeleportOrigin");
 
 	// m_flAbortedPlaybackAt
+	private static readonly SchemaField<float> __m_flAbortedPlaybackAt = new("CPointCommentaryNode", "m_flAbortedPlaybackAt");
 	[SchemaMember("CPointCommentaryNode", "m_flAbortedPlaybackAt")]
-	public ref float AbortedPlaybackAt => ref Schema.GetRef<float>(this.Handle, "CPointCommentaryNode", "m_flAbortedPlaybackAt");
+	public ref float AbortedPlaybackAt => ref __m_flAbortedPlaybackAt.GetRef(this.Handle);
 
 	// m_pOnCommentaryStarted
 	[SchemaMember("CPointCommentaryNode", "m_pOnCommentaryStarted")]
@@ -127,16 +134,19 @@ public partial class CPointCommentaryNode : CBaseAnimGraph
 	public CEntityIOOutput OnCommentaryStopped => Schema.GetDeclaredClass<CEntityIOOutput>(this.Handle, "CPointCommentaryNode", "m_pOnCommentaryStopped");
 
 	// m_bActive
+	private static readonly SchemaField<bool> __m_bActive = new("CPointCommentaryNode", "m_bActive");
 	[SchemaMember("CPointCommentaryNode", "m_bActive")]
-	public ref bool Active => ref Schema.GetRef<bool>(this.Handle, "CPointCommentaryNode", "m_bActive");
+	public ref bool Active => ref __m_bActive.GetRef(this.Handle);
 
 	// m_flStartTime
+	private static readonly SchemaField<float> __m_flStartTime = new("CPointCommentaryNode", "m_flStartTime");
 	[SchemaMember("CPointCommentaryNode", "m_flStartTime")]
-	public ref float StartTime => ref Schema.GetRef<float>(this.Handle, "CPointCommentaryNode", "m_flStartTime");
+	public ref float StartTime => ref __m_flStartTime.GetRef(this.Handle);
 
 	// m_flStartTimeInCommentary
+	private static readonly SchemaField<float> __m_flStartTimeInCommentary = new("CPointCommentaryNode", "m_flStartTimeInCommentary");
 	[SchemaMember("CPointCommentaryNode", "m_flStartTimeInCommentary")]
-	public ref float StartTimeInCommentary => ref Schema.GetRef<float>(this.Handle, "CPointCommentaryNode", "m_flStartTimeInCommentary");
+	public ref float StartTimeInCommentary => ref __m_flStartTimeInCommentary.GetRef(this.Handle);
 
 	// m_iszTitle
 	[SchemaMember("CPointCommentaryNode", "m_iszTitle")]
@@ -155,15 +165,18 @@ public partial class CPointCommentaryNode : CBaseAnimGraph
 	}
 
 	// m_iNodeNumber
+	private static readonly SchemaField<Int32> __m_iNodeNumber = new("CPointCommentaryNode", "m_iNodeNumber");
 	[SchemaMember("CPointCommentaryNode", "m_iNodeNumber")]
-	public ref Int32 NodeNumber => ref Schema.GetRef<Int32>(this.Handle, "CPointCommentaryNode", "m_iNodeNumber");
+	public ref Int32 NodeNumber => ref __m_iNodeNumber.GetRef(this.Handle);
 
 	// m_iNodeNumberMax
+	private static readonly SchemaField<Int32> __m_iNodeNumberMax = new("CPointCommentaryNode", "m_iNodeNumberMax");
 	[SchemaMember("CPointCommentaryNode", "m_iNodeNumberMax")]
-	public ref Int32 NodeNumberMax => ref Schema.GetRef<Int32>(this.Handle, "CPointCommentaryNode", "m_iNodeNumberMax");
+	public ref Int32 NodeNumberMax => ref __m_iNodeNumberMax.GetRef(this.Handle);
 
 	// m_bListenedTo
+	private static readonly SchemaField<bool> __m_bListenedTo = new("CPointCommentaryNode", "m_bListenedTo");
 	[SchemaMember("CPointCommentaryNode", "m_bListenedTo")]
-	public ref bool ListenedTo => ref Schema.GetRef<bool>(this.Handle, "CPointCommentaryNode", "m_bListenedTo");
+	public ref bool ListenedTo => ref __m_bListenedTo.GetRef(this.Handle);
 
 }

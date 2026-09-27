@@ -19,11 +19,13 @@ public partial class CFuncNavObstruction : CBaseModelEntity
     public CFuncNavObstruction (IntPtr pointer) : base(pointer) {}
 
 	// m_bDisabled
+	private static readonly SchemaField<bool> __m_bDisabled = new("CFuncNavObstruction", "m_bDisabled");
 	[SchemaMember("CFuncNavObstruction", "m_bDisabled")]
-	public ref bool Disabled => ref Schema.GetRef<bool>(this.Handle, "CFuncNavObstruction", "m_bDisabled");
+	public ref bool Disabled => ref __m_bDisabled.GetRef(this.Handle);
 
 	// m_bUseAsyncObstacleUpdate
+	private static readonly SchemaField<bool> __m_bUseAsyncObstacleUpdate = new("CFuncNavObstruction", "m_bUseAsyncObstacleUpdate");
 	[SchemaMember("CFuncNavObstruction", "m_bUseAsyncObstacleUpdate")]
-	public ref bool UseAsyncObstacleUpdate => ref Schema.GetRef<bool>(this.Handle, "CFuncNavObstruction", "m_bUseAsyncObstacleUpdate");
+	public ref bool UseAsyncObstacleUpdate => ref __m_bUseAsyncObstacleUpdate.GetRef(this.Handle);
 
 }

@@ -27,16 +27,19 @@ public partial class CTriggerSndSosOpvar : CBaseTrigger
 	public Vector Position => Schema.GetDeclaredClass<Vector>(this.Handle, "CTriggerSndSosOpvar", "m_flPosition");
 
 	// m_flCenterSize
+	private static readonly SchemaField<float> __m_flCenterSize = new("CTriggerSndSosOpvar", "m_flCenterSize");
 	[SchemaMember("CTriggerSndSosOpvar", "m_flCenterSize")]
-	public ref float CenterSize => ref Schema.GetRef<float>(this.Handle, "CTriggerSndSosOpvar", "m_flCenterSize");
+	public ref float CenterSize => ref __m_flCenterSize.GetRef(this.Handle);
 
 	// m_flMinVal
+	private static readonly SchemaField<float> __m_flMinVal = new("CTriggerSndSosOpvar", "m_flMinVal");
 	[SchemaMember("CTriggerSndSosOpvar", "m_flMinVal")]
-	public ref float MinVal => ref Schema.GetRef<float>(this.Handle, "CTriggerSndSosOpvar", "m_flMinVal");
+	public ref float MinVal => ref __m_flMinVal.GetRef(this.Handle);
 
 	// m_flMaxVal
+	private static readonly SchemaField<float> __m_flMaxVal = new("CTriggerSndSosOpvar", "m_flMaxVal");
 	[SchemaMember("CTriggerSndSosOpvar", "m_flMaxVal")]
-	public ref float MaxVal => ref Schema.GetRef<float>(this.Handle, "CTriggerSndSosOpvar", "m_flMaxVal");
+	public ref float MaxVal => ref __m_flMaxVal.GetRef(this.Handle);
 
 	// m_opvarName
 	[SchemaMember("CTriggerSndSosOpvar", "m_opvarName")]
@@ -63,8 +66,9 @@ public partial class CTriggerSndSosOpvar : CBaseTrigger
 	}
 
 	// m_bVolIs2D
+	private static readonly SchemaField<bool> __m_bVolIs2D = new("CTriggerSndSosOpvar", "m_bVolIs2D");
 	[SchemaMember("CTriggerSndSosOpvar", "m_bVolIs2D")]
-	public ref bool VolIs2D => ref Schema.GetRef<bool>(this.Handle, "CTriggerSndSosOpvar", "m_bVolIs2D");
+	public ref bool VolIs2D => ref __m_bVolIs2D.GetRef(this.Handle);
 
 	// m_opvarNameChar
 	[SchemaMember("CTriggerSndSosOpvar", "m_opvarNameChar")]
@@ -95,7 +99,8 @@ public partial class CTriggerSndSosOpvar : CBaseTrigger
 	public Vector VecNormPos => Schema.GetDeclaredClass<Vector>(this.Handle, "CTriggerSndSosOpvar", "m_VecNormPos");
 
 	// m_flNormCenterSize
+	private static readonly SchemaField<float> __m_flNormCenterSize = new("CTriggerSndSosOpvar", "m_flNormCenterSize");
 	[SchemaMember("CTriggerSndSosOpvar", "m_flNormCenterSize")]
-	public ref float NormCenterSize => ref Schema.GetRef<float>(this.Handle, "CTriggerSndSosOpvar", "m_flNormCenterSize");
+	public ref float NormCenterSize => ref __m_flNormCenterSize.GetRef(this.Handle);
 
 }

@@ -19,40 +19,49 @@ public partial class CEconItemView : IEconItemInterface
     public CEconItemView (IntPtr pointer) : base(pointer) {}
 
 	// m_iItemDefinitionIndex
+	private static readonly SchemaField<UInt16> __m_iItemDefinitionIndex = new("CEconItemView", "m_iItemDefinitionIndex");
 	[SchemaMember("CEconItemView", "m_iItemDefinitionIndex")]
-	public ref UInt16 ItemDefinitionIndex => ref Schema.GetRef<UInt16>(this.Handle, "CEconItemView", "m_iItemDefinitionIndex");
+	public ref UInt16 ItemDefinitionIndex => ref __m_iItemDefinitionIndex.GetRef(this.Handle);
 
 	// m_iEntityQuality
+	private static readonly SchemaField<Int32> __m_iEntityQuality = new("CEconItemView", "m_iEntityQuality");
 	[SchemaMember("CEconItemView", "m_iEntityQuality")]
-	public ref Int32 EntityQuality => ref Schema.GetRef<Int32>(this.Handle, "CEconItemView", "m_iEntityQuality");
+	public ref Int32 EntityQuality => ref __m_iEntityQuality.GetRef(this.Handle);
 
 	// m_iEntityLevel
+	private static readonly SchemaField<UInt32> __m_iEntityLevel = new("CEconItemView", "m_iEntityLevel");
 	[SchemaMember("CEconItemView", "m_iEntityLevel")]
-	public ref UInt32 EntityLevel => ref Schema.GetRef<UInt32>(this.Handle, "CEconItemView", "m_iEntityLevel");
+	public ref UInt32 EntityLevel => ref __m_iEntityLevel.GetRef(this.Handle);
 
 	// m_iItemID
+	private static readonly SchemaField<UInt64> __m_iItemID = new("CEconItemView", "m_iItemID");
 	[SchemaMember("CEconItemView", "m_iItemID")]
-	public ref UInt64 ItemID => ref Schema.GetRef<UInt64>(this.Handle, "CEconItemView", "m_iItemID");
+	public ref UInt64 ItemID => ref __m_iItemID.GetRef(this.Handle);
 
 	// m_iItemIDHigh
+	private static readonly SchemaField<UInt32> __m_iItemIDHigh = new("CEconItemView", "m_iItemIDHigh");
 	[SchemaMember("CEconItemView", "m_iItemIDHigh")]
-	public ref UInt32 ItemIDHigh => ref Schema.GetRef<UInt32>(this.Handle, "CEconItemView", "m_iItemIDHigh");
+	public ref UInt32 ItemIDHigh => ref __m_iItemIDHigh.GetRef(this.Handle);
 
 	// m_iItemIDLow
+	private static readonly SchemaField<UInt32> __m_iItemIDLow = new("CEconItemView", "m_iItemIDLow");
 	[SchemaMember("CEconItemView", "m_iItemIDLow")]
-	public ref UInt32 ItemIDLow => ref Schema.GetRef<UInt32>(this.Handle, "CEconItemView", "m_iItemIDLow");
+	public ref UInt32 ItemIDLow => ref __m_iItemIDLow.GetRef(this.Handle);
 
 	// m_iAccountID
+	private static readonly SchemaField<UInt32> __m_iAccountID = new("CEconItemView", "m_iAccountID");
 	[SchemaMember("CEconItemView", "m_iAccountID")]
-	public ref UInt32 AccountID => ref Schema.GetRef<UInt32>(this.Handle, "CEconItemView", "m_iAccountID");
+	public ref UInt32 AccountID => ref __m_iAccountID.GetRef(this.Handle);
 
 	// m_iInventoryPosition
+	private static readonly SchemaField<UInt32> __m_iInventoryPosition = new("CEconItemView", "m_iInventoryPosition");
 	[SchemaMember("CEconItemView", "m_iInventoryPosition")]
-	public ref UInt32 InventoryPosition => ref Schema.GetRef<UInt32>(this.Handle, "CEconItemView", "m_iInventoryPosition");
+	public ref UInt32 InventoryPosition => ref __m_iInventoryPosition.GetRef(this.Handle);
 
 	// m_bInitialized
+	private static readonly SchemaField<bool> __m_bInitialized = new("CEconItemView", "m_bInitialized");
 	[SchemaMember("CEconItemView", "m_bInitialized")]
-	public ref bool Initialized => ref Schema.GetRef<bool>(this.Handle, "CEconItemView", "m_bInitialized");
+	public ref bool Initialized => ref __m_bInitialized.GetRef(this.Handle);
 
 	// m_AttributeList
 	[SchemaMember("CEconItemView", "m_AttributeList")]

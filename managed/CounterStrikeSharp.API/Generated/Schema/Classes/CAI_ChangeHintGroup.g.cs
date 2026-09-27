@@ -19,8 +19,9 @@ public partial class CAI_ChangeHintGroup : CBaseEntity
     public CAI_ChangeHintGroup (IntPtr pointer) : base(pointer) {}
 
 	// m_iSearchType
+	private static readonly SchemaField<Int32> __m_iSearchType = new("CAI_ChangeHintGroup", "m_iSearchType");
 	[SchemaMember("CAI_ChangeHintGroup", "m_iSearchType")]
-	public ref Int32 SearchType => ref Schema.GetRef<Int32>(this.Handle, "CAI_ChangeHintGroup", "m_iSearchType");
+	public ref Int32 SearchType => ref __m_iSearchType.GetRef(this.Handle);
 
 	// m_strSearchName
 	[SchemaMember("CAI_ChangeHintGroup", "m_strSearchName")]
@@ -39,7 +40,8 @@ public partial class CAI_ChangeHintGroup : CBaseEntity
 	}
 
 	// m_flRadius
+	private static readonly SchemaField<float> __m_flRadius = new("CAI_ChangeHintGroup", "m_flRadius");
 	[SchemaMember("CAI_ChangeHintGroup", "m_flRadius")]
-	public ref float Radius => ref Schema.GetRef<float>(this.Handle, "CAI_ChangeHintGroup", "m_flRadius");
+	public ref float Radius => ref __m_flRadius.GetRef(this.Handle);
 
 }

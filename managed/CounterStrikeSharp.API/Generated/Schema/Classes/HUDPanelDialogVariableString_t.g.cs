@@ -19,12 +19,14 @@ public partial class HUDPanelDialogVariableString_t : NativeObject
     public HUDPanelDialogVariableString_t (IntPtr pointer) : base(pointer) {}
 
 	// m_nPanelIdIndex
+	private static readonly SchemaField<UInt16> __m_nPanelIdIndex = new("HUDPanelDialogVariableString_t", "m_nPanelIdIndex");
 	[SchemaMember("HUDPanelDialogVariableString_t", "m_nPanelIdIndex")]
-	public ref UInt16 PanelIdIndex => ref Schema.GetRef<UInt16>(this.Handle, "HUDPanelDialogVariableString_t", "m_nPanelIdIndex");
+	public ref UInt16 PanelIdIndex => ref __m_nPanelIdIndex.GetRef(this.Handle);
 
 	// m_nDialogVariableIndex
+	private static readonly SchemaField<UInt16> __m_nDialogVariableIndex = new("HUDPanelDialogVariableString_t", "m_nDialogVariableIndex");
 	[SchemaMember("HUDPanelDialogVariableString_t", "m_nDialogVariableIndex")]
-	public ref UInt16 DialogVariableIndex => ref Schema.GetRef<UInt16>(this.Handle, "HUDPanelDialogVariableString_t", "m_nDialogVariableIndex");
+	public ref UInt16 DialogVariableIndex => ref __m_nDialogVariableIndex.GetRef(this.Handle);
 
 	// m_sValue
 	[SchemaMember("HUDPanelDialogVariableString_t", "m_sValue")]
@@ -35,7 +37,8 @@ public partial class HUDPanelDialogVariableString_t : NativeObject
 	}
 
 	// m_bIsSet
+	private static readonly SchemaField<bool> __m_bIsSet = new("HUDPanelDialogVariableString_t", "m_bIsSet");
 	[SchemaMember("HUDPanelDialogVariableString_t", "m_bIsSet")]
-	public ref bool IsSet => ref Schema.GetRef<bool>(this.Handle, "HUDPanelDialogVariableString_t", "m_bIsSet");
+	public ref bool IsSet => ref __m_bIsSet.GetRef(this.Handle);
 
 }

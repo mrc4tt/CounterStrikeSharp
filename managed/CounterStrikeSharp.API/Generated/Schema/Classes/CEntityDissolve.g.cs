@@ -19,43 +19,52 @@ public partial class CEntityDissolve : CBaseModelEntity
     public CEntityDissolve (IntPtr pointer) : base(pointer) {}
 
 	// m_flFadeInStart
+	private static readonly SchemaField<float> __m_flFadeInStart = new("CEntityDissolve", "m_flFadeInStart");
 	[SchemaMember("CEntityDissolve", "m_flFadeInStart")]
-	public ref float FadeInStart => ref Schema.GetRef<float>(this.Handle, "CEntityDissolve", "m_flFadeInStart");
+	public ref float FadeInStart => ref __m_flFadeInStart.GetRef(this.Handle);
 
 	// m_flFadeInLength
+	private static readonly SchemaField<float> __m_flFadeInLength = new("CEntityDissolve", "m_flFadeInLength");
 	[SchemaMember("CEntityDissolve", "m_flFadeInLength")]
-	public ref float FadeInLength => ref Schema.GetRef<float>(this.Handle, "CEntityDissolve", "m_flFadeInLength");
+	public ref float FadeInLength => ref __m_flFadeInLength.GetRef(this.Handle);
 
 	// m_flFadeOutModelStart
+	private static readonly SchemaField<float> __m_flFadeOutModelStart = new("CEntityDissolve", "m_flFadeOutModelStart");
 	[SchemaMember("CEntityDissolve", "m_flFadeOutModelStart")]
-	public ref float FadeOutModelStart => ref Schema.GetRef<float>(this.Handle, "CEntityDissolve", "m_flFadeOutModelStart");
+	public ref float FadeOutModelStart => ref __m_flFadeOutModelStart.GetRef(this.Handle);
 
 	// m_flFadeOutModelLength
+	private static readonly SchemaField<float> __m_flFadeOutModelLength = new("CEntityDissolve", "m_flFadeOutModelLength");
 	[SchemaMember("CEntityDissolve", "m_flFadeOutModelLength")]
-	public ref float FadeOutModelLength => ref Schema.GetRef<float>(this.Handle, "CEntityDissolve", "m_flFadeOutModelLength");
+	public ref float FadeOutModelLength => ref __m_flFadeOutModelLength.GetRef(this.Handle);
 
 	// m_flFadeOutStart
+	private static readonly SchemaField<float> __m_flFadeOutStart = new("CEntityDissolve", "m_flFadeOutStart");
 	[SchemaMember("CEntityDissolve", "m_flFadeOutStart")]
-	public ref float FadeOutStart => ref Schema.GetRef<float>(this.Handle, "CEntityDissolve", "m_flFadeOutStart");
+	public ref float FadeOutStart => ref __m_flFadeOutStart.GetRef(this.Handle);
 
 	// m_flFadeOutLength
+	private static readonly SchemaField<float> __m_flFadeOutLength = new("CEntityDissolve", "m_flFadeOutLength");
 	[SchemaMember("CEntityDissolve", "m_flFadeOutLength")]
-	public ref float FadeOutLength => ref Schema.GetRef<float>(this.Handle, "CEntityDissolve", "m_flFadeOutLength");
+	public ref float FadeOutLength => ref __m_flFadeOutLength.GetRef(this.Handle);
 
 	// m_flStartTime
+	private static readonly SchemaField<float> __m_flStartTime = new("CEntityDissolve", "m_flStartTime");
 	[SchemaMember("CEntityDissolve", "m_flStartTime")]
-	public ref float StartTime => ref Schema.GetRef<float>(this.Handle, "CEntityDissolve", "m_flStartTime");
+	public ref float StartTime => ref __m_flStartTime.GetRef(this.Handle);
 
 	// m_nDissolveType
+	private static readonly SchemaField<EntityDissolveType_t> __m_nDissolveType = new("CEntityDissolve", "m_nDissolveType");
 	[SchemaMember("CEntityDissolve", "m_nDissolveType")]
-	public ref EntityDissolveType_t DissolveType => ref Schema.GetRef<EntityDissolveType_t>(this.Handle, "CEntityDissolve", "m_nDissolveType");
+	public ref EntityDissolveType_t DissolveType => ref __m_nDissolveType.GetRef(this.Handle);
 
 	// m_vDissolverOrigin
 	[SchemaMember("CEntityDissolve", "m_vDissolverOrigin")]
 	public Vector DissolverOrigin => Schema.GetDeclaredClass<Vector>(this.Handle, "CEntityDissolve", "m_vDissolverOrigin");
 
 	// m_nMagnitude
+	private static readonly SchemaField<UInt32> __m_nMagnitude = new("CEntityDissolve", "m_nMagnitude");
 	[SchemaMember("CEntityDissolve", "m_nMagnitude")]
-	public ref UInt32 Magnitude => ref Schema.GetRef<UInt32>(this.Handle, "CEntityDissolve", "m_nMagnitude");
+	public ref UInt32 Magnitude => ref __m_nMagnitude.GetRef(this.Handle);
 
 }

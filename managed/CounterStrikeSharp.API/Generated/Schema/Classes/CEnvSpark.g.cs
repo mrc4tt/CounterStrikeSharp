@@ -19,20 +19,24 @@ public partial class CEnvSpark : CPointEntity
     public CEnvSpark (IntPtr pointer) : base(pointer) {}
 
 	// m_flDelay
+	private static readonly SchemaField<float> __m_flDelay = new("CEnvSpark", "m_flDelay");
 	[SchemaMember("CEnvSpark", "m_flDelay")]
-	public ref float Delay => ref Schema.GetRef<float>(this.Handle, "CEnvSpark", "m_flDelay");
+	public ref float Delay => ref __m_flDelay.GetRef(this.Handle);
 
 	// m_nMagnitude
+	private static readonly SchemaField<Int32> __m_nMagnitude = new("CEnvSpark", "m_nMagnitude");
 	[SchemaMember("CEnvSpark", "m_nMagnitude")]
-	public ref Int32 Magnitude => ref Schema.GetRef<Int32>(this.Handle, "CEnvSpark", "m_nMagnitude");
+	public ref Int32 Magnitude => ref __m_nMagnitude.GetRef(this.Handle);
 
 	// m_nTrailLength
+	private static readonly SchemaField<Int32> __m_nTrailLength = new("CEnvSpark", "m_nTrailLength");
 	[SchemaMember("CEnvSpark", "m_nTrailLength")]
-	public ref Int32 TrailLength => ref Schema.GetRef<Int32>(this.Handle, "CEnvSpark", "m_nTrailLength");
+	public ref Int32 TrailLength => ref __m_nTrailLength.GetRef(this.Handle);
 
 	// m_nType
+	private static readonly SchemaField<Int32> __m_nType = new("CEnvSpark", "m_nType");
 	[SchemaMember("CEnvSpark", "m_nType")]
-	public ref Int32 Type => ref Schema.GetRef<Int32>(this.Handle, "CEnvSpark", "m_nType");
+	public ref Int32 Type => ref __m_nType.GetRef(this.Handle);
 
 	// m_OnSpark
 	[SchemaMember("CEnvSpark", "m_OnSpark")]

@@ -19,11 +19,13 @@ public partial class WeaponPurchaseCount_t : NativeObject
     public WeaponPurchaseCount_t (IntPtr pointer) : base(pointer) {}
 
 	// m_nItemDefIndex
+	private static readonly SchemaField<UInt16> __m_nItemDefIndex = new("WeaponPurchaseCount_t", "m_nItemDefIndex");
 	[SchemaMember("WeaponPurchaseCount_t", "m_nItemDefIndex")]
-	public ref UInt16 ItemDefIndex => ref Schema.GetRef<UInt16>(this.Handle, "WeaponPurchaseCount_t", "m_nItemDefIndex");
+	public ref UInt16 ItemDefIndex => ref __m_nItemDefIndex.GetRef(this.Handle);
 
 	// m_nCount
+	private static readonly SchemaField<UInt16> __m_nCount = new("WeaponPurchaseCount_t", "m_nCount");
 	[SchemaMember("WeaponPurchaseCount_t", "m_nCount")]
-	public ref UInt16 Count => ref Schema.GetRef<UInt16>(this.Handle, "WeaponPurchaseCount_t", "m_nCount");
+	public ref UInt16 Count => ref __m_nCount.GetRef(this.Handle);
 
 }

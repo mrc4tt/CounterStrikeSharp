@@ -19,103 +19,128 @@ public partial class dynpitchvol_base_t : NativeObject
     public dynpitchvol_base_t (IntPtr pointer) : base(pointer) {}
 
 	// preset
+	private static readonly SchemaField<Int32> __preset = new("dynpitchvol_base_t", "preset");
 	[SchemaMember("dynpitchvol_base_t", "preset")]
-	public ref Int32 Preset => ref Schema.GetRef<Int32>(this.Handle, "dynpitchvol_base_t", "preset");
+	public ref Int32 Preset => ref __preset.GetRef(this.Handle);
 
 	// pitchrun
+	private static readonly SchemaField<Int32> __pitchrun = new("dynpitchvol_base_t", "pitchrun");
 	[SchemaMember("dynpitchvol_base_t", "pitchrun")]
-	public ref Int32 Pitchrun => ref Schema.GetRef<Int32>(this.Handle, "dynpitchvol_base_t", "pitchrun");
+	public ref Int32 Pitchrun => ref __pitchrun.GetRef(this.Handle);
 
 	// pitchstart
+	private static readonly SchemaField<Int32> __pitchstart = new("dynpitchvol_base_t", "pitchstart");
 	[SchemaMember("dynpitchvol_base_t", "pitchstart")]
-	public ref Int32 Pitchstart => ref Schema.GetRef<Int32>(this.Handle, "dynpitchvol_base_t", "pitchstart");
+	public ref Int32 Pitchstart => ref __pitchstart.GetRef(this.Handle);
 
 	// spinup
+	private static readonly SchemaField<Int32> __spinup = new("dynpitchvol_base_t", "spinup");
 	[SchemaMember("dynpitchvol_base_t", "spinup")]
-	public ref Int32 Spinup => ref Schema.GetRef<Int32>(this.Handle, "dynpitchvol_base_t", "spinup");
+	public ref Int32 Spinup => ref __spinup.GetRef(this.Handle);
 
 	// spindown
+	private static readonly SchemaField<Int32> __spindown = new("dynpitchvol_base_t", "spindown");
 	[SchemaMember("dynpitchvol_base_t", "spindown")]
-	public ref Int32 Spindown => ref Schema.GetRef<Int32>(this.Handle, "dynpitchvol_base_t", "spindown");
+	public ref Int32 Spindown => ref __spindown.GetRef(this.Handle);
 
 	// volrun
+	private static readonly SchemaField<Int32> __volrun = new("dynpitchvol_base_t", "volrun");
 	[SchemaMember("dynpitchvol_base_t", "volrun")]
-	public ref Int32 Volrun => ref Schema.GetRef<Int32>(this.Handle, "dynpitchvol_base_t", "volrun");
+	public ref Int32 Volrun => ref __volrun.GetRef(this.Handle);
 
 	// volstart
+	private static readonly SchemaField<Int32> __volstart = new("dynpitchvol_base_t", "volstart");
 	[SchemaMember("dynpitchvol_base_t", "volstart")]
-	public ref Int32 Volstart => ref Schema.GetRef<Int32>(this.Handle, "dynpitchvol_base_t", "volstart");
+	public ref Int32 Volstart => ref __volstart.GetRef(this.Handle);
 
 	// fadein
+	private static readonly SchemaField<Int32> __fadein = new("dynpitchvol_base_t", "fadein");
 	[SchemaMember("dynpitchvol_base_t", "fadein")]
-	public ref Int32 Fadein => ref Schema.GetRef<Int32>(this.Handle, "dynpitchvol_base_t", "fadein");
+	public ref Int32 Fadein => ref __fadein.GetRef(this.Handle);
 
 	// fadeout
+	private static readonly SchemaField<Int32> __fadeout = new("dynpitchvol_base_t", "fadeout");
 	[SchemaMember("dynpitchvol_base_t", "fadeout")]
-	public ref Int32 Fadeout => ref Schema.GetRef<Int32>(this.Handle, "dynpitchvol_base_t", "fadeout");
+	public ref Int32 Fadeout => ref __fadeout.GetRef(this.Handle);
 
 	// lfotype
+	private static readonly SchemaField<Int32> __lfotype = new("dynpitchvol_base_t", "lfotype");
 	[SchemaMember("dynpitchvol_base_t", "lfotype")]
-	public ref Int32 Lfotype => ref Schema.GetRef<Int32>(this.Handle, "dynpitchvol_base_t", "lfotype");
+	public ref Int32 Lfotype => ref __lfotype.GetRef(this.Handle);
 
 	// lforate
+	private static readonly SchemaField<Int32> __lforate = new("dynpitchvol_base_t", "lforate");
 	[SchemaMember("dynpitchvol_base_t", "lforate")]
-	public ref Int32 Lforate => ref Schema.GetRef<Int32>(this.Handle, "dynpitchvol_base_t", "lforate");
+	public ref Int32 Lforate => ref __lforate.GetRef(this.Handle);
 
 	// lfomodpitch
+	private static readonly SchemaField<Int32> __lfomodpitch = new("dynpitchvol_base_t", "lfomodpitch");
 	[SchemaMember("dynpitchvol_base_t", "lfomodpitch")]
-	public ref Int32 Lfomodpitch => ref Schema.GetRef<Int32>(this.Handle, "dynpitchvol_base_t", "lfomodpitch");
+	public ref Int32 Lfomodpitch => ref __lfomodpitch.GetRef(this.Handle);
 
 	// lfomodvol
+	private static readonly SchemaField<Int32> __lfomodvol = new("dynpitchvol_base_t", "lfomodvol");
 	[SchemaMember("dynpitchvol_base_t", "lfomodvol")]
-	public ref Int32 Lfomodvol => ref Schema.GetRef<Int32>(this.Handle, "dynpitchvol_base_t", "lfomodvol");
+	public ref Int32 Lfomodvol => ref __lfomodvol.GetRef(this.Handle);
 
 	// cspinup
+	private static readonly SchemaField<Int32> __cspinup = new("dynpitchvol_base_t", "cspinup");
 	[SchemaMember("dynpitchvol_base_t", "cspinup")]
-	public ref Int32 Cspinup => ref Schema.GetRef<Int32>(this.Handle, "dynpitchvol_base_t", "cspinup");
+	public ref Int32 Cspinup => ref __cspinup.GetRef(this.Handle);
 
 	// cspincount
+	private static readonly SchemaField<Int32> __cspincount = new("dynpitchvol_base_t", "cspincount");
 	[SchemaMember("dynpitchvol_base_t", "cspincount")]
-	public ref Int32 Cspincount => ref Schema.GetRef<Int32>(this.Handle, "dynpitchvol_base_t", "cspincount");
+	public ref Int32 Cspincount => ref __cspincount.GetRef(this.Handle);
 
 	// pitch
+	private static readonly SchemaField<Int32> __pitch = new("dynpitchvol_base_t", "pitch");
 	[SchemaMember("dynpitchvol_base_t", "pitch")]
-	public ref Int32 Pitch => ref Schema.GetRef<Int32>(this.Handle, "dynpitchvol_base_t", "pitch");
+	public ref Int32 Pitch => ref __pitch.GetRef(this.Handle);
 
 	// spinupsav
+	private static readonly SchemaField<Int32> __spinupsav = new("dynpitchvol_base_t", "spinupsav");
 	[SchemaMember("dynpitchvol_base_t", "spinupsav")]
-	public ref Int32 Spinupsav => ref Schema.GetRef<Int32>(this.Handle, "dynpitchvol_base_t", "spinupsav");
+	public ref Int32 Spinupsav => ref __spinupsav.GetRef(this.Handle);
 
 	// spindownsav
+	private static readonly SchemaField<Int32> __spindownsav = new("dynpitchvol_base_t", "spindownsav");
 	[SchemaMember("dynpitchvol_base_t", "spindownsav")]
-	public ref Int32 Spindownsav => ref Schema.GetRef<Int32>(this.Handle, "dynpitchvol_base_t", "spindownsav");
+	public ref Int32 Spindownsav => ref __spindownsav.GetRef(this.Handle);
 
 	// pitchfrac
+	private static readonly SchemaField<Int32> __pitchfrac = new("dynpitchvol_base_t", "pitchfrac");
 	[SchemaMember("dynpitchvol_base_t", "pitchfrac")]
-	public ref Int32 Pitchfrac => ref Schema.GetRef<Int32>(this.Handle, "dynpitchvol_base_t", "pitchfrac");
+	public ref Int32 Pitchfrac => ref __pitchfrac.GetRef(this.Handle);
 
 	// vol
+	private static readonly SchemaField<Int32> __vol = new("dynpitchvol_base_t", "vol");
 	[SchemaMember("dynpitchvol_base_t", "vol")]
-	public ref Int32 Vol => ref Schema.GetRef<Int32>(this.Handle, "dynpitchvol_base_t", "vol");
+	public ref Int32 Vol => ref __vol.GetRef(this.Handle);
 
 	// fadeinsav
+	private static readonly SchemaField<Int32> __fadeinsav = new("dynpitchvol_base_t", "fadeinsav");
 	[SchemaMember("dynpitchvol_base_t", "fadeinsav")]
-	public ref Int32 Fadeinsav => ref Schema.GetRef<Int32>(this.Handle, "dynpitchvol_base_t", "fadeinsav");
+	public ref Int32 Fadeinsav => ref __fadeinsav.GetRef(this.Handle);
 
 	// fadeoutsav
+	private static readonly SchemaField<Int32> __fadeoutsav = new("dynpitchvol_base_t", "fadeoutsav");
 	[SchemaMember("dynpitchvol_base_t", "fadeoutsav")]
-	public ref Int32 Fadeoutsav => ref Schema.GetRef<Int32>(this.Handle, "dynpitchvol_base_t", "fadeoutsav");
+	public ref Int32 Fadeoutsav => ref __fadeoutsav.GetRef(this.Handle);
 
 	// volfrac
+	private static readonly SchemaField<Int32> __volfrac = new("dynpitchvol_base_t", "volfrac");
 	[SchemaMember("dynpitchvol_base_t", "volfrac")]
-	public ref Int32 Volfrac => ref Schema.GetRef<Int32>(this.Handle, "dynpitchvol_base_t", "volfrac");
+	public ref Int32 Volfrac => ref __volfrac.GetRef(this.Handle);
 
 	// lfofrac
+	private static readonly SchemaField<Int32> __lfofrac = new("dynpitchvol_base_t", "lfofrac");
 	[SchemaMember("dynpitchvol_base_t", "lfofrac")]
-	public ref Int32 Lfofrac => ref Schema.GetRef<Int32>(this.Handle, "dynpitchvol_base_t", "lfofrac");
+	public ref Int32 Lfofrac => ref __lfofrac.GetRef(this.Handle);
 
 	// lfomult
+	private static readonly SchemaField<Int32> __lfomult = new("dynpitchvol_base_t", "lfomult");
 	[SchemaMember("dynpitchvol_base_t", "lfomult")]
-	public ref Int32 Lfomult => ref Schema.GetRef<Int32>(this.Handle, "dynpitchvol_base_t", "lfomult");
+	public ref Int32 Lfomult => ref __lfomult.GetRef(this.Handle);
 
 }

@@ -27,24 +27,29 @@ public partial class CBuoyancyHelper : NativeObject
 	public CUtlStringToken FluidType => Schema.GetDeclaredClass<CUtlStringToken>(this.Handle, "CBuoyancyHelper", "m_nFluidType");
 
 	// m_flFluidDensity
+	private static readonly SchemaField<float> __m_flFluidDensity = new("CBuoyancyHelper", "m_flFluidDensity");
 	[SchemaMember("CBuoyancyHelper", "m_flFluidDensity")]
-	public ref float FluidDensity => ref Schema.GetRef<float>(this.Handle, "CBuoyancyHelper", "m_flFluidDensity");
+	public ref float FluidDensity => ref __m_flFluidDensity.GetRef(this.Handle);
 
 	// m_flNeutrallyBuoyantGravity
+	private static readonly SchemaField<float> __m_flNeutrallyBuoyantGravity = new("CBuoyancyHelper", "m_flNeutrallyBuoyantGravity");
 	[SchemaMember("CBuoyancyHelper", "m_flNeutrallyBuoyantGravity")]
-	public ref float NeutrallyBuoyantGravity => ref Schema.GetRef<float>(this.Handle, "CBuoyancyHelper", "m_flNeutrallyBuoyantGravity");
+	public ref float NeutrallyBuoyantGravity => ref __m_flNeutrallyBuoyantGravity.GetRef(this.Handle);
 
 	// m_flNeutrallyBuoyantLinearDamping
+	private static readonly SchemaField<float> __m_flNeutrallyBuoyantLinearDamping = new("CBuoyancyHelper", "m_flNeutrallyBuoyantLinearDamping");
 	[SchemaMember("CBuoyancyHelper", "m_flNeutrallyBuoyantLinearDamping")]
-	public ref float NeutrallyBuoyantLinearDamping => ref Schema.GetRef<float>(this.Handle, "CBuoyancyHelper", "m_flNeutrallyBuoyantLinearDamping");
+	public ref float NeutrallyBuoyantLinearDamping => ref __m_flNeutrallyBuoyantLinearDamping.GetRef(this.Handle);
 
 	// m_flNeutrallyBuoyantAngularDamping
+	private static readonly SchemaField<float> __m_flNeutrallyBuoyantAngularDamping = new("CBuoyancyHelper", "m_flNeutrallyBuoyantAngularDamping");
 	[SchemaMember("CBuoyancyHelper", "m_flNeutrallyBuoyantAngularDamping")]
-	public ref float NeutrallyBuoyantAngularDamping => ref Schema.GetRef<float>(this.Handle, "CBuoyancyHelper", "m_flNeutrallyBuoyantAngularDamping");
+	public ref float NeutrallyBuoyantAngularDamping => ref __m_flNeutrallyBuoyantAngularDamping.GetRef(this.Handle);
 
 	// m_bNeutrallyBuoyant
+	private static readonly SchemaField<bool> __m_bNeutrallyBuoyant = new("CBuoyancyHelper", "m_bNeutrallyBuoyant");
 	[SchemaMember("CBuoyancyHelper", "m_bNeutrallyBuoyant")]
-	public ref bool NeutrallyBuoyant => ref Schema.GetRef<bool>(this.Handle, "CBuoyancyHelper", "m_bNeutrallyBuoyant");
+	public ref bool NeutrallyBuoyant => ref __m_bNeutrallyBuoyant.GetRef(this.Handle);
 
 	// m_vecFractionOfWheelSubmergedForWheelFriction
 	[SchemaMember("CBuoyancyHelper", "m_vecFractionOfWheelSubmergedForWheelFriction")]

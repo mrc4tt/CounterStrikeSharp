@@ -27,36 +27,43 @@ public partial class CParticleSystem : CBaseModelEntity
 	}
 
 	// m_bActive
+	private static readonly SchemaField<bool> __m_bActive = new("CParticleSystem", "m_bActive");
 	[SchemaMember("CParticleSystem", "m_bActive")]
-	public ref bool Active => ref Schema.GetRef<bool>(this.Handle, "CParticleSystem", "m_bActive");
+	public ref bool Active => ref __m_bActive.GetRef(this.Handle);
 
 	// m_bFrozen
+	private static readonly SchemaField<bool> __m_bFrozen = new("CParticleSystem", "m_bFrozen");
 	[SchemaMember("CParticleSystem", "m_bFrozen")]
-	public ref bool Frozen => ref Schema.GetRef<bool>(this.Handle, "CParticleSystem", "m_bFrozen");
+	public ref bool Frozen => ref __m_bFrozen.GetRef(this.Handle);
 
 	// m_flFreezeTransitionDuration
+	private static readonly SchemaField<float> __m_flFreezeTransitionDuration = new("CParticleSystem", "m_flFreezeTransitionDuration");
 	[SchemaMember("CParticleSystem", "m_flFreezeTransitionDuration")]
-	public ref float FreezeTransitionDuration => ref Schema.GetRef<float>(this.Handle, "CParticleSystem", "m_flFreezeTransitionDuration");
+	public ref float FreezeTransitionDuration => ref __m_flFreezeTransitionDuration.GetRef(this.Handle);
 
 	// m_nStopType
+	private static readonly SchemaField<Int32> __m_nStopType = new("CParticleSystem", "m_nStopType");
 	[SchemaMember("CParticleSystem", "m_nStopType")]
-	public ref Int32 StopType => ref Schema.GetRef<Int32>(this.Handle, "CParticleSystem", "m_nStopType");
+	public ref Int32 StopType => ref __m_nStopType.GetRef(this.Handle);
 
 	// m_bAnimateDuringGameplayPause
+	private static readonly SchemaField<bool> __m_bAnimateDuringGameplayPause = new("CParticleSystem", "m_bAnimateDuringGameplayPause");
 	[SchemaMember("CParticleSystem", "m_bAnimateDuringGameplayPause")]
-	public ref bool AnimateDuringGameplayPause => ref Schema.GetRef<bool>(this.Handle, "CParticleSystem", "m_bAnimateDuringGameplayPause");
+	public ref bool AnimateDuringGameplayPause => ref __m_bAnimateDuringGameplayPause.GetRef(this.Handle);
 
 	// m_iEffectIndex
 	[SchemaMember("CParticleSystem", "m_iEffectIndex")]
 	public CStrongHandle<InfoForResourceTypeIParticleSystemDefinition> EffectIndex => Schema.GetDeclaredClass<CStrongHandle<InfoForResourceTypeIParticleSystemDefinition>>(this.Handle, "CParticleSystem", "m_iEffectIndex");
 
 	// m_flStartTime
+	private static readonly SchemaField<float> __m_flStartTime = new("CParticleSystem", "m_flStartTime");
 	[SchemaMember("CParticleSystem", "m_flStartTime")]
-	public ref float StartTime => ref Schema.GetRef<float>(this.Handle, "CParticleSystem", "m_flStartTime");
+	public ref float StartTime => ref __m_flStartTime.GetRef(this.Handle);
 
 	// m_flPreSimTime
+	private static readonly SchemaField<float> __m_flPreSimTime = new("CParticleSystem", "m_flPreSimTime");
 	[SchemaMember("CParticleSystem", "m_flPreSimTime")]
-	public ref float PreSimTime => ref Schema.GetRef<float>(this.Handle, "CParticleSystem", "m_flPreSimTime");
+	public ref float PreSimTime => ref __m_flPreSimTime.GetRef(this.Handle);
 
 	// m_vServerControlPoints
 	[SchemaMember("CParticleSystem", "m_vServerControlPoints")]
@@ -71,8 +78,9 @@ public partial class CParticleSystem : CBaseModelEntity
 	public Span<CHandle<CBaseEntity>> ControlPointEnts => Schema.GetFixedArray<CHandle<CBaseEntity>>(this.Handle, "CParticleSystem", "m_hControlPointEnts", 64);
 
 	// m_bDataStringLocalized
+	private static readonly SchemaField<bool> __m_bDataStringLocalized = new("CParticleSystem", "m_bDataStringLocalized");
 	[SchemaMember("CParticleSystem", "m_bDataStringLocalized")]
-	public ref bool DataStringLocalized => ref Schema.GetRef<bool>(this.Handle, "CParticleSystem", "m_bDataStringLocalized");
+	public ref bool DataStringLocalized => ref __m_bDataStringLocalized.GetRef(this.Handle);
 
 	// m_strDataString
 	[SchemaMember("CParticleSystem", "m_strDataString")]
@@ -83,20 +91,24 @@ public partial class CParticleSystem : CBaseModelEntity
 	}
 
 	// m_bNoSave
+	private static readonly SchemaField<bool> __m_bNoSave = new("CParticleSystem", "m_bNoSave");
 	[SchemaMember("CParticleSystem", "m_bNoSave")]
-	public ref bool NoSave => ref Schema.GetRef<bool>(this.Handle, "CParticleSystem", "m_bNoSave");
+	public ref bool NoSave => ref __m_bNoSave.GetRef(this.Handle);
 
 	// m_bNoFreeze
+	private static readonly SchemaField<bool> __m_bNoFreeze = new("CParticleSystem", "m_bNoFreeze");
 	[SchemaMember("CParticleSystem", "m_bNoFreeze")]
-	public ref bool NoFreeze => ref Schema.GetRef<bool>(this.Handle, "CParticleSystem", "m_bNoFreeze");
+	public ref bool NoFreeze => ref __m_bNoFreeze.GetRef(this.Handle);
 
 	// m_bNoRamp
+	private static readonly SchemaField<bool> __m_bNoRamp = new("CParticleSystem", "m_bNoRamp");
 	[SchemaMember("CParticleSystem", "m_bNoRamp")]
-	public ref bool NoRamp => ref Schema.GetRef<bool>(this.Handle, "CParticleSystem", "m_bNoRamp");
+	public ref bool NoRamp => ref __m_bNoRamp.GetRef(this.Handle);
 
 	// m_bStartActive
+	private static readonly SchemaField<bool> __m_bStartActive = new("CParticleSystem", "m_bStartActive");
 	[SchemaMember("CParticleSystem", "m_bStartActive")]
-	public ref bool StartActive => ref Schema.GetRef<bool>(this.Handle, "CParticleSystem", "m_bStartActive");
+	public ref bool StartActive => ref __m_bStartActive.GetRef(this.Handle);
 
 	// m_iszEffectName
 	[SchemaMember("CParticleSystem", "m_iszEffectName")]
@@ -111,16 +123,18 @@ public partial class CParticleSystem : CBaseModelEntity
 	public Span<string> ControlPointNames => Schema.GetFixedArray<string>(this.Handle, "CParticleSystem", "m_iszControlPointNames", 64);
 
 	// m_nDataCP
+	private static readonly SchemaField<Int32> __m_nDataCP = new("CParticleSystem", "m_nDataCP");
 	[SchemaMember("CParticleSystem", "m_nDataCP")]
-	public ref Int32 DataCP => ref Schema.GetRef<Int32>(this.Handle, "CParticleSystem", "m_nDataCP");
+	public ref Int32 DataCP => ref __m_nDataCP.GetRef(this.Handle);
 
 	// m_vecDataCPValue
 	[SchemaMember("CParticleSystem", "m_vecDataCPValue")]
 	public Vector DataCPValue => Schema.GetDeclaredClass<Vector>(this.Handle, "CParticleSystem", "m_vecDataCPValue");
 
 	// m_nTintCP
+	private static readonly SchemaField<Int32> __m_nTintCP = new("CParticleSystem", "m_nTintCP");
 	[SchemaMember("CParticleSystem", "m_nTintCP")]
-	public ref Int32 TintCP => ref Schema.GetRef<Int32>(this.Handle, "CParticleSystem", "m_nTintCP");
+	public ref Int32 TintCP => ref __m_nTintCP.GetRef(this.Handle);
 
 	// m_clrTint
 	[SchemaMember("CParticleSystem", "m_clrTint")]

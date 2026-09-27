@@ -23,19 +23,23 @@ public partial class CRenderComponent : CEntityComponent
 	public CNetworkVarChainer __m_pChainEntity => Schema.GetDeclaredClass<CNetworkVarChainer>(this.Handle, "CRenderComponent", "__m_pChainEntity");
 
 	// m_bIsRenderingWithViewModels
+	private static readonly SchemaField<bool> __m_bIsRenderingWithViewModels = new("CRenderComponent", "m_bIsRenderingWithViewModels");
 	[SchemaMember("CRenderComponent", "m_bIsRenderingWithViewModels")]
-	public ref bool IsRenderingWithViewModels => ref Schema.GetRef<bool>(this.Handle, "CRenderComponent", "m_bIsRenderingWithViewModels");
+	public ref bool IsRenderingWithViewModels => ref __m_bIsRenderingWithViewModels.GetRef(this.Handle);
 
 	// m_nSplitscreenFlags
+	private static readonly SchemaField<UInt32> __m_nSplitscreenFlags = new("CRenderComponent", "m_nSplitscreenFlags");
 	[SchemaMember("CRenderComponent", "m_nSplitscreenFlags")]
-	public ref UInt32 SplitscreenFlags => ref Schema.GetRef<UInt32>(this.Handle, "CRenderComponent", "m_nSplitscreenFlags");
+	public ref UInt32 SplitscreenFlags => ref __m_nSplitscreenFlags.GetRef(this.Handle);
 
 	// m_bEnableRendering
+	private static readonly SchemaField<bool> __m_bEnableRendering = new("CRenderComponent", "m_bEnableRendering");
 	[SchemaMember("CRenderComponent", "m_bEnableRendering")]
-	public ref bool EnableRendering => ref Schema.GetRef<bool>(this.Handle, "CRenderComponent", "m_bEnableRendering");
+	public ref bool EnableRendering => ref __m_bEnableRendering.GetRef(this.Handle);
 
 	// m_bInterpolationReadyToDraw
+	private static readonly SchemaField<bool> __m_bInterpolationReadyToDraw = new("CRenderComponent", "m_bInterpolationReadyToDraw");
 	[SchemaMember("CRenderComponent", "m_bInterpolationReadyToDraw")]
-	public ref bool InterpolationReadyToDraw => ref Schema.GetRef<bool>(this.Handle, "CRenderComponent", "m_bInterpolationReadyToDraw");
+	public ref bool InterpolationReadyToDraw => ref __m_bInterpolationReadyToDraw.GetRef(this.Handle);
 
 }

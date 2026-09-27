@@ -23,12 +23,14 @@ public partial class lerpdata_t : NativeObject
 	public CHandle<CBaseEntity> Ent => Schema.GetDeclaredClass<CHandle<CBaseEntity>>(this.Handle, "lerpdata_t", "m_hEnt");
 
 	// m_MoveType
+	private static readonly SchemaField<MoveType_t> __m_MoveType = new("lerpdata_t", "m_MoveType");
 	[SchemaMember("lerpdata_t", "m_MoveType")]
-	public ref MoveType_t MoveType => ref Schema.GetRef<MoveType_t>(this.Handle, "lerpdata_t", "m_MoveType");
+	public ref MoveType_t MoveType => ref __m_MoveType.GetRef(this.Handle);
 
 	// m_flStartTime
+	private static readonly SchemaField<float> __m_flStartTime = new("lerpdata_t", "m_flStartTime");
 	[SchemaMember("lerpdata_t", "m_flStartTime")]
-	public ref float StartTime => ref Schema.GetRef<float>(this.Handle, "lerpdata_t", "m_flStartTime");
+	public ref float StartTime => ref __m_flStartTime.GetRef(this.Handle);
 
 	// m_vecStartOrigin
 	[SchemaMember("lerpdata_t", "m_vecStartOrigin")]

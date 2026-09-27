@@ -43,8 +43,9 @@ public partial class sndopvarlatchdata_t : NativeObject
 	}
 
 	// m_flVal
+	private static readonly SchemaField<float> __m_flVal = new("sndopvarlatchdata_t", "m_flVal");
 	[SchemaMember("sndopvarlatchdata_t", "m_flVal")]
-	public ref float Val => ref Schema.GetRef<float>(this.Handle, "sndopvarlatchdata_t", "m_flVal");
+	public ref float Val => ref __m_flVal.GetRef(this.Handle);
 
 	// m_vPos
 	[SchemaMember("sndopvarlatchdata_t", "m_vPos")]

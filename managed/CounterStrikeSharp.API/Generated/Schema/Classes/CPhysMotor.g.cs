@@ -43,36 +43,44 @@ public partial class CPhysMotor : CLogicalEntity
 	public CHandle<CBaseEntity> AnchorObject => Schema.GetDeclaredClass<CHandle<CBaseEntity>>(this.Handle, "CPhysMotor", "m_hAnchorObject");
 
 	// m_spinUp
+	private static readonly SchemaField<float> __m_spinUp = new("CPhysMotor", "m_spinUp");
 	[SchemaMember("CPhysMotor", "m_spinUp")]
-	public ref float SpinUp => ref Schema.GetRef<float>(this.Handle, "CPhysMotor", "m_spinUp");
+	public ref float SpinUp => ref __m_spinUp.GetRef(this.Handle);
 
 	// m_spinDown
+	private static readonly SchemaField<float> __m_spinDown = new("CPhysMotor", "m_spinDown");
 	[SchemaMember("CPhysMotor", "m_spinDown")]
-	public ref float SpinDown => ref Schema.GetRef<float>(this.Handle, "CPhysMotor", "m_spinDown");
+	public ref float SpinDown => ref __m_spinDown.GetRef(this.Handle);
 
 	// m_flMotorFriction
+	private static readonly SchemaField<float> __m_flMotorFriction = new("CPhysMotor", "m_flMotorFriction");
 	[SchemaMember("CPhysMotor", "m_flMotorFriction")]
-	public ref float MotorFriction => ref Schema.GetRef<float>(this.Handle, "CPhysMotor", "m_flMotorFriction");
+	public ref float MotorFriction => ref __m_flMotorFriction.GetRef(this.Handle);
 
 	// m_additionalAcceleration
+	private static readonly SchemaField<float> __m_additionalAcceleration = new("CPhysMotor", "m_additionalAcceleration");
 	[SchemaMember("CPhysMotor", "m_additionalAcceleration")]
-	public ref float AdditionalAcceleration => ref Schema.GetRef<float>(this.Handle, "CPhysMotor", "m_additionalAcceleration");
+	public ref float AdditionalAcceleration => ref __m_additionalAcceleration.GetRef(this.Handle);
 
 	// m_angularAcceleration
+	private static readonly SchemaField<float> __m_angularAcceleration = new("CPhysMotor", "m_angularAcceleration");
 	[SchemaMember("CPhysMotor", "m_angularAcceleration")]
-	public ref float AngularAcceleration => ref Schema.GetRef<float>(this.Handle, "CPhysMotor", "m_angularAcceleration");
+	public ref float AngularAcceleration => ref __m_angularAcceleration.GetRef(this.Handle);
 
 	// m_flTorqueScale
+	private static readonly SchemaField<float> __m_flTorqueScale = new("CPhysMotor", "m_flTorqueScale");
 	[SchemaMember("CPhysMotor", "m_flTorqueScale")]
-	public ref float TorqueScale => ref Schema.GetRef<float>(this.Handle, "CPhysMotor", "m_flTorqueScale");
+	public ref float TorqueScale => ref __m_flTorqueScale.GetRef(this.Handle);
 
 	// m_flTargetSpeed
+	private static readonly SchemaField<float> __m_flTargetSpeed = new("CPhysMotor", "m_flTargetSpeed");
 	[SchemaMember("CPhysMotor", "m_flTargetSpeed")]
-	public ref float TargetSpeed => ref Schema.GetRef<float>(this.Handle, "CPhysMotor", "m_flTargetSpeed");
+	public ref float TargetSpeed => ref __m_flTargetSpeed.GetRef(this.Handle);
 
 	// m_flSpeedWhenSpinUpOrSpinDownStarted
+	private static readonly SchemaField<float> __m_flSpeedWhenSpinUpOrSpinDownStarted = new("CPhysMotor", "m_flSpeedWhenSpinUpOrSpinDownStarted");
 	[SchemaMember("CPhysMotor", "m_flSpeedWhenSpinUpOrSpinDownStarted")]
-	public ref float SpeedWhenSpinUpOrSpinDownStarted => ref Schema.GetRef<float>(this.Handle, "CPhysMotor", "m_flSpeedWhenSpinUpOrSpinDownStarted");
+	public ref float SpeedWhenSpinUpOrSpinDownStarted => ref __m_flSpeedWhenSpinUpOrSpinDownStarted.GetRef(this.Handle);
 
 	// m_pFixedWorldBody
 	[SchemaMember("CPhysMotor", "m_pFixedWorldBody")]

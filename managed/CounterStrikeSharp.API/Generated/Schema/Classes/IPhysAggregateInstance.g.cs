@@ -19,7 +19,8 @@ public partial class IPhysAggregateInstance : IPhysicsBodyList
     public IPhysAggregateInstance (IntPtr pointer) : base(pointer) {}
 
 	// m_bIsAxisAligned
+	private static readonly SchemaField<bool> __m_bIsAxisAligned = new("IPhysAggregateInstance", "m_bIsAxisAligned");
 	[SchemaMember("IPhysAggregateInstance", "m_bIsAxisAligned")]
-	public ref bool IsAxisAligned => ref Schema.GetRef<bool>(this.Handle, "IPhysAggregateInstance", "m_bIsAxisAligned");
+	public ref bool IsAxisAligned => ref __m_bIsAxisAligned.GetRef(this.Handle);
 
 }

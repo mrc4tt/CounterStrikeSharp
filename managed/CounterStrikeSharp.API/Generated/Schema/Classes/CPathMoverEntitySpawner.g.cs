@@ -19,8 +19,9 @@ public partial class CPathMoverEntitySpawner : CLogicalEntity
     public CPathMoverEntitySpawner (IntPtr pointer) : base(pointer) {}
 
 	// m_eTemplateChoiceStrategy
+	private static readonly SchemaField<CPathMoverEntitySpawnerTemplateChoiceStrategy_t> __m_eTemplateChoiceStrategy = new("CPathMoverEntitySpawner", "m_eTemplateChoiceStrategy");
 	[SchemaMember("CPathMoverEntitySpawner", "m_eTemplateChoiceStrategy")]
-	public ref CPathMoverEntitySpawnerTemplateChoiceStrategy_t TemplateChoiceStrategy => ref Schema.GetRef<CPathMoverEntitySpawnerTemplateChoiceStrategy_t>(this.Handle, "CPathMoverEntitySpawner", "m_eTemplateChoiceStrategy");
+	public ref CPathMoverEntitySpawnerTemplateChoiceStrategy_t TemplateChoiceStrategy => ref __m_eTemplateChoiceStrategy.GetRef(this.Handle);
 
 	// m_szSpawnTemplates
 	[SchemaMember("CPathMoverEntitySpawner", "m_szSpawnTemplates")]
@@ -35,40 +36,48 @@ public partial class CPathMoverEntitySpawner : CLogicalEntity
 	public Span<Int32> SpawnTemplateCount => Schema.GetFixedArray<Int32>(this.Handle, "CPathMoverEntitySpawner", "m_szSpawnTemplateCount", 4);
 
 	// m_nSpawnIndex
+	private static readonly SchemaField<Int32> __m_nSpawnIndex = new("CPathMoverEntitySpawner", "m_nSpawnIndex");
 	[SchemaMember("CPathMoverEntitySpawner", "m_nSpawnIndex")]
-	public ref Int32 SpawnIndex => ref Schema.GetRef<Int32>(this.Handle, "CPathMoverEntitySpawner", "m_nSpawnIndex");
+	public ref Int32 SpawnIndex => ref __m_nSpawnIndex.GetRef(this.Handle);
 
 	// m_hPathMover
 	[SchemaMember("CPathMoverEntitySpawner", "m_hPathMover")]
 	public CHandle<CPathMover> PathMover => Schema.GetDeclaredClass<CHandle<CPathMover>>(this.Handle, "CPathMoverEntitySpawner", "m_hPathMover");
 
 	// m_flSpawnFrequencySeconds
+	private static readonly SchemaField<float> __m_flSpawnFrequencySeconds = new("CPathMoverEntitySpawner", "m_flSpawnFrequencySeconds");
 	[SchemaMember("CPathMoverEntitySpawner", "m_flSpawnFrequencySeconds")]
-	public ref float SpawnFrequencySeconds => ref Schema.GetRef<float>(this.Handle, "CPathMoverEntitySpawner", "m_flSpawnFrequencySeconds");
+	public ref float SpawnFrequencySeconds => ref __m_flSpawnFrequencySeconds.GetRef(this.Handle);
 
 	// m_flSpawnFrequencyDistToNearestMover
+	private static readonly SchemaField<float> __m_flSpawnFrequencyDistToNearestMover = new("CPathMoverEntitySpawner", "m_flSpawnFrequencyDistToNearestMover");
 	[SchemaMember("CPathMoverEntitySpawner", "m_flSpawnFrequencyDistToNearestMover")]
-	public ref float SpawnFrequencyDistToNearestMover => ref Schema.GetRef<float>(this.Handle, "CPathMoverEntitySpawner", "m_flSpawnFrequencyDistToNearestMover");
+	public ref float SpawnFrequencyDistToNearestMover => ref __m_flSpawnFrequencyDistToNearestMover.GetRef(this.Handle);
 
 	// m_nMaxActive
+	private static readonly SchemaField<Int32> __m_nMaxActive = new("CPathMoverEntitySpawner", "m_nMaxActive");
 	[SchemaMember("CPathMoverEntitySpawner", "m_nMaxActive")]
-	public ref Int32 MaxActive => ref Schema.GetRef<Int32>(this.Handle, "CPathMoverEntitySpawner", "m_nMaxActive");
+	public ref Int32 MaxActive => ref __m_nMaxActive.GetRef(this.Handle);
 
 	// m_nSpawnNum
+	private static readonly SchemaField<Int32> __m_nSpawnNum = new("CPathMoverEntitySpawner", "m_nSpawnNum");
 	[SchemaMember("CPathMoverEntitySpawner", "m_nSpawnNum")]
-	public ref Int32 SpawnNum => ref Schema.GetRef<Int32>(this.Handle, "CPathMoverEntitySpawner", "m_nSpawnNum");
+	public ref Int32 SpawnNum => ref __m_nSpawnNum.GetRef(this.Handle);
 
 	// m_flLastSpawnTime
+	private static readonly SchemaField<float> __m_flLastSpawnTime = new("CPathMoverEntitySpawner", "m_flLastSpawnTime");
 	[SchemaMember("CPathMoverEntitySpawner", "m_flLastSpawnTime")]
-	public ref float LastSpawnTime => ref Schema.GetRef<float>(this.Handle, "CPathMoverEntitySpawner", "m_flLastSpawnTime");
+	public ref float LastSpawnTime => ref __m_flLastSpawnTime.GetRef(this.Handle);
 
 	// m_bEnabled
+	private static readonly SchemaField<bool> __m_bEnabled = new("CPathMoverEntitySpawner", "m_bEnabled");
 	[SchemaMember("CPathMoverEntitySpawner", "m_bEnabled")]
-	public ref bool Enabled => ref Schema.GetRef<bool>(this.Handle, "CPathMoverEntitySpawner", "m_bEnabled");
+	public ref bool Enabled => ref __m_bEnabled.GetRef(this.Handle);
 
 	// m_bDestroyMoverOnArrivedAtEnd
+	private static readonly SchemaField<bool> __m_bDestroyMoverOnArrivedAtEnd = new("CPathMoverEntitySpawner", "m_bDestroyMoverOnArrivedAtEnd");
 	[SchemaMember("CPathMoverEntitySpawner", "m_bDestroyMoverOnArrivedAtEnd")]
-	public ref bool DestroyMoverOnArrivedAtEnd => ref Schema.GetRef<bool>(this.Handle, "CPathMoverEntitySpawner", "m_bDestroyMoverOnArrivedAtEnd");
+	public ref bool DestroyMoverOnArrivedAtEnd => ref __m_bDestroyMoverOnArrivedAtEnd.GetRef(this.Handle);
 
 	// m_vecQueuedRemovals
 	[SchemaMember("CPathMoverEntitySpawner", "m_vecQueuedRemovals")]
@@ -91,8 +100,9 @@ public partial class CPathMoverEntitySpawner : CLogicalEntity
 	}
 
 	// m_bPrepopulateOnSpawn
+	private static readonly SchemaField<bool> __m_bPrepopulateOnSpawn = new("CPathMoverEntitySpawner", "m_bPrepopulateOnSpawn");
 	[SchemaMember("CPathMoverEntitySpawner", "m_bPrepopulateOnSpawn")]
-	public ref bool PrepopulateOnSpawn => ref Schema.GetRef<bool>(this.Handle, "CPathMoverEntitySpawner", "m_bPrepopulateOnSpawn");
+	public ref bool PrepopulateOnSpawn => ref __m_bPrepopulateOnSpawn.GetRef(this.Handle);
 
 	// m_iszPathNodeStartName
 	[SchemaMember("CPathMoverEntitySpawner", "m_iszPathNodeStartName")]
@@ -107,7 +117,8 @@ public partial class CPathMoverEntitySpawner : CLogicalEntity
 	public Vector MoverSpawnPos => Schema.GetDeclaredClass<Vector>(this.Handle, "CPathMoverEntitySpawner", "m_vMoverSpawnPos");
 
 	// m_bRunningDebugThink
+	private static readonly SchemaField<bool> __m_bRunningDebugThink = new("CPathMoverEntitySpawner", "m_bRunningDebugThink");
 	[SchemaMember("CPathMoverEntitySpawner", "m_bRunningDebugThink")]
-	public ref bool RunningDebugThink => ref Schema.GetRef<bool>(this.Handle, "CPathMoverEntitySpawner", "m_bRunningDebugThink");
+	public ref bool RunningDebugThink => ref __m_bRunningDebugThink.GetRef(this.Handle);
 
 }

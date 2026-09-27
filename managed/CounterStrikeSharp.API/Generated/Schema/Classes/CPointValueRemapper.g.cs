@@ -19,16 +19,19 @@ public partial class CPointValueRemapper : CBaseEntity
     public CPointValueRemapper (IntPtr pointer) : base(pointer) {}
 
 	// m_bDisabled
+	private static readonly SchemaField<bool> __m_bDisabled = new("CPointValueRemapper", "m_bDisabled");
 	[SchemaMember("CPointValueRemapper", "m_bDisabled")]
-	public ref bool Disabled => ref Schema.GetRef<bool>(this.Handle, "CPointValueRemapper", "m_bDisabled");
+	public ref bool Disabled => ref __m_bDisabled.GetRef(this.Handle);
 
 	// m_bUpdateOnClient
+	private static readonly SchemaField<bool> __m_bUpdateOnClient = new("CPointValueRemapper", "m_bUpdateOnClient");
 	[SchemaMember("CPointValueRemapper", "m_bUpdateOnClient")]
-	public ref bool UpdateOnClient => ref Schema.GetRef<bool>(this.Handle, "CPointValueRemapper", "m_bUpdateOnClient");
+	public ref bool UpdateOnClient => ref __m_bUpdateOnClient.GetRef(this.Handle);
 
 	// m_nInputType
+	private static readonly SchemaField<ValueRemapperInputType_t> __m_nInputType = new("CPointValueRemapper", "m_nInputType");
 	[SchemaMember("CPointValueRemapper", "m_nInputType")]
-	public ref ValueRemapperInputType_t InputType => ref Schema.GetRef<ValueRemapperInputType_t>(this.Handle, "CPointValueRemapper", "m_nInputType");
+	public ref ValueRemapperInputType_t InputType => ref __m_nInputType.GetRef(this.Handle);
 
 	// m_iszRemapLineStartName
 	[SchemaMember("CPointValueRemapper", "m_iszRemapLineStartName")]
@@ -55,24 +58,29 @@ public partial class CPointValueRemapper : CBaseEntity
 	public CHandle<CBaseEntity> RemapLineEnd => Schema.GetDeclaredClass<CHandle<CBaseEntity>>(this.Handle, "CPointValueRemapper", "m_hRemapLineEnd");
 
 	// m_flMaximumChangePerSecond
+	private static readonly SchemaField<float> __m_flMaximumChangePerSecond = new("CPointValueRemapper", "m_flMaximumChangePerSecond");
 	[SchemaMember("CPointValueRemapper", "m_flMaximumChangePerSecond")]
-	public ref float MaximumChangePerSecond => ref Schema.GetRef<float>(this.Handle, "CPointValueRemapper", "m_flMaximumChangePerSecond");
+	public ref float MaximumChangePerSecond => ref __m_flMaximumChangePerSecond.GetRef(this.Handle);
 
 	// m_flDisengageDistance
+	private static readonly SchemaField<float> __m_flDisengageDistance = new("CPointValueRemapper", "m_flDisengageDistance");
 	[SchemaMember("CPointValueRemapper", "m_flDisengageDistance")]
-	public ref float DisengageDistance => ref Schema.GetRef<float>(this.Handle, "CPointValueRemapper", "m_flDisengageDistance");
+	public ref float DisengageDistance => ref __m_flDisengageDistance.GetRef(this.Handle);
 
 	// m_flEngageDistance
+	private static readonly SchemaField<float> __m_flEngageDistance = new("CPointValueRemapper", "m_flEngageDistance");
 	[SchemaMember("CPointValueRemapper", "m_flEngageDistance")]
-	public ref float EngageDistance => ref Schema.GetRef<float>(this.Handle, "CPointValueRemapper", "m_flEngageDistance");
+	public ref float EngageDistance => ref __m_flEngageDistance.GetRef(this.Handle);
 
 	// m_bRequiresUseKey
+	private static readonly SchemaField<bool> __m_bRequiresUseKey = new("CPointValueRemapper", "m_bRequiresUseKey");
 	[SchemaMember("CPointValueRemapper", "m_bRequiresUseKey")]
-	public ref bool RequiresUseKey => ref Schema.GetRef<bool>(this.Handle, "CPointValueRemapper", "m_bRequiresUseKey");
+	public ref bool RequiresUseKey => ref __m_bRequiresUseKey.GetRef(this.Handle);
 
 	// m_nOutputType
+	private static readonly SchemaField<ValueRemapperOutputType_t> __m_nOutputType = new("CPointValueRemapper", "m_nOutputType");
 	[SchemaMember("CPointValueRemapper", "m_nOutputType")]
-	public ref ValueRemapperOutputType_t OutputType => ref Schema.GetRef<ValueRemapperOutputType_t>(this.Handle, "CPointValueRemapper", "m_nOutputType");
+	public ref ValueRemapperOutputType_t OutputType => ref __m_nOutputType.GetRef(this.Handle);
 
 	// m_iszOutputEntityName
 	[SchemaMember("CPointValueRemapper", "m_iszOutputEntityName")]
@@ -111,52 +119,64 @@ public partial class CPointValueRemapper : CBaseEntity
 	public NetworkedVector<CHandle<CBaseEntity>> OutputEntities => Schema.GetDeclaredClass<NetworkedVector<CHandle<CBaseEntity>>>(this.Handle, "CPointValueRemapper", "m_hOutputEntities");
 
 	// m_nHapticsType
+	private static readonly SchemaField<ValueRemapperHapticsType_t> __m_nHapticsType = new("CPointValueRemapper", "m_nHapticsType");
 	[SchemaMember("CPointValueRemapper", "m_nHapticsType")]
-	public ref ValueRemapperHapticsType_t HapticsType => ref Schema.GetRef<ValueRemapperHapticsType_t>(this.Handle, "CPointValueRemapper", "m_nHapticsType");
+	public ref ValueRemapperHapticsType_t HapticsType => ref __m_nHapticsType.GetRef(this.Handle);
 
 	// m_nMomentumType
+	private static readonly SchemaField<ValueRemapperMomentumType_t> __m_nMomentumType = new("CPointValueRemapper", "m_nMomentumType");
 	[SchemaMember("CPointValueRemapper", "m_nMomentumType")]
-	public ref ValueRemapperMomentumType_t MomentumType => ref Schema.GetRef<ValueRemapperMomentumType_t>(this.Handle, "CPointValueRemapper", "m_nMomentumType");
+	public ref ValueRemapperMomentumType_t MomentumType => ref __m_nMomentumType.GetRef(this.Handle);
 
 	// m_flMomentumModifier
+	private static readonly SchemaField<float> __m_flMomentumModifier = new("CPointValueRemapper", "m_flMomentumModifier");
 	[SchemaMember("CPointValueRemapper", "m_flMomentumModifier")]
-	public ref float MomentumModifier => ref Schema.GetRef<float>(this.Handle, "CPointValueRemapper", "m_flMomentumModifier");
+	public ref float MomentumModifier => ref __m_flMomentumModifier.GetRef(this.Handle);
 
 	// m_flSnapValue
+	private static readonly SchemaField<float> __m_flSnapValue = new("CPointValueRemapper", "m_flSnapValue");
 	[SchemaMember("CPointValueRemapper", "m_flSnapValue")]
-	public ref float SnapValue => ref Schema.GetRef<float>(this.Handle, "CPointValueRemapper", "m_flSnapValue");
+	public ref float SnapValue => ref __m_flSnapValue.GetRef(this.Handle);
 
 	// m_flCurrentMomentum
+	private static readonly SchemaField<float> __m_flCurrentMomentum = new("CPointValueRemapper", "m_flCurrentMomentum");
 	[SchemaMember("CPointValueRemapper", "m_flCurrentMomentum")]
-	public ref float CurrentMomentum => ref Schema.GetRef<float>(this.Handle, "CPointValueRemapper", "m_flCurrentMomentum");
+	public ref float CurrentMomentum => ref __m_flCurrentMomentum.GetRef(this.Handle);
 
 	// m_nRatchetType
+	private static readonly SchemaField<ValueRemapperRatchetType_t> __m_nRatchetType = new("CPointValueRemapper", "m_nRatchetType");
 	[SchemaMember("CPointValueRemapper", "m_nRatchetType")]
-	public ref ValueRemapperRatchetType_t RatchetType => ref Schema.GetRef<ValueRemapperRatchetType_t>(this.Handle, "CPointValueRemapper", "m_nRatchetType");
+	public ref ValueRemapperRatchetType_t RatchetType => ref __m_nRatchetType.GetRef(this.Handle);
 
 	// m_flRatchetOffset
+	private static readonly SchemaField<float> __m_flRatchetOffset = new("CPointValueRemapper", "m_flRatchetOffset");
 	[SchemaMember("CPointValueRemapper", "m_flRatchetOffset")]
-	public ref float RatchetOffset => ref Schema.GetRef<float>(this.Handle, "CPointValueRemapper", "m_flRatchetOffset");
+	public ref float RatchetOffset => ref __m_flRatchetOffset.GetRef(this.Handle);
 
 	// m_flInputOffset
+	private static readonly SchemaField<float> __m_flInputOffset = new("CPointValueRemapper", "m_flInputOffset");
 	[SchemaMember("CPointValueRemapper", "m_flInputOffset")]
-	public ref float InputOffset => ref Schema.GetRef<float>(this.Handle, "CPointValueRemapper", "m_flInputOffset");
+	public ref float InputOffset => ref __m_flInputOffset.GetRef(this.Handle);
 
 	// m_bEngaged
+	private static readonly SchemaField<bool> __m_bEngaged = new("CPointValueRemapper", "m_bEngaged");
 	[SchemaMember("CPointValueRemapper", "m_bEngaged")]
-	public ref bool Engaged => ref Schema.GetRef<bool>(this.Handle, "CPointValueRemapper", "m_bEngaged");
+	public ref bool Engaged => ref __m_bEngaged.GetRef(this.Handle);
 
 	// m_bFirstUpdate
+	private static readonly SchemaField<bool> __m_bFirstUpdate = new("CPointValueRemapper", "m_bFirstUpdate");
 	[SchemaMember("CPointValueRemapper", "m_bFirstUpdate")]
-	public ref bool FirstUpdate => ref Schema.GetRef<bool>(this.Handle, "CPointValueRemapper", "m_bFirstUpdate");
+	public ref bool FirstUpdate => ref __m_bFirstUpdate.GetRef(this.Handle);
 
 	// m_flPreviousValue
+	private static readonly SchemaField<float> __m_flPreviousValue = new("CPointValueRemapper", "m_flPreviousValue");
 	[SchemaMember("CPointValueRemapper", "m_flPreviousValue")]
-	public ref float PreviousValue => ref Schema.GetRef<float>(this.Handle, "CPointValueRemapper", "m_flPreviousValue");
+	public ref float PreviousValue => ref __m_flPreviousValue.GetRef(this.Handle);
 
 	// m_flPreviousUpdateTickTime
+	private static readonly SchemaField<float> __m_flPreviousUpdateTickTime = new("CPointValueRemapper", "m_flPreviousUpdateTickTime");
 	[SchemaMember("CPointValueRemapper", "m_flPreviousUpdateTickTime")]
-	public ref float PreviousUpdateTickTime => ref Schema.GetRef<float>(this.Handle, "CPointValueRemapper", "m_flPreviousUpdateTickTime");
+	public ref float PreviousUpdateTickTime => ref __m_flPreviousUpdateTickTime.GetRef(this.Handle);
 
 	// m_vecPreviousTestPoint
 	[SchemaMember("CPointValueRemapper", "m_vecPreviousTestPoint")]
@@ -167,8 +187,9 @@ public partial class CPointValueRemapper : CBaseEntity
 	public CHandle<CBasePlayerPawn> UsingPlayer => Schema.GetDeclaredClass<CHandle<CBasePlayerPawn>>(this.Handle, "CPointValueRemapper", "m_hUsingPlayer");
 
 	// m_flCustomOutputValue
+	private static readonly SchemaField<float> __m_flCustomOutputValue = new("CPointValueRemapper", "m_flCustomOutputValue");
 	[SchemaMember("CPointValueRemapper", "m_flCustomOutputValue")]
-	public ref float CustomOutputValue => ref Schema.GetRef<float>(this.Handle, "CPointValueRemapper", "m_flCustomOutputValue");
+	public ref float CustomOutputValue => ref __m_flCustomOutputValue.GetRef(this.Handle);
 
 	// m_iszSoundEngage
 	[SchemaMember("CPointValueRemapper", "m_iszSoundEngage")]

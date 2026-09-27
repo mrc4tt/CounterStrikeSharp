@@ -19,27 +19,33 @@ public partial class CCSPlayerController_InGameMoneyServices : CPlayerController
     public CCSPlayerController_InGameMoneyServices (IntPtr pointer) : base(pointer) {}
 
 	// m_bReceivesMoneyNextRound
+	private static readonly SchemaField<bool> __m_bReceivesMoneyNextRound = new("CCSPlayerController_InGameMoneyServices", "m_bReceivesMoneyNextRound");
 	[SchemaMember("CCSPlayerController_InGameMoneyServices", "m_bReceivesMoneyNextRound")]
-	public ref bool ReceivesMoneyNextRound => ref Schema.GetRef<bool>(this.Handle, "CCSPlayerController_InGameMoneyServices", "m_bReceivesMoneyNextRound");
+	public ref bool ReceivesMoneyNextRound => ref __m_bReceivesMoneyNextRound.GetRef(this.Handle);
 
 	// m_iMoneyEarnedForNextRound
+	private static readonly SchemaField<Int32> __m_iMoneyEarnedForNextRound = new("CCSPlayerController_InGameMoneyServices", "m_iMoneyEarnedForNextRound");
 	[SchemaMember("CCSPlayerController_InGameMoneyServices", "m_iMoneyEarnedForNextRound")]
-	public ref Int32 MoneyEarnedForNextRound => ref Schema.GetRef<Int32>(this.Handle, "CCSPlayerController_InGameMoneyServices", "m_iMoneyEarnedForNextRound");
+	public ref Int32 MoneyEarnedForNextRound => ref __m_iMoneyEarnedForNextRound.GetRef(this.Handle);
 
 	// m_iAccount
+	private static readonly SchemaField<Int32> __m_iAccount = new("CCSPlayerController_InGameMoneyServices", "m_iAccount");
 	[SchemaMember("CCSPlayerController_InGameMoneyServices", "m_iAccount")]
-	public ref Int32 Account => ref Schema.GetRef<Int32>(this.Handle, "CCSPlayerController_InGameMoneyServices", "m_iAccount");
+	public ref Int32 Account => ref __m_iAccount.GetRef(this.Handle);
 
 	// m_iStartAccount
+	private static readonly SchemaField<Int32> __m_iStartAccount = new("CCSPlayerController_InGameMoneyServices", "m_iStartAccount");
 	[SchemaMember("CCSPlayerController_InGameMoneyServices", "m_iStartAccount")]
-	public ref Int32 StartAccount => ref Schema.GetRef<Int32>(this.Handle, "CCSPlayerController_InGameMoneyServices", "m_iStartAccount");
+	public ref Int32 StartAccount => ref __m_iStartAccount.GetRef(this.Handle);
 
 	// m_iTotalCashSpent
+	private static readonly SchemaField<Int32> __m_iTotalCashSpent = new("CCSPlayerController_InGameMoneyServices", "m_iTotalCashSpent");
 	[SchemaMember("CCSPlayerController_InGameMoneyServices", "m_iTotalCashSpent")]
-	public ref Int32 TotalCashSpent => ref Schema.GetRef<Int32>(this.Handle, "CCSPlayerController_InGameMoneyServices", "m_iTotalCashSpent");
+	public ref Int32 TotalCashSpent => ref __m_iTotalCashSpent.GetRef(this.Handle);
 
 	// m_iCashSpentThisRound
+	private static readonly SchemaField<Int32> __m_iCashSpentThisRound = new("CCSPlayerController_InGameMoneyServices", "m_iCashSpentThisRound");
 	[SchemaMember("CCSPlayerController_InGameMoneyServices", "m_iCashSpentThisRound")]
-	public ref Int32 CashSpentThisRound => ref Schema.GetRef<Int32>(this.Handle, "CCSPlayerController_InGameMoneyServices", "m_iCashSpentThisRound");
+	public ref Int32 CashSpentThisRound => ref __m_iCashSpentThisRound.GetRef(this.Handle);
 
 }

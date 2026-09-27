@@ -23,11 +23,13 @@ public partial class VelocitySampler : NativeObject
 	public Vector PrevSample => Schema.GetDeclaredClass<Vector>(this.Handle, "VelocitySampler", "m_prevSample");
 
 	// m_fPrevSampleTime
+	private static readonly SchemaField<float> __m_fPrevSampleTime = new("VelocitySampler", "m_fPrevSampleTime");
 	[SchemaMember("VelocitySampler", "m_fPrevSampleTime")]
-	public ref float PrevSampleTime => ref Schema.GetRef<float>(this.Handle, "VelocitySampler", "m_fPrevSampleTime");
+	public ref float PrevSampleTime => ref __m_fPrevSampleTime.GetRef(this.Handle);
 
 	// m_fIdealSampleRate
+	private static readonly SchemaField<float> __m_fIdealSampleRate = new("VelocitySampler", "m_fIdealSampleRate");
 	[SchemaMember("VelocitySampler", "m_fIdealSampleRate")]
-	public ref float IdealSampleRate => ref Schema.GetRef<float>(this.Handle, "VelocitySampler", "m_fIdealSampleRate");
+	public ref float IdealSampleRate => ref __m_fIdealSampleRate.GetRef(this.Handle);
 
 }

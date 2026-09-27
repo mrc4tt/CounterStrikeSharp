@@ -27,11 +27,13 @@ public partial class CPointTeleport : CServerOnlyPointEntity
 	public QAngle SaveAngles => Schema.GetDeclaredClass<QAngle>(this.Handle, "CPointTeleport", "m_vSaveAngles");
 
 	// m_bTeleportParentedEntities
+	private static readonly SchemaField<bool> __m_bTeleportParentedEntities = new("CPointTeleport", "m_bTeleportParentedEntities");
 	[SchemaMember("CPointTeleport", "m_bTeleportParentedEntities")]
-	public ref bool TeleportParentedEntities => ref Schema.GetRef<bool>(this.Handle, "CPointTeleport", "m_bTeleportParentedEntities");
+	public ref bool TeleportParentedEntities => ref __m_bTeleportParentedEntities.GetRef(this.Handle);
 
 	// m_bTeleportUseCurrentAngle
+	private static readonly SchemaField<bool> __m_bTeleportUseCurrentAngle = new("CPointTeleport", "m_bTeleportUseCurrentAngle");
 	[SchemaMember("CPointTeleport", "m_bTeleportUseCurrentAngle")]
-	public ref bool TeleportUseCurrentAngle => ref Schema.GetRef<bool>(this.Handle, "CPointTeleport", "m_bTeleportUseCurrentAngle");
+	public ref bool TeleportUseCurrentAngle => ref __m_bTeleportUseCurrentAngle.GetRef(this.Handle);
 
 }

@@ -19,19 +19,23 @@ public partial class CLogicActiveAutosave : CLogicAutosave
     public CLogicActiveAutosave (IntPtr pointer) : base(pointer) {}
 
 	// m_TriggerHitPoints
+	private static readonly SchemaField<Int32> __m_TriggerHitPoints = new("CLogicActiveAutosave", "m_TriggerHitPoints");
 	[SchemaMember("CLogicActiveAutosave", "m_TriggerHitPoints")]
-	public ref Int32 TriggerHitPoints => ref Schema.GetRef<Int32>(this.Handle, "CLogicActiveAutosave", "m_TriggerHitPoints");
+	public ref Int32 TriggerHitPoints => ref __m_TriggerHitPoints.GetRef(this.Handle);
 
 	// m_flTimeToTrigger
+	private static readonly SchemaField<float> __m_flTimeToTrigger = new("CLogicActiveAutosave", "m_flTimeToTrigger");
 	[SchemaMember("CLogicActiveAutosave", "m_flTimeToTrigger")]
-	public ref float TimeToTrigger => ref Schema.GetRef<float>(this.Handle, "CLogicActiveAutosave", "m_flTimeToTrigger");
+	public ref float TimeToTrigger => ref __m_flTimeToTrigger.GetRef(this.Handle);
 
 	// m_flStartTime
+	private static readonly SchemaField<float> __m_flStartTime = new("CLogicActiveAutosave", "m_flStartTime");
 	[SchemaMember("CLogicActiveAutosave", "m_flStartTime")]
-	public ref float StartTime => ref Schema.GetRef<float>(this.Handle, "CLogicActiveAutosave", "m_flStartTime");
+	public ref float StartTime => ref __m_flStartTime.GetRef(this.Handle);
 
 	// m_flDangerousTime
+	private static readonly SchemaField<float> __m_flDangerousTime = new("CLogicActiveAutosave", "m_flDangerousTime");
 	[SchemaMember("CLogicActiveAutosave", "m_flDangerousTime")]
-	public ref float DangerousTime => ref Schema.GetRef<float>(this.Handle, "CLogicActiveAutosave", "m_flDangerousTime");
+	public ref float DangerousTime => ref __m_flDangerousTime.GetRef(this.Handle);
 
 }

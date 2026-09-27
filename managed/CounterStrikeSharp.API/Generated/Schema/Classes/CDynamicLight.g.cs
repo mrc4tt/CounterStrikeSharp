@@ -19,39 +19,48 @@ public partial class CDynamicLight : CBaseModelEntity
     public CDynamicLight (IntPtr pointer) : base(pointer) {}
 
 	// m_ActualFlags
+	private static readonly SchemaField<byte> __m_ActualFlags = new("CDynamicLight", "m_ActualFlags");
 	[SchemaMember("CDynamicLight", "m_ActualFlags")]
-	public ref byte ActualFlags => ref Schema.GetRef<byte>(this.Handle, "CDynamicLight", "m_ActualFlags");
+	public ref byte ActualFlags => ref __m_ActualFlags.GetRef(this.Handle);
 
 	// m_Flags
+	private static readonly SchemaField<byte> __m_Flags = new("CDynamicLight", "m_Flags");
 	[SchemaMember("CDynamicLight", "m_Flags")]
-	public ref byte DynamicLightFlags => ref Schema.GetRef<byte>(this.Handle, "CDynamicLight", "m_Flags");
+	public ref byte DynamicLightFlags => ref __m_Flags.GetRef(this.Handle);
 
 	// m_LightStyle
+	private static readonly SchemaField<byte> __m_LightStyle = new("CDynamicLight", "m_LightStyle");
 	[SchemaMember("CDynamicLight", "m_LightStyle")]
-	public ref byte LightStyle => ref Schema.GetRef<byte>(this.Handle, "CDynamicLight", "m_LightStyle");
+	public ref byte LightStyle => ref __m_LightStyle.GetRef(this.Handle);
 
 	// m_On
+	private static readonly SchemaField<bool> __m_On = new("CDynamicLight", "m_On");
 	[SchemaMember("CDynamicLight", "m_On")]
-	public ref bool On => ref Schema.GetRef<bool>(this.Handle, "CDynamicLight", "m_On");
+	public ref bool On => ref __m_On.GetRef(this.Handle);
 
 	// m_Radius
+	private static readonly SchemaField<float> __m_Radius = new("CDynamicLight", "m_Radius");
 	[SchemaMember("CDynamicLight", "m_Radius")]
-	public ref float Radius => ref Schema.GetRef<float>(this.Handle, "CDynamicLight", "m_Radius");
+	public ref float Radius => ref __m_Radius.GetRef(this.Handle);
 
 	// m_Exponent
+	private static readonly SchemaField<Int32> __m_Exponent = new("CDynamicLight", "m_Exponent");
 	[SchemaMember("CDynamicLight", "m_Exponent")]
-	public ref Int32 Exponent => ref Schema.GetRef<Int32>(this.Handle, "CDynamicLight", "m_Exponent");
+	public ref Int32 Exponent => ref __m_Exponent.GetRef(this.Handle);
 
 	// m_InnerAngle
+	private static readonly SchemaField<float> __m_InnerAngle = new("CDynamicLight", "m_InnerAngle");
 	[SchemaMember("CDynamicLight", "m_InnerAngle")]
-	public ref float InnerAngle => ref Schema.GetRef<float>(this.Handle, "CDynamicLight", "m_InnerAngle");
+	public ref float InnerAngle => ref __m_InnerAngle.GetRef(this.Handle);
 
 	// m_OuterAngle
+	private static readonly SchemaField<float> __m_OuterAngle = new("CDynamicLight", "m_OuterAngle");
 	[SchemaMember("CDynamicLight", "m_OuterAngle")]
-	public ref float OuterAngle => ref Schema.GetRef<float>(this.Handle, "CDynamicLight", "m_OuterAngle");
+	public ref float OuterAngle => ref __m_OuterAngle.GetRef(this.Handle);
 
 	// m_SpotRadius
+	private static readonly SchemaField<float> __m_SpotRadius = new("CDynamicLight", "m_SpotRadius");
 	[SchemaMember("CDynamicLight", "m_SpotRadius")]
-	public ref float SpotRadius => ref Schema.GetRef<float>(this.Handle, "CDynamicLight", "m_SpotRadius");
+	public ref float SpotRadius => ref __m_SpotRadius.GetRef(this.Handle);
 
 }

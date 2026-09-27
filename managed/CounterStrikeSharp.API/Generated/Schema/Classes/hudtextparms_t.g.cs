@@ -35,19 +35,23 @@ public partial class hudtextparms_t : NativeObject
 	}
 
 	// effect
+	private static readonly SchemaField<byte> __effect = new("hudtextparms_t", "effect");
 	[SchemaMember("hudtextparms_t", "effect")]
-	public ref byte Effect => ref Schema.GetRef<byte>(this.Handle, "hudtextparms_t", "effect");
+	public ref byte Effect => ref __effect.GetRef(this.Handle);
 
 	// channel
+	private static readonly SchemaField<byte> __channel = new("hudtextparms_t", "channel");
 	[SchemaMember("hudtextparms_t", "channel")]
-	public ref byte Channel => ref Schema.GetRef<byte>(this.Handle, "hudtextparms_t", "channel");
+	public ref byte Channel => ref __channel.GetRef(this.Handle);
 
 	// x
+	private static readonly SchemaField<float> __x = new("hudtextparms_t", "x");
 	[SchemaMember("hudtextparms_t", "x")]
-	public ref float X => ref Schema.GetRef<float>(this.Handle, "hudtextparms_t", "x");
+	public ref float X => ref __x.GetRef(this.Handle);
 
 	// y
+	private static readonly SchemaField<float> __y = new("hudtextparms_t", "y");
 	[SchemaMember("hudtextparms_t", "y")]
-	public ref float Y => ref Schema.GetRef<float>(this.Handle, "hudtextparms_t", "y");
+	public ref float Y => ref __y.GetRef(this.Handle);
 
 }

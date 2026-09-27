@@ -19,32 +19,39 @@ public partial class CItemGeneric : CItem
     public CItemGeneric (IntPtr pointer) : base(pointer) {}
 
 	// m_bHasTriggerRadius
+	private static readonly SchemaField<bool> __m_bHasTriggerRadius = new("CItemGeneric", "m_bHasTriggerRadius");
 	[SchemaMember("CItemGeneric", "m_bHasTriggerRadius")]
-	public ref bool HasTriggerRadius => ref Schema.GetRef<bool>(this.Handle, "CItemGeneric", "m_bHasTriggerRadius");
+	public ref bool HasTriggerRadius => ref __m_bHasTriggerRadius.GetRef(this.Handle);
 
 	// m_bHasPickupRadius
+	private static readonly SchemaField<bool> __m_bHasPickupRadius = new("CItemGeneric", "m_bHasPickupRadius");
 	[SchemaMember("CItemGeneric", "m_bHasPickupRadius")]
-	public ref bool HasPickupRadius => ref Schema.GetRef<bool>(this.Handle, "CItemGeneric", "m_bHasPickupRadius");
+	public ref bool HasPickupRadius => ref __m_bHasPickupRadius.GetRef(this.Handle);
 
 	// m_flPickupRadiusSqr
+	private static readonly SchemaField<float> __m_flPickupRadiusSqr = new("CItemGeneric", "m_flPickupRadiusSqr");
 	[SchemaMember("CItemGeneric", "m_flPickupRadiusSqr")]
-	public ref float PickupRadiusSqr => ref Schema.GetRef<float>(this.Handle, "CItemGeneric", "m_flPickupRadiusSqr");
+	public ref float PickupRadiusSqr => ref __m_flPickupRadiusSqr.GetRef(this.Handle);
 
 	// m_flTriggerRadiusSqr
+	private static readonly SchemaField<float> __m_flTriggerRadiusSqr = new("CItemGeneric", "m_flTriggerRadiusSqr");
 	[SchemaMember("CItemGeneric", "m_flTriggerRadiusSqr")]
-	public ref float TriggerRadiusSqr => ref Schema.GetRef<float>(this.Handle, "CItemGeneric", "m_flTriggerRadiusSqr");
+	public ref float TriggerRadiusSqr => ref __m_flTriggerRadiusSqr.GetRef(this.Handle);
 
 	// m_flLastPickupCheck
+	private static readonly SchemaField<float> __m_flLastPickupCheck = new("CItemGeneric", "m_flLastPickupCheck");
 	[SchemaMember("CItemGeneric", "m_flLastPickupCheck")]
-	public ref float LastPickupCheck => ref Schema.GetRef<float>(this.Handle, "CItemGeneric", "m_flLastPickupCheck");
+	public ref float LastPickupCheck => ref __m_flLastPickupCheck.GetRef(this.Handle);
 
 	// m_bPlayerCounterListenerAdded
+	private static readonly SchemaField<bool> __m_bPlayerCounterListenerAdded = new("CItemGeneric", "m_bPlayerCounterListenerAdded");
 	[SchemaMember("CItemGeneric", "m_bPlayerCounterListenerAdded")]
-	public ref bool PlayerCounterListenerAdded => ref Schema.GetRef<bool>(this.Handle, "CItemGeneric", "m_bPlayerCounterListenerAdded");
+	public ref bool PlayerCounterListenerAdded => ref __m_bPlayerCounterListenerAdded.GetRef(this.Handle);
 
 	// m_bPlayerInTriggerRadius
+	private static readonly SchemaField<bool> __m_bPlayerInTriggerRadius = new("CItemGeneric", "m_bPlayerInTriggerRadius");
 	[SchemaMember("CItemGeneric", "m_bPlayerInTriggerRadius")]
-	public ref bool PlayerInTriggerRadius => ref Schema.GetRef<bool>(this.Handle, "CItemGeneric", "m_bPlayerInTriggerRadius");
+	public ref bool PlayerInTriggerRadius => ref __m_bPlayerInTriggerRadius.GetRef(this.Handle);
 
 	// m_hSpawnParticleEffect
 	[SchemaMember("CItemGeneric", "m_hSpawnParticleEffect")]
@@ -59,8 +66,9 @@ public partial class CItemGeneric : CItem
 	}
 
 	// m_bAutoStartAmbientSound
+	private static readonly SchemaField<bool> __m_bAutoStartAmbientSound = new("CItemGeneric", "m_bAutoStartAmbientSound");
 	[SchemaMember("CItemGeneric", "m_bAutoStartAmbientSound")]
-	public ref bool AutoStartAmbientSound => ref Schema.GetRef<bool>(this.Handle, "CItemGeneric", "m_bAutoStartAmbientSound");
+	public ref bool AutoStartAmbientSound => ref __m_bAutoStartAmbientSound.GetRef(this.Handle);
 
 	// m_pSpawnScriptFunction
 	[SchemaMember("CItemGeneric", "m_pSpawnScriptFunction")]
@@ -151,12 +159,14 @@ public partial class CItemGeneric : CItem
 	}
 
 	// m_flPickupRadius
+	private static readonly SchemaField<float> __m_flPickupRadius = new("CItemGeneric", "m_flPickupRadius");
 	[SchemaMember("CItemGeneric", "m_flPickupRadius")]
-	public ref float PickupRadius => ref Schema.GetRef<float>(this.Handle, "CItemGeneric", "m_flPickupRadius");
+	public ref float PickupRadius => ref __m_flPickupRadius.GetRef(this.Handle);
 
 	// m_flTriggerRadius
+	private static readonly SchemaField<float> __m_flTriggerRadius = new("CItemGeneric", "m_flTriggerRadius");
 	[SchemaMember("CItemGeneric", "m_flTriggerRadius")]
-	public ref float TriggerRadius => ref Schema.GetRef<float>(this.Handle, "CItemGeneric", "m_flTriggerRadius");
+	public ref float TriggerRadius => ref __m_flTriggerRadius.GetRef(this.Handle);
 
 	// m_pTriggerSoundEffect
 	[SchemaMember("CItemGeneric", "m_pTriggerSoundEffect")]
@@ -167,8 +177,9 @@ public partial class CItemGeneric : CItem
 	}
 
 	// m_bGlowWhenInTrigger
+	private static readonly SchemaField<bool> __m_bGlowWhenInTrigger = new("CItemGeneric", "m_bGlowWhenInTrigger");
 	[SchemaMember("CItemGeneric", "m_bGlowWhenInTrigger")]
-	public ref bool GlowWhenInTrigger => ref Schema.GetRef<bool>(this.Handle, "CItemGeneric", "m_bGlowWhenInTrigger");
+	public ref bool GlowWhenInTrigger => ref __m_bGlowWhenInTrigger.GetRef(this.Handle);
 
 	// m_glowColor
 	[SchemaMember("CItemGeneric", "m_glowColor")]
@@ -179,8 +190,9 @@ public partial class CItemGeneric : CItem
 	}
 
 	// m_bUseable
+	private static readonly SchemaField<bool> __m_bUseable = new("CItemGeneric", "m_bUseable");
 	[SchemaMember("CItemGeneric", "m_bUseable")]
-	public ref bool Useable => ref Schema.GetRef<bool>(this.Handle, "CItemGeneric", "m_bUseable");
+	public ref bool Useable => ref __m_bUseable.GetRef(this.Handle);
 
 	// m_hTriggerHelper
 	[SchemaMember("CItemGeneric", "m_hTriggerHelper")]

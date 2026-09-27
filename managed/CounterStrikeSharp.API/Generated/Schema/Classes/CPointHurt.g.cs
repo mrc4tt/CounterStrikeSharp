@@ -19,20 +19,24 @@ public partial class CPointHurt : CPointEntity
     public CPointHurt (IntPtr pointer) : base(pointer) {}
 
 	// m_nDamage
+	private static readonly SchemaField<Int32> __m_nDamage = new("CPointHurt", "m_nDamage");
 	[SchemaMember("CPointHurt", "m_nDamage")]
-	public ref Int32 Damage => ref Schema.GetRef<Int32>(this.Handle, "CPointHurt", "m_nDamage");
+	public ref Int32 Damage => ref __m_nDamage.GetRef(this.Handle);
 
 	// m_bitsDamageType
+	private static readonly SchemaField<DamageTypes_t> __m_bitsDamageType = new("CPointHurt", "m_bitsDamageType");
 	[SchemaMember("CPointHurt", "m_bitsDamageType")]
-	public ref DamageTypes_t BitsDamageType => ref Schema.GetRef<DamageTypes_t>(this.Handle, "CPointHurt", "m_bitsDamageType");
+	public ref DamageTypes_t BitsDamageType => ref __m_bitsDamageType.GetRef(this.Handle);
 
 	// m_flRadius
+	private static readonly SchemaField<float> __m_flRadius = new("CPointHurt", "m_flRadius");
 	[SchemaMember("CPointHurt", "m_flRadius")]
-	public ref float Radius => ref Schema.GetRef<float>(this.Handle, "CPointHurt", "m_flRadius");
+	public ref float Radius => ref __m_flRadius.GetRef(this.Handle);
 
 	// m_flDelay
+	private static readonly SchemaField<float> __m_flDelay = new("CPointHurt", "m_flDelay");
 	[SchemaMember("CPointHurt", "m_flDelay")]
-	public ref float Delay => ref Schema.GetRef<float>(this.Handle, "CPointHurt", "m_flDelay");
+	public ref float Delay => ref __m_flDelay.GetRef(this.Handle);
 
 	// m_strTarget
 	[SchemaMember("CPointHurt", "m_strTarget")]

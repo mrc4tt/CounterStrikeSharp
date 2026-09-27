@@ -19,28 +19,34 @@ public partial class CSoundEventEntity : CBaseEntity
     public CSoundEventEntity (IntPtr pointer) : base(pointer) {}
 
 	// m_bStartOnSpawn
+	private static readonly SchemaField<bool> __m_bStartOnSpawn = new("CSoundEventEntity", "m_bStartOnSpawn");
 	[SchemaMember("CSoundEventEntity", "m_bStartOnSpawn")]
-	public ref bool StartOnSpawn => ref Schema.GetRef<bool>(this.Handle, "CSoundEventEntity", "m_bStartOnSpawn");
+	public ref bool StartOnSpawn => ref __m_bStartOnSpawn.GetRef(this.Handle);
 
 	// m_bToLocalPlayer
+	private static readonly SchemaField<bool> __m_bToLocalPlayer = new("CSoundEventEntity", "m_bToLocalPlayer");
 	[SchemaMember("CSoundEventEntity", "m_bToLocalPlayer")]
-	public ref bool ToLocalPlayer => ref Schema.GetRef<bool>(this.Handle, "CSoundEventEntity", "m_bToLocalPlayer");
+	public ref bool ToLocalPlayer => ref __m_bToLocalPlayer.GetRef(this.Handle);
 
 	// m_bStopOnNew
+	private static readonly SchemaField<bool> __m_bStopOnNew = new("CSoundEventEntity", "m_bStopOnNew");
 	[SchemaMember("CSoundEventEntity", "m_bStopOnNew")]
-	public ref bool StopOnNew => ref Schema.GetRef<bool>(this.Handle, "CSoundEventEntity", "m_bStopOnNew");
+	public ref bool StopOnNew => ref __m_bStopOnNew.GetRef(this.Handle);
 
 	// m_bSaveRestore
+	private static readonly SchemaField<bool> __m_bSaveRestore = new("CSoundEventEntity", "m_bSaveRestore");
 	[SchemaMember("CSoundEventEntity", "m_bSaveRestore")]
-	public ref bool SaveRestore => ref Schema.GetRef<bool>(this.Handle, "CSoundEventEntity", "m_bSaveRestore");
+	public ref bool SaveRestore => ref __m_bSaveRestore.GetRef(this.Handle);
 
 	// m_bSavedIsPlaying
+	private static readonly SchemaField<bool> __m_bSavedIsPlaying = new("CSoundEventEntity", "m_bSavedIsPlaying");
 	[SchemaMember("CSoundEventEntity", "m_bSavedIsPlaying")]
-	public ref bool SavedIsPlaying => ref Schema.GetRef<bool>(this.Handle, "CSoundEventEntity", "m_bSavedIsPlaying");
+	public ref bool SavedIsPlaying => ref __m_bSavedIsPlaying.GetRef(this.Handle);
 
 	// m_flSavedElapsedTime
+	private static readonly SchemaField<float> __m_flSavedElapsedTime = new("CSoundEventEntity", "m_flSavedElapsedTime");
 	[SchemaMember("CSoundEventEntity", "m_flSavedElapsedTime")]
-	public ref float SavedElapsedTime => ref Schema.GetRef<float>(this.Handle, "CSoundEventEntity", "m_flSavedElapsedTime");
+	public ref float SavedElapsedTime => ref __m_flSavedElapsedTime.GetRef(this.Handle);
 
 	// m_iszSourceEntityName
 	[SchemaMember("CSoundEventEntity", "m_iszSourceEntityName")]
@@ -63,8 +69,9 @@ public partial class CSoundEventEntity : CBaseEntity
 	public CEntityIOOutput OnSoundFinished => Schema.GetDeclaredClass<CEntityIOOutput>(this.Handle, "CSoundEventEntity", "m_onSoundFinished");
 
 	// m_flClientCullRadius
+	private static readonly SchemaField<float> __m_flClientCullRadius = new("CSoundEventEntity", "m_flClientCullRadius");
 	[SchemaMember("CSoundEventEntity", "m_flClientCullRadius")]
-	public ref float ClientCullRadius => ref Schema.GetRef<float>(this.Handle, "CSoundEventEntity", "m_flClientCullRadius");
+	public ref float ClientCullRadius => ref __m_flClientCullRadius.GetRef(this.Handle);
 
 	// m_iszSoundName
 	[SchemaMember("CSoundEventEntity", "m_iszSoundName")]
@@ -79,7 +86,8 @@ public partial class CSoundEventEntity : CBaseEntity
 	public CHandle<CEntityInstance> Source => Schema.GetDeclaredClass<CHandle<CEntityInstance>>(this.Handle, "CSoundEventEntity", "m_hSource");
 
 	// m_nEntityIndexSelection
+	private static readonly SchemaField<Int32> __m_nEntityIndexSelection = new("CSoundEventEntity", "m_nEntityIndexSelection");
 	[SchemaMember("CSoundEventEntity", "m_nEntityIndexSelection")]
-	public ref Int32 EntityIndexSelection => ref Schema.GetRef<Int32>(this.Handle, "CSoundEventEntity", "m_nEntityIndexSelection");
+	public ref Int32 EntityIndexSelection => ref __m_nEntityIndexSelection.GetRef(this.Handle);
 
 }

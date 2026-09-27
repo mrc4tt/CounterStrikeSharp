@@ -35,28 +35,34 @@ public partial class CInferno : CBaseModelEntity
 	public Span<Vector> BurnNormal => Schema.GetFixedArray<Vector>(this.Handle, "CInferno", "m_BurnNormal", 64);
 
 	// m_fireCount
+	private static readonly SchemaField<Int32> __m_fireCount = new("CInferno", "m_fireCount");
 	[SchemaMember("CInferno", "m_fireCount")]
-	public ref Int32 FireCount => ref Schema.GetRef<Int32>(this.Handle, "CInferno", "m_fireCount");
+	public ref Int32 FireCount => ref __m_fireCount.GetRef(this.Handle);
 
 	// m_nInfernoType
+	private static readonly SchemaField<Int32> __m_nInfernoType = new("CInferno", "m_nInfernoType");
 	[SchemaMember("CInferno", "m_nInfernoType")]
-	public ref Int32 InfernoType => ref Schema.GetRef<Int32>(this.Handle, "CInferno", "m_nInfernoType");
+	public ref Int32 InfernoType => ref __m_nInfernoType.GetRef(this.Handle);
 
 	// m_nFireEffectTickBegin
+	private static readonly SchemaField<Int32> __m_nFireEffectTickBegin = new("CInferno", "m_nFireEffectTickBegin");
 	[SchemaMember("CInferno", "m_nFireEffectTickBegin")]
-	public ref Int32 FireEffectTickBegin => ref Schema.GetRef<Int32>(this.Handle, "CInferno", "m_nFireEffectTickBegin");
+	public ref Int32 FireEffectTickBegin => ref __m_nFireEffectTickBegin.GetRef(this.Handle);
 
 	// m_nFireLifetime
+	private static readonly SchemaField<float> __m_nFireLifetime = new("CInferno", "m_nFireLifetime");
 	[SchemaMember("CInferno", "m_nFireLifetime")]
-	public ref float FireLifetime => ref Schema.GetRef<float>(this.Handle, "CInferno", "m_nFireLifetime");
+	public ref float FireLifetime => ref __m_nFireLifetime.GetRef(this.Handle);
 
 	// m_bInPostEffectTime
+	private static readonly SchemaField<bool> __m_bInPostEffectTime = new("CInferno", "m_bInPostEffectTime");
 	[SchemaMember("CInferno", "m_bInPostEffectTime")]
-	public ref bool InPostEffectTime => ref Schema.GetRef<bool>(this.Handle, "CInferno", "m_bInPostEffectTime");
+	public ref bool InPostEffectTime => ref __m_bInPostEffectTime.GetRef(this.Handle);
 
 	// m_bWasCreatedInSmoke
+	private static readonly SchemaField<bool> __m_bWasCreatedInSmoke = new("CInferno", "m_bWasCreatedInSmoke");
 	[SchemaMember("CInferno", "m_bWasCreatedInSmoke")]
-	public ref bool WasCreatedInSmoke => ref Schema.GetRef<bool>(this.Handle, "CInferno", "m_bWasCreatedInSmoke");
+	public ref bool WasCreatedInSmoke => ref __m_bWasCreatedInSmoke.GetRef(this.Handle);
 
 	// m_extent
 	[SchemaMember("CInferno", "m_extent")]
@@ -91,16 +97,19 @@ public partial class CInferno : CBaseModelEntity
 	public IntervalTimer ActiveTimer => Schema.GetDeclaredClass<IntervalTimer>(this.Handle, "CInferno", "m_activeTimer");
 
 	// m_fireSpawnOffset
+	private static readonly SchemaField<Int32> __m_fireSpawnOffset = new("CInferno", "m_fireSpawnOffset");
 	[SchemaMember("CInferno", "m_fireSpawnOffset")]
-	public ref Int32 FireSpawnOffset => ref Schema.GetRef<Int32>(this.Handle, "CInferno", "m_fireSpawnOffset");
+	public ref Int32 FireSpawnOffset => ref __m_fireSpawnOffset.GetRef(this.Handle);
 
 	// m_nMaxFlames
+	private static readonly SchemaField<Int32> __m_nMaxFlames = new("CInferno", "m_nMaxFlames");
 	[SchemaMember("CInferno", "m_nMaxFlames")]
-	public ref Int32 MaxFlames => ref Schema.GetRef<Int32>(this.Handle, "CInferno", "m_nMaxFlames");
+	public ref Int32 MaxFlames => ref __m_nMaxFlames.GetRef(this.Handle);
 
 	// m_nSpreadCount
+	private static readonly SchemaField<Int32> __m_nSpreadCount = new("CInferno", "m_nSpreadCount");
 	[SchemaMember("CInferno", "m_nSpreadCount")]
-	public ref Int32 SpreadCount => ref Schema.GetRef<Int32>(this.Handle, "CInferno", "m_nSpreadCount");
+	public ref Int32 SpreadCount => ref __m_nSpreadCount.GetRef(this.Handle);
 
 	// m_BookkeepingTimer
 	[SchemaMember("CInferno", "m_BookkeepingTimer")]
@@ -111,7 +120,8 @@ public partial class CInferno : CBaseModelEntity
 	public CountdownTimer NextSpreadTimer => Schema.GetDeclaredClass<CountdownTimer>(this.Handle, "CInferno", "m_NextSpreadTimer");
 
 	// m_nSourceItemDefIndex
+	private static readonly SchemaField<UInt16> __m_nSourceItemDefIndex = new("CInferno", "m_nSourceItemDefIndex");
 	[SchemaMember("CInferno", "m_nSourceItemDefIndex")]
-	public ref UInt16 SourceItemDefIndex => ref Schema.GetRef<UInt16>(this.Handle, "CInferno", "m_nSourceItemDefIndex");
+	public ref UInt16 SourceItemDefIndex => ref __m_nSourceItemDefIndex.GetRef(this.Handle);
 
 }

@@ -19,44 +19,54 @@ public partial class CAI_Expresser : NativeObject
     public CAI_Expresser (IntPtr pointer) : base(pointer) {}
 
 	// m_flStopTalkTime
+	private static readonly SchemaField<float> __m_flStopTalkTime = new("CAI_Expresser", "m_flStopTalkTime");
 	[SchemaMember("CAI_Expresser", "m_flStopTalkTime")]
-	public ref float StopTalkTime => ref Schema.GetRef<float>(this.Handle, "CAI_Expresser", "m_flStopTalkTime");
+	public ref float StopTalkTime => ref __m_flStopTalkTime.GetRef(this.Handle);
 
 	// m_flStopTalkTimeWithoutDelay
+	private static readonly SchemaField<float> __m_flStopTalkTimeWithoutDelay = new("CAI_Expresser", "m_flStopTalkTimeWithoutDelay");
 	[SchemaMember("CAI_Expresser", "m_flStopTalkTimeWithoutDelay")]
-	public ref float StopTalkTimeWithoutDelay => ref Schema.GetRef<float>(this.Handle, "CAI_Expresser", "m_flStopTalkTimeWithoutDelay");
+	public ref float StopTalkTimeWithoutDelay => ref __m_flStopTalkTimeWithoutDelay.GetRef(this.Handle);
 
 	// m_flQueuedSpeechTime
+	private static readonly SchemaField<float> __m_flQueuedSpeechTime = new("CAI_Expresser", "m_flQueuedSpeechTime");
 	[SchemaMember("CAI_Expresser", "m_flQueuedSpeechTime")]
-	public ref float QueuedSpeechTime => ref Schema.GetRef<float>(this.Handle, "CAI_Expresser", "m_flQueuedSpeechTime");
+	public ref float QueuedSpeechTime => ref __m_flQueuedSpeechTime.GetRef(this.Handle);
 
 	// m_flBlockedTalkTime
+	private static readonly SchemaField<float> __m_flBlockedTalkTime = new("CAI_Expresser", "m_flBlockedTalkTime");
 	[SchemaMember("CAI_Expresser", "m_flBlockedTalkTime")]
-	public ref float BlockedTalkTime => ref Schema.GetRef<float>(this.Handle, "CAI_Expresser", "m_flBlockedTalkTime");
+	public ref float BlockedTalkTime => ref __m_flBlockedTalkTime.GetRef(this.Handle);
 
 	// m_voicePitch
+	private static readonly SchemaField<Int32> __m_voicePitch = new("CAI_Expresser", "m_voicePitch");
 	[SchemaMember("CAI_Expresser", "m_voicePitch")]
-	public ref Int32 VoicePitch => ref Schema.GetRef<Int32>(this.Handle, "CAI_Expresser", "m_voicePitch");
+	public ref Int32 VoicePitch => ref __m_voicePitch.GetRef(this.Handle);
 
 	// m_flLastTimeAcceptedSpeak
+	private static readonly SchemaField<float> __m_flLastTimeAcceptedSpeak = new("CAI_Expresser", "m_flLastTimeAcceptedSpeak");
 	[SchemaMember("CAI_Expresser", "m_flLastTimeAcceptedSpeak")]
-	public ref float LastTimeAcceptedSpeak => ref Schema.GetRef<float>(this.Handle, "CAI_Expresser", "m_flLastTimeAcceptedSpeak");
+	public ref float LastTimeAcceptedSpeak => ref __m_flLastTimeAcceptedSpeak.GetRef(this.Handle);
 
 	// m_bAllowSpeakingInterrupts
+	private static readonly SchemaField<bool> __m_bAllowSpeakingInterrupts = new("CAI_Expresser", "m_bAllowSpeakingInterrupts");
 	[SchemaMember("CAI_Expresser", "m_bAllowSpeakingInterrupts")]
-	public ref bool AllowSpeakingInterrupts => ref Schema.GetRef<bool>(this.Handle, "CAI_Expresser", "m_bAllowSpeakingInterrupts");
+	public ref bool AllowSpeakingInterrupts => ref __m_bAllowSpeakingInterrupts.GetRef(this.Handle);
 
 	// m_bConsiderSceneInvolvementAsSpeech
+	private static readonly SchemaField<bool> __m_bConsiderSceneInvolvementAsSpeech = new("CAI_Expresser", "m_bConsiderSceneInvolvementAsSpeech");
 	[SchemaMember("CAI_Expresser", "m_bConsiderSceneInvolvementAsSpeech")]
-	public ref bool ConsiderSceneInvolvementAsSpeech => ref Schema.GetRef<bool>(this.Handle, "CAI_Expresser", "m_bConsiderSceneInvolvementAsSpeech");
+	public ref bool ConsiderSceneInvolvementAsSpeech => ref __m_bConsiderSceneInvolvementAsSpeech.GetRef(this.Handle);
 
 	// m_bSceneEntityDisabled
+	private static readonly SchemaField<bool> __m_bSceneEntityDisabled = new("CAI_Expresser", "m_bSceneEntityDisabled");
 	[SchemaMember("CAI_Expresser", "m_bSceneEntityDisabled")]
-	public ref bool SceneEntityDisabled => ref Schema.GetRef<bool>(this.Handle, "CAI_Expresser", "m_bSceneEntityDisabled");
+	public ref bool SceneEntityDisabled => ref __m_bSceneEntityDisabled.GetRef(this.Handle);
 
 	// m_nLastSpokenPriority
+	private static readonly SchemaField<Int32> __m_nLastSpokenPriority = new("CAI_Expresser", "m_nLastSpokenPriority");
 	[SchemaMember("CAI_Expresser", "m_nLastSpokenPriority")]
-	public ref Int32 LastSpokenPriority => ref Schema.GetRef<Int32>(this.Handle, "CAI_Expresser", "m_nLastSpokenPriority");
+	public ref Int32 LastSpokenPriority => ref __m_nLastSpokenPriority.GetRef(this.Handle);
 
 	// m_pOuter
 	[SchemaMember("CAI_Expresser", "m_pOuter")]

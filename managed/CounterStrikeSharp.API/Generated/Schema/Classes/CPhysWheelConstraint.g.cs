@@ -19,48 +19,59 @@ public partial class CPhysWheelConstraint : CPhysConstraint
     public CPhysWheelConstraint (IntPtr pointer) : base(pointer) {}
 
 	// m_flSuspensionFrequency
+	private static readonly SchemaField<float> __m_flSuspensionFrequency = new("CPhysWheelConstraint", "m_flSuspensionFrequency");
 	[SchemaMember("CPhysWheelConstraint", "m_flSuspensionFrequency")]
-	public ref float SuspensionFrequency => ref Schema.GetRef<float>(this.Handle, "CPhysWheelConstraint", "m_flSuspensionFrequency");
+	public ref float SuspensionFrequency => ref __m_flSuspensionFrequency.GetRef(this.Handle);
 
 	// m_flSuspensionDampingRatio
+	private static readonly SchemaField<float> __m_flSuspensionDampingRatio = new("CPhysWheelConstraint", "m_flSuspensionDampingRatio");
 	[SchemaMember("CPhysWheelConstraint", "m_flSuspensionDampingRatio")]
-	public ref float SuspensionDampingRatio => ref Schema.GetRef<float>(this.Handle, "CPhysWheelConstraint", "m_flSuspensionDampingRatio");
+	public ref float SuspensionDampingRatio => ref __m_flSuspensionDampingRatio.GetRef(this.Handle);
 
 	// m_flSuspensionHeightOffset
+	private static readonly SchemaField<float> __m_flSuspensionHeightOffset = new("CPhysWheelConstraint", "m_flSuspensionHeightOffset");
 	[SchemaMember("CPhysWheelConstraint", "m_flSuspensionHeightOffset")]
-	public ref float SuspensionHeightOffset => ref Schema.GetRef<float>(this.Handle, "CPhysWheelConstraint", "m_flSuspensionHeightOffset");
+	public ref float SuspensionHeightOffset => ref __m_flSuspensionHeightOffset.GetRef(this.Handle);
 
 	// m_bEnableSuspensionLimit
+	private static readonly SchemaField<bool> __m_bEnableSuspensionLimit = new("CPhysWheelConstraint", "m_bEnableSuspensionLimit");
 	[SchemaMember("CPhysWheelConstraint", "m_bEnableSuspensionLimit")]
-	public ref bool EnableSuspensionLimit => ref Schema.GetRef<bool>(this.Handle, "CPhysWheelConstraint", "m_bEnableSuspensionLimit");
+	public ref bool EnableSuspensionLimit => ref __m_bEnableSuspensionLimit.GetRef(this.Handle);
 
 	// m_flMinSuspensionOffset
+	private static readonly SchemaField<float> __m_flMinSuspensionOffset = new("CPhysWheelConstraint", "m_flMinSuspensionOffset");
 	[SchemaMember("CPhysWheelConstraint", "m_flMinSuspensionOffset")]
-	public ref float MinSuspensionOffset => ref Schema.GetRef<float>(this.Handle, "CPhysWheelConstraint", "m_flMinSuspensionOffset");
+	public ref float MinSuspensionOffset => ref __m_flMinSuspensionOffset.GetRef(this.Handle);
 
 	// m_flMaxSuspensionOffset
+	private static readonly SchemaField<float> __m_flMaxSuspensionOffset = new("CPhysWheelConstraint", "m_flMaxSuspensionOffset");
 	[SchemaMember("CPhysWheelConstraint", "m_flMaxSuspensionOffset")]
-	public ref float MaxSuspensionOffset => ref Schema.GetRef<float>(this.Handle, "CPhysWheelConstraint", "m_flMaxSuspensionOffset");
+	public ref float MaxSuspensionOffset => ref __m_flMaxSuspensionOffset.GetRef(this.Handle);
 
 	// m_bEnableSteeringLimit
+	private static readonly SchemaField<bool> __m_bEnableSteeringLimit = new("CPhysWheelConstraint", "m_bEnableSteeringLimit");
 	[SchemaMember("CPhysWheelConstraint", "m_bEnableSteeringLimit")]
-	public ref bool EnableSteeringLimit => ref Schema.GetRef<bool>(this.Handle, "CPhysWheelConstraint", "m_bEnableSteeringLimit");
+	public ref bool EnableSteeringLimit => ref __m_bEnableSteeringLimit.GetRef(this.Handle);
 
 	// m_flMinSteeringAngle
+	private static readonly SchemaField<float> __m_flMinSteeringAngle = new("CPhysWheelConstraint", "m_flMinSteeringAngle");
 	[SchemaMember("CPhysWheelConstraint", "m_flMinSteeringAngle")]
-	public ref float MinSteeringAngle => ref Schema.GetRef<float>(this.Handle, "CPhysWheelConstraint", "m_flMinSteeringAngle");
+	public ref float MinSteeringAngle => ref __m_flMinSteeringAngle.GetRef(this.Handle);
 
 	// m_flMaxSteeringAngle
+	private static readonly SchemaField<float> __m_flMaxSteeringAngle = new("CPhysWheelConstraint", "m_flMaxSteeringAngle");
 	[SchemaMember("CPhysWheelConstraint", "m_flMaxSteeringAngle")]
-	public ref float MaxSteeringAngle => ref Schema.GetRef<float>(this.Handle, "CPhysWheelConstraint", "m_flMaxSteeringAngle");
+	public ref float MaxSteeringAngle => ref __m_flMaxSteeringAngle.GetRef(this.Handle);
 
 	// m_flSteeringAxisFriction
+	private static readonly SchemaField<float> __m_flSteeringAxisFriction = new("CPhysWheelConstraint", "m_flSteeringAxisFriction");
 	[SchemaMember("CPhysWheelConstraint", "m_flSteeringAxisFriction")]
-	public ref float SteeringAxisFriction => ref Schema.GetRef<float>(this.Handle, "CPhysWheelConstraint", "m_flSteeringAxisFriction");
+	public ref float SteeringAxisFriction => ref __m_flSteeringAxisFriction.GetRef(this.Handle);
 
 	// m_flSpinAxisFriction
+	private static readonly SchemaField<float> __m_flSpinAxisFriction = new("CPhysWheelConstraint", "m_flSpinAxisFriction");
 	[SchemaMember("CPhysWheelConstraint", "m_flSpinAxisFriction")]
-	public ref float SpinAxisFriction => ref Schema.GetRef<float>(this.Handle, "CPhysWheelConstraint", "m_flSpinAxisFriction");
+	public ref float SpinAxisFriction => ref __m_flSpinAxisFriction.GetRef(this.Handle);
 
 	// m_hSteeringMimicsEntity
 	[SchemaMember("CPhysWheelConstraint", "m_hSteeringMimicsEntity")]

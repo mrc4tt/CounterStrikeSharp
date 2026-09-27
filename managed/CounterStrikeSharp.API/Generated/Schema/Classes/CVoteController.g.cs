@@ -19,24 +19,28 @@ public partial class CVoteController : CBaseEntity
     public CVoteController (IntPtr pointer) : base(pointer) {}
 
 	// m_iActiveIssueIndex
+	private static readonly SchemaField<Int32> __m_iActiveIssueIndex = new("CVoteController", "m_iActiveIssueIndex");
 	[SchemaMember("CVoteController", "m_iActiveIssueIndex")]
-	public ref Int32 ActiveIssueIndex => ref Schema.GetRef<Int32>(this.Handle, "CVoteController", "m_iActiveIssueIndex");
+	public ref Int32 ActiveIssueIndex => ref __m_iActiveIssueIndex.GetRef(this.Handle);
 
 	// m_iOnlyTeamToVote
+	private static readonly SchemaField<Int32> __m_iOnlyTeamToVote = new("CVoteController", "m_iOnlyTeamToVote");
 	[SchemaMember("CVoteController", "m_iOnlyTeamToVote")]
-	public ref Int32 OnlyTeamToVote => ref Schema.GetRef<Int32>(this.Handle, "CVoteController", "m_iOnlyTeamToVote");
+	public ref Int32 OnlyTeamToVote => ref __m_iOnlyTeamToVote.GetRef(this.Handle);
 
 	// m_nVoteOptionCount
 	[SchemaMember("CVoteController", "m_nVoteOptionCount")]
 	public Span<Int32> VoteOptionCount => Schema.GetFixedArray<Int32>(this.Handle, "CVoteController", "m_nVoteOptionCount", 5);
 
 	// m_nPotentialVotes
+	private static readonly SchemaField<Int32> __m_nPotentialVotes = new("CVoteController", "m_nPotentialVotes");
 	[SchemaMember("CVoteController", "m_nPotentialVotes")]
-	public ref Int32 PotentialVotes => ref Schema.GetRef<Int32>(this.Handle, "CVoteController", "m_nPotentialVotes");
+	public ref Int32 PotentialVotes => ref __m_nPotentialVotes.GetRef(this.Handle);
 
 	// m_bIsYesNoVote
+	private static readonly SchemaField<bool> __m_bIsYesNoVote = new("CVoteController", "m_bIsYesNoVote");
 	[SchemaMember("CVoteController", "m_bIsYesNoVote")]
-	public ref bool IsYesNoVote => ref Schema.GetRef<bool>(this.Handle, "CVoteController", "m_bIsYesNoVote");
+	public ref bool IsYesNoVote => ref __m_bIsYesNoVote.GetRef(this.Handle);
 
 	// m_acceptingVotesTimer
 	[SchemaMember("CVoteController", "m_acceptingVotesTimer")]
@@ -55,16 +59,19 @@ public partial class CVoteController : CBaseEntity
 	public Span<Int32> VotesCast => Schema.GetFixedArray<Int32>(this.Handle, "CVoteController", "m_nVotesCast", 64);
 
 	// m_playerHoldingVote
+	private static readonly SchemaField<Int32> __m_playerHoldingVote = new("CVoteController", "m_playerHoldingVote");
 	[SchemaMember("CVoteController", "m_playerHoldingVote")]
-	public ref Int32 PlayerHoldingVote => ref Schema.GetRef<Int32>(this.Handle, "CVoteController", "m_playerHoldingVote");
+	public ref Int32 PlayerHoldingVote => ref __m_playerHoldingVote.GetRef(this.Handle);
 
 	// m_playerOverrideForVote
+	private static readonly SchemaField<Int32> __m_playerOverrideForVote = new("CVoteController", "m_playerOverrideForVote");
 	[SchemaMember("CVoteController", "m_playerOverrideForVote")]
-	public ref Int32 PlayerOverrideForVote => ref Schema.GetRef<Int32>(this.Handle, "CVoteController", "m_playerOverrideForVote");
+	public ref Int32 PlayerOverrideForVote => ref __m_playerOverrideForVote.GetRef(this.Handle);
 
 	// m_nHighestCountIndex
+	private static readonly SchemaField<Int32> __m_nHighestCountIndex = new("CVoteController", "m_nHighestCountIndex");
 	[SchemaMember("CVoteController", "m_nHighestCountIndex")]
-	public ref Int32 HighestCountIndex => ref Schema.GetRef<Int32>(this.Handle, "CVoteController", "m_nHighestCountIndex");
+	public ref Int32 HighestCountIndex => ref __m_nHighestCountIndex.GetRef(this.Handle);
 
 	// m_potentialIssues
 	[SchemaMember("CVoteController", "m_potentialIssues")]

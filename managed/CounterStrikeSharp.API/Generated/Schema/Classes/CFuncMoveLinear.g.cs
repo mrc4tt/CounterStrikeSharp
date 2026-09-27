@@ -19,8 +19,9 @@ public partial class CFuncMoveLinear : CBaseToggle
     public CFuncMoveLinear (IntPtr pointer) : base(pointer) {}
 
 	// m_authoredPosition
+	private static readonly SchemaField<MoveLinearAuthoredPos_t> __m_authoredPosition = new("CFuncMoveLinear", "m_authoredPosition");
 	[SchemaMember("CFuncMoveLinear", "m_authoredPosition")]
-	public ref MoveLinearAuthoredPos_t AuthoredPosition => ref Schema.GetRef<MoveLinearAuthoredPos_t>(this.Handle, "CFuncMoveLinear", "m_authoredPosition");
+	public ref MoveLinearAuthoredPos_t AuthoredPosition => ref __m_authoredPosition.GetRef(this.Handle);
 
 	// m_angMoveEntitySpace
 	[SchemaMember("CFuncMoveLinear", "m_angMoveEntitySpace")]
@@ -55,12 +56,14 @@ public partial class CFuncMoveLinear : CBaseToggle
 	}
 
 	// m_flBlockDamage
+	private static readonly SchemaField<float> __m_flBlockDamage = new("CFuncMoveLinear", "m_flBlockDamage");
 	[SchemaMember("CFuncMoveLinear", "m_flBlockDamage")]
-	public ref float BlockDamage => ref Schema.GetRef<float>(this.Handle, "CFuncMoveLinear", "m_flBlockDamage");
+	public ref float BlockDamage => ref __m_flBlockDamage.GetRef(this.Handle);
 
 	// m_flStartPosition
+	private static readonly SchemaField<float> __m_flStartPosition = new("CFuncMoveLinear", "m_flStartPosition");
 	[SchemaMember("CFuncMoveLinear", "m_flStartPosition")]
-	public ref float StartPosition => ref Schema.GetRef<float>(this.Handle, "CFuncMoveLinear", "m_flStartPosition");
+	public ref float StartPosition => ref __m_flStartPosition.GetRef(this.Handle);
 
 	// m_OnFullyOpen
 	[SchemaMember("CFuncMoveLinear", "m_OnFullyOpen")]
@@ -71,19 +74,23 @@ public partial class CFuncMoveLinear : CBaseToggle
 	public CEntityIOOutput OnFullyClosed => Schema.GetDeclaredClass<CEntityIOOutput>(this.Handle, "CFuncMoveLinear", "m_OnFullyClosed");
 
 	// m_flSpeed
+	private static readonly SchemaField<float> __m_flSpeed = new("CFuncMoveLinear", "m_flSpeed");
 	[SchemaMember("CFuncMoveLinear", "m_flSpeed")]
-	public ref float Speed => ref Schema.GetRef<float>(this.Handle, "CFuncMoveLinear", "m_flSpeed");
+	public ref float Speed => ref __m_flSpeed.GetRef(this.Handle);
 
 	// m_bCreateMovableNavMesh
+	private static readonly SchemaField<bool> __m_bCreateMovableNavMesh = new("CFuncMoveLinear", "m_bCreateMovableNavMesh");
 	[SchemaMember("CFuncMoveLinear", "m_bCreateMovableNavMesh")]
-	public ref bool CreateMovableNavMesh => ref Schema.GetRef<bool>(this.Handle, "CFuncMoveLinear", "m_bCreateMovableNavMesh");
+	public ref bool CreateMovableNavMesh => ref __m_bCreateMovableNavMesh.GetRef(this.Handle);
 
 	// m_bAllowMovableNavMeshDockingOnEntireEntity
+	private static readonly SchemaField<bool> __m_bAllowMovableNavMeshDockingOnEntireEntity = new("CFuncMoveLinear", "m_bAllowMovableNavMeshDockingOnEntireEntity");
 	[SchemaMember("CFuncMoveLinear", "m_bAllowMovableNavMeshDockingOnEntireEntity")]
-	public ref bool AllowMovableNavMeshDockingOnEntireEntity => ref Schema.GetRef<bool>(this.Handle, "CFuncMoveLinear", "m_bAllowMovableNavMeshDockingOnEntireEntity");
+	public ref bool AllowMovableNavMeshDockingOnEntireEntity => ref __m_bAllowMovableNavMeshDockingOnEntireEntity.GetRef(this.Handle);
 
 	// m_bCreateNavObstacle
+	private static readonly SchemaField<bool> __m_bCreateNavObstacle = new("CFuncMoveLinear", "m_bCreateNavObstacle");
 	[SchemaMember("CFuncMoveLinear", "m_bCreateNavObstacle")]
-	public ref bool CreateNavObstacle => ref Schema.GetRef<bool>(this.Handle, "CFuncMoveLinear", "m_bCreateNavObstacle");
+	public ref bool CreateNavObstacle => ref __m_bCreateNavObstacle.GetRef(this.Handle);
 
 }

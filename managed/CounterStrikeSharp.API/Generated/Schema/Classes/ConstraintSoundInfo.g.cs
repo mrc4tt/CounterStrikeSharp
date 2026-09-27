@@ -71,11 +71,13 @@ public partial class ConstraintSoundInfo : NativeObject
 	}
 
 	// m_bPlayTravelSound
+	private static readonly SchemaField<bool> __m_bPlayTravelSound = new("ConstraintSoundInfo", "m_bPlayTravelSound");
 	[SchemaMember("ConstraintSoundInfo", "m_bPlayTravelSound")]
-	public ref bool PlayTravelSound => ref Schema.GetRef<bool>(this.Handle, "ConstraintSoundInfo", "m_bPlayTravelSound");
+	public ref bool PlayTravelSound => ref __m_bPlayTravelSound.GetRef(this.Handle);
 
 	// m_bPlayReversalSound
+	private static readonly SchemaField<bool> __m_bPlayReversalSound = new("ConstraintSoundInfo", "m_bPlayReversalSound");
 	[SchemaMember("ConstraintSoundInfo", "m_bPlayReversalSound")]
-	public ref bool PlayReversalSound => ref Schema.GetRef<bool>(this.Handle, "ConstraintSoundInfo", "m_bPlayReversalSound");
+	public ref bool PlayReversalSound => ref __m_bPlayReversalSound.GetRef(this.Handle);
 
 }

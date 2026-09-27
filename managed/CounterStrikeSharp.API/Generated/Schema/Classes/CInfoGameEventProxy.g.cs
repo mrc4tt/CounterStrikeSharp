@@ -27,7 +27,8 @@ public partial class CInfoGameEventProxy : CPointEntity
 	}
 
 	// m_flRange
+	private static readonly SchemaField<float> __m_flRange = new("CInfoGameEventProxy", "m_flRange");
 	[SchemaMember("CInfoGameEventProxy", "m_flRange")]
-	public ref float Range => ref Schema.GetRef<float>(this.Handle, "CInfoGameEventProxy", "m_flRange");
+	public ref float Range => ref __m_flRange.GetRef(this.Handle);
 
 }

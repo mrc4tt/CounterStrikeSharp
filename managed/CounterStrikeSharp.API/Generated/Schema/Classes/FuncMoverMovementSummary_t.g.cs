@@ -19,32 +19,39 @@ public partial class FuncMoverMovementSummary_t : NativeObject
     public FuncMoverMovementSummary_t (IntPtr pointer) : base(pointer) {}
 
 	// flStartT
+	private static readonly SchemaField<float> __flStartT = new("FuncMoverMovementSummary_t", "flStartT");
 	[SchemaMember("FuncMoverMovementSummary_t", "flStartT")]
-	public ref float FlStartT => ref Schema.GetRef<float>(this.Handle, "FuncMoverMovementSummary_t", "flStartT");
+	public ref float FlStartT => ref __flStartT.GetRef(this.Handle);
 
 	// flEndT
+	private static readonly SchemaField<float> __flEndT = new("FuncMoverMovementSummary_t", "flEndT");
 	[SchemaMember("FuncMoverMovementSummary_t", "flEndT")]
-	public ref float FlEndT => ref Schema.GetRef<float>(this.Handle, "FuncMoverMovementSummary_t", "flEndT");
+	public ref float FlEndT => ref __flEndT.GetRef(this.Handle);
 
 	// nStartNodeIndex
+	private static readonly SchemaField<Int32> __nStartNodeIndex = new("FuncMoverMovementSummary_t", "nStartNodeIndex");
 	[SchemaMember("FuncMoverMovementSummary_t", "nStartNodeIndex")]
-	public ref Int32 NStartNodeIndex => ref Schema.GetRef<Int32>(this.Handle, "FuncMoverMovementSummary_t", "nStartNodeIndex");
+	public ref Int32 NStartNodeIndex => ref __nStartNodeIndex.GetRef(this.Handle);
 
 	// nStopNodeIndex
+	private static readonly SchemaField<Int32> __nStopNodeIndex = new("FuncMoverMovementSummary_t", "nStopNodeIndex");
 	[SchemaMember("FuncMoverMovementSummary_t", "nStopNodeIndex")]
-	public ref Int32 NStopNodeIndex => ref Schema.GetRef<Int32>(this.Handle, "FuncMoverMovementSummary_t", "nStopNodeIndex");
+	public ref Int32 NStopNodeIndex => ref __nStopNodeIndex.GetRef(this.Handle);
 
 	// nMovementMode
+	private static readonly SchemaField<Int32> __nMovementMode = new("FuncMoverMovementSummary_t", "nMovementMode");
 	[SchemaMember("FuncMoverMovementSummary_t", "nMovementMode")]
-	public ref Int32 NMovementMode => ref Schema.GetRef<Int32>(this.Handle, "FuncMoverMovementSummary_t", "nMovementMode");
+	public ref Int32 NMovementMode => ref __nMovementMode.GetRef(this.Handle);
 
 	// nFlags
+	private static readonly SchemaField<FuncMoverMovementSummaryFlags_t> __nFlags = new("FuncMoverMovementSummary_t", "nFlags");
 	[SchemaMember("FuncMoverMovementSummary_t", "nFlags")]
-	public ref FuncMoverMovementSummaryFlags_t NFlags => ref Schema.GetRef<FuncMoverMovementSummaryFlags_t>(this.Handle, "FuncMoverMovementSummary_t", "nFlags");
+	public ref FuncMoverMovementSummaryFlags_t NFlags => ref __nFlags.GetRef(this.Handle);
 
 	// nTick
+	private static readonly SchemaField<Int32> __nTick = new("FuncMoverMovementSummary_t", "nTick");
 	[SchemaMember("FuncMoverMovementSummary_t", "nTick")]
-	public ref Int32 NTick => ref Schema.GetRef<Int32>(this.Handle, "FuncMoverMovementSummary_t", "nTick");
+	public ref Int32 NTick => ref __nTick.GetRef(this.Handle);
 
 	// hPathMover
 	[SchemaMember("FuncMoverMovementSummary_t", "hPathMover")]

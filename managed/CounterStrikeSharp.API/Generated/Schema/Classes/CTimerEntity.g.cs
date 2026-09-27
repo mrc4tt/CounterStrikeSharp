@@ -31,43 +31,53 @@ public partial class CTimerEntity : CLogicalEntity
 	public CEntityIOOutput OnTimerLow => Schema.GetDeclaredClass<CEntityIOOutput>(this.Handle, "CTimerEntity", "m_OnTimerLow");
 
 	// m_iDisabled
+	private static readonly SchemaField<Int32> __m_iDisabled = new("CTimerEntity", "m_iDisabled");
 	[SchemaMember("CTimerEntity", "m_iDisabled")]
-	public ref Int32 Disabled => ref Schema.GetRef<Int32>(this.Handle, "CTimerEntity", "m_iDisabled");
+	public ref Int32 Disabled => ref __m_iDisabled.GetRef(this.Handle);
 
 	// m_flInitialDelay
+	private static readonly SchemaField<float> __m_flInitialDelay = new("CTimerEntity", "m_flInitialDelay");
 	[SchemaMember("CTimerEntity", "m_flInitialDelay")]
-	public ref float InitialDelay => ref Schema.GetRef<float>(this.Handle, "CTimerEntity", "m_flInitialDelay");
+	public ref float InitialDelay => ref __m_flInitialDelay.GetRef(this.Handle);
 
 	// m_flRefireTime
+	private static readonly SchemaField<float> __m_flRefireTime = new("CTimerEntity", "m_flRefireTime");
 	[SchemaMember("CTimerEntity", "m_flRefireTime")]
-	public ref float RefireTime => ref Schema.GetRef<float>(this.Handle, "CTimerEntity", "m_flRefireTime");
+	public ref float RefireTime => ref __m_flRefireTime.GetRef(this.Handle);
 
 	// m_bUpDownState
+	private static readonly SchemaField<bool> __m_bUpDownState = new("CTimerEntity", "m_bUpDownState");
 	[SchemaMember("CTimerEntity", "m_bUpDownState")]
-	public ref bool UpDownState => ref Schema.GetRef<bool>(this.Handle, "CTimerEntity", "m_bUpDownState");
+	public ref bool UpDownState => ref __m_bUpDownState.GetRef(this.Handle);
 
 	// m_iUseRandomTime
+	private static readonly SchemaField<Int32> __m_iUseRandomTime = new("CTimerEntity", "m_iUseRandomTime");
 	[SchemaMember("CTimerEntity", "m_iUseRandomTime")]
-	public ref Int32 UseRandomTime => ref Schema.GetRef<Int32>(this.Handle, "CTimerEntity", "m_iUseRandomTime");
+	public ref Int32 UseRandomTime => ref __m_iUseRandomTime.GetRef(this.Handle);
 
 	// m_bPauseAfterFiring
+	private static readonly SchemaField<bool> __m_bPauseAfterFiring = new("CTimerEntity", "m_bPauseAfterFiring");
 	[SchemaMember("CTimerEntity", "m_bPauseAfterFiring")]
-	public ref bool PauseAfterFiring => ref Schema.GetRef<bool>(this.Handle, "CTimerEntity", "m_bPauseAfterFiring");
+	public ref bool PauseAfterFiring => ref __m_bPauseAfterFiring.GetRef(this.Handle);
 
 	// m_flLowerRandomBound
+	private static readonly SchemaField<float> __m_flLowerRandomBound = new("CTimerEntity", "m_flLowerRandomBound");
 	[SchemaMember("CTimerEntity", "m_flLowerRandomBound")]
-	public ref float LowerRandomBound => ref Schema.GetRef<float>(this.Handle, "CTimerEntity", "m_flLowerRandomBound");
+	public ref float LowerRandomBound => ref __m_flLowerRandomBound.GetRef(this.Handle);
 
 	// m_flUpperRandomBound
+	private static readonly SchemaField<float> __m_flUpperRandomBound = new("CTimerEntity", "m_flUpperRandomBound");
 	[SchemaMember("CTimerEntity", "m_flUpperRandomBound")]
-	public ref float UpperRandomBound => ref Schema.GetRef<float>(this.Handle, "CTimerEntity", "m_flUpperRandomBound");
+	public ref float UpperRandomBound => ref __m_flUpperRandomBound.GetRef(this.Handle);
 
 	// m_flRemainingTime
+	private static readonly SchemaField<float> __m_flRemainingTime = new("CTimerEntity", "m_flRemainingTime");
 	[SchemaMember("CTimerEntity", "m_flRemainingTime")]
-	public ref float RemainingTime => ref Schema.GetRef<float>(this.Handle, "CTimerEntity", "m_flRemainingTime");
+	public ref float RemainingTime => ref __m_flRemainingTime.GetRef(this.Handle);
 
 	// m_bPaused
+	private static readonly SchemaField<bool> __m_bPaused = new("CTimerEntity", "m_bPaused");
 	[SchemaMember("CTimerEntity", "m_bPaused")]
-	public ref bool Paused => ref Schema.GetRef<bool>(this.Handle, "CTimerEntity", "m_bPaused");
+	public ref bool Paused => ref __m_bPaused.GetRef(this.Handle);
 
 }

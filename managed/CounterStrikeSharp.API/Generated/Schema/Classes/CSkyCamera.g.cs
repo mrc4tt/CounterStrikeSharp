@@ -27,8 +27,9 @@ public partial class CSkyCamera : CBaseEntity
 	public CUtlStringToken SkyboxSlotToken => Schema.GetDeclaredClass<CUtlStringToken>(this.Handle, "CSkyCamera", "m_skyboxSlotToken");
 
 	// m_bUseAngles
+	private static readonly SchemaField<bool> __m_bUseAngles = new("CSkyCamera", "m_bUseAngles");
 	[SchemaMember("CSkyCamera", "m_bUseAngles")]
-	public ref bool UseAngles => ref Schema.GetRef<bool>(this.Handle, "CSkyCamera", "m_bUseAngles");
+	public ref bool UseAngles => ref __m_bUseAngles.GetRef(this.Handle);
 
 	// m_pNext
 	[SchemaMember("CSkyCamera", "m_pNext")]

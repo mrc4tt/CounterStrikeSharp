@@ -19,8 +19,9 @@ public partial class CEnvMuzzleFlash : CPointEntity
     public CEnvMuzzleFlash (IntPtr pointer) : base(pointer) {}
 
 	// m_flScale
+	private static readonly SchemaField<float> __m_flScale = new("CEnvMuzzleFlash", "m_flScale");
 	[SchemaMember("CEnvMuzzleFlash", "m_flScale")]
-	public ref float Scale => ref Schema.GetRef<float>(this.Handle, "CEnvMuzzleFlash", "m_flScale");
+	public ref float Scale => ref __m_flScale.GetRef(this.Handle);
 
 	// m_iszParentAttachment
 	[SchemaMember("CEnvMuzzleFlash", "m_iszParentAttachment")]

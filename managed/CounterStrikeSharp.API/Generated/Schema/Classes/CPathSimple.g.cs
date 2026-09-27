@@ -31,7 +31,8 @@ public partial class CPathSimple : CBaseEntity
 	}
 
 	// m_bClosedLoop
+	private static readonly SchemaField<bool> __m_bClosedLoop = new("CPathSimple", "m_bClosedLoop");
 	[SchemaMember("CPathSimple", "m_bClosedLoop")]
-	public ref bool ClosedLoop => ref Schema.GetRef<bool>(this.Handle, "CPathSimple", "m_bClosedLoop");
+	public ref bool ClosedLoop => ref __m_bClosedLoop.GetRef(this.Handle);
 
 }

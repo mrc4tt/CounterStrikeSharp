@@ -23,7 +23,8 @@ public partial class RelationshipOverride_t : Relationship_t
 	public CHandle<CBaseEntity> Entity => Schema.GetDeclaredClass<CHandle<CBaseEntity>>(this.Handle, "RelationshipOverride_t", "entity");
 
 	// classType
+	private static readonly SchemaField<Class_T> __classType = new("RelationshipOverride_t", "classType");
 	[SchemaMember("RelationshipOverride_t", "classType")]
-	public ref Class_T ClassType => ref Schema.GetRef<Class_T>(this.Handle, "RelationshipOverride_t", "classType");
+	public ref Class_T ClassType => ref __classType.GetRef(this.Handle);
 
 }

@@ -19,19 +19,23 @@ public partial class constraint_axislimit_t : NativeObject
     public constraint_axislimit_t (IntPtr pointer) : base(pointer) {}
 
 	// flMinRotation
+	private static readonly SchemaField<float> __flMinRotation = new("constraint_axislimit_t", "flMinRotation");
 	[SchemaMember("constraint_axislimit_t", "flMinRotation")]
-	public ref float FlMinRotation => ref Schema.GetRef<float>(this.Handle, "constraint_axislimit_t", "flMinRotation");
+	public ref float FlMinRotation => ref __flMinRotation.GetRef(this.Handle);
 
 	// flMaxRotation
+	private static readonly SchemaField<float> __flMaxRotation = new("constraint_axislimit_t", "flMaxRotation");
 	[SchemaMember("constraint_axislimit_t", "flMaxRotation")]
-	public ref float FlMaxRotation => ref Schema.GetRef<float>(this.Handle, "constraint_axislimit_t", "flMaxRotation");
+	public ref float FlMaxRotation => ref __flMaxRotation.GetRef(this.Handle);
 
 	// flMotorTargetAngSpeed
+	private static readonly SchemaField<float> __flMotorTargetAngSpeed = new("constraint_axislimit_t", "flMotorTargetAngSpeed");
 	[SchemaMember("constraint_axislimit_t", "flMotorTargetAngSpeed")]
-	public ref float FlMotorTargetAngSpeed => ref Schema.GetRef<float>(this.Handle, "constraint_axislimit_t", "flMotorTargetAngSpeed");
+	public ref float FlMotorTargetAngSpeed => ref __flMotorTargetAngSpeed.GetRef(this.Handle);
 
 	// flMotorMaxTorque
+	private static readonly SchemaField<float> __flMotorMaxTorque = new("constraint_axislimit_t", "flMotorMaxTorque");
 	[SchemaMember("constraint_axislimit_t", "flMotorMaxTorque")]
-	public ref float FlMotorMaxTorque => ref Schema.GetRef<float>(this.Handle, "constraint_axislimit_t", "flMotorMaxTorque");
+	public ref float FlMotorMaxTorque => ref __flMotorMaxTorque.GetRef(this.Handle);
 
 }

@@ -19,7 +19,8 @@ public partial class ExternalAnimGraphHandle_t : NativeObject
     public ExternalAnimGraphHandle_t (IntPtr pointer) : base(pointer) {}
 
 	// m_Value
+	private static readonly SchemaField<UInt32> __m_Value = new("ExternalAnimGraphHandle_t", "m_Value");
 	[SchemaMember("ExternalAnimGraphHandle_t", "m_Value")]
-	public ref UInt32 Value => ref Schema.GetRef<UInt32>(this.Handle, "ExternalAnimGraphHandle_t", "m_Value");
+	public ref UInt32 Value => ref __m_Value.GetRef(this.Handle);
 
 }

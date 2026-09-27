@@ -19,12 +19,14 @@ public partial class CRagdollPropAttached : CRagdollProp
     public CRagdollPropAttached (IntPtr pointer) : base(pointer) {}
 
 	// m_boneIndexAttached
+	private static readonly SchemaField<UInt32> __m_boneIndexAttached = new("CRagdollPropAttached", "m_boneIndexAttached");
 	[SchemaMember("CRagdollPropAttached", "m_boneIndexAttached")]
-	public ref UInt32 BoneIndexAttached => ref Schema.GetRef<UInt32>(this.Handle, "CRagdollPropAttached", "m_boneIndexAttached");
+	public ref UInt32 BoneIndexAttached => ref __m_boneIndexAttached.GetRef(this.Handle);
 
 	// m_ragdollAttachedObjectIndex
+	private static readonly SchemaField<UInt32> __m_ragdollAttachedObjectIndex = new("CRagdollPropAttached", "m_ragdollAttachedObjectIndex");
 	[SchemaMember("CRagdollPropAttached", "m_ragdollAttachedObjectIndex")]
-	public ref UInt32 RagdollAttachedObjectIndex => ref Schema.GetRef<UInt32>(this.Handle, "CRagdollPropAttached", "m_ragdollAttachedObjectIndex");
+	public ref UInt32 RagdollAttachedObjectIndex => ref __m_ragdollAttachedObjectIndex.GetRef(this.Handle);
 
 	// m_attachmentPointBoneSpace
 	[SchemaMember("CRagdollPropAttached", "m_attachmentPointBoneSpace")]
@@ -35,11 +37,13 @@ public partial class CRagdollPropAttached : CRagdollProp
 	public Vector AttachmentPointRagdollSpace => Schema.GetDeclaredClass<Vector>(this.Handle, "CRagdollPropAttached", "m_attachmentPointRagdollSpace");
 
 	// m_bShouldDetach
+	private static readonly SchemaField<bool> __m_bShouldDetach = new("CRagdollPropAttached", "m_bShouldDetach");
 	[SchemaMember("CRagdollPropAttached", "m_bShouldDetach")]
-	public ref bool ShouldDetach => ref Schema.GetRef<bool>(this.Handle, "CRagdollPropAttached", "m_bShouldDetach");
+	public ref bool ShouldDetach => ref __m_bShouldDetach.GetRef(this.Handle);
 
 	// m_bShouldDeleteAttachedActivationRecord
+	private static readonly SchemaField<bool> __m_bShouldDeleteAttachedActivationRecord = new("CRagdollPropAttached", "m_bShouldDeleteAttachedActivationRecord");
 	[SchemaMember("CRagdollPropAttached", "m_bShouldDeleteAttachedActivationRecord")]
-	public ref bool ShouldDeleteAttachedActivationRecord => ref Schema.GetRef<bool>(this.Handle, "CRagdollPropAttached", "m_bShouldDeleteAttachedActivationRecord");
+	public ref bool ShouldDeleteAttachedActivationRecord => ref __m_bShouldDeleteAttachedActivationRecord.GetRef(this.Handle);
 
 }

@@ -67,28 +67,33 @@ public partial class CBasePlayerPawn : CBaseCombatCharacter
 	public QAngle V_anglePrevious => Schema.GetDeclaredClass<QAngle>(this.Handle, "CBasePlayerPawn", "v_anglePrevious");
 
 	// m_iHideHUD
+	private static readonly SchemaField<UInt32> __m_iHideHUD = new("CBasePlayerPawn", "m_iHideHUD");
 	[SchemaMember("CBasePlayerPawn", "m_iHideHUD")]
-	public ref UInt32 HideHUD => ref Schema.GetRef<UInt32>(this.Handle, "CBasePlayerPawn", "m_iHideHUD");
+	public ref UInt32 HideHUD => ref __m_iHideHUD.GetRef(this.Handle);
 
 	// m_skybox3d
 	[SchemaMember("CBasePlayerPawn", "m_skybox3d")]
 	public sky3dparams_t Skybox3d => Schema.GetDeclaredClass<sky3dparams_t>(this.Handle, "CBasePlayerPawn", "m_skybox3d");
 
 	// m_fTimeLastHurt
+	private static readonly SchemaField<float> __m_fTimeLastHurt = new("CBasePlayerPawn", "m_fTimeLastHurt");
 	[SchemaMember("CBasePlayerPawn", "m_fTimeLastHurt")]
-	public ref float TimeLastHurt => ref Schema.GetRef<float>(this.Handle, "CBasePlayerPawn", "m_fTimeLastHurt");
+	public ref float TimeLastHurt => ref __m_fTimeLastHurt.GetRef(this.Handle);
 
 	// m_flDeathTime
+	private static readonly SchemaField<float> __m_flDeathTime = new("CBasePlayerPawn", "m_flDeathTime");
 	[SchemaMember("CBasePlayerPawn", "m_flDeathTime")]
-	public ref float DeathTime => ref Schema.GetRef<float>(this.Handle, "CBasePlayerPawn", "m_flDeathTime");
+	public ref float DeathTime => ref __m_flDeathTime.GetRef(this.Handle);
 
 	// m_fNextSuicideTime
+	private static readonly SchemaField<float> __m_fNextSuicideTime = new("CBasePlayerPawn", "m_fNextSuicideTime");
 	[SchemaMember("CBasePlayerPawn", "m_fNextSuicideTime")]
-	public ref float NextSuicideTime => ref Schema.GetRef<float>(this.Handle, "CBasePlayerPawn", "m_fNextSuicideTime");
+	public ref float NextSuicideTime => ref __m_fNextSuicideTime.GetRef(this.Handle);
 
 	// m_fInitHUD
+	private static readonly SchemaField<bool> __m_fInitHUD = new("CBasePlayerPawn", "m_fInitHUD");
 	[SchemaMember("CBasePlayerPawn", "m_fInitHUD")]
-	public ref bool InitHUD => ref Schema.GetRef<bool>(this.Handle, "CBasePlayerPawn", "m_fInitHUD");
+	public ref bool InitHUD => ref __m_fInitHUD.GetRef(this.Handle);
 
 	// m_pExpresser
 	[SchemaMember("CBasePlayerPawn", "m_pExpresser")]
@@ -103,12 +108,14 @@ public partial class CBasePlayerPawn : CBaseCombatCharacter
 	public CHandle<CBasePlayerController> DefaultController => Schema.GetDeclaredClass<CHandle<CBasePlayerController>>(this.Handle, "CBasePlayerPawn", "m_hDefaultController");
 
 	// m_fHltvReplayDelay
+	private static readonly SchemaField<float> __m_fHltvReplayDelay = new("CBasePlayerPawn", "m_fHltvReplayDelay");
 	[SchemaMember("CBasePlayerPawn", "m_fHltvReplayDelay")]
-	public ref float HltvReplayDelay => ref Schema.GetRef<float>(this.Handle, "CBasePlayerPawn", "m_fHltvReplayDelay");
+	public ref float HltvReplayDelay => ref __m_fHltvReplayDelay.GetRef(this.Handle);
 
 	// m_fHltvReplayEnd
+	private static readonly SchemaField<float> __m_fHltvReplayEnd = new("CBasePlayerPawn", "m_fHltvReplayEnd");
 	[SchemaMember("CBasePlayerPawn", "m_fHltvReplayEnd")]
-	public ref float HltvReplayEnd => ref Schema.GetRef<float>(this.Handle, "CBasePlayerPawn", "m_fHltvReplayEnd");
+	public ref float HltvReplayEnd => ref __m_fHltvReplayEnd.GetRef(this.Handle);
 
 	// m_iHltvReplayEntity
 	[SchemaMember("CBasePlayerPawn", "m_iHltvReplayEntity")]

@@ -19,19 +19,23 @@ public partial class CEnvTilt : CPointEntity
     public CEnvTilt (IntPtr pointer) : base(pointer) {}
 
 	// m_Duration
+	private static readonly SchemaField<float> __m_Duration = new("CEnvTilt", "m_Duration");
 	[SchemaMember("CEnvTilt", "m_Duration")]
-	public ref float Duration => ref Schema.GetRef<float>(this.Handle, "CEnvTilt", "m_Duration");
+	public ref float Duration => ref __m_Duration.GetRef(this.Handle);
 
 	// m_Radius
+	private static readonly SchemaField<float> __m_Radius = new("CEnvTilt", "m_Radius");
 	[SchemaMember("CEnvTilt", "m_Radius")]
-	public ref float Radius => ref Schema.GetRef<float>(this.Handle, "CEnvTilt", "m_Radius");
+	public ref float Radius => ref __m_Radius.GetRef(this.Handle);
 
 	// m_TiltTime
+	private static readonly SchemaField<float> __m_TiltTime = new("CEnvTilt", "m_TiltTime");
 	[SchemaMember("CEnvTilt", "m_TiltTime")]
-	public ref float TiltTime => ref Schema.GetRef<float>(this.Handle, "CEnvTilt", "m_TiltTime");
+	public ref float TiltTime => ref __m_TiltTime.GetRef(this.Handle);
 
 	// m_stopTime
+	private static readonly SchemaField<float> __m_stopTime = new("CEnvTilt", "m_stopTime");
 	[SchemaMember("CEnvTilt", "m_stopTime")]
-	public ref float StopTime => ref Schema.GetRef<float>(this.Handle, "CEnvTilt", "m_stopTime");
+	public ref float StopTime => ref __m_stopTime.GetRef(this.Handle);
 
 }

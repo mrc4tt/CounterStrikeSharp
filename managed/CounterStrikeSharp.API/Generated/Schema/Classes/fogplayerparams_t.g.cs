@@ -23,8 +23,9 @@ public partial class fogplayerparams_t : NativeObject
 	public CHandle<CFogController> Ctrl => Schema.GetDeclaredClass<CHandle<CFogController>>(this.Handle, "fogplayerparams_t", "m_hCtrl");
 
 	// m_flTransitionTime
+	private static readonly SchemaField<float> __m_flTransitionTime = new("fogplayerparams_t", "m_flTransitionTime");
 	[SchemaMember("fogplayerparams_t", "m_flTransitionTime")]
-	public ref float TransitionTime => ref Schema.GetRef<float>(this.Handle, "fogplayerparams_t", "m_flTransitionTime");
+	public ref float TransitionTime => ref __m_flTransitionTime.GetRef(this.Handle);
 
 	// m_OldColor
 	[SchemaMember("fogplayerparams_t", "m_OldColor")]
@@ -35,24 +36,29 @@ public partial class fogplayerparams_t : NativeObject
 	}
 
 	// m_flOldStart
+	private static readonly SchemaField<float> __m_flOldStart = new("fogplayerparams_t", "m_flOldStart");
 	[SchemaMember("fogplayerparams_t", "m_flOldStart")]
-	public ref float OldStart => ref Schema.GetRef<float>(this.Handle, "fogplayerparams_t", "m_flOldStart");
+	public ref float OldStart => ref __m_flOldStart.GetRef(this.Handle);
 
 	// m_flOldEnd
+	private static readonly SchemaField<float> __m_flOldEnd = new("fogplayerparams_t", "m_flOldEnd");
 	[SchemaMember("fogplayerparams_t", "m_flOldEnd")]
-	public ref float OldEnd => ref Schema.GetRef<float>(this.Handle, "fogplayerparams_t", "m_flOldEnd");
+	public ref float OldEnd => ref __m_flOldEnd.GetRef(this.Handle);
 
 	// m_flOldMaxDensity
+	private static readonly SchemaField<float> __m_flOldMaxDensity = new("fogplayerparams_t", "m_flOldMaxDensity");
 	[SchemaMember("fogplayerparams_t", "m_flOldMaxDensity")]
-	public ref float OldMaxDensity => ref Schema.GetRef<float>(this.Handle, "fogplayerparams_t", "m_flOldMaxDensity");
+	public ref float OldMaxDensity => ref __m_flOldMaxDensity.GetRef(this.Handle);
 
 	// m_flOldHDRColorScale
+	private static readonly SchemaField<float> __m_flOldHDRColorScale = new("fogplayerparams_t", "m_flOldHDRColorScale");
 	[SchemaMember("fogplayerparams_t", "m_flOldHDRColorScale")]
-	public ref float OldHDRColorScale => ref Schema.GetRef<float>(this.Handle, "fogplayerparams_t", "m_flOldHDRColorScale");
+	public ref float OldHDRColorScale => ref __m_flOldHDRColorScale.GetRef(this.Handle);
 
 	// m_flOldFarZ
+	private static readonly SchemaField<float> __m_flOldFarZ = new("fogplayerparams_t", "m_flOldFarZ");
 	[SchemaMember("fogplayerparams_t", "m_flOldFarZ")]
-	public ref float OldFarZ => ref Schema.GetRef<float>(this.Handle, "fogplayerparams_t", "m_flOldFarZ");
+	public ref float OldFarZ => ref __m_flOldFarZ.GetRef(this.Handle);
 
 	// m_NewColor
 	[SchemaMember("fogplayerparams_t", "m_NewColor")]
@@ -63,23 +69,28 @@ public partial class fogplayerparams_t : NativeObject
 	}
 
 	// m_flNewStart
+	private static readonly SchemaField<float> __m_flNewStart = new("fogplayerparams_t", "m_flNewStart");
 	[SchemaMember("fogplayerparams_t", "m_flNewStart")]
-	public ref float NewStart => ref Schema.GetRef<float>(this.Handle, "fogplayerparams_t", "m_flNewStart");
+	public ref float NewStart => ref __m_flNewStart.GetRef(this.Handle);
 
 	// m_flNewEnd
+	private static readonly SchemaField<float> __m_flNewEnd = new("fogplayerparams_t", "m_flNewEnd");
 	[SchemaMember("fogplayerparams_t", "m_flNewEnd")]
-	public ref float NewEnd => ref Schema.GetRef<float>(this.Handle, "fogplayerparams_t", "m_flNewEnd");
+	public ref float NewEnd => ref __m_flNewEnd.GetRef(this.Handle);
 
 	// m_flNewMaxDensity
+	private static readonly SchemaField<float> __m_flNewMaxDensity = new("fogplayerparams_t", "m_flNewMaxDensity");
 	[SchemaMember("fogplayerparams_t", "m_flNewMaxDensity")]
-	public ref float NewMaxDensity => ref Schema.GetRef<float>(this.Handle, "fogplayerparams_t", "m_flNewMaxDensity");
+	public ref float NewMaxDensity => ref __m_flNewMaxDensity.GetRef(this.Handle);
 
 	// m_flNewHDRColorScale
+	private static readonly SchemaField<float> __m_flNewHDRColorScale = new("fogplayerparams_t", "m_flNewHDRColorScale");
 	[SchemaMember("fogplayerparams_t", "m_flNewHDRColorScale")]
-	public ref float NewHDRColorScale => ref Schema.GetRef<float>(this.Handle, "fogplayerparams_t", "m_flNewHDRColorScale");
+	public ref float NewHDRColorScale => ref __m_flNewHDRColorScale.GetRef(this.Handle);
 
 	// m_flNewFarZ
+	private static readonly SchemaField<float> __m_flNewFarZ = new("fogplayerparams_t", "m_flNewFarZ");
 	[SchemaMember("fogplayerparams_t", "m_flNewFarZ")]
-	public ref float NewFarZ => ref Schema.GetRef<float>(this.Handle, "fogplayerparams_t", "m_flNewFarZ");
+	public ref float NewFarZ => ref __m_flNewFarZ.GetRef(this.Handle);
 
 }

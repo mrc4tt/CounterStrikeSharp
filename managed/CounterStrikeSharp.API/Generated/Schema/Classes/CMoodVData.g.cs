@@ -19,7 +19,8 @@ public partial class CMoodVData : NativeObject
     public CMoodVData (IntPtr pointer) : base(pointer) {}
 
 	// m_nMoodType
+	private static readonly SchemaField<MoodType_t> __m_nMoodType = new("CMoodVData", "m_nMoodType");
 	[SchemaMember("CMoodVData", "m_nMoodType")]
-	public ref MoodType_t MoodType => ref Schema.GetRef<MoodType_t>(this.Handle, "CMoodVData", "m_nMoodType");
+	public ref MoodType_t MoodType => ref __m_nMoodType.GetRef(this.Handle);
 
 }

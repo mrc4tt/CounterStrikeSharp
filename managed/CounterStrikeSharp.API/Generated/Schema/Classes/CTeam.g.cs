@@ -27,8 +27,9 @@ public partial class CTeam : CBaseEntity
 	public NetworkedVector<CHandle<CBasePlayerPawn>> Players => Schema.GetDeclaredClass<NetworkedVector<CHandle<CBasePlayerPawn>>>(this.Handle, "CTeam", "m_aPlayers");
 
 	// m_iScore
+	private static readonly SchemaField<Int32> __m_iScore = new("CTeam", "m_iScore");
 	[SchemaMember("CTeam", "m_iScore")]
-	public ref Int32 Score => ref Schema.GetRef<Int32>(this.Handle, "CTeam", "m_iScore");
+	public ref Int32 Score => ref __m_iScore.GetRef(this.Handle);
 
 	// m_szTeamname
 	[SchemaMember("CTeam", "m_szTeamname")]

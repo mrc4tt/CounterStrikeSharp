@@ -35,7 +35,8 @@ public partial class CPhysicsPropRespawnable : CPhysicsProp
 	public Vector OriginalMaxs => Schema.GetDeclaredClass<Vector>(this.Handle, "CPhysicsPropRespawnable", "m_vOriginalMaxs");
 
 	// m_flRespawnDuration
+	private static readonly SchemaField<float> __m_flRespawnDuration = new("CPhysicsPropRespawnable", "m_flRespawnDuration");
 	[SchemaMember("CPhysicsPropRespawnable", "m_flRespawnDuration")]
-	public ref float RespawnDuration => ref Schema.GetRef<float>(this.Handle, "CPhysicsPropRespawnable", "m_flRespawnDuration");
+	public ref float RespawnDuration => ref __m_flRespawnDuration.GetRef(this.Handle);
 
 }

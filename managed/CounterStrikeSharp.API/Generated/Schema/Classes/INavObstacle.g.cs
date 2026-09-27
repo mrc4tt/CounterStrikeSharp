@@ -19,7 +19,8 @@ public partial class INavObstacle : NativeObject
     public INavObstacle (IntPtr pointer) : base(pointer) {}
 
 	// m_nId
+	private static readonly SchemaField<UInt64> __m_nId = new("INavObstacle", "m_nId");
 	[SchemaMember("INavObstacle", "m_nId")]
-	public ref UInt64 Id => ref Schema.GetRef<UInt64>(this.Handle, "INavObstacle", "m_nId");
+	public ref UInt64 Id => ref __m_nId.GetRef(this.Handle);
 
 }

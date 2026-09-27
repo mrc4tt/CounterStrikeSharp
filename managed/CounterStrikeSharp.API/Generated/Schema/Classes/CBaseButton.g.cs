@@ -23,12 +23,14 @@ public partial class CBaseButton : CBaseToggle
 	public QAngle MoveEntitySpace => Schema.GetDeclaredClass<QAngle>(this.Handle, "CBaseButton", "m_angMoveEntitySpace");
 
 	// m_fStayPushed
+	private static readonly SchemaField<bool> __m_fStayPushed = new("CBaseButton", "m_fStayPushed");
 	[SchemaMember("CBaseButton", "m_fStayPushed")]
-	public ref bool StayPushed => ref Schema.GetRef<bool>(this.Handle, "CBaseButton", "m_fStayPushed");
+	public ref bool StayPushed => ref __m_fStayPushed.GetRef(this.Handle);
 
 	// m_fRotating
+	private static readonly SchemaField<bool> __m_fRotating = new("CBaseButton", "m_fRotating");
 	[SchemaMember("CBaseButton", "m_fRotating")]
-	public ref bool Rotating => ref Schema.GetRef<bool>(this.Handle, "CBaseButton", "m_fRotating");
+	public ref bool Rotating => ref __m_fRotating.GetRef(this.Handle);
 
 	// m_ls
 	[SchemaMember("CBaseButton", "m_ls")]
@@ -67,24 +69,29 @@ public partial class CBaseButton : CBaseToggle
 	}
 
 	// m_bLocked
+	private static readonly SchemaField<bool> __m_bLocked = new("CBaseButton", "m_bLocked");
 	[SchemaMember("CBaseButton", "m_bLocked")]
-	public ref bool Locked => ref Schema.GetRef<bool>(this.Handle, "CBaseButton", "m_bLocked");
+	public ref bool Locked => ref __m_bLocked.GetRef(this.Handle);
 
 	// m_bDisabled
+	private static readonly SchemaField<bool> __m_bDisabled = new("CBaseButton", "m_bDisabled");
 	[SchemaMember("CBaseButton", "m_bDisabled")]
-	public ref bool Disabled => ref Schema.GetRef<bool>(this.Handle, "CBaseButton", "m_bDisabled");
+	public ref bool Disabled => ref __m_bDisabled.GetRef(this.Handle);
 
 	// m_flSpeed
+	private static readonly SchemaField<float> __m_flSpeed = new("CBaseButton", "m_flSpeed");
 	[SchemaMember("CBaseButton", "m_flSpeed")]
-	public ref float Speed => ref Schema.GetRef<float>(this.Handle, "CBaseButton", "m_flSpeed");
+	public ref float Speed => ref __m_flSpeed.GetRef(this.Handle);
 
 	// m_flUseLockedTime
+	private static readonly SchemaField<float> __m_flUseLockedTime = new("CBaseButton", "m_flUseLockedTime");
 	[SchemaMember("CBaseButton", "m_flUseLockedTime")]
-	public ref float UseLockedTime => ref Schema.GetRef<float>(this.Handle, "CBaseButton", "m_flUseLockedTime");
+	public ref float UseLockedTime => ref __m_flUseLockedTime.GetRef(this.Handle);
 
 	// m_bSolidBsp
+	private static readonly SchemaField<bool> __m_bSolidBsp = new("CBaseButton", "m_bSolidBsp");
 	[SchemaMember("CBaseButton", "m_bSolidBsp")]
-	public ref bool SolidBsp => ref Schema.GetRef<bool>(this.Handle, "CBaseButton", "m_bSolidBsp");
+	public ref bool SolidBsp => ref __m_bSolidBsp.GetRef(this.Handle);
 
 	// m_OnDamaged
 	[SchemaMember("CBaseButton", "m_OnDamaged")]
@@ -107,8 +114,9 @@ public partial class CBaseButton : CBaseToggle
 	public CEntityIOOutput OnOut => Schema.GetDeclaredClass<CEntityIOOutput>(this.Handle, "CBaseButton", "m_OnOut");
 
 	// m_nState
+	private static readonly SchemaField<Int32> __m_nState = new("CBaseButton", "m_nState");
 	[SchemaMember("CBaseButton", "m_nState")]
-	public ref Int32 State => ref Schema.GetRef<Int32>(this.Handle, "CBaseButton", "m_nState");
+	public ref Int32 State => ref __m_nState.GetRef(this.Handle);
 
 	// m_hConstraint
 	[SchemaMember("CBaseButton", "m_hConstraint")]
@@ -119,8 +127,9 @@ public partial class CBaseButton : CBaseToggle
 	public CHandle<CEntityInstance> ConstraintParent => Schema.GetDeclaredClass<CHandle<CEntityInstance>>(this.Handle, "CBaseButton", "m_hConstraintParent");
 
 	// m_bForceNpcExclude
+	private static readonly SchemaField<bool> __m_bForceNpcExclude = new("CBaseButton", "m_bForceNpcExclude");
 	[SchemaMember("CBaseButton", "m_bForceNpcExclude")]
-	public ref bool ForceNpcExclude => ref Schema.GetRef<bool>(this.Handle, "CBaseButton", "m_bForceNpcExclude");
+	public ref bool ForceNpcExclude => ref __m_bForceNpcExclude.GetRef(this.Handle);
 
 	// m_sGlowEntity
 	[SchemaMember("CBaseButton", "m_sGlowEntity")]
@@ -135,8 +144,9 @@ public partial class CBaseButton : CBaseToggle
 	public CHandle<CBaseModelEntity> GlowEntity => Schema.GetDeclaredClass<CHandle<CBaseModelEntity>>(this.Handle, "CBaseButton", "m_glowEntity");
 
 	// m_usable
+	private static readonly SchemaField<bool> __m_usable = new("CBaseButton", "m_usable");
 	[SchemaMember("CBaseButton", "m_usable")]
-	public ref bool Usable => ref Schema.GetRef<bool>(this.Handle, "CBaseButton", "m_usable");
+	public ref bool Usable => ref __m_usable.GetRef(this.Handle);
 
 	// m_szDisplayText
 	[SchemaMember("CBaseButton", "m_szDisplayText")]

@@ -47,7 +47,8 @@ public partial class CPathMover : CPathWithDynamicNodes
 	}
 
 	// m_flSampleSpacing
+	private static readonly SchemaField<float> __m_flSampleSpacing = new("CPathMover", "m_flSampleSpacing");
 	[SchemaMember("CPathMover", "m_flSampleSpacing")]
-	public ref float SampleSpacing => ref Schema.GetRef<float>(this.Handle, "CPathMover", "m_flSampleSpacing");
+	public ref float SampleSpacing => ref __m_flSampleSpacing.GetRef(this.Handle);
 
 }

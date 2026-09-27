@@ -19,24 +19,29 @@ public partial class CDynamicProp : CBreakableProp
     public CDynamicProp (IntPtr pointer) : base(pointer) {}
 
 	// m_bGraphControllerEnabled
+	private static readonly SchemaField<bool> __m_bGraphControllerEnabled = new("CDynamicProp", "m_bGraphControllerEnabled");
 	[SchemaMember("CDynamicProp", "m_bGraphControllerEnabled")]
-	public ref bool GraphControllerEnabled => ref Schema.GetRef<bool>(this.Handle, "CDynamicProp", "m_bGraphControllerEnabled");
+	public ref bool GraphControllerEnabled => ref __m_bGraphControllerEnabled.GetRef(this.Handle);
 
 	// m_bCreateNavObstacle
+	private static readonly SchemaField<bool> __m_bCreateNavObstacle = new("CDynamicProp", "m_bCreateNavObstacle");
 	[SchemaMember("CDynamicProp", "m_bCreateNavObstacle")]
-	public ref bool CreateNavObstacle => ref Schema.GetRef<bool>(this.Handle, "CDynamicProp", "m_bCreateNavObstacle");
+	public ref bool CreateNavObstacle => ref __m_bCreateNavObstacle.GetRef(this.Handle);
 
 	// m_bNavObstacleUpdatesOverridden
+	private static readonly SchemaField<bool> __m_bNavObstacleUpdatesOverridden = new("CDynamicProp", "m_bNavObstacleUpdatesOverridden");
 	[SchemaMember("CDynamicProp", "m_bNavObstacleUpdatesOverridden")]
-	public ref bool NavObstacleUpdatesOverridden => ref Schema.GetRef<bool>(this.Handle, "CDynamicProp", "m_bNavObstacleUpdatesOverridden");
+	public ref bool NavObstacleUpdatesOverridden => ref __m_bNavObstacleUpdatesOverridden.GetRef(this.Handle);
 
 	// m_bUseHitboxesForRenderBox
+	private static readonly SchemaField<bool> __m_bUseHitboxesForRenderBox = new("CDynamicProp", "m_bUseHitboxesForRenderBox");
 	[SchemaMember("CDynamicProp", "m_bUseHitboxesForRenderBox")]
-	public ref bool UseHitboxesForRenderBox => ref Schema.GetRef<bool>(this.Handle, "CDynamicProp", "m_bUseHitboxesForRenderBox");
+	public ref bool UseHitboxesForRenderBox => ref __m_bUseHitboxesForRenderBox.GetRef(this.Handle);
 
 	// m_bUseAnimGraph
+	private static readonly SchemaField<bool> __m_bUseAnimGraph = new("CDynamicProp", "m_bUseAnimGraph");
 	[SchemaMember("CDynamicProp", "m_bUseAnimGraph")]
-	public ref bool UseAnimGraph => ref Schema.GetRef<bool>(this.Handle, "CDynamicProp", "m_bUseAnimGraph");
+	public ref bool UseAnimGraph => ref __m_bUseAnimGraph.GetRef(this.Handle);
 
 	// m_pOutputAnimBegun
 	[SchemaMember("CDynamicProp", "m_pOutputAnimBegun")]
@@ -67,48 +72,59 @@ public partial class CDynamicProp : CBreakableProp
 	}
 
 	// m_nIdleAnimLoopMode
+	private static readonly SchemaField<AnimLoopMode_t> __m_nIdleAnimLoopMode = new("CDynamicProp", "m_nIdleAnimLoopMode");
 	[SchemaMember("CDynamicProp", "m_nIdleAnimLoopMode")]
-	public ref AnimLoopMode_t IdleAnimLoopMode => ref Schema.GetRef<AnimLoopMode_t>(this.Handle, "CDynamicProp", "m_nIdleAnimLoopMode");
+	public ref AnimLoopMode_t IdleAnimLoopMode => ref __m_nIdleAnimLoopMode.GetRef(this.Handle);
 
 	// m_bRandomizeCycle
+	private static readonly SchemaField<bool> __m_bRandomizeCycle = new("CDynamicProp", "m_bRandomizeCycle");
 	[SchemaMember("CDynamicProp", "m_bRandomizeCycle")]
-	public ref bool RandomizeCycle => ref Schema.GetRef<bool>(this.Handle, "CDynamicProp", "m_bRandomizeCycle");
+	public ref bool RandomizeCycle => ref __m_bRandomizeCycle.GetRef(this.Handle);
 
 	// m_bStartDisabled
+	private static readonly SchemaField<bool> __m_bStartDisabled = new("CDynamicProp", "m_bStartDisabled");
 	[SchemaMember("CDynamicProp", "m_bStartDisabled")]
-	public ref bool StartDisabled => ref Schema.GetRef<bool>(this.Handle, "CDynamicProp", "m_bStartDisabled");
+	public ref bool StartDisabled => ref __m_bStartDisabled.GetRef(this.Handle);
 
 	// m_bFiredStartEndOutput
+	private static readonly SchemaField<bool> __m_bFiredStartEndOutput = new("CDynamicProp", "m_bFiredStartEndOutput");
 	[SchemaMember("CDynamicProp", "m_bFiredStartEndOutput")]
-	public ref bool FiredStartEndOutput => ref Schema.GetRef<bool>(this.Handle, "CDynamicProp", "m_bFiredStartEndOutput");
+	public ref bool FiredStartEndOutput => ref __m_bFiredStartEndOutput.GetRef(this.Handle);
 
 	// m_bForceNpcExclude
+	private static readonly SchemaField<bool> __m_bForceNpcExclude = new("CDynamicProp", "m_bForceNpcExclude");
 	[SchemaMember("CDynamicProp", "m_bForceNpcExclude")]
-	public ref bool ForceNpcExclude => ref Schema.GetRef<bool>(this.Handle, "CDynamicProp", "m_bForceNpcExclude");
+	public ref bool ForceNpcExclude => ref __m_bForceNpcExclude.GetRef(this.Handle);
 
 	// m_bCreateMovableSurfaceGraph
+	private static readonly SchemaField<bool> __m_bCreateMovableSurfaceGraph = new("CDynamicProp", "m_bCreateMovableSurfaceGraph");
 	[SchemaMember("CDynamicProp", "m_bCreateMovableSurfaceGraph")]
-	public ref bool CreateMovableSurfaceGraph => ref Schema.GetRef<bool>(this.Handle, "CDynamicProp", "m_bCreateMovableSurfaceGraph");
+	public ref bool CreateMovableSurfaceGraph => ref __m_bCreateMovableSurfaceGraph.GetRef(this.Handle);
 
 	// m_bCreateNonSolid
+	private static readonly SchemaField<bool> __m_bCreateNonSolid = new("CDynamicProp", "m_bCreateNonSolid");
 	[SchemaMember("CDynamicProp", "m_bCreateNonSolid")]
-	public ref bool CreateNonSolid => ref Schema.GetRef<bool>(this.Handle, "CDynamicProp", "m_bCreateNonSolid");
+	public ref bool CreateNonSolid => ref __m_bCreateNonSolid.GetRef(this.Handle);
 
 	// m_bIsOverrideProp
+	private static readonly SchemaField<bool> __m_bIsOverrideProp = new("CDynamicProp", "m_bIsOverrideProp");
 	[SchemaMember("CDynamicProp", "m_bIsOverrideProp")]
-	public ref bool IsOverrideProp => ref Schema.GetRef<bool>(this.Handle, "CDynamicProp", "m_bIsOverrideProp");
+	public ref bool IsOverrideProp => ref __m_bIsOverrideProp.GetRef(this.Handle);
 
 	// m_iInitialGlowState
+	private static readonly SchemaField<Int32> __m_iInitialGlowState = new("CDynamicProp", "m_iInitialGlowState");
 	[SchemaMember("CDynamicProp", "m_iInitialGlowState")]
-	public ref Int32 InitialGlowState => ref Schema.GetRef<Int32>(this.Handle, "CDynamicProp", "m_iInitialGlowState");
+	public ref Int32 InitialGlowState => ref __m_iInitialGlowState.GetRef(this.Handle);
 
 	// m_nGlowRange
+	private static readonly SchemaField<Int32> __m_nGlowRange = new("CDynamicProp", "m_nGlowRange");
 	[SchemaMember("CDynamicProp", "m_nGlowRange")]
-	public ref Int32 GlowRange => ref Schema.GetRef<Int32>(this.Handle, "CDynamicProp", "m_nGlowRange");
+	public ref Int32 GlowRange => ref __m_nGlowRange.GetRef(this.Handle);
 
 	// m_nGlowRangeMin
+	private static readonly SchemaField<Int32> __m_nGlowRangeMin = new("CDynamicProp", "m_nGlowRangeMin");
 	[SchemaMember("CDynamicProp", "m_nGlowRangeMin")]
-	public ref Int32 GlowRangeMin => ref Schema.GetRef<Int32>(this.Handle, "CDynamicProp", "m_nGlowRangeMin");
+	public ref Int32 GlowRangeMin => ref __m_nGlowRangeMin.GetRef(this.Handle);
 
 	// m_glowColor
 	[SchemaMember("CDynamicProp", "m_glowColor")]
@@ -119,7 +135,8 @@ public partial class CDynamicProp : CBreakableProp
 	}
 
 	// m_nGlowTeam
+	private static readonly SchemaField<Int32> __m_nGlowTeam = new("CDynamicProp", "m_nGlowTeam");
 	[SchemaMember("CDynamicProp", "m_nGlowTeam")]
-	public ref Int32 GlowTeam => ref Schema.GetRef<Int32>(this.Handle, "CDynamicProp", "m_nGlowTeam");
+	public ref Int32 GlowTeam => ref __m_nGlowTeam.GetRef(this.Handle);
 
 }

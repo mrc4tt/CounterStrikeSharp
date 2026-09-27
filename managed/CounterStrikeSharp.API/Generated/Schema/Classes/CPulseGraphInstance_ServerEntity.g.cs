@@ -23,8 +23,9 @@ public partial class CPulseGraphInstance_ServerEntity : CBasePulseGraphInstance
 	public CHandle<CBaseEntity> Owner => Schema.GetDeclaredClass<CHandle<CBaseEntity>>(this.Handle, "CPulseGraphInstance_ServerEntity", "m_hOwner");
 
 	// m_bActivated
+	private static readonly SchemaField<bool> __m_bActivated = new("CPulseGraphInstance_ServerEntity", "m_bActivated");
 	[SchemaMember("CPulseGraphInstance_ServerEntity", "m_bActivated")]
-	public ref bool Activated => ref Schema.GetRef<bool>(this.Handle, "CPulseGraphInstance_ServerEntity", "m_bActivated");
+	public ref bool Activated => ref __m_bActivated.GetRef(this.Handle);
 
 	// m_sNameFixupStaticPrefix
 	[SchemaMember("CPulseGraphInstance_ServerEntity", "m_sNameFixupStaticPrefix")]

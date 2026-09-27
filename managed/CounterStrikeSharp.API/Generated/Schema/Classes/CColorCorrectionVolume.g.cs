@@ -19,16 +19,19 @@ public partial class CColorCorrectionVolume : CBaseTrigger
     public CColorCorrectionVolume (IntPtr pointer) : base(pointer) {}
 
 	// m_MaxWeight
+	private static readonly SchemaField<float> __m_MaxWeight = new("CColorCorrectionVolume", "m_MaxWeight");
 	[SchemaMember("CColorCorrectionVolume", "m_MaxWeight")]
-	public ref float MaxWeight => ref Schema.GetRef<float>(this.Handle, "CColorCorrectionVolume", "m_MaxWeight");
+	public ref float MaxWeight => ref __m_MaxWeight.GetRef(this.Handle);
 
 	// m_FadeDuration
+	private static readonly SchemaField<float> __m_FadeDuration = new("CColorCorrectionVolume", "m_FadeDuration");
 	[SchemaMember("CColorCorrectionVolume", "m_FadeDuration")]
-	public ref float FadeDuration => ref Schema.GetRef<float>(this.Handle, "CColorCorrectionVolume", "m_FadeDuration");
+	public ref float FadeDuration => ref __m_FadeDuration.GetRef(this.Handle);
 
 	// m_Weight
+	private static readonly SchemaField<float> __m_Weight = new("CColorCorrectionVolume", "m_Weight");
 	[SchemaMember("CColorCorrectionVolume", "m_Weight")]
-	public ref float Weight => ref Schema.GetRef<float>(this.Handle, "CColorCorrectionVolume", "m_Weight");
+	public ref float Weight => ref __m_Weight.GetRef(this.Handle);
 
 	// m_lookupFilename
 	[SchemaMember("CColorCorrectionVolume", "m_lookupFilename")]
@@ -39,19 +42,23 @@ public partial class CColorCorrectionVolume : CBaseTrigger
 	}
 
 	// m_LastEnterWeight
+	private static readonly SchemaField<float> __m_LastEnterWeight = new("CColorCorrectionVolume", "m_LastEnterWeight");
 	[SchemaMember("CColorCorrectionVolume", "m_LastEnterWeight")]
-	public ref float LastEnterWeight => ref Schema.GetRef<float>(this.Handle, "CColorCorrectionVolume", "m_LastEnterWeight");
+	public ref float LastEnterWeight => ref __m_LastEnterWeight.GetRef(this.Handle);
 
 	// m_LastEnterTime
+	private static readonly SchemaField<float> __m_LastEnterTime = new("CColorCorrectionVolume", "m_LastEnterTime");
 	[SchemaMember("CColorCorrectionVolume", "m_LastEnterTime")]
-	public ref float LastEnterTime => ref Schema.GetRef<float>(this.Handle, "CColorCorrectionVolume", "m_LastEnterTime");
+	public ref float LastEnterTime => ref __m_LastEnterTime.GetRef(this.Handle);
 
 	// m_LastExitWeight
+	private static readonly SchemaField<float> __m_LastExitWeight = new("CColorCorrectionVolume", "m_LastExitWeight");
 	[SchemaMember("CColorCorrectionVolume", "m_LastExitWeight")]
-	public ref float LastExitWeight => ref Schema.GetRef<float>(this.Handle, "CColorCorrectionVolume", "m_LastExitWeight");
+	public ref float LastExitWeight => ref __m_LastExitWeight.GetRef(this.Handle);
 
 	// m_LastExitTime
+	private static readonly SchemaField<float> __m_LastExitTime = new("CColorCorrectionVolume", "m_LastExitTime");
 	[SchemaMember("CColorCorrectionVolume", "m_LastExitTime")]
-	public ref float LastExitTime => ref Schema.GetRef<float>(this.Handle, "CColorCorrectionVolume", "m_LastExitTime");
+	public ref float LastExitTime => ref __m_LastExitTime.GetRef(this.Handle);
 
 }

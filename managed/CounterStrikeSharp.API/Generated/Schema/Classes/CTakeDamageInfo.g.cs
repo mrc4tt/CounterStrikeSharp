@@ -47,59 +47,73 @@ public partial class CTakeDamageInfo : NativeObject
 	public CHandle<CBaseEntity> Ability => Schema.GetDeclaredClass<CHandle<CBaseEntity>>(this.Handle, "CTakeDamageInfo", "m_hAbility");
 
 	// m_flDamage
+	private static readonly SchemaField<float> __m_flDamage = new("CTakeDamageInfo", "m_flDamage");
 	[SchemaMember("CTakeDamageInfo", "m_flDamage")]
-	public ref float Damage => ref Schema.GetRef<float>(this.Handle, "CTakeDamageInfo", "m_flDamage");
+	public ref float Damage => ref __m_flDamage.GetRef(this.Handle);
 
 	// m_flTotalledDamage
+	private static readonly SchemaField<float> __m_flTotalledDamage = new("CTakeDamageInfo", "m_flTotalledDamage");
 	[SchemaMember("CTakeDamageInfo", "m_flTotalledDamage")]
-	public ref float TotalledDamage => ref Schema.GetRef<float>(this.Handle, "CTakeDamageInfo", "m_flTotalledDamage");
+	public ref float TotalledDamage => ref __m_flTotalledDamage.GetRef(this.Handle);
 
 	// m_bitsDamageType
+	private static readonly SchemaField<DamageTypes_t> __m_bitsDamageType = new("CTakeDamageInfo", "m_bitsDamageType");
 	[SchemaMember("CTakeDamageInfo", "m_bitsDamageType")]
-	public ref DamageTypes_t BitsDamageType => ref Schema.GetRef<DamageTypes_t>(this.Handle, "CTakeDamageInfo", "m_bitsDamageType");
+	public ref DamageTypes_t BitsDamageType => ref __m_bitsDamageType.GetRef(this.Handle);
 
 	// m_iDamageCustom
+	private static readonly SchemaField<Int32> __m_iDamageCustom = new("CTakeDamageInfo", "m_iDamageCustom");
 	[SchemaMember("CTakeDamageInfo", "m_iDamageCustom")]
-	public ref Int32 DamageCustom => ref Schema.GetRef<Int32>(this.Handle, "CTakeDamageInfo", "m_iDamageCustom");
+	public ref Int32 DamageCustom => ref __m_iDamageCustom.GetRef(this.Handle);
 
 	// m_iAmmoType
+	private static readonly SchemaField<byte> __m_iAmmoType = new("CTakeDamageInfo", "m_iAmmoType");
 	[SchemaMember("CTakeDamageInfo", "m_iAmmoType")]
-	public ref byte AmmoType => ref Schema.GetRef<byte>(this.Handle, "CTakeDamageInfo", "m_iAmmoType");
+	public ref byte AmmoType => ref __m_iAmmoType.GetRef(this.Handle);
 
 	// m_flOriginalDamage
+	private static readonly SchemaField<float> __m_flOriginalDamage = new("CTakeDamageInfo", "m_flOriginalDamage");
 	[SchemaMember("CTakeDamageInfo", "m_flOriginalDamage")]
-	public ref float OriginalDamage => ref Schema.GetRef<float>(this.Handle, "CTakeDamageInfo", "m_flOriginalDamage");
+	public ref float OriginalDamage => ref __m_flOriginalDamage.GetRef(this.Handle);
 
 	// m_bShouldBleed
+	private static readonly SchemaField<bool> __m_bShouldBleed = new("CTakeDamageInfo", "m_bShouldBleed");
 	[SchemaMember("CTakeDamageInfo", "m_bShouldBleed")]
-	public ref bool ShouldBleed => ref Schema.GetRef<bool>(this.Handle, "CTakeDamageInfo", "m_bShouldBleed");
+	public ref bool ShouldBleed => ref __m_bShouldBleed.GetRef(this.Handle);
 
 	// m_bShouldSpark
+	private static readonly SchemaField<bool> __m_bShouldSpark = new("CTakeDamageInfo", "m_bShouldSpark");
 	[SchemaMember("CTakeDamageInfo", "m_bShouldSpark")]
-	public ref bool ShouldSpark => ref Schema.GetRef<bool>(this.Handle, "CTakeDamageInfo", "m_bShouldSpark");
+	public ref bool ShouldSpark => ref __m_bShouldSpark.GetRef(this.Handle);
 
 	// m_nDamageFlags
+	private static readonly SchemaField<TakeDamageFlags_t> __m_nDamageFlags = new("CTakeDamageInfo", "m_nDamageFlags");
 	[SchemaMember("CTakeDamageInfo", "m_nDamageFlags")]
-	public ref TakeDamageFlags_t DamageFlags => ref Schema.GetRef<TakeDamageFlags_t>(this.Handle, "CTakeDamageInfo", "m_nDamageFlags");
+	public ref TakeDamageFlags_t DamageFlags => ref __m_nDamageFlags.GetRef(this.Handle);
 
 	// m_iHitGroupId
+	private static readonly SchemaField<HitGroup_t> __m_iHitGroupId = new("CTakeDamageInfo", "m_iHitGroupId");
 	[SchemaMember("CTakeDamageInfo", "m_iHitGroupId")]
-	public ref HitGroup_t HitGroupId => ref Schema.GetRef<HitGroup_t>(this.Handle, "CTakeDamageInfo", "m_iHitGroupId");
+	public ref HitGroup_t HitGroupId => ref __m_iHitGroupId.GetRef(this.Handle);
 
 	// m_nNumObjectsPenetrated
+	private static readonly SchemaField<Int32> __m_nNumObjectsPenetrated = new("CTakeDamageInfo", "m_nNumObjectsPenetrated");
 	[SchemaMember("CTakeDamageInfo", "m_nNumObjectsPenetrated")]
-	public ref Int32 NumObjectsPenetrated => ref Schema.GetRef<Int32>(this.Handle, "CTakeDamageInfo", "m_nNumObjectsPenetrated");
+	public ref Int32 NumObjectsPenetrated => ref __m_nNumObjectsPenetrated.GetRef(this.Handle);
 
 	// m_flFriendlyFireDamageReductionRatio
+	private static readonly SchemaField<float> __m_flFriendlyFireDamageReductionRatio = new("CTakeDamageInfo", "m_flFriendlyFireDamageReductionRatio");
 	[SchemaMember("CTakeDamageInfo", "m_flFriendlyFireDamageReductionRatio")]
-	public ref float FriendlyFireDamageReductionRatio => ref Schema.GetRef<float>(this.Handle, "CTakeDamageInfo", "m_flFriendlyFireDamageReductionRatio");
+	public ref float FriendlyFireDamageReductionRatio => ref __m_flFriendlyFireDamageReductionRatio.GetRef(this.Handle);
 
 	// m_bStoppedBullet
+	private static readonly SchemaField<bool> __m_bStoppedBullet = new("CTakeDamageInfo", "m_bStoppedBullet");
 	[SchemaMember("CTakeDamageInfo", "m_bStoppedBullet")]
-	public ref bool StoppedBullet => ref Schema.GetRef<bool>(this.Handle, "CTakeDamageInfo", "m_bStoppedBullet");
+	public ref bool StoppedBullet => ref __m_bStoppedBullet.GetRef(this.Handle);
 
 	// m_bInTakeDamageFlow
+	private static readonly SchemaField<bool> __m_bInTakeDamageFlow = new("CTakeDamageInfo", "m_bInTakeDamageFlow");
 	[SchemaMember("CTakeDamageInfo", "m_bInTakeDamageFlow")]
-	public ref bool InTakeDamageFlow => ref Schema.GetRef<bool>(this.Handle, "CTakeDamageInfo", "m_bInTakeDamageFlow");
+	public ref bool InTakeDamageFlow => ref __m_bInTakeDamageFlow.GetRef(this.Handle);
 
 }

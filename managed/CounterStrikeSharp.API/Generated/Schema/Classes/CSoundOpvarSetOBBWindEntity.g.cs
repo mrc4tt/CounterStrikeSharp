@@ -35,19 +35,23 @@ public partial class CSoundOpvarSetOBBWindEntity : CSoundOpvarSetPointBase
 	public Vector DistanceMaxs => Schema.GetDeclaredClass<Vector>(this.Handle, "CSoundOpvarSetOBBWindEntity", "m_vDistanceMaxs");
 
 	// m_flWindMin
+	private static readonly SchemaField<float> __m_flWindMin = new("CSoundOpvarSetOBBWindEntity", "m_flWindMin");
 	[SchemaMember("CSoundOpvarSetOBBWindEntity", "m_flWindMin")]
-	public ref float WindMin => ref Schema.GetRef<float>(this.Handle, "CSoundOpvarSetOBBWindEntity", "m_flWindMin");
+	public ref float WindMin => ref __m_flWindMin.GetRef(this.Handle);
 
 	// m_flWindMax
+	private static readonly SchemaField<float> __m_flWindMax = new("CSoundOpvarSetOBBWindEntity", "m_flWindMax");
 	[SchemaMember("CSoundOpvarSetOBBWindEntity", "m_flWindMax")]
-	public ref float WindMax => ref Schema.GetRef<float>(this.Handle, "CSoundOpvarSetOBBWindEntity", "m_flWindMax");
+	public ref float WindMax => ref __m_flWindMax.GetRef(this.Handle);
 
 	// m_flWindMapMin
+	private static readonly SchemaField<float> __m_flWindMapMin = new("CSoundOpvarSetOBBWindEntity", "m_flWindMapMin");
 	[SchemaMember("CSoundOpvarSetOBBWindEntity", "m_flWindMapMin")]
-	public ref float WindMapMin => ref Schema.GetRef<float>(this.Handle, "CSoundOpvarSetOBBWindEntity", "m_flWindMapMin");
+	public ref float WindMapMin => ref __m_flWindMapMin.GetRef(this.Handle);
 
 	// m_flWindMapMax
+	private static readonly SchemaField<float> __m_flWindMapMax = new("CSoundOpvarSetOBBWindEntity", "m_flWindMapMax");
 	[SchemaMember("CSoundOpvarSetOBBWindEntity", "m_flWindMapMax")]
-	public ref float WindMapMax => ref Schema.GetRef<float>(this.Handle, "CSoundOpvarSetOBBWindEntity", "m_flWindMapMax");
+	public ref float WindMapMax => ref __m_flWindMapMax.GetRef(this.Handle);
 
 }

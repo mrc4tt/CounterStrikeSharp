@@ -31,60 +31,73 @@ public partial class CPhysHinge : CPhysConstraint
 	public CEntityIOOutput NotifyMaxLimitReached => Schema.GetDeclaredClass<CEntityIOOutput>(this.Handle, "CPhysHinge", "m_NotifyMaxLimitReached");
 
 	// m_bAtMinLimit
+	private static readonly SchemaField<bool> __m_bAtMinLimit = new("CPhysHinge", "m_bAtMinLimit");
 	[SchemaMember("CPhysHinge", "m_bAtMinLimit")]
-	public ref bool AtMinLimit => ref Schema.GetRef<bool>(this.Handle, "CPhysHinge", "m_bAtMinLimit");
+	public ref bool AtMinLimit => ref __m_bAtMinLimit.GetRef(this.Handle);
 
 	// m_bAtMaxLimit
+	private static readonly SchemaField<bool> __m_bAtMaxLimit = new("CPhysHinge", "m_bAtMaxLimit");
 	[SchemaMember("CPhysHinge", "m_bAtMaxLimit")]
-	public ref bool AtMaxLimit => ref Schema.GetRef<bool>(this.Handle, "CPhysHinge", "m_bAtMaxLimit");
+	public ref bool AtMaxLimit => ref __m_bAtMaxLimit.GetRef(this.Handle);
 
 	// m_hinge
 	[SchemaMember("CPhysHinge", "m_hinge")]
 	public constraint_hingeparams_t Hinge => Schema.GetDeclaredClass<constraint_hingeparams_t>(this.Handle, "CPhysHinge", "m_hinge");
 
 	// m_hingeFriction
+	private static readonly SchemaField<float> __m_hingeFriction = new("CPhysHinge", "m_hingeFriction");
 	[SchemaMember("CPhysHinge", "m_hingeFriction")]
-	public ref float HingeFriction => ref Schema.GetRef<float>(this.Handle, "CPhysHinge", "m_hingeFriction");
+	public ref float HingeFriction => ref __m_hingeFriction.GetRef(this.Handle);
 
 	// m_systemLoadScale
+	private static readonly SchemaField<float> __m_systemLoadScale = new("CPhysHinge", "m_systemLoadScale");
 	[SchemaMember("CPhysHinge", "m_systemLoadScale")]
-	public ref float SystemLoadScale => ref Schema.GetRef<float>(this.Handle, "CPhysHinge", "m_systemLoadScale");
+	public ref float SystemLoadScale => ref __m_systemLoadScale.GetRef(this.Handle);
 
 	// m_bIsAxisLocal
+	private static readonly SchemaField<bool> __m_bIsAxisLocal = new("CPhysHinge", "m_bIsAxisLocal");
 	[SchemaMember("CPhysHinge", "m_bIsAxisLocal")]
-	public ref bool IsAxisLocal => ref Schema.GetRef<bool>(this.Handle, "CPhysHinge", "m_bIsAxisLocal");
+	public ref bool IsAxisLocal => ref __m_bIsAxisLocal.GetRef(this.Handle);
 
 	// m_flMinRotation
+	private static readonly SchemaField<float> __m_flMinRotation = new("CPhysHinge", "m_flMinRotation");
 	[SchemaMember("CPhysHinge", "m_flMinRotation")]
-	public ref float MinRotation => ref Schema.GetRef<float>(this.Handle, "CPhysHinge", "m_flMinRotation");
+	public ref float MinRotation => ref __m_flMinRotation.GetRef(this.Handle);
 
 	// m_flMaxRotation
+	private static readonly SchemaField<float> __m_flMaxRotation = new("CPhysHinge", "m_flMaxRotation");
 	[SchemaMember("CPhysHinge", "m_flMaxRotation")]
-	public ref float MaxRotation => ref Schema.GetRef<float>(this.Handle, "CPhysHinge", "m_flMaxRotation");
+	public ref float MaxRotation => ref __m_flMaxRotation.GetRef(this.Handle);
 
 	// m_flInitialRotation
+	private static readonly SchemaField<float> __m_flInitialRotation = new("CPhysHinge", "m_flInitialRotation");
 	[SchemaMember("CPhysHinge", "m_flInitialRotation")]
-	public ref float InitialRotation => ref Schema.GetRef<float>(this.Handle, "CPhysHinge", "m_flInitialRotation");
+	public ref float InitialRotation => ref __m_flInitialRotation.GetRef(this.Handle);
 
 	// m_flMotorFrequency
+	private static readonly SchemaField<float> __m_flMotorFrequency = new("CPhysHinge", "m_flMotorFrequency");
 	[SchemaMember("CPhysHinge", "m_flMotorFrequency")]
-	public ref float MotorFrequency => ref Schema.GetRef<float>(this.Handle, "CPhysHinge", "m_flMotorFrequency");
+	public ref float MotorFrequency => ref __m_flMotorFrequency.GetRef(this.Handle);
 
 	// m_flMotorDampingRatio
+	private static readonly SchemaField<float> __m_flMotorDampingRatio = new("CPhysHinge", "m_flMotorDampingRatio");
 	[SchemaMember("CPhysHinge", "m_flMotorDampingRatio")]
-	public ref float MotorDampingRatio => ref Schema.GetRef<float>(this.Handle, "CPhysHinge", "m_flMotorDampingRatio");
+	public ref float MotorDampingRatio => ref __m_flMotorDampingRatio.GetRef(this.Handle);
 
 	// m_flAngleSpeed
+	private static readonly SchemaField<float> __m_flAngleSpeed = new("CPhysHinge", "m_flAngleSpeed");
 	[SchemaMember("CPhysHinge", "m_flAngleSpeed")]
-	public ref float AngleSpeed => ref Schema.GetRef<float>(this.Handle, "CPhysHinge", "m_flAngleSpeed");
+	public ref float AngleSpeed => ref __m_flAngleSpeed.GetRef(this.Handle);
 
 	// m_flAngleSpeedThreshold
+	private static readonly SchemaField<float> __m_flAngleSpeedThreshold = new("CPhysHinge", "m_flAngleSpeedThreshold");
 	[SchemaMember("CPhysHinge", "m_flAngleSpeedThreshold")]
-	public ref float AngleSpeedThreshold => ref Schema.GetRef<float>(this.Handle, "CPhysHinge", "m_flAngleSpeedThreshold");
+	public ref float AngleSpeedThreshold => ref __m_flAngleSpeedThreshold.GetRef(this.Handle);
 
 	// m_flLimitsDebugVisRotation
+	private static readonly SchemaField<float> __m_flLimitsDebugVisRotation = new("CPhysHinge", "m_flLimitsDebugVisRotation");
 	[SchemaMember("CPhysHinge", "m_flLimitsDebugVisRotation")]
-	public ref float LimitsDebugVisRotation => ref Schema.GetRef<float>(this.Handle, "CPhysHinge", "m_flLimitsDebugVisRotation");
+	public ref float LimitsDebugVisRotation => ref __m_flLimitsDebugVisRotation.GetRef(this.Handle);
 
 	// m_OnStartMoving
 	[SchemaMember("CPhysHinge", "m_OnStartMoving")]

@@ -19,7 +19,8 @@ public partial class CSoundEventSphereEntity : CSoundEventEntity
     public CSoundEventSphereEntity (IntPtr pointer) : base(pointer) {}
 
 	// m_flRadius
+	private static readonly SchemaField<float> __m_flRadius = new("CSoundEventSphereEntity", "m_flRadius");
 	[SchemaMember("CSoundEventSphereEntity", "m_flRadius")]
-	public ref float Radius => ref Schema.GetRef<float>(this.Handle, "CSoundEventSphereEntity", "m_flRadius");
+	public ref float Radius => ref __m_flRadius.GetRef(this.Handle);
 
 }

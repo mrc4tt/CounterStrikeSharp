@@ -27,44 +27,51 @@ public partial class CBaseCSGrenadeProjectile : CBaseGrenade
 	public Vector InitialVelocity => Schema.GetDeclaredClass<Vector>(this.Handle, "CBaseCSGrenadeProjectile", "m_vInitialVelocity");
 
 	// m_nBounces
+	private static readonly SchemaField<Int32> __m_nBounces = new("CBaseCSGrenadeProjectile", "m_nBounces");
 	[SchemaMember("CBaseCSGrenadeProjectile", "m_nBounces")]
-	public ref Int32 Bounces => ref Schema.GetRef<Int32>(this.Handle, "CBaseCSGrenadeProjectile", "m_nBounces");
+	public ref Int32 Bounces => ref __m_nBounces.GetRef(this.Handle);
 
 	// m_nExplodeEffectIndex
 	[SchemaMember("CBaseCSGrenadeProjectile", "m_nExplodeEffectIndex")]
 	public CStrongHandle<InfoForResourceTypeIParticleSystemDefinition> ExplodeEffectIndex => Schema.GetDeclaredClass<CStrongHandle<InfoForResourceTypeIParticleSystemDefinition>>(this.Handle, "CBaseCSGrenadeProjectile", "m_nExplodeEffectIndex");
 
 	// m_nExplodeEffectTickBegin
+	private static readonly SchemaField<Int32> __m_nExplodeEffectTickBegin = new("CBaseCSGrenadeProjectile", "m_nExplodeEffectTickBegin");
 	[SchemaMember("CBaseCSGrenadeProjectile", "m_nExplodeEffectTickBegin")]
-	public ref Int32 ExplodeEffectTickBegin => ref Schema.GetRef<Int32>(this.Handle, "CBaseCSGrenadeProjectile", "m_nExplodeEffectTickBegin");
+	public ref Int32 ExplodeEffectTickBegin => ref __m_nExplodeEffectTickBegin.GetRef(this.Handle);
 
 	// m_vecExplodeEffectOrigin
 	[SchemaMember("CBaseCSGrenadeProjectile", "m_vecExplodeEffectOrigin")]
 	public Vector ExplodeEffectOrigin => Schema.GetDeclaredClass<Vector>(this.Handle, "CBaseCSGrenadeProjectile", "m_vecExplodeEffectOrigin");
 
 	// m_flSpawnTime
+	private static readonly SchemaField<float> __m_flSpawnTime = new("CBaseCSGrenadeProjectile", "m_flSpawnTime");
 	[SchemaMember("CBaseCSGrenadeProjectile", "m_flSpawnTime")]
-	public ref float SpawnTime => ref Schema.GetRef<float>(this.Handle, "CBaseCSGrenadeProjectile", "m_flSpawnTime");
+	public ref float SpawnTime => ref __m_flSpawnTime.GetRef(this.Handle);
 
 	// m_unOGSExtraFlags
+	private static readonly SchemaField<byte> __m_unOGSExtraFlags = new("CBaseCSGrenadeProjectile", "m_unOGSExtraFlags");
 	[SchemaMember("CBaseCSGrenadeProjectile", "m_unOGSExtraFlags")]
-	public ref byte OGSExtraFlags => ref Schema.GetRef<byte>(this.Handle, "CBaseCSGrenadeProjectile", "m_unOGSExtraFlags");
+	public ref byte OGSExtraFlags => ref __m_unOGSExtraFlags.GetRef(this.Handle);
 
 	// m_bDetonationRecorded
+	private static readonly SchemaField<bool> __m_bDetonationRecorded = new("CBaseCSGrenadeProjectile", "m_bDetonationRecorded");
 	[SchemaMember("CBaseCSGrenadeProjectile", "m_bDetonationRecorded")]
-	public ref bool DetonationRecorded => ref Schema.GetRef<bool>(this.Handle, "CBaseCSGrenadeProjectile", "m_bDetonationRecorded");
+	public ref bool DetonationRecorded => ref __m_bDetonationRecorded.GetRef(this.Handle);
 
 	// m_nItemIndex
+	private static readonly SchemaField<UInt16> __m_nItemIndex = new("CBaseCSGrenadeProjectile", "m_nItemIndex");
 	[SchemaMember("CBaseCSGrenadeProjectile", "m_nItemIndex")]
-	public ref UInt16 ItemIndex => ref Schema.GetRef<UInt16>(this.Handle, "CBaseCSGrenadeProjectile", "m_nItemIndex");
+	public ref UInt16 ItemIndex => ref __m_nItemIndex.GetRef(this.Handle);
 
 	// m_vecOriginalSpawnLocation
 	[SchemaMember("CBaseCSGrenadeProjectile", "m_vecOriginalSpawnLocation")]
 	public Vector OriginalSpawnLocation => Schema.GetDeclaredClass<Vector>(this.Handle, "CBaseCSGrenadeProjectile", "m_vecOriginalSpawnLocation");
 
 	// m_flLastBounceSoundTime
+	private static readonly SchemaField<float> __m_flLastBounceSoundTime = new("CBaseCSGrenadeProjectile", "m_flLastBounceSoundTime");
 	[SchemaMember("CBaseCSGrenadeProjectile", "m_flLastBounceSoundTime")]
-	public ref float LastBounceSoundTime => ref Schema.GetRef<float>(this.Handle, "CBaseCSGrenadeProjectile", "m_flLastBounceSoundTime");
+	public ref float LastBounceSoundTime => ref __m_flLastBounceSoundTime.GetRef(this.Handle);
 
 	// m_vecGrenadeSpin
 	[SchemaMember("CBaseCSGrenadeProjectile", "m_vecGrenadeSpin")]
@@ -75,11 +82,13 @@ public partial class CBaseCSGrenadeProjectile : CBaseGrenade
 	public Vector LastHitSurfaceNormal => Schema.GetDeclaredClass<Vector>(this.Handle, "CBaseCSGrenadeProjectile", "m_vecLastHitSurfaceNormal");
 
 	// m_nTicksAtZeroVelocity
+	private static readonly SchemaField<Int32> __m_nTicksAtZeroVelocity = new("CBaseCSGrenadeProjectile", "m_nTicksAtZeroVelocity");
 	[SchemaMember("CBaseCSGrenadeProjectile", "m_nTicksAtZeroVelocity")]
-	public ref Int32 TicksAtZeroVelocity => ref Schema.GetRef<Int32>(this.Handle, "CBaseCSGrenadeProjectile", "m_nTicksAtZeroVelocity");
+	public ref Int32 TicksAtZeroVelocity => ref __m_nTicksAtZeroVelocity.GetRef(this.Handle);
 
 	// m_bHasEverHitEnemy
+	private static readonly SchemaField<bool> __m_bHasEverHitEnemy = new("CBaseCSGrenadeProjectile", "m_bHasEverHitEnemy");
 	[SchemaMember("CBaseCSGrenadeProjectile", "m_bHasEverHitEnemy")]
-	public ref bool HasEverHitEnemy => ref Schema.GetRef<bool>(this.Handle, "CBaseCSGrenadeProjectile", "m_bHasEverHitEnemy");
+	public ref bool HasEverHitEnemy => ref __m_bHasEverHitEnemy.GetRef(this.Handle);
 
 }

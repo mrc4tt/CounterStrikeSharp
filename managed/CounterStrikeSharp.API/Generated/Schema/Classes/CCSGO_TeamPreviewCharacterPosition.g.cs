@@ -19,16 +19,19 @@ public partial class CCSGO_TeamPreviewCharacterPosition : CBaseEntity
     public CCSGO_TeamPreviewCharacterPosition (IntPtr pointer) : base(pointer) {}
 
 	// m_nVariant
+	private static readonly SchemaField<Int32> __m_nVariant = new("CCSGO_TeamPreviewCharacterPosition", "m_nVariant");
 	[SchemaMember("CCSGO_TeamPreviewCharacterPosition", "m_nVariant")]
-	public ref Int32 Variant => ref Schema.GetRef<Int32>(this.Handle, "CCSGO_TeamPreviewCharacterPosition", "m_nVariant");
+	public ref Int32 Variant => ref __m_nVariant.GetRef(this.Handle);
 
 	// m_nRandom
+	private static readonly SchemaField<Int32> __m_nRandom = new("CCSGO_TeamPreviewCharacterPosition", "m_nRandom");
 	[SchemaMember("CCSGO_TeamPreviewCharacterPosition", "m_nRandom")]
-	public ref Int32 Random => ref Schema.GetRef<Int32>(this.Handle, "CCSGO_TeamPreviewCharacterPosition", "m_nRandom");
+	public ref Int32 Random => ref __m_nRandom.GetRef(this.Handle);
 
 	// m_nOrdinal
+	private static readonly SchemaField<Int32> __m_nOrdinal = new("CCSGO_TeamPreviewCharacterPosition", "m_nOrdinal");
 	[SchemaMember("CCSGO_TeamPreviewCharacterPosition", "m_nOrdinal")]
-	public ref Int32 Ordinal => ref Schema.GetRef<Int32>(this.Handle, "CCSGO_TeamPreviewCharacterPosition", "m_nOrdinal");
+	public ref Int32 Ordinal => ref __m_nOrdinal.GetRef(this.Handle);
 
 	// m_sWeaponName
 	[SchemaMember("CCSGO_TeamPreviewCharacterPosition", "m_sWeaponName")]
@@ -39,8 +42,9 @@ public partial class CCSGO_TeamPreviewCharacterPosition : CBaseEntity
 	}
 
 	// m_xuid
+	private static readonly SchemaField<UInt64> __m_xuid = new("CCSGO_TeamPreviewCharacterPosition", "m_xuid");
 	[SchemaMember("CCSGO_TeamPreviewCharacterPosition", "m_xuid")]
-	public ref UInt64 Xuid => ref Schema.GetRef<UInt64>(this.Handle, "CCSGO_TeamPreviewCharacterPosition", "m_xuid");
+	public ref UInt64 Xuid => ref __m_xuid.GetRef(this.Handle);
 
 	// m_agentItem
 	[SchemaMember("CCSGO_TeamPreviewCharacterPosition", "m_agentItem")]

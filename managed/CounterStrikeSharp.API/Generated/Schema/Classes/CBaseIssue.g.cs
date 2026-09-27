@@ -35,16 +35,19 @@ public partial class CBaseIssue : NativeObject
 	}
 
 	// m_iNumYesVotes
+	private static readonly SchemaField<Int32> __m_iNumYesVotes = new("CBaseIssue", "m_iNumYesVotes");
 	[SchemaMember("CBaseIssue", "m_iNumYesVotes")]
-	public ref Int32 NumYesVotes => ref Schema.GetRef<Int32>(this.Handle, "CBaseIssue", "m_iNumYesVotes");
+	public ref Int32 NumYesVotes => ref __m_iNumYesVotes.GetRef(this.Handle);
 
 	// m_iNumNoVotes
+	private static readonly SchemaField<Int32> __m_iNumNoVotes = new("CBaseIssue", "m_iNumNoVotes");
 	[SchemaMember("CBaseIssue", "m_iNumNoVotes")]
-	public ref Int32 NumNoVotes => ref Schema.GetRef<Int32>(this.Handle, "CBaseIssue", "m_iNumNoVotes");
+	public ref Int32 NumNoVotes => ref __m_iNumNoVotes.GetRef(this.Handle);
 
 	// m_iNumPotentialVotes
+	private static readonly SchemaField<Int32> __m_iNumPotentialVotes = new("CBaseIssue", "m_iNumPotentialVotes");
 	[SchemaMember("CBaseIssue", "m_iNumPotentialVotes")]
-	public ref Int32 NumPotentialVotes => ref Schema.GetRef<Int32>(this.Handle, "CBaseIssue", "m_iNumPotentialVotes");
+	public ref Int32 NumPotentialVotes => ref __m_iNumPotentialVotes.GetRef(this.Handle);
 
 	// m_pVoteController
 	[SchemaMember("CBaseIssue", "m_pVoteController")]

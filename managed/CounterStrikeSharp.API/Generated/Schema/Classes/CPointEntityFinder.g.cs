@@ -47,8 +47,9 @@ public partial class CPointEntityFinder : CBaseEntity
 	public CHandle<CBaseEntity> Reference => Schema.GetDeclaredClass<CHandle<CBaseEntity>>(this.Handle, "CPointEntityFinder", "m_hReference");
 
 	// m_FindMethod
+	private static readonly SchemaField<EntFinderMethod_t> __m_FindMethod = new("CPointEntityFinder", "m_FindMethod");
 	[SchemaMember("CPointEntityFinder", "m_FindMethod")]
-	public ref EntFinderMethod_t FindMethod => ref Schema.GetRef<EntFinderMethod_t>(this.Handle, "CPointEntityFinder", "m_FindMethod");
+	public ref EntFinderMethod_t FindMethod => ref __m_FindMethod.GetRef(this.Handle);
 
 	// m_OnFoundEntity
 	[SchemaMember("CPointEntityFinder", "m_OnFoundEntity")]

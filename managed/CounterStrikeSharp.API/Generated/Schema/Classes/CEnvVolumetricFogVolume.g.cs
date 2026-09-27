@@ -19,8 +19,9 @@ public partial class CEnvVolumetricFogVolume : CBaseEntity
     public CEnvVolumetricFogVolume (IntPtr pointer) : base(pointer) {}
 
 	// m_bActive
+	private static readonly SchemaField<bool> __m_bActive = new("CEnvVolumetricFogVolume", "m_bActive");
 	[SchemaMember("CEnvVolumetricFogVolume", "m_bActive")]
-	public ref bool Active => ref Schema.GetRef<bool>(this.Handle, "CEnvVolumetricFogVolume", "m_bActive");
+	public ref bool Active => ref __m_bActive.GetRef(this.Handle);
 
 	// m_vBoxMins
 	[SchemaMember("CEnvVolumetricFogVolume", "m_vBoxMins")]
@@ -31,44 +32,54 @@ public partial class CEnvVolumetricFogVolume : CBaseEntity
 	public Vector BoxMaxs => Schema.GetDeclaredClass<Vector>(this.Handle, "CEnvVolumetricFogVolume", "m_vBoxMaxs");
 
 	// m_bStartDisabled
+	private static readonly SchemaField<bool> __m_bStartDisabled = new("CEnvVolumetricFogVolume", "m_bStartDisabled");
 	[SchemaMember("CEnvVolumetricFogVolume", "m_bStartDisabled")]
-	public ref bool StartDisabled => ref Schema.GetRef<bool>(this.Handle, "CEnvVolumetricFogVolume", "m_bStartDisabled");
+	public ref bool StartDisabled => ref __m_bStartDisabled.GetRef(this.Handle);
 
 	// m_bIndirectUseLPVs
+	private static readonly SchemaField<bool> __m_bIndirectUseLPVs = new("CEnvVolumetricFogVolume", "m_bIndirectUseLPVs");
 	[SchemaMember("CEnvVolumetricFogVolume", "m_bIndirectUseLPVs")]
-	public ref bool IndirectUseLPVs => ref Schema.GetRef<bool>(this.Handle, "CEnvVolumetricFogVolume", "m_bIndirectUseLPVs");
+	public ref bool IndirectUseLPVs => ref __m_bIndirectUseLPVs.GetRef(this.Handle);
 
 	// m_flStrength
+	private static readonly SchemaField<float> __m_flStrength = new("CEnvVolumetricFogVolume", "m_flStrength");
 	[SchemaMember("CEnvVolumetricFogVolume", "m_flStrength")]
-	public ref float Strength => ref Schema.GetRef<float>(this.Handle, "CEnvVolumetricFogVolume", "m_flStrength");
+	public ref float Strength => ref __m_flStrength.GetRef(this.Handle);
 
 	// m_nFalloffShape
+	private static readonly SchemaField<Int32> __m_nFalloffShape = new("CEnvVolumetricFogVolume", "m_nFalloffShape");
 	[SchemaMember("CEnvVolumetricFogVolume", "m_nFalloffShape")]
-	public ref Int32 FalloffShape => ref Schema.GetRef<Int32>(this.Handle, "CEnvVolumetricFogVolume", "m_nFalloffShape");
+	public ref Int32 FalloffShape => ref __m_nFalloffShape.GetRef(this.Handle);
 
 	// m_flFalloffExponent
+	private static readonly SchemaField<float> __m_flFalloffExponent = new("CEnvVolumetricFogVolume", "m_flFalloffExponent");
 	[SchemaMember("CEnvVolumetricFogVolume", "m_flFalloffExponent")]
-	public ref float FalloffExponent => ref Schema.GetRef<float>(this.Handle, "CEnvVolumetricFogVolume", "m_flFalloffExponent");
+	public ref float FalloffExponent => ref __m_flFalloffExponent.GetRef(this.Handle);
 
 	// m_flHeightFogDepth
+	private static readonly SchemaField<float> __m_flHeightFogDepth = new("CEnvVolumetricFogVolume", "m_flHeightFogDepth");
 	[SchemaMember("CEnvVolumetricFogVolume", "m_flHeightFogDepth")]
-	public ref float HeightFogDepth => ref Schema.GetRef<float>(this.Handle, "CEnvVolumetricFogVolume", "m_flHeightFogDepth");
+	public ref float HeightFogDepth => ref __m_flHeightFogDepth.GetRef(this.Handle);
 
 	// m_fHeightFogEdgeWidth
+	private static readonly SchemaField<float> __m_fHeightFogEdgeWidth = new("CEnvVolumetricFogVolume", "m_fHeightFogEdgeWidth");
 	[SchemaMember("CEnvVolumetricFogVolume", "m_fHeightFogEdgeWidth")]
-	public ref float HeightFogEdgeWidth => ref Schema.GetRef<float>(this.Handle, "CEnvVolumetricFogVolume", "m_fHeightFogEdgeWidth");
+	public ref float HeightFogEdgeWidth => ref __m_fHeightFogEdgeWidth.GetRef(this.Handle);
 
 	// m_fIndirectLightStrength
+	private static readonly SchemaField<float> __m_fIndirectLightStrength = new("CEnvVolumetricFogVolume", "m_fIndirectLightStrength");
 	[SchemaMember("CEnvVolumetricFogVolume", "m_fIndirectLightStrength")]
-	public ref float IndirectLightStrength => ref Schema.GetRef<float>(this.Handle, "CEnvVolumetricFogVolume", "m_fIndirectLightStrength");
+	public ref float IndirectLightStrength => ref __m_fIndirectLightStrength.GetRef(this.Handle);
 
 	// m_fSunLightStrength
+	private static readonly SchemaField<float> __m_fSunLightStrength = new("CEnvVolumetricFogVolume", "m_fSunLightStrength");
 	[SchemaMember("CEnvVolumetricFogVolume", "m_fSunLightStrength")]
-	public ref float SunLightStrength => ref Schema.GetRef<float>(this.Handle, "CEnvVolumetricFogVolume", "m_fSunLightStrength");
+	public ref float SunLightStrength => ref __m_fSunLightStrength.GetRef(this.Handle);
 
 	// m_fNoiseStrength
+	private static readonly SchemaField<float> __m_fNoiseStrength = new("CEnvVolumetricFogVolume", "m_fNoiseStrength");
 	[SchemaMember("CEnvVolumetricFogVolume", "m_fNoiseStrength")]
-	public ref float NoiseStrength => ref Schema.GetRef<float>(this.Handle, "CEnvVolumetricFogVolume", "m_fNoiseStrength");
+	public ref float NoiseStrength => ref __m_fNoiseStrength.GetRef(this.Handle);
 
 	// m_TintColor
 	[SchemaMember("CEnvVolumetricFogVolume", "m_TintColor")]
@@ -79,19 +90,23 @@ public partial class CEnvVolumetricFogVolume : CBaseEntity
 	}
 
 	// m_bOverrideTintColor
+	private static readonly SchemaField<bool> __m_bOverrideTintColor = new("CEnvVolumetricFogVolume", "m_bOverrideTintColor");
 	[SchemaMember("CEnvVolumetricFogVolume", "m_bOverrideTintColor")]
-	public ref bool OverrideTintColor => ref Schema.GetRef<bool>(this.Handle, "CEnvVolumetricFogVolume", "m_bOverrideTintColor");
+	public ref bool OverrideTintColor => ref __m_bOverrideTintColor.GetRef(this.Handle);
 
 	// m_bOverrideIndirectLightStrength
+	private static readonly SchemaField<bool> __m_bOverrideIndirectLightStrength = new("CEnvVolumetricFogVolume", "m_bOverrideIndirectLightStrength");
 	[SchemaMember("CEnvVolumetricFogVolume", "m_bOverrideIndirectLightStrength")]
-	public ref bool OverrideIndirectLightStrength => ref Schema.GetRef<bool>(this.Handle, "CEnvVolumetricFogVolume", "m_bOverrideIndirectLightStrength");
+	public ref bool OverrideIndirectLightStrength => ref __m_bOverrideIndirectLightStrength.GetRef(this.Handle);
 
 	// m_bOverrideSunLightStrength
+	private static readonly SchemaField<bool> __m_bOverrideSunLightStrength = new("CEnvVolumetricFogVolume", "m_bOverrideSunLightStrength");
 	[SchemaMember("CEnvVolumetricFogVolume", "m_bOverrideSunLightStrength")]
-	public ref bool OverrideSunLightStrength => ref Schema.GetRef<bool>(this.Handle, "CEnvVolumetricFogVolume", "m_bOverrideSunLightStrength");
+	public ref bool OverrideSunLightStrength => ref __m_bOverrideSunLightStrength.GetRef(this.Handle);
 
 	// m_bOverrideNoiseStrength
+	private static readonly SchemaField<bool> __m_bOverrideNoiseStrength = new("CEnvVolumetricFogVolume", "m_bOverrideNoiseStrength");
 	[SchemaMember("CEnvVolumetricFogVolume", "m_bOverrideNoiseStrength")]
-	public ref bool OverrideNoiseStrength => ref Schema.GetRef<bool>(this.Handle, "CEnvVolumetricFogVolume", "m_bOverrideNoiseStrength");
+	public ref bool OverrideNoiseStrength => ref __m_bOverrideNoiseStrength.GetRef(this.Handle);
 
 }

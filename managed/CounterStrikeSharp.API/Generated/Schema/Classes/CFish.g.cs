@@ -23,28 +23,34 @@ public partial class CFish : CBaseAnimGraph
 	public CHandle<CFishPool> Pool => Schema.GetDeclaredClass<CHandle<CFishPool>>(this.Handle, "CFish", "m_pool");
 
 	// m_id
+	private static readonly SchemaField<UInt32> __m_id = new("CFish", "m_id");
 	[SchemaMember("CFish", "m_id")]
-	public ref UInt32 Id => ref Schema.GetRef<UInt32>(this.Handle, "CFish", "m_id");
+	public ref UInt32 Id => ref __m_id.GetRef(this.Handle);
 
 	// m_x
+	private static readonly SchemaField<float> __m_x = new("CFish", "m_x");
 	[SchemaMember("CFish", "m_x")]
-	public ref float X => ref Schema.GetRef<float>(this.Handle, "CFish", "m_x");
+	public ref float X => ref __m_x.GetRef(this.Handle);
 
 	// m_y
+	private static readonly SchemaField<float> __m_y = new("CFish", "m_y");
 	[SchemaMember("CFish", "m_y")]
-	public ref float Y => ref Schema.GetRef<float>(this.Handle, "CFish", "m_y");
+	public ref float Y => ref __m_y.GetRef(this.Handle);
 
 	// m_z
+	private static readonly SchemaField<float> __m_z = new("CFish", "m_z");
 	[SchemaMember("CFish", "m_z")]
-	public ref float Z => ref Schema.GetRef<float>(this.Handle, "CFish", "m_z");
+	public ref float Z => ref __m_z.GetRef(this.Handle);
 
 	// m_angle
+	private static readonly SchemaField<float> __m_angle = new("CFish", "m_angle");
 	[SchemaMember("CFish", "m_angle")]
-	public ref float Angle => ref Schema.GetRef<float>(this.Handle, "CFish", "m_angle");
+	public ref float Angle => ref __m_angle.GetRef(this.Handle);
 
 	// m_angleChange
+	private static readonly SchemaField<float> __m_angleChange = new("CFish", "m_angleChange");
 	[SchemaMember("CFish", "m_angleChange")]
-	public ref float AngleChange => ref Schema.GetRef<float>(this.Handle, "CFish", "m_angleChange");
+	public ref float AngleChange => ref __m_angleChange.GetRef(this.Handle);
 
 	// m_forward
 	[SchemaMember("CFish", "m_forward")]
@@ -59,36 +65,43 @@ public partial class CFish : CBaseAnimGraph
 	public Vector PoolOrigin => Schema.GetDeclaredClass<Vector>(this.Handle, "CFish", "m_poolOrigin");
 
 	// m_waterLevel
+	private static readonly SchemaField<float> __m_waterLevel = new("CFish", "m_waterLevel");
 	[SchemaMember("CFish", "m_waterLevel")]
-	public ref float FishWaterLevel => ref Schema.GetRef<float>(this.Handle, "CFish", "m_waterLevel");
+	public ref float FishWaterLevel => ref __m_waterLevel.GetRef(this.Handle);
 
 	// m_speed
+	private static readonly SchemaField<float> __m_speed = new("CFish", "m_speed");
 	[SchemaMember("CFish", "m_speed")]
-	public ref float Speed => ref Schema.GetRef<float>(this.Handle, "CFish", "m_speed");
+	public ref float Speed => ref __m_speed.GetRef(this.Handle);
 
 	// m_desiredSpeed
+	private static readonly SchemaField<float> __m_desiredSpeed = new("CFish", "m_desiredSpeed");
 	[SchemaMember("CFish", "m_desiredSpeed")]
-	public ref float DesiredSpeed => ref Schema.GetRef<float>(this.Handle, "CFish", "m_desiredSpeed");
+	public ref float DesiredSpeed => ref __m_desiredSpeed.GetRef(this.Handle);
 
 	// m_calmSpeed
+	private static readonly SchemaField<float> __m_calmSpeed = new("CFish", "m_calmSpeed");
 	[SchemaMember("CFish", "m_calmSpeed")]
-	public ref float CalmSpeed => ref Schema.GetRef<float>(this.Handle, "CFish", "m_calmSpeed");
+	public ref float CalmSpeed => ref __m_calmSpeed.GetRef(this.Handle);
 
 	// m_panicSpeed
+	private static readonly SchemaField<float> __m_panicSpeed = new("CFish", "m_panicSpeed");
 	[SchemaMember("CFish", "m_panicSpeed")]
-	public ref float PanicSpeed => ref Schema.GetRef<float>(this.Handle, "CFish", "m_panicSpeed");
+	public ref float PanicSpeed => ref __m_panicSpeed.GetRef(this.Handle);
 
 	// m_avoidRange
+	private static readonly SchemaField<float> __m_avoidRange = new("CFish", "m_avoidRange");
 	[SchemaMember("CFish", "m_avoidRange")]
-	public ref float AvoidRange => ref Schema.GetRef<float>(this.Handle, "CFish", "m_avoidRange");
+	public ref float AvoidRange => ref __m_avoidRange.GetRef(this.Handle);
 
 	// m_turnTimer
 	[SchemaMember("CFish", "m_turnTimer")]
 	public CountdownTimer TurnTimer => Schema.GetDeclaredClass<CountdownTimer>(this.Handle, "CFish", "m_turnTimer");
 
 	// m_turnClockwise
+	private static readonly SchemaField<bool> __m_turnClockwise = new("CFish", "m_turnClockwise");
 	[SchemaMember("CFish", "m_turnClockwise")]
-	public ref bool TurnClockwise => ref Schema.GetRef<bool>(this.Handle, "CFish", "m_turnClockwise");
+	public ref bool TurnClockwise => ref __m_turnClockwise.GetRef(this.Handle);
 
 	// m_goTimer
 	[SchemaMember("CFish", "m_goTimer")]

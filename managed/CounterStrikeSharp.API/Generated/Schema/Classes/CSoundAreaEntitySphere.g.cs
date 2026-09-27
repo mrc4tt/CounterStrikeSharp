@@ -19,7 +19,8 @@ public partial class CSoundAreaEntitySphere : CSoundAreaEntityBase
     public CSoundAreaEntitySphere (IntPtr pointer) : base(pointer) {}
 
 	// m_flRadius
+	private static readonly SchemaField<float> __m_flRadius = new("CSoundAreaEntitySphere", "m_flRadius");
 	[SchemaMember("CSoundAreaEntitySphere", "m_flRadius")]
-	public ref float Radius => ref Schema.GetRef<float>(this.Handle, "CSoundAreaEntitySphere", "m_flRadius");
+	public ref float Radius => ref __m_flRadius.GetRef(this.Handle);
 
 }

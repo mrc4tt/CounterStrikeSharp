@@ -19,8 +19,9 @@ public partial class CLogicBranch : CLogicalEntity
     public CLogicBranch (IntPtr pointer) : base(pointer) {}
 
 	// m_bInValue
+	private static readonly SchemaField<bool> __m_bInValue = new("CLogicBranch", "m_bInValue");
 	[SchemaMember("CLogicBranch", "m_bInValue")]
-	public ref bool InValue => ref Schema.GetRef<bool>(this.Handle, "CLogicBranch", "m_bInValue");
+	public ref bool InValue => ref __m_bInValue.GetRef(this.Handle);
 
 	// m_Listeners
 	[SchemaMember("CLogicBranch", "m_Listeners")]

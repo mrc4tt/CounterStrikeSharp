@@ -27,11 +27,13 @@ public partial class CPhysPulley : CPhysConstraint
 	public Span<Vector> Offset => Schema.GetFixedArray<Vector>(this.Handle, "CPhysPulley", "m_offset", 2);
 
 	// m_addLength
+	private static readonly SchemaField<float> __m_addLength = new("CPhysPulley", "m_addLength");
 	[SchemaMember("CPhysPulley", "m_addLength")]
-	public ref float AddLength => ref Schema.GetRef<float>(this.Handle, "CPhysPulley", "m_addLength");
+	public ref float AddLength => ref __m_addLength.GetRef(this.Handle);
 
 	// m_gearRatio
+	private static readonly SchemaField<float> __m_gearRatio = new("CPhysPulley", "m_gearRatio");
 	[SchemaMember("CPhysPulley", "m_gearRatio")]
-	public ref float GearRatio => ref Schema.GetRef<float>(this.Handle, "CPhysPulley", "m_gearRatio");
+	public ref float GearRatio => ref __m_gearRatio.GetRef(this.Handle);
 
 }

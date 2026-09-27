@@ -19,107 +19,132 @@ public partial class CPointClientUIWorldPanel : CBaseClientUIEntity
     public CPointClientUIWorldPanel (IntPtr pointer) : base(pointer) {}
 
 	// m_bIgnoreInput
+	private static readonly SchemaField<bool> __m_bIgnoreInput = new("CPointClientUIWorldPanel", "m_bIgnoreInput");
 	[SchemaMember("CPointClientUIWorldPanel", "m_bIgnoreInput")]
-	public ref bool IgnoreInput => ref Schema.GetRef<bool>(this.Handle, "CPointClientUIWorldPanel", "m_bIgnoreInput");
+	public ref bool IgnoreInput => ref __m_bIgnoreInput.GetRef(this.Handle);
 
 	// m_bLit
+	private static readonly SchemaField<bool> __m_bLit = new("CPointClientUIWorldPanel", "m_bLit");
 	[SchemaMember("CPointClientUIWorldPanel", "m_bLit")]
-	public ref bool Lit => ref Schema.GetRef<bool>(this.Handle, "CPointClientUIWorldPanel", "m_bLit");
+	public ref bool Lit => ref __m_bLit.GetRef(this.Handle);
 
 	// m_bFollowPlayerAcrossTeleport
+	private static readonly SchemaField<bool> __m_bFollowPlayerAcrossTeleport = new("CPointClientUIWorldPanel", "m_bFollowPlayerAcrossTeleport");
 	[SchemaMember("CPointClientUIWorldPanel", "m_bFollowPlayerAcrossTeleport")]
-	public ref bool FollowPlayerAcrossTeleport => ref Schema.GetRef<bool>(this.Handle, "CPointClientUIWorldPanel", "m_bFollowPlayerAcrossTeleport");
+	public ref bool FollowPlayerAcrossTeleport => ref __m_bFollowPlayerAcrossTeleport.GetRef(this.Handle);
 
 	// m_flWidth
+	private static readonly SchemaField<float> __m_flWidth = new("CPointClientUIWorldPanel", "m_flWidth");
 	[SchemaMember("CPointClientUIWorldPanel", "m_flWidth")]
-	public ref float Width => ref Schema.GetRef<float>(this.Handle, "CPointClientUIWorldPanel", "m_flWidth");
+	public ref float Width => ref __m_flWidth.GetRef(this.Handle);
 
 	// m_flHeight
+	private static readonly SchemaField<float> __m_flHeight = new("CPointClientUIWorldPanel", "m_flHeight");
 	[SchemaMember("CPointClientUIWorldPanel", "m_flHeight")]
-	public ref float Height => ref Schema.GetRef<float>(this.Handle, "CPointClientUIWorldPanel", "m_flHeight");
+	public ref float Height => ref __m_flHeight.GetRef(this.Handle);
 
 	// m_flDPI
+	private static readonly SchemaField<float> __m_flDPI = new("CPointClientUIWorldPanel", "m_flDPI");
 	[SchemaMember("CPointClientUIWorldPanel", "m_flDPI")]
-	public ref float DPI => ref Schema.GetRef<float>(this.Handle, "CPointClientUIWorldPanel", "m_flDPI");
+	public ref float DPI => ref __m_flDPI.GetRef(this.Handle);
 
 	// m_flWindowUIScale
+	private static readonly SchemaField<float> __m_flWindowUIScale = new("CPointClientUIWorldPanel", "m_flWindowUIScale");
 	[SchemaMember("CPointClientUIWorldPanel", "m_flWindowUIScale")]
-	public ref float WindowUIScale => ref Schema.GetRef<float>(this.Handle, "CPointClientUIWorldPanel", "m_flWindowUIScale");
+	public ref float WindowUIScale => ref __m_flWindowUIScale.GetRef(this.Handle);
 
 	// m_flInteractDistance
+	private static readonly SchemaField<float> __m_flInteractDistance = new("CPointClientUIWorldPanel", "m_flInteractDistance");
 	[SchemaMember("CPointClientUIWorldPanel", "m_flInteractDistance")]
-	public ref float InteractDistance => ref Schema.GetRef<float>(this.Handle, "CPointClientUIWorldPanel", "m_flInteractDistance");
+	public ref float InteractDistance => ref __m_flInteractDistance.GetRef(this.Handle);
 
 	// m_flDepthOffset
+	private static readonly SchemaField<float> __m_flDepthOffset = new("CPointClientUIWorldPanel", "m_flDepthOffset");
 	[SchemaMember("CPointClientUIWorldPanel", "m_flDepthOffset")]
-	public ref float DepthOffset => ref Schema.GetRef<float>(this.Handle, "CPointClientUIWorldPanel", "m_flDepthOffset");
+	public ref float DepthOffset => ref __m_flDepthOffset.GetRef(this.Handle);
 
 	// m_unOwnerContext
+	private static readonly SchemaField<UInt32> __m_unOwnerContext = new("CPointClientUIWorldPanel", "m_unOwnerContext");
 	[SchemaMember("CPointClientUIWorldPanel", "m_unOwnerContext")]
-	public ref UInt32 OwnerContext => ref Schema.GetRef<UInt32>(this.Handle, "CPointClientUIWorldPanel", "m_unOwnerContext");
+	public ref UInt32 OwnerContext => ref __m_unOwnerContext.GetRef(this.Handle);
 
 	// m_unHorizontalAlign
+	private static readonly SchemaField<UInt32> __m_unHorizontalAlign = new("CPointClientUIWorldPanel", "m_unHorizontalAlign");
 	[SchemaMember("CPointClientUIWorldPanel", "m_unHorizontalAlign")]
-	public ref UInt32 HorizontalAlign => ref Schema.GetRef<UInt32>(this.Handle, "CPointClientUIWorldPanel", "m_unHorizontalAlign");
+	public ref UInt32 HorizontalAlign => ref __m_unHorizontalAlign.GetRef(this.Handle);
 
 	// m_unVerticalAlign
+	private static readonly SchemaField<UInt32> __m_unVerticalAlign = new("CPointClientUIWorldPanel", "m_unVerticalAlign");
 	[SchemaMember("CPointClientUIWorldPanel", "m_unVerticalAlign")]
-	public ref UInt32 VerticalAlign => ref Schema.GetRef<UInt32>(this.Handle, "CPointClientUIWorldPanel", "m_unVerticalAlign");
+	public ref UInt32 VerticalAlign => ref __m_unVerticalAlign.GetRef(this.Handle);
 
 	// m_unOrientation
+	private static readonly SchemaField<UInt32> __m_unOrientation = new("CPointClientUIWorldPanel", "m_unOrientation");
 	[SchemaMember("CPointClientUIWorldPanel", "m_unOrientation")]
-	public ref UInt32 Orientation => ref Schema.GetRef<UInt32>(this.Handle, "CPointClientUIWorldPanel", "m_unOrientation");
+	public ref UInt32 Orientation => ref __m_unOrientation.GetRef(this.Handle);
 
 	// m_bAllowInteractionFromAllSceneWorlds
+	private static readonly SchemaField<bool> __m_bAllowInteractionFromAllSceneWorlds = new("CPointClientUIWorldPanel", "m_bAllowInteractionFromAllSceneWorlds");
 	[SchemaMember("CPointClientUIWorldPanel", "m_bAllowInteractionFromAllSceneWorlds")]
-	public ref bool AllowInteractionFromAllSceneWorlds => ref Schema.GetRef<bool>(this.Handle, "CPointClientUIWorldPanel", "m_bAllowInteractionFromAllSceneWorlds");
+	public ref bool AllowInteractionFromAllSceneWorlds => ref __m_bAllowInteractionFromAllSceneWorlds.GetRef(this.Handle);
 
 	// m_vecCSSClasses
 	[SchemaMember("CPointClientUIWorldPanel", "m_vecCSSClasses")]
 	public NetworkedVector<string> CSSClasses => Schema.GetDeclaredClass<NetworkedVector<string>>(this.Handle, "CPointClientUIWorldPanel", "m_vecCSSClasses");
 
 	// m_bOpaque
+	private static readonly SchemaField<bool> __m_bOpaque = new("CPointClientUIWorldPanel", "m_bOpaque");
 	[SchemaMember("CPointClientUIWorldPanel", "m_bOpaque")]
-	public ref bool Opaque => ref Schema.GetRef<bool>(this.Handle, "CPointClientUIWorldPanel", "m_bOpaque");
+	public ref bool Opaque => ref __m_bOpaque.GetRef(this.Handle);
 
 	// m_bNoDepth
+	private static readonly SchemaField<bool> __m_bNoDepth = new("CPointClientUIWorldPanel", "m_bNoDepth");
 	[SchemaMember("CPointClientUIWorldPanel", "m_bNoDepth")]
-	public ref bool NoDepth => ref Schema.GetRef<bool>(this.Handle, "CPointClientUIWorldPanel", "m_bNoDepth");
+	public ref bool NoDepth => ref __m_bNoDepth.GetRef(this.Handle);
 
 	// m_bVisibleWhenParentNoDraw
+	private static readonly SchemaField<bool> __m_bVisibleWhenParentNoDraw = new("CPointClientUIWorldPanel", "m_bVisibleWhenParentNoDraw");
 	[SchemaMember("CPointClientUIWorldPanel", "m_bVisibleWhenParentNoDraw")]
-	public ref bool VisibleWhenParentNoDraw => ref Schema.GetRef<bool>(this.Handle, "CPointClientUIWorldPanel", "m_bVisibleWhenParentNoDraw");
+	public ref bool VisibleWhenParentNoDraw => ref __m_bVisibleWhenParentNoDraw.GetRef(this.Handle);
 
 	// m_bRenderBackface
+	private static readonly SchemaField<bool> __m_bRenderBackface = new("CPointClientUIWorldPanel", "m_bRenderBackface");
 	[SchemaMember("CPointClientUIWorldPanel", "m_bRenderBackface")]
-	public ref bool RenderBackface => ref Schema.GetRef<bool>(this.Handle, "CPointClientUIWorldPanel", "m_bRenderBackface");
+	public ref bool RenderBackface => ref __m_bRenderBackface.GetRef(this.Handle);
 
 	// m_bUseOffScreenIndicator
+	private static readonly SchemaField<bool> __m_bUseOffScreenIndicator = new("CPointClientUIWorldPanel", "m_bUseOffScreenIndicator");
 	[SchemaMember("CPointClientUIWorldPanel", "m_bUseOffScreenIndicator")]
-	public ref bool UseOffScreenIndicator => ref Schema.GetRef<bool>(this.Handle, "CPointClientUIWorldPanel", "m_bUseOffScreenIndicator");
+	public ref bool UseOffScreenIndicator => ref __m_bUseOffScreenIndicator.GetRef(this.Handle);
 
 	// m_bExcludeFromSaveGames
+	private static readonly SchemaField<bool> __m_bExcludeFromSaveGames = new("CPointClientUIWorldPanel", "m_bExcludeFromSaveGames");
 	[SchemaMember("CPointClientUIWorldPanel", "m_bExcludeFromSaveGames")]
-	public ref bool ExcludeFromSaveGames => ref Schema.GetRef<bool>(this.Handle, "CPointClientUIWorldPanel", "m_bExcludeFromSaveGames");
+	public ref bool ExcludeFromSaveGames => ref __m_bExcludeFromSaveGames.GetRef(this.Handle);
 
 	// m_bGrabbable
+	private static readonly SchemaField<bool> __m_bGrabbable = new("CPointClientUIWorldPanel", "m_bGrabbable");
 	[SchemaMember("CPointClientUIWorldPanel", "m_bGrabbable")]
-	public ref bool Grabbable => ref Schema.GetRef<bool>(this.Handle, "CPointClientUIWorldPanel", "m_bGrabbable");
+	public ref bool Grabbable => ref __m_bGrabbable.GetRef(this.Handle);
 
 	// m_bOnlyRenderToTexture
+	private static readonly SchemaField<bool> __m_bOnlyRenderToTexture = new("CPointClientUIWorldPanel", "m_bOnlyRenderToTexture");
 	[SchemaMember("CPointClientUIWorldPanel", "m_bOnlyRenderToTexture")]
-	public ref bool OnlyRenderToTexture => ref Schema.GetRef<bool>(this.Handle, "CPointClientUIWorldPanel", "m_bOnlyRenderToTexture");
+	public ref bool OnlyRenderToTexture => ref __m_bOnlyRenderToTexture.GetRef(this.Handle);
 
 	// m_bDisableMipGen
+	private static readonly SchemaField<bool> __m_bDisableMipGen = new("CPointClientUIWorldPanel", "m_bDisableMipGen");
 	[SchemaMember("CPointClientUIWorldPanel", "m_bDisableMipGen")]
-	public ref bool DisableMipGen => ref Schema.GetRef<bool>(this.Handle, "CPointClientUIWorldPanel", "m_bDisableMipGen");
+	public ref bool DisableMipGen => ref __m_bDisableMipGen.GetRef(this.Handle);
 
 	// m_nExplicitImageLayout
+	private static readonly SchemaField<Int32> __m_nExplicitImageLayout = new("CPointClientUIWorldPanel", "m_nExplicitImageLayout");
 	[SchemaMember("CPointClientUIWorldPanel", "m_nExplicitImageLayout")]
-	public ref Int32 ExplicitImageLayout => ref Schema.GetRef<Int32>(this.Handle, "CPointClientUIWorldPanel", "m_nExplicitImageLayout");
+	public ref Int32 ExplicitImageLayout => ref __m_nExplicitImageLayout.GetRef(this.Handle);
 
 	// m_bIgnoreParentOrientation
+	private static readonly SchemaField<bool> __m_bIgnoreParentOrientation = new("CPointClientUIWorldPanel", "m_bIgnoreParentOrientation");
 	[SchemaMember("CPointClientUIWorldPanel", "m_bIgnoreParentOrientation")]
-	public ref bool IgnoreParentOrientation => ref Schema.GetRef<bool>(this.Handle, "CPointClientUIWorldPanel", "m_bIgnoreParentOrientation");
+	public ref bool IgnoreParentOrientation => ref __m_bIgnoreParentOrientation.GetRef(this.Handle);
 
 }

@@ -19,7 +19,8 @@ public partial class PrecipitationFilter_t : NativeObject
     public PrecipitationFilter_t (IntPtr pointer) : base(pointer) {}
 
 	// m_flMaxRadius
+	private static readonly SchemaField<float> __m_flMaxRadius = new("PrecipitationFilter_t", "m_flMaxRadius");
 	[SchemaMember("PrecipitationFilter_t", "m_flMaxRadius")]
-	public ref float MaxRadius => ref Schema.GetRef<float>(this.Handle, "PrecipitationFilter_t", "m_flMaxRadius");
+	public ref float MaxRadius => ref __m_flMaxRadius.GetRef(this.Handle);
 
 }

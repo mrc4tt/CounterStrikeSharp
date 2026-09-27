@@ -27,8 +27,9 @@ public partial class DynamicVolumeDef_t : NativeObject
 	public CHandle<CBaseEntity> Target => Schema.GetDeclaredClass<CHandle<CBaseEntity>>(this.Handle, "DynamicVolumeDef_t", "m_target");
 
 	// m_nHullIdx
+	private static readonly SchemaField<Int32> __m_nHullIdx = new("DynamicVolumeDef_t", "m_nHullIdx");
 	[SchemaMember("DynamicVolumeDef_t", "m_nHullIdx")]
-	public ref Int32 HullIdx => ref Schema.GetRef<Int32>(this.Handle, "DynamicVolumeDef_t", "m_nHullIdx");
+	public ref Int32 HullIdx => ref __m_nHullIdx.GetRef(this.Handle);
 
 	// m_vSourceAnchorPos
 	[SchemaMember("DynamicVolumeDef_t", "m_vSourceAnchorPos")]
@@ -39,15 +40,18 @@ public partial class DynamicVolumeDef_t : NativeObject
 	public Vector TargetAnchorPos => Schema.GetDeclaredClass<Vector>(this.Handle, "DynamicVolumeDef_t", "m_vTargetAnchorPos");
 
 	// m_nAreaSrc
+	private static readonly SchemaField<UInt32> __m_nAreaSrc = new("DynamicVolumeDef_t", "m_nAreaSrc");
 	[SchemaMember("DynamicVolumeDef_t", "m_nAreaSrc")]
-	public ref UInt32 AreaSrc => ref Schema.GetRef<UInt32>(this.Handle, "DynamicVolumeDef_t", "m_nAreaSrc");
+	public ref UInt32 AreaSrc => ref __m_nAreaSrc.GetRef(this.Handle);
 
 	// m_nAreaDst
+	private static readonly SchemaField<UInt32> __m_nAreaDst = new("DynamicVolumeDef_t", "m_nAreaDst");
 	[SchemaMember("DynamicVolumeDef_t", "m_nAreaDst")]
-	public ref UInt32 AreaDst => ref Schema.GetRef<UInt32>(this.Handle, "DynamicVolumeDef_t", "m_nAreaDst");
+	public ref UInt32 AreaDst => ref __m_nAreaDst.GetRef(this.Handle);
 
 	// m_bAttached
+	private static readonly SchemaField<bool> __m_bAttached = new("DynamicVolumeDef_t", "m_bAttached");
 	[SchemaMember("DynamicVolumeDef_t", "m_bAttached")]
-	public ref bool Attached => ref Schema.GetRef<bool>(this.Handle, "DynamicVolumeDef_t", "m_bAttached");
+	public ref bool Attached => ref __m_bAttached.GetRef(this.Handle);
 
 }

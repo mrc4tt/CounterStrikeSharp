@@ -19,12 +19,14 @@ public partial class CBasePlayerWeaponVData : CEntitySubclassVDataBase
     public CBasePlayerWeaponVData (IntPtr pointer) : base(pointer) {}
 
 	// m_bBuiltRightHanded
+	private static readonly SchemaField<bool> __m_bBuiltRightHanded = new("CBasePlayerWeaponVData", "m_bBuiltRightHanded");
 	[SchemaMember("CBasePlayerWeaponVData", "m_bBuiltRightHanded")]
-	public ref bool BuiltRightHanded => ref Schema.GetRef<bool>(this.Handle, "CBasePlayerWeaponVData", "m_bBuiltRightHanded");
+	public ref bool BuiltRightHanded => ref __m_bBuiltRightHanded.GetRef(this.Handle);
 
 	// m_bAllowFlipping
+	private static readonly SchemaField<bool> __m_bAllowFlipping = new("CBasePlayerWeaponVData", "m_bAllowFlipping");
 	[SchemaMember("CBasePlayerWeaponVData", "m_bAllowFlipping")]
-	public ref bool AllowFlipping => ref Schema.GetRef<bool>(this.Handle, "CBasePlayerWeaponVData", "m_bAllowFlipping");
+	public ref bool AllowFlipping => ref __m_bAllowFlipping.GetRef(this.Handle);
 
 	// m_szMuzzleFlashParticleConfig
 	[SchemaMember("CBasePlayerWeaponVData", "m_szMuzzleFlashParticleConfig")]
@@ -35,95 +37,118 @@ public partial class CBasePlayerWeaponVData : CEntitySubclassVDataBase
 	}
 
 	// m_nMuzzleSmokeShotThreshold
+	private static readonly SchemaField<byte> __m_nMuzzleSmokeShotThreshold = new("CBasePlayerWeaponVData", "m_nMuzzleSmokeShotThreshold");
 	[SchemaMember("CBasePlayerWeaponVData", "m_nMuzzleSmokeShotThreshold")]
-	public ref byte MuzzleSmokeShotThreshold => ref Schema.GetRef<byte>(this.Handle, "CBasePlayerWeaponVData", "m_nMuzzleSmokeShotThreshold");
+	public ref byte MuzzleSmokeShotThreshold => ref __m_nMuzzleSmokeShotThreshold.GetRef(this.Handle);
 
 	// m_flMuzzleSmokeTimeout
+	private static readonly SchemaField<float> __m_flMuzzleSmokeTimeout = new("CBasePlayerWeaponVData", "m_flMuzzleSmokeTimeout");
 	[SchemaMember("CBasePlayerWeaponVData", "m_flMuzzleSmokeTimeout")]
-	public ref float MuzzleSmokeTimeout => ref Schema.GetRef<float>(this.Handle, "CBasePlayerWeaponVData", "m_flMuzzleSmokeTimeout");
+	public ref float MuzzleSmokeTimeout => ref __m_flMuzzleSmokeTimeout.GetRef(this.Handle);
 
 	// m_flMuzzleSmokeDecrementRate
+	private static readonly SchemaField<float> __m_flMuzzleSmokeDecrementRate = new("CBasePlayerWeaponVData", "m_flMuzzleSmokeDecrementRate");
 	[SchemaMember("CBasePlayerWeaponVData", "m_flMuzzleSmokeDecrementRate")]
-	public ref float MuzzleSmokeDecrementRate => ref Schema.GetRef<float>(this.Handle, "CBasePlayerWeaponVData", "m_flMuzzleSmokeDecrementRate");
+	public ref float MuzzleSmokeDecrementRate => ref __m_flMuzzleSmokeDecrementRate.GetRef(this.Handle);
 
 	// m_bGenerateMuzzleLight
+	private static readonly SchemaField<bool> __m_bGenerateMuzzleLight = new("CBasePlayerWeaponVData", "m_bGenerateMuzzleLight");
 	[SchemaMember("CBasePlayerWeaponVData", "m_bGenerateMuzzleLight")]
-	public ref bool GenerateMuzzleLight => ref Schema.GetRef<bool>(this.Handle, "CBasePlayerWeaponVData", "m_bGenerateMuzzleLight");
+	public ref bool GenerateMuzzleLight => ref __m_bGenerateMuzzleLight.GetRef(this.Handle);
 
 	// m_bShouldAnimateInWorld
+	private static readonly SchemaField<bool> __m_bShouldAnimateInWorld = new("CBasePlayerWeaponVData", "m_bShouldAnimateInWorld");
 	[SchemaMember("CBasePlayerWeaponVData", "m_bShouldAnimateInWorld")]
-	public ref bool ShouldAnimateInWorld => ref Schema.GetRef<bool>(this.Handle, "CBasePlayerWeaponVData", "m_bShouldAnimateInWorld");
+	public ref bool ShouldAnimateInWorld => ref __m_bShouldAnimateInWorld.GetRef(this.Handle);
 
 	// m_bLinkedCooldowns
+	private static readonly SchemaField<bool> __m_bLinkedCooldowns = new("CBasePlayerWeaponVData", "m_bLinkedCooldowns");
 	[SchemaMember("CBasePlayerWeaponVData", "m_bLinkedCooldowns")]
-	public ref bool LinkedCooldowns => ref Schema.GetRef<bool>(this.Handle, "CBasePlayerWeaponVData", "m_bLinkedCooldowns");
+	public ref bool LinkedCooldowns => ref __m_bLinkedCooldowns.GetRef(this.Handle);
 
 	// m_iFlags
+	private static readonly SchemaField<ItemFlagTypes_t> __m_iFlags = new("CBasePlayerWeaponVData", "m_iFlags");
 	[SchemaMember("CBasePlayerWeaponVData", "m_iFlags")]
-	public ref ItemFlagTypes_t Flags => ref Schema.GetRef<ItemFlagTypes_t>(this.Handle, "CBasePlayerWeaponVData", "m_iFlags");
+	public ref ItemFlagTypes_t Flags => ref __m_iFlags.GetRef(this.Handle);
 
 	// m_iWeight
+	private static readonly SchemaField<Int32> __m_iWeight = new("CBasePlayerWeaponVData", "m_iWeight");
 	[SchemaMember("CBasePlayerWeaponVData", "m_iWeight")]
-	public ref Int32 Weight => ref Schema.GetRef<Int32>(this.Handle, "CBasePlayerWeaponVData", "m_iWeight");
+	public ref Int32 Weight => ref __m_iWeight.GetRef(this.Handle);
 
 	// m_bAutoSwitchTo
+	private static readonly SchemaField<bool> __m_bAutoSwitchTo = new("CBasePlayerWeaponVData", "m_bAutoSwitchTo");
 	[SchemaMember("CBasePlayerWeaponVData", "m_bAutoSwitchTo")]
-	public ref bool AutoSwitchTo => ref Schema.GetRef<bool>(this.Handle, "CBasePlayerWeaponVData", "m_bAutoSwitchTo");
+	public ref bool AutoSwitchTo => ref __m_bAutoSwitchTo.GetRef(this.Handle);
 
 	// m_bAutoSwitchFrom
+	private static readonly SchemaField<bool> __m_bAutoSwitchFrom = new("CBasePlayerWeaponVData", "m_bAutoSwitchFrom");
 	[SchemaMember("CBasePlayerWeaponVData", "m_bAutoSwitchFrom")]
-	public ref bool AutoSwitchFrom => ref Schema.GetRef<bool>(this.Handle, "CBasePlayerWeaponVData", "m_bAutoSwitchFrom");
+	public ref bool AutoSwitchFrom => ref __m_bAutoSwitchFrom.GetRef(this.Handle);
 
 	// m_nPrimaryAmmoType
+	private static readonly SchemaField<byte> __m_nPrimaryAmmoType = new("CBasePlayerWeaponVData", "m_nPrimaryAmmoType");
 	[SchemaMember("CBasePlayerWeaponVData", "m_nPrimaryAmmoType")]
-	public ref byte PrimaryAmmoType => ref Schema.GetRef<byte>(this.Handle, "CBasePlayerWeaponVData", "m_nPrimaryAmmoType");
+	public ref byte PrimaryAmmoType => ref __m_nPrimaryAmmoType.GetRef(this.Handle);
 
 	// m_nSecondaryAmmoType
+	private static readonly SchemaField<byte> __m_nSecondaryAmmoType = new("CBasePlayerWeaponVData", "m_nSecondaryAmmoType");
 	[SchemaMember("CBasePlayerWeaponVData", "m_nSecondaryAmmoType")]
-	public ref byte SecondaryAmmoType => ref Schema.GetRef<byte>(this.Handle, "CBasePlayerWeaponVData", "m_nSecondaryAmmoType");
+	public ref byte SecondaryAmmoType => ref __m_nSecondaryAmmoType.GetRef(this.Handle);
 
 	// m_iMaxClip1
+	private static readonly SchemaField<Int32> __m_iMaxClip1 = new("CBasePlayerWeaponVData", "m_iMaxClip1");
 	[SchemaMember("CBasePlayerWeaponVData", "m_iMaxClip1")]
-	public ref Int32 MaxClip1 => ref Schema.GetRef<Int32>(this.Handle, "CBasePlayerWeaponVData", "m_iMaxClip1");
+	public ref Int32 MaxClip1 => ref __m_iMaxClip1.GetRef(this.Handle);
 
 	// m_iMaxClip2
+	private static readonly SchemaField<Int32> __m_iMaxClip2 = new("CBasePlayerWeaponVData", "m_iMaxClip2");
 	[SchemaMember("CBasePlayerWeaponVData", "m_iMaxClip2")]
-	public ref Int32 MaxClip2 => ref Schema.GetRef<Int32>(this.Handle, "CBasePlayerWeaponVData", "m_iMaxClip2");
+	public ref Int32 MaxClip2 => ref __m_iMaxClip2.GetRef(this.Handle);
 
 	// m_iDefaultClip1
+	private static readonly SchemaField<Int32> __m_iDefaultClip1 = new("CBasePlayerWeaponVData", "m_iDefaultClip1");
 	[SchemaMember("CBasePlayerWeaponVData", "m_iDefaultClip1")]
-	public ref Int32 DefaultClip1 => ref Schema.GetRef<Int32>(this.Handle, "CBasePlayerWeaponVData", "m_iDefaultClip1");
+	public ref Int32 DefaultClip1 => ref __m_iDefaultClip1.GetRef(this.Handle);
 
 	// m_iDefaultClip2
+	private static readonly SchemaField<Int32> __m_iDefaultClip2 = new("CBasePlayerWeaponVData", "m_iDefaultClip2");
 	[SchemaMember("CBasePlayerWeaponVData", "m_iDefaultClip2")]
-	public ref Int32 DefaultClip2 => ref Schema.GetRef<Int32>(this.Handle, "CBasePlayerWeaponVData", "m_iDefaultClip2");
+	public ref Int32 DefaultClip2 => ref __m_iDefaultClip2.GetRef(this.Handle);
 
 	// m_bReserveAmmoAsClips
+	private static readonly SchemaField<bool> __m_bReserveAmmoAsClips = new("CBasePlayerWeaponVData", "m_bReserveAmmoAsClips");
 	[SchemaMember("CBasePlayerWeaponVData", "m_bReserveAmmoAsClips")]
-	public ref bool ReserveAmmoAsClips => ref Schema.GetRef<bool>(this.Handle, "CBasePlayerWeaponVData", "m_bReserveAmmoAsClips");
+	public ref bool ReserveAmmoAsClips => ref __m_bReserveAmmoAsClips.GetRef(this.Handle);
 
 	// m_bTreatAsSingleClip
+	private static readonly SchemaField<bool> __m_bTreatAsSingleClip = new("CBasePlayerWeaponVData", "m_bTreatAsSingleClip");
 	[SchemaMember("CBasePlayerWeaponVData", "m_bTreatAsSingleClip")]
-	public ref bool TreatAsSingleClip => ref Schema.GetRef<bool>(this.Handle, "CBasePlayerWeaponVData", "m_bTreatAsSingleClip");
+	public ref bool TreatAsSingleClip => ref __m_bTreatAsSingleClip.GetRef(this.Handle);
 
 	// m_bKeepLoadedAmmo
+	private static readonly SchemaField<bool> __m_bKeepLoadedAmmo = new("CBasePlayerWeaponVData", "m_bKeepLoadedAmmo");
 	[SchemaMember("CBasePlayerWeaponVData", "m_bKeepLoadedAmmo")]
-	public ref bool KeepLoadedAmmo => ref Schema.GetRef<bool>(this.Handle, "CBasePlayerWeaponVData", "m_bKeepLoadedAmmo");
+	public ref bool KeepLoadedAmmo => ref __m_bKeepLoadedAmmo.GetRef(this.Handle);
 
 	// m_iRumbleEffect
+	private static readonly SchemaField<RumbleEffect_t> __m_iRumbleEffect = new("CBasePlayerWeaponVData", "m_iRumbleEffect");
 	[SchemaMember("CBasePlayerWeaponVData", "m_iRumbleEffect")]
-	public ref RumbleEffect_t RumbleEffect => ref Schema.GetRef<RumbleEffect_t>(this.Handle, "CBasePlayerWeaponVData", "m_iRumbleEffect");
+	public ref RumbleEffect_t RumbleEffect => ref __m_iRumbleEffect.GetRef(this.Handle);
 
 	// m_flDropSpeed
+	private static readonly SchemaField<float> __m_flDropSpeed = new("CBasePlayerWeaponVData", "m_flDropSpeed");
 	[SchemaMember("CBasePlayerWeaponVData", "m_flDropSpeed")]
-	public ref float DropSpeed => ref Schema.GetRef<float>(this.Handle, "CBasePlayerWeaponVData", "m_flDropSpeed");
+	public ref float DropSpeed => ref __m_flDropSpeed.GetRef(this.Handle);
 
 	// m_iSlot
+	private static readonly SchemaField<Int32> __m_iSlot = new("CBasePlayerWeaponVData", "m_iSlot");
 	[SchemaMember("CBasePlayerWeaponVData", "m_iSlot")]
-	public ref Int32 Slot => ref Schema.GetRef<Int32>(this.Handle, "CBasePlayerWeaponVData", "m_iSlot");
+	public ref Int32 Slot => ref __m_iSlot.GetRef(this.Handle);
 
 	// m_iPosition
+	private static readonly SchemaField<Int32> __m_iPosition = new("CBasePlayerWeaponVData", "m_iPosition");
 	[SchemaMember("CBasePlayerWeaponVData", "m_iPosition")]
-	public ref Int32 Position => ref Schema.GetRef<Int32>(this.Handle, "CBasePlayerWeaponVData", "m_iPosition");
+	public ref Int32 Position => ref __m_iPosition.GetRef(this.Handle);
 
 }

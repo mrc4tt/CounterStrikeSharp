@@ -35,28 +35,32 @@ public partial class CChicken : CDynamicProp
 	public CountdownTimer CollisionStuckTimer => Schema.GetDeclaredClass<CountdownTimer>(this.Handle, "CChicken", "m_collisionStuckTimer");
 
 	// m_isOnGround
+	private static readonly SchemaField<bool> __m_isOnGround = new("CChicken", "m_isOnGround");
 	[SchemaMember("CChicken", "m_isOnGround")]
-	public ref bool IsOnGround => ref Schema.GetRef<bool>(this.Handle, "CChicken", "m_isOnGround");
+	public ref bool IsOnGround => ref __m_isOnGround.GetRef(this.Handle);
 
 	// m_vFallVelocity
 	[SchemaMember("CChicken", "m_vFallVelocity")]
 	public Vector FallVelocity => Schema.GetDeclaredClass<Vector>(this.Handle, "CChicken", "m_vFallVelocity");
 
 	// m_desiredActivity
+	private static readonly SchemaField<EChickenActivity> __m_desiredActivity = new("CChicken", "m_desiredActivity");
 	[SchemaMember("CChicken", "m_desiredActivity")]
-	public ref EChickenActivity DesiredActivity => ref Schema.GetRef<EChickenActivity>(this.Handle, "CChicken", "m_desiredActivity");
+	public ref EChickenActivity DesiredActivity => ref __m_desiredActivity.GetRef(this.Handle);
 
 	// m_currentActivity
+	private static readonly SchemaField<EChickenActivity> __m_currentActivity = new("CChicken", "m_currentActivity");
 	[SchemaMember("CChicken", "m_currentActivity")]
-	public ref EChickenActivity CurrentActivity => ref Schema.GetRef<EChickenActivity>(this.Handle, "CChicken", "m_currentActivity");
+	public ref EChickenActivity CurrentActivity => ref __m_currentActivity.GetRef(this.Handle);
 
 	// m_activityTimer
 	[SchemaMember("CChicken", "m_activityTimer")]
 	public CountdownTimer ActivityTimer => Schema.GetDeclaredClass<CountdownTimer>(this.Handle, "CChicken", "m_activityTimer");
 
 	// m_turnRate
+	private static readonly SchemaField<float> __m_turnRate = new("CChicken", "m_turnRate");
 	[SchemaMember("CChicken", "m_turnRate")]
-	public ref float TurnRate => ref Schema.GetRef<float>(this.Handle, "CChicken", "m_turnRate");
+	public ref float TurnRate => ref __m_turnRate.GetRef(this.Handle);
 
 	// m_fleeFrom
 	[SchemaMember("CChicken", "m_fleeFrom")]
@@ -91,8 +95,9 @@ public partial class CChicken : CDynamicProp
 	public CountdownTimer JumpTimer => Schema.GetDeclaredClass<CountdownTimer>(this.Handle, "CChicken", "m_jumpTimer");
 
 	// m_flLastJumpTime
+	private static readonly SchemaField<float> __m_flLastJumpTime = new("CChicken", "m_flLastJumpTime");
 	[SchemaMember("CChicken", "m_flLastJumpTime")]
-	public ref float LastJumpTime => ref Schema.GetRef<float>(this.Handle, "CChicken", "m_flLastJumpTime");
+	public ref float LastJumpTime => ref __m_flLastJumpTime.GetRef(this.Handle);
 
 	// m_repathTimer
 	[SchemaMember("CChicken", "m_repathTimer")]
@@ -103,8 +108,9 @@ public partial class CChicken : CDynamicProp
 	public Vector PathGoal => Schema.GetDeclaredClass<Vector>(this.Handle, "CChicken", "m_vecPathGoal");
 
 	// m_flActiveFollowStartTime
+	private static readonly SchemaField<float> __m_flActiveFollowStartTime = new("CChicken", "m_flActiveFollowStartTime");
 	[SchemaMember("CChicken", "m_flActiveFollowStartTime")]
-	public ref float ActiveFollowStartTime => ref Schema.GetRef<float>(this.Handle, "CChicken", "m_flActiveFollowStartTime");
+	public ref float ActiveFollowStartTime => ref __m_flActiveFollowStartTime.GetRef(this.Handle);
 
 	// m_followMinuteTimer
 	[SchemaMember("CChicken", "m_followMinuteTimer")]
@@ -115,7 +121,8 @@ public partial class CChicken : CDynamicProp
 	public CountdownTimer BlockDirectionTimer => Schema.GetDeclaredClass<CountdownTimer>(this.Handle, "CChicken", "m_BlockDirectionTimer");
 
 	// m_bSpawnDyingParticles
+	private static readonly SchemaField<bool> __m_bSpawnDyingParticles = new("CChicken", "m_bSpawnDyingParticles");
 	[SchemaMember("CChicken", "m_bSpawnDyingParticles")]
-	public ref bool SpawnDyingParticles => ref Schema.GetRef<bool>(this.Handle, "CChicken", "m_bSpawnDyingParticles");
+	public ref bool SpawnDyingParticles => ref __m_bSpawnDyingParticles.GetRef(this.Handle);
 
 }

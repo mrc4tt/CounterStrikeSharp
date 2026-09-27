@@ -19,24 +19,29 @@ public partial class CFishPool : CBaseEntity
     public CFishPool (IntPtr pointer) : base(pointer) {}
 
 	// m_fishCount
+	private static readonly SchemaField<Int32> __m_fishCount = new("CFishPool", "m_fishCount");
 	[SchemaMember("CFishPool", "m_fishCount")]
-	public ref Int32 FishCount => ref Schema.GetRef<Int32>(this.Handle, "CFishPool", "m_fishCount");
+	public ref Int32 FishCount => ref __m_fishCount.GetRef(this.Handle);
 
 	// m_maxRange
+	private static readonly SchemaField<float> __m_maxRange = new("CFishPool", "m_maxRange");
 	[SchemaMember("CFishPool", "m_maxRange")]
-	public ref float MaxRange => ref Schema.GetRef<float>(this.Handle, "CFishPool", "m_maxRange");
+	public ref float MaxRange => ref __m_maxRange.GetRef(this.Handle);
 
 	// m_swimDepth
+	private static readonly SchemaField<float> __m_swimDepth = new("CFishPool", "m_swimDepth");
 	[SchemaMember("CFishPool", "m_swimDepth")]
-	public ref float SwimDepth => ref Schema.GetRef<float>(this.Handle, "CFishPool", "m_swimDepth");
+	public ref float SwimDepth => ref __m_swimDepth.GetRef(this.Handle);
 
 	// m_waterLevel
+	private static readonly SchemaField<float> __m_waterLevel = new("CFishPool", "m_waterLevel");
 	[SchemaMember("CFishPool", "m_waterLevel")]
-	public new ref float WaterLevel => ref Schema.GetRef<float>(this.Handle, "CFishPool", "m_waterLevel");
+	public new ref float WaterLevel => ref __m_waterLevel.GetRef(this.Handle);
 
 	// m_isDormant
+	private static readonly SchemaField<bool> __m_isDormant = new("CFishPool", "m_isDormant");
 	[SchemaMember("CFishPool", "m_isDormant")]
-	public ref bool IsDormant => ref Schema.GetRef<bool>(this.Handle, "CFishPool", "m_isDormant");
+	public ref bool IsDormant => ref __m_isDormant.GetRef(this.Handle);
 
 	// m_fishes
 	[SchemaMember("CFishPool", "m_fishes")]

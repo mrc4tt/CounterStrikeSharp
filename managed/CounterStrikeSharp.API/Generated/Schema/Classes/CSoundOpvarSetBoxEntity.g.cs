@@ -35,8 +35,9 @@ public partial class CSoundOpvarSetBoxEntity : CSoundOpvarSetPointEntity
 	public Vector DistanceOuterMaxs => Schema.GetDeclaredClass<Vector>(this.Handle, "CSoundOpvarSetBoxEntity", "m_vDistanceOuterMaxs");
 
 	// m_nBoxDirection
+	private static readonly SchemaField<Int32> __m_nBoxDirection = new("CSoundOpvarSetBoxEntity", "m_nBoxDirection");
 	[SchemaMember("CSoundOpvarSetBoxEntity", "m_nBoxDirection")]
-	public ref Int32 BoxDirection => ref Schema.GetRef<Int32>(this.Handle, "CSoundOpvarSetBoxEntity", "m_nBoxDirection");
+	public ref Int32 BoxDirection => ref __m_nBoxDirection.GetRef(this.Handle);
 
 	// m_vInnerMins
 	[SchemaMember("CSoundOpvarSetBoxEntity", "m_vInnerMins")]

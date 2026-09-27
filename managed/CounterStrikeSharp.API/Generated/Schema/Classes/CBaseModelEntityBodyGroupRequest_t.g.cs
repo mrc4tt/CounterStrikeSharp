@@ -19,8 +19,9 @@ public partial class CBaseModelEntityBodyGroupRequest_t : NativeObject
     public CBaseModelEntityBodyGroupRequest_t (IntPtr pointer) : base(pointer) {}
 
 	// m_uRequestID
+	private static readonly SchemaField<UInt32> __m_uRequestID = new("CBaseModelEntity::BodyGroupRequest_t", "m_uRequestID");
 	[SchemaMember("CBaseModelEntity::BodyGroupRequest_t", "m_uRequestID")]
-	public ref UInt32 RequestID => ref Schema.GetRef<UInt32>(this.Handle, "CBaseModelEntity::BodyGroupRequest_t", "m_uRequestID");
+	public ref UInt32 RequestID => ref __m_uRequestID.GetRef(this.Handle);
 
 	// m_nGroupName
 	[SchemaMember("CBaseModelEntity::BodyGroupRequest_t", "m_nGroupName")]
@@ -35,15 +36,18 @@ public partial class CBaseModelEntityBodyGroupRequest_t : NativeObject
 	}
 
 	// m_nGroup
+	private static readonly SchemaField<Int32> __m_nGroup = new("CBaseModelEntity::BodyGroupRequest_t", "m_nGroup");
 	[SchemaMember("CBaseModelEntity::BodyGroupRequest_t", "m_nGroup")]
-	public ref Int32 Group => ref Schema.GetRef<Int32>(this.Handle, "CBaseModelEntity::BodyGroupRequest_t", "m_nGroup");
+	public ref Int32 Group => ref __m_nGroup.GetRef(this.Handle);
 
 	// m_uChoice
+	private static readonly SchemaField<UInt16> __m_uChoice = new("CBaseModelEntity::BodyGroupRequest_t", "m_uChoice");
 	[SchemaMember("CBaseModelEntity::BodyGroupRequest_t", "m_uChoice")]
-	public ref UInt16 Choice => ref Schema.GetRef<UInt16>(this.Handle, "CBaseModelEntity::BodyGroupRequest_t", "m_uChoice");
+	public ref UInt16 Choice => ref __m_uChoice.GetRef(this.Handle);
 
 	// m_uRefCount
+	private static readonly SchemaField<UInt16> __m_uRefCount = new("CBaseModelEntity::BodyGroupRequest_t", "m_uRefCount");
 	[SchemaMember("CBaseModelEntity::BodyGroupRequest_t", "m_uRefCount")]
-	public ref UInt16 RefCount => ref Schema.GetRef<UInt16>(this.Handle, "CBaseModelEntity::BodyGroupRequest_t", "m_uRefCount");
+	public ref UInt16 RefCount => ref __m_uRefCount.GetRef(this.Handle);
 
 }

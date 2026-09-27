@@ -19,8 +19,9 @@ public partial class CBaseClientUIEntity : CBaseModelEntity
     public CBaseClientUIEntity (IntPtr pointer) : base(pointer) {}
 
 	// m_bEnabled
+	private static readonly SchemaField<bool> __m_bEnabled = new("CBaseClientUIEntity", "m_bEnabled");
 	[SchemaMember("CBaseClientUIEntity", "m_bEnabled")]
-	public ref bool Enabled => ref Schema.GetRef<bool>(this.Handle, "CBaseClientUIEntity", "m_bEnabled");
+	public ref bool Enabled => ref __m_bEnabled.GetRef(this.Handle);
 
 	// m_DialogXMLName
 	[SchemaMember("CBaseClientUIEntity", "m_DialogXMLName")]

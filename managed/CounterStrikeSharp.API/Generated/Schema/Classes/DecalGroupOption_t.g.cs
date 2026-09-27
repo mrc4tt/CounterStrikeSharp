@@ -31,19 +31,23 @@ public partial class DecalGroupOption_t : NativeObject
 	}
 
 	// m_flProbability
+	private static readonly SchemaField<float> __m_flProbability = new("DecalGroupOption_t", "m_flProbability");
 	[SchemaMember("DecalGroupOption_t", "m_flProbability")]
-	public ref float Probability => ref Schema.GetRef<float>(this.Handle, "DecalGroupOption_t", "m_flProbability");
+	public ref float Probability => ref __m_flProbability.GetRef(this.Handle);
 
 	// m_bEnableAngleBetweenNormalAndGravityRange
+	private static readonly SchemaField<bool> __m_bEnableAngleBetweenNormalAndGravityRange = new("DecalGroupOption_t", "m_bEnableAngleBetweenNormalAndGravityRange");
 	[SchemaMember("DecalGroupOption_t", "m_bEnableAngleBetweenNormalAndGravityRange")]
-	public ref bool EnableAngleBetweenNormalAndGravityRange => ref Schema.GetRef<bool>(this.Handle, "DecalGroupOption_t", "m_bEnableAngleBetweenNormalAndGravityRange");
+	public ref bool EnableAngleBetweenNormalAndGravityRange => ref __m_bEnableAngleBetweenNormalAndGravityRange.GetRef(this.Handle);
 
 	// m_flMinAngleBetweenNormalAndGravity
+	private static readonly SchemaField<float> __m_flMinAngleBetweenNormalAndGravity = new("DecalGroupOption_t", "m_flMinAngleBetweenNormalAndGravity");
 	[SchemaMember("DecalGroupOption_t", "m_flMinAngleBetweenNormalAndGravity")]
-	public ref float MinAngleBetweenNormalAndGravity => ref Schema.GetRef<float>(this.Handle, "DecalGroupOption_t", "m_flMinAngleBetweenNormalAndGravity");
+	public ref float MinAngleBetweenNormalAndGravity => ref __m_flMinAngleBetweenNormalAndGravity.GetRef(this.Handle);
 
 	// m_flMaxAngleBetweenNormalAndGravity
+	private static readonly SchemaField<float> __m_flMaxAngleBetweenNormalAndGravity = new("DecalGroupOption_t", "m_flMaxAngleBetweenNormalAndGravity");
 	[SchemaMember("DecalGroupOption_t", "m_flMaxAngleBetweenNormalAndGravity")]
-	public ref float MaxAngleBetweenNormalAndGravity => ref Schema.GetRef<float>(this.Handle, "DecalGroupOption_t", "m_flMaxAngleBetweenNormalAndGravity");
+	public ref float MaxAngleBetweenNormalAndGravity => ref __m_flMaxAngleBetweenNormalAndGravity.GetRef(this.Handle);
 
 }

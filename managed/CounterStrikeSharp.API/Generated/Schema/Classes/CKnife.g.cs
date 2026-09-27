@@ -19,7 +19,8 @@ public partial class CKnife : CCSWeaponBase
     public CKnife (IntPtr pointer) : base(pointer) {}
 
 	// m_bFirstAttack
+	private static readonly SchemaField<bool> __m_bFirstAttack = new("CKnife", "m_bFirstAttack");
 	[SchemaMember("CKnife", "m_bFirstAttack")]
-	public ref bool FirstAttack => ref Schema.GetRef<bool>(this.Handle, "CKnife", "m_bFirstAttack");
+	public ref bool FirstAttack => ref __m_bFirstAttack.GetRef(this.Handle);
 
 }

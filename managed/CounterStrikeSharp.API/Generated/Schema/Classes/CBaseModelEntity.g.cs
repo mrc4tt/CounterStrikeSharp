@@ -31,88 +31,107 @@ public partial class CBaseModelEntity : CBaseEntity
 	public CChoreoComponent? ChoreoComponent => Schema.GetPointer<CChoreoComponent>(this.Handle, "CBaseModelEntity", "m_pChoreoComponent");
 
 	// m_nDestructiblePartInitialStateDestructed0
+	private static readonly SchemaField<HitGroup_t> __m_nDestructiblePartInitialStateDestructed0 = new("CBaseModelEntity", "m_nDestructiblePartInitialStateDestructed0");
 	[SchemaMember("CBaseModelEntity", "m_nDestructiblePartInitialStateDestructed0")]
-	public ref HitGroup_t DestructiblePartInitialStateDestructed0 => ref Schema.GetRef<HitGroup_t>(this.Handle, "CBaseModelEntity", "m_nDestructiblePartInitialStateDestructed0");
+	public ref HitGroup_t DestructiblePartInitialStateDestructed0 => ref __m_nDestructiblePartInitialStateDestructed0.GetRef(this.Handle);
 
 	// m_nDestructiblePartInitialStateDestructed1
+	private static readonly SchemaField<HitGroup_t> __m_nDestructiblePartInitialStateDestructed1 = new("CBaseModelEntity", "m_nDestructiblePartInitialStateDestructed1");
 	[SchemaMember("CBaseModelEntity", "m_nDestructiblePartInitialStateDestructed1")]
-	public ref HitGroup_t DestructiblePartInitialStateDestructed1 => ref Schema.GetRef<HitGroup_t>(this.Handle, "CBaseModelEntity", "m_nDestructiblePartInitialStateDestructed1");
+	public ref HitGroup_t DestructiblePartInitialStateDestructed1 => ref __m_nDestructiblePartInitialStateDestructed1.GetRef(this.Handle);
 
 	// m_nDestructiblePartInitialStateDestructed2
+	private static readonly SchemaField<HitGroup_t> __m_nDestructiblePartInitialStateDestructed2 = new("CBaseModelEntity", "m_nDestructiblePartInitialStateDestructed2");
 	[SchemaMember("CBaseModelEntity", "m_nDestructiblePartInitialStateDestructed2")]
-	public ref HitGroup_t DestructiblePartInitialStateDestructed2 => ref Schema.GetRef<HitGroup_t>(this.Handle, "CBaseModelEntity", "m_nDestructiblePartInitialStateDestructed2");
+	public ref HitGroup_t DestructiblePartInitialStateDestructed2 => ref __m_nDestructiblePartInitialStateDestructed2.GetRef(this.Handle);
 
 	// m_nDestructiblePartInitialStateDestructed3
+	private static readonly SchemaField<HitGroup_t> __m_nDestructiblePartInitialStateDestructed3 = new("CBaseModelEntity", "m_nDestructiblePartInitialStateDestructed3");
 	[SchemaMember("CBaseModelEntity", "m_nDestructiblePartInitialStateDestructed3")]
-	public ref HitGroup_t DestructiblePartInitialStateDestructed3 => ref Schema.GetRef<HitGroup_t>(this.Handle, "CBaseModelEntity", "m_nDestructiblePartInitialStateDestructed3");
+	public ref HitGroup_t DestructiblePartInitialStateDestructed3 => ref __m_nDestructiblePartInitialStateDestructed3.GetRef(this.Handle);
 
 	// m_nDestructiblePartInitialStateDestructed4
+	private static readonly SchemaField<HitGroup_t> __m_nDestructiblePartInitialStateDestructed4 = new("CBaseModelEntity", "m_nDestructiblePartInitialStateDestructed4");
 	[SchemaMember("CBaseModelEntity", "m_nDestructiblePartInitialStateDestructed4")]
-	public ref HitGroup_t DestructiblePartInitialStateDestructed4 => ref Schema.GetRef<HitGroup_t>(this.Handle, "CBaseModelEntity", "m_nDestructiblePartInitialStateDestructed4");
+	public ref HitGroup_t DestructiblePartInitialStateDestructed4 => ref __m_nDestructiblePartInitialStateDestructed4.GetRef(this.Handle);
 
 	// m_nDestructiblePartInitialStateDestructed0_PartIndex
+	private static readonly SchemaField<Int32> __m_nDestructiblePartInitialStateDestructed0_PartIndex = new("CBaseModelEntity", "m_nDestructiblePartInitialStateDestructed0_PartIndex");
 	[SchemaMember("CBaseModelEntity", "m_nDestructiblePartInitialStateDestructed0_PartIndex")]
-	public ref Int32 DestructiblePartInitialStateDestructed0_PartIndex => ref Schema.GetRef<Int32>(this.Handle, "CBaseModelEntity", "m_nDestructiblePartInitialStateDestructed0_PartIndex");
+	public ref Int32 DestructiblePartInitialStateDestructed0_PartIndex => ref __m_nDestructiblePartInitialStateDestructed0_PartIndex.GetRef(this.Handle);
 
 	// m_nDestructiblePartInitialStateDestructed1_PartIndex
+	private static readonly SchemaField<Int32> __m_nDestructiblePartInitialStateDestructed1_PartIndex = new("CBaseModelEntity", "m_nDestructiblePartInitialStateDestructed1_PartIndex");
 	[SchemaMember("CBaseModelEntity", "m_nDestructiblePartInitialStateDestructed1_PartIndex")]
-	public ref Int32 DestructiblePartInitialStateDestructed1_PartIndex => ref Schema.GetRef<Int32>(this.Handle, "CBaseModelEntity", "m_nDestructiblePartInitialStateDestructed1_PartIndex");
+	public ref Int32 DestructiblePartInitialStateDestructed1_PartIndex => ref __m_nDestructiblePartInitialStateDestructed1_PartIndex.GetRef(this.Handle);
 
 	// m_nDestructiblePartInitialStateDestructed2_PartIndex
+	private static readonly SchemaField<Int32> __m_nDestructiblePartInitialStateDestructed2_PartIndex = new("CBaseModelEntity", "m_nDestructiblePartInitialStateDestructed2_PartIndex");
 	[SchemaMember("CBaseModelEntity", "m_nDestructiblePartInitialStateDestructed2_PartIndex")]
-	public ref Int32 DestructiblePartInitialStateDestructed2_PartIndex => ref Schema.GetRef<Int32>(this.Handle, "CBaseModelEntity", "m_nDestructiblePartInitialStateDestructed2_PartIndex");
+	public ref Int32 DestructiblePartInitialStateDestructed2_PartIndex => ref __m_nDestructiblePartInitialStateDestructed2_PartIndex.GetRef(this.Handle);
 
 	// m_nDestructiblePartInitialStateDestructed3_PartIndex
+	private static readonly SchemaField<Int32> __m_nDestructiblePartInitialStateDestructed3_PartIndex = new("CBaseModelEntity", "m_nDestructiblePartInitialStateDestructed3_PartIndex");
 	[SchemaMember("CBaseModelEntity", "m_nDestructiblePartInitialStateDestructed3_PartIndex")]
-	public ref Int32 DestructiblePartInitialStateDestructed3_PartIndex => ref Schema.GetRef<Int32>(this.Handle, "CBaseModelEntity", "m_nDestructiblePartInitialStateDestructed3_PartIndex");
+	public ref Int32 DestructiblePartInitialStateDestructed3_PartIndex => ref __m_nDestructiblePartInitialStateDestructed3_PartIndex.GetRef(this.Handle);
 
 	// m_nDestructiblePartInitialStateDestructed4_PartIndex
+	private static readonly SchemaField<Int32> __m_nDestructiblePartInitialStateDestructed4_PartIndex = new("CBaseModelEntity", "m_nDestructiblePartInitialStateDestructed4_PartIndex");
 	[SchemaMember("CBaseModelEntity", "m_nDestructiblePartInitialStateDestructed4_PartIndex")]
-	public ref Int32 DestructiblePartInitialStateDestructed4_PartIndex => ref Schema.GetRef<Int32>(this.Handle, "CBaseModelEntity", "m_nDestructiblePartInitialStateDestructed4_PartIndex");
+	public ref Int32 DestructiblePartInitialStateDestructed4_PartIndex => ref __m_nDestructiblePartInitialStateDestructed4_PartIndex.GetRef(this.Handle);
 
 	// m_bDestructiblePartInitialStateDestructed0_GenerateBreakpieces
+	private static readonly SchemaField<bool> __m_bDestructiblePartInitialStateDestructed0_GenerateBreakpieces = new("CBaseModelEntity", "m_bDestructiblePartInitialStateDestructed0_GenerateBreakpieces");
 	[SchemaMember("CBaseModelEntity", "m_bDestructiblePartInitialStateDestructed0_GenerateBreakpieces")]
-	public ref bool DestructiblePartInitialStateDestructed0_GenerateBreakpieces => ref Schema.GetRef<bool>(this.Handle, "CBaseModelEntity", "m_bDestructiblePartInitialStateDestructed0_GenerateBreakpieces");
+	public ref bool DestructiblePartInitialStateDestructed0_GenerateBreakpieces => ref __m_bDestructiblePartInitialStateDestructed0_GenerateBreakpieces.GetRef(this.Handle);
 
 	// m_bDestructiblePartInitialStateDestructed1_GenerateBreakpieces
+	private static readonly SchemaField<bool> __m_bDestructiblePartInitialStateDestructed1_GenerateBreakpieces = new("CBaseModelEntity", "m_bDestructiblePartInitialStateDestructed1_GenerateBreakpieces");
 	[SchemaMember("CBaseModelEntity", "m_bDestructiblePartInitialStateDestructed1_GenerateBreakpieces")]
-	public ref bool DestructiblePartInitialStateDestructed1_GenerateBreakpieces => ref Schema.GetRef<bool>(this.Handle, "CBaseModelEntity", "m_bDestructiblePartInitialStateDestructed1_GenerateBreakpieces");
+	public ref bool DestructiblePartInitialStateDestructed1_GenerateBreakpieces => ref __m_bDestructiblePartInitialStateDestructed1_GenerateBreakpieces.GetRef(this.Handle);
 
 	// m_bDestructiblePartInitialStateDestructed2_GenerateBreakpieces
+	private static readonly SchemaField<bool> __m_bDestructiblePartInitialStateDestructed2_GenerateBreakpieces = new("CBaseModelEntity", "m_bDestructiblePartInitialStateDestructed2_GenerateBreakpieces");
 	[SchemaMember("CBaseModelEntity", "m_bDestructiblePartInitialStateDestructed2_GenerateBreakpieces")]
-	public ref bool DestructiblePartInitialStateDestructed2_GenerateBreakpieces => ref Schema.GetRef<bool>(this.Handle, "CBaseModelEntity", "m_bDestructiblePartInitialStateDestructed2_GenerateBreakpieces");
+	public ref bool DestructiblePartInitialStateDestructed2_GenerateBreakpieces => ref __m_bDestructiblePartInitialStateDestructed2_GenerateBreakpieces.GetRef(this.Handle);
 
 	// m_bDestructiblePartInitialStateDestructed3_GenerateBreakpieces
+	private static readonly SchemaField<bool> __m_bDestructiblePartInitialStateDestructed3_GenerateBreakpieces = new("CBaseModelEntity", "m_bDestructiblePartInitialStateDestructed3_GenerateBreakpieces");
 	[SchemaMember("CBaseModelEntity", "m_bDestructiblePartInitialStateDestructed3_GenerateBreakpieces")]
-	public ref bool DestructiblePartInitialStateDestructed3_GenerateBreakpieces => ref Schema.GetRef<bool>(this.Handle, "CBaseModelEntity", "m_bDestructiblePartInitialStateDestructed3_GenerateBreakpieces");
+	public ref bool DestructiblePartInitialStateDestructed3_GenerateBreakpieces => ref __m_bDestructiblePartInitialStateDestructed3_GenerateBreakpieces.GetRef(this.Handle);
 
 	// m_bDestructiblePartInitialStateDestructed4_GenerateBreakpieces
+	private static readonly SchemaField<bool> __m_bDestructiblePartInitialStateDestructed4_GenerateBreakpieces = new("CBaseModelEntity", "m_bDestructiblePartInitialStateDestructed4_GenerateBreakpieces");
 	[SchemaMember("CBaseModelEntity", "m_bDestructiblePartInitialStateDestructed4_GenerateBreakpieces")]
-	public ref bool DestructiblePartInitialStateDestructed4_GenerateBreakpieces => ref Schema.GetRef<bool>(this.Handle, "CBaseModelEntity", "m_bDestructiblePartInitialStateDestructed4_GenerateBreakpieces");
+	public ref bool DestructiblePartInitialStateDestructed4_GenerateBreakpieces => ref __m_bDestructiblePartInitialStateDestructed4_GenerateBreakpieces.GetRef(this.Handle);
 
 	// m_pDestructiblePartsSystemComponent
 	[SchemaMember("CBaseModelEntity", "m_pDestructiblePartsSystemComponent")]
 	public CDestructiblePartsComponent? DestructiblePartsSystemComponent => Schema.GetPointer<CDestructiblePartsComponent>(this.Handle, "CBaseModelEntity", "m_pDestructiblePartsSystemComponent");
 
 	// m_flDissolveStartTime
+	private static readonly SchemaField<float> __m_flDissolveStartTime = new("CBaseModelEntity", "m_flDissolveStartTime");
 	[SchemaMember("CBaseModelEntity", "m_flDissolveStartTime")]
-	public ref float DissolveStartTime => ref Schema.GetRef<float>(this.Handle, "CBaseModelEntity", "m_flDissolveStartTime");
+	public ref float DissolveStartTime => ref __m_flDissolveStartTime.GetRef(this.Handle);
 
 	// m_OnIgnite
 	[SchemaMember("CBaseModelEntity", "m_OnIgnite")]
 	public CEntityIOOutput OnIgnite => Schema.GetDeclaredClass<CEntityIOOutput>(this.Handle, "CBaseModelEntity", "m_OnIgnite");
 
 	// m_nRenderMode
+	private static readonly SchemaField<RenderMode_t> __m_nRenderMode = new("CBaseModelEntity", "m_nRenderMode");
 	[SchemaMember("CBaseModelEntity", "m_nRenderMode")]
-	public ref RenderMode_t RenderMode => ref Schema.GetRef<RenderMode_t>(this.Handle, "CBaseModelEntity", "m_nRenderMode");
+	public ref RenderMode_t RenderMode => ref __m_nRenderMode.GetRef(this.Handle);
 
 	// m_nRenderFX
+	private static readonly SchemaField<RenderFx_t> __m_nRenderFX = new("CBaseModelEntity", "m_nRenderFX");
 	[SchemaMember("CBaseModelEntity", "m_nRenderFX")]
-	public ref RenderFx_t RenderFX => ref Schema.GetRef<RenderFx_t>(this.Handle, "CBaseModelEntity", "m_nRenderFX");
+	public ref RenderFx_t RenderFX => ref __m_nRenderFX.GetRef(this.Handle);
 
 	// m_bAllowFadeInView
+	private static readonly SchemaField<bool> __m_bAllowFadeInView = new("CBaseModelEntity", "m_bAllowFadeInView");
 	[SchemaMember("CBaseModelEntity", "m_bAllowFadeInView")]
-	public ref bool AllowFadeInView => ref Schema.GetRef<bool>(this.Handle, "CBaseModelEntity", "m_bAllowFadeInView");
+	public ref bool AllowFadeInView => ref __m_bAllowFadeInView.GetRef(this.Handle);
 
 	// m_clrRender
 	[SchemaMember("CBaseModelEntity", "m_clrRender")]
@@ -127,16 +146,19 @@ public partial class CBaseModelEntity : CBaseEntity
 	public NetworkedVector<EntityRenderAttribute_t> RenderAttributes => Schema.GetDeclaredClass<NetworkedVector<EntityRenderAttribute_t>>(this.Handle, "CBaseModelEntity", "m_vecRenderAttributes");
 
 	// m_bRenderToCubemaps
+	private static readonly SchemaField<bool> __m_bRenderToCubemaps = new("CBaseModelEntity", "m_bRenderToCubemaps");
 	[SchemaMember("CBaseModelEntity", "m_bRenderToCubemaps")]
-	public ref bool RenderToCubemaps => ref Schema.GetRef<bool>(this.Handle, "CBaseModelEntity", "m_bRenderToCubemaps");
+	public ref bool RenderToCubemaps => ref __m_bRenderToCubemaps.GetRef(this.Handle);
 
 	// m_bExpandRenderBoundsToIncludeCloth
+	private static readonly SchemaField<bool> __m_bExpandRenderBoundsToIncludeCloth = new("CBaseModelEntity", "m_bExpandRenderBoundsToIncludeCloth");
 	[SchemaMember("CBaseModelEntity", "m_bExpandRenderBoundsToIncludeCloth")]
-	public ref bool ExpandRenderBoundsToIncludeCloth => ref Schema.GetRef<bool>(this.Handle, "CBaseModelEntity", "m_bExpandRenderBoundsToIncludeCloth");
+	public ref bool ExpandRenderBoundsToIncludeCloth => ref __m_bExpandRenderBoundsToIncludeCloth.GetRef(this.Handle);
 
 	// m_bNoInterpolate
+	private static readonly SchemaField<bool> __m_bNoInterpolate = new("CBaseModelEntity", "m_bNoInterpolate");
 	[SchemaMember("CBaseModelEntity", "m_bNoInterpolate")]
-	public ref bool NoInterpolate => ref Schema.GetRef<bool>(this.Handle, "CBaseModelEntity", "m_bNoInterpolate");
+	public ref bool NoInterpolate => ref __m_bNoInterpolate.GetRef(this.Handle);
 
 	// m_Collision
 	[SchemaMember("CBaseModelEntity", "m_Collision")]
@@ -147,32 +169,39 @@ public partial class CBaseModelEntity : CBaseEntity
 	public CGlowProperty Glow => Schema.GetDeclaredClass<CGlowProperty>(this.Handle, "CBaseModelEntity", "m_Glow");
 
 	// m_flGlowBackfaceMult
+	private static readonly SchemaField<float> __m_flGlowBackfaceMult = new("CBaseModelEntity", "m_flGlowBackfaceMult");
 	[SchemaMember("CBaseModelEntity", "m_flGlowBackfaceMult")]
-	public ref float GlowBackfaceMult => ref Schema.GetRef<float>(this.Handle, "CBaseModelEntity", "m_flGlowBackfaceMult");
+	public ref float GlowBackfaceMult => ref __m_flGlowBackfaceMult.GetRef(this.Handle);
 
 	// m_fadeMinDist
+	private static readonly SchemaField<float> __m_fadeMinDist = new("CBaseModelEntity", "m_fadeMinDist");
 	[SchemaMember("CBaseModelEntity", "m_fadeMinDist")]
-	public ref float FadeMinDist => ref Schema.GetRef<float>(this.Handle, "CBaseModelEntity", "m_fadeMinDist");
+	public ref float FadeMinDist => ref __m_fadeMinDist.GetRef(this.Handle);
 
 	// m_fadeMaxDist
+	private static readonly SchemaField<float> __m_fadeMaxDist = new("CBaseModelEntity", "m_fadeMaxDist");
 	[SchemaMember("CBaseModelEntity", "m_fadeMaxDist")]
-	public ref float FadeMaxDist => ref Schema.GetRef<float>(this.Handle, "CBaseModelEntity", "m_fadeMaxDist");
+	public ref float FadeMaxDist => ref __m_fadeMaxDist.GetRef(this.Handle);
 
 	// m_flFadeScale
+	private static readonly SchemaField<float> __m_flFadeScale = new("CBaseModelEntity", "m_flFadeScale");
 	[SchemaMember("CBaseModelEntity", "m_flFadeScale")]
-	public ref float FadeScale => ref Schema.GetRef<float>(this.Handle, "CBaseModelEntity", "m_flFadeScale");
+	public ref float FadeScale => ref __m_flFadeScale.GetRef(this.Handle);
 
 	// m_flShadowStrength
+	private static readonly SchemaField<float> __m_flShadowStrength = new("CBaseModelEntity", "m_flShadowStrength");
 	[SchemaMember("CBaseModelEntity", "m_flShadowStrength")]
-	public ref float ShadowStrength => ref Schema.GetRef<float>(this.Handle, "CBaseModelEntity", "m_flShadowStrength");
+	public ref float ShadowStrength => ref __m_flShadowStrength.GetRef(this.Handle);
 
 	// m_nObjectCulling
+	private static readonly SchemaField<byte> __m_nObjectCulling = new("CBaseModelEntity", "m_nObjectCulling");
 	[SchemaMember("CBaseModelEntity", "m_nObjectCulling")]
-	public ref byte ObjectCulling => ref Schema.GetRef<byte>(this.Handle, "CBaseModelEntity", "m_nObjectCulling");
+	public ref byte ObjectCulling => ref __m_nObjectCulling.GetRef(this.Handle);
 
 	// m_bodyGroupTotalRequestCount
+	private static readonly SchemaField<UInt32> __m_bodyGroupTotalRequestCount = new("CBaseModelEntity", "m_bodyGroupTotalRequestCount");
 	[SchemaMember("CBaseModelEntity", "m_bodyGroupTotalRequestCount")]
-	public ref UInt32 BodyGroupTotalRequestCount => ref Schema.GetRef<UInt32>(this.Handle, "CBaseModelEntity", "m_bodyGroupTotalRequestCount");
+	public ref UInt32 BodyGroupTotalRequestCount => ref __m_bodyGroupTotalRequestCount.GetRef(this.Handle);
 
 	// m_bodyGroupRequests
 	[SchemaMember("CBaseModelEntity", "m_bodyGroupRequests")]

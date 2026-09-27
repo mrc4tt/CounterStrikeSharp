@@ -19,7 +19,8 @@ public partial class CNetworkTransmitComponent : NativeObject
     public CNetworkTransmitComponent (IntPtr pointer) : base(pointer) {}
 
 	// m_nTransmitStateOwnedCounter
+	private static readonly SchemaField<byte> __m_nTransmitStateOwnedCounter = new("CNetworkTransmitComponent", "m_nTransmitStateOwnedCounter");
 	[SchemaMember("CNetworkTransmitComponent", "m_nTransmitStateOwnedCounter")]
-	public ref byte TransmitStateOwnedCounter => ref Schema.GetRef<byte>(this.Handle, "CNetworkTransmitComponent", "m_nTransmitStateOwnedCounter");
+	public ref byte TransmitStateOwnedCounter => ref __m_nTransmitStateOwnedCounter.GetRef(this.Handle);
 
 }

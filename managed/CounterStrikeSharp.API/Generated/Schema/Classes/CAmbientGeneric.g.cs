@@ -19,28 +19,33 @@ public partial class CAmbientGeneric : CPointEntity
     public CAmbientGeneric (IntPtr pointer) : base(pointer) {}
 
 	// m_radius
+	private static readonly SchemaField<float> __m_radius = new("CAmbientGeneric", "m_radius");
 	[SchemaMember("CAmbientGeneric", "m_radius")]
-	public ref float Radius => ref Schema.GetRef<float>(this.Handle, "CAmbientGeneric", "m_radius");
+	public ref float Radius => ref __m_radius.GetRef(this.Handle);
 
 	// m_flMaxRadius
+	private static readonly SchemaField<float> __m_flMaxRadius = new("CAmbientGeneric", "m_flMaxRadius");
 	[SchemaMember("CAmbientGeneric", "m_flMaxRadius")]
-	public ref float MaxRadius => ref Schema.GetRef<float>(this.Handle, "CAmbientGeneric", "m_flMaxRadius");
+	public ref float MaxRadius => ref __m_flMaxRadius.GetRef(this.Handle);
 
 	// m_iSoundLevel
+	private static readonly SchemaField<soundlevel_t> __m_iSoundLevel = new("CAmbientGeneric", "m_iSoundLevel");
 	[SchemaMember("CAmbientGeneric", "m_iSoundLevel")]
-	public ref soundlevel_t SoundLevel => ref Schema.GetRef<soundlevel_t>(this.Handle, "CAmbientGeneric", "m_iSoundLevel");
+	public ref soundlevel_t SoundLevel => ref __m_iSoundLevel.GetRef(this.Handle);
 
 	// m_dpv
 	[SchemaMember("CAmbientGeneric", "m_dpv")]
 	public dynpitchvol_t Dpv => Schema.GetDeclaredClass<dynpitchvol_t>(this.Handle, "CAmbientGeneric", "m_dpv");
 
 	// m_fActive
+	private static readonly SchemaField<bool> __m_fActive = new("CAmbientGeneric", "m_fActive");
 	[SchemaMember("CAmbientGeneric", "m_fActive")]
-	public ref bool Active => ref Schema.GetRef<bool>(this.Handle, "CAmbientGeneric", "m_fActive");
+	public ref bool Active => ref __m_fActive.GetRef(this.Handle);
 
 	// m_fLooping
+	private static readonly SchemaField<bool> __m_fLooping = new("CAmbientGeneric", "m_fLooping");
 	[SchemaMember("CAmbientGeneric", "m_fLooping")]
-	public ref bool Looping => ref Schema.GetRef<bool>(this.Handle, "CAmbientGeneric", "m_fLooping");
+	public ref bool Looping => ref __m_fLooping.GetRef(this.Handle);
 
 	// m_iszSound
 	[SchemaMember("CAmbientGeneric", "m_iszSound")]

@@ -27,15 +27,18 @@ public partial class CSoundOpvarSetAutoRoomEntity : CSoundOpvarSetPointEntity
 	public NetworkedVector<AutoRoomDoorwayPairs_t> DoorwayPairs => Schema.GetDeclaredClass<NetworkedVector<AutoRoomDoorwayPairs_t>>(this.Handle, "CSoundOpvarSetAutoRoomEntity", "m_doorwayPairs");
 
 	// m_flSize
+	private static readonly SchemaField<float> __m_flSize = new("CSoundOpvarSetAutoRoomEntity", "m_flSize");
 	[SchemaMember("CSoundOpvarSetAutoRoomEntity", "m_flSize")]
-	public ref float Size => ref Schema.GetRef<float>(this.Handle, "CSoundOpvarSetAutoRoomEntity", "m_flSize");
+	public ref float Size => ref __m_flSize.GetRef(this.Handle);
 
 	// m_flHeightTolerance
+	private static readonly SchemaField<float> __m_flHeightTolerance = new("CSoundOpvarSetAutoRoomEntity", "m_flHeightTolerance");
 	[SchemaMember("CSoundOpvarSetAutoRoomEntity", "m_flHeightTolerance")]
-	public ref float HeightTolerance => ref Schema.GetRef<float>(this.Handle, "CSoundOpvarSetAutoRoomEntity", "m_flHeightTolerance");
+	public ref float HeightTolerance => ref __m_flHeightTolerance.GetRef(this.Handle);
 
 	// m_flSizeSqr
+	private static readonly SchemaField<float> __m_flSizeSqr = new("CSoundOpvarSetAutoRoomEntity", "m_flSizeSqr");
 	[SchemaMember("CSoundOpvarSetAutoRoomEntity", "m_flSizeSqr")]
-	public ref float SizeSqr => ref Schema.GetRef<float>(this.Handle, "CSoundOpvarSetAutoRoomEntity", "m_flSizeSqr");
+	public ref float SizeSqr => ref __m_flSizeSqr.GetRef(this.Handle);
 
 }

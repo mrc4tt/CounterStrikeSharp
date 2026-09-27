@@ -19,7 +19,8 @@ public partial class FilterDamageType : CBaseFilter
     public FilterDamageType (IntPtr pointer) : base(pointer) {}
 
 	// m_iDamageType
+	private static readonly SchemaField<Int32> __m_iDamageType = new("FilterDamageType", "m_iDamageType");
 	[SchemaMember("FilterDamageType", "m_iDamageType")]
-	public ref Int32 DamageType => ref Schema.GetRef<Int32>(this.Handle, "FilterDamageType", "m_iDamageType");
+	public ref Int32 DamageType => ref __m_iDamageType.GetRef(this.Handle);
 
 }

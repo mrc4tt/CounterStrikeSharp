@@ -27,8 +27,9 @@ public partial class CBaseAnimGraph : CBaseModelEntity
 	public CAnimGraphControllerPtr MainGraphController => Schema.GetDeclaredClass<CAnimGraphControllerPtr>(this.Handle, "CBaseAnimGraph", "m_pMainGraphController");
 
 	// m_bInitiallyPopulateInterpHistory
+	private static readonly SchemaField<bool> __m_bInitiallyPopulateInterpHistory = new("CBaseAnimGraph", "m_bInitiallyPopulateInterpHistory");
 	[SchemaMember("CBaseAnimGraph", "m_bInitiallyPopulateInterpHistory")]
-	public ref bool InitiallyPopulateInterpHistory => ref Schema.GetRef<bool>(this.Handle, "CBaseAnimGraph", "m_bInitiallyPopulateInterpHistory");
+	public ref bool InitiallyPopulateInterpHistory => ref __m_bInitiallyPopulateInterpHistory.GetRef(this.Handle);
 
 	// m_OnExternalChoreoGraphChanged
 	[SchemaMember("CBaseAnimGraph", "m_OnExternalChoreoGraphChanged")]
@@ -39,20 +40,23 @@ public partial class CBaseAnimGraph : CBaseModelEntity
 	public IChoreoServices? ChoreoServices => Schema.GetPointer<IChoreoServices>(this.Handle, "CBaseAnimGraph", "m_pChoreoServices");
 
 	// m_bAnimGraphUpdateEnabled
+	private static readonly SchemaField<bool> __m_bAnimGraphUpdateEnabled = new("CBaseAnimGraph", "m_bAnimGraphUpdateEnabled");
 	[SchemaMember("CBaseAnimGraph", "m_bAnimGraphUpdateEnabled")]
-	public ref bool AnimGraphUpdateEnabled => ref Schema.GetRef<bool>(this.Handle, "CBaseAnimGraph", "m_bAnimGraphUpdateEnabled");
+	public ref bool AnimGraphUpdateEnabled => ref __m_bAnimGraphUpdateEnabled.GetRef(this.Handle);
 
 	// m_bAnimationUpdateScheduled
+	private static readonly SchemaField<bool> __m_bAnimationUpdateScheduled = new("CBaseAnimGraph", "m_bAnimationUpdateScheduled");
 	[SchemaMember("CBaseAnimGraph", "m_bAnimationUpdateScheduled")]
-	public ref bool AnimationUpdateScheduled => ref Schema.GetRef<bool>(this.Handle, "CBaseAnimGraph", "m_bAnimationUpdateScheduled");
+	public ref bool AnimationUpdateScheduled => ref __m_bAnimationUpdateScheduled.GetRef(this.Handle);
 
 	// m_vecForce
 	[SchemaMember("CBaseAnimGraph", "m_vecForce")]
 	public Vector Force => Schema.GetDeclaredClass<Vector>(this.Handle, "CBaseAnimGraph", "m_vecForce");
 
 	// m_nForceBone
+	private static readonly SchemaField<Int32> __m_nForceBone = new("CBaseAnimGraph", "m_nForceBone");
 	[SchemaMember("CBaseAnimGraph", "m_nForceBone")]
-	public ref Int32 ForceBone => ref Schema.GetRef<Int32>(this.Handle, "CBaseAnimGraph", "m_nForceBone");
+	public ref Int32 ForceBone => ref __m_nForceBone.GetRef(this.Handle);
 
 	// m_pRagdollControl
 	[SchemaMember("CBaseAnimGraph", "m_pRagdollControl")]
@@ -63,16 +67,19 @@ public partial class CBaseAnimGraph : CBaseModelEntity
 	public PhysicsRagdollPose_t RagdollPose => Schema.GetDeclaredClass<PhysicsRagdollPose_t>(this.Handle, "CBaseAnimGraph", "m_RagdollPose");
 
 	// m_bRagdollEnabled
+	private static readonly SchemaField<bool> __m_bRagdollEnabled = new("CBaseAnimGraph", "m_bRagdollEnabled");
 	[SchemaMember("CBaseAnimGraph", "m_bRagdollEnabled")]
-	public ref bool RagdollEnabled => ref Schema.GetRef<bool>(this.Handle, "CBaseAnimGraph", "m_bRagdollEnabled");
+	public ref bool RagdollEnabled => ref __m_bRagdollEnabled.GetRef(this.Handle);
 
 	// m_bRagdollClientSide
+	private static readonly SchemaField<bool> __m_bRagdollClientSide = new("CBaseAnimGraph", "m_bRagdollClientSide");
 	[SchemaMember("CBaseAnimGraph", "m_bRagdollClientSide")]
-	public ref bool RagdollClientSide => ref Schema.GetRef<bool>(this.Handle, "CBaseAnimGraph", "m_bRagdollClientSide");
+	public ref bool RagdollClientSide => ref __m_bRagdollClientSide.GetRef(this.Handle);
 
 	// m_bShouldUpdateTransformations
+	private static readonly SchemaField<bool> __m_bShouldUpdateTransformations = new("CBaseAnimGraph", "m_bShouldUpdateTransformations");
 	[SchemaMember("CBaseAnimGraph", "m_bShouldUpdateTransformations")]
-	public ref bool ShouldUpdateTransformations => ref Schema.GetRef<bool>(this.Handle, "CBaseAnimGraph", "m_bShouldUpdateTransformations");
+	public ref bool ShouldUpdateTransformations => ref __m_bShouldUpdateTransformations.GetRef(this.Handle);
 
 	// m_xParentedRagdollRootInEntitySpace
 	[SchemaMember("CBaseAnimGraph", "m_xParentedRagdollRootInEntitySpace")]

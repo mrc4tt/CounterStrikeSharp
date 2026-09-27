@@ -19,12 +19,14 @@ public partial class CCSPlayer_AimPunchServices : CPlayerPawnComponent
     public CCSPlayer_AimPunchServices (IntPtr pointer) : base(pointer) {}
 
 	// m_predictableBaseTick
+	private static readonly SchemaField<Int32> __m_predictableBaseTick = new("CCSPlayer_AimPunchServices", "m_predictableBaseTick");
 	[SchemaMember("CCSPlayer_AimPunchServices", "m_predictableBaseTick")]
-	public ref Int32 PredictableBaseTick => ref Schema.GetRef<Int32>(this.Handle, "CCSPlayer_AimPunchServices", "m_predictableBaseTick");
+	public ref Int32 PredictableBaseTick => ref __m_predictableBaseTick.GetRef(this.Handle);
 
 	// m_predictableBaseTickInterpAmount
+	private static readonly SchemaField<float> __m_predictableBaseTickInterpAmount = new("CCSPlayer_AimPunchServices", "m_predictableBaseTickInterpAmount");
 	[SchemaMember("CCSPlayer_AimPunchServices", "m_predictableBaseTickInterpAmount")]
-	public ref float PredictableBaseTickInterpAmount => ref Schema.GetRef<float>(this.Handle, "CCSPlayer_AimPunchServices", "m_predictableBaseTickInterpAmount");
+	public ref float PredictableBaseTickInterpAmount => ref __m_predictableBaseTickInterpAmount.GetRef(this.Handle);
 
 	// m_predictableBaseAngle
 	[SchemaMember("CCSPlayer_AimPunchServices", "m_predictableBaseAngle")]
@@ -35,8 +37,9 @@ public partial class CCSPlayer_AimPunchServices : CPlayerPawnComponent
 	public QAngle PredictableBaseAngleVel => Schema.GetDeclaredClass<QAngle>(this.Handle, "CCSPlayer_AimPunchServices", "m_predictableBaseAngleVel");
 
 	// m_unpredictableBaseTick
+	private static readonly SchemaField<Int32> __m_unpredictableBaseTick = new("CCSPlayer_AimPunchServices", "m_unpredictableBaseTick");
 	[SchemaMember("CCSPlayer_AimPunchServices", "m_unpredictableBaseTick")]
-	public ref Int32 UnpredictableBaseTick => ref Schema.GetRef<Int32>(this.Handle, "CCSPlayer_AimPunchServices", "m_unpredictableBaseTick");
+	public ref Int32 UnpredictableBaseTick => ref __m_unpredictableBaseTick.GetRef(this.Handle);
 
 	// m_unpredictableBaseAngle
 	[SchemaMember("CCSPlayer_AimPunchServices", "m_unpredictableBaseAngle")]

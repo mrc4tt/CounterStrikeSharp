@@ -43,12 +43,14 @@ public partial class CEnvInstructorHint : CPointEntity
 	}
 
 	// m_iTimeout
+	private static readonly SchemaField<Int32> __m_iTimeout = new("CEnvInstructorHint", "m_iTimeout");
 	[SchemaMember("CEnvInstructorHint", "m_iTimeout")]
-	public ref Int32 Timeout => ref Schema.GetRef<Int32>(this.Handle, "CEnvInstructorHint", "m_iTimeout");
+	public ref Int32 Timeout => ref __m_iTimeout.GetRef(this.Handle);
 
 	// m_iDisplayLimit
+	private static readonly SchemaField<Int32> __m_iDisplayLimit = new("CEnvInstructorHint", "m_iDisplayLimit");
 	[SchemaMember("CEnvInstructorHint", "m_iDisplayLimit")]
-	public ref Int32 DisplayLimit => ref Schema.GetRef<Int32>(this.Handle, "CEnvInstructorHint", "m_iDisplayLimit");
+	public ref Int32 DisplayLimit => ref __m_iDisplayLimit.GetRef(this.Handle);
 
 	// m_iszIcon_Onscreen
 	[SchemaMember("CEnvInstructorHint", "m_iszIcon_Onscreen")]
@@ -91,44 +93,54 @@ public partial class CEnvInstructorHint : CPointEntity
 	}
 
 	// m_fIconOffset
+	private static readonly SchemaField<float> __m_fIconOffset = new("CEnvInstructorHint", "m_fIconOffset");
 	[SchemaMember("CEnvInstructorHint", "m_fIconOffset")]
-	public ref float IconOffset => ref Schema.GetRef<float>(this.Handle, "CEnvInstructorHint", "m_fIconOffset");
+	public ref float IconOffset => ref __m_fIconOffset.GetRef(this.Handle);
 
 	// m_fRange
+	private static readonly SchemaField<float> __m_fRange = new("CEnvInstructorHint", "m_fRange");
 	[SchemaMember("CEnvInstructorHint", "m_fRange")]
-	public ref float Range => ref Schema.GetRef<float>(this.Handle, "CEnvInstructorHint", "m_fRange");
+	public ref float Range => ref __m_fRange.GetRef(this.Handle);
 
 	// m_iPulseOption
+	private static readonly SchemaField<byte> __m_iPulseOption = new("CEnvInstructorHint", "m_iPulseOption");
 	[SchemaMember("CEnvInstructorHint", "m_iPulseOption")]
-	public ref byte PulseOption => ref Schema.GetRef<byte>(this.Handle, "CEnvInstructorHint", "m_iPulseOption");
+	public ref byte PulseOption => ref __m_iPulseOption.GetRef(this.Handle);
 
 	// m_iAlphaOption
+	private static readonly SchemaField<byte> __m_iAlphaOption = new("CEnvInstructorHint", "m_iAlphaOption");
 	[SchemaMember("CEnvInstructorHint", "m_iAlphaOption")]
-	public ref byte AlphaOption => ref Schema.GetRef<byte>(this.Handle, "CEnvInstructorHint", "m_iAlphaOption");
+	public ref byte AlphaOption => ref __m_iAlphaOption.GetRef(this.Handle);
 
 	// m_iShakeOption
+	private static readonly SchemaField<byte> __m_iShakeOption = new("CEnvInstructorHint", "m_iShakeOption");
 	[SchemaMember("CEnvInstructorHint", "m_iShakeOption")]
-	public ref byte ShakeOption => ref Schema.GetRef<byte>(this.Handle, "CEnvInstructorHint", "m_iShakeOption");
+	public ref byte ShakeOption => ref __m_iShakeOption.GetRef(this.Handle);
 
 	// m_bStatic
+	private static readonly SchemaField<bool> __m_bStatic = new("CEnvInstructorHint", "m_bStatic");
 	[SchemaMember("CEnvInstructorHint", "m_bStatic")]
-	public ref bool Static => ref Schema.GetRef<bool>(this.Handle, "CEnvInstructorHint", "m_bStatic");
+	public ref bool Static => ref __m_bStatic.GetRef(this.Handle);
 
 	// m_bNoOffscreen
+	private static readonly SchemaField<bool> __m_bNoOffscreen = new("CEnvInstructorHint", "m_bNoOffscreen");
 	[SchemaMember("CEnvInstructorHint", "m_bNoOffscreen")]
-	public ref bool NoOffscreen => ref Schema.GetRef<bool>(this.Handle, "CEnvInstructorHint", "m_bNoOffscreen");
+	public ref bool NoOffscreen => ref __m_bNoOffscreen.GetRef(this.Handle);
 
 	// m_bForceCaption
+	private static readonly SchemaField<bool> __m_bForceCaption = new("CEnvInstructorHint", "m_bForceCaption");
 	[SchemaMember("CEnvInstructorHint", "m_bForceCaption")]
-	public ref bool ForceCaption => ref Schema.GetRef<bool>(this.Handle, "CEnvInstructorHint", "m_bForceCaption");
+	public ref bool ForceCaption => ref __m_bForceCaption.GetRef(this.Handle);
 
 	// m_iInstanceType
+	private static readonly SchemaField<Int32> __m_iInstanceType = new("CEnvInstructorHint", "m_iInstanceType");
 	[SchemaMember("CEnvInstructorHint", "m_iInstanceType")]
-	public ref Int32 InstanceType => ref Schema.GetRef<Int32>(this.Handle, "CEnvInstructorHint", "m_iInstanceType");
+	public ref Int32 InstanceType => ref __m_iInstanceType.GetRef(this.Handle);
 
 	// m_bSuppressRest
+	private static readonly SchemaField<bool> __m_bSuppressRest = new("CEnvInstructorHint", "m_bSuppressRest");
 	[SchemaMember("CEnvInstructorHint", "m_bSuppressRest")]
-	public ref bool SuppressRest => ref Schema.GetRef<bool>(this.Handle, "CEnvInstructorHint", "m_bSuppressRest");
+	public ref bool SuppressRest => ref __m_bSuppressRest.GetRef(this.Handle);
 
 	// m_iszBinding
 	[SchemaMember("CEnvInstructorHint", "m_iszBinding")]
@@ -139,15 +151,18 @@ public partial class CEnvInstructorHint : CPointEntity
 	}
 
 	// m_bAllowNoDrawTarget
+	private static readonly SchemaField<bool> __m_bAllowNoDrawTarget = new("CEnvInstructorHint", "m_bAllowNoDrawTarget");
 	[SchemaMember("CEnvInstructorHint", "m_bAllowNoDrawTarget")]
-	public ref bool AllowNoDrawTarget => ref Schema.GetRef<bool>(this.Handle, "CEnvInstructorHint", "m_bAllowNoDrawTarget");
+	public ref bool AllowNoDrawTarget => ref __m_bAllowNoDrawTarget.GetRef(this.Handle);
 
 	// m_bAutoStart
+	private static readonly SchemaField<bool> __m_bAutoStart = new("CEnvInstructorHint", "m_bAutoStart");
 	[SchemaMember("CEnvInstructorHint", "m_bAutoStart")]
-	public ref bool AutoStart => ref Schema.GetRef<bool>(this.Handle, "CEnvInstructorHint", "m_bAutoStart");
+	public ref bool AutoStart => ref __m_bAutoStart.GetRef(this.Handle);
 
 	// m_bLocalPlayerOnly
+	private static readonly SchemaField<bool> __m_bLocalPlayerOnly = new("CEnvInstructorHint", "m_bLocalPlayerOnly");
 	[SchemaMember("CEnvInstructorHint", "m_bLocalPlayerOnly")]
-	public ref bool LocalPlayerOnly => ref Schema.GetRef<bool>(this.Handle, "CEnvInstructorHint", "m_bLocalPlayerOnly");
+	public ref bool LocalPlayerOnly => ref __m_bLocalPlayerOnly.GetRef(this.Handle);
 
 }

@@ -27,15 +27,18 @@ public partial class CPointVelocitySensor : CPointEntity
 	public Vector Axis => Schema.GetDeclaredClass<Vector>(this.Handle, "CPointVelocitySensor", "m_vecAxis");
 
 	// m_bEnabled
+	private static readonly SchemaField<bool> __m_bEnabled = new("CPointVelocitySensor", "m_bEnabled");
 	[SchemaMember("CPointVelocitySensor", "m_bEnabled")]
-	public ref bool Enabled => ref Schema.GetRef<bool>(this.Handle, "CPointVelocitySensor", "m_bEnabled");
+	public ref bool Enabled => ref __m_bEnabled.GetRef(this.Handle);
 
 	// m_fPrevVelocity
+	private static readonly SchemaField<float> __m_fPrevVelocity = new("CPointVelocitySensor", "m_fPrevVelocity");
 	[SchemaMember("CPointVelocitySensor", "m_fPrevVelocity")]
-	public ref float PrevVelocity => ref Schema.GetRef<float>(this.Handle, "CPointVelocitySensor", "m_fPrevVelocity");
+	public ref float PrevVelocity => ref __m_fPrevVelocity.GetRef(this.Handle);
 
 	// m_flAvgInterval
+	private static readonly SchemaField<float> __m_flAvgInterval = new("CPointVelocitySensor", "m_flAvgInterval");
 	[SchemaMember("CPointVelocitySensor", "m_flAvgInterval")]
-	public ref float AvgInterval => ref Schema.GetRef<float>(this.Handle, "CPointVelocitySensor", "m_flAvgInterval");
+	public ref float AvgInterval => ref __m_flAvgInterval.GetRef(this.Handle);
 
 }

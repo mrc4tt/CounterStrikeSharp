@@ -23,8 +23,9 @@ public partial class CEnvSoundscape : CBaseEntity
 	public CEntityIOOutput OnPlay => Schema.GetDeclaredClass<CEntityIOOutput>(this.Handle, "CEnvSoundscape", "m_OnPlay");
 
 	// m_flRadius
+	private static readonly SchemaField<float> __m_flRadius = new("CEnvSoundscape", "m_flRadius");
 	[SchemaMember("CEnvSoundscape", "m_flRadius")]
-	public ref float Radius => ref Schema.GetRef<float>(this.Handle, "CEnvSoundscape", "m_flRadius");
+	public ref float Radius => ref __m_flRadius.GetRef(this.Handle);
 
 	// m_soundEventName
 	[SchemaMember("CEnvSoundscape", "m_soundEventName")]
@@ -35,16 +36,19 @@ public partial class CEnvSoundscape : CBaseEntity
 	}
 
 	// m_bOverrideWithEvent
+	private static readonly SchemaField<bool> __m_bOverrideWithEvent = new("CEnvSoundscape", "m_bOverrideWithEvent");
 	[SchemaMember("CEnvSoundscape", "m_bOverrideWithEvent")]
-	public ref bool OverrideWithEvent => ref Schema.GetRef<bool>(this.Handle, "CEnvSoundscape", "m_bOverrideWithEvent");
+	public ref bool OverrideWithEvent => ref __m_bOverrideWithEvent.GetRef(this.Handle);
 
 	// m_soundscapeIndex
+	private static readonly SchemaField<Int32> __m_soundscapeIndex = new("CEnvSoundscape", "m_soundscapeIndex");
 	[SchemaMember("CEnvSoundscape", "m_soundscapeIndex")]
-	public ref Int32 SoundscapeIndex => ref Schema.GetRef<Int32>(this.Handle, "CEnvSoundscape", "m_soundscapeIndex");
+	public ref Int32 SoundscapeIndex => ref __m_soundscapeIndex.GetRef(this.Handle);
 
 	// m_soundscapeEntityListId
+	private static readonly SchemaField<Int32> __m_soundscapeEntityListId = new("CEnvSoundscape", "m_soundscapeEntityListId");
 	[SchemaMember("CEnvSoundscape", "m_soundscapeEntityListId")]
-	public ref Int32 SoundscapeEntityListId => ref Schema.GetRef<Int32>(this.Handle, "CEnvSoundscape", "m_soundscapeEntityListId");
+	public ref Int32 SoundscapeEntityListId => ref __m_soundscapeEntityListId.GetRef(this.Handle);
 
 	// m_positionNames
 	[SchemaMember("CEnvSoundscape", "m_positionNames")]
@@ -55,8 +59,9 @@ public partial class CEnvSoundscape : CBaseEntity
 	public CHandle<CEnvSoundscape> ProxySoundscape => Schema.GetDeclaredClass<CHandle<CEnvSoundscape>>(this.Handle, "CEnvSoundscape", "m_hProxySoundscape");
 
 	// m_bDisabled
+	private static readonly SchemaField<bool> __m_bDisabled = new("CEnvSoundscape", "m_bDisabled");
 	[SchemaMember("CEnvSoundscape", "m_bDisabled")]
-	public ref bool Disabled => ref Schema.GetRef<bool>(this.Handle, "CEnvSoundscape", "m_bDisabled");
+	public ref bool Disabled => ref __m_bDisabled.GetRef(this.Handle);
 
 	// m_soundscapeName
 	[SchemaMember("CEnvSoundscape", "m_soundscapeName")]
@@ -67,7 +72,8 @@ public partial class CEnvSoundscape : CBaseEntity
 	}
 
 	// m_soundEventHash
+	private static readonly SchemaField<UInt32> __m_soundEventHash = new("CEnvSoundscape", "m_soundEventHash");
 	[SchemaMember("CEnvSoundscape", "m_soundEventHash")]
-	public ref UInt32 SoundEventHash => ref Schema.GetRef<UInt32>(this.Handle, "CEnvSoundscape", "m_soundEventHash");
+	public ref UInt32 SoundEventHash => ref __m_soundEventHash.GetRef(this.Handle);
 
 }

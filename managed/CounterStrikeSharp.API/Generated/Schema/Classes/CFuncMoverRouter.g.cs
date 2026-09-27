@@ -19,12 +19,14 @@ public partial class CFuncMoverRouter : CLogicalEntity
     public CFuncMoverRouter (IntPtr pointer) : base(pointer) {}
 
 	// m_nMoverIndex
+	private static readonly SchemaField<Int32> __m_nMoverIndex = new("CFuncMoverRouter", "m_nMoverIndex");
 	[SchemaMember("CFuncMoverRouter", "m_nMoverIndex")]
-	public ref Int32 MoverIndex => ref Schema.GetRef<Int32>(this.Handle, "CFuncMoverRouter", "m_nMoverIndex");
+	public ref Int32 MoverIndex => ref __m_nMoverIndex.GetRef(this.Handle);
 
 	// m_bRouteToAllMovers
+	private static readonly SchemaField<bool> __m_bRouteToAllMovers = new("CFuncMoverRouter", "m_bRouteToAllMovers");
 	[SchemaMember("CFuncMoverRouter", "m_bRouteToAllMovers")]
-	public ref bool RouteToAllMovers => ref Schema.GetRef<bool>(this.Handle, "CFuncMoverRouter", "m_bRouteToAllMovers");
+	public ref bool RouteToAllMovers => ref __m_bRouteToAllMovers.GetRef(this.Handle);
 
 	// m_hPathMover
 	[SchemaMember("CFuncMoverRouter", "m_hPathMover")]

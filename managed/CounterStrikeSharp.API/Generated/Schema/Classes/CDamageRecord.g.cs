@@ -51,39 +51,48 @@ public partial class CDamageRecord : NativeObject
 	}
 
 	// m_DamagerXuid
+	private static readonly SchemaField<UInt64> __m_DamagerXuid = new("CDamageRecord", "m_DamagerXuid");
 	[SchemaMember("CDamageRecord", "m_DamagerXuid")]
-	public ref UInt64 DamagerXuid => ref Schema.GetRef<UInt64>(this.Handle, "CDamageRecord", "m_DamagerXuid");
+	public ref UInt64 DamagerXuid => ref __m_DamagerXuid.GetRef(this.Handle);
 
 	// m_RecipientXuid
+	private static readonly SchemaField<UInt64> __m_RecipientXuid = new("CDamageRecord", "m_RecipientXuid");
 	[SchemaMember("CDamageRecord", "m_RecipientXuid")]
-	public ref UInt64 RecipientXuid => ref Schema.GetRef<UInt64>(this.Handle, "CDamageRecord", "m_RecipientXuid");
+	public ref UInt64 RecipientXuid => ref __m_RecipientXuid.GetRef(this.Handle);
 
 	// m_flBulletsDamage
+	private static readonly SchemaField<float> __m_flBulletsDamage = new("CDamageRecord", "m_flBulletsDamage");
 	[SchemaMember("CDamageRecord", "m_flBulletsDamage")]
-	public ref float BulletsDamage => ref Schema.GetRef<float>(this.Handle, "CDamageRecord", "m_flBulletsDamage");
+	public ref float BulletsDamage => ref __m_flBulletsDamage.GetRef(this.Handle);
 
 	// m_flDamage
+	private static readonly SchemaField<float> __m_flDamage = new("CDamageRecord", "m_flDamage");
 	[SchemaMember("CDamageRecord", "m_flDamage")]
-	public ref float Damage => ref Schema.GetRef<float>(this.Handle, "CDamageRecord", "m_flDamage");
+	public ref float Damage => ref __m_flDamage.GetRef(this.Handle);
 
 	// m_flActualHealthRemoved
+	private static readonly SchemaField<float> __m_flActualHealthRemoved = new("CDamageRecord", "m_flActualHealthRemoved");
 	[SchemaMember("CDamageRecord", "m_flActualHealthRemoved")]
-	public ref float ActualHealthRemoved => ref Schema.GetRef<float>(this.Handle, "CDamageRecord", "m_flActualHealthRemoved");
+	public ref float ActualHealthRemoved => ref __m_flActualHealthRemoved.GetRef(this.Handle);
 
 	// m_iNumHits
+	private static readonly SchemaField<Int32> __m_iNumHits = new("CDamageRecord", "m_iNumHits");
 	[SchemaMember("CDamageRecord", "m_iNumHits")]
-	public ref Int32 NumHits => ref Schema.GetRef<Int32>(this.Handle, "CDamageRecord", "m_iNumHits");
+	public ref Int32 NumHits => ref __m_iNumHits.GetRef(this.Handle);
 
 	// m_iLastBulletUpdate
+	private static readonly SchemaField<Int32> __m_iLastBulletUpdate = new("CDamageRecord", "m_iLastBulletUpdate");
 	[SchemaMember("CDamageRecord", "m_iLastBulletUpdate")]
-	public ref Int32 LastBulletUpdate => ref Schema.GetRef<Int32>(this.Handle, "CDamageRecord", "m_iLastBulletUpdate");
+	public ref Int32 LastBulletUpdate => ref __m_iLastBulletUpdate.GetRef(this.Handle);
 
 	// m_bIsOtherEnemy
+	private static readonly SchemaField<bool> __m_bIsOtherEnemy = new("CDamageRecord", "m_bIsOtherEnemy");
 	[SchemaMember("CDamageRecord", "m_bIsOtherEnemy")]
-	public ref bool IsOtherEnemy => ref Schema.GetRef<bool>(this.Handle, "CDamageRecord", "m_bIsOtherEnemy");
+	public ref bool IsOtherEnemy => ref __m_bIsOtherEnemy.GetRef(this.Handle);
 
 	// m_killType
+	private static readonly SchemaField<EKillTypes_t> __m_killType = new("CDamageRecord", "m_killType");
 	[SchemaMember("CDamageRecord", "m_killType")]
-	public ref EKillTypes_t KillType => ref Schema.GetRef<EKillTypes_t>(this.Handle, "CDamageRecord", "m_killType");
+	public ref EKillTypes_t KillType => ref __m_killType.GetRef(this.Handle);
 
 }

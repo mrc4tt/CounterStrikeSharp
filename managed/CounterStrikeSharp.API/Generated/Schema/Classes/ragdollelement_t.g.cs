@@ -23,15 +23,18 @@ public partial class ragdollelement_t : NativeObject
 	public Vector OriginParentSpace => Schema.GetDeclaredClass<Vector>(this.Handle, "ragdollelement_t", "originParentSpace");
 
 	// parentIndex
+	private static readonly SchemaField<Int32> __parentIndex = new("ragdollelement_t", "parentIndex");
 	[SchemaMember("ragdollelement_t", "parentIndex")]
-	public ref Int32 ParentIndex => ref Schema.GetRef<Int32>(this.Handle, "ragdollelement_t", "parentIndex");
+	public ref Int32 ParentIndex => ref __parentIndex.GetRef(this.Handle);
 
 	// m_flRadius
+	private static readonly SchemaField<float> __m_flRadius = new("ragdollelement_t", "m_flRadius");
 	[SchemaMember("ragdollelement_t", "m_flRadius")]
-	public ref float Radius => ref Schema.GetRef<float>(this.Handle, "ragdollelement_t", "m_flRadius");
+	public ref float Radius => ref __m_flRadius.GetRef(this.Handle);
 
 	// m_nHeight
+	private static readonly SchemaField<Int32> __m_nHeight = new("ragdollelement_t", "m_nHeight");
 	[SchemaMember("ragdollelement_t", "m_nHeight")]
-	public ref Int32 Height => ref Schema.GetRef<Int32>(this.Handle, "ragdollelement_t", "m_nHeight");
+	public ref Int32 Height => ref __m_nHeight.GetRef(this.Handle);
 
 }

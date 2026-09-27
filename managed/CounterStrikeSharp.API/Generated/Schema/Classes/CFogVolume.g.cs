@@ -43,11 +43,13 @@ public partial class CFogVolume : CServerOnlyModelEntity
 	}
 
 	// m_bDisabled
+	private static readonly SchemaField<bool> __m_bDisabled = new("CFogVolume", "m_bDisabled");
 	[SchemaMember("CFogVolume", "m_bDisabled")]
-	public ref bool Disabled => ref Schema.GetRef<bool>(this.Handle, "CFogVolume", "m_bDisabled");
+	public ref bool Disabled => ref __m_bDisabled.GetRef(this.Handle);
 
 	// m_bInFogVolumesList
+	private static readonly SchemaField<bool> __m_bInFogVolumesList = new("CFogVolume", "m_bInFogVolumesList");
 	[SchemaMember("CFogVolume", "m_bInFogVolumesList")]
-	public ref bool InFogVolumesList => ref Schema.GetRef<bool>(this.Handle, "CFogVolume", "m_bInFogVolumesList");
+	public ref bool InFogVolumesList => ref __m_bInFogVolumesList.GetRef(this.Handle);
 
 }

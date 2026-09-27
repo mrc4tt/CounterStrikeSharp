@@ -19,8 +19,9 @@ public partial class CSoundAreaEntityBase : CBaseEntity
     public CSoundAreaEntityBase (IntPtr pointer) : base(pointer) {}
 
 	// m_bDisabled
+	private static readonly SchemaField<bool> __m_bDisabled = new("CSoundAreaEntityBase", "m_bDisabled");
 	[SchemaMember("CSoundAreaEntityBase", "m_bDisabled")]
-	public ref bool Disabled => ref Schema.GetRef<bool>(this.Handle, "CSoundAreaEntityBase", "m_bDisabled");
+	public ref bool Disabled => ref __m_bDisabled.GetRef(this.Handle);
 
 	// m_iszSoundAreaType
 	[SchemaMember("CSoundAreaEntityBase", "m_iszSoundAreaType")]

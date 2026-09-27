@@ -19,11 +19,13 @@ public partial class CFuncNavBlocker : CBaseModelEntity
     public CFuncNavBlocker (IntPtr pointer) : base(pointer) {}
 
 	// m_bDisabled
+	private static readonly SchemaField<bool> __m_bDisabled = new("CFuncNavBlocker", "m_bDisabled");
 	[SchemaMember("CFuncNavBlocker", "m_bDisabled")]
-	public ref bool Disabled => ref Schema.GetRef<bool>(this.Handle, "CFuncNavBlocker", "m_bDisabled");
+	public ref bool Disabled => ref __m_bDisabled.GetRef(this.Handle);
 
 	// m_nBlockedTeamNumber
+	private static readonly SchemaField<Int32> __m_nBlockedTeamNumber = new("CFuncNavBlocker", "m_nBlockedTeamNumber");
 	[SchemaMember("CFuncNavBlocker", "m_nBlockedTeamNumber")]
-	public ref Int32 BlockedTeamNumber => ref Schema.GetRef<Int32>(this.Handle, "CFuncNavBlocker", "m_nBlockedTeamNumber");
+	public ref Int32 BlockedTeamNumber => ref __m_nBlockedTeamNumber.GetRef(this.Handle);
 
 }

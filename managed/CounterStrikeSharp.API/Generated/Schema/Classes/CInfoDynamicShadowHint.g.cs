@@ -19,20 +19,24 @@ public partial class CInfoDynamicShadowHint : CPointEntity
     public CInfoDynamicShadowHint (IntPtr pointer) : base(pointer) {}
 
 	// m_bDisabled
+	private static readonly SchemaField<bool> __m_bDisabled = new("CInfoDynamicShadowHint", "m_bDisabled");
 	[SchemaMember("CInfoDynamicShadowHint", "m_bDisabled")]
-	public ref bool Disabled => ref Schema.GetRef<bool>(this.Handle, "CInfoDynamicShadowHint", "m_bDisabled");
+	public ref bool Disabled => ref __m_bDisabled.GetRef(this.Handle);
 
 	// m_flRange
+	private static readonly SchemaField<float> __m_flRange = new("CInfoDynamicShadowHint", "m_flRange");
 	[SchemaMember("CInfoDynamicShadowHint", "m_flRange")]
-	public ref float Range => ref Schema.GetRef<float>(this.Handle, "CInfoDynamicShadowHint", "m_flRange");
+	public ref float Range => ref __m_flRange.GetRef(this.Handle);
 
 	// m_nImportance
+	private static readonly SchemaField<Int32> __m_nImportance = new("CInfoDynamicShadowHint", "m_nImportance");
 	[SchemaMember("CInfoDynamicShadowHint", "m_nImportance")]
-	public ref Int32 Importance => ref Schema.GetRef<Int32>(this.Handle, "CInfoDynamicShadowHint", "m_nImportance");
+	public ref Int32 Importance => ref __m_nImportance.GetRef(this.Handle);
 
 	// m_nLightChoice
+	private static readonly SchemaField<Int32> __m_nLightChoice = new("CInfoDynamicShadowHint", "m_nLightChoice");
 	[SchemaMember("CInfoDynamicShadowHint", "m_nLightChoice")]
-	public ref Int32 LightChoice => ref Schema.GetRef<Int32>(this.Handle, "CInfoDynamicShadowHint", "m_nLightChoice");
+	public ref Int32 LightChoice => ref __m_nLightChoice.GetRef(this.Handle);
 
 	// m_hLight
 	[SchemaMember("CInfoDynamicShadowHint", "m_hLight")]

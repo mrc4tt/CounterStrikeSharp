@@ -19,24 +19,28 @@ public partial class CBasePlayerController : CBaseEntity
     public CBasePlayerController (IntPtr pointer) : base(pointer) {}
 
 	// m_nInButtonsWhichAreToggles
+	private static readonly SchemaField<UInt64> __m_nInButtonsWhichAreToggles = new("CBasePlayerController", "m_nInButtonsWhichAreToggles");
 	[SchemaMember("CBasePlayerController", "m_nInButtonsWhichAreToggles")]
-	public ref UInt64 InButtonsWhichAreToggles => ref Schema.GetRef<UInt64>(this.Handle, "CBasePlayerController", "m_nInButtonsWhichAreToggles");
+	public ref UInt64 InButtonsWhichAreToggles => ref __m_nInButtonsWhichAreToggles.GetRef(this.Handle);
 
 	// m_nTickBase
+	private static readonly SchemaField<UInt32> __m_nTickBase = new("CBasePlayerController", "m_nTickBase");
 	[SchemaMember("CBasePlayerController", "m_nTickBase")]
-	public ref UInt32 TickBase => ref Schema.GetRef<UInt32>(this.Handle, "CBasePlayerController", "m_nTickBase");
+	public ref UInt32 TickBase => ref __m_nTickBase.GetRef(this.Handle);
 
 	// m_hPawn
 	[SchemaMember("CBasePlayerController", "m_hPawn")]
 	public CHandle<CBasePlayerPawn> Pawn => Schema.GetDeclaredClass<CHandle<CBasePlayerPawn>>(this.Handle, "CBasePlayerController", "m_hPawn");
 
 	// m_bKnownTeamMismatch
+	private static readonly SchemaField<bool> __m_bKnownTeamMismatch = new("CBasePlayerController", "m_bKnownTeamMismatch");
 	[SchemaMember("CBasePlayerController", "m_bKnownTeamMismatch")]
-	public ref bool KnownTeamMismatch => ref Schema.GetRef<bool>(this.Handle, "CBasePlayerController", "m_bKnownTeamMismatch");
+	public ref bool KnownTeamMismatch => ref __m_bKnownTeamMismatch.GetRef(this.Handle);
 
 	// m_nSplitScreenSlot
+	private static readonly SchemaField<Int32> __m_nSplitScreenSlot = new("CBasePlayerController", "m_nSplitScreenSlot");
 	[SchemaMember("CBasePlayerController", "m_nSplitScreenSlot")]
-	public ref Int32 SplitScreenSlot => ref Schema.GetRef<Int32>(this.Handle, "CBasePlayerController", "m_nSplitScreenSlot");
+	public ref Int32 SplitScreenSlot => ref __m_nSplitScreenSlot.GetRef(this.Handle);
 
 	// m_hSplitOwner
 	[SchemaMember("CBasePlayerController", "m_hSplitOwner")]
@@ -47,16 +51,19 @@ public partial class CBasePlayerController : CBaseEntity
 	public NetworkedVector<CHandle<CBasePlayerController>> SplitScreenPlayers => Schema.GetDeclaredClass<NetworkedVector<CHandle<CBasePlayerController>>>(this.Handle, "CBasePlayerController", "m_hSplitScreenPlayers");
 
 	// m_bIsHLTV
+	private static readonly SchemaField<bool> __m_bIsHLTV = new("CBasePlayerController", "m_bIsHLTV");
 	[SchemaMember("CBasePlayerController", "m_bIsHLTV")]
-	public ref bool IsHLTV => ref Schema.GetRef<bool>(this.Handle, "CBasePlayerController", "m_bIsHLTV");
+	public ref bool IsHLTV => ref __m_bIsHLTV.GetRef(this.Handle);
 
 	// m_iConnected
+	private static readonly SchemaField<PlayerConnectedState> __m_iConnected = new("CBasePlayerController", "m_iConnected");
 	[SchemaMember("CBasePlayerController", "m_iConnected")]
-	public ref PlayerConnectedState Connected => ref Schema.GetRef<PlayerConnectedState>(this.Handle, "CBasePlayerController", "m_iConnected");
+	public ref PlayerConnectedState Connected => ref __m_iConnected.GetRef(this.Handle);
 
 	// m_iMostConnected
+	private static readonly SchemaField<PlayerConnectedState> __m_iMostConnected = new("CBasePlayerController", "m_iMostConnected");
 	[SchemaMember("CBasePlayerController", "m_iMostConnected")]
-	public ref PlayerConnectedState MostConnected => ref Schema.GetRef<PlayerConnectedState>(this.Handle, "CBasePlayerController", "m_iMostConnected");
+	public ref PlayerConnectedState MostConnected => ref __m_iMostConnected.GetRef(this.Handle);
 
 	// m_iszPlayerName
 	[SchemaMember("CBasePlayerController", "m_iszPlayerName")]
@@ -75,55 +82,68 @@ public partial class CBasePlayerController : CBaseEntity
 	}
 
 	// m_fLerpTime
+	private static readonly SchemaField<float> __m_fLerpTime = new("CBasePlayerController", "m_fLerpTime");
 	[SchemaMember("CBasePlayerController", "m_fLerpTime")]
-	public ref float LerpTime => ref Schema.GetRef<float>(this.Handle, "CBasePlayerController", "m_fLerpTime");
+	public ref float LerpTime => ref __m_fLerpTime.GetRef(this.Handle);
 
 	// m_bLagCompensation
+	private static readonly SchemaField<bool> __m_bLagCompensation = new("CBasePlayerController", "m_bLagCompensation");
 	[SchemaMember("CBasePlayerController", "m_bLagCompensation")]
-	public ref bool LagCompensation => ref Schema.GetRef<bool>(this.Handle, "CBasePlayerController", "m_bLagCompensation");
+	public ref bool LagCompensation => ref __m_bLagCompensation.GetRef(this.Handle);
 
 	// m_bPredict
+	private static readonly SchemaField<bool> __m_bPredict = new("CBasePlayerController", "m_bPredict");
 	[SchemaMember("CBasePlayerController", "m_bPredict")]
-	public ref bool Predict => ref Schema.GetRef<bool>(this.Handle, "CBasePlayerController", "m_bPredict");
+	public ref bool Predict => ref __m_bPredict.GetRef(this.Handle);
 
 	// m_bIsLowViolence
+	private static readonly SchemaField<bool> __m_bIsLowViolence = new("CBasePlayerController", "m_bIsLowViolence");
 	[SchemaMember("CBasePlayerController", "m_bIsLowViolence")]
-	public ref bool IsLowViolence => ref Schema.GetRef<bool>(this.Handle, "CBasePlayerController", "m_bIsLowViolence");
+	public ref bool IsLowViolence => ref __m_bIsLowViolence.GetRef(this.Handle);
 
 	// m_bGamePaused
+	private static readonly SchemaField<bool> __m_bGamePaused = new("CBasePlayerController", "m_bGamePaused");
 	[SchemaMember("CBasePlayerController", "m_bGamePaused")]
-	public ref bool GamePaused => ref Schema.GetRef<bool>(this.Handle, "CBasePlayerController", "m_bGamePaused");
+	public ref bool GamePaused => ref __m_bGamePaused.GetRef(this.Handle);
 
 	// m_iIgnoreGlobalChat
+	private static readonly SchemaField<ChatIgnoreType_t> __m_iIgnoreGlobalChat = new("CBasePlayerController", "m_iIgnoreGlobalChat");
 	[SchemaMember("CBasePlayerController", "m_iIgnoreGlobalChat")]
-	public ref ChatIgnoreType_t IgnoreGlobalChat => ref Schema.GetRef<ChatIgnoreType_t>(this.Handle, "CBasePlayerController", "m_iIgnoreGlobalChat");
+	public ref ChatIgnoreType_t IgnoreGlobalChat => ref __m_iIgnoreGlobalChat.GetRef(this.Handle);
 
 	// m_flLastPlayerTalkTime
+	private static readonly SchemaField<float> __m_flLastPlayerTalkTime = new("CBasePlayerController", "m_flLastPlayerTalkTime");
 	[SchemaMember("CBasePlayerController", "m_flLastPlayerTalkTime")]
-	public ref float LastPlayerTalkTime => ref Schema.GetRef<float>(this.Handle, "CBasePlayerController", "m_flLastPlayerTalkTime");
+	public ref float LastPlayerTalkTime => ref __m_flLastPlayerTalkTime.GetRef(this.Handle);
 
 	// m_flLastEntitySteadyState
+	private static readonly SchemaField<float> __m_flLastEntitySteadyState = new("CBasePlayerController", "m_flLastEntitySteadyState");
 	[SchemaMember("CBasePlayerController", "m_flLastEntitySteadyState")]
-	public ref float LastEntitySteadyState => ref Schema.GetRef<float>(this.Handle, "CBasePlayerController", "m_flLastEntitySteadyState");
+	public ref float LastEntitySteadyState => ref __m_flLastEntitySteadyState.GetRef(this.Handle);
 
 	// m_nAvailableEntitySteadyState
+	private static readonly SchemaField<Int32> __m_nAvailableEntitySteadyState = new("CBasePlayerController", "m_nAvailableEntitySteadyState");
 	[SchemaMember("CBasePlayerController", "m_nAvailableEntitySteadyState")]
-	public ref Int32 AvailableEntitySteadyState => ref Schema.GetRef<Int32>(this.Handle, "CBasePlayerController", "m_nAvailableEntitySteadyState");
+	public ref Int32 AvailableEntitySteadyState => ref __m_nAvailableEntitySteadyState.GetRef(this.Handle);
 
 	// m_bHasAnySteadyStateEnts
+	private static readonly SchemaField<bool> __m_bHasAnySteadyStateEnts = new("CBasePlayerController", "m_bHasAnySteadyStateEnts");
 	[SchemaMember("CBasePlayerController", "m_bHasAnySteadyStateEnts")]
-	public ref bool HasAnySteadyStateEnts => ref Schema.GetRef<bool>(this.Handle, "CBasePlayerController", "m_bHasAnySteadyStateEnts");
+	public ref bool HasAnySteadyStateEnts => ref __m_bHasAnySteadyStateEnts.GetRef(this.Handle);
 
 	// m_steamID
+	private static readonly SchemaField<UInt64> __m_steamID = new("CBasePlayerController", "m_steamID");
 	[SchemaMember("CBasePlayerController", "m_steamID")]
-	public ref UInt64 SteamID => ref Schema.GetRef<UInt64>(this.Handle, "CBasePlayerController", "m_steamID");
+	public ref UInt64 SteamID => ref __m_steamID.GetRef(this.Handle);
 
 	// m_bNoClipEnabled
+	private static readonly SchemaField<bool> __m_bNoClipEnabled = new("CBasePlayerController", "m_bNoClipEnabled");
 	[SchemaMember("CBasePlayerController", "m_bNoClipEnabled")]
-	public ref bool NoClipEnabled => ref Schema.GetRef<bool>(this.Handle, "CBasePlayerController", "m_bNoClipEnabled");
+	public ref bool NoClipEnabled => ref __m_bNoClipEnabled.GetRef(this.Handle);
 
 	// m_iDesiredFOV
+	private static readonly SchemaField<UInt32> __m_iDesiredFOV = new("CBasePlayerController", "m_iDesiredFOV");
 	[SchemaMember("CBasePlayerController", "m_iDesiredFOV")]
-	public ref UInt32 DesiredFOV => ref Schema.GetRef<UInt32>(this.Handle, "CBasePlayerController", "m_iDesiredFOV");
+	public ref UInt32 DesiredFOV => ref __m_iDesiredFOV.GetRef(this.Handle);
 
 }

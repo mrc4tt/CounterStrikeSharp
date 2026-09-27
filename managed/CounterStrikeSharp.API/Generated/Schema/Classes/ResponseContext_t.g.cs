@@ -35,7 +35,8 @@ public partial class ResponseContext_t : NativeObject
 	}
 
 	// m_fExpirationTime
+	private static readonly SchemaField<float> __m_fExpirationTime = new("ResponseContext_t", "m_fExpirationTime");
 	[SchemaMember("ResponseContext_t", "m_fExpirationTime")]
-	public ref float ExpirationTime => ref Schema.GetRef<float>(this.Handle, "ResponseContext_t", "m_fExpirationTime");
+	public ref float ExpirationTime => ref __m_fExpirationTime.GetRef(this.Handle);
 
 }

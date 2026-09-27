@@ -19,15 +19,18 @@ public partial class CTriggerImpact : CTriggerMultiple
     public CTriggerImpact (IntPtr pointer) : base(pointer) {}
 
 	// m_flMagnitude
+	private static readonly SchemaField<float> __m_flMagnitude = new("CTriggerImpact", "m_flMagnitude");
 	[SchemaMember("CTriggerImpact", "m_flMagnitude")]
-	public ref float Magnitude => ref Schema.GetRef<float>(this.Handle, "CTriggerImpact", "m_flMagnitude");
+	public ref float Magnitude => ref __m_flMagnitude.GetRef(this.Handle);
 
 	// m_flNoise
+	private static readonly SchemaField<float> __m_flNoise = new("CTriggerImpact", "m_flNoise");
 	[SchemaMember("CTriggerImpact", "m_flNoise")]
-	public ref float Noise => ref Schema.GetRef<float>(this.Handle, "CTriggerImpact", "m_flNoise");
+	public ref float Noise => ref __m_flNoise.GetRef(this.Handle);
 
 	// m_flViewkick
+	private static readonly SchemaField<float> __m_flViewkick = new("CTriggerImpact", "m_flViewkick");
 	[SchemaMember("CTriggerImpact", "m_flViewkick")]
-	public ref float Viewkick => ref Schema.GetRef<float>(this.Handle, "CTriggerImpact", "m_flViewkick");
+	public ref float Viewkick => ref __m_flViewkick.GetRef(this.Handle);
 
 }

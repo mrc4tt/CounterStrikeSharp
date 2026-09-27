@@ -19,8 +19,9 @@ public partial class CMovementStatsProperty : NativeObject
     public CMovementStatsProperty (IntPtr pointer) : base(pointer) {}
 
 	// m_nUseCounter
+	private static readonly SchemaField<Int32> __m_nUseCounter = new("CMovementStatsProperty", "m_nUseCounter");
 	[SchemaMember("CMovementStatsProperty", "m_nUseCounter")]
-	public ref Int32 UseCounter => ref Schema.GetRef<Int32>(this.Handle, "CMovementStatsProperty", "m_nUseCounter");
+	public ref Int32 UseCounter => ref __m_nUseCounter.GetRef(this.Handle);
 
 	// m_emaMovementDirection
 	[SchemaMember("CMovementStatsProperty", "m_emaMovementDirection")]

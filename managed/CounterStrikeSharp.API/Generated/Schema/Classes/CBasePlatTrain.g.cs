@@ -35,15 +35,18 @@ public partial class CBasePlatTrain : CBaseToggle
 	}
 
 	// m_volume
+	private static readonly SchemaField<float> __m_volume = new("CBasePlatTrain", "m_volume");
 	[SchemaMember("CBasePlatTrain", "m_volume")]
-	public ref float Volume => ref Schema.GetRef<float>(this.Handle, "CBasePlatTrain", "m_volume");
+	public ref float Volume => ref __m_volume.GetRef(this.Handle);
 
 	// m_flTWidth
+	private static readonly SchemaField<float> __m_flTWidth = new("CBasePlatTrain", "m_flTWidth");
 	[SchemaMember("CBasePlatTrain", "m_flTWidth")]
-	public ref float TWidth => ref Schema.GetRef<float>(this.Handle, "CBasePlatTrain", "m_flTWidth");
+	public ref float TWidth => ref __m_flTWidth.GetRef(this.Handle);
 
 	// m_flTLength
+	private static readonly SchemaField<float> __m_flTLength = new("CBasePlatTrain", "m_flTLength");
 	[SchemaMember("CBasePlatTrain", "m_flTLength")]
-	public ref float TLength => ref Schema.GetRef<float>(this.Handle, "CBasePlatTrain", "m_flTLength");
+	public ref float TLength => ref __m_flTLength.GetRef(this.Handle);
 
 }

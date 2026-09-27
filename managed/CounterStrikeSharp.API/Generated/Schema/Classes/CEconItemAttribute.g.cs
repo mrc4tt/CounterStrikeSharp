@@ -19,23 +19,28 @@ public partial class CEconItemAttribute : NativeObject
     public CEconItemAttribute (IntPtr pointer) : base(pointer) {}
 
 	// m_iAttributeDefinitionIndex
+	private static readonly SchemaField<UInt16> __m_iAttributeDefinitionIndex = new("CEconItemAttribute", "m_iAttributeDefinitionIndex");
 	[SchemaMember("CEconItemAttribute", "m_iAttributeDefinitionIndex")]
-	public ref UInt16 AttributeDefinitionIndex => ref Schema.GetRef<UInt16>(this.Handle, "CEconItemAttribute", "m_iAttributeDefinitionIndex");
+	public ref UInt16 AttributeDefinitionIndex => ref __m_iAttributeDefinitionIndex.GetRef(this.Handle);
 
 	// m_flValue
+	private static readonly SchemaField<float> __m_flValue = new("CEconItemAttribute", "m_flValue");
 	[SchemaMember("CEconItemAttribute", "m_flValue")]
-	public ref float Value => ref Schema.GetRef<float>(this.Handle, "CEconItemAttribute", "m_flValue");
+	public ref float Value => ref __m_flValue.GetRef(this.Handle);
 
 	// m_flInitialValue
+	private static readonly SchemaField<float> __m_flInitialValue = new("CEconItemAttribute", "m_flInitialValue");
 	[SchemaMember("CEconItemAttribute", "m_flInitialValue")]
-	public ref float InitialValue => ref Schema.GetRef<float>(this.Handle, "CEconItemAttribute", "m_flInitialValue");
+	public ref float InitialValue => ref __m_flInitialValue.GetRef(this.Handle);
 
 	// m_nRefundableCurrency
+	private static readonly SchemaField<Int32> __m_nRefundableCurrency = new("CEconItemAttribute", "m_nRefundableCurrency");
 	[SchemaMember("CEconItemAttribute", "m_nRefundableCurrency")]
-	public ref Int32 RefundableCurrency => ref Schema.GetRef<Int32>(this.Handle, "CEconItemAttribute", "m_nRefundableCurrency");
+	public ref Int32 RefundableCurrency => ref __m_nRefundableCurrency.GetRef(this.Handle);
 
 	// m_bSetBonus
+	private static readonly SchemaField<bool> __m_bSetBonus = new("CEconItemAttribute", "m_bSetBonus");
 	[SchemaMember("CEconItemAttribute", "m_bSetBonus")]
-	public ref bool SetBonus => ref Schema.GetRef<bool>(this.Handle, "CEconItemAttribute", "m_bSetBonus");
+	public ref bool SetBonus => ref __m_bSetBonus.GetRef(this.Handle);
 
 }

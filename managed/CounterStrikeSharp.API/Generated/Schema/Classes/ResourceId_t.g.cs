@@ -19,7 +19,8 @@ public partial class ResourceId_t : NativeObject
     public ResourceId_t (IntPtr pointer) : base(pointer) {}
 
 	// m_Value
+	private static readonly SchemaField<UInt64> __m_Value = new("ResourceId_t", "m_Value");
 	[SchemaMember("ResourceId_t", "m_Value")]
-	public ref UInt64 Value => ref Schema.GetRef<UInt64>(this.Handle, "ResourceId_t", "m_Value");
+	public ref UInt64 Value => ref __m_Value.GetRef(this.Handle);
 
 }

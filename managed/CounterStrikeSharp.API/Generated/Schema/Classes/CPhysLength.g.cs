@@ -27,15 +27,18 @@ public partial class CPhysLength : CPhysConstraint
 	public Vector Attach => Schema.GetDeclaredClass<Vector>(this.Handle, "CPhysLength", "m_vecAttach");
 
 	// m_addLength
+	private static readonly SchemaField<float> __m_addLength = new("CPhysLength", "m_addLength");
 	[SchemaMember("CPhysLength", "m_addLength")]
-	public ref float AddLength => ref Schema.GetRef<float>(this.Handle, "CPhysLength", "m_addLength");
+	public ref float AddLength => ref __m_addLength.GetRef(this.Handle);
 
 	// m_minLength
+	private static readonly SchemaField<float> __m_minLength = new("CPhysLength", "m_minLength");
 	[SchemaMember("CPhysLength", "m_minLength")]
-	public ref float MinLength => ref Schema.GetRef<float>(this.Handle, "CPhysLength", "m_minLength");
+	public ref float MinLength => ref __m_minLength.GetRef(this.Handle);
 
 	// m_totalLength
+	private static readonly SchemaField<float> __m_totalLength = new("CPhysLength", "m_totalLength");
 	[SchemaMember("CPhysLength", "m_totalLength")]
-	public ref float TotalLength => ref Schema.GetRef<float>(this.Handle, "CPhysLength", "m_totalLength");
+	public ref float TotalLength => ref __m_totalLength.GetRef(this.Handle);
 
 }

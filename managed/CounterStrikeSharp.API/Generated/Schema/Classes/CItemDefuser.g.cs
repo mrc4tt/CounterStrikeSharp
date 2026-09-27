@@ -23,7 +23,8 @@ public partial class CItemDefuser : CItem
 	public EntitySpottedState_t EntitySpottedState => Schema.GetDeclaredClass<EntitySpottedState_t>(this.Handle, "CItemDefuser", "m_entitySpottedState");
 
 	// m_nSpotRules
+	private static readonly SchemaField<Int32> __m_nSpotRules = new("CItemDefuser", "m_nSpotRules");
 	[SchemaMember("CItemDefuser", "m_nSpotRules")]
-	public ref Int32 SpotRules => ref Schema.GetRef<Int32>(this.Handle, "CItemDefuser", "m_nSpotRules");
+	public ref Int32 SpotRules => ref __m_nSpotRules.GetRef(this.Handle);
 
 }
