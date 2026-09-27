@@ -16,6 +16,7 @@ add_executable(css_unit_tests
     test_timer_system_startup.cpp
     test_khook_semantics.cpp
     test_signature_pattern.cpp
+    test_gamedata_signature_check.cpp
     ${CMAKE_SOURCE_DIR}/libraries/metamod-source/third_party/khook/src/ranges.cpp
     ${CATCH2_AMALG_DIR}/catch_amalgamated.cpp
 )
@@ -23,6 +24,8 @@ add_executable(css_unit_tests
 target_include_directories(css_unit_tests PRIVATE
     ${CATCH2_AMALG_DIR}
     ${CMAKE_SOURCE_DIR}/src
+    # nlohmann/json.hpp, for the gamedata signature check.
+    ${CMAKE_SOURCE_DIR}/libraries
     # khook.hpp only. Not KHOOK_STANDALONE, so every KHOOK_API entry point is an
     # inline forwarder to KHook::__exported__khook -- the test defines that symbol
     # and points it at a mock, so no khook/safetyhook/Zydis build is needed.

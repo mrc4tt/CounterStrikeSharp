@@ -3,6 +3,9 @@
 #include "core/coreconfig.h"
 #include "core/log.h"
 #include "core/globals.h"
+#include "core/gamedata_signature_check.h"
+#include "core/memory.h"
+#include "core/memory_module.h"
 
 #include <cstring>
 #include <filesystem>
@@ -345,6 +348,60 @@ bool ValidateGamedata(const std::string& body, const std::string& currentPath, s
     return true;
 }
 
+// Resolves a gamedata signature against the binaries loaded in this process, with the same
+// scanner and library mapping CGameConfig::ResolveSignature uses once gamedata is live.
+bool SignatureResolvesInProcess(const std::string& library, const std::string& signature)
+{
+    // "engine" is engine2 on disk; the other library names are the file stem.
+    const std::string stem = library == "engine" ? "engine2" : library;
+    if (stem.empty()) return false;
+
+    auto* module = modules::GetModuleByName(MODULE_PREFIX + stem + MODULE_EXT);
+    if (!module) return false;
+
+    if (signature[0] == '@') return signature.size() > 1 && module->FindSymbol(signature.substr(1)) != nullptr;
+    return module->FindSignature(signature.c_str()) != nullptr;
+}
+
+// Blocks an update that would break a signature the current gamedata resolves. The game
+// build already matches (checked first), so a signature that stops resolving is a bad
+// publish, not a game update. Offsets cannot be verified this way and are not checked.
+bool SignaturesHoldUp(const std::string& body, const std::string& currentPath, std::string& error)
+{
+    std::ifstream currentFile(currentPath);
+    if (!currentFile.is_open()) return true; // nothing working to protect
+
+    auto current = nlohmann::json::parse(currentFile, nullptr, false);
+    if (current.is_discarded()) return true; // the current file is broken anyway
+
+    auto incoming = nlohmann::json::parse(body, nullptr, false);
+
+#ifdef _WIN32
+    constexpr auto platform = "windows";
+#else
+    constexpr auto platform = "linux";
+#endif
+
+    // Idempotent; globals::Initialize() calls it again later.
+    modules::Initialize();
+
+    auto result = CheckSignatureRegressions(current, incoming, platform, SignatureResolvesInProcess);
+
+    for (const auto& key : result.stillBroken)
+        CSSHARP_CORE_WARN("Gamedata signature {} does not resolve in either the current or the downloaded file", key);
+
+    if (!result.regressions.empty())
+    {
+        for (const auto& regression : result.regressions)
+            CSSHARP_CORE_ERROR("Gamedata signature regression: {}", regression);
+        error = std::to_string(result.regressions.size()) + " signature(s) that resolve today would stop resolving";
+        return false;
+    }
+
+    CSSHARP_CORE_INFO("Gamedata signature check passed: {} changed, {} scanned, none regress", result.changed, result.scans);
+    return true;
+}
+
 // "1.41.8.5" (steam.inf PatchVersion) -> "14185", the tag CS2_VibeSignatures names builds by.
 std::string ServerGameVersionTag(std::string& error)
 {
@@ -508,6 +565,12 @@ bool TryUpdateGameConfig()
     if (!ValidateGamedata(res.body, gamedataPath, error))
     {
         CSSHARP_CORE_ERROR("Gamedata update from {} rejected: {}", configuredUrl, error);
+        return false;
+    }
+
+    if (!SignaturesHoldUp(res.body, gamedataPath, error))
+    {
+        CSSHARP_CORE_ERROR("Gamedata update from {} rejected, keeping the current gamedata.json: {}", configuredUrl, error);
         return false;
     }
 

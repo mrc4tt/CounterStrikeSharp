@@ -54,6 +54,8 @@ When enabled, CS# checks `AutoUpdateURL` for a newer `gamedata.json` at startup,
 
 Before downloading, CS# reads `latest/manifest.json` next to the URL and compares the game build it was generated for with this server's `PatchVersion` from `csgo/steam.inf` (`1.41.8.5` is build `14185`). If they differ, or either cannot be read, the update is skipped and the current file is kept, so a server that has not taken a CS2 update yet never receives signatures for the next build. URLs without a `/latest/` segment skip this check.
 
+After downloading, every signature whose text changed is checked against the server binaries that are already loaded. If a signature that resolves with the current file would stop resolving with the new one (or a resolving key was removed), the update is rejected and the current file is kept; the log names each such key. Offsets cannot be checked this way.
+
 A download only replaces the local file if it parses as a JSON object and has at least half as many keys as the current file; otherwise it is rejected and the existing file is used. A failed or skipped update is logged and never stops CS# from loading.
 
 ## AutoUpdateURL
