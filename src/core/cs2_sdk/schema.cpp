@@ -80,26 +80,52 @@ static bool InitSchemaFieldsForClass(SchemaTableMap_t* tableMap, const char* cla
         return false;
     }
 
-    short fieldsSize = pClassInfo->m_nFieldCount;
-    SchemaClassFieldData_t* pFields = pClassInfo->m_pFields;
-
     CNetworkSerializerClassInfo* pNetworkClassInfo = FindNetworkSerializerClassInfo(className);
 
     SchemaKeyValueMap_t* keyValueMap = new SchemaKeyValueMap_t(0, 0);
-    keyValueMap->EnsureCapacity(fieldsSize);
+    keyValueMap->EnsureCapacity(pClassInfo->m_nFieldCount);
     tableMap->Insert(classKey, keyValueMap);
 
-    for (int i = 0; i < fieldsSize; ++i)
+    // Walk the class and then its base classes, so a field is found through any class that
+    // inherits it: `SetStateChanged(pawn, "CCSPlayer_WeaponServices", "m_hActiveWeapon")`
+    // names a field declared on CPlayer_WeaponServices, and used to resolve to offset 0,
+    // silently (it then read as "not networked", so the call did nothing). A field the
+    // derived class redeclares wins, because it is inserted first.
+    //
+    // __m_pChainEntity is deliberately NOT inherited. Utilities.SetStateChanged(entity,
+    // className, ...) probes it on className and, when found, notifies through
+    // `entity + chainOffset`: that pointer is only meaningful for the object that owns the
+    // chain, never for the entity a component-class name is usually paired with. Inheriting
+    // it would turn those calls from a no-op into a notify through a garbage pointer.
+    uint32_t baseOffset = 0;
+    for (SchemaClassInfoData_t* pCurrent = pClassInfo; pCurrent != nullptr;)
     {
-        SchemaClassFieldData_t& field = pFields[i];
+        const bool isDeclaringClass = pCurrent == pClassInfo;
+        CNetworkSerializerClassInfo* pCurrentNetworkInfo =
+            isDeclaringClass ? pNetworkClassInfo : FindNetworkSerializerClassInfo(pCurrent->m_pszName);
 
-        if (field.m_pType->m_eTypeCategory == SCHEMA_TYPE_ATOMIC && field.m_pType->m_eAtomicCategory == SCHEMA_ATOMIC_COLLECTION_OF_T)
-            keyValueMap->Insert(hash_32_fnv1a_const(field.m_pszName),
-                                { field.m_nSingleInheritanceOffset, IsFieldNetworked(pNetworkClassInfo, field),
-                                  static_cast<CSchemaType_Atomic_CollectionOfT*>(field.m_pType)->m_pfnManipulator });
-        else
-            keyValueMap->Insert(hash_32_fnv1a_const(field.m_pszName),
-                                { field.m_nSingleInheritanceOffset, IsFieldNetworked(pNetworkClassInfo, field) });
+        for (int i = 0; i < pCurrent->m_nFieldCount; ++i)
+        {
+            SchemaClassFieldData_t& field = pCurrent->m_pFields[i];
+
+            if (!isDeclaringClass && V_strcmp(field.m_pszName, "__m_pChainEntity") == 0) continue;
+
+            auto fieldKey = hash_32_fnv1a_const(field.m_pszName);
+            if (keyValueMap->IsValidIndex(keyValueMap->Find(fieldKey))) continue;
+
+            auto offset = static_cast<int32_t>(baseOffset + field.m_nSingleInheritanceOffset);
+            bool networked = IsFieldNetworked(pNetworkClassInfo, field) || IsFieldNetworked(pCurrentNetworkInfo, field);
+
+            if (field.m_pType->m_eTypeCategory == SCHEMA_TYPE_ATOMIC && field.m_pType->m_eAtomicCategory == SCHEMA_ATOMIC_COLLECTION_OF_T)
+                keyValueMap->Insert(fieldKey,
+                                    { offset, networked, static_cast<CSchemaType_Atomic_CollectionOfT*>(field.m_pType)->m_pfnManipulator });
+            else
+                keyValueMap->Insert(fieldKey, { offset, networked });
+        }
+
+        if (pCurrent->m_nBaseClassCount == 0 || !pCurrent->m_pBaseClasses) break;
+        baseOffset += pCurrent->m_pBaseClasses[0].m_nOffset;
+        pCurrent = pCurrent->m_pBaseClasses[0].m_pClass;
     }
 
     return true;
@@ -146,6 +172,16 @@ SchemaKey schema::GetOffset(const char* className, uint32_t classKey, const char
     auto memberIndex = tableMap->Find(memberKey);
     if (!tableMap->IsValidIndex(memberIndex))
     {
+        // An unknown name still resolves to offset 0 (callers depend on getting a key back),
+        // but no longer silently: a typo or a field Valve removed reads/writes the start of
+        // the object. Warn once, then cache the miss so the warning does not repeat.
+        // __m_pChainEntity is probed on every class by SetStateChanged; its absence is normal.
+        if (V_strcmp(memberName, "__m_pChainEntity") != 0)
+        {
+            CSSHARP_CORE_WARN("Schema field '{}::{}' not found (not declared on the class or its bases); using offset 0", className,
+                              memberName);
+        }
+        tableMap->Insert(memberKey, { 0, false });
         return { 0, 0 };
     }
 
