@@ -50,10 +50,16 @@ When enabled, will remove the `FCVAR_HIDDEN`,`FCVAR_DEVELOPMENTONLY`, `FCVAR_MIS
 
 ## AutoUpdateEnabled
 
-When enabled, CS# will check for any updates to the gamedata.json file and automatically update it if a new version is available.
+When enabled, CS# checks `AutoUpdateURL` for a newer `gamedata.json` at startup, before gamedata is loaded, and replaces the local file if the server has a new version. Enabled by default.
+
+Before downloading, CS# reads `latest/manifest.json` next to the URL and compares the game build it was generated for with this server's `PatchVersion` from `csgo/steam.inf` (`1.41.8.5` is build `14185`). If they differ, or either cannot be read, the update is skipped and the current file is kept, so a server that has not taken a CS2 update yet never receives signatures for the next build. URLs without a `/latest/` segment skip this check.
+
+A download only replaces the local file if it parses as a JSON object and has at least half as many keys as the current file; otherwise it is rejected and the existing file is used. A failed or skipped update is logged and never stops CS# from loading.
 
 ## AutoUpdateURL
-The URL to use for the auto-update feature. This URL should point to a JSON file that contains the latest version of the gamedata.json file.
+The full URL of the `gamedata.json` to track. Defaults to `https://sig.miksen.me/latest/CounterStrikeSharp/gamedata.json`, the newest generated gamedata from CS2_VibeSignatures. The server must send an `ETag` header for the "already up to date" check to work; it is stored next to the file as `gamedata.etag`.
+
+On Linux, https is supported through the Steam Runtime's `libcurl`. The Windows build supports `http://` URLs only.
 
 ## MaximumFrameTasksExecutedPerTick
 The maximum amount of `NextFrame` and `NextWorldUpdate` tasks that can be executed on a single game frame. The queue totals are tracked separately. Defaults to 1024. This value can be reduced to prevent long frame burstiness.

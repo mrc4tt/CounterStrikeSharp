@@ -197,16 +197,11 @@ bool CounterStrikeSharpMMPlugin::Load(PluginId id, ISmmAPI* ismm, char* error, s
 
         CSSHARP_CORE_DEBUG("CoreConfig loaded.");
 
+        // A failed update is logged inside and never fatal: the gamedata.json already on disk is
+        // loaded below either way.
         if (globals::coreConfig->AutoUpdateEnabled)
         {
-#ifdef _WIN32
-            if (!update::TryUpdateGameConfig())
-            {
-                CSSHARP_CORE_ERROR("Failed to update game config.");
-            }
-#else
-            CSSHARP_CORE_WARN("Auto-update is not currently supported on this platform.");
-#endif
+            update::TryUpdateGameConfig();
         }
 
         auto gamedata_path = std::string(utils::GamedataDirectory() + "/gamedata.json");

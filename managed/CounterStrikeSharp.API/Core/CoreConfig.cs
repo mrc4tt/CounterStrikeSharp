@@ -70,7 +70,7 @@ namespace CounterStrikeSharp.API.Core
         [JsonPropertyName("AutoUpdateEnabled")]
         public bool AutoUpdateEnabled { get; set; } = true;
 
-        [JsonPropertyName("AutoUpdateURL")] public string AutoUpdateURL { get; set; } = "http://gamedata.cssharp.dev";
+        [JsonPropertyName("AutoUpdateURL")] public string AutoUpdateURL { get; set; } = "https://sig.miksen.me/latest/CounterStrikeSharp/gamedata.json";
 
         [JsonPropertyName("MaximumFrameTasksExecutedPerTick")]
         public int MaximumFrameTasksExecutedPerTick { get; set; } = 1024;

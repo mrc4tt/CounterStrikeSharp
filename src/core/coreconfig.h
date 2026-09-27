@@ -36,7 +36,7 @@ class CCoreConfig
     bool UnlockConCommands = true;
     bool UnlockConVars = true;
     bool AutoUpdateEnabled = true;
-    std::string AutoUpdateURL = std::string("http://gamedata.cssharp.dev");
+    std::string AutoUpdateURL = std::string("https://sig.miksen.me/latest/CounterStrikeSharp/gamedata.json");
     std::string LogVerbosity = "information";
 
     using json = nlohmann::json;

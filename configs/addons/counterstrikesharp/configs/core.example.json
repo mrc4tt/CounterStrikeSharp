@@ -8,8 +8,8 @@
     "ServerLanguage": "en",
     "UnlockConCommands": true,
     "UnlockConVars": true,
-    "AutoUpdateEnabled": false,
-    "AutoUpdateURL": "http://gamedata.cssharp.dev",
+    "AutoUpdateEnabled": true,
+    "AutoUpdateURL": "https://sig.miksen.me/latest/CounterStrikeSharp/gamedata.json",
     "MaximumFrameTasksExecutedPerTick": 1024,
     "LogVerbosity": "information"
 }
