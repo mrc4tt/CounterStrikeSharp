@@ -198,6 +198,19 @@ jobs:
           /p:InformationalVersion=${{ needs.setup.outputs.gitversion_informationalversion }} \
           managed/CounterStrikeSharp.API
 
+          # RayTrace compat plugin (managed/RayTrace), same as build.sh's build_raytrace.
+          # Lands under bin/Release/raytrace so it rides in the API artifact without
+          # moving net10.0/publish. RayTraceApi goes to shared/ only - a private copy
+          # next to the plugin splits the capability's type identity.
+          for p in RayTraceImpl:plugins RayTraceApi:shared; do
+            dotnet publish -c Release --no-self-contained \
+            /p:Version=${{ needs.setup.outputs.gitversion_semver }} \
+            /p:AssemblyVersion=${{ needs.setup.outputs.gitversion_assemblySemver }} \
+            /p:InformationalVersion=${{ needs.setup.outputs.gitversion_informationalversion }} \
+            -o managed/CounterStrikeSharp.API/bin/Release/raytrace/${p#*:}/${p%%:*} \
+            managed/RayTrace/${p%%:*}/${p%%:*}.csproj
+          done
+
       - uses: actions/upload-artifact@v5
         with:
           name: counterstrikesharp-api-${{ needs.setup.outputs.gitversion_semver }}
@@ -242,6 +255,7 @@ jobs:
         run: |
           mkdir -p build/linux/addons/counterstrikesharp/api
           cp -r build/api/net10.0/publish/* build/linux/addons/counterstrikesharp/api
+          cp -r build/api/raytrace/* build/linux/addons/counterstrikesharp/
 
       - name: Zip Linux (runtimeless)
         run: (cd build/linux && zip -qq -r ../../counterstrikesharp-linux-${{ needs.setup.outputs.gitversion_semver }}.zip ./*)

@@ -59,10 +59,16 @@ run_local_linux_build() {
         return 0
     fi
 
-    if ! command -v act &> /dev/null; then
+    # Standalone act binary, or the gh extension (gh extension install nektos/gh-act).
+    local -a act_cmd=()
+    if command -v act &> /dev/null; then
+        act_cmd=(act)
+    elif command -v gh &> /dev/null && gh act --version &> /dev/null; then
+        act_cmd=(gh act)
+    else
         echo "⚠️  act not installed - skipping local Linux build."
-        echo "   Install: https://github.com/nektos/act"
-        echo "   Then run the command printed above to append Linux zips to $tag."
+        echo "   Install: https://github.com/nektos/act or 'gh extension install nektos/gh-act'"
+        echo "   Then run: ./create-release.sh --linux-only"
         return 0
     fi
 
@@ -129,7 +135,7 @@ run_local_linux_build() {
         for i in "${!stashed_remotes[@]}"; do
             restore_cmd+="git remote add '${stashed_remotes[$i]}' '${stashed_urls[$i]}' 2>/dev/null; "
         done
-        trap "$restore_cmd" EXIT
+        trap "$restore_cmd ${EXIT_RESTORE:-}" EXIT
     fi
 
     echo ""
@@ -137,11 +143,16 @@ run_local_linux_build() {
     echo "   Artifacts: $artifact_dir"
     echo ""
 
+    # --user root: act >= 0.2.8x runs steps as the image's default user, which
+    # for catthehacker/ubuntu:full-latest is runner (1001). The workspace is
+    # mounted at the host path under /root (mode 700), so the GitVersion setup
+    # step dies with "Access to the path '/root/CounterStrikeSharp' is denied".
     local act_status=0
-    act workflow_dispatch \
+    "${act_cmd[@]}" workflow_dispatch \
         -W .github/workflows/build-and-publish.yml \
         --input confirm_local=LOCAL \
         -P ubuntu-latest=catthehacker/ubuntu:full-latest \
+        --container-options "--user root" \
         --artifact-server-path "$artifact_dir" \
         -s GITHUB_TOKEN="$token" || act_status=$?
 
@@ -150,7 +161,7 @@ run_local_linux_build() {
         for i in "${!stashed_remotes[@]}"; do
             git remote add "${stashed_remotes[$i]}" "${stashed_urls[$i]}" 2>/dev/null || true
         done
-        trap - EXIT
+        if [ -n "${EXIT_RESTORE:-}" ]; then trap "$EXIT_RESTORE" EXIT; else trap - EXIT; fi
         echo "Restored remotes: ${stashed_remotes[*]}"
     fi
 
@@ -185,6 +196,30 @@ if [ "$LINUX_ONLY" = true ]; then
         echo "Error: no GitHub release exists for $HEAD_TAG - run a normal release instead."
         exit 1
     fi
+    # GitVersion (GitHubFlow) only yields the tag's own version when HEAD is
+    # on a branch named main. Detached at the tag it reports
+    # 1.0.N+1--no-branch-.1, and any other branch name becomes the prerelease
+    # label - either way the zips get the wrong version and the upload misses
+    # the release. Point local main at the tag for the act run (no working
+    # tree change: HEAD is already that commit) and put it back on every exit
+    # path. Nothing is pushed.
+    ORIG_BRANCH=$(git symbolic-ref -q --short HEAD || true)
+    if [ "$ORIG_BRANCH" != "main" ]; then
+        ORIG_MAIN=$(git rev-parse --verify -q refs/heads/main || true)
+        if [ -n "$ORIG_MAIN" ] && git worktree list --porcelain | grep -qx 'branch refs/heads/main'; then
+            echo "Error: main is checked out in another worktree - cannot point it at $HEAD_TAG."
+            exit 1
+        fi
+        git checkout -q -B main HEAD
+        if [ -n "$ORIG_MAIN" ]; then
+            EXIT_RESTORE="git checkout -q -B main '$ORIG_MAIN' 2>/dev/null || git branch -f main '$ORIG_MAIN'; echo 'Restored main to ${ORIG_MAIN:0:8}';"
+        else
+            EXIT_RESTORE="git checkout -q --detach && git branch -D main;"
+        fi
+        trap "$EXIT_RESTORE" EXIT
+        echo "Temporarily pointed main at $HEAD_TAG for GitVersion (was ${ORIG_MAIN:0:8})."
+    fi
+
     echo "Re-running local Linux build for $HEAD_TAG..."
     NO_LOCAL=false
     run_local_linux_build "$HEAD_TAG"
