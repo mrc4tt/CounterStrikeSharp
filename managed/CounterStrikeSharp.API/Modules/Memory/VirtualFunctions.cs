@@ -5,15 +5,21 @@ using CounterStrikeSharp.API.Modules.Memory.DynamicFunctions;
 
 namespace CounterStrikeSharp.API.Modules.Memory;
 
-// Each engine function is an eager static FIELD whose gamedata SIGNATURE is resolved LAZILY,
-// on first invoke/hook, via the deferred `new(() => GameData.GetSignature("Foo"))` ctor.
+// Every public member is a static FIELD: both the MemoryFunction (`FooFunc`) and its Action/Func
+// companion (`Foo = FooFunc.Invoke`), matching upstream CounterStrikeSharp (1.0.369) exactly,
+// including the companions not being readonly. Most engine functions resolve their gamedata
+// SIGNATURE lazily, on first invoke/hook, via the deferred `new(() => GameData.GetSignature("Foo"))`
+// ctor; ClientPrint, UTIL_ClientPrintAll and GiveNamedItem are the eager exceptions (see below).
+// Creating a companion from FooFunc.Invoke does not resolve the signature.
 //
 // Two constraints are satisfied at once:
 //
-//  1. FIELD ABI. Plugins compiled against the field-based API emit `ldsfld FooFunc`. A Lazy-backed
-//     PROPERTY only exposes get_FooFunc + a private `_fooFunc` backing field, so that ldsfld fails
-//     at load with MissingFieldException — silently breaking every such plugin (e.g. Deathmatch).
-//     Keeping these as fields preserves the ABI.
+//  1. FIELD ABI. Plugins compiled against the field-based API emit `ldsfld FooFunc` / `ldsfld Foo`.
+//     A PROPERTY only exposes get_Foo + a backing field, so that ldsfld fails at load with
+//     MissingFieldException — silently breaking every such plugin (e.g. Deathmatch, jRandomSkills on
+//     GetCSWeaponDataFromKey). Fork releases 1.0.389-1.0.406 shipped the companions as properties;
+//     plugins built against those and calling a companion must be rebuilt.
+//     VirtualFunctionsAbiTests guards this.
 //
 //  2. PER-MEMBER ISOLATION. A plain eager `= new(GameData.GetSignature("Foo"))` field initializer
 //     resolves the key inside the static constructor, so a SINGLE missing gamedata key throws
@@ -27,7 +33,7 @@ namespace CounterStrikeSharp.API.Modules.Memory;
 // Do NOT convert these fields back to properties — it reintroduces the MissingFieldException break.
 public static class VirtualFunctions
 {
-    // Kept as eager public static FIELDS (not Lazy-backed properties like the rest of this class)
+    // Kept as eager public static FIELDS with eager signature resolution (unlike the deferred ones below)
     // for binary compatibility with plugins compiled against upstream CounterStrikeSharp.API
     // (e.g. NuGet 1.0.369), where ClientPrint / ClientPrintFunc / ClientPrintAll / ClientPrintAllFunc
     // are all public static FIELDS. Those plugins emit `ldsfld ClientPrintAll`; a property only
@@ -39,14 +45,14 @@ public static class VirtualFunctions
     // Func fields must be declared AFTER their backing *Func field (static field init is textual order).
     public static readonly MemoryFunctionVoid<IntPtr, HudDestination, string, IntPtr, IntPtr, IntPtr, IntPtr> ClientPrintFunc =
         new(GameData.GetSignature("ClientPrint"));
-    public static readonly Action<IntPtr, HudDestination, string, IntPtr, IntPtr, IntPtr, IntPtr> ClientPrint = ClientPrintFunc.Invoke;
+    public static Action<IntPtr, HudDestination, string, IntPtr, IntPtr, IntPtr, IntPtr> ClientPrint = ClientPrintFunc.Invoke;
 
     public static readonly MemoryFunctionVoid<HudDestination, string, IntPtr, IntPtr, IntPtr, IntPtr, IntPtr> ClientPrintAllFunc =
         new(GameData.GetSignature("UTIL_ClientPrintAll"));
-    public static readonly Action<HudDestination, string, IntPtr, IntPtr, IntPtr, IntPtr, IntPtr> ClientPrintAll = ClientPrintAllFunc.Invoke;
+    public static Action<HudDestination, string, IntPtr, IntPtr, IntPtr, IntPtr, IntPtr> ClientPrintAll = ClientPrintAllFunc.Invoke;
 
     // void (*FnGiveNamedItem)(void* itemService,const char* pchName, void* iSubType,void* pScriptItem, void* a5,void* a6) = nullptr;
-    // NOTE: kept as an eager public static FIELD (not a Lazy-backed property like the others)
+    // NOTE: kept as an eager public static FIELD with eager signature resolution (unlike the deferred ones below)
     // for binary compatibility with plugins compiled against upstream CounterStrikeSharp.API
     // (e.g. NuGet 1.0.369), where this is a field. Those plugins emit `ldsfld GiveNamedItemFunc`;
     // a property only exposes get_GiveNamedItemFunc + a `_giveNamedItemFunc` backing field, so the
@@ -55,7 +61,7 @@ public static class VirtualFunctions
     // sig is required and present.
     public static readonly MemoryFunctionWithReturn<IntPtr, string, IntPtr, IntPtr, IntPtr, IntPtr, IntPtr> GiveNamedItemFunc =
         new(GameData.GetSignature("GiveNamedItem"));
-    public static Func<IntPtr, string, IntPtr, IntPtr, IntPtr, IntPtr, IntPtr> GiveNamedItem => GiveNamedItemFunc.Invoke;
+    public static Func<IntPtr, string, IntPtr, IntPtr, IntPtr, IntPtr, IntPtr> GiveNamedItem = GiveNamedItemFunc.Invoke;
 
     // ── Eager static FIELDS with DEFERRED signature resolution ──
     // These are public static FIELDS (not Lazy-backed properties) so plugins compiled against the
@@ -67,40 +73,40 @@ public static class VirtualFunctions
     // properties: it silently breaks every plugin that references them as fields.
     public static readonly MemoryFunctionVoid<IntPtr, byte> SwitchTeamFunc =
         new(() => GameData.GetSignature("CCSPlayerController_SwitchTeam"));
-    public static Action<IntPtr, byte> SwitchTeam => SwitchTeamFunc.Invoke;
+    public static Action<IntPtr, byte> SwitchTeam = SwitchTeamFunc.Invoke;
 
     // void(*UTIL_Remove)(CEntityInstance*);
     public static readonly MemoryFunctionVoid<IntPtr> UTIL_RemoveFunc =
         new(() => GameData.GetSignature("UTIL_Remove"));
-    public static Action<IntPtr> UTIL_Remove => UTIL_RemoveFunc.Invoke;
+    public static Action<IntPtr> UTIL_Remove = UTIL_RemoveFunc.Invoke;
 
     // void(*CBaseModelEntity_SetModel)(CBaseModelEntity*, const char*);
     public static readonly MemoryFunctionVoid<IntPtr, string> SetModelFunc =
         new(() => GameData.GetSignature("CBaseModelEntity_SetModel"));
-    public static Action<IntPtr, string> SetModel => SetModelFunc.Invoke;
+    public static Action<IntPtr, string> SetModel = SetModelFunc.Invoke;
 
     [Obsolete("Use TerminateRoundFuncLinux or TerminateRoundFuncWindows instead")]
     public static readonly MemoryFunctionVoid<IntPtr, RoundEndReason, float, IntPtr, byte> TerminateRoundFunc =
         new(() => GameData.GetSignature("CCSGameRules_TerminateRound"));
 
     [Obsolete("Use TerminateRoundLinux or TerminateRoundWindows instead")]
-    public static Action<IntPtr, RoundEndReason, float, IntPtr, byte> TerminateRound => TerminateRoundFunc.Invoke;
+    public static Action<IntPtr, RoundEndReason, float, IntPtr, byte> TerminateRound = TerminateRoundFunc.Invoke;
 
     public static readonly MemoryFunctionVoid<IntPtr, RoundEndReason, float, IntPtr, byte> TerminateRoundFuncLinux =
         new(() => GameData.GetSignature("CCSGameRules_TerminateRound"));
-    public static Action<IntPtr, RoundEndReason, float, IntPtr, byte> TerminateRoundLinux => TerminateRoundFuncLinux.Invoke;
+    public static Action<IntPtr, RoundEndReason, float, IntPtr, byte> TerminateRoundLinux = TerminateRoundFuncLinux.Invoke;
 
     public static readonly MemoryFunctionVoid<IntPtr, float, RoundEndReason, IntPtr, byte> TerminateRoundFuncWindows =
         new(() => GameData.GetSignature("CCSGameRules_TerminateRound"));
-    public static Action<IntPtr, float, RoundEndReason, IntPtr, byte> TerminateRoundWindows => TerminateRoundFuncWindows.Invoke;
+    public static Action<IntPtr, float, RoundEndReason, IntPtr, byte> TerminateRoundWindows = TerminateRoundFuncWindows.Invoke;
 
     public static readonly MemoryFunctionWithReturn<string, int, IntPtr> UTIL_CreateEntityByNameFunc =
         new(() => GameData.GetSignature("UTIL_CreateEntityByName"));
-    public static Func<string, int, IntPtr> UTIL_CreateEntityByName => UTIL_CreateEntityByNameFunc.Invoke;
+    public static Func<string, int, IntPtr> UTIL_CreateEntityByName = UTIL_CreateEntityByNameFunc.Invoke;
 
     public static readonly MemoryFunctionVoid<IntPtr, IntPtr> CBaseEntity_DispatchSpawnFunc =
         new(() => GameData.GetSignature("CBaseEntity_DispatchSpawn"));
-    public static Action<IntPtr, IntPtr> CBaseEntity_DispatchSpawn => CBaseEntity_DispatchSpawnFunc.Invoke;
+    public static Action<IntPtr, IntPtr> CBaseEntity_DispatchSpawn = CBaseEntity_DispatchSpawnFunc.Invoke;
 
     // SetPawn takes four bool flags; this binding only passes two, so the last two
     // arrive as whatever was left in those argument registers. Kept (not removed) so
@@ -118,7 +124,7 @@ public static class VirtualFunctions
 
     // Companion of the obsolete field above; referencing it here is intended.
 #pragma warning disable CS0618
-    public static Action<CEntityInstance, CTakeDamageInfo, CTakeDamageResult> CBaseEntity_TakeDamageOld => CBaseEntity_TakeDamageOldFunc.Invoke;
+    public static Action<CEntityInstance, CTakeDamageInfo, CTakeDamageResult> CBaseEntity_TakeDamageOld = CBaseEntity_TakeDamageOldFunc.Invoke;
 #pragma warning restore CS0618
 
     // Compatibility alias used by older third-party plugins (e.g. WC3) that hook the entity TakeDamage
@@ -133,11 +139,11 @@ public static class VirtualFunctions
 
     public static readonly MemoryFunctionWithReturn<CCSPlayer_WeaponServices, CBasePlayerWeapon, bool> CCSPlayer_WeaponServices_CanUseFunc =
         new(() => GameData.GetSignature("CCSPlayer_WeaponServices_CanUse"));
-    public static Func<CCSPlayer_WeaponServices, CBasePlayerWeapon, bool> CCSPlayer_WeaponServices_CanUse => CCSPlayer_WeaponServices_CanUseFunc.Invoke;
+    public static Func<CCSPlayer_WeaponServices, CBasePlayerWeapon, bool> CCSPlayer_WeaponServices_CanUse = CCSPlayer_WeaponServices_CanUseFunc.Invoke;
 
     public static readonly MemoryFunctionWithReturn<int, string, CCSWeaponBaseVData> GetCSWeaponDataFromKeyFunc =
         new(() => GameData.GetSignature("GetCSWeaponDataFromKey"));
-    public static Func<int, string, CCSWeaponBaseVData> GetCSWeaponDataFromKey => GetCSWeaponDataFromKeyFunc.Invoke;
+    public static Func<int, string, CCSWeaponBaseVData> GetCSWeaponDataFromKey = GetCSWeaponDataFromKeyFunc.Invoke;
 
     // Eager FIELD with deferred signature resolution (see the block comment above SwitchTeamFunc).
     // Field ABI is required by plugins that emit `ldsfld CCSPlayer_ItemServices_CanAcquireFunc`
@@ -145,21 +151,21 @@ public static class VirtualFunctions
     // factory defers the gamedata lookup to first invoke.
     public static readonly MemoryFunctionWithReturn<CCSPlayer_ItemServices, CEconItemView, AcquireMethod, IntPtr, AcquireResult> CCSPlayer_ItemServices_CanAcquireFunc =
         new(() => GameData.GetSignature("CCSPlayer_ItemServices_CanAcquire"));
-    public static Func<CCSPlayer_ItemServices, CEconItemView, AcquireMethod, IntPtr, AcquireResult> CCSPlayer_ItemServices_CanAcquire => CCSPlayer_ItemServices_CanAcquireFunc.Invoke;
+    public static Func<CCSPlayer_ItemServices, CEconItemView, AcquireMethod, IntPtr, AcquireResult> CCSPlayer_ItemServices_CanAcquire = CCSPlayer_ItemServices_CanAcquireFunc.Invoke;
 
     public static readonly MemoryFunctionVoid<CCSPlayerPawnBase> CCSPlayerPawnBase_PostThinkFunc =
         new(() => GameData.GetSignature("CCSPlayerPawnBase_PostThink"));
-    public static Action<CCSPlayerPawnBase> CCSPlayerPawnBase_PostThink => CCSPlayerPawnBase_PostThinkFunc.Invoke;
+    public static Action<CCSPlayerPawnBase> CCSPlayerPawnBase_PostThink = CCSPlayerPawnBase_PostThinkFunc.Invoke;
 
     public static readonly MemoryFunctionVoid<CBaseTrigger, CBaseEntity> CBaseTrigger_StartTouchFunc =
         new(() => GameData.GetSignature("CBaseTrigger_StartTouch"));
-    public static Action<CBaseTrigger, CBaseEntity> CBaseTrigger_StartTouch => CBaseTrigger_StartTouchFunc.Invoke;
+    public static Action<CBaseTrigger, CBaseEntity> CBaseTrigger_StartTouch = CBaseTrigger_StartTouchFunc.Invoke;
 
     public static readonly MemoryFunctionVoid<CBaseTrigger, CBaseEntity> CBaseTrigger_EndTouchFunc =
         new(() => GameData.GetSignature("CBaseTrigger_EndTouch"));
-    public static Action<CBaseTrigger, CBaseEntity> CBaseTrigger_EndTouch => CBaseTrigger_EndTouchFunc.Invoke;
+    public static Action<CBaseTrigger, CBaseEntity> CBaseTrigger_EndTouch = CBaseTrigger_EndTouchFunc.Invoke;
 
     public static readonly MemoryFunctionVoid<IntPtr, IntPtr> RemovePlayerItemFunc =
         new(() => GameData.GetSignature("CBasePlayerPawn_RemovePlayerItem"));
-    public static Action<IntPtr, IntPtr> RemovePlayerItemVirtual => RemovePlayerItemFunc.Invoke;
+    public static Action<IntPtr, IntPtr> RemovePlayerItemVirtual = RemovePlayerItemFunc.Invoke;
 }
