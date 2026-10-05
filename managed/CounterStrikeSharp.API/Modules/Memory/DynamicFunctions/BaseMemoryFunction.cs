@@ -23,49 +23,12 @@ public abstract class BaseMemoryFunction : NativeObject
     private static readonly object _hooksLock = new();
 
     private static IntPtr CreateValveFunctionBySignature(string signature, DataType returnType,
-        DataType[] argumentTypes)
-    {
-        if (!_createdFunctions.TryGetValue(signature, out var function))
-        {
-            try
-            {
-                function = NativeAPI.CreateVirtualFunctionBySignature(IntPtr.Zero, Addresses.ServerPath, signature,
-                    argumentTypes.Length, (int)returnType, argumentTypes.Cast<object>().ToArray());
-                _createdFunctions[signature] = function;
-            }
-            catch (Exception ex)
-            {
-                // Don't swallow silently: a failed resolution leaves `function` at
-                // IntPtr.Zero, and invoking that later jumps to address 0 and crashes
-                // with no clue why. Log so the bad signature is diagnosable.
-                Application.Instance.Logger.LogError(ex,
-                    "Failed to resolve native function for signature \"{Signature}\"", SignatureFormat.ToIdaStyle(signature));
-            }
-        }
-
-        return function;
-    }
+        DataType[] argumentTypes) =>
+        NativeFunctionCache.BySignature(Addresses.ServerPath, signature, returnType, argumentTypes);
 
     private static IntPtr CreateValveFunctionBySignature(string signature, string binarypath, DataType returnType,
-        DataType[] argumentTypes)
-    {
-        if (!_createdFunctions.TryGetValue(signature, out var function))
-        {
-            try
-            {
-                function = NativeAPI.CreateVirtualFunctionBySignature(IntPtr.Zero, binarypath, signature,
-                    argumentTypes.Length, (int)returnType, argumentTypes.Cast<object>().ToArray());
-                _createdFunctions[signature] = function;
-            }
-            catch (Exception ex)
-            {
-                Application.Instance.Logger.LogError(ex,
-                    "Failed to resolve native function for signature \"{Signature}\" in {Binary}", SignatureFormat.ToIdaStyle(signature), binarypath);
-            }
-        }
-
-        return function;
-    }
+        DataType[] argumentTypes) =>
+        NativeFunctionCache.BySignature(binarypath, signature, returnType, argumentTypes);
 
     private static IntPtr CreateValveFunctionByOffset(string symbolName, int offset, DataType returnType,
         DataType[] argumentTypes, Func<nint> nativeCaller)
@@ -192,13 +155,30 @@ public abstract class BaseMemoryFunction : NativeObject
     {
         bool post = mode == HookMode.Post;
 
+        // Resolve first: with deferred signatures reading Handle can throw (missing gamedata key), and
+        // that must happen before the reference exists or it stays rooted with no registration to
+        // release it on unload.
+        var handle = Handle;
+
         // Create the reference explicitly so we own its identifier for later cleanup.
         // (NativeAPI.HookFunction would otherwise create the same reference implicitly.)
+        // Create returns the existing reference when this handler is already hooked elsewhere.
+        bool shared = FunctionReference.IsRegistered(handler);
         var reference = FunctionReference.Create(handler);
-        NativeAPI.HookFunction(Handle, reference, post);
+        try
+        {
+            NativeAPI.HookFunction(handle, reference, post);
+        }
+        catch
+        {
+            // e.g. "Invalid function pointer" for an unresolved signature: nothing was hooked, so
+            // drop a reference created just for this call (and the plugin load context it captures).
+            if (!shared) FunctionReference.Remove(reference.Identifier);
+            throw;
+        }
 
         lock (_hooksLock)
-            _activeHooks.Add(new HookRegistration(Handle, handler, post, reference.Identifier));
+            _activeHooks.Add(new HookRegistration(handle, handler, post, reference.Identifier));
     }
 
     public void Unhook(Func<DynamicHook, HookResult> handler, HookMode mode)
@@ -259,4 +239,4 @@ public abstract class BaseMemoryFunction : NativeObject
     {
         NativeAPI.ExecuteVirtualFunction<object>(Handle, bypass, args);
     }
-}
+}

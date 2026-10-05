@@ -26,51 +26,15 @@ namespace CounterStrikeSharp.API.Modules.Memory;
 
 public partial class VirtualFunction
 {
-    private static Dictionary<string, IntPtr> _createdFunctions = new();
-
     private static IntPtr CreateVirtualFunctionBySignature(string signature, IEnumerable<DataType> argumentTypes,
         DataType returnType,
-        object[] arguments)
-    {
-        if (!_createdFunctions.TryGetValue(signature, out var function))
-        {
-            try
-            {
-                function = NativeAPI.CreateVirtualFunctionBySignature(IntPtr.Zero, Addresses.ServerPath, signature,
-                    argumentTypes.Count(), (int)returnType, arguments);
-                _createdFunctions[signature] = function;
-            }
-            catch (Exception ex)
-            {
-                Application.Instance.Logger.LogError(ex,
-                    "Failed to resolve native function for signature \"{Signature}\"", SignatureFormat.ToIdaStyle(signature));
-            }
-        }
-
-        return function;
-    }
+        object[] arguments) =>
+        NativeFunctionCache.BySignature(Addresses.ServerPath, signature, returnType, argumentTypes.ToArray());
 
     private static IntPtr CreateVirtualFunctionBySignature(string signature, string binarypath, IEnumerable<DataType> argumentTypes,
         DataType returnType,
-        object[] arguments)
-    {
-        if (!_createdFunctions.TryGetValue(signature, out var function))
-        {
-            try
-            {
-                function = NativeAPI.CreateVirtualFunctionBySignature(IntPtr.Zero, binarypath, signature,
-                    argumentTypes.Count(), (int)returnType, arguments);
-                _createdFunctions[signature] = function;
-            }
-            catch (Exception ex)
-            {
-                Application.Instance.Logger.LogError(ex,
-                    "Failed to resolve native function for signature \"{Signature}\" in {Binary}", SignatureFormat.ToIdaStyle(signature), binarypath);
-            }
-        }
-
-        return function;
-    }
+        object[] arguments) =>
+        NativeFunctionCache.BySignature(binarypath, signature, returnType, argumentTypes.ToArray());
 
     #region Funcs
     public static Func<TResult> Create<TResult>(string signature)

@@ -91,7 +91,8 @@ public class GameTests
 
         Assert.NotNull(weapon);
         Assert.Equal("weapon_ak47", weapon.DesignerName);
-        Assert.Single(pawn.WeaponServices.MyWeapons);
+        // Contains, not Single: a live bot can buy or pick up a weapon of its own in the same frame.
+        Assert.Contains(pawn.WeaponServices.MyWeapons, handle => handle.Index == weapon.Index);
     }
 
     [Fact]
