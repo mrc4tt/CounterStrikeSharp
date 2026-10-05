@@ -23,6 +23,9 @@ public class VirtualFunctionTests
             return HookResult.Continue;
         };
 
+        // PostThink only runs for a live pawn.
+        await EnsureAliveBot("bot_quota 2; bot_quota_mode normal");
+
         try
         {
             VirtualFunctions.CCSPlayerPawnBase_PostThinkFunc.Hook(hookHandler, HookMode.Pre);

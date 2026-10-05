@@ -18,7 +18,9 @@ public class ConVarTests
         Assert.NotNull(boolConVar);
         Assert.Equal("sv_cheats", boolConVar.Name);
         Assert.Equal(ConVarType.Bool, boolConVar.Type);
-        Assert.Equal(ConVarFlags.FCVAR_NOTIFY | ConVarFlags.FCVAR_REPLICATED | ConVarFlags.FCVAR_RELEASE, boolConVar.Flags);
+        // HasFlag, not Equal: game updates add flags (1.41.8.8 added FCVAR_GAMEINFO_CANNOT_OVERRIDE).
+        Assert.True(boolConVar.Flags.HasFlag(ConVarFlags.FCVAR_NOTIFY | ConVarFlags.FCVAR_REPLICATED | ConVarFlags.FCVAR_RELEASE),
+            $"sv_cheats flags: {boolConVar.Flags}");
         Assert.True(boolConVar.GetPrimitiveValue<bool>());
 
         boolConVar.GetPrimitiveValue<bool>() = false;

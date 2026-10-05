@@ -1,6 +1,8 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using CounterStrikeSharp.API;
+using CounterStrikeSharp.API.Core;
 
 public static class TestUtils
 {
@@ -34,6 +36,24 @@ public static class TestUtils
         {
             await WaitOneFrame();
         }
+    }
+
+    /// <summary>
+    /// Issues <paramref name="setupCommand"/> (bot_add, bot_quota ...) and waits until a bot with a live pawn
+    /// exists. Bots join and spawn over several frames, so a single WaitOneFrame finds none.
+    /// </summary>
+    public static async Task<CCSPlayerController> EnsureAliveBot(string setupCommand, int maxFrames = 512)
+    {
+        Server.ExecuteCommand(setupCommand);
+        CCSPlayerController? AliveBot() =>
+            Utilities.GetPlayers().LastOrDefault(p => p.IsBot && p.PawnIsAlive && p.PlayerPawn.Value != null);
+
+        if (!await WaitUntil(() => AliveBot() != null, maxFrames))
+        {
+            throw new Exception($"No alive bot after '{setupCommand}' within {maxFrames} frames.");
+        }
+
+        return AliveBot()!;
     }
 
     public static async Task WaitForSeconds(float seconds)
