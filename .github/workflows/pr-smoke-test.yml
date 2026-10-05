@@ -7,10 +7,9 @@ on:
         description: "PR number to test (latest head commit)"
         required: true
         type: string
+  # No pull_request trigger: no job runs for it, so it only produced a skipped run per PR push.
   issue_comment:
     types: [created]
-  pull_request:
-    types: [opened, synchronize, reopened]
 
 permissions: {}
 
