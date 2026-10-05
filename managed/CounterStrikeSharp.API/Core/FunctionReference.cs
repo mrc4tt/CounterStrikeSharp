@@ -495,6 +495,9 @@ namespace CounterStrikeSharp.API.Core
 
         public static void Remove(int reference) => Remove(reference, firedNormally: false);
 
+        // Whether a permanent reference exists for this delegate; Create would return it instead of a new one.
+        internal static bool IsRegistered(Delegate method) => TargetMethodToFunctionReferencesMap.ContainsKey(method);
+
         // (Solution A) Push a just-fired single-use stub into the bounded retention
         // window, evicting (reclaiming) the oldest if the window is full.
         private static void RetainFiredStub(int reference)
