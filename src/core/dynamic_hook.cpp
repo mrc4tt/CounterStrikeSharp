@@ -1,10 +1,13 @@
 #include "dynamic_hook.h"
 #include <dyncall/dyncallback/dyncall_callback.h>
+#include <algorithm>
 #include <array>
 #include <atomic>
 #include <mutex>
 #include <set>
 #include <string>
+
+#include "core/log.h"
 
 namespace counterstrikesharp {
 namespace {
@@ -184,6 +187,35 @@ void* Save(DataType_t type, const DCValue& value, KHook::Action action, bool ori
 }
 } // namespace
 
+namespace {
+// Re-entry guards, per thread (a hook can fire on any thread).
+//
+// A handler that calls the function it hooks (directly, or through something it
+// calls - ChangeTeam -> SetPawn -> ...) re-enters the same hook and runs itself
+// again. Seen as a bare "Stack overflow." with bots joining a team on 1.41.8.4
+// (upstream issue 1446). Nesting is allowed up to kMaxHandlerDepth so legitimate
+// nested calls (a damage handler dealing splash damage) still reach every listener;
+// past that the nested call skips the handler chain and just runs the original.
+//
+// The original call gets a hard depth cap on top: if KHook's original ever resolved
+// back into the hook itself, the loop would be in native code with no handler
+// involved. The cap is far above any real recursion of a hooked game function, so
+// it only refuses a runaway loop instead of truncating one that is legitimate.
+thread_local std::vector<const void*> t_inHandler;
+thread_local std::vector<const void*> t_inOriginal;
+constexpr std::ptrdiff_t kMaxHandlerDepth = 8;
+constexpr std::ptrdiff_t kMaxOriginalDepth = 256;
+
+struct ActiveScope
+{
+    std::vector<const void*>& stack;
+    ActiveScope(std::vector<const void*>& stack, const void* state) : stack(stack) { stack.push_back(state); }
+    ~ActiveScope() { stack.pop_back(); }
+};
+
+std::ptrdiff_t Depth(const std::vector<const void*>& stack, const void* state) { return std::count(stack.begin(), stack.end(), state); }
+} // namespace
+
 struct DynamicHook::State
 {
     enum Phase
@@ -206,6 +238,9 @@ struct DynamicHook::State
     std::array<Callback, 4> callbacks;
     std::atomic<bool> enabled{ true };
     std::atomic<bool> removed{ false };
+    void* address = nullptr;
+    std::atomic<bool> warnedReentry{ false };
+    std::atomic<bool> warnedDepth{ false };
     static std::vector<std::weak_ptr<State>>& Live()
     {
         static std::vector<std::weak_ptr<State>> live;
@@ -268,6 +303,16 @@ struct DynamicHook::State
         *result = {};
         if (cb.phase == Original)
         {
+            if (Depth(t_inOriginal, &state) >= kMaxOriginalDepth)
+            {
+                if (!state.warnedDepth.exchange(true))
+                    CSSHARP_CORE_ERROR("Hook at {} re-entered its own original call {} times; not calling it again "
+                                       "(the original resolves back into the hook)",
+                                       state.address, kMaxOriginalDepth);
+                Save(state.returnType, *result, KHook::Action::Ignore, true);
+                return Signature(state.returnType);
+            }
+            ActiveScope scope(t_inOriginal, &state);
             *result = Call(KHook::GetOriginalFunction(), frame);
             Save(state.returnType, *result, KHook::Action::Ignore, true);
         }
@@ -278,7 +323,17 @@ struct DynamicHook::State
                 auto* value = KHook::GetCurrentValuePtr();
                 if (state.returnType != DATA_TYPE_VOID && value) std::memcpy(&frame.result, value, TypeSize(state.returnType));
             }
-            auto action = state.enabled.load() ? state.handler(cb.phase == Post, frame) : KHook::Action::Ignore;
+            const bool tooDeep = Depth(t_inHandler, &state) >= kMaxHandlerDepth;
+            if (tooDeep && !state.warnedReentry.exchange(true))
+                CSSHARP_CORE_WARN("Hook at {} re-entered its own handler {} times; deeper calls run the original "
+                                  "without the handler (a plugin calls the function it hooks)",
+                                  state.address, kMaxHandlerDepth);
+            auto action = KHook::Action::Ignore;
+            if (state.enabled.load() && !tooDeep)
+            {
+                ActiveScope scope(t_inHandler, &state);
+                action = state.handler(cb.phase == Post, frame);
+            }
             // A return write is independent of argument writes. Changed arguments
             // must reach subsequent hooks, so resume the chain via Recall.
             if (frame.returnChanged && action == KHook::Action::Ignore) action = KHook::Action::Override;
@@ -298,6 +353,7 @@ DynamicHook::DynamicHook(void* address, const std::vector<DataType_t>& types, Da
     : m_state(std::make_shared<State>(types, returnType, std::move(handler)))
 {
     if (!address) throw std::invalid_argument("Cannot hook a null function");
+    m_state->address = address;
     std::string signature;
     for (auto type : types)
     {
