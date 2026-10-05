@@ -354,7 +354,9 @@ void EntityKeyValuesGetValue(ScriptContext& script_context)
 
         case counterstrikesharp::TYPE_COLOR:
         {
-            script_context.SetResult(KeyValuesScratch(keyValues->GetColor(key)));
+            // By value, not via scratch: managed Color results are a packed uint (ColorMarshaler.Unpack,
+            // R | G << 8 | B << 16 | A << 24 == GetRawColor), so a pointer here was read as the color.
+            script_context.SetResult(static_cast<unsigned int>(keyValues->GetColor(key).GetRawColor()));
             break;
         }
 
