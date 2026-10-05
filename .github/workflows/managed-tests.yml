@@ -1,0 +1,41 @@
+name: Managed tests
+
+# The tag-triggered release workflows publish the managed API, so a broken API
+# (e.g. the VirtualFunctions binary contract, see VirtualFunctionsAbiTests)
+# must be caught here, on push and PR, before anything is tagged.
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - "managed/**"
+      - ".github/workflows/managed-tests.yml"
+  push:
+    branches: ["main"]
+    paths:
+      - "managed/**"
+      - ".github/workflows/managed-tests.yml"
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: managed-tests-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: "10.0.x"
+
+      - name: Test
+        run: dotnet test -c Release managed/CounterStrikeSharp.API.Tests/CounterStrikeSharp.API.Tests.csproj

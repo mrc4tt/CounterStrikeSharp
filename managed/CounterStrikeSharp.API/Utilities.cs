@@ -58,7 +58,7 @@ namespace CounterStrikeSharp.API
 
         public static T? CreateEntityByName<T>(string name) where T : CBaseEntity
         {
-            return FastNew.CreateInstance<T, IntPtr>(VirtualFunctions.UTIL_CreateEntityByName(name, -1))!;
+            return FastNew.CreateInstance<T, IntPtr>(VirtualFunctions.UTIL_CreateEntityByNameFunc.Invoke(name, -1))!;
         }
 
         public static CCSPlayerController? GetPlayerFromIndex(int index)

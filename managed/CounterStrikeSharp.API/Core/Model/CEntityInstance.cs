@@ -38,7 +38,7 @@ public partial class CEntityInstance : IEquatable<CEntityInstance>
     {
         Guard.IsValidEntity(this);
 
-        VirtualFunctions.UTIL_Remove(this.Handle);
+        VirtualFunctions.UTIL_RemoveFunc.Invoke(this.Handle);
     }
     
     public bool Equals(CEntityInstance? other)

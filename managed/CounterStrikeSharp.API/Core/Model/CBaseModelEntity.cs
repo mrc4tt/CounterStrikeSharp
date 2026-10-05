@@ -25,6 +25,6 @@ public partial class CBaseModelEntity
     {
         Guard.IsValidEntity(this);
 
-        VirtualFunctions.SetModel(Handle, model);
+        VirtualFunctions.SetModelFunc.Invoke(Handle, model);
     }
 }
