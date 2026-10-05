@@ -28,6 +28,6 @@ public partial class CBasePlayerPawn
         Guard.IsValidEntity(this);
         Guard.IsValidEntity(weapon);
 
-        VirtualFunctions.RemovePlayerItemVirtual(Handle, weapon.Handle);
+        VirtualFunctions.RemovePlayerItemFunc.Invoke(Handle, weapon.Handle);
     }
 }

@@ -16,9 +16,7 @@ public class RayTraceTests
 
     public async Task InitializeAsync()
     {
-        Server.ExecuteCommand("bot_kick; bot_quota 5; bot_quota_mode normal");
-        await WaitOneFrame();
-        this.player = Utilities.GetPlayers().Last(p => p.LifeState == (byte)LifeState_t.LIFE_ALIVE);
+        this.player = await EnsureAliveBot();
         if (player.PlayerPawn.Value == null)
         {
             throw new Exception("No valid player pawn found for test player.");

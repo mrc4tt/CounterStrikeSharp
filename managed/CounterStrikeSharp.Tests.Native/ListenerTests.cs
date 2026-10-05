@@ -52,7 +52,8 @@ public class ListenerTests
         {
             // A failed assertion must not leave the listener registered for the tests that follow.
             if (listening) NativeAPI.RemoveListener("OnClientConnect", callback);
-            NativeAPI.IssueServerCommand("bot_quota 1");
+            Server.ExecuteCommand(BotSetupCommand);
+            await EnsureAliveBot();
         }
     }
 
@@ -203,11 +204,7 @@ public class ListenerTests
     {
         // Respawn immunity would let the listeners fire without any health being lost.
         NativeAPI.IssueServerCommand("mp_respawn_immunitytime 0");
-        NativeAPI.IssueServerCommand("bot_kick");
-        NativeAPI.IssueServerCommand("bot_add");
-        await WaitOneFrame();
-
-        var player = Utilities.GetPlayers().First(p => p.IsBot && p.PawnIsAlive);
+        var player = await EnsureAliveBot();
         var pawn = player.PlayerPawn.Value!;
 
         // The convar only affects later spawns; this pawn may already carry spawn protection.

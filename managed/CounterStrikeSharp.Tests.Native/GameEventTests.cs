@@ -43,7 +43,10 @@ public class GameEventTests
         }
         finally
         {
-            NativeAPI.IssueServerCommand("bot_quota 5");
+            // Restore the quota and refill before the next test: some test classes need a player in
+            // their constructor.
+            Server.ExecuteCommand(BotSetupCommand);
+            await EnsureAliveBot();
         }
     }
 

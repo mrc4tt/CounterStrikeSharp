@@ -41,9 +41,14 @@ list(REMOVE_DUPLICATES PROTO_PATHS)
 list(TRANSFORM PROTO_OUTPUT PREPEND ${CMAKE_CURRENT_BINARY_DIR}/protobufcompiler/)
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/protobufcompiler)
 
+# csgo/ goes BEFORE the SDK's protobuf include: since SteamDatabase bd8f82d the protos use
+# Valve-only options (FieldOptions.boxed_type / synthetic_default, FileOptions.additional_includes)
+# that exist only in Valve's patched csgo/google/protobuf/descriptor.proto. With the stock 3.21.8
+# copy first, protoc fails with 'Option "boxed_type" unknown'. Those options are codegen metadata
+# only; the linked 3.21.8 libprotobuf keeps them as unknown fields and the wire format is unchanged.
 add_custom_command(
     OUTPUT ${PROTO_OUTPUT}
-    COMMAND "${PROTOC_EXECUTABLE}" -I ${PROJECT_SOURCE_DIR}/libraries/hl2sdk-cs2/thirdparty/protobuf-3.21.8/src --proto_path=${PROJECT_SOURCE_DIR}/libraries/Protobufs/csgo ${PROTO_PATHS} --cpp_out=${CMAKE_CURRENT_BINARY_DIR}/protobufcompiler ${PROTO_INPUT}
+    COMMAND "${PROTOC_EXECUTABLE}" --proto_path=${PROJECT_SOURCE_DIR}/libraries/Protobufs/csgo -I ${PROJECT_SOURCE_DIR}/libraries/hl2sdk-cs2/thirdparty/protobuf-3.21.8/src ${PROTO_PATHS} --cpp_out=${CMAKE_CURRENT_BINARY_DIR}/protobufcompiler ${PROTO_INPUT}
     COMMENT "Generating protobuf file"
 )
 

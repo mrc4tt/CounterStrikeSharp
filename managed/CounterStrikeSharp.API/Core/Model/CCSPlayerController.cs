@@ -158,7 +158,7 @@ public partial class CCSPlayerController
     {
         Guard.IsValidEntity(this);
 
-        VirtualFunctions.SwitchTeam(Handle, (byte)team);
+        VirtualFunctions.SwitchTeamFunc.Invoke(Handle, (byte)team);
     }
 
     /// <summary>
