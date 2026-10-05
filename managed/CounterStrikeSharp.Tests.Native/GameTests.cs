@@ -16,7 +16,7 @@ public class GameTests
 
     public async Task InitializeAsync()
     {
-        this.player = await EnsureAliveBot("bot_kick; bot_quota 5; bot_quota_mode normal");
+        this.player = await EnsureAliveBot();
         if (player.PlayerPawn.Value == null)
         {
             throw new Exception("No valid player pawn found for test player.");

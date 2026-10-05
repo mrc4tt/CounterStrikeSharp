@@ -24,7 +24,7 @@ public class VirtualFunctionTests
         };
 
         // PostThink only runs for a live pawn.
-        await EnsureAliveBot("bot_quota 2; bot_quota_mode normal");
+        await EnsureAliveBot();
 
         try
         {

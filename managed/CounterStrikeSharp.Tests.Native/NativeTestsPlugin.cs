@@ -103,6 +103,10 @@ namespace NativeTestsPlugin
 
             try
             {
+                // Some test classes need a player in their constructor (SchemaPropertyTests), which cannot
+                // wait, so make sure live bots exist before any test runs.
+                await EnsureAliveBot();
+
                 using var controller = new XunitFrontController(AppDomainSupport.IfAvailable, this.ModulePath);
 
                 var executionOptions = TestFrameworkOptions.ForExecution();

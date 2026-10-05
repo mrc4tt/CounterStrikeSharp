@@ -14,17 +14,6 @@ namespace NativeTestsPlugin;
 // so they are exercised here end to end.
 public class ProtobufTests
 {
-    private static async Task<CCSPlayerController> GetBot()
-    {
-        if (!Utilities.GetPlayers().Any())
-        {
-            Server.ExecuteCommand("bot_quota 2; bot_quota_mode normal");
-            await WaitUntil(() => Utilities.GetPlayers().Any());
-        }
-
-        return Utilities.GetPlayers().First();
-    }
-
     [Theory]
     [InlineData("TextMsg")]
     [InlineData("SayText")]
@@ -68,7 +57,7 @@ public class ProtobufTests
     [Fact]
     public async Task PrintToChatAndCenter_DoNotBreakServer()
     {
-        var bot = await GetBot();
+        var bot = await EnsureAliveBot();
 
         bot.PrintToChat("protobuf test chat");
         bot.PrintToCenter("protobuf test center");
@@ -82,7 +71,7 @@ public class ProtobufTests
     [Fact]
     public async Task ReplicateConVar_DoesNotBreakServer()
     {
-        var bot = await GetBot();
+        var bot = await EnsureAliveBot();
 
         bot.ReplicateConVar("sv_cheats", "0");
         await WaitOneFrame();
