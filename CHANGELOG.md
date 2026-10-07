@@ -1,3 +1,27 @@
+## What's Changed in v1.0.407
+* fix: defer FreeEvent of superseded events to post hook ([66f9925](https://github.com/mrc4tt/CounterStrikeSharp/commit/66f9925ef9da0b26a57dff1418828f9f0b0fd52a))
+* Merge pull request #27 from mrc4tt/ci/smoke-drop-pr-trigger in [#27](https://github.com/mrc4tt/CounterStrikeSharp/pull/27) ([3519646](https://github.com/mrc4tt/CounterStrikeSharp/commit/3519646c8b8d2d9e3971d3e00c6a981c29e0d327))
+* ci(smoke): drop the pull_request trigger ([42c87f5](https://github.com/mrc4tt/CounterStrikeSharp/commit/42c87f55dc272aa0b1ee627c2cb1946eff757877))
+* Merge pull request #26 from mrc4tt/fix/hook-reentry-depth in [#26](https://github.com/mrc4tt/CounterStrikeSharp/pull/26) ([e0f92fd](https://github.com/mrc4tt/CounterStrikeSharp/commit/e0f92fdd2028f7fb23a216012659bc3c0778a6ef))
+* test(native): wait until a re-entry test hook is live ([cdd6405](https://github.com/mrc4tt/CounterStrikeSharp/commit/cdd6405ec22ff8fcce90195730333fa4d498c5d0))
+* fix(DynamicHook): bound hook re-entry instead of recursing to a stack overflow ([635e5a6](https://github.com/mrc4tt/CounterStrikeSharp/commit/635e5a68c4eadf5e7a6b54ccbc9b86061becaaeb))
+* Merge pull request #25 from mrc4tt/fix/memoryfunction-cache in [#25](https://github.com/mrc4tt/CounterStrikeSharp/pull/25) ([27e8b8b](https://github.com/mrc4tt/CounterStrikeSharp/commit/27e8b8b2493845c98d11814bf9727f69114231a2))
+* test(native): don't assume the bot holds only the given weapon ([a9624fa](https://github.com/mrc4tt/CounterStrikeSharp/commit/a9624fa2e0acb636e4fc6e5fb0199eaba4e51ecc))
+* fix(api): key native function cache by types, cache failures, plug Hook leak ([37fc2bf](https://github.com/mrc4tt/CounterStrikeSharp/commit/37fc2bf22d3617cc492237eaa5ad4e781699a651))
+* Merge pull request #24 from mrc4tt/fix/vfuncs-abi-protobufs in [#24](https://github.com/mrc4tt/CounterStrikeSharp/pull/24) ([5f08720](https://github.com/mrc4tt/CounterStrikeSharp/commit/5f08720d42e88a370929a9aa4a9fd56152b97fcc))
+* test(native): keep live bots on the smoke server ([f45454c](https://github.com/mrc4tt/CounterStrikeSharp/commit/f45454c2d4e6caa6448fefd5d5add8b3292ac67e))
+* test(native): wait for a live bot instead of one frame ([822813a](https://github.com/mrc4tt/CounterStrikeSharp/commit/822813a576d965bb3a695dfdca92dfb0ff6628bb))
+* fix(native): return CEntityKeyValues colors by value ([116605e](https://github.com/mrc4tt/CounterStrikeSharp/commit/116605e10e9e1dd1ac94c48f83bbe25d2687d174))
+* test(native): cover protobuf-backed native message paths ([d8b2a8e](https://github.com/mrc4tt/CounterStrikeSharp/commit/d8b2a8e5df55068068cacd693995308eeec5fc65))
+* fix(api): keep fork-built plugins binding to VirtualFunctions ([8d2d211](https://github.com/mrc4tt/CounterStrikeSharp/commit/8d2d2110887a5dea5e077dbc59c0446892a816c4))
+* chore(deps): bump Protobufs to SteamDatabase bd8f82d ([5402c2c](https://github.com/mrc4tt/CounterStrikeSharp/commit/5402c2c3f37288f1f1e1a14c3fe86e4a7e0f597d))
+* fix(api): restore VirtualFunctions field ABI for upstream-built plugins ([96f2174](https://github.com/mrc4tt/CounterStrikeSharp/commit/96f2174c14e9547c6a0e064c6dbc2b687f3bcc0e))
+* chore(gamedata): remove CCSPlayer_WeaponServices_SelectItem offset ([7d10d33](https://github.com/mrc4tt/CounterStrikeSharp/commit/7d10d336180ef39c7552d03536e6dcc031db85d5))
+* Merge pull request #23 from mrc4tt/chore/automated/schema-update in [#23](https://github.com/mrc4tt/CounterStrikeSharp/pull/23) ([1a46388](https://github.com/mrc4tt/CounterStrikeSharp/commit/1a46388f3f895bce7ffa56f599703093032897c7))
+* chore: update schema definitions to 1.41.8.8 ([e8d8e06](https://github.com/mrc4tt/CounterStrikeSharp/commit/e8d8e063c840178007e15393026886222dfc03a9))
+* upd small stuff ([b520e7f](https://github.com/mrc4tt/CounterStrikeSharp/commit/b520e7f86b111cb527838f13a5d6d1cdbdaa70b2))
+* gamedata: 14186 (auto-generated from CS2_VibeSignatures) ([50424a1](https://github.com/mrc4tt/CounterStrikeSharp/commit/50424a1f5455d0141468dafe26992aba26c6ff24))
+
 ## What's Changed in v1.0.406
 * perf(schemagen): generated builtin/enum properties read through SchemaField<T> ([218e152](https://github.com/mrc4tt/CounterStrikeSharp/commit/218e152cefe11c2bdae3f0863cbe44179ed59996))
 * feat: reject a gamedata update that breaks a working signature ([e5fac6d](https://github.com/mrc4tt/CounterStrikeSharp/commit/e5fac6d2aafe4af98ce843593c274d13a723551e))
@@ -307,6 +331,8 @@
 
 ## What's Changed in v1.0.376
 * test new action ([d3f0fd1](https://github.com/mrc4tt/CounterStrikeSharp/commit/d3f0fd1530abfce10b3cd1fb9fbe41eca217f24b))
+
+## What's Changed in v1.0.375
 * feat: update API.cs ([69a2382](https://github.com/mrc4tt/CounterStrikeSharp/commit/69a23820e33d179178092499134171aa3827616b))
 
 ## What's Changed in v1.0.374
