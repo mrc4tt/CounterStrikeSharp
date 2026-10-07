@@ -253,7 +253,13 @@ KHook::Return<bool> EventManager::OnFireEvent(IGameEventManager2* pGameEventMana
                     // per non-null frame, so push/pop always balance regardless of whether
                     // a post hook is added mid-fire.
                     m_EventCopies.push(bHasPostHook ? globals::gameEventManager->DuplicateEvent(pEvent) : nullptr);
-                    globals::gameEventManager->FreeEvent(pEvent);
+                    // Superseding skips the original FireEvent (which would have freed the
+                    // event), so we own it now. Do NOT free it here: KHook still runs every
+                    // other plugin's pre hook with this same pEvent after we return (e.g.
+                    // MultiAddonManager's FireEvent hook calls pEvent->GetName()), which was
+                    // a use-after-free crash. Free it in OnFireEventPost instead; the post
+                    // loop always runs, and ours runs after hooks registered later.
+                    m_SupersededEvents.push(pEvent);
                     return { KHook::Action::Supersede, false };
                 }
             }
@@ -264,6 +270,7 @@ KHook::Return<bool> EventManager::OnFireEvent(IGameEventManager2* pGameEventMana
     {
         m_EventStack.push(nullptr);
     }
+    m_SupersededEvents.push(nullptr);
 
     if (bLocalDontBroadcast != bDontBroadcast)
     {
@@ -313,6 +320,13 @@ KHook::Return<bool> EventManager::OnFireEventPost(IGameEventManager2* pGameEvent
     }
 
     m_EventStack.pop();
+
+    IGameEvent* pSuperseded = m_SupersededEvents.top();
+    m_SupersededEvents.pop();
+    if (pSuperseded)
+    {
+        globals::gameEventManager->FreeEvent(pSuperseded);
+    }
 
     return { KHook::Action::Ignore, true };
 }

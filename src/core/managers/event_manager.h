@@ -122,6 +122,9 @@ class EventManager : public IGameEventListener2, public GlobalClass
 
     std::stack<EventHook*> m_EventStack;
     std::stack<IGameEvent*> m_EventCopies;
+    // One entry per m_EventStack frame: the event to free once the post loop runs if
+    // our pre hook superseded FireEvent, else nullptr. See OnFireEvent.
+    std::stack<IGameEvent*> m_SupersededEvents;
     std::stack<PendingEventHook> m_PendingHooks;
     // Guards m_PendingHooks and the defer-vs-hook decision in HookEvent against the
     // OnGameLoopInitialized drain. Closes the TOCTOU race where HookEvent reads
