@@ -32,7 +32,7 @@ _fieldtypes GetVariantType(ScriptContext& script_context)
         script_context.ThrowNativeError("Invalid variant pointer");
         return _fieldtypes::FIELD_TYPEUNKNOWN;
     }
-    return pVariant->m_type;
+    return static_cast<_fieldtypes>(pVariant->GetType());
 }
 
 static int GetVariantInt(ScriptContext& script_context)
@@ -43,12 +43,12 @@ static int GetVariantInt(ScriptContext& script_context)
         script_context.ThrowNativeError("Invalid variant pointer");
         return 0;
     }
-    if (pVariant->m_type != _fieldtypes::FIELD_INT32)
+    if (pVariant->GetType() != _fieldtypes::FIELD_INT32)
     {
         script_context.ThrowNativeError("Variant type is not int");
         return 0.0f;
     }
-    return pVariant->m_int32;
+    return static_cast<int32>(*pVariant);
 }
 
 static uint GetVariantUInt(ScriptContext& script_context)
@@ -59,12 +59,12 @@ static uint GetVariantUInt(ScriptContext& script_context)
         script_context.ThrowNativeError("Invalid variant pointer");
         return 0;
     }
-    if (pVariant->m_type != _fieldtypes::FIELD_UINT32)
+    if (pVariant->GetType() != _fieldtypes::FIELD_UINT32)
     {
         script_context.ThrowNativeError("Variant type is not uint");
         return 0.0f;
     }
-    return pVariant->m_uint32;
+    return static_cast<uint32>(*pVariant);
 }
 
 static float GetVariantFloat(ScriptContext& script_context)
@@ -75,12 +75,12 @@ static float GetVariantFloat(ScriptContext& script_context)
         script_context.ThrowNativeError("Invalid variant pointer");
         return 0;
     }
-    if (pVariant->m_type != _fieldtypes::FIELD_FLOAT32)
+    if (pVariant->GetType() != _fieldtypes::FIELD_FLOAT32)
     {
         script_context.ThrowNativeError("Variant type is not float");
         return 0.0f;
     }
-    return pVariant->m_float32;
+    return static_cast<float32>(*pVariant);
 }
 
 static const char* GetVariantString(ScriptContext& script_context)
@@ -91,13 +91,13 @@ static const char* GetVariantString(ScriptContext& script_context)
         script_context.ThrowNativeError("Invalid variant pointer");
         return "";
     }
-    if (pVariant->m_type != _fieldtypes::FIELD_STRING)
+    if (pVariant->GetType() != _fieldtypes::FIELD_STRING)
     {
         script_context.ThrowNativeError("Variant type is not string");
         return "";
     }
 
-    return pVariant->m_pszString;
+    return static_cast<string_t>(*pVariant).ToCStr();
 }
 
 static bool GetVariantBool(ScriptContext& script_context)
@@ -108,12 +108,12 @@ static bool GetVariantBool(ScriptContext& script_context)
         script_context.ThrowNativeError("Invalid variant pointer");
         return false;
     }
-    if (pVariant->m_type != _fieldtypes::FIELD_BOOLEAN)
+    if (pVariant->GetType() != _fieldtypes::FIELD_BOOLEAN)
     {
         script_context.ThrowNativeError("Variant type is not boolean");
         return 0.0f;
     }
-    return pVariant->m_bool;
+    return static_cast<bool>(*pVariant);
 }
 
 static void SetVariantInt(ScriptContext& script_context)
@@ -124,14 +124,14 @@ static void SetVariantInt(ScriptContext& script_context)
         script_context.ThrowNativeError("Invalid variant pointer");
         return;
     }
-    if (pVariant->m_type != _fieldtypes::FIELD_INT32)
+    if (pVariant->GetType() != _fieldtypes::FIELD_INT32)
     {
         script_context.ThrowNativeError("Variant type is not int");
         return;
     }
 
     int value = script_context.GetArgument<int>(1);
-    pVariant->m_int32 = value;
+    *pVariant = value;
 }
 
 static void SetVariantUInt(ScriptContext& script_context)
@@ -142,14 +142,14 @@ static void SetVariantUInt(ScriptContext& script_context)
         script_context.ThrowNativeError("Invalid variant pointer");
         return;
     }
-    if (pVariant->m_type != _fieldtypes::FIELD_UINT32)
+    if (pVariant->GetType() != _fieldtypes::FIELD_UINT32)
     {
         script_context.ThrowNativeError("Variant type is not uint");
         return;
     }
 
     uint value = script_context.GetArgument<uint>(1);
-    pVariant->m_uint32 = value;
+    *pVariant = value;
 }
 
 static void SetVariantFloat(ScriptContext& script_context)
@@ -160,14 +160,14 @@ static void SetVariantFloat(ScriptContext& script_context)
         script_context.ThrowNativeError("Invalid variant pointer");
         return;
     }
-    if (pVariant->m_type != _fieldtypes::FIELD_FLOAT32)
+    if (pVariant->GetType() != _fieldtypes::FIELD_FLOAT32)
     {
         script_context.ThrowNativeError("Variant type is not float");
         return;
     }
 
     float value = script_context.GetArgument<float>(1);
-    pVariant->m_float32 = value;
+    *pVariant = value;
 }
 
 static void SetVariantString(ScriptContext& script_context)
@@ -178,14 +178,16 @@ static void SetVariantString(ScriptContext& script_context)
         script_context.ThrowNativeError("Invalid variant pointer");
         return;
     }
-    if (pVariant->m_type != _fieldtypes::FIELD_STRING)
+    if (pVariant->GetType() != _fieldtypes::FIELD_STRING)
     {
         script_context.ThrowNativeError("Variant type is not string");
         return;
     }
 
     const char* value = script_context.GetArgument<const char*>(1);
-    pVariant->m_pszString = value;
+    // The SDK's operator=(string_t) re-types the variant to FIELD_CSTRING and copies;
+    // copy-assigning a temporary keeps FIELD_STRING and stores the pointer as before.
+    *pVariant = variant_t(MAKE_STRING(value));
 }
 
 static void SetVariantBool(ScriptContext& script_context)
@@ -196,14 +198,14 @@ static void SetVariantBool(ScriptContext& script_context)
         script_context.ThrowNativeError("Invalid variant pointer");
         return;
     }
-    if (pVariant->m_type != _fieldtypes::FIELD_BOOLEAN)
+    if (pVariant->GetType() != _fieldtypes::FIELD_BOOLEAN)
     {
         script_context.ThrowNativeError("Variant type is not boolean");
         return;
     }
 
     bool value = script_context.GetArgument<bool>(1);
-    pVariant->m_bool = value;
+    *pVariant = value;
 }
 
 REGISTER_NATIVES(cvariant, {
