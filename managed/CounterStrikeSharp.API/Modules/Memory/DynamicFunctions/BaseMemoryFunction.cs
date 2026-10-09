@@ -165,6 +165,7 @@ public abstract class BaseMemoryFunction : NativeObject
         // Create returns the existing reference when this handler is already hooked elsewhere.
         bool shared = FunctionReference.IsRegistered(handler);
         var reference = FunctionReference.Create(handler);
+        reference.SetCrashLabel("hook", (handler.Method.DeclaringType?.Name ?? "?") + "." + handler.Method.Name + (post ? " (post)" : ""));
         try
         {
             NativeAPI.HookFunction(handle, reference, post);
@@ -239,4 +240,4 @@ public abstract class BaseMemoryFunction : NativeObject
     {
         NativeAPI.ExecuteVirtualFunction<object>(Handle, bypass, args);
     }
-}
+}

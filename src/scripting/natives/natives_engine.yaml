@@ -24,6 +24,7 @@ NEW_TRACE_RESULT: -> pointer
 GET_TICKED_TIME: -> double
 QUEUE_TASK_FOR_FRAME: tick:int, callback:func -> void
 GET_VALVE_INTERFACE: interfaceType:int, interfaceName:string -> pointer
+GET_CRASH_CONTEXT: -> pointer
 GET_COMMAND_PARAM_VALUE: param:string, dataType:DataType_t, defaultValue:any -> any
 FIND_COMMAND_LINE_PARAM: param:string -> bool
 GET_COMMAND_LINE_PARAM: param:string, defaultValue:string -> string

@@ -22,6 +22,7 @@
 #include "core/detours.h"
 #include "core/dynamic_hook.h"
 #include "core/fatal_reporter.h"
+#include "core/crash_recorder.h"
 #include "core/coreconfig.h"
 #include "core/game_system.h"
 #include "core/gameconfig.h"
@@ -352,6 +353,19 @@ bool CounterStrikeSharpMMPlugin::Unload(char* error, size_t maxlen)
     return true;
 }
 
+// Lets a crash handler (AcceleratorCS2) find the flight recorder, see core/crash_recorder.h.
+void* CounterStrikeSharpMMPlugin::OnMetamodQuery(const char* iface, int* ret)
+{
+    if (iface && strcmp(iface, CSS_CRASH_CONTEXT_INTERFACE) == 0)
+    {
+        if (ret) *ret = META_IFACE_OK;
+        return crash::Get();
+    }
+
+    if (ret) *ret = META_IFACE_FAILED;
+    return nullptr;
+}
+
 void CounterStrikeSharpMMPlugin::AllPluginsLoaded()
 {
     /* This is where we'd do stuff that relies on the mod or other plugins
@@ -398,6 +412,7 @@ KHook::Return<void> CounterStrikeSharpMMPlugin::Hook_GameFrame(IServerGameDLL*, 
 
     // Free DynamicHooks that were removed from inside a hook callback last frame.
     DynamicHook::CollectRetired();
+    crash::OnGameFrame();
     globals::timerSystem.OnGameFrame(simulating);
 
     // Reused across frames so the scheduler drain does not allocate a vector per

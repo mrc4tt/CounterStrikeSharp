@@ -176,6 +176,17 @@ namespace CounterStrikeSharp.API.Core
         private readonly ParameterInfo[] _parameters;
         private readonly bool _isManualScriptContext;
 
+        // Crash flight recorder label (see CrashRecorder): which plugin this callback belongs to and what
+        // it is, shown by crash handlers as the running callback / recent activity.
+        private string _crashOwner;
+        private string _crashKind = "callback";
+        private string _crashDetail;
+        private bool _crashActivity = true;
+        private long _lastActivityTicks = long.MinValue;
+
+        // One activity entry per callback per second at most; the rest only update the current callback.
+        private const long ActivityIntervalMs = 1000;
+
         private readonly TaskCompletionSource _taskCompletionSource = new();
 
         private FunctionReference(Delegate method, FunctionLifetime lifetime)
@@ -188,6 +199,33 @@ namespace CounterStrikeSharp.API.Core
             _parameters = method.Method.GetParameters();
             _isManualScriptContext =
                 _parameters.Length > 0 && _parameters[0].ParameterType == typeof(ScriptContext);
+
+            var declaring = method.Method.DeclaringType?.Assembly;
+            _crashOwner = declaring != null && declaring != typeof(FunctionReference).Assembly
+                ? _ownerName
+                : CrashRecorder.CurrentOwner ?? "core";
+            _crashDetail = (method.Method.DeclaringType?.Name ?? "?") + "." + method.Method.Name;
+        }
+
+        /// <summary>
+        /// Describes this callback for the crash flight recorder. <paramref name="owner"/> defaults to the
+        /// plugin resolved at creation. <paramref name="activity"/> false keeps per-frame callbacks out of the
+        /// activity history.
+        /// </summary>
+        internal void SetCrashLabel(string kind, string detail, bool activity = true, string? owner = null)
+        {
+            _crashKind = kind;
+            _crashDetail = detail;
+            _crashActivity = activity;
+            if (!string.IsNullOrEmpty(owner)) _crashOwner = owner;
+        }
+
+        internal static string OwnerOf(Delegate method)
+        {
+            var declaring = method.Method.DeclaringType?.Assembly;
+            return declaring != null && declaring != typeof(FunctionReference).Assembly
+                ? declaring.GetName().Name ?? "unknown"
+                : CrashRecorder.CurrentOwner ?? "core";
         }
 
         /// <summary>
@@ -271,6 +309,17 @@ namespace CounterStrikeSharp.API.Core
 
         private unsafe void Dispatch(fxScriptContext* context)
         {
+            if (_crashActivity)
+            {
+                var now = Environment.TickCount64;
+                if (now - _lastActivityTicks >= ActivityIntervalMs)
+                {
+                    _lastActivityTicks = now;
+                    CrashRecorder.Activity(_crashOwner, _crashKind, _crashDetail);
+                }
+            }
+
+            var previousCrashOwner = CrashRecorder.Enter(_crashOwner, _crashKind, _crashDetail);
             {
                 try
                 {
@@ -358,6 +407,9 @@ namespace CounterStrikeSharp.API.Core
                     }
 
                     var owner = ResolveOwnerAssembly(e, _targetMethod)?.GetName().Name ?? "unknown";
+                    var root = e.GetBaseException();
+                    CrashRecorder.Exception(_crashOwner != "core" ? _crashOwner : owner, _crashKind,
+                        _crashDetail + ": " + root.GetType().Name + ": " + root.Message);
                     var throttleKey = owner + "|" + _targetMethod.Method.Name + "|" + e.GetBaseException().GetType().Name;
                     var decision = Diagnostics.PluginDiagnostics.RecordError(owner, throttleKey);
 
@@ -375,6 +427,8 @@ namespace CounterStrikeSharp.API.Core
                 }
                 finally
                 {
+                    CrashRecorder.Exit(previousCrashOwner);
+
                     if (Lifetime == FunctionLifetime.SingleUse)
                     {
                         RemoveSelf();

@@ -23,6 +23,7 @@
 
 #include "mm_plugin.h"
 #include "core/fatal_reporter.h"
+#include "core/crash_recorder.h"
 #include "core/timer_system.h"
 #include "core/utils.h"
 #include "core/cs2_sdk/compat/IEngineSound.h"
@@ -277,8 +278,12 @@ void ClientPrint(ScriptContext& scriptContext)
 // name it as the last console line if the process aborts. See fatal_reporter.
 void SetFatalSuspectPlugin(ScriptContext& script_context) { fatal::SetSuspectPlugin(script_context.GetArgument<const char*>(0)); }
 
+// Flight recorder block that managed code writes plugin activity into. See crash_recorder.
+void* GetCrashContext(ScriptContext& script_context) { return crash::Get(); }
+
 REGISTER_NATIVES(engine, {
     ScriptEngine::RegisterNativeHandler("SET_FATAL_SUSPECT_PLUGIN", SetFatalSuspectPlugin);
+    ScriptEngine::RegisterNativeHandler("GET_CRASH_CONTEXT", GetCrashContext);
     ScriptEngine::RegisterNativeHandler("GET_GAME_DIRECTORY", GetGameDirectory);
     ScriptEngine::RegisterNativeHandler("GET_MAP_NAME", GetMapName);
     ScriptEngine::RegisterNativeHandler("IS_MAP_VALID", IsMapValid);

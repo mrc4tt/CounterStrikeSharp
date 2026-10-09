@@ -845,6 +845,15 @@ namespace CounterStrikeSharp.API.Core
 			_ctx.CheckErrors();
 		}
 
+        public static IntPtr GetCrashContext(){
+			var _ctx = ScriptContext.GlobalScriptContext;
+			_ctx.Reset();
+			_ctx.SetIdentifier(0x5C3FA3C7);
+			_ctx.Invoke();
+			_ctx.CheckErrors();
+			return _ctx.GetResultPrimitive<IntPtr>();
+		}
+
         public static IntPtr GetValveInterface(int interfacetype, string interfacename){
 			var _ctx = ScriptContext.GlobalScriptContext;
 			_ctx.Reset();

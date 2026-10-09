@@ -40,6 +40,8 @@ namespace CounterStrikeSharp.API.Modules.Timers
         {
             // Create the reference explicitly so we own its identifier for cleanup in Kill.
             var functionReference = FunctionReference.Create(callback);
+            functionReference.SetCrashLabel("timer",
+                (callback.Method.DeclaringType?.Name ?? "?") + "." + callback.Method.Name + " (" + interval.ToString(System.Globalization.CultureInfo.InvariantCulture) + "s)");
             _functionReferenceIdentifier = functionReference.Identifier;
             Handle = NativeAPI.CreateTimer(interval, functionReference, (int)(flags ?? 0));
         }

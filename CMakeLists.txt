@@ -52,6 +52,9 @@ set(SOURCE_FILES
     src/core/log.cpp
     src/core/fatal_reporter.h
     src/core/fatal_reporter.cpp
+    src/core/css_crash_context.h
+    src/core/crash_recorder.h
+    src/core/crash_recorder.cpp
     src/scripting/script_engine.h
     src/scripting/script_engine.cpp
     src/core/global_listener.h

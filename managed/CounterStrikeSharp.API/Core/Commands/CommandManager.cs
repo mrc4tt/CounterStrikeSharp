@@ -20,6 +20,8 @@ public class CommandManager : ICommandManager
     {
         _logger = logger;
         _internalFunctionReference = FunctionReference.Create(HandleCommandInternal);
+        // The plugin's own command callback is recorded per invocation in HandleCommandInternal.
+        _internalFunctionReference.SetCrashLabel("command", "dispatch", activity: false, owner: "core");
     }
 
     public void RegisterCommand(CommandDefinition definition)
@@ -162,7 +164,20 @@ public class CommandManager : ICommandManager
                     }
                 }
 
-                command.Callback?.Invoke(caller, info);
+                if (command.Callback == null) continue;
+
+                var owner = FunctionReference.OwnerOf(command.Callback);
+                var commandString = info.GetCommandString;
+                CrashRecorder.Activity(owner, "command", commandString);
+                var previousOwner = CrashRecorder.Enter(owner, "command", commandString);
+                try
+                {
+                    command.Callback.Invoke(caller, info);
+                }
+                finally
+                {
+                    CrashRecorder.Exit(previousOwner);
+                }
             }
         }
     }
