@@ -92,6 +92,9 @@ namespace CounterStrikeSharp.API.Core
 
             Logger.LogInformation("CounterStrikeSharp is starting up...");
 
+            // Before any plugin loads, so their callbacks are attributed from the first one.
+            CrashRecorder.Initialize();
+
             _coreConfig.Load();
             _gameDataProvider.Load();
 

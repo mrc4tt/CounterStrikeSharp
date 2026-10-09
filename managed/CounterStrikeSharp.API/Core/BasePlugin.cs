@@ -98,11 +98,20 @@ namespace CounterStrikeSharp.API.Core
             private readonly Action _dispose;
 
             public CallbackSubscriber(Delegate underlyingMethod, Delegate wrapperMethod, Action dispose)
+                : this(underlyingMethod, wrapperMethod, dispose, null, null)
+            {
+            }
+
+            internal CallbackSubscriber(Delegate underlyingMethod, Delegate wrapperMethod, Action dispose, string? crashKind,
+                string? crashDetail, bool crashActivity = true)
             {
                 _dispose = dispose;
                 _underlyingMethod = underlyingMethod;
 
                 var functionReference = FunctionReference.Create(wrapperMethod);
+                if (crashKind != null)
+                    functionReference.SetCrashLabel(crashKind, crashDetail ?? crashKind, crashActivity,
+                        FunctionReference.OwnerOf(underlyingMethod));
                 _inputArgument = (InputArgument)functionReference;
 
                 _functionReferenceIdentifier = functionReference.Identifier;
@@ -150,7 +159,7 @@ namespace CounterStrikeSharp.API.Core
         {
 #pragma warning disable CS0618 // intentional internal use of the non-generic deregister
             var subscriber = new CallbackSubscriber(handler, handler,
-                () => DeregisterEventHandler(name, handler, post));
+                () => DeregisterEventHandler(name, handler, post), "event", post ? name : name + " (pre)");
 #pragma warning restore CS0618
 
             NativeAPI.HookEvent(name, subscriber.GetInputArgument(), post);
@@ -235,7 +244,8 @@ namespace CounterStrikeSharp.API.Core
                 return handler.Invoke(caller, command);
             });
 
-            var subscriber = new CallbackSubscriber(handler, wrappedHandler, () => { RemoveCommandListener(name, handler, mode); });
+            var subscriber = new CallbackSubscriber(handler, wrappedHandler, () => { RemoveCommandListener(name, handler, mode); },
+                "cmdlistener", name ?? "*");
             NativeAPI.AddCommandListener(name, subscriber.GetInputArgument(), mode == HookMode.Post);
             CommandListeners[handler] = subscriber;
         }
@@ -345,7 +355,8 @@ namespace CounterStrikeSharp.API.Core
 
 #pragma warning disable CS0618 // intentional internal use of the non-generic RemoveListener
             var subscriber =
-                new CallbackSubscriber(handler, wrappedHandler, () => { RemoveListener(listenerName, handler); });
+                new CallbackSubscriber(handler, wrappedHandler, () => { RemoveListener(listenerName, handler); },
+                    "listener", listenerName, !CrashRecorder.IsHighFrequencyListener(listenerName));
 #pragma warning restore CS0618
 
             NativeAPI.AddListener(listenerName, subscriber.GetInputArgument());

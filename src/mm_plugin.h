@@ -40,6 +40,7 @@ class CounterStrikeSharpMMPlugin : public ISmmPlugin, public IMetamodListener
     bool Pause(char* error, size_t maxlen) override;
     bool Unpause(char* error, size_t maxlen) override;
     void AllPluginsLoaded() override;
+    void* OnMetamodQuery(const char* iface, int* ret) override;
 
   public: // hooks
     void OnLevelInit(char const* pMapName,

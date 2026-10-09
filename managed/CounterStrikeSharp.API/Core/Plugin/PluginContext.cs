@@ -310,6 +310,8 @@ namespace CounterStrikeSharp.API.Core.Plugin
                 // delegate FailFast, the SIGABRT handler names this plugin as the last
                 // console line instead of an anonymous "Process terminated".
                 NativeAPI.SetFatalSuspectPlugin(Plugin.ModuleName ?? Plugin.GetType().Assembly.GetName().Name ?? "unknown");
+                // Attributes callbacks the plugin registers while loading (wrapped by BasePlugin) to it.
+                var previousCrashOwner = CrashRecorder.EnterPlugin(Plugin.GetType().Assembly.GetName().Name ?? "unknown", "load");
                 try
                 {
                     Plugin.Load(hotReload);
@@ -338,10 +340,12 @@ namespace CounterStrikeSharp.API.Core.Plugin
                             report);
                     }
 
+                    CrashRecorder.Exit(previousCrashOwner);
                     Unload(hotReload);
                     return;
                 }
 
+                CrashRecorder.Exit(previousCrashOwner);
                 loadTimer.Stop();
                 // Loaded cleanly: clear the suspect so a later unrelated fatal does not
                 // blame this plugin. A failed load deliberately leaves it set, because
@@ -594,6 +598,7 @@ namespace CounterStrikeSharp.API.Core.Plugin
 
             _logger.LogInformation("Unloading plugin {Name}", Plugin.ModuleName);
 
+            var previousCrashOwner = CrashRecorder.EnterPlugin(Plugin.GetType().Assembly.GetName().Name ?? "unknown", "unload");
             try
             {
                 Plugin.Unload(hotReload);
@@ -605,6 +610,7 @@ namespace CounterStrikeSharp.API.Core.Plugin
             }
             finally
             {
+                CrashRecorder.Exit(previousCrashOwner);
                 Plugin?.Dispose();
                 _serviceScope?.Dispose();
                 // Each Load() builds a fresh ServiceProvider (Serilog file sinks
