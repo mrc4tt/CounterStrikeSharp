@@ -8,10 +8,12 @@
 #include "core/memory_module.h"
 
 #include <cstring>
+#include <ctime>
 #include <filesystem>
 #include <fstream>
 #include <optional>
 #include <string>
+#include <vector>
 
 #include <nlohmann/json.hpp>
 
@@ -589,4 +591,83 @@ bool TryUpdateGameConfig()
     CSSHARP_CORE_INFO("Gamedata file written to: {} with ETag {}", gamedataPath, res.etag);
     return true;
 }
+void WriteGamedataStatus()
+{
+#ifdef _WIN32
+    constexpr auto platform = "windows";
+#else
+    constexpr auto platform = "linux";
+#endif
+
+    namespace fs = std::filesystem;
+
+    // Idempotent; globals::Initialize() has normally run already.
+    modules::Initialize();
+
+    const fs::path root = utils::GetRootDirectory();
+    std::vector<fs::path> files;
+    std::error_code ec;
+
+    for (const auto& entry : fs::directory_iterator(root / "gamedata", ec))
+        if (entry.path().extension() == ".json") files.push_back(entry.path());
+
+    // Plugins that ship their own gamedata (plugins/<Name>/gamedata/<file>.json).
+    for (const auto& plugin : fs::directory_iterator(root / "plugins", ec))
+    {
+        if (!plugin.is_directory()) continue;
+        std::error_code inner;
+        for (const auto& entry : fs::directory_iterator(plugin.path() / "gamedata", inner))
+            if (entry.path().extension() == ".json") files.push_back(entry.path());
+    }
+
+    auto missing = nlohmann::json::array();
+    int checked = 0;
+
+    for (const auto& file : files)
+    {
+        std::ifstream in(file);
+        auto json = nlohmann::json::parse(in, nullptr, false);
+        if (json.is_discarded() || !json.is_object()) continue;
+
+        const auto relative = fs::relative(file, root, ec).generic_string();
+
+        for (const auto& [name, entry] : json.items())
+        {
+            if (!entry.is_object() || !entry.contains("signatures") || !entry["signatures"].is_object()) continue;
+
+            const auto& signatures = entry["signatures"];
+            if (!signatures.contains(platform) || !signatures[platform].is_string()) continue;
+
+            const auto library = signatures.contains("library") && signatures["library"].is_string() ? signatures["library"].get<std::string>() : std::string("server");
+            const auto signature = signatures[platform].get<std::string>();
+            if (signature.empty()) continue;
+
+            checked++;
+            if (!SignatureResolvesInProcess(library, signature)) missing.push_back({{"name", name}, {"file", relative}});
+        }
+    }
+
+    nlohmann::json status = {
+        {"version", 1},
+        {"at", static_cast<long long>(std::time(nullptr))},
+        {"checked", checked},
+        {"missing", missing},
+    };
+
+    std::error_code mkdirError;
+    fs::create_directories(root / "logs", mkdirError);
+
+    std::string error;
+    if (!WriteAtomically((root / "logs" / "gamedata-status.json").string(), status.dump(2) + "\n", error))
+    {
+        CSSHARP_CORE_WARN("Could not write the gamedata status: {}", error);
+        return;
+    }
+
+    if (missing.empty())
+        CSSHARP_CORE_INFO("Gamedata status: all {} signatures resolve", checked);
+    else
+        CSSHARP_CORE_WARN("Gamedata status: {} of {} signatures don't resolve (logs/gamedata-status.json)", missing.size(), checked);
+}
+
 } // namespace counterstrikesharp::update
