@@ -217,6 +217,9 @@ bool CounterStrikeSharpMMPlugin::Load(PluginId id, ISmmAPI* ismm, char* error, s
 
         globals::Initialize();
 
+        // Which gamedata signatures resolve on this CS2 build, for the hosting panel.
+        update::WriteGamedataStatus();
+
         CSSHARP_CORE_DEBUG("Globals loaded.");
         globals::mmPlugin = &gPlugin;
 
