@@ -638,20 +638,22 @@ void WriteGamedataStatus()
             const auto& signatures = entry["signatures"];
             if (!signatures.contains(platform) || !signatures[platform].is_string()) continue;
 
-            const auto library = signatures.contains("library") && signatures["library"].is_string() ? signatures["library"].get<std::string>() : std::string("server");
+            const auto library = signatures.contains("library") && signatures["library"].is_string()
+                                     ? signatures["library"].get<std::string>()
+                                     : std::string("server");
             const auto signature = signatures[platform].get<std::string>();
             if (signature.empty()) continue;
 
             checked++;
-            if (!SignatureResolvesInProcess(library, signature)) missing.push_back({{"name", name}, {"file", relative}});
+            if (!SignatureResolvesInProcess(library, signature)) missing.push_back({ { "name", name }, { "file", relative } });
         }
     }
 
     nlohmann::json status = {
-        {"version", 1},
-        {"at", static_cast<long long>(std::time(nullptr))},
-        {"checked", checked},
-        {"missing", missing},
+        { "version", 1 },
+        { "at", static_cast<long long>(std::time(nullptr)) },
+        { "checked", checked },
+        { "missing", missing },
     };
 
     std::error_code mkdirError;
@@ -664,8 +666,7 @@ void WriteGamedataStatus()
         return;
     }
 
-    if (missing.empty())
-        CSSHARP_CORE_INFO("Gamedata status: all {} signatures resolve", checked);
+    if (missing.empty()) CSSHARP_CORE_INFO("Gamedata status: all {} signatures resolve", checked);
     else
         CSSHARP_CORE_WARN("Gamedata status: {} of {} signatures don't resolve (logs/gamedata-status.json)", missing.size(), checked);
 }
