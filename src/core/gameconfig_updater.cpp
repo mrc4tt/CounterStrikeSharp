@@ -611,13 +611,19 @@ void WriteGamedataStatus()
     for (const auto& entry : fs::directory_iterator(root / "gamedata", ec))
         if (entry.path().extension() == ".json") files.push_back(entry.path());
 
-    // Plugins that ship their own gamedata (plugins/<Name>/gamedata/<file>.json).
-    for (const auto& plugin : fs::directory_iterator(root / "plugins", ec))
+    // Plugins that ship their own gamedata (plugins/<Name>/gamedata/<file>.json), switched
+    // off ones in plugins/disabled/ too: a host that turns a plugin off because its
+    // gamedata is missing must still see when it works again.
+    for (const auto& folder : { root / "plugins", root / "plugins" / "disabled" })
     {
-        if (!plugin.is_directory()) continue;
-        std::error_code inner;
-        for (const auto& entry : fs::directory_iterator(plugin.path() / "gamedata", inner))
-            if (entry.path().extension() == ".json") files.push_back(entry.path());
+        std::error_code outer;
+        for (const auto& plugin : fs::directory_iterator(folder, outer))
+        {
+            if (!plugin.is_directory() || plugin.path() == root / "plugins" / "disabled") continue;
+            std::error_code inner;
+            for (const auto& entry : fs::directory_iterator(plugin.path() / "gamedata", inner))
+                if (entry.path().extension() == ".json") files.push_back(entry.path());
+        }
     }
 
     auto missing = nlohmann::json::array();
