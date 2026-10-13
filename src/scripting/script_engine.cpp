@@ -109,15 +109,12 @@ tl::optional<TNativeHandler> ScriptEngine::GetNativeHandler(std::string identifi
 
 bool ScriptEngine::CallNativeHandler(uint64_t nativeIdentifier, ScriptContext& context)
 {
-    auto h = GetNativeHandler(nativeIdentifier);
-    if (h)
-    {
-        (*h)(context);
+    // Call through the map entry instead of copying the std::function into an optional first.
+    auto it = g_registeredHandlers.find(nativeIdentifier);
+    if (it == g_registeredHandlers.end()) return false;
 
-        return true;
-    }
-
-    return false;
+    it->second(context);
+    return true;
 }
 
 void ScriptEngine::RegisterNativeHandlerInt(uint64_t nativeIdentifier, TNativeHandler function)
@@ -129,13 +126,15 @@ void ScriptEngine::InvokeNative(counterstrikesharp::fxNativeContext& context)
 {
     if (context.nativeIdentifier == 0) return;
 
-    auto nativeHandler = counterstrikesharp::ScriptEngine::GetNativeHandler(context.nativeIdentifier);
+    // Every managed -> native call lands here. Call through the map entry instead of copying the
+    // std::function into an optional on each call.
+    auto it = g_registeredHandlers.find(context.nativeIdentifier);
 
-    if (nativeHandler)
+    if (it != g_registeredHandlers.end())
     {
         counterstrikesharp::ScriptContextRaw scriptContext(context);
 
-        (*nativeHandler)(scriptContext);
+        it->second(scriptContext);
     }
     else
     {

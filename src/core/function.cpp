@@ -32,6 +32,7 @@
 #include <algorithm>
 #include <array>
 #include <string_view>
+#include <vector>
 
 #include "core/log.h"
 #include "core/memory_module.h"
@@ -155,12 +156,57 @@ static const char* DescribeUncallableTarget(const void* target)
     return nullptr;
 }
 
+namespace {
+// One dyncall VM per nesting level and thread, reused across calls. A fresh 4KB VM used to be
+// malloc'd and freed on every native function call. Indexed by depth because a call can re-enter
+// (a hook on the target runs managed code that calls another ValveFunction) and each level needs
+// its own argument buffer.
+struct CallVMPool
+{
+    std::vector<DCCallVM*> vms;
+    size_t depth = 0;
+
+    ~CallVMPool()
+    {
+        for (auto* vm : vms)
+            dcFree(vm);
+    }
+};
+
+thread_local CallVMPool t_callVMPool;
+
+class PooledCallVM
+{
+  public:
+    PooledCallVM()
+    {
+        auto& pool = t_callVMPool;
+        if (pool.depth == pool.vms.size())
+        {
+            DCCallVM* vm = dcNewCallVM(4096);
+            if (vm == nullptr) throw std::bad_alloc();
+            pool.vms.push_back(vm);
+        }
+        m_vm = pool.vms[pool.depth++];
+    }
+
+    ~PooledCallVM() { --t_callVMPool.depth; }
+
+    PooledCallVM(const PooledCallVM&) = delete;
+    PooledCallVM& operator=(const PooledCallVM&) = delete;
+
+    DCCallVM* get() const { return m_vm; }
+
+  private:
+    DCCallVM* m_vm;
+};
+} // namespace
+
 void ValveFunction::Call(ScriptContext& script_context, int offset, bool bypass)
 {
     if (!IsCallable()) return;
 
-    auto callVM = std::unique_ptr<DCCallVM, decltype(&dcFree)>(dcNewCallVM(4096), dcFree);
-    if (!callVM) throw std::bad_alloc();
+    PooledCallVM callVM;
     auto* g_pCallVM = callVM.get();
     dcReset(g_pCallVM);
     dcMode(g_pCallVM, m_iCallingConvention);

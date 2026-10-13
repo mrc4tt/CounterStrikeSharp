@@ -201,12 +201,66 @@ namespace CounterStrikeSharp.API.Core
             }
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static unsafe void PushRaw<T>(fxScriptContext* context, T value) where T : unmanaged
+        {
+            byte* slot = &context->functionData[8 * context->numArguments];
+            *(long*)slot = 0;
+            *(T*)slot = value;
+            context->numArguments++;
+        }
+
+        // Writes the common primitive types straight into the argument slot, with the same bytes
+        // Marshal.StructureToPtr produced (bool as a 4-byte BOOL), but without the reflection,
+        // Marshal.SizeOf and enum Convert.ChangeType of the general path. Returns false for
+        // anything else (strings, char, structs, native objects...).
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static unsafe bool TryPushPrimitive(fxScriptContext* context, object arg)
+        {
+            switch (arg)
+            {
+                case IntPtr p: PushRaw(context, p); return true;
+                case int i: PushRaw(context, i); return true;
+                case uint u: PushRaw(context, u); return true;
+                case float f: PushRaw(context, f); return true;
+                case bool b: PushRaw(context, b ? 1 : 0); return true;
+                case long l: PushRaw(context, l); return true;
+                case ulong ul: PushRaw(context, ul); return true;
+                case double d: PushRaw(context, d); return true;
+                case UIntPtr up: PushRaw(context, up); return true;
+                case short sh: PushRaw(context, sh); return true;
+                case ushort ush: PushRaw(context, ush); return true;
+                case byte by: PushRaw(context, by); return true;
+                case sbyte sb: PushRaw(context, sb); return true;
+                case Enum:
+                    switch (Type.GetTypeCode(arg.GetType()))
+                    {
+                        case TypeCode.Int32: PushRaw(context, (int)arg); return true;
+                        case TypeCode.UInt32: PushRaw(context, (uint)arg); return true;
+                        case TypeCode.Int64: PushRaw(context, (long)arg); return true;
+                        case TypeCode.UInt64: PushRaw(context, (ulong)arg); return true;
+                        case TypeCode.Int16: PushRaw(context, (short)arg); return true;
+                        case TypeCode.UInt16: PushRaw(context, (ushort)arg); return true;
+                        case TypeCode.Byte: PushRaw(context, (byte)arg); return true;
+                        case TypeCode.SByte: PushRaw(context, (sbyte)arg); return true;
+                    }
+                    return false;
+                default:
+                    return false;
+            }
+        }
+
         [SecurityCritical]
         internal unsafe void Push(fxScriptContext* context, object? arg)
         {
             if (arg == null)
             {
                 arg = 0;
+            }
+
+            if (TryPushPrimitive(context, arg))
+            {
+                return;
             }
 
             if (arg.GetType().IsEnum)
@@ -453,6 +507,17 @@ namespace CounterStrikeSharp.API.Core
         // paths are asserted with null!/! rather than widening the signature.
         internal unsafe object GetResult(Type type, byte* ptr)
         {
+            // Common primitive results without Marshal.PtrToStructure. Same values it returned:
+            // bool reads the 4-byte BOOL the marshaller used.
+            if (type == typeof(IntPtr)) return *(IntPtr*)ptr;
+            if (type == typeof(int)) return *(int*)ptr;
+            if (type == typeof(uint)) return *(uint*)ptr;
+            if (type == typeof(float)) return *(float*)ptr;
+            if (type == typeof(bool)) return *(int*)ptr != 0;
+            if (type == typeof(long)) return *(long*)ptr;
+            if (type == typeof(ulong)) return *(ulong*)ptr;
+            if (type == typeof(double)) return *(double*)ptr;
+
             if (type == typeof(string))
             {
                 var nativeUtf8 = *(byte**)ptr;
