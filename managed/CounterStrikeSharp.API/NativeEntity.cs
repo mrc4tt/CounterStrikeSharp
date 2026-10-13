@@ -6,7 +6,7 @@ namespace CounterStrikeSharp.API;
 
 public abstract class NativeEntity : NativeObject
 {
-    public new IntPtr Handle => EntitySystem.GetEntityByHandle(EntityHandle) ?? IntPtr.Zero;
+    public new IntPtr Handle => EntitySystem.GetEntityPointerByRawHandle(EntityHandle.Raw);
     public CEntityHandle EntityHandle { get; }
 
     public NativeEntity(IntPtr pointer) : base(pointer)

@@ -7,7 +7,21 @@ namespace CounterStrikeSharp.API.Modules.Entities;
 
 public static class EntitySystem
 {
-    private static Lazy<IntPtr> ConcreteEntityListPointer = new(NativeAPI.GetConcreteEntityListPointer);
+    // The entity list lives for the whole process. Cached in a plain field instead of a Lazy<T>,
+    // because it is read on every entity access.
+    private static IntPtr _concreteEntityListPointer;
+
+    private static IntPtr EntityListPointer
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get
+        {
+            var pointer = _concreteEntityListPointer;
+            if (pointer == IntPtr.Zero)
+                _concreteEntityListPointer = pointer = NativeAPI.GetConcreteEntityListPointer();
+            return pointer;
+        }
+    }
 
     private const int MaxEntities = 32768;
     private const int MaxEntitiesPerChunk = 512;
@@ -16,34 +30,48 @@ public static class EntitySystem
     private const int HandleOffset = 0x10;
     private const uint InvalidEHandleIndex = 0xFFFFFFFF;
 
-    static unsafe Span<IntPtr> IdentityChunks => new((void*)ConcreteEntityListPointer.Value, MaxChunks);
-    public static IntPtr FirstActiveEntity => Marshal.ReadIntPtr(ConcreteEntityListPointer.Value, MaxEntitiesPerChunk);
+    static unsafe Span<IntPtr> IdentityChunks => new((void*)EntityListPointer, MaxChunks);
+    public static IntPtr FirstActiveEntity => Marshal.ReadIntPtr(EntityListPointer, MaxEntitiesPerChunk);
 
     public static IntPtr? GetEntityByHandle(uint raw)
     {
-        return GetEntityByHandle(new CHandle<CEntityInstance>(raw));
+        return TryGetEntityPointer(raw, out var pointer) ? pointer : null;
     }
 
     public static IntPtr? GetEntityByHandle<T>(CHandle<T> handle) where T : NativeEntity
     {
-        if (!handle.IsValid)
-            return null;
+        return TryGetEntityPointer(handle.Raw, out var pointer) ? pointer : null;
+    }
 
-        IntPtr pChunkToUse = IdentityChunks[(int)(handle.Index / MaxEntitiesPerChunk)];
+    /// <summary>
+    /// Entity pointer for a raw handle, or IntPtr.Zero when the handle is invalid or the entity is gone.
+    /// Allocation-free: every schema read/write, IsValid and virtual call on an entity goes through this.
+    /// </summary>
+    internal static IntPtr GetEntityPointerByRawHandle(uint raw)
+    {
+        return TryGetEntityPointer(raw, out var pointer) ? pointer : IntPtr.Zero;
+    }
+
+    private static unsafe bool TryGetEntityPointer(uint raw, out IntPtr pointer)
+    {
+        pointer = IntPtr.Zero;
+
+        uint index = raw & (Utilities.MaxEntities - 1);
+        if (index == Utilities.MaxEntities - 1)
+            return false;
+
+        IntPtr pChunkToUse = ((IntPtr*)EntityListPointer)[index / MaxEntitiesPerChunk];
         if (pChunkToUse == IntPtr.Zero)
-            return null;
+            return false;
 
-        IntPtr pIdentityPtr = IntPtr.Add(pChunkToUse, SizeOfEntityIdentity * (int)(handle.Index % MaxEntitiesPerChunk));
+        byte* pIdentity = (byte*)pChunkToUse + SizeOfEntityIdentity * (index % MaxEntitiesPerChunk);
 
-        if (pIdentityPtr == IntPtr.Zero)
-            return null;
+        // The serial number must match, or the slot now holds a different entity.
+        if (*(uint*)(pIdentity + HandleOffset) != raw)
+            return false;
 
-        var foundHandle = new CEntityHandle(pIdentityPtr + HandleOffset);
-
-        if (foundHandle.Raw != handle.Raw)
-            return null;
-
-        return Marshal.ReadIntPtr(pIdentityPtr);
+        pointer = *(IntPtr*)pIdentity;
+        return true;
     }
 
     public static IntPtr? GetEntityByIndex(uint index)
@@ -59,9 +87,9 @@ public static class EntitySystem
         if (pIdentityPtr == IntPtr.Zero)
             return null;
 
-        var foundHandle = new CEntityHandle(pIdentityPtr + HandleOffset);
-
-        if (foundHandle.Index != index)
+        // Read the handle in place instead of wrapping it in a CEntityHandle (no allocation).
+        uint foundIndex = (uint)Marshal.ReadInt32(pIdentityPtr + HandleOffset) & (Utilities.MaxEntities - 1);
+        if (foundIndex != index)
             return null;
 
         return Marshal.ReadIntPtr(pIdentityPtr);
