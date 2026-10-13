@@ -736,9 +736,15 @@ void WriteGamedataStatus()
     }
 
     nlohmann::json status = {
-        { "version", 1 },           { "at", static_cast<long long>(std::time(nullptr)) },
-        { "checked", checked },     { "missing", missing },
-        { "viaVtable", viaVtable }, { "vtableMismatch", vtableMismatch },
+        { "version", 1 },
+        { "at", static_cast<long long>(std::time(nullptr)) },
+        { "checked", checked },
+        { "missing", missing },
+        { "viaVtable", viaVtable },
+        { "vtableMismatch", vtableMismatch },
+        // gamedata.gamever vouches for this gamedata.json on this game build: only then can a
+        // vtable slot stand in for a failed signature (vtable_fallback.cpp).
+        { "gamedataBuildVerified", gamedataTrusted },
     };
 
     std::error_code mkdirError;
