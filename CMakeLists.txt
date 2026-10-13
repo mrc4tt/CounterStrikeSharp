@@ -48,6 +48,9 @@ set(SOURCE_FILES
     src/core/gameconfig.cpp
     src/core/gameconfig_updater.h
     src/core/gameconfig_updater.cpp
+    src/core/gamedata_vtable.h
+    src/core/vtable_fallback.h
+    src/core/vtable_fallback.cpp
     src/core/log.h
     src/core/log.cpp
     src/core/fatal_reporter.h

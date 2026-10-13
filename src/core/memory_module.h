@@ -115,7 +115,12 @@ class CModule
     CModule(std::string_view path, struct dl_phdr_info* info);
 #endif
 
+    // Pattern scan, then the gamedata vtable fallback / cross-check (core/vtable_fallback.h).
     void* FindSignature(const char* signature);
+
+    // Pattern scan only. For callers that judge the pattern itself: the updater's regression
+    // check and the gamedata status report, which must not mistake a fallback for a match.
+    void* ScanSignature(const char* signature);
 
     void* FindInterface(std::string_view name);
 

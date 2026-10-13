@@ -6,11 +6,13 @@
 #include "core/gamedata_signature_check.h"
 #include "core/memory.h"
 #include "core/memory_module.h"
+#include "core/vtable_fallback.h"
 
 #include <cstring>
 #include <ctime>
 #include <filesystem>
 #include <fstream>
+#include <iterator>
 #include <optional>
 #include <string>
 #include <vector>
@@ -352,17 +354,34 @@ bool ValidateGamedata(const std::string& body, const std::string& currentPath, s
 
 // Resolves a gamedata signature against the binaries loaded in this process, with the same
 // scanner and library mapping CGameConfig::ResolveSignature uses once gamedata is live.
-bool SignatureResolvesInProcess(const std::string& library, const std::string& signature)
+modules::CModule* ModuleForLibrary(const std::string& library)
 {
     // "engine" is engine2 on disk; the other library names are the file stem.
     const std::string stem = library == "engine" ? "engine2" : library;
-    if (stem.empty()) return false;
+    if (stem.empty()) return nullptr;
 
-    auto* module = modules::GetModuleByName(MODULE_PREFIX + stem + MODULE_EXT);
-    if (!module) return false;
+    return modules::GetModuleByName(MODULE_PREFIX + stem + MODULE_EXT);
+}
 
-    if (signature[0] == '@') return signature.size() > 1 && module->FindSymbol(signature.substr(1)) != nullptr;
-    return module->FindSignature(signature.c_str()) != nullptr;
+// The pattern alone (ScanSignature, not FindSignature): the vtable fallback is judged on its own,
+// so a fallback is never reported as the pattern working.
+void* ScanInProcess(const std::string& library, const std::string& signature)
+{
+    auto* module = ModuleForLibrary(library);
+    if (!module || signature.empty()) return nullptr;
+
+    if (signature[0] == '@') return signature.size() > 1 ? module->FindSymbol(signature.substr(1)) : nullptr;
+    return module->ScanSignature(signature.c_str());
+}
+
+bool SignatureResolvesInProcess(const std::string& library, const std::string& signature)
+{
+    return ScanInProcess(library, signature) != nullptr;
+}
+
+void* SlotInProcess(const std::string& library, const gamedata::VtableSlot& slot)
+{
+    return gamedata::ResolveVtableSlot(ModuleForLibrary(library), slot);
 }
 
 // Blocks an update that would break a signature the current gamedata resolves. The game
@@ -387,7 +406,10 @@ bool SignaturesHoldUp(const std::string& body, const std::string& currentPath, s
     // Idempotent; globals::Initialize() calls it again later.
     modules::Initialize();
 
-    auto result = CheckSignatureRegressions(current, incoming, platform, SignatureResolvesInProcess);
+    auto result = CheckSignatureRegressions(current, incoming, platform, SignatureResolvesInProcess,
+                                            [](const std::string& library, const gamedata::VtableSlot& slot) {
+        return SlotInProcess(library, slot) != nullptr;
+    });
 
     for (const auto& key : result.stillBroken)
         CSSHARP_CORE_WARN("Gamedata signature {} does not resolve in either the current or the downloaded file", key);
@@ -458,7 +480,7 @@ std::optional<std::string> ManifestUrlFor(const std::string& url)
 // this server runs. Pages always serves the newest processed build, which can be ahead of a
 // server that has not taken the game update yet (or behind one that just did); signatures for
 // another build either fail to resolve or, worse, resolve to the wrong function.
-bool GameVersionMatches(const std::string& url, std::string& reason)
+bool GameVersionMatches(const std::string& url, std::string& reason, std::string& matchedTag)
 {
     auto manifestUrl = ManifestUrlFor(url);
     if (!manifestUrl)
@@ -504,7 +526,33 @@ bool GameVersionMatches(const std::string& url, std::string& reason)
     }
 
     CSSHARP_CORE_INFO("Published gamedata is for game build {}, matching this server", published);
+    matchedTag = serverTag;
     return true;
+}
+
+std::string ReadWholeFile(const std::string& path)
+{
+    std::ifstream in(path, std::ios::binary);
+    return { std::istreambuf_iterator<char>(in), std::istreambuf_iterator<char>() };
+}
+
+std::string GameverPath() { return utils::GamedataDirectory() + "/gamedata.gamever"; }
+
+// Records that gamedata.json, as it is on disk now, was generated for `gameTag` (see
+// gamedata::GameverMarker). Without a confirmed tag the marker is removed instead: a file the
+// updater cannot vouch for must not keep an older vouch.
+void RecordGamedataBuild(const std::string& gameTag, const std::string& gamedataPath)
+{
+    std::error_code ec;
+    if (gameTag.empty())
+    {
+        std::filesystem::remove(GameverPath(), ec);
+        return;
+    }
+
+    std::string error;
+    if (!WriteAtomically(GameverPath(), gamedata::GameverMarker(gameTag, ReadWholeFile(gamedataPath)), error))
+        CSSHARP_CORE_WARN("Could not record the gamedata game build ({}); vtable fallbacks stay off", error);
 }
 
 } // namespace
@@ -526,7 +574,8 @@ bool TryUpdateGameConfig()
     }
 
     std::string reason;
-    if (!GameVersionMatches(configuredUrl, reason))
+    std::string matchedTag;
+    if (!GameVersionMatches(configuredUrl, reason, matchedTag))
     {
         CSSHARP_CORE_WARN("Gamedata update skipped, keeping the current gamedata.json: {}", reason);
         return false;
@@ -548,6 +597,7 @@ bool TryUpdateGameConfig()
     if (res.status == 304)
     {
         CSSHARP_CORE_INFO("Gamedata is up to date, ETag: {}", localETag);
+        RecordGamedataBuild(matchedTag, gamedataPath);
         return true;
     }
 
@@ -560,6 +610,7 @@ bool TryUpdateGameConfig()
     if (!res.etag.empty() && res.etag == localETag)
     {
         CSSHARP_CORE_INFO("Gamedata is up to date, ETag: {}", localETag);
+        RecordGamedataBuild(matchedTag, gamedataPath);
         return true;
     }
 
@@ -588,8 +639,18 @@ bool TryUpdateGameConfig()
         CSSHARP_CORE_WARN("Gamedata updated, but the ETag could not be stored ({}); the next start re-downloads it", error);
     }
 
+    RecordGamedataBuild(matchedTag, gamedataPath);
+
     CSSHARP_CORE_INFO("Gamedata file written to: {} with ETag {}", gamedataPath, res.etag);
     return true;
+}
+
+bool GamedataMatchesServerBuild()
+{
+    std::string error;
+    const auto serverTag = ServerGameVersionTag(error);
+    const auto gamedataPath = utils::GamedataDirectory() + "/gamedata.json";
+    return gamedata::GameverMarkerMatches(ReadFirstLine(GameverPath()), serverTag, ReadWholeFile(gamedataPath));
 }
 void WriteGamedataStatus()
 {
@@ -626,7 +687,13 @@ void WriteGamedataStatus()
         }
     }
 
+    const bool gamedataTrusted = GamedataMatchesServerBuild();
+
     auto missing = nlohmann::json::array();
+    // Pattern broken, vtable slot still resolves: works today, but the signature needs a fix.
+    auto viaVtable = nlohmann::json::array();
+    // Pattern and slot both resolve, to different functions: one of them is wrong (or one is a thunk).
+    auto vtableMismatch = nlohmann::json::array();
     int checked = 0;
 
     for (const auto& file : files)
@@ -651,15 +718,27 @@ void WriteGamedataStatus()
             if (signature.empty()) continue;
 
             checked++;
-            if (!SignatureResolvesInProcess(library, signature)) missing.push_back({ { "name", name }, { "file", relative } });
+            void* scanned = ScanInProcess(library, signature);
+            const auto slot = gamedata::ParseVtableSlot(entry, platform);
+            void* slotted = slot ? SlotInProcess(library, *slot) : nullptr;
+
+            // Same rule as the runtime (vtable_fallback.cpp): only a slot from a gamedata.json
+            // proven to be for this game build stands in for a failed signature.
+            const bool trusted = file == root / "gamedata" / "gamedata.json" && gamedataTrusted;
+
+            nlohmann::json row = { { "name", name }, { "file", relative } };
+            if (!scanned && !(slotted && trusted)) missing.push_back(row);
+            else if (!scanned)
+                viaVtable.push_back(row);
+            else if (slotted && slotted != scanned)
+                vtableMismatch.push_back(row);
         }
     }
 
     nlohmann::json status = {
-        { "version", 1 },
-        { "at", static_cast<long long>(std::time(nullptr)) },
-        { "checked", checked },
-        { "missing", missing },
+        { "version", 1 },           { "at", static_cast<long long>(std::time(nullptr)) },
+        { "checked", checked },     { "missing", missing },
+        { "viaVtable", viaVtable }, { "vtableMismatch", vtableMismatch },
     };
 
     std::error_code mkdirError;
@@ -675,6 +754,13 @@ void WriteGamedataStatus()
     if (missing.empty()) CSSHARP_CORE_INFO("Gamedata status: all {} signatures resolve", checked);
     else
         CSSHARP_CORE_WARN("Gamedata status: {} of {} signatures don't resolve (logs/gamedata-status.json)", missing.size(), checked);
+
+    if (!viaVtable.empty())
+        CSSHARP_CORE_WARN("Gamedata status: {} signature(s) only resolve through their vtable slot (logs/gamedata-status.json)",
+                          viaVtable.size());
+    if (!vtableMismatch.empty())
+        CSSHARP_CORE_WARN("Gamedata status: {} signature(s) disagree with their vtable slot (logs/gamedata-status.json)",
+                          vtableMismatch.size());
 }
 
 } // namespace counterstrikesharp::update

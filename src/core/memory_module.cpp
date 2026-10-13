@@ -1,6 +1,7 @@
 #include <khook.hpp>
 #include "core/memory_module.h"
 #include "core/signature_pattern.h"
+#include "core/vtable_fallback.h"
 
 #include <algorithm>
 #include <cstddef>
@@ -707,7 +708,9 @@ CModule::ScanForSignature(const std::uint8_t* data, std::size_t size, const std:
     return nullptr;
 }
 
-void* CModule::FindSignature(const char* signature)
+void* CModule::FindSignature(const char* signature) { return gamedata::ApplyVtableFallback(this, signature, ScanSignature(signature)); }
+
+void* CModule::ScanSignature(const char* signature)
 {
     if (signature == nullptr || strlen(signature) == 0)
     {

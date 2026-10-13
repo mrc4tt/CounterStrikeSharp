@@ -27,6 +27,7 @@
 #include "core/game_system.h"
 #include "core/gameconfig.h"
 #include "core/gameconfig_updater.h"
+#include "core/vtable_fallback.h"
 #include "core/global_listener.h"
 #include "core/khook_original_return.h"
 #include "core/log.h"
@@ -214,6 +215,9 @@ bool CounterStrikeSharpMMPlugin::Load(PluginId id, ISmmAPI* ismm, char* error, s
             CSSHARP_CORE_ERROR("Could not read \'{}\'. Error: {}", gamedata_path, conf_error);
             return false;
         }
+
+        // Before globals::Initialize(): its own signature scans should already get the fallback.
+        gamedata::LoadVtableFallbacks(update::GamedataMatchesServerBuild());
 
         globals::Initialize();
 

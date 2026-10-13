@@ -137,3 +137,75 @@ TEST_CASE("new keys, offsets and other platforms are ignored", "[gamedata_signat
     CHECK(result.changed == 0);
     CHECK(bin.calls == 0);
 }
+
+namespace {
+
+json SigWithSlot(const std::string& linuxSig, const std::string& className, int index)
+{
+    auto entry = Sig(linuxSig);
+    entry["vtable"] = { { "class", className }, { "linux_index", index }, { "windows_index", index + 1 } };
+    return entry;
+}
+
+counterstrikesharp::update::VtableSlotResolver SlotsResolve(bool resolves, int* calls)
+{
+    return [resolves, calls](const std::string&, const counterstrikesharp::gamedata::VtableSlot&) {
+        ++*calls;
+        return resolves;
+    };
+}
+
+} // namespace
+
+TEST_CASE("a broken signature whose vtable slot resolves is not a regression", "[gamedata_signature_check]")
+{
+    json current = { { "A", SigWithSlot("OLD", "CFoo", 10) } };
+    json incoming = { { "A", SigWithSlot("BROKEN", "CFoo", 11) } };
+    FakeBinary bin{ { "OLD" } };
+    int slotCalls = 0;
+
+    auto result = CheckSignatureRegressions(current, incoming, "linux", bin.Resolver(), SlotsResolve(true, &slotCalls));
+
+    CHECK(result.regressions.empty());
+    CHECK(result.stillBroken.empty());
+    CHECK(slotCalls == 1);
+}
+
+TEST_CASE("a broken signature whose vtable slot fails still regresses", "[gamedata_signature_check]")
+{
+    json current = { { "A", SigWithSlot("OLD", "CFoo", 10) } };
+    json incoming = { { "A", SigWithSlot("BROKEN", "CFoo", 11) } };
+    FakeBinary bin{ { "OLD" } };
+    int slotCalls = 0;
+
+    auto result = CheckSignatureRegressions(current, incoming, "linux", bin.Resolver(), SlotsResolve(false, &slotCalls));
+
+    REQUIRE(result.regressions.size() == 1);
+}
+
+TEST_CASE("a vtable slot change alone counts as a change", "[gamedata_signature_check]")
+{
+    json current = { { "A", SigWithSlot("SIG", "CFoo", 10) } };
+    json incoming = { { "A", SigWithSlot("SIG", "CFoo", 11) } };
+    FakeBinary bin{ { "SIG" } };
+
+    auto result = CheckSignatureRegressions(current, incoming, "linux", bin.Resolver());
+
+    CHECK(result.changed == 1);
+    CHECK(result.regressions.empty());
+}
+
+TEST_CASE("the current file's slot does not make it count as resolving", "[gamedata_signature_check]")
+{
+    // The current file may be from an older build; the runtime would not fall back to its slot.
+    json current = { { "A", SigWithSlot("OLD_BROKEN", "CFoo", 10) } };
+    json incoming = { { "A", Sig("ALSO_BROKEN") } };
+    FakeBinary bin;
+    int slotCalls = 0;
+
+    auto result = CheckSignatureRegressions(current, incoming, "linux", bin.Resolver(), SlotsResolve(true, &slotCalls));
+
+    CHECK(result.regressions.empty());
+    REQUIRE(result.stillBroken.size() == 1);
+    CHECK(slotCalls == 0);
+}

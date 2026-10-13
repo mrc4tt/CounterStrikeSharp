@@ -44,6 +44,11 @@
       "library": "server",
       "windows": "40 55 56 41 54 48 8B EC 48 83 EC ? 4C 89 AC 24 ? ? ? ?",
       "linux": "55 48 89 E5 41 56 41 55 41 54 53 48 89 FB 48 83 EC ? E8 ? ? ? ? 80 BB ? ? ? ? ?"
+    },
+    "vtable": {
+      "class": "CCSPlayerPawn",
+      "linux_index": 356,
+      "windows_index": 355
     }
   },
   "CGameEventManager_Init": {
@@ -79,6 +84,11 @@
       "library": "server",
       "windows": "48 89 5C 24 ? 48 89 6C 24 ? 56 57 41 54 41 56 41 57 48 83 EC ? 48 8B 01 48 8B FA",
       "linux": "55 48 8D 15 ? ? ? ? 48 89 E5 41 55 41 54 49 89 F4 53 48 89 FB 48 83 EC ? 48 8B 07 48 8B 80 ? ? ? ? 48 39 D0 0F 85 ? ? ? ? 80 BF ? ? ? ? ?"
+    },
+    "vtable": {
+      "class": "CCSPlayer_WeaponServices",
+      "linux_index": 28,
+      "windows_index": 27
     }
   },
   "CCSPlayer_ItemServices_CanAcquire": {
@@ -217,6 +227,11 @@
       "library": "server",
       "windows": "40 57 41 56 48 83 EC ? 48 8B 01",
       "linux": "55 48 89 E5 41 54 49 89 F4 53 48 8B 07 48 89 FB FF 90 ? ? ? ? 84 C0 75 ? 5B 41 5C 5D C3 90 4C 89 E6 48 89 DF 5B 41 5C 5D E9 ? ? ? ? ? 49 8B 40 ?"
+    },
+    "vtable": {
+      "class": "CBaseTrigger",
+      "linux_index": 149,
+      "windows_index": 150
     }
   },
   "CBaseTrigger_EndTouch": {
@@ -224,6 +239,11 @@
       "library": "server",
       "windows": "48 85 D2 0F 84 ? ? ? ? 53 55 48 83 EC ? 4C 8B 42 10",
       "linux": "48 85 F6 74 ? E9 ? ? ? ? 66 0F 1F 44 00 ? C3 ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? 55 48 89 E5 41 55"
+    },
+    "vtable": {
+      "class": "CBaseTrigger",
+      "linux_index": 151,
+      "windows_index": 152
     }
   },
   "GameEntitySystem": {
@@ -257,6 +277,11 @@
       "library": "server",
       "windows": "48 8B C4 4C 89 48 ? 48 89 50 ? 48 89 48 ? 55 48 8D A8 ? ? ? ?",
       "linux": "55 49 89 CA 48 89 E5 41 57 41 89 D7"
+    },
+    "vtable": {
+      "class": "CSource2GameEntities",
+      "linux_index": 13,
+      "windows_index": 12
     }
   },
   "CheckTransmitPlayerSlot": {
