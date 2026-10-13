@@ -53,9 +53,32 @@ public partial class CBaseEntity
                 velocityPtr = &vel;
             }
 
-            VirtualFunction.CreateVoid<IntPtr, IntPtr, IntPtr, IntPtr>(Handle, GameData.GetOffset("CBaseEntity_Teleport"))(Handle,
-                (nint)positionPtr,
-                (nint)anglePtr, (nint)velocityPtr);
+            // Call the vtable entry directly: the old path looked up the gamedata offset, built a new
+            // VirtualFunction (LINQ, boxing, a native CreateVirtualFunction) and dynamically invoked it
+            // on every teleport. The target is the same vtable slot, so hooks on it still run.
+            var entity = Handle;
+            var function = (delegate* unmanaged<nint, nint, nint, nint, void>)
+                ((nint*)*(nint*)entity)[TeleportOffset];
+            function(entity, (nint)positionPtr, (nint)anglePtr, (nint)velocityPtr);
+        }
+    }
+
+    // Cached per loaded gamedata set: GameData.Load builds a new Methods dictionary, so a reload
+    // (e.g. after a gamedata update) is picked up.
+    private static Dictionary<string, LoadedGameData>? s_teleportOffsetSource;
+    private static int s_teleportOffset;
+
+    private static int TeleportOffset
+    {
+        get
+        {
+            var methods = GameData.GameDataProvider.Methods;
+            if (!ReferenceEquals(methods, s_teleportOffsetSource))
+            {
+                s_teleportOffset = GameData.GetOffset("CBaseEntity_Teleport");
+                s_teleportOffsetSource = methods;
+            }
+            return s_teleportOffset;
         }
     }
 
