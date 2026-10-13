@@ -257,17 +257,41 @@ jobs:
           cp -r build/api/net10.0/publish/* build/linux/addons/counterstrikesharp/api
           cp -r build/api/raytrace/* build/linux/addons/counterstrikesharp/
 
+      # The shipped .so loses its symbol table (~2 MB of the 6.8 MB); the symbols ride along as
+      # a separate release asset, linked by .gnu_debuglink, so a native crash address from a
+      # server can still be symbolized: put the .debug file next to the .so for gdb, or run
+      # `addr2line -e counterstrikesharp.so.debug <offset>`.
+      - name: Split native debug symbols
+        run: |
+          so=build/linux/addons/counterstrikesharp/bin/linuxsteamrt64/counterstrikesharp.so
+          objcopy --only-keep-debug "$so" counterstrikesharp-linux-${{ needs.setup.outputs.gitversion_semver }}.so.debug
+          strip --strip-unneeded "$so"
+          objcopy --add-gnu-debuglink=counterstrikesharp-linux-${{ needs.setup.outputs.gitversion_semver }}.so.debug "$so"
+
       - name: Zip Linux (runtimeless)
         run: (cd build/linux && zip -qq -r ../../counterstrikesharp-linux-${{ needs.setup.outputs.gitversion_semver }}.zip ./*)
 
+      # createdump, libmscordaccore.so and libmscordbi.so only serve crash dumps and managed
+      # debuggers (SOS, vsdbg) attaching to the server - none of which this build supports
+      # (build.sh drops createdump for the same reason). ~4 MB. dotnet-trace and perf still work.
       - name: Add dotnet runtime
         run: |
           mkdir -p build/linux/addons/counterstrikesharp/dotnet
           curl -s -L https://builds.dotnet.microsoft.com/dotnet/aspnetcore/Runtime/10.0.3/aspnetcore-runtime-10.0.3-linux-x64.tar.gz \
-          | tar xvz -C build/linux/addons/counterstrikesharp/dotnet
+          | tar xz -C build/linux/addons/counterstrikesharp/dotnet
+          find build/linux/addons/counterstrikesharp/dotnet -type f \
+            \( -name createdump -o -name libmscordaccore.so -o -name libmscordbi.so \) -delete
 
       - name: Zip Linux (with runtime)
         run: (cd build/linux && zip -qq -r ../../counterstrikesharp-with-runtime-linux-${{ needs.setup.outputs.gitversion_semver }}.zip ./*)
+
+      # Same, without the ASP.NET Core shared framework (~27 MB unpacked, ~12 MB zipped).
+      # CounterStrikeSharp itself only needs Microsoft.NETCore.App; a plugin that references
+      # Microsoft.AspNetCore.App (Kestrel, web panels) needs the full with-runtime zip.
+      - name: Zip Linux (with slim runtime)
+        run: |
+          rm -rf build/linux/addons/counterstrikesharp/dotnet/shared/Microsoft.AspNetCore.App
+          (cd build/linux && zip -qq -r ../../counterstrikesharp-with-runtime-slim-linux-${{ needs.setup.outputs.gitversion_semver }}.zip ./*)
 
       - name: Generate a changelog
         uses: orhun/git-cliff-action@v4
@@ -288,3 +312,5 @@ jobs:
           files: |
             counterstrikesharp-linux-${{ needs.setup.outputs.gitversion_semver }}.zip
             counterstrikesharp-with-runtime-linux-${{ needs.setup.outputs.gitversion_semver }}.zip
+            counterstrikesharp-with-runtime-slim-linux-${{ needs.setup.outputs.gitversion_semver }}.zip
+            counterstrikesharp-linux-${{ needs.setup.outputs.gitversion_semver }}.so.debug

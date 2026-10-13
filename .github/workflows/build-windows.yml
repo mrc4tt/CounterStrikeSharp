@@ -163,9 +163,18 @@ jobs:
           mkdir -p build/windows/addons/counterstrikesharp/dotnet
           curl -s -L https://builds.dotnet.microsoft.com/dotnet/aspnetcore/Runtime/10.0.3/aspnetcore-runtime-10.0.3-win-x64.zip -o dotnet.zip
           unzip -qq dotnet.zip -d build/windows/addons/counterstrikesharp/dotnet
+          # Crash-dump and managed-debugger support only, as on Linux (build-and-publish.yml).
+          find build/windows/addons/counterstrikesharp/dotnet -type f \
+            \( -name createdump.exe -o -name 'mscordaccore*.dll' -o -name mscordbi.dll \) -delete
 
       - name: Zip Windows (with runtime)
         run: (cd build/windows && zip -qq -r ../../counterstrikesharp-with-runtime-windows-${{ needs.setup.outputs.gitversion_semver }}.zip ./*)
+
+      # Without the ASP.NET Core shared framework; see the Linux slim zip.
+      - name: Zip Windows (with slim runtime)
+        run: |
+          rm -rf build/windows/addons/counterstrikesharp/dotnet/shared/Microsoft.AspNetCore.App
+          (cd build/windows && zip -qq -r ../../counterstrikesharp-with-runtime-slim-windows-${{ needs.setup.outputs.gitversion_semver }}.zip ./*)
 
       - name: Append to Release
         uses: softprops/action-gh-release@v3
@@ -173,3 +182,4 @@ jobs:
           files: |
             counterstrikesharp-windows-${{ needs.setup.outputs.gitversion_semver }}.zip
             counterstrikesharp-with-runtime-windows-${{ needs.setup.outputs.gitversion_semver }}.zip
+            counterstrikesharp-with-runtime-slim-windows-${{ needs.setup.outputs.gitversion_semver }}.zip
