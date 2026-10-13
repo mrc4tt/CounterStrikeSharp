@@ -136,8 +136,18 @@ namespace CounterStrikeSharp.API.Core
         public readonly Dictionary<Delegate, CallbackSubscriber> Handlers =
             new Dictionary<Delegate, CallbackSubscriber>();
 
+        /// <summary>
+        /// Most recent subscriber per handler. Kept for compatibility; a handler registered for several
+        /// commands appears here once. The full set lives in <see cref="_commandListenerRegistrations"/>.
+        /// </summary>
         public readonly Dictionary<Delegate, CallbackSubscriber> CommandListeners =
             new Dictionary<Delegate, CallbackSubscriber>();
+
+        // Every AddCommandListener call, so one handler registered for several commands (or modes) is
+        // removed for each of them. Keying only by the handler lost all but the last registration, and
+        // the rest stayed hooked natively after unload, still calling into the unloaded plugin.
+        private readonly List<(string? Name, Delegate Handler, bool Post, CallbackSubscriber Subscriber)>
+            _commandListenerRegistrations = new();
 
         public readonly Dictionary<Delegate, CallbackSubscriber> Listeners =
             new Dictionary<Delegate, CallbackSubscriber>();
@@ -244,9 +254,11 @@ namespace CounterStrikeSharp.API.Core
                 return handler.Invoke(caller, command);
             });
 
-            var subscriber = new CallbackSubscriber(handler, wrappedHandler, () => { RemoveCommandListener(name, handler, mode); },
+            CallbackSubscriber? subscriber = null;
+            subscriber = new CallbackSubscriber(handler, wrappedHandler, () => RemoveCommandListenerRegistration(subscriber!),
                 "cmdlistener", name ?? "*");
             NativeAPI.AddCommandListener(name, subscriber.GetInputArgument(), mode == HookMode.Post);
+            _commandListenerRegistrations.Add((name, handler, mode == HookMode.Post, subscriber));
             CommandListeners[handler] = subscriber;
         }
 
@@ -273,15 +285,31 @@ namespace CounterStrikeSharp.API.Core
         /// <inheritdoc cref="AddCommandListener"/>
         public void RemoveCommandListener(string? name, CommandInfo.CommandListenerCallback handler, HookMode mode)
         {
-            if (CommandListeners.ContainsKey(handler))
-            {
-                var subscriber = CommandListeners[handler];
+            var post = mode == HookMode.Post;
+            var index = _commandListenerRegistrations.FindLastIndex(r =>
+                r.Name == name && r.Post == post && r.Handler.Equals(handler));
+            if (index < 0) return;
 
-                NativeAPI.RemoveCommandListener(name, subscriber.GetInputArgument(), mode == HookMode.Post);
+            RemoveCommandListenerRegistration(_commandListenerRegistrations[index].Subscriber);
+        }
 
-                FunctionReference.Remove(subscriber.GetReferenceIdentifier());
-                CommandListeners.Remove(handler);
-            }
+        private void RemoveCommandListenerRegistration(CallbackSubscriber subscriber)
+        {
+            var index = _commandListenerRegistrations.FindIndex(r => ReferenceEquals(r.Subscriber, subscriber));
+            if (index < 0) return;
+
+            var registration = _commandListenerRegistrations[index];
+            _commandListenerRegistrations.RemoveAt(index);
+
+            NativeAPI.RemoveCommandListener(registration.Name, subscriber.GetInputArgument(), registration.Post);
+            FunctionReference.Remove(subscriber.GetReferenceIdentifier());
+
+            // Keep the compatibility map pointing at a live registration of this handler, if any is left.
+            var remaining = _commandListenerRegistrations.FindLastIndex(r => r.Handler.Equals(registration.Handler));
+            if (remaining >= 0)
+                CommandListeners[registration.Handler] = _commandListenerRegistrations[remaining].Subscriber;
+            else
+                CommandListeners.Remove(registration.Handler);
         }
 
         /// <summary>
@@ -727,9 +755,9 @@ namespace CounterStrikeSharp.API.Core
                 subscriber.Dispose();
             }
 
-            foreach (var subscriber in CommandListeners.Values.ToList())
+            foreach (var registration in _commandListenerRegistrations.ToList())
             {
-                subscriber.Dispose();
+                registration.Subscriber.Dispose();
             }
 
             foreach (var subscriber in Listeners.Values.ToList())
