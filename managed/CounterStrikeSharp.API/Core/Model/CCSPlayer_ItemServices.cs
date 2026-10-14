@@ -46,15 +46,26 @@ public partial class CCSPlayer_ItemServices
     }
 
     /// <summary>
-    /// Removes every weapon from the player.
+    /// Removes every weapon from the player, and the defuser. Armor and helmet are kept.
     /// </summary>
     /// <exception cref="InvalidOperationException">ItemServices points to null</exception>
-    public void RemoveWeapons()
+    public void RemoveWeapons() => RemoveWeapons(false);
+
+    /// <summary>
+    /// Removes every weapon from the player, and the defuser.
+    /// </summary>
+    /// <param name="removeArmor">Also take the helmet off and set the armor to 0.</param>
+    /// <exception cref="InvalidOperationException">ItemServices points to null</exception>
+    public void RemoveWeapons(bool removeArmor)
     {
         if (Handle == IntPtr.Zero)
             throw new InvalidOperationException("ItemServices points to null.");
 
-        VirtualFunction.CreateVoid<nint>(Handle, GameData.GetOffset("CCSPlayer_ItemServices_RemoveWeapons"))(Handle);
+        // The game's RemoveWeapons takes a second argument on both platforms: when set it
+        // also clears m_bHasHelmet and the pawn's m_ArmorValue (m_bHasDefuser is cleared
+        // either way). Binding it with only `this` left that flag to whatever the previous
+        // native call had left in the register (rsi / rdx), so armor was removed at random.
+        VirtualFunction.CreateVoid<nint, bool>(Handle, GameData.GetOffset("CCSPlayer_ItemServices_RemoveWeapons"))(Handle, removeArmor);
     }
 
     public T? GiveNamedItem<T>(string item) where T : CEntityInstance

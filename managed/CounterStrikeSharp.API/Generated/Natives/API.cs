@@ -1720,6 +1720,15 @@ namespace CounterStrikeSharp.API.Core
 			return _ctx.GetResultPrimitive<bool>();
 		}
 
+        public static bool IsSchemaNetworkInfoReady(){
+			var _ctx = ScriptContext.GlobalScriptContext;
+			_ctx.Reset();
+			_ctx.SetIdentifier(0x27907755);
+			_ctx.Invoke();
+			_ctx.CheckErrors();
+			return _ctx.GetResultPrimitive<bool>();
+		}
+
         public static T GetSchemaValueByName<T>(IntPtr instance, int returntype, string classname, string propname){
 			var _ctx = ScriptContext.GlobalScriptContext;
 			_ctx.Reset();

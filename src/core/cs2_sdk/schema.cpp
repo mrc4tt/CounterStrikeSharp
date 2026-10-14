@@ -25,6 +25,7 @@
 #include "core/log.h"
 
 #include "tier1/utlmap.h"
+#include <unordered_set>
 #include <schemasystem.h>
 #include <entity2/entitysystem.h>
 #include <entity2/entityclass.h>
@@ -57,6 +58,21 @@ static CNetworkSerializerClassInfo* FindNetworkSerializerClassInfo(const char* c
     return pDatabase->m_ClassInfos[index];
 }
 
+// Classes whose table was built before the entity system existed (a plugin resolving an
+// offset in Load() when it loads with the server). Their offsets are right - schema does not
+// depend on the entity system - but every field's `networked` flag read false, because the
+// network serializer database is not reachable yet, and the table is process-wide and was
+// never rebuilt: SetStateChanged then did nothing for that class, for every plugin, until a
+// restart (roflmuffin/CounterStrikeSharp#1463). Such a table is rebuilt on its first lookup
+// once the database is there.
+static std::unordered_set<uint32_t>& ClassesWithoutNetworkInfo()
+{
+    static std::unordered_set<uint32_t> classes;
+    return classes;
+}
+
+bool schema::IsNetworkInfoReady() { return GetNetworkSerializerDatabase() != nullptr; }
+
 static bool IsFieldNetworked(CNetworkSerializerClassInfo* pNetworkClassInfo, SchemaClassFieldData_t& field)
 {
     if (!pNetworkClassInfo) return false;
@@ -81,6 +97,13 @@ static bool InitSchemaFieldsForClass(SchemaTableMap_t* tableMap, const char* cla
     }
 
     CNetworkSerializerClassInfo* pNetworkClassInfo = FindNetworkSerializerClassInfo(className);
+    if (!schema::IsNetworkInfoReady())
+    {
+        ClassesWithoutNetworkInfo().insert(classKey);
+        CSSHARP_CORE_DEBUG("Schema class '{}' resolved before the entity system exists; its networked flags are "
+                           "recomputed on first use after map load",
+                           className);
+    }
 
     SchemaKeyValueMap_t* keyValueMap = new SchemaKeyValueMap_t(0, 0);
     keyValueMap->EnsureCapacity(pClassInfo->m_nFieldCount);
@@ -169,6 +192,17 @@ SchemaKey schema::GetOffset(const char* className, uint32_t classKey, const char
     }
 
     SchemaKeyValueMap_t* tableMap = schemaTableMap[tableMapIndex];
+
+    // Built without network info and the database is reachable now: rebuild, so `networked`
+    // stops reading false. Callers get SchemaKey by value, so dropping the old table is safe.
+    if (ClassesWithoutNetworkInfo().count(classKey) && schema::IsNetworkInfoReady())
+    {
+        ClassesWithoutNetworkInfo().erase(classKey);
+        schemaTableMap.RemoveAt(tableMapIndex);
+        delete tableMap;
+        return GetOffset(className, classKey, memberName, memberKey);
+    }
+
     auto memberIndex = tableMap->Find(memberKey);
     if (!tableMap->IsValidIndex(memberIndex))
     {

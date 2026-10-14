@@ -53,6 +53,8 @@ bool IsSchemaFieldNetworked(ScriptContext& script_context)
     return m_key.networked;
 }
 
+bool IsSchemaNetworkInfoReady(ScriptContext& script_context) { return schema::IsNetworkInfoReady(); }
+
 int GetSchemaClassSize(ScriptContext& script_context)
 {
     auto className = script_context.GetArgument<const char*>(0);
@@ -237,6 +239,7 @@ void SchemaNetworkStateChanged(ScriptContext& script_context)
 REGISTER_NATIVES(schema, {
     ScriptEngine::RegisterNativeHandler("GET_SCHEMA_OFFSET", GetSchemaOffset);
     ScriptEngine::RegisterNativeHandler("IS_SCHEMA_FIELD_NETWORKED", IsSchemaFieldNetworked);
+    ScriptEngine::RegisterNativeHandler("IS_SCHEMA_NETWORK_INFO_READY", IsSchemaNetworkInfoReady);
     ScriptEngine::RegisterNativeHandler("GET_SCHEMA_VALUE_BY_NAME", GetSchemaValueByName);
     ScriptEngine::RegisterNativeHandler("SET_SCHEMA_VALUE_BY_NAME", SetSchemaValueByName);
     ScriptEngine::RegisterNativeHandler("GET_SCHEMA_CLASS_SIZE", GetSchemaClassSize);

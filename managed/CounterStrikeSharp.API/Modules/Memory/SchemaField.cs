@@ -320,7 +320,16 @@ public sealed class SchemaField<T>
         _chainOffset = networked ? Schema.ResolveEntry(ClassName, "__m_pChainEntity").Offset : 0;
 
         var state = networked ? NetworkYes : NetworkNo;
-        Volatile.Write(ref _networkState, state);
+
+        // "Not networked" before the entity system exists is not an answer: the native side
+        // cannot see the network serializer yet and reports false for every field. Caching it
+        // made SetStateChanged a silent no-op for this field until a restart whenever it was
+        // first touched in Load() (roflmuffin/CounterStrikeSharp#1463). Leave it unresolved
+        // so the next access after map load asks again; a "yes" is always final.
+        if (networked || NativeAPI.IsSchemaNetworkInfoReady())
+        {
+            Volatile.Write(ref _networkState, state);
+        }
 
         return state;
     }
