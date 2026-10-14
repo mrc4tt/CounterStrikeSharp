@@ -166,4 +166,32 @@ public static class VirtualFunctions
     [EditorBrowsable(EditorBrowsableState.Never)] public static Action<CBaseTrigger, CBaseEntity> get_CBaseTrigger_StartTouch() => CBaseTrigger_StartTouch;
     [EditorBrowsable(EditorBrowsableState.Never)] public static Action<CBaseTrigger, CBaseEntity> get_CBaseTrigger_EndTouch() => CBaseTrigger_EndTouch;
     [EditorBrowsable(EditorBrowsableState.Never)] public static Action<IntPtr, IntPtr> get_RemovePlayerItemVirtual() => RemovePlayerItemVirtual;
+
+    /// <summary>
+    /// Resolves every signature-based binding now, on the game thread during core startup, instead of on its
+    /// first use. A first use mid-match scanned server.so right then and froze the tick (tens of ms, ~120 ms
+    /// for a stale signature). Failures behave as before: they are logged once by the native function cache,
+    /// and only that binding stays unusable.
+    /// </summary>
+    internal static (int Resolved, int Failed) WarmUp()
+    {
+        int resolved = 0, failed = 0;
+        foreach (var field in typeof(VirtualFunctions).GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static))
+        {
+            if (field.GetValue(null) is not NativeObject function)
+                continue;
+
+            try
+            {
+                if (function.Handle != IntPtr.Zero) resolved++;
+                else failed++;
+            }
+            catch
+            {
+                failed++;
+            }
+        }
+
+        return (resolved, failed);
+    }
 }

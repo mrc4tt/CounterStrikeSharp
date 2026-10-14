@@ -1,3 +1,5 @@
+using CounterStrikeSharp.API.Modules.Memory;
+using System.Diagnostics;
 /*
  *  This file is part of CounterStrikeSharp.
  *  CounterStrikeSharp is free software: you can redistribute it and/or modify
@@ -97,6 +99,20 @@ namespace CounterStrikeSharp.API.Core
 
             _coreConfig.Load();
             _gameDataProvider.Load();
+
+            // Resolve the core's native function signatures now (game thread, before any plugin) so the first
+            // use during a match doesn't stall the tick with a binary scan.
+            try
+            {
+                var warmUp = Stopwatch.StartNew();
+                var (resolved, failed) = VirtualFunctions.WarmUp();
+                Logger.LogDebug("Resolved {Resolved} native functions ({Failed} unavailable) in {Ms}ms",
+                    resolved, failed, warmUp.ElapsedMilliseconds);
+            }
+            catch (Exception e)
+            {
+                Logger.LogWarning(e, "Resolving native functions at startup failed; they resolve on first use instead");
+            }
 
             // Admin source paths are Debug — the result counts (e.g. "Loaded admin data
             // with N admins.") are the INFO-level signal; the paths only matter when
