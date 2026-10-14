@@ -103,14 +103,21 @@ public partial class CCSPlayerController
     }
 
     /// <summary>
-    /// Removes every weapon from the player.
+    /// Removes every weapon from the player, and the defuser. Armor and helmet are kept.
     /// </summary>
     /// <exception cref="InvalidOperationException">Entity is not valid</exception>
-    public void RemoveWeapons()
+    public void RemoveWeapons() => RemoveWeapons(false);
+
+    /// <summary>
+    /// Removes every weapon from the player, and the defuser.
+    /// </summary>
+    /// <param name="removeArmor">Also take the helmet off and set the armor to 0.</param>
+    /// <exception cref="InvalidOperationException">Entity is not valid</exception>
+    public void RemoveWeapons(bool removeArmor)
     {
         Guard.IsValidEntity(this);
 
-        PlayerPawn.Value?.ItemServices?.As<CCSPlayer_ItemServices>().RemoveWeapons();
+        PlayerPawn.Value?.ItemServices?.As<CCSPlayer_ItemServices>().RemoveWeapons(removeArmor);
     }
 
     /// <summary>
