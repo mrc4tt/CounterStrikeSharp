@@ -35,7 +35,7 @@ public class EntityIOTests
 
         Assert.NotNull(world);
 
-        var worldFromHandle = world.EntityHandle.Get().As<CWorld>();
+        var worldFromHandle = world.EntityHandle.Get()!.As<CWorld>();
 
         Assert.Equal(world.Handle, worldFromHandle.Handle);
     }

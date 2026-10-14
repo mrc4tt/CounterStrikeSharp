@@ -210,7 +210,9 @@ public class FrameSchedulingTests
         }
 
         // All tasks should have been drained by latest NextFrameAsync
+        #pragma warning disable xUnit1030 // continue right where the frame callback completes; resuming elsewhere would skew the frame counts below
         await Server.NextFrameAsync(() => { }).ConfigureAwait(false);
+#pragma warning restore xUnit1030
 
         // The queue is shared with the rest of the server (other plugins, the core's own deferred
         // releases), so a frame may spend part of its budget on tasks that are not ours. What must hold
@@ -241,7 +243,9 @@ public class FrameSchedulingTests
         }
 
         // All tasks should have been drained by latest NextFrameAsync
+        #pragma warning disable xUnit1030 // continue right where the frame callback completes; resuming elsewhere would skew the frame counts below
         await Server.NextWorldUpdateAsync(() => { }).ConfigureAwait(false);
+#pragma warning restore xUnit1030
 
         for (int i = 0; i < callsByFrame.Count; i++)
         {

@@ -11,10 +11,10 @@ namespace NativeTestsPlugin;
 
 public class RayTraceTests
 {
-    private CCSPlayerController player;
-    private CCSPlayerPawn pawn;
+    private CCSPlayerController player = null!;
+    private CCSPlayerPawn pawn = null!;
 
-    public async Task InitializeAsync()
+    private async Task InitializeAsync()
     {
         this.player = await EnsureAliveBot();
         if (player.PlayerPawn.Value == null)
@@ -46,7 +46,7 @@ public class RayTraceTests
     {
         await InitializeAsync();
 
-        var pos = pawn.AbsOrigin - new Vector(0, 0, 100);
+        var pos = pawn.AbsOrigin! - new Vector(0, 0, 100);
         var contentsMask = Trace.PointContents(pos, Masks.All);
         Assert.NotEqual(0ul, (ulong)contentsMask);
         Assert.True(contentsMask.HasFlag(Contents.Solid) || contentsMask.HasFlag(Contents.PlayerClip));
@@ -57,7 +57,7 @@ public class RayTraceTests
     {
         await InitializeAsync();
 
-        var start = pawn.AbsOrigin;
+        var start = pawn.AbsOrigin!;
         var angles = new QAngle(0, -90, 0);
         var result = Trace.TraceShape(start, angles, ignoreEntity: pawn,
             options: new TraceOptions { InteractsWith = Masks.SolidBrushOnly, InteractsExclude = Contents.Pickup });
@@ -75,7 +75,7 @@ public class RayTraceTests
     {
         await InitializeAsync();
 
-        var start = pawn.AbsOrigin;
+        var start = pawn.AbsOrigin!;
         var end = start + new Vector(0, 0, -100);
         var result = Trace.TraceHullShape(start, end, new Vector(0, 0, 0), new Vector(32, 32, 72), ignoreEntity: pawn,
             options: new TraceOptions { InteractsWith = Masks.SolidBrushOnly, InteractsExclude = Contents.Pickup });
@@ -93,7 +93,7 @@ public class RayTraceTests
     {
         await InitializeAsync();
 
-        var start = pawn.AbsOrigin;
+        var start = pawn.AbsOrigin!;
         var end = start + new Vector(0, 0, -100);
         var result = Trace.TraceEndShape(start, end, ignoreEntity: pawn,
             options: new TraceOptions { InteractsWith = Masks.SolidBrushOnly, InteractsExclude = Contents.Pickup });

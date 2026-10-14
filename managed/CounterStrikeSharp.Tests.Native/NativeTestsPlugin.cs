@@ -52,7 +52,7 @@ namespace NativeTestsPlugin
             // Loading blocks the game thread, so we use NextFrame to run our tests asynchronously.
             // Uncomment to run the tests on load
             // Server.NextWorldUpdate(() => RunTests());
-            AddCommand("css_run_tests", "Runs the xUnit tests for the native plugin.", (player, info) => { RunTests(); });
+            AddCommand("css_run_tests", "Runs the xUnit tests for the native plugin.", (player, info) => { _ = RunTests(); });
         }
 
         [ConsoleCommand("css_itest")]
@@ -67,7 +67,7 @@ namespace NativeTestsPlugin
                 return;
             }
 
-            RunTests(filter);
+            _ = RunTests(filter);
         }
 
         [ConsoleCommand("css_smoke_test", "Run all non-benchmark tests and export a JSON report.")]

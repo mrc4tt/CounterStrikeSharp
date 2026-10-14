@@ -80,7 +80,7 @@ public class ListenerTests
             NativeAPI.AddListener("OnEntityCreated", createCallback);
             NativeAPI.AddListener("OnEntityDeleted", deleteCallback);
 
-            var ent = Utilities.CreateEntityByName<CBaseModelEntity>("prop_dynamic");
+            var ent = Utilities.CreateEntityByName<CBaseModelEntity>("prop_dynamic")!;
             await WaitOneFrame();
 
             Assert.Equal(1, createCount);

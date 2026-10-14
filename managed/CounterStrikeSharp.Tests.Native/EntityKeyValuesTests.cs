@@ -24,18 +24,18 @@ public class EntityKeyValuesTests
         Assert.Equal(100, kv.GetInt("health"));
         Assert.Equal(5.5f, kv.GetFloat("speed"));
         Assert.Equal(Double.MaxValue, kv.GetDouble("double"));
-        var position = kv.GetVector("position");
-        Assert.Equal(position.X, 1.0f);
-        Assert.Equal(position.Y, 2.0f);
-        Assert.Equal(position.Z, 3.0f);
+        var position = kv.GetVector("position")!;
+        Assert.Equal(1.0f, position.X);
+        Assert.Equal(2.0f, position.Y);
+        Assert.Equal(3.0f, position.Z);
 
-        var angle = kv.GetAngle("view_angle");
-        Assert.Equal(angle.X, 90.0f);
-        Assert.Equal(angle.Y, 45.0f);
-        Assert.Equal(angle.Z, 12.5f);
+        var angle = kv.GetAngle("view_angle")!;
+        Assert.Equal(90.0f, angle.X);
+        Assert.Equal(45.0f, angle.Y);
+        Assert.Equal(12.5f, angle.Z);
 
         Assert.Equal(Color.FromArgb(255, 128, 64, 32), kv.GetColor("color"));
-        Assert.Equal((uint)12345, kv.GetEHandle("owner").Raw);
+        Assert.Equal((uint)12345, kv.GetEHandle("owner")!.Raw);
     }
 
     [Fact]

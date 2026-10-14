@@ -336,7 +336,7 @@ public class ScriptContextBenchmarks
 
     // ── Export ───────────────────────────────────────────────────────────
 
-    public static void ExportResults()
+    internal static void ExportResults()
     {
         List<BenchmarkResult> snapshot;
         lock (_lock)

@@ -19,7 +19,7 @@ public class EntityTests
 
         Assert.Multiple(() =>
         {
-            Assert.Equal(0, world.AbsOrigin.X);
+            Assert.Equal(0, world.AbsOrigin!.X);
             Assert.Equal(0, world.AbsOrigin.Y);
             Assert.Equal(0, world.AbsOrigin.Z);
         });
