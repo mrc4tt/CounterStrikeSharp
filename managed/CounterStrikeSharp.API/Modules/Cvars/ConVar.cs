@@ -123,8 +123,43 @@ public class ConVar
     /// </remarks>
     public string StringValue
     {
-        get => NativeAPI.GetConvarValueAsString(AccessIndex);
+        get => GetStringValueCached();
         set => NativeAPI.SetConvarValueAsString(AccessIndex, value);
+    }
+
+    // StringValue formatted the value natively on every read (~200 ns plus a new string). Cache the
+    // formatted string with the raw value it came from, and reuse it while the raw value is unchanged.
+    // The raw value is read from the ConVar's own storage (CVValue_t): the text itself for string
+    // ConVars (its buffer can be reused in place), the first 16 bytes of the value union otherwise.
+    // One immutable snapshot so a read from another thread never pairs a new raw value with an old string.
+    private sealed record StringValueSnapshot(byte[] Raw, string Value);
+    private StringValueSnapshot? _stringValueSnapshot;
+    private const int RawValueSize = 16; // largest CVValue_t members: Vector4D / QAngle
+
+    private unsafe string GetStringValueCached()
+    {
+        var address = NativeAPI.GetConvarValueAddress(AccessIndex);
+        if (address == IntPtr.Zero)
+            return NativeAPI.GetConvarValueAsString(AccessIndex);
+
+        ReadOnlySpan<byte> raw;
+        if ((_cachedType ??= Type) == ConVarType.String)
+        {
+            var text = *(byte**)address; // CUtlString::m_pString
+            raw = text == null ? ReadOnlySpan<byte>.Empty : System.Runtime.InteropServices.MemoryMarshal.CreateReadOnlySpanFromNullTerminated(text);
+        }
+        else
+        {
+            raw = new ReadOnlySpan<byte>((void*)address, RawValueSize);
+        }
+
+        var snapshot = _stringValueSnapshot;
+        if (snapshot != null && raw.SequenceEqual(snapshot.Raw))
+            return snapshot.Value;
+
+        var value = NativeAPI.GetConvarValueAsString(AccessIndex);
+        _stringValueSnapshot = new StringValueSnapshot(raw.ToArray(), value);
+        return value;
     }
 
     /// <summary>
