@@ -132,12 +132,35 @@ namespace CounterStrikeSharp.API
 
         public static IEnumerable<T> FindAllEntitiesByDesignerName<T>(string designerName) where T : CEntityInstance
         {
-            var pEntity = new CEntityIdentity(EntitySystem.FirstActiveEntity);
-            for (; pEntity != null && pEntity.Handle != IntPtr.Zero; pEntity = pEntity.Next)
+            // Walks the identity list on raw pointers and matches the designer name as UTF-8 bytes. Before, each
+            // entity got a CEntityIdentity wrapper, and its designer name was decoded into a new string twice
+            // (null check + Contains), byte by byte: hundreds of allocations per call on a full server.
+            // Same rule as before: the designer name contains designerName (ordinal), null names never match.
+            var needle = Encoding.UTF8.GetBytes(designerName);
+            var designerNameOffset = s_identityDesignerNameField.Offset;
+            var nextOffset = s_identityNextField.Offset;
+
+            for (var identity = EntitySystem.FirstActiveEntity; identity != IntPtr.Zero; identity = Marshal.ReadIntPtr(identity + nextOffset))
             {
-                if (pEntity.DesignerName == null || !pEntity.DesignerName.Contains(designerName)) continue;
-                yield return new PointerTo<T>(pEntity.Handle).Value;
+                if (!DesignerNameContains(identity + designerNameOffset, needle)) continue;
+                yield return new PointerTo<T>(identity).Value;
             }
+        }
+
+        private static readonly SchemaField<IntPtr> s_identityDesignerNameField = new("CEntityIdentity", "m_designerName");
+        private static readonly SchemaField<IntPtr> s_identityNextField = new("CEntityIdentity", "m_pNext");
+
+        private static unsafe bool DesignerNameContains(IntPtr designerNameField, byte[] needle)
+        {
+            var name = *(byte**)designerNameField;
+            if (name == null)
+                return false;
+
+            var length = 0;
+            while (name[length] != 0)
+                length++;
+
+            return new ReadOnlySpan<byte>(name, length).IndexOf(needle) >= 0;
         }
 
         public static IEnumerable<CEntityInstance> GetAllEntities()
@@ -233,15 +256,9 @@ namespace CounterStrikeSharp.API
                     return null!;
                 }
 
-                var len = 0;
-                while (Marshal.ReadByte(nativeUtf8, len) != 0)
-                {
-                    ++len;
-                }
-
-                var buffer = new byte[len];
-                Marshal.Copy(nativeUtf8, buffer, 0, buffer.Length);
-                return Encoding.UTF8.GetString(buffer);
+                // Same decoding as before (UTF-8 up to the terminator), without a per-byte
+                // Marshal.ReadByte call and an intermediate byte[].
+                return Marshal.PtrToStringUTF8(nativeUtf8)!;
             }
         }
 
