@@ -50,7 +50,17 @@ namespace CounterStrikeSharp.API.Modules.Events
                 _handle = handle;
             }
 
-            public bool TryMarkReleased() => Interlocked.Exchange(ref _released, 1) == 0;
+            public bool TryMarkReleased()
+            {
+                if (Interlocked.Exchange(ref _released, 1) != 0)
+                    return false;
+
+                // Released by FireEvent/Free: the finalizer has nothing left to do. Suppressing it keeps the
+                // object off the finalization queue, so a fired event no longer costs a finalizer run and a
+                // GC promotion.
+                GC.SuppressFinalize(this);
+                return true;
+            }
 
             // A created event that was never fired (or only fired with FireEventToClient, which does not
             // consume it) and never freed would otherwise stay allocated in the engine forever. Event
