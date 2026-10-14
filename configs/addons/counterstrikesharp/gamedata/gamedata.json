@@ -364,5 +364,12 @@
       "windows": "85 D2 78 ? 48 89 5C 24 ? 56",
       "linux": "55 48 89 E5 41 55 41 54 53 48 63 DE 48 83 EC ?"
     }
+  },
+  "CBaseEntity_TakeDamage": {
+    "signatures": {
+      "library": "server",
+      "windows": "40 55 53 56 57 41 54 48 8D 6C 24 ? 48 81 EC ? ? ? ? 4D 8B E0",
+      "linux": "55 66 0F EF C0 48 89 E5 41 57 41 56 41 55 49 89 FD 31 FF"
+    }
   }
 }
