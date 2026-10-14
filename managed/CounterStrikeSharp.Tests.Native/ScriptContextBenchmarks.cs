@@ -382,6 +382,127 @@ public class ScriptContextBenchmarks
     /// multiple logical calls, pass <paramref name="callsPerIteration"/> so
     /// the per-call stats are correct.
     /// </summary>
+    // ── Scenarios from the swiftly-solution/profiler benchmark (source2toolkit.net/benchmarks) ──
+    // Same operations its CSSharpProfiler times, but warmed up and averaged over many calls, so the
+    // numbers show steady-state per-call cost rather than one cold pass.
+
+    private static CPointWorldText CreateWorldText()
+    {
+        var entity = Utilities.CreateEntityByName<CPointWorldText>("point_worldtext")!;
+        entity.DispatchSpawn();
+        return entity;
+    }
+
+    [Fact]
+    public void Benchmark_Profiler_EntityHandle()
+    {
+        var world = GetWorld()!;
+        Run("Entity Handle resolve", "Profiler Scenarios", () =>
+        {
+            var h = world.Handle;
+        });
+    }
+
+    [Fact]
+    public void Benchmark_Profiler_SchemaRead()
+    {
+        var text = CreateWorldText();
+        try
+        {
+            Run("Schema Read (MessageText + Color + Enabled)", "Profiler Scenarios", () =>
+            {
+                var message = text.MessageText;
+                var color = text.Color;
+                var enabled = text.Enabled;
+            });
+        }
+        finally
+        {
+            text.Remove();
+        }
+    }
+
+    [Fact]
+    public void Benchmark_Profiler_SchemaWriteAndStateChanged()
+    {
+        var text = CreateWorldText();
+        try
+        {
+            Run("Schema Write + SetStateChanged (MessageText + Color)", "Profiler Scenarios", () =>
+            {
+                text.MessageText = "Performance Test Entity";
+                Utilities.SetStateChanged(text, "CPointWorldText", "m_messageText");
+                text.Color = System.Drawing.Color.FromArgb(255, 255, 0, 0);
+                Utilities.SetStateChanged(text, "CPointWorldText", "m_Color");
+            });
+        }
+        finally
+        {
+            text.Remove();
+        }
+    }
+
+    [Fact]
+    public void Benchmark_Profiler_Teleport()
+    {
+        var text = CreateWorldText();
+        try
+        {
+            var position = new System.Numerics.Vector3(0, 10, 0);
+            Run("Teleport (virtual call)", "Profiler Scenarios", () => text.Teleport(position, null, null));
+        }
+        finally
+        {
+            text.Remove();
+        }
+    }
+
+    [Fact]
+    public void Benchmark_Profiler_GetGameRules()
+    {
+        Run("Get Game Rules (FindAllEntitiesByDesignerName)", "Profiler Scenarios", () =>
+        {
+            var rules = Utilities.FindAllEntitiesByDesignerName<CCSGameRulesProxy>("cs_gamerules").First().GameRules;
+        });
+    }
+
+    [Fact]
+    public void Benchmark_Profiler_GetPlayers()
+    {
+        Run("Utilities.GetPlayers", "Profiler Scenarios", () =>
+        {
+            var players = Utilities.GetPlayers();
+        });
+    }
+
+    [Fact]
+    public void Benchmark_Profiler_ConVarRead()
+    {
+        var convar = CounterStrikeSharp.API.Modules.Cvars.ConVar.Find("sv_cs_player_speed_has_hostage")!;
+        Run("ConVar StringValue read", "Profiler Scenarios", () =>
+        {
+            var value = convar.StringValue;
+        });
+        Run("ConVar GetPrimitiveValue<float> read", "Profiler Scenarios", () =>
+        {
+            var value = convar.GetPrimitiveValue<float>();
+        });
+    }
+
+    [Fact]
+    public void Benchmark_Profiler_AddAllPlayers()
+    {
+        var message = UserMessage.FromId(120);
+        try
+        {
+            Run("RecipientFilter.AddAllPlayers (repeated)", "Profiler Scenarios", () => message.Recipients.AddAllPlayers());
+        }
+        finally
+        {
+            message.Dispose();
+        }
+    }
+
     private static void Run(string name, string category, Action body, int callsPerIteration = 1)
     {
         for (int i = 0; i < WarmupIterations; i++)
