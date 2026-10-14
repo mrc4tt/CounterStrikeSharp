@@ -128,6 +128,9 @@ static std::vector<std::string> CS2BadList = {
 
 int16_t FindChainOffset(const char* className);
 SchemaKey GetOffset(const char* className, uint32_t classKey, const char* memberName, uint32_t memberKey);
+// False until the network serializer database is reachable (the entity system exists): a
+// `networked` flag read before then is not final.
+bool IsNetworkInfoReady();
 } // namespace schema
 
 #define SCHEMA_FIELD_OFFSET(type, varName, extra_offset)                                                               \
