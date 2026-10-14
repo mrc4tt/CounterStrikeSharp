@@ -198,6 +198,15 @@ public class Schema
             return Unsafe.Read<T>((void*)(handle + offset));
         }
 
+        // Strings: the native getter returns the address of the field (instance + offset) and the result is
+        // read with PtrToStringUTF8, so do exactly that here and skip the two marshalled name strings, the
+        // native schema lookup and the thread-local result copy.
+        if (typeof(T) == typeof(string))
+        {
+            var offset = GetSchemaOffsetCore(className, propertyName);
+            return (T)(object)Marshal.PtrToStringUTF8(handle + offset)!;
+        }
+
         return NativeAPI.GetSchemaValueByName<T>(handle, (int)typeof(T).ToDataType()!, className, propertyName);
     }
 
@@ -297,22 +306,26 @@ public class Schema
         // buffer bytes => null handle => NRE on write. Compute the address directly.
         var handle = pointer + GetSchemaOffset(className, memberName);
 
-        var bytes = Encoding.UTF8.GetBytes(value);
-        if (bytes.Length > maxLength)
+        // Encode straight into the field instead of allocating a byte[] and copying it byte by byte.
+        var length = Encoding.UTF8.GetByteCount(value);
+        if (length > maxLength)
         {
             throw new ArgumentException($"String length exceeds maximum length of {maxLength}");
         }
 
-        for (int i = 0; i < bytes.Length; i++)
-        {
-            Unsafe.Write((void*)(handle.ToInt64() + i), bytes[i]);
-        }
-
-        Unsafe.Write((void*)(handle.ToInt64() + bytes.Length), 0);
+        Encoding.UTF8.GetBytes(value, new Span<byte>((void*)handle, length));
+        Unsafe.Write((void*)(handle.ToInt64() + length), (byte)0);
     }
 
     public static T GetCustomMarshalledType<T>(IntPtr pointer, string className, string memberName)
     {
+        // Color without boxing it through object.
+        if (typeof(T) == typeof(Color))
+        {
+            var color = Marshaling.ColorMarshaler.NativeToManaged(pointer + GetSchemaOffset(className, memberName));
+            return Unsafe.As<Color, T>(ref color);
+        }
+
         var type = typeof(T);
         object result = type switch
         {
@@ -325,6 +338,12 @@ public class Schema
 
     public static void SetCustomMarshalledType<T>(IntPtr pointer, string className, string memberName, T value)
     {
+        if (typeof(T) == typeof(Color))
+        {
+            Marshaling.ColorMarshaler.ManagedToNative(pointer + GetSchemaOffset(className, memberName), Unsafe.As<T, Color>(ref value));
+            return;
+        }
+
         var type = typeof(T);
         switch (type)
         {
