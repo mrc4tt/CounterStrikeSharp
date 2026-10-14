@@ -32,10 +32,15 @@ public class ConVar
     /// Used to access primitive value types, i.e. <see langword="bool"/>, <see langword="float"/>, <see langword="int"/>, etc.
     /// </summary>
     /// <typeparam name="T">The type of value to retrieve</typeparam>
+    // A ConVar's type never changes, so GetPrimitiveValue reads it once instead of asking native on every
+    // read (that doubled the native calls per value read).
+    private ConVarType? _cachedType;
+
     public unsafe ref T GetPrimitiveValue<T>()
     {
         var type = typeof(T);
-        switch (Type)
+        var convarType = _cachedType ??= Type;
+        switch (convarType)
         {
             case ConVarType.Bool:
                 if (type != typeof(bool))
