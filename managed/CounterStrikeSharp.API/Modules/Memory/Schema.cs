@@ -168,9 +168,19 @@ public class Schema
         return entry;
     }
 
+    // Whether a field is send-table networked never changes while the server runs. SetStateChanged asks on
+    // every call, and the native lookup marshals two strings each time, so cache the answer.
+    private static readonly ConcurrentDictionary<(string ClassName, string PropertyName), bool> _networkedByValue = new();
+
     public static bool IsSchemaFieldNetworked(string className, string propertyName)
     {
-        return NativeAPI.IsSchemaFieldNetworked(className, propertyName);
+        var key = (className, propertyName);
+        if (_networkedByValue.TryGetValue(key, out var networked))
+            return networked;
+
+        networked = NativeAPI.IsSchemaFieldNetworked(className, propertyName);
+        _networkedByValue[key] = networked;
+        return networked;
     }
 
     public static unsafe T GetSchemaValue<T>(IntPtr handle, string className, string propertyName)
