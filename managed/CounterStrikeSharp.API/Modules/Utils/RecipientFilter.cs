@@ -108,9 +108,27 @@ public class RecipientFilter : IList<CCSPlayerController>, IMarshalToNative
         }
     }
 
+    /// <summary>
+    /// Adds every connected player that isn't already a recipient. Players already in the filter are not
+    /// added again (before, each call appended all players again, so the list grew with duplicates and
+    /// every later mask update walked all of them).
+    /// </summary>
     public void AddAllPlayers()
     {
-        _recipients.AddRange(Utilities.GetPlayers());
+        var missing = Utilities.GetConnectedPlayersMask() & ~GetRecipientMask();
+        if (missing == 0)
+            return; // the recipient mask wouldn't change
+
+        while (missing != 0)
+        {
+            var slot = System.Numerics.BitOperations.TrailingZeroCount(missing);
+            missing &= missing - 1;
+
+            var pointer = Utilities.GetConnectedControllerPointer(slot);
+            if (pointer != IntPtr.Zero)
+                _recipients.Add(new CCSPlayerController(pointer));
+        }
+
         CollectionChanged?.Invoke();
     }
 

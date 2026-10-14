@@ -162,15 +162,47 @@ namespace CounterStrikeSharp.API
 
             for (int i = 0; i < maxPlayers; i++)
             {
-                var controller = GetPlayerFromSlot(i);
-
-                if (controller == null || !controller.IsValid || controller.Connected != PlayerConnectedState.Connected)
+                // Check the slot on the raw entity pointer first and only build a wrapper for connected
+                // players. Building one for every slot cost a native handle lookup plus two more handle
+                // resolutions (IsValid, Connected) per slot, every tick, for every plugin calling this.
+                var pointer = GetConnectedControllerPointer(i);
+                if (pointer == IntPtr.Zero)
                     continue;
 
-                players.Add(controller);
+                players.Add(new CCSPlayerController(pointer));
             }
 
             return players;
+        }
+
+        private static readonly SchemaField<PlayerConnectedState> s_connectedField = new("CBasePlayerController", "m_iConnected");
+
+        /// <summary>
+        /// The controller pointer for a slot when the player is connected, otherwise IntPtr.Zero. Same
+        /// conditions as GetPlayers used: entity present at index slot+1 (its handle matches, so it is
+        /// valid) and m_iConnected == Connected.
+        /// </summary>
+        internal static IntPtr GetConnectedControllerPointer(int slot)
+        {
+            var pointer = EntitySystem.GetEntityByIndex((uint)(slot + 1));
+            if (pointer is not { } entity || entity == IntPtr.Zero)
+                return IntPtr.Zero;
+
+            return s_connectedField.GetRef(entity) == PlayerConnectedState.Connected ? entity : IntPtr.Zero;
+        }
+
+        /// <summary>Bit mask (bit = slot) of the players GetPlayers would return, without building wrappers.</summary>
+        internal static ulong GetConnectedPlayersMask()
+        {
+            ulong mask = 0;
+            var maxPlayers = Math.Min(Server.MaxPlayers, 64);
+            for (int i = 0; i < maxPlayers; i++)
+            {
+                if (GetConnectedControllerPointer(i) != IntPtr.Zero)
+                    mask |= 1UL << i;
+            }
+
+            return mask;
         }
 
         [Obsolete]
