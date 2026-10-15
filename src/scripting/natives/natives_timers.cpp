@@ -21,19 +21,23 @@
 
 namespace counterstrikesharp {
 
-timers::Timer* CreateTimer(ScriptContext& script_context)
+// The managed Timer.Handle is the timer's serial, not its address. A pointer handle let a
+// late Kill() (after the one-shot fired, or after a map change freed it) hit whatever timer
+// the allocator had since put at that address, e.g. another plugin's.
+void* CreateTimer(ScriptContext& script_context)
 {
     auto interval = script_context.GetArgument<float>(0);
     auto callback = script_context.GetArgument<CallbackT>(1);
     auto flags = script_context.GetArgument<int>(2);
 
-    return globals::timerSystem.CreateTimer(interval, callback, flags);
+    auto timer = globals::timerSystem.CreateTimer(interval, callback, flags);
+    return reinterpret_cast<void*>(static_cast<uintptr_t>(timer->m_serial));
 }
 
 void KillTimer(ScriptContext& script_context)
 {
-    auto timer = script_context.GetArgument<timers::Timer*>(0);
-    globals::timerSystem.KillTimer(timer);
+    auto serial = reinterpret_cast<uintptr_t>(script_context.GetArgument<void*>(0));
+    globals::timerSystem.KillTimerBySerial(serial);
 }
 
 REGISTER_NATIVES(timers, {

@@ -52,6 +52,10 @@ class Timer
     Timer(float interval, float exec_time, CallbackT callback, int flags);
     ~Timer();
 
+    // Handle given to managed code instead of the pointer: serials are never reused, so a
+    // stale handle (timer already fired and freed) cannot name a newer timer that the
+    // allocator placed at the same address.
+    uint64_t m_serial;
     float m_interval;
     ScriptCallback* m_callback;
     int m_flags;
@@ -85,6 +89,8 @@ class TimerSystem : public GlobalClass
     void RemoveMapChangeTimers();
     timers::Timer* CreateTimer(float interval, CallbackT callback, int flags);
     void KillTimer(timers::Timer* timer);
+    // Kill by the handle managed code holds (Timer::m_serial); unknown/stale serials are a no-op.
+    void KillTimerBySerial(uint64_t serial);
     double GetTickedTime();
 
   private:

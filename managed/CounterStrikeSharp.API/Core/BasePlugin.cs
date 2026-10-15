@@ -103,12 +103,17 @@ namespace CounterStrikeSharp.API.Core
             }
 
             internal CallbackSubscriber(Delegate underlyingMethod, Delegate wrapperMethod, Action dispose, string? crashKind,
-                string? crashDetail, bool crashActivity = true)
+                string? crashDetail, bool crashActivity = true, bool uniqueReference = false)
             {
                 _dispose = dispose;
                 _underlyingMethod = underlyingMethod;
 
-                var functionReference = FunctionReference.Create(wrapperMethod);
+                // uniqueReference: the subscriber owns its reference outright. With the shared one
+                // from Create(), one handler hooked twice (Pre and Post, or two message ids) got a
+                // single reference, and removing either registration killed the other.
+                var functionReference = uniqueReference
+                    ? FunctionReference.CreateUnique(wrapperMethod, FunctionLifetime.Permanent)
+                    : FunctionReference.Create(wrapperMethod);
                 if (crashKind != null)
                     functionReference.SetCrashLabel(crashKind, crashDetail ?? crashKind, crashActivity,
                         FunctionReference.OwnerOf(underlyingMethod));
@@ -133,8 +138,59 @@ namespace CounterStrikeSharp.API.Core
             }
         }
 
+        /// <summary>
+        /// Most recent subscriber per handler (game events and user messages). Kept for
+        /// compatibility; a handler registered several times appears once. The full set lives in
+        /// <see cref="_handlerRegistrations"/>.
+        /// </summary>
         public readonly Dictionary<Delegate, CallbackSubscriber> Handlers =
             new Dictionary<Delegate, CallbackSubscriber>();
+
+        // Every event / user-message registration, keyed by (kind, name or id, mode, handler).
+        // Keying by the handler alone (Handlers) meant registering one handler for Pre and Post,
+        // or for two message ids, overwrote the first: only one was unhooked on unload and the
+        // other stayed hooked natively, calling into a removed reference.
+        private sealed record HandlerRegistration(string Kind, string Key, Delegate Handler, bool Post,
+            CallbackSubscriber Subscriber, Action Unhook);
+
+        private readonly List<HandlerRegistration> _handlerRegistrations = new();
+
+        private void AddHandlerRegistration(HandlerRegistration registration)
+        {
+            _handlerRegistrations.Add(registration);
+            Handlers[registration.Handler] = registration.Subscriber;
+        }
+
+        // Removes every matching registration, as before: with the old shared reference native
+        // unhooked all copies of a handler registered twice for the same event and mode.
+        private void RemoveHandlerRegistration(string kind, string key, Delegate handler, bool post)
+        {
+            foreach (var registration in _handlerRegistrations
+                         .Where(r => r.Kind == kind && r.Key == key && r.Post == post && r.Handler.Equals(handler))
+                         .ToList())
+            {
+                RemoveHandlerRegistration(registration.Subscriber);
+            }
+        }
+
+        private void RemoveHandlerRegistration(CallbackSubscriber subscriber)
+        {
+            var index = _handlerRegistrations.FindIndex(r => ReferenceEquals(r.Subscriber, subscriber));
+            if (index < 0) return;
+
+            var registration = _handlerRegistrations[index];
+            _handlerRegistrations.RemoveAt(index);
+
+            registration.Unhook();
+            FunctionReference.Remove(subscriber.GetReferenceIdentifier());
+
+            // Keep the compatibility map pointing at a live registration of this handler, if any is left.
+            var remaining = _handlerRegistrations.FindLastIndex(r => r.Handler.Equals(registration.Handler));
+            if (remaining >= 0)
+                Handlers[registration.Handler] = _handlerRegistrations[remaining].Subscriber;
+            else
+                Handlers.Remove(registration.Handler);
+        }
 
         /// <summary>
         /// Most recent subscriber per handler. Kept for compatibility; a handler registered for several
@@ -167,13 +223,14 @@ namespace CounterStrikeSharp.API.Core
         private void RegisterEventHandlerInternal<T>(string name, GameEventHandler<T> handler, bool post)
             where T : GameEvent
         {
-#pragma warning disable CS0618 // intentional internal use of the non-generic deregister
-            var subscriber = new CallbackSubscriber(handler, handler,
-                () => DeregisterEventHandler(name, handler, post), "event", post ? name : name + " (pre)");
-#pragma warning restore CS0618
+            CallbackSubscriber? subscriber = null;
+            subscriber = new CallbackSubscriber(handler, handler, () => RemoveHandlerRegistration(subscriber!), "event",
+                post ? name : name + " (pre)", uniqueReference: true);
 
             NativeAPI.HookEvent(name, subscriber.GetInputArgument(), post);
-            Handlers[handler] = subscriber;
+            var input = subscriber.GetInputArgument();
+            AddHandlerRegistration(new HandlerRegistration("event", name, handler, post, subscriber,
+                () => NativeAPI.UnhookEvent(name, input, post)));
         }
 
         /// <summary>
@@ -200,22 +257,13 @@ namespace CounterStrikeSharp.API.Core
         public void DeregisterEventHandler<T>(GameEventHandler<T> handler, HookMode hookMode = HookMode.Post) where T : GameEvent
         {
             var name = typeof(T).GetCustomAttribute<EventNameAttribute>()!.Name;
-
-            if (!Handlers.TryGetValue(handler, out var subscriber)) return;
-
-            NativeAPI.UnhookEvent(name, subscriber.GetInputArgument(), hookMode == HookMode.Post);
-            FunctionReference.Remove(subscriber.GetReferenceIdentifier());
-            Handlers.Remove(handler);
+            RemoveHandlerRegistration("event", name, handler, hookMode == HookMode.Post);
         }
 
         [Obsolete("Use the generic version of this method")]
         public void DeregisterEventHandler(string name, Delegate handler, bool post)
         {
-            if (!Handlers.TryGetValue(handler, out var subscriber)) return;
-
-            NativeAPI.UnhookEvent(name, subscriber.GetInputArgument(), post);
-            FunctionReference.Remove(subscriber.GetReferenceIdentifier());
-            Handlers.Remove(handler);
+            RemoveHandlerRegistration("event", name, handler, post);
         }
 
 
@@ -436,10 +484,19 @@ namespace CounterStrikeSharp.API.Core
         /// <param name="callback">Code to run when timer elapses</param>
         /// <param name="flags">Controls if the timer is a one-off, repeat or stops on map change etc.</param>
         /// <returns>An instance of the <see cref="Timer"/></returns>
+        // Finished fires when the timer can never run again (one-shot fired, Kill(), or a
+        // STOP_ON_MAPCHANGE timer cut by the map change). Finished timers used to stay in this
+        // list, with their closures, until the plugin unloaded.
+        private void TrackTimer(Timer timer)
+        {
+            Timers.Add(timer);
+            timer.Finished += t => Timers.Remove(t);
+        }
+
         public Timer AddTimer(float interval, Action callback, TimerFlags? flags = null)
         {
             var timer = new Timer(interval, callback, flags ?? 0);
-            Timers.Add(timer);
+            TrackTimer(timer);
             return timer;
         }
 
@@ -454,7 +511,7 @@ namespace CounterStrikeSharp.API.Core
         public Timer AddTickTimer(int tickInterval, Action callback, TimerFlags? flags = null)
         {
             var timer = new Timer(tickInterval * Server.TickInterval, callback, flags ?? 0);
-            Timers.Add(timer);
+            TrackTimer(timer);
             return timer;
         }
 
@@ -661,20 +718,19 @@ namespace CounterStrikeSharp.API.Core
 
         public void HookUserMessage(int messageId, UserMessage.UserMessageHandler handler, HookMode mode = HookMode.Pre)
         {
-            var subscriber = new CallbackSubscriber(handler, handler,
-                () => UnhookUserMessage(messageId, handler));
+            CallbackSubscriber? subscriber = null;
+            subscriber = new CallbackSubscriber(handler, handler, () => RemoveHandlerRegistration(subscriber!), null, null,
+                uniqueReference: true);
 
             NativeAPI.HookUsermessage(messageId, subscriber.GetInputArgument(), mode);
-            Handlers[handler] = subscriber;
+            var input = subscriber.GetInputArgument();
+            AddHandlerRegistration(new HandlerRegistration("usermessage", messageId.ToString(), handler,
+                mode == HookMode.Post, subscriber, () => NativeAPI.UnhookUsermessage(messageId, input, mode)));
         }
 
         public void UnhookUserMessage(int messageId, UserMessage.UserMessageHandler handler, HookMode mode = HookMode.Pre)
         {
-            if (!Handlers.TryGetValue(handler, out var subscriber)) return;
-
-            NativeAPI.UnhookUsermessage(messageId, subscriber.GetInputArgument(), mode);
-            FunctionReference.Remove(subscriber.GetReferenceIdentifier());
-            Handlers.Remove(handler);
+            RemoveHandlerRegistration("usermessage", messageId.ToString(), handler, mode == HookMode.Post);
         }
 
         /// <summary>
@@ -750,6 +806,11 @@ namespace CounterStrikeSharp.API.Core
             // Deregister*/Remove*, which mutates the same dictionary. Iterating
             // .Values directly would throw InvalidOperationException partway
             // through the first loop and leak the remaining subscribers/timers.
+            foreach (var registration in _handlerRegistrations.ToList())
+            {
+                registration.Subscriber.Dispose();
+            }
+
             foreach (var subscriber in Handlers.Values.ToList())
             {
                 subscriber.Dispose();

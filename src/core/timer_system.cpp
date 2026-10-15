@@ -34,6 +34,7 @@
 #include <public/eiface.h>
 
 #include <algorithm>
+#include <unordered_map>
 
 #include "core/globals.h"
 #include "core/log.h"
@@ -47,14 +48,29 @@ double universal_time = 0.0f;
 double timer_next_think = 0.0f;
 } // namespace timers
 
+// Live timers by serial. Maintained by the Timer ctor/dtor so every delete path (fired
+// one-shot, KillTimer, RemoveMapChangeTimers) drops its entry.
+static std::unordered_map<uint64_t, timers::Timer*>& TimersBySerial()
+{
+    static std::unordered_map<uint64_t, timers::Timer*> timers;
+    return timers;
+}
+
+static uint64_t g_next_timer_serial = 1;
+
 timers::Timer::Timer(float interval, float exec_time, CallbackT callback, int flags)
-    : m_interval(interval), m_exec_time(exec_time), m_flags(flags), m_kill_me(false), m_in_exec(false)
+    : m_serial(g_next_timer_serial++), m_interval(interval), m_exec_time(exec_time), m_flags(flags), m_kill_me(false), m_in_exec(false)
 {
     m_callback = globals::callbackManager.CreateCallback("Timer");
     m_callback->AddListener(callback);
+    TimersBySerial()[m_serial] = this;
 }
 
-timers::Timer::~Timer() { globals::callbackManager.ReleaseCallback(m_callback); }
+timers::Timer::~Timer()
+{
+    TimersBySerial().erase(m_serial);
+    globals::callbackManager.ReleaseCallback(m_callback);
+}
 
 TimerSystem::TimerSystem()
 {
@@ -251,6 +267,13 @@ void TimerSystem::KillTimer(timers::Timer* timer)
         if ((success = it != m_once_off_timers.end())) m_once_off_timers.erase(it, m_once_off_timers.end());
         delete timer;
     }
+}
+
+void TimerSystem::KillTimerBySerial(uint64_t serial)
+{
+    auto it = TimersBySerial().find(serial);
+    if (it == TimersBySerial().end()) return;
+    KillTimer(it->second);
 }
 
 double TimerSystem::GetTickedTime() { return timers::universal_time; }

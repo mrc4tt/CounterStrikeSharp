@@ -432,6 +432,7 @@ namespace CounterStrikeSharp.API.Core
                     if (Lifetime == FunctionLifetime.SingleUse)
                     {
                         RemoveSelf();
+                        SingleUseCompleted?.Invoke();
                     }
 
                     _taskCompletionSource.TrySetResult();
@@ -507,13 +508,32 @@ namespace CounterStrikeSharp.API.Core
             }
 
             var reference = new FunctionReference(method, lifetime);
-            Register(reference);
+            // Only permanent references are looked up by delegate. Indexing a single-use one
+            // replaced the delegate's permanent entry, so a later Create(D) (e.g. an Unhook that
+            // converts the handler to an InputArgument) minted a new pointer native did not know.
+            Register(reference, indexByMethod: lifetime == FunctionLifetime.Permanent);
 
             return reference;
         }
 
+        /// <summary>
+        /// A reference that is never shared and never returned by <see cref="Create"/> for the
+        /// same delegate. For owners that remove their reference independently (timers): with
+        /// the shared one, killing one of two <c>AddTimer(x, Foo)</c> removed the reference the
+        /// other was still firing into.
+        /// </summary>
+        internal static FunctionReference CreateUnique(Delegate method, FunctionLifetime lifetime)
+        {
+            var reference = new FunctionReference(method, lifetime);
+            Register(reference, indexByMethod: false);
+            return reference;
+        }
 
-        private static void Register(FunctionReference reference)
+        /// <summary>Runs on the game thread after a single-use reference has fired and been removed.</summary>
+        internal Action? SingleUseCompleted { get; set; }
+
+
+        private static void Register(FunctionReference reference, bool indexByMethod = true)
         {
             lock (ReferenceCounterLock)
             {
@@ -528,7 +548,8 @@ namespace CounterStrikeSharp.API.Core
                 NativeCallbackKeepAlive[thisRefId] = stub;
 
                 IdToFunctionReferencesMap[thisRefId] = reference;
-                TargetMethodToFunctionReferencesMap[reference._targetMethod] = reference;
+                if (indexByMethod)
+                    TargetMethodToFunctionReferencesMap[reference._targetMethod] = reference;
 
                 unchecked
                 {
@@ -549,6 +570,13 @@ namespace CounterStrikeSharp.API.Core
 
         public static void Remove(int reference) => Remove(reference, firedNormally: false);
 
+        /// <summary>
+        /// Remove a reference whose native side is already gone (a timer after KillTimer). Unlike
+        /// <see cref="Remove(int)"/>, its stub goes into the bounded retention window instead of
+        /// staying rooted forever, so per-timer references do not leak one stub each.
+        /// </summary>
+        internal static void RemoveReleased(int reference) => Remove(reference, firedNormally: false, nativeReleased: true);
+
         // Whether a permanent reference exists for this delegate; Create would return it instead of a new one.
         internal static bool IsRegistered(Delegate method) => TargetMethodToFunctionReferencesMap.ContainsKey(method);
 
@@ -566,11 +594,15 @@ namespace CounterStrikeSharp.API.Core
             }
         }
 
-        private static void Remove(int reference, bool firedNormally)
+        private static void Remove(int reference, bool firedNormally, bool nativeReleased = false)
         {
             if (IdToFunctionReferencesMap.TryRemove(reference, out var functionReference))
             {
-                TargetMethodToFunctionReferencesMap.TryRemove(functionReference._targetMethod, out _);
+                // Only drop the index entry if it is this reference: a single-use reference
+                // re-indexes the delegate, and removing by key alone unindexed whichever
+                // permanent reference the delegate pointed to.
+                TargetMethodToFunctionReferencesMap.TryRemove(
+                    new KeyValuePair<Delegate, FunctionReference>(functionReference._targetMethod, functionReference));
 
                 // Retain owner attribution so a later native call into this now-removed
                 // id is blamed on the right plugin (see LogDeadCallback) instead of being
@@ -592,7 +624,7 @@ namespace CounterStrikeSharp.API.Core
                 //   "A callback was made on a garbage collected delegate ...CallbackDelegate::Invoke"
                 // -> hard "Process terminated". Keeping the stub rooted turns that fatal
                 // crash into LogDeadCallback's named, defused no-op instead.
-                if (firedNormally && functionReference.Lifetime == FunctionLifetime.SingleUse)
+                if ((firedNormally && functionReference.Lifetime == FunctionLifetime.SingleUse) || nativeReleased)
                 {
                     // (Solution A) Don't reclaim immediately; keep this fired stub rooted
                     // inside a bounded window so a late native re-call is a safe no-op
