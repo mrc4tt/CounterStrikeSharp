@@ -57,7 +57,17 @@ namespace CounterStrikeSharp.API
                 }
                 catch (Exception e)
                 {
-                    Application.Instance.Logger.LogError(e, "Error invoking callback");
+                    // Same throttle as FunctionReference: a NextFrame task that throws every
+                    // tick would otherwise print a full stack 64 times a second.
+                    var owner = FunctionReference.OwnerOf(task);
+                    var decision = Core.Diagnostics.PluginDiagnostics.RecordError(owner,
+                        owner + "|" + task.Method.Name + "|" + e.GetBaseException().GetType().Name);
+                    if (decision.LogFull)
+                        Application.Instance.Logger.LogError(e, "Error invoking callback");
+                    else if (decision.LogSuppressionNotice)
+                        Application.Instance.Logger.LogError(
+                            "Plugin '{Owner}' tick task '{Task}' still throwing {Error} ({Count}x total). Stack suppressed.",
+                            owner, task.Method.Name, e.GetBaseException().GetType().Name, decision.TimesSeen);
                 }
             }
         }

@@ -109,6 +109,9 @@ public class PluginManager : IPluginManager
 
         if (CoreConfig.PluginAutoLoadEnabled)
         {
+            // Fence between framework init and plugin output: everything from here to the
+            // summary table below comes from plugin Load/OnAllPluginsLoaded.
+            _logger.LogInformation("---- Loading {Count} plugin(s) ----", pluginAssemblyPaths.Count());
             foreach (var path in pluginAssemblyPaths)
             {
                 try

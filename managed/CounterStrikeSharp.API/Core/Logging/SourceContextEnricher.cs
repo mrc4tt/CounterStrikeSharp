@@ -43,7 +43,9 @@ public class SourceContextEnricher : ILogEventEnricher
             }
         }
 
+        logEvent.AddOrUpdateProperty(new LogEventProperty(CoreLogging.FileTagPropertyName,
+            new ScalarValue("cssharp:" + name)));
         logEvent.AddOrUpdateProperty(new LogEventProperty(TagPropertyName,
             new ScalarValue(CoreLogging.FormatSourceTag("(cssharp:" + name + ")", CoreLogging.TagColorCore))));
     }
-}
+}

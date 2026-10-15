@@ -21,19 +21,35 @@
 namespace counterstrikesharp {
 namespace hooks {
 
+// Running totals for LogHookSummary(). Hooks are installed on the game thread only.
+static int s_hooksInstalled = 0;
+static int s_hooksFailed = 0;
+
 void ReportHookRegistration(const char* name, void** vtable, int slot, bool ok, const char* reason)
 {
     if (ok)
     {
-        CSSHARP_CORE_TRACE("Installed hook '{}' (vtable {}, slot {})", name, (void*)vtable, slot);
+        ++s_hooksInstalled;
+        CSSHARP_CORE_DEBUG("Installed hook '{}' (vtable {}, slot {})", name, (void*)vtable, slot);
         return;
     }
+
+    ++s_hooksFailed;
 
     // ERROR, not WARN: whatever this hook backs is now silently inactive, and the
     // symptom shows up far from here -- an event that never fires, a command that
     // stops working -- with nothing else in the log to connect it back.
     CSSHARP_CORE_ERROR("Failed to install hook '{}' (vtable {}, slot {}): {}", name, (void*)vtable, slot,
                        reason != nullptr ? reason : "unknown reason");
+}
+
+void LogHookSummary()
+{
+    // One Info line instead of one per hook: the per-hook list is at Debug, and every
+    // failure already has its own ERROR line above.
+    if (s_hooksFailed == 0) CSSHARP_CORE_INFO("Engine hooks installed: {}", s_hooksInstalled);
+    else
+        CSSHARP_CORE_ERROR("Engine hooks installed: {}, FAILED: {} (see errors above)", s_hooksInstalled, s_hooksFailed);
 }
 
 } // namespace hooks

@@ -11,5 +11,6 @@
     "AutoUpdateEnabled": true,
     "AutoUpdateURL": "https://sig.miksen.me/latest/CounterStrikeSharp/gamedata.json",
     "MaximumFrameTasksExecutedPerTick": 1024,
-    "LogVerbosity": "information"
+    "LogVerbosity": "information",
+    "PluginLogFiles": false
 }

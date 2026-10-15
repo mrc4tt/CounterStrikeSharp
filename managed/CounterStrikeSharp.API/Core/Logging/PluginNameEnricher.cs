@@ -27,6 +27,8 @@ public class PluginNameEnricher : ILogEventEnricher
         var property = propertyFactory.CreateProperty(PropertyName, Context.Plugin.ModuleName);
         logEvent.AddPropertyIfAbsent(property);
 
+        logEvent.AddPropertyIfAbsent(new LogEventProperty(CoreLogging.FileTagPropertyName,
+            new ScalarValue("plugin:" + Context.Plugin.ModuleName)));
         logEvent.AddPropertyIfAbsent(new LogEventProperty(TagPropertyName, new ScalarValue(
             CoreLogging.FormatSourceTag("(plugin:" + Context.Plugin.ModuleName + ")", CoreLogging.TagColorPlugin))));
     }

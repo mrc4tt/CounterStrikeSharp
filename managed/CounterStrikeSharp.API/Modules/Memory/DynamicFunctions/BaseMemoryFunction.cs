@@ -165,7 +165,7 @@ public abstract class BaseMemoryFunction : NativeObject
         // Create returns the existing reference when this handler is already hooked elsewhere.
         bool shared = FunctionReference.IsRegistered(handler);
         var reference = FunctionReference.Create(handler);
-        reference.SetCrashLabel("hook", (handler.Method.DeclaringType?.Name ?? "?") + "." + handler.Method.Name + (post ? " (post)" : ""));
+        reference.SetCrashLabel("hook", DescribeHandler(handler) + (post ? " (post)" : ""));
         try
         {
             NativeAPI.HookFunction(handle, reference, post);
@@ -180,13 +180,24 @@ public abstract class BaseMemoryFunction : NativeObject
 
         lock (_hooksLock)
             _activeHooks.Add(new HookRegistration(handle, handler, post, reference.Identifier));
+
+        // Info on purpose: which plugin detours which engine function is the first thing to
+        // check when two plugins fight over one, and it is a handful of lines per boot.
+        Application.Instance.Logger.LogInformation("Plugin '{Owner}' hooked {Handler} ({Mode}) at 0x{Address:X}",
+            FunctionReference.OwnerOf(handler), DescribeHandler(handler), post ? "post" : "pre", (long)handle);
     }
+
+    private static string DescribeHandler(Delegate handler) =>
+        (handler.Method.DeclaringType?.Name ?? "?") + "." + handler.Method.Name;
 
     public void Unhook(Func<DynamicHook, HookResult> handler, HookMode mode)
     {
         bool post = mode == HookMode.Post;
 
         NativeAPI.UnhookFunction(Handle, handler, post);
+
+        Application.Instance.Logger.LogInformation("Plugin '{Owner}' unhooked {Handler} ({Mode}) at 0x{Address:X}",
+            FunctionReference.OwnerOf(handler), DescribeHandler(handler), post ? "post" : "pre", (long)Handle);
 
         int referenceId;
         lock (_hooksLock)

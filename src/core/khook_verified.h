@@ -27,6 +27,10 @@ namespace hooks {
 // Implemented in khook_verified.cpp.
 void ReportHookRegistration(const char* name, void** vtable, int slot, bool ok, const char* reason);
 
+// Logs one Info line with how many hooks ReportHookRegistration has seen so far.
+// Implemented in khook_verified.cpp.
+void LogHookSummary();
+
 // KHook can refuse to install a hook, and says so only through a return value the
 // plain API hides from us.
 //

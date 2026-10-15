@@ -80,9 +80,10 @@ public static class CoreLogging
     private static Logger? SerilogLogger { get; set; }
 
     /// <summary>
-    /// The single writer of logs/log-all.txt — the aggregate of every plugin's output.
-    /// Plugin loggers forward into it with WriteTo.Logger instead of each opening their
-    /// own sink on the same path, because the two obvious alternatives are both broken:
+    /// The single writer of logs/log-&lt;date&gt;.txt and logs/log-errors-&lt;date&gt;.txt — the
+    /// framework's and every plugin's output in one place. The core logger and every plugin
+    /// logger forward into it with WriteTo.Logger instead of each opening their own sink on
+    /// the same path, because the two obvious alternatives are both broken:
     ///
     ///   * one FileSink per plugin with shared: false — the second plugin's sink hits a
     ///     sharing violation on the already-open file and CreateLogger() throws, taking
@@ -102,6 +103,20 @@ public static class CoreLogging
     /// built before then forwards into a sink that drops instead of throwing.
     /// </summary>
     public static Serilog.ILogger PluginAggregateLogger { get; private set; } = Logger.None;
+
+    /// <summary>Days of log files kept per file sink before Serilog deletes the oldest.</summary>
+    public const int RetainedLogDays = 7;
+
+    /// <summary>
+    /// Name of the plain-text "cssharp:Foo" / "plugin:Foo" tag used by the file sinks, set
+    /// by <see cref="SourceContextEnricher"/> and <see cref="PluginNameEnricher"/>. One
+    /// property for both, because core and plugin events share the same file.
+    /// </summary>
+    public const string FileTagPropertyName = "FileTag";
+
+    /// <summary>Output template shared by every file sink (and by per-plugin files).</summary>
+    public const string FileOutputTemplate =
+        "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [" + LevelToken + "] ({FileTag:l}) {Message:lj}{NewLine}{Exception}";
 
     // Live minimum-level control. Defaults to Information so the demoted boot/init
     // lines stay hidden; CoreConfig.Load() drives it from the "LogVerbosity" setting
@@ -136,6 +151,35 @@ public static class CoreLogging
     {
         if (SerilogLogger == null)
         {
+            // Single owner of the on-disk logs (see PluginAggregateLogger): log-<date>.txt
+            // holds core + plugin lines in time order, log-errors-<date>.txt only Error+.
+            // Both run through one Async wrapper so file rolls + Serilog's retention scan
+            // (PathRoller regex over the log dir) happen on a background thread instead of
+            // stalling the game tick — a synchronous roll was measured at ~469ms on the game
+            // thread. No level floor here: the core logger and each plugin logger apply
+            // their own before forwarding.
+            //
+            // retainedFileCountLimit is set explicitly: Serilog's default keeps 31 files per
+            // sink, which with one sink per plugin filled logs/ with hundreds of files.
+            var aggregate = new LoggerConfiguration()
+                .MinimumLevel.Verbose()
+                .WriteTo.Async(a =>
+                {
+                    a.File(Path.Join(new[] { contentRoot, "logs", "log-.txt" }),
+                        rollingInterval: RollingInterval.Day,
+                        retainedFileCountLimit: RetainedLogDays,
+                        outputTemplate: FileOutputTemplate);
+                    // Errors-only sink: isolates crashes/load failures (incl. plugin blame
+                    // reports) into one file that can be handed to a plugin author without
+                    // wading through the full info-level log.
+                    a.File(Path.Join(new[] { contentRoot, "logs", "log-errors-.txt" }),
+                        rollingInterval: RollingInterval.Day,
+                        retainedFileCountLimit: RetainedLogDays,
+                        restrictedToMinimumLevel: LogEventLevel.Error,
+                        outputTemplate: FileOutputTemplate);
+                })
+                .CreateLogger();
+
             SerilogLogger = new LoggerConfiguration()
                 .MinimumLevel.ControlledBy(LevelSwitch)
                 .Enrich.FromLogContext()
@@ -146,7 +190,7 @@ public static class CoreLogging
                 // already colored cyan and already padded (see FormatSourceTag) so the
                 // framework's own lines stand out from game-engine output and messages
                 // line up in one column. Only the console sink carries escapes; the file
-                // sinks below stay plain text and use the raw SourceContext instead.
+                // sinks stay plain text and use the uncolored FileTag instead.
                 // The console sink is wrapped in Async for the same reason the file sinks
                 // are, but against a different failure: Console.Out is an unbuffered
                 // write(2) to stdout, and on a real server stdout is a PIPE -- docker
@@ -160,7 +204,7 @@ public static class CoreLogging
                 // blockWhenFull: false is the point of the exercise -- when the queue
                 // fills (10k events) Serilog DROPS the event rather than applying
                 // backpressure to the game thread. Losing console lines during a log
-                // storm is strictly better than dropping ticks; the file sinks below are
+                // storm is strictly better than dropping ticks; the file sinks are
                 // the durable record, and fatal_reporter.cpp writes crash breadcrumbs
                 // with a direct write(2) to stderr that does not go through Serilog.
                 .WriteTo.Async(a => a.Console(
@@ -168,40 +212,9 @@ public static class CoreLogging
                     outputTemplate:
                     "{Timestamp:HH:mm:ss.fff} [" + LevelToken + "] {SourceTag:l} {Message:lj}{NewLine}{Exception}"),
                     bufferSize: 10000, blockWhenFull: false)
-                // File sinks run through Async so file rolls + Serilog's retention scan
-                // (PathRoller regex over the log dir) happen on a background thread instead
-                // of stalling the game tick — a synchronous roll was measured at ~469ms on
-                // the game thread. One Async wrapper = one shared background queue/thread.
-                .WriteTo.Async(a =>
-                {
-                    a.File(Path.Join(new[] { contentRoot, "logs", $"log-cssharp.txt" }),
-                        rollingInterval: RollingInterval.Day,
-                        outputTemplate:
-                        "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [" + LevelToken +
-                        "] (cssharp:{SourceContext}) {Message:lj}{NewLine}{Exception}");
-                    // Errors-only sink: isolates crashes/load failures (incl. plugin blame
-                    // reports) into one file that can be handed to a plugin author without
-                    // wading through the full info-level log.
-                    a.File(Path.Join(new[] { contentRoot, "logs", $"log-errors.txt" }),
-                        rollingInterval: RollingInterval.Day,
-                        restrictedToMinimumLevel: LogEventLevel.Error,
-                        outputTemplate:
-                        "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [" + LevelToken +
-                        "] (cssharp:{SourceContext}) {Message:lj}{NewLine}{Exception}");
-                })
-                .CreateLogger();
-
-            // Single owner of log-all.txt (see PluginAggregateLogger). Its own Async
-            // wrapper, so a plugin logging does not wait on this file's roll either.
-            // No level floor here: each plugin logger applies its own before forwarding.
-            var aggregate = new LoggerConfiguration()
-                .MinimumLevel.Verbose()
-                .WriteTo.Async(a => a.File(
-                        Path.Join(new[] { contentRoot, "logs", "log-all.txt" }),
-                        rollingInterval: RollingInterval.Day,
-                        outputTemplate:
-                        "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [" + LevelToken +
-                        "] plugin:{PluginName} {Message:lj}{NewLine}{Exception}"))
+                // Framework lines go to disk through the shared combined logger above, so
+                // core and plugin output land in one file in the order they happened.
+                .WriteTo.Logger(aggregate)
                 .CreateLogger();
             PluginAggregateLogger = aggregate;
 

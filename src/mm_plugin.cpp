@@ -30,6 +30,7 @@
 #include "core/vtable_fallback.h"
 #include "core/global_listener.h"
 #include "core/khook_original_return.h"
+#include "core/khook_verified.h"
 #include "core/log.h"
 #include "core/managers/entity_manager.h"
 #include "core/managers/chat_manager.h"
@@ -272,6 +273,7 @@ bool CounterStrikeSharpMMPlugin::Load(PluginId id, ISmmAPI* ismm, char* error, s
         fatal::InstallHandler();
 
         CSSHARP_CORE_DEBUG("Hooks added.");
+        hooks::LogHookSummary();
 
         // Used by Metamod Console Commands
         g_pCVar = globals::cvars;

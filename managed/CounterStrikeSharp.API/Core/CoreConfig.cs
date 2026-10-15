@@ -48,6 +48,9 @@ namespace CounterStrikeSharp.API.Core
         [JsonPropertyName("LogVerbosity")]
         public string LogVerbosity { get; set; } = "information";
 
+        [JsonPropertyName("PluginLogFiles")]
+        public bool PluginLogFiles { get; set; } = false;
+
         [JsonPropertyName("FollowCS2ServerGuidelines")]
         public bool FollowCS2ServerGuidelines { get; set; } = true;
 
@@ -116,6 +119,13 @@ namespace CounterStrikeSharp.API.Core
         /// Lower to "debug" to see the per-step boot/init lines hidden at the default level.
         /// </summary>
         public static string LogVerbosity => _coreConfig.LogVerbosity;
+
+        /// <summary>
+        /// Also write each plugin's output to its own logs/log-&lt;Plugin&gt;-&lt;date&gt;.txt.
+        /// Off by default; every plugin line is already in the shared logs/log-&lt;date&gt;.txt.
+        /// Read when a plugin loads, so a change applies on the next plugin (re)load.
+        /// </summary>
+        public static bool PluginLogFiles => _coreConfig.PluginLogFiles;
 
         /// <summary>
         /// <para>
