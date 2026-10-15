@@ -55,7 +55,6 @@ namespace CounterStrikeSharp.API.Core
         private readonly IPlayerLanguageManager _playerLanguageManager;
         private readonly ICommandManager _commandManager;
         private readonly IStringLocalizer _localizer;
-        private UpdateWatcher? _updateWatcher;
 
         public Application(ILoggerFactory loggerFactory, IScriptHostConfiguration scriptHostConfiguration,
             GameDataProvider gameDataProvider, CoreConfig coreConfig, IPluginManager pluginManager,
@@ -151,10 +150,6 @@ namespace CounterStrikeSharp.API.Core
             }
 
             Server.Initialize();
-
-            // Watch our own binaries for an on-disk update applied while the server is live,
-            // so the running match survives on the old binary instead of crashing.
-            _updateWatcher = UpdateWatcher.Start(Logger, _scriptHostConfiguration.RootPath);
         }
 
         [RequiresPermissions("@css/generic")]

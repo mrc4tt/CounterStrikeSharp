@@ -85,26 +85,35 @@ namespace CounterStrikeSharp.API.Core.Plugin
             _path = path;
             PluginId = id;
 
-            Loader = PluginLoader.CreateFromAssemblyFile(path,
-                new[]
-                {
-                    typeof(IPlugin), typeof(ILogger), typeof(IServiceCollection), typeof(IPluginServiceCollection<>),
-                    typeof(ICommandManager)
-                }, config =>
-                {
-                    config.EnableHotReload = true;
-                    config.IsUnloadable = true;
-                    config.PreferSharedTypes = true;
-                });
-
-            if (CoreConfig.PluginHotReloadEnabled)
+            // EnableHotReload makes McMaster open a FileSystemWatcher (one inotify instance on
+            // Linux) inside the PluginLoader ctor. It used to be hard-coded true, so every plugin
+            // cost an instance even with PluginHotReloadEnabled=false; on a box running several
+            // servers under one user that exhausted fs.inotify.max_user_instances (1024) and the
+            // ctor threw "The configured user limit (1024) on the number of inotify instances has
+            // been reached", failing the plugin load (an admin plugin, in the live incident).
+            var hotReload = CoreConfig.PluginHotReloadEnabled;
+            try
             {
-                _fileWatcher = new FileSystemWatcher
+                Loader = CreateLoader(path, hotReload);
+            }
+            catch (IOException ex) when (hotReload)
+            {
+                // Watching is a convenience; loading is not. Drop hot reload for this plugin
+                // rather than refusing to load it.
+                _logger.LogWarning("Hot reload disabled for {Path}: could not create a file watcher ({Message})",
+                    path, ex.Message);
+                hotReload = false;
+                Loader = CreateLoader(path, hotReload: false);
+            }
+
+            if (hotReload)
+            {
+                var watcher = new FileSystemWatcher
                 {
                     Path = Path.GetDirectoryName(path)!
                 };
 
-                _fileWatcher.Deleted += async (s, e) =>
+                watcher.Deleted += async (s, e) =>
                 {
                     Server.NextWorldUpdate(() =>
                     {
@@ -120,10 +129,38 @@ namespace CounterStrikeSharp.API.Core.Plugin
                     });
                 };
 
-                _fileWatcher.Filter = "*.dll";
-                _fileWatcher.EnableRaisingEvents = true;
+                watcher.Filter = "*.dll";
+                try
+                {
+                    watcher.EnableRaisingEvents = true;
+                    _fileWatcher = watcher;
+                }
+                catch (IOException ex)
+                {
+                    // Same inotify limit as above; McMaster's reload still works, only delete
+                    // detection is lost.
+                    watcher.Dispose();
+                    _logger.LogWarning("Delete detection disabled for {Path}: could not create a file watcher ({Message})",
+                        path, ex.Message);
+                }
+
                 Loader.Reloaded += async (s, e) => await OnReloadedAsync(s, e);
             }
+        }
+
+        private static PluginLoader CreateLoader(string path, bool hotReload)
+        {
+            return PluginLoader.CreateFromAssemblyFile(path,
+                new[]
+                {
+                    typeof(IPlugin), typeof(ILogger), typeof(IServiceCollection), typeof(IPluginServiceCollection<>),
+                    typeof(ICommandManager)
+                }, config =>
+                {
+                    config.EnableHotReload = hotReload;
+                    config.IsUnloadable = true;
+                    config.PreferSharedTypes = true;
+                });
         }
 
         private Task OnReloadedAsync(object sender, PluginReloadedEventArgs eventargs)
