@@ -199,6 +199,15 @@ namespace CounterStrikeSharp.API.Core.Plugin
                 }, config =>
                 {
                     config.EnableHotReload = hotReload;
+                    // Read the plugin and its private dependencies into memory instead of
+                    // mapping the files. A mapped DLL that is overwritten in place (FTP, plain
+                    // cp over the running file) corrupts the running plugin's metadata; the next
+                    // reflection call on it then fails with "Index not found. (0x80131124)".
+                    // EnableHotReload already implies this in McMaster, so before hot reload was
+                    // gated on PluginHotReloadEnabled every plugin was loaded this way. Side
+                    // effect, unchanged from then: Assembly.Location is "" for plugin assemblies
+                    // (use ModulePath / ModuleDirectory). A .pdb next to the DLL is still loaded.
+                    config.LoadInMemory = true;
                     config.IsUnloadable = true;
                     config.PreferSharedTypes = true;
                 });

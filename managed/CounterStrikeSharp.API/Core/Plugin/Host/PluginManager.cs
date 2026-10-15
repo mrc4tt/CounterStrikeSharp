@@ -34,7 +34,13 @@ public class PluginManager : IPluginManager
     private void LoadLibrary(string path)
     {
         var loader = PluginLoader.CreateFromAssemblyFile(path, new[] { typeof(IPlugin), typeof(PluginCapability<>), typeof(PlayerCapability<>) },
-            config => { config.PreferSharedTypes = true; });
+            config =>
+            {
+                config.PreferSharedTypes = true;
+                // Same as plugins (PluginContext.CreateLoader): a shared library overwritten on
+                // disk while mapped corrupts every plugin using it.
+                config.LoadInMemory = true;
+            });
         var assembly = loader.LoadDefaultAssembly();
 
         if (CoreConfig.PluginResolveNugetPackages)
@@ -264,6 +270,7 @@ public class PluginManager : IPluginManager
         var loader = PluginLoader.CreateFromAssemblyFile(dependencyPath, configure: c =>
         {
             c.PreferSharedTypes = true;
+            c.LoadInMemory = true;
         });
 
         assembly = loader.LoadDefaultAssembly();
