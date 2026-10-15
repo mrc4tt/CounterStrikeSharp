@@ -99,6 +99,10 @@ namespace CounterStrikeSharp.API.Core
             // Before any plugin loads, so their callbacks are attributed from the first one.
             CrashRecorder.Initialize();
 
+            // Before any plugin loads: config reload-on-change in plugins polls instead of
+            // taking an inotify instance (see InotifyDiagnostics).
+            InotifyDiagnostics.ApplyPollingFileWatcherDefault();
+
             _coreConfig.Load();
             _gameDataProvider.Load();
 
@@ -135,6 +139,8 @@ namespace CounterStrikeSharp.API.Core
             AdminManager.AddCommands();
 
             RegisterPluginCommands();
+
+            InotifyDiagnostics.WarnIfNearLimit(Logger);
 
             _pluginManager.Load();
 

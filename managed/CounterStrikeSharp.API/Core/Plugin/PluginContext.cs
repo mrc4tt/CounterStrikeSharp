@@ -96,7 +96,7 @@ namespace CounterStrikeSharp.API.Core.Plugin
             {
                 Loader = CreateLoader(path, hotReload);
             }
-            catch (IOException ex) when (hotReload)
+            catch (IOException ex) when (hotReload && InotifyDiagnostics.IsInotifyLimitError(ex))
             {
                 // Watching is a convenience; loading is not. Drop hot reload for this plugin
                 // rather than refusing to load it.
@@ -135,7 +135,7 @@ namespace CounterStrikeSharp.API.Core.Plugin
                     watcher.EnableRaisingEvents = true;
                     _fileWatcher = watcher;
                 }
-                catch (IOException ex)
+                catch (IOException ex) when (InotifyDiagnostics.IsInotifyLimitError(ex))
                 {
                     // Same inotify limit as above; McMaster's reload still works, only delete
                     // detection is lost.
@@ -568,6 +568,19 @@ namespace CounterStrikeSharp.API.Core.Plugin
         internal static string? FixHintFor(Exception ex)
         {
             var msg = ex.Message ?? string.Empty;
+
+            // Checked first: the runtime's message contains "configured", which the generic
+            // config hint further down would otherwise claim.
+            if (InotifyDiagnostics.IsInotifyLimitError(ex))
+                return InotifyDiagnostics.IsWatchLimitError(ex)
+                    ? "The plugin watches files, and this Linux user has no inotify watches left "
+                      + "(fs.inotify.max_user_watches, shared by every process the user runs). Raise that limit, "
+                      + "or ask the author to watch fewer directories."
+                    : "The plugin creates a file watcher (FileSystemWatcher), and this Linux user has no inotify "
+                      + "instances left. The limit (fs.inotify.max_user_instances) is shared by every process the "
+                      + "user runs, so other servers count too. "
+                      + (InotifyDiagnostics.DescribeUsage() is { } usage ? usage + " " : "")
+                      + "Raise the limit, run fewer servers per user, or ask the author to make the watcher optional.";
 
             if (IsDependencyResolutionFailure(ex))
                 return "The .NET host could not initialize dependency resolution for this DLL. Usually an INSTALL "

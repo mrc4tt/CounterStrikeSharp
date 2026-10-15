@@ -78,6 +78,11 @@ namespace CounterStrikeSharp.API.Core
         [JsonPropertyName("MaximumFrameTasksExecutedPerTick")]
         public int MaximumFrameTasksExecutedPerTick { get; set; } = 1024;
 
+        // Keys in core.json that match no property above (typos, or keys of removed features
+        // such as the UpdateWatcher* set). Collected only so Load() can say they are ignored.
+        [JsonExtensionData]
+        public System.Collections.Generic.Dictionary<string, System.Text.Json.JsonElement>? UnknownKeys { get; set; }
+
     }
 
     /// <summary>
@@ -198,6 +203,13 @@ namespace CounterStrikeSharp.API.Core
                     if (data != null)
                     {
                         _coreConfig = data;
+
+                        if (data.UnknownKeys is { Count: > 0 } unknown)
+                        {
+                            _logger.LogWarning(
+                                "Ignoring unknown core.json key(s): {Keys}. Check for typos; UpdateWatcher* keys belong to a removed feature",
+                                string.Join(", ", unknown.Keys));
+                        }
                     }
                 }
                 catch (Exception ex)
