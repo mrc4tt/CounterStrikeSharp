@@ -3,6 +3,7 @@ name: Synchronize - Schema
 on:
   schedule:
     - cron: "0 8 * * *"
+      timezone: "Europe/Copenhagen"
   workflow_dispatch:
 
 jobs:
@@ -45,6 +46,7 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
+      actions: write # dispatch Managed tests on the PR branch, see below
 
     steps:
       - name: Checkout repository
@@ -124,6 +126,7 @@ jobs:
           fi
 
       - name: Create Pull Request
+        id: cpr
         if: steps.changes.outputs.has_changes == 'true'
         uses: peter-evans/create-pull-request@v8
         with:
@@ -143,6 +146,17 @@ jobs:
             *This is an automated PR. Please review the changes before merging.*
           branch: chore/automated/schema-update
           delete-branch: true
+
+      # A PR pushed with GITHUB_TOKEN gets its pull_request runs parked as
+      # "action required" until someone approves them, and they expire as
+      # failures if nobody does. A workflow_dispatch sent with GITHUB_TOKEN is
+      # not gated, and its run reports a check on the branch head commit, so
+      # the PR still shows the Managed tests result.
+      - name: Run Managed tests on the PR branch
+        if: steps.cpr.outputs.pull-request-head-sha != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh workflow run managed-tests.yml --repo "${{ github.repository }}" --ref chore/automated/schema-update
 
       - name: No changes detected
         if: steps.changes.outputs.has_changes == 'false'

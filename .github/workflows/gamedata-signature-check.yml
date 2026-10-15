@@ -17,6 +17,7 @@ name: Gamedata signature check (self-hosted)
 on:
   schedule:
     - cron: "30 9 * * *"
+      timezone: "Europe/Copenhagen"
   workflow_dispatch:
     inputs:
       build:
