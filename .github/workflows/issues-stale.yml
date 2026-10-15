@@ -3,6 +3,7 @@ name: Mark stale issues
 on:
   schedule:
   - cron: '28 3 * * *'
+    timezone: "Europe/Copenhagen"
 
 jobs:
   stale:
