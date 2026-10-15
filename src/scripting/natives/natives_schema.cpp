@@ -155,7 +155,10 @@ void SetSchemaValueByName(ScriptContext& script_context)
     if (globals::coreConfig->FollowCS2ServerGuidelines &&
         std::find(schema::CS2BadList.begin(), schema::CS2BadList.end(), memberName) != schema::CS2BadList.end())
     {
-        CSSHARP_CORE_ERROR("Cannot set '{}::{}' with \"FollowCS2ServerGuidelines\" option enabled.", className, memberName);
+        // Throw, like the managed path (Schema.GetSchemaOffset) does for the same fields. Only
+        // logging here let the plugin believe the write happened, and the core log line did not
+        // say which plugin made it.
+        script_context.ThrowNativeError("Cannot set '%s::%s' with \"FollowCS2ServerGuidelines\" option enabled.", className, memberName);
         return;
     }
 
