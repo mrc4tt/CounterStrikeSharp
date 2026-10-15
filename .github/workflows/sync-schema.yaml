@@ -46,7 +46,7 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
-      actions: write # dispatch Managed tests on the PR branch, see below
+      actions: write # fallback dispatch of Managed tests, see below
 
     steps:
       - name: Checkout repository
@@ -125,12 +125,26 @@ jobs:
             echo "has_changes=false" >> "$GITHUB_OUTPUT"
           fi
 
+      # A PR pushed with GITHUB_TOKEN gets its pull_request runs parked as
+      # "action required" until someone approves them, and they expire as
+      # failures if nobody does. Pushing as the schema-bot GitHub App instead
+      # makes them run like any other PR. Set the repo variable
+      # SCHEMA_BOT_CLIENT_ID and the secret SCHEMA_BOT_PRIVATE_KEY to enable it;
+      # without them this falls back to GITHUB_TOKEN plus the dispatch below.
+      - name: Generate schema-bot token
+        id: app-token
+        if: steps.changes.outputs.has_changes == 'true' && vars.SCHEMA_BOT_CLIENT_ID != ''
+        uses: actions/create-github-app-token@v3
+        with:
+          client-id: ${{ vars.SCHEMA_BOT_CLIENT_ID }}
+          private-key: ${{ secrets.SCHEMA_BOT_PRIVATE_KEY }}
+
       - name: Create Pull Request
         id: cpr
         if: steps.changes.outputs.has_changes == 'true'
         uses: peter-evans/create-pull-request@v8
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ steps.app-token.outputs.token || secrets.GITHUB_TOKEN }}
           author: ${{ github.actor }} <${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com>
           commit-message: "chore: update schema definitions to ${{ steps.version.outputs.patch_version }}"
           title: "chore: Update Schema Definitions to ${{ steps.version.outputs.patch_version }}"
@@ -147,13 +161,11 @@ jobs:
           branch: chore/automated/schema-update
           delete-branch: true
 
-      # A PR pushed with GITHUB_TOKEN gets its pull_request runs parked as
-      # "action required" until someone approves them, and they expire as
-      # failures if nobody does. A workflow_dispatch sent with GITHUB_TOKEN is
-      # not gated, and its run reports a check on the branch head commit, so
-      # the PR still shows the Managed tests result.
+      # Fallback when the PR was pushed with GITHUB_TOKEN: a workflow_dispatch
+      # sent with GITHUB_TOKEN is not gated, and its run reports a check on the
+      # branch head commit, so the PR still shows the Managed tests result.
       - name: Run Managed tests on the PR branch
-        if: steps.cpr.outputs.pull-request-head-sha != ''
+        if: steps.cpr.outputs.pull-request-head-sha != '' && steps.app-token.outputs.token == ''
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: gh workflow run managed-tests.yml --repo "${{ github.repository }}" --ref chore/automated/schema-update
