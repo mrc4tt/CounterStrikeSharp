@@ -65,12 +65,38 @@ public sealed class GameDataProvider : IStartupService
             // N "Successfully loaded …" lines (one per gamedata file) at boot.
             var fileBreakdown = new List<string>();
 
-            foreach (string filePath in Directory.EnumerateFiles(_gameDataDirectoryPath, "*.json"))
+            // Fixed order, because a duplicate key is resolved by "later file wins": core
+            // gamedata.json first, then the rest by name. EnumerateFiles order is whatever the
+            // filesystem returns, so which copy of a duplicated key won differed between hosts.
+            var files = Directory.EnumerateFiles(_gameDataDirectoryPath, "*.json")
+                .OrderBy(f => Path.GetFileName(f).Equals("gamedata.json", StringComparison.OrdinalIgnoreCase) ? 0 : 1)
+                .ThenBy(f => Path.GetFileName(f), StringComparer.OrdinalIgnoreCase);
+
+            foreach (string filePath in files)
             {
                 var fileName = Path.GetFileName(filePath);
+
+                // Per file: one malformed plugin gamedata file used to abort the whole loop and
+                // drop every file after it, core signatures included.
+                Dictionary<string, LoadedGameData>? loadedMethods;
+                try
+                {
+                    string jsonContent = File.ReadAllText(filePath, Encoding.UTF8);
+                    loadedMethods = JsonSerializer.Deserialize<Dictionary<string, LoadedGameData>>(jsonContent);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError("Skipping gamedata file {Path}, it could not be read: {Error}", filePath, ex.Message);
+                    continue;
+                }
+
+                if (loadedMethods == null)
+                {
+                    _logger.LogWarning("Unable to load game data entries from {Path}, game data file is empty", filePath);
+                    continue;
+                }
+
                 loadedFiles.Add(fileName);
-                string jsonContent = File.ReadAllText(filePath, Encoding.UTF8);
-                Dictionary<string, LoadedGameData> loadedMethods = JsonSerializer.Deserialize<Dictionary<string, LoadedGameData>>(jsonContent)!;
 
                 foreach (KeyValuePair<string, LoadedGameData> loadedMethod in loadedMethods)
                 {
@@ -82,15 +108,8 @@ public sealed class GameDataProvider : IStartupService
                     Methods[loadedMethod.Key] = loadedMethod.Value;
                 }
 
-                if (loadedMethods != null)
-                {
-                    _logger.LogDebug("Loaded {Count} game data entries from {Path}", loadedMethods.Count, filePath);
-                    fileBreakdown.Add($"{fileName} ({loadedMethods.Count})");
-                }
-                else
-                {
-                    _logger.LogWarning("Unable to load game data entries from {Path}, game data file is empty", filePath);
-                }
+                _logger.LogDebug("Loaded {Count} game data entries from {Path}", loadedMethods.Count, filePath);
+                fileBreakdown.Add($"{fileName} ({loadedMethods.Count})");
             }
 
             LoadedFiles = loadedFiles;

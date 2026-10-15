@@ -8,6 +8,8 @@
 #include "core/memory_module.h"
 #include "core/vtable_fallback.h"
 
+#include <algorithm>
+#include <chrono>
 #include <cstring>
 #include <ctime>
 #include <filesystem>
@@ -31,8 +33,20 @@ namespace {
 
 // A gamedata.json is ~100 KiB; anything near this is not a gamedata file.
 constexpr size_t kMaxBodyBytes = 16 * 1024 * 1024;
-constexpr long kConnectTimeoutSeconds = 5;
+constexpr long kConnectTimeoutSeconds = 3;
+// One budget for the whole update (manifest + gamedata), not per request: this runs
+// synchronously in Load(), and two requests with their own 15s limits could hold up server
+// boot for ~30s against a host that accepts connections but answers slowly.
 constexpr long kTotalTimeoutSeconds = 15;
+
+std::chrono::steady_clock::time_point g_updateDeadline;
+
+// Seconds left of the update budget, or 0 when it is spent.
+long RemainingBudgetSeconds()
+{
+    auto left = std::chrono::duration_cast<std::chrono::seconds>(g_updateDeadline - std::chrono::steady_clock::now()).count();
+    return left > 0 ? static_cast<long>(left) : 0;
+}
 
 struct FetchResult
 {
@@ -201,6 +215,13 @@ FetchResult Fetch(const ParsedUrl&, const std::string& fullUrl, const std::strin
 {
     FetchResult result;
 
+    const long budget = RemainingBudgetSeconds();
+    if (budget == 0)
+    {
+        result.error = "update time budget spent";
+        return result;
+    }
+
     const auto* api = curl::Load(result.error);
     if (!api) return result;
 
@@ -220,8 +241,8 @@ FetchResult Fetch(const ParsedUrl&, const std::string& fullUrl, const std::strin
     api->easy_setopt(easy, curl::OPT_URL, fullUrl.c_str());
     api->easy_setopt(easy, curl::OPT_FOLLOWLOCATION, 1L);
     api->easy_setopt(easy, curl::OPT_MAXREDIRS, 5L);
-    api->easy_setopt(easy, curl::OPT_CONNECTTIMEOUT, kConnectTimeoutSeconds);
-    api->easy_setopt(easy, curl::OPT_TIMEOUT, kTotalTimeoutSeconds);
+    api->easy_setopt(easy, curl::OPT_CONNECTTIMEOUT, std::min(kConnectTimeoutSeconds, budget));
+    api->easy_setopt(easy, curl::OPT_TIMEOUT, budget);
     api->easy_setopt(easy, curl::OPT_NOSIGNAL, 1L);
     api->easy_setopt(easy, curl::OPT_USERAGENT, "CounterStrikeSharp-gamedata-updater");
     api->easy_setopt(easy, curl::OPT_WRITEFUNCTION, &curl::OnBody);
@@ -254,6 +275,13 @@ FetchResult Fetch(const ParsedUrl& url, const std::string&, const std::string& k
 {
     FetchResult result;
 
+    const long budget = RemainingBudgetSeconds();
+    if (budget == 0)
+    {
+        result.error = "update time budget spent";
+        return result;
+    }
+
     if (url.scheme != "http")
     {
         result.error = "https is not supported by the Windows build; use an http:// AutoUpdateURL";
@@ -262,8 +290,8 @@ FetchResult Fetch(const ParsedUrl& url, const std::string&, const std::string& k
 
     httplib::Client client(url.origin);
     client.set_follow_location(true);
-    client.set_connection_timeout(kConnectTimeoutSeconds, 0);
-    client.set_read_timeout(kTotalTimeoutSeconds, 0);
+    client.set_connection_timeout(std::min(kConnectTimeoutSeconds, budget), 0);
+    client.set_read_timeout(budget, 0);
 
     httplib::Headers headers;
     if (!knownETag.empty()) headers.emplace("If-None-Match", knownETag);
@@ -565,6 +593,8 @@ bool TryUpdateGameConfig()
 {
     const auto& configuredUrl = globals::coreConfig->AutoUpdateURL;
     CSSHARP_CORE_INFO("AutoUpdate enabled, checking for gamedata updates from {}", configuredUrl);
+
+    g_updateDeadline = std::chrono::steady_clock::now() + std::chrono::seconds(kTotalTimeoutSeconds);
 
     auto url = ParseUrl(configuredUrl);
     if (!url)
