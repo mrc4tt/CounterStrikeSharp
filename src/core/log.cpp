@@ -5,12 +5,37 @@
 #include <filesystem>
 
 #include <spdlog/async.h>
+#include <spdlog/pattern_formatter.h>
 #include <spdlog/sinks/basic_file_sink.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <spdlog/cfg/env.h>
 
 namespace counterstrikesharp {
 std::shared_ptr<spdlog::logger> Log::m_core_logger;
+
+namespace {
+// %* in the patterns below: the three-letter level token the managed Serilog output uses
+// (VRB/DBG/INF/WRN/ERR/FTL), so native and managed lines share one format on the console.
+class Level3Flag : public spdlog::custom_flag_formatter
+{
+  public:
+    void format(const spdlog::details::log_msg& msg, const std::tm&, spdlog::memory_buf_t& dest) override
+    {
+        static constexpr const char* names[] = { "VRB", "DBG", "INF", "WRN", "ERR", "FTL", "OFF" };
+        const char* name = names[static_cast<int>(msg.level)];
+        dest.append(name, name + 3);
+    }
+
+    std::unique_ptr<custom_flag_formatter> clone() const override { return std::make_unique<Level3Flag>(); }
+};
+
+std::unique_ptr<spdlog::formatter> MakeFormatter(const std::string& pattern)
+{
+    auto formatter = std::make_unique<spdlog::pattern_formatter>();
+    formatter->add_flag<Level3Flag>('*').set_pattern(pattern);
+    return formatter;
+}
+} // namespace
 
 void Log::Init()
 {
@@ -25,7 +50,9 @@ void Log::Init()
 #else
     color_sink->set_color(spdlog::level::trace, color_sink->yellow);
 #endif
-    color_sink->set_pattern("%^[%T.%e] [%l] %n: %v%$");
+    // Mirrors the managed console template (CoreLogging.cs): time, colored level, cyan source
+    // tag padded to CoreLogging.SourceTagWidth (26), message.
+    color_sink->set_formatter(MakeFormatter("%H:%M:%S.%e [%^%*%$] \x1b[36m(cssharp:native)          \x1b[0m %v"));
 
     // Async logging so disk/console IO never runs on the caller (game) thread.
     // A synchronous logger with flush_on(info) wrote+fsync'd on whatever thread
@@ -63,7 +90,7 @@ void Log::AttachFileSink(const std::string& logDirectory)
         const std::string path = logDirectory + "/counterstrikesharp.log";
 
         auto file_sink = std::make_shared<spdlog::sinks::basic_file_sink_mt>(path, true);
-        file_sink->set_pattern("[%T.%e] [%l] %n: %v");
+        file_sink->set_formatter(MakeFormatter("%Y-%m-%d %H:%M:%S.%e %z [%*] (cssharp:native) %v"));
         m_core_logger->sinks().push_back(file_sink);
 
         CSSHARP_CORE_DEBUG("Logging to file: {}", path);

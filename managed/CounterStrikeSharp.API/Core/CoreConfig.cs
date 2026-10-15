@@ -310,7 +310,7 @@ namespace CounterStrikeSharp.API.Core
             // via css_core_reload — lowering to "debug" surfaces the demoted boot lines.
             CoreLogging.SetVerbosity(LogVerbosity);
 
-            _logger.LogInformation("Successfully loaded core configuration");
+            _logger.LogDebug("Successfully loaded core configuration");
         }
     }
 }

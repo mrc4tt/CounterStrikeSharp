@@ -757,7 +757,9 @@ void WriteGamedataStatus()
         return;
     }
 
-    if (missing.empty()) CSSHARP_CORE_INFO("Gamedata status: all {} signatures resolve", checked);
+    // "signatures", not "entries": offset-only entries are not scanned here, so this count is
+    // the signature half of the managed "Gamedata: N entries ...: S signatures, O offsets" line.
+    if (missing.empty()) CSSHARP_CORE_INFO("Gamedata: all {} signatures resolve ({} file(s))", checked, files.size());
     else
         CSSHARP_CORE_WARN("Gamedata status: {} of {} signatures don't resolve (logs/gamedata-status.json)", missing.size(), checked);
 

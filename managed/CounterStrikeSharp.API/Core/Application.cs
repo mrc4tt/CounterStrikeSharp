@@ -92,7 +92,10 @@ namespace CounterStrikeSharp.API.Core
                 }
             };
 
-            Logger.LogInformation("CounterStrikeSharp is starting up...");
+            // One line that says what is booting: API version, OS and runtime.
+            Logger.LogInformation("CounterStrikeSharp v{Version} starting ({Os}, {Runtime})", Api.GetVersion(),
+                System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows) ? "Windows" : "Linux",
+                System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription);
 
             // Before any plugin loads, so their callbacks are attributed from the first one.
             CrashRecorder.Initialize();

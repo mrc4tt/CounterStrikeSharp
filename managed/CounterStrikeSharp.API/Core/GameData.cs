@@ -95,11 +95,7 @@ public sealed class GameDataProvider : IStartupService
 
             LoadedFiles = loadedFiles;
 
-            if (fileBreakdown.Count > 0)
-                _logger.LogInformation("Loaded {Total} game data entries from {Files} file(s): {Breakdown}",
-                    Methods.Count, fileBreakdown.Count, string.Join(", ", fileBreakdown));
-
-            ValidateCurrentPlatformEntries();
+            ValidateCurrentPlatformEntries(fileBreakdown);
         }
         catch (Exception ex)
         {
@@ -112,7 +108,11 @@ public sealed class GameDataProvider : IStartupService
     // at type-init time and takes down every plugin that touches that class, so surfacing
     // it here — early, by name — turns a cryptic TypeInitializationException cascade into
     // an actionable startup warning.
-    private void ValidateCurrentPlatformEntries()
+    //
+    // On success this is also the one boot line for gamedata: entry count, per-file breakdown,
+    // and the signature/offset split. The signature count matches the native
+    // "Gamedata: all N signatures resolve" line, which scans exactly those entries.
+    private void ValidateCurrentPlatformEntries(List<string> fileBreakdown)
     {
         if (Methods == null || Methods.Count == 0)
         {
@@ -124,6 +124,7 @@ public sealed class GameDataProvider : IStartupService
 
         bool linux = RuntimeInformation.IsOSPlatform(OSPlatform.Linux);
         var broken = new List<string>();
+        int signatures = 0;
 
         foreach (var kv in Methods)
         {
@@ -136,21 +137,26 @@ public sealed class GameDataProvider : IStartupService
             bool hasSig = sig != null && !string.IsNullOrWhiteSpace(linux ? sig.Linux : sig.Windows);
             bool hasOff = off != null && (linux ? off.Linux : off.Windows).HasValue;
 
+            if (hasSig) signatures++;
             if (!hasSig && !hasOff)
                 broken.Add(kv.Key);
         }
 
+        var platform = linux ? "Linux" : "Windows";
+        var summary = string.Format("{0} entries from {1} file(s) [{2}]: {3} signatures, {4} offsets",
+            Methods.Count, fileBreakdown.Count, string.Join(", ", fileBreakdown), signatures, Methods.Count - signatures);
+
         if (broken.Count > 0)
         {
+            _logger.LogInformation("Gamedata: {Summary}", summary);
             _logger.LogWarning(
                 "{Count} game data entr{Suffix} have no {Platform} signature/offset and will throw if used: {Keys}",
-                broken.Count, broken.Count == 1 ? "y" : "ies", linux ? "Linux" : "Windows",
+                broken.Count, broken.Count == 1 ? "y" : "ies", platform,
                 string.Join(", ", broken));
         }
         else
         {
-            _logger.LogInformation("Game data validated: all {Count} entries have a {Platform} signature/offset.",
-                Methods.Count, linux ? "Linux" : "Windows");
+            _logger.LogInformation("Gamedata: {Summary}, all present for {Platform}", summary, platform);
         }
     }
 }
