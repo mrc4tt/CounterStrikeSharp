@@ -215,7 +215,9 @@ namespace CounterStrikeSharp.API.Core
 
                         // Fork-only: surface accumulated runtime errors so a misbehaving
                         // plugin is obvious from `css_plugins list`.
-                        var asmName = plugin.Plugin?.GetType().Assembly.GetName().Name;
+                        var asmName = plugin.Plugin != null
+                            ? Diagnostics.PluginDiagnostics.SafeAssemblyName(plugin.Plugin.GetType().Assembly)
+                            : null;
                         var errCount = asmName != null
                             ? CounterStrikeSharp.API.Core.Diagnostics.PluginDiagnostics.GetErrorCount(asmName)
                             : 0;
@@ -233,9 +235,6 @@ namespace CounterStrikeSharp.API.Core
                             sb.Append("\n");
                             sb.AppendFormat("    Termination Reason: {0}", plugin.TerminationReason);
                         }
-
-                        sb.Append("\n");
-                        sb.AppendFormat("    Path: {0}", Path.GetRelativePath(_scriptHostConfiguration.RootPath, plugin.FilePath));
 
                         info.ReplyToCommand(sb.ToString());
                     }
@@ -258,9 +257,20 @@ namespace CounterStrikeSharp.API.Core
                         break;
                     }
 
-                    var asmName = plugin.Plugin?.GetType().Assembly.GetName();
-                    var errCount = asmName?.Name != null
-                        ? CounterStrikeSharp.API.Core.Diagnostics.PluginDiagnostics.GetErrorCount(asmName.Name)
+                    var pluginAssembly = plugin.Plugin?.GetType().Assembly;
+                    var asmDisplayName = pluginAssembly != null ? Diagnostics.PluginDiagnostics.SafeAssemblyName(pluginAssembly) : null;
+                    Version? asmVersion = null;
+                    try
+                    {
+                        asmVersion = pluginAssembly?.GetName().Version;
+                    }
+                    catch
+                    {
+                        // unreadable metadata (DLL overwritten while loaded); show the name only
+                    }
+
+                    var errCount = asmDisplayName != null
+                        ? CounterStrikeSharp.API.Core.Diagnostics.PluginDiagnostics.GetErrorCount(asmDisplayName)
                         : 0;
                     var termination = plugin is PluginContext ctx ? ctx.TerminationReason : null;
 
@@ -272,7 +282,7 @@ namespace CounterStrikeSharp.API.Core
                         sb.AppendLine($"    Author:         {plugin.Plugin.ModuleAuthor}");
                     if (!string.IsNullOrEmpty(plugin.Plugin?.ModuleDescription))
                         sb.AppendLine($"    Description:    {plugin.Plugin.ModuleDescription}");
-                    sb.AppendLine($"    Assembly:       {asmName?.Name ?? "?"} {asmName?.Version}");
+                    sb.AppendLine($"    Assembly:       {asmDisplayName ?? "?"} {asmVersion}");
                     sb.AppendLine($"    Path:           {plugin.FilePath}");
                     if (File.Exists(plugin.FilePath))
                         sb.AppendLine($"    File modified:  {File.GetLastWriteTime(plugin.FilePath):yyyy-MM-dd HH:mm:ss}");
@@ -409,6 +419,11 @@ namespace CounterStrikeSharp.API.Core
         {
             try
             {
+                // A fresh loader reads the DLL from disk again; reusing the old one returned the
+                // assembly it had already loaded, so a replaced plugin kept running its old code.
+                if (plugin is PluginContext ctx && plugin.State != PluginState.Loaded)
+                    ctx.RefreshLoader();
+
                 plugin.Load(hotReload);
                 if (plugin.State == PluginState.Loaded)
                     plugin.Plugin?.OnAllPluginsLoaded(hotReload);
@@ -451,7 +466,7 @@ namespace CounterStrikeSharp.API.Core
 
                 var plugin = _pluginManager.GetLoadedPlugins().FirstOrDefault(p =>
                     p.Plugin != null && System.Runtime.Loader.AssemblyLoadContext.GetLoadContext(p.Plugin.GetType().Assembly) == alc);
-                return plugin?.Plugin?.GetType().Assembly.GetName().Name ?? asm.GetName().Name ?? "unknown";
+                return Diagnostics.PluginDiagnostics.SafeAssemblyName(plugin?.Plugin?.GetType().Assembly ?? asm);
             }
 
             return "unknown (no plugin frame on the stack)";

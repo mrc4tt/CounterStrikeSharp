@@ -311,8 +311,8 @@ public static class GameData
             {
                 var asm = f.GetMethod()?.DeclaringType?.Assembly;
                 if (asm == null || asm == self) continue;
-                var name = asm.GetName().Name;
-                if (string.IsNullOrEmpty(name)) continue;
+                var name = Diagnostics.PluginDiagnostics.SafeAssemblyName(asm);
+                if (string.IsNullOrEmpty(name) || name == "unknown") continue;
                 if (name.StartsWith("System.") || name.StartsWith("Microsoft.")
                     || name == "System.Private.CoreLib" || name == "mscorlib")
                     continue;

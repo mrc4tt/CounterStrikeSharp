@@ -283,3 +283,42 @@ public class LoadFailureReportTests
         Assert.All(report, c => Assert.True(c < 128, $"non-ASCII char U+{(int)c:X4} in banner"));
     }
 }
+
+public class SafeAssemblyNameTests
+{
+    // Mimics a plugin whose DLL was overwritten while loaded: reading its metadata throws.
+    private sealed class UnreadableAssembly : Assembly
+    {
+        private readonly string _location;
+        private readonly bool _fullNameThrows;
+
+        public UnreadableAssembly(string location, bool fullNameThrows)
+        {
+            _location = location;
+            _fullNameThrows = fullNameThrows;
+        }
+
+        public override AssemblyName GetName() =>
+            throw new System.Globalization.CultureNotFoundException("name", "0 is an invalid culture identifier.");
+
+        public override string FullName =>
+            _fullNameThrows ? throw new BadImageFormatException("Index not found. (0x80131124)") : "Broken.Plugin, Version=1.0.0.0";
+
+        public override string Location => _location;
+    }
+
+    [Fact]
+    public void ReadableAssemblyUsesItsName()
+    {
+        Assert.Equal("CounterStrikeSharp.API", PluginDiagnostics.SafeAssemblyName(typeof(PluginDiagnostics).Assembly));
+    }
+
+    [Fact]
+    public void FallsBackToFullNameThenLocationThenUnknown()
+    {
+        Assert.Equal("Broken.Plugin", PluginDiagnostics.SafeAssemblyName(new UnreadableAssembly("/x/Other.dll", false)));
+        Assert.Equal("MatchZy", PluginDiagnostics.SafeAssemblyName(new UnreadableAssembly("/plugins/MatchZy/MatchZy.dll", true)));
+        Assert.Equal("unknown", PluginDiagnostics.SafeAssemblyName(new UnreadableAssembly("", true)));
+        Assert.Equal("unknown", PluginDiagnostics.SafeAssemblyName(null));
+    }
+}

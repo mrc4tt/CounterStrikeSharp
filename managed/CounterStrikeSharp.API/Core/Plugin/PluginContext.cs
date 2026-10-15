@@ -58,6 +58,10 @@ namespace CounterStrikeSharp.API.Core.Plugin
 
         private PluginLoader Loader { get; set; }
 
+        // Whether this context's loader watches for changes (PluginHotReloadEnabled, minus a
+        // fallback when the inotify limit was hit). RefreshLoader builds the same kind again.
+        private bool _hotReload;
+
         private ServiceProvider? ServiceProvider { get; set; }
 
         public int PluginId { get; }
@@ -107,6 +111,8 @@ namespace CounterStrikeSharp.API.Core.Plugin
                 Loader = CreateLoader(path, hotReload: false);
             }
 
+            _hotReload = hotReload;
+
             if (hotReload)
             {
                 var watcher = new FileSystemWatcher
@@ -147,6 +153,40 @@ namespace CounterStrikeSharp.API.Core.Plugin
 
                 Loader.Reloaded += async (s, e) => await OnReloadedAsync(s, e);
             }
+        }
+
+        /// <summary>
+        /// Replaces the loader with a new one, i.e. a new AssemblyLoadContext that reads the
+        /// plugin's files from disk again. For css_plugins load/reload of an unloaded context:
+        /// the old loader's context still holds the previously loaded assembly, so loading
+        /// through it again ran the old code even after the DLL on disk was replaced. With a
+        /// DLL that had been overwritten while mapped it also kept the corrupt image.
+        /// </summary>
+        internal void RefreshLoader()
+        {
+            if (State == PluginState.Loaded || State == PluginState.Loading)
+                throw new InvalidOperationException("Unload the plugin before refreshing its loader.");
+
+            var old = Loader;
+            PluginLoader fresh;
+            try
+            {
+                fresh = CreateLoader(_path, _hotReload);
+            }
+            catch (IOException ex) when (_hotReload && InotifyDiagnostics.IsInotifyLimitError(ex))
+            {
+                _logger.LogWarning("Hot reload disabled for {Path}: could not create a file watcher ({Message})",
+                    _path, ex.Message);
+                _hotReload = false;
+                fresh = CreateLoader(_path, hotReload: false);
+            }
+
+            if (_hotReload)
+                fresh.Reloaded += async (s, e) => await OnReloadedAsync(s, e);
+
+            Loader = fresh;
+            // Unloads the old AssemblyLoadContext (collectible) and stops its file watcher.
+            old.Dispose();
         }
 
         private static PluginLoader CreateLoader(string path, bool hotReload)
@@ -195,7 +235,7 @@ namespace CounterStrikeSharp.API.Core.Plugin
             using (Loader.EnterContextualReflection())
             {
                 var defaultAssembly = Loader.LoadDefaultAssembly();
-                Diagnostics.PluginDiagnostics.Reset(defaultAssembly.GetName().Name ?? "");
+                Diagnostics.PluginDiagnostics.Reset(Diagnostics.PluginDiagnostics.SafeAssemblyName(defaultAssembly));
 
                 Type? pluginType = defaultAssembly.GetExportedTypes()
                     .FirstOrDefault(t => typeof(IPlugin).IsAssignableFrom(t));
@@ -261,7 +301,7 @@ namespace CounterStrikeSharp.API.Core.Plugin
                             Path.Join(new[]
                             {
                                 _hostConfiguration.RootPath, "logs",
-                                $"log-{pluginType.Assembly.GetName().Name}-.txt"
+                                $"log-{Diagnostics.PluginDiagnostics.SafeAssemblyName(pluginType.Assembly)}-.txt"
                             }), rollingInterval: RollingInterval.Day,
                             retainedFileCountLimit: CoreLogging.RetainedLogDays,
                             outputTemplate: CoreLogging.FileOutputTemplate));
@@ -372,9 +412,9 @@ namespace CounterStrikeSharp.API.Core.Plugin
                 // If OnLoad (or a hook/timer it schedules) triggers a garbage-collected-
                 // delegate FailFast, the SIGABRT handler names this plugin as the last
                 // console line instead of an anonymous "Process terminated".
-                NativeAPI.SetFatalSuspectPlugin(Plugin.ModuleName ?? Plugin.GetType().Assembly.GetName().Name ?? "unknown");
+                NativeAPI.SetFatalSuspectPlugin(Plugin.ModuleName ?? Diagnostics.PluginDiagnostics.SafeAssemblyName(Plugin.GetType().Assembly));
                 // Attributes callbacks the plugin registers while loading (wrapped by BasePlugin) to it.
-                var previousCrashOwner = CrashRecorder.EnterPlugin(Plugin.GetType().Assembly.GetName().Name ?? "unknown", "load");
+                var previousCrashOwner = CrashRecorder.EnterPlugin(Diagnostics.PluginDiagnostics.SafeAssemblyName(Plugin.GetType().Assembly), "load");
                 try
                 {
                     Plugin.Load(hotReload);
@@ -396,7 +436,7 @@ namespace CounterStrikeSharp.API.Core.Plugin
                         // path re-pastes THIS exact banner (capped) so an operator who missed
                         // it the first time still gets the full, actionable report.
                         FunctionReference.RecordLoadFailure(
-                            Plugin.GetType().Assembly.GetName().Name!,
+                            Diagnostics.PluginDiagnostics.SafeAssemblyName(Plugin.GetType().Assembly),
                             Plugin.ModuleName!,
                             report);
                     }
@@ -439,7 +479,7 @@ namespace CounterStrikeSharp.API.Core.Plugin
 
             // Pre-load line is Debug — the "Finished loading … in Nms" line below plus
             // the startup summary table already cover the roster. Keeps boot output lean.
-            _logger.LogDebug("Loading plugin {Name}", pluginType.Assembly.GetName().Name);
+            _logger.LogDebug("Loading plugin {Name}", Diagnostics.PluginDiagnostics.SafeAssemblyName(pluginType.Assembly));
 
             _serviceScope = ServiceProvider!.CreateScope();
 
@@ -509,7 +549,9 @@ namespace CounterStrikeSharp.API.Core.Plugin
         {
             var root = ex.GetBaseException();
             var name = plugin?.ModuleName ?? System.IO.Path.GetFileNameWithoutExtension(path);
-            var pluginAsmName = plugin?.GetType().Assembly.GetName().Name ?? System.IO.Path.GetFileNameWithoutExtension(path);
+            var pluginAsmName = plugin != null
+                ? Diagnostics.PluginDiagnostics.SafeAssemblyName(plugin.GetType().Assembly)
+                : System.IO.Path.GetFileNameWithoutExtension(path);
 
             // Closest-to-throw frame in the plugin's own assembly, and whether the throw started in core.
             System.Diagnostics.StackFrame? pluginFrame = null;
@@ -520,7 +562,7 @@ namespace CounterStrikeSharp.API.Core.Plugin
                 var asm = frames[i].GetMethod()?.DeclaringType?.Assembly;
                 if (asm == null) continue;
                 if (i == 0) throwInsideCssharp = asm == typeof(PluginContext).Assembly;
-                if (pluginFrame == null && asm.GetName().Name == pluginAsmName) pluginFrame = frames[i];
+                if (pluginFrame == null && Diagnostics.PluginDiagnostics.SafeAssemblyName(asm) == pluginAsmName) pluginFrame = frames[i];
             }
 
             var missing = DependencyDiagnostics.MissingAssembly(root);
@@ -745,7 +787,9 @@ namespace CounterStrikeSharp.API.Core.Plugin
 
             _logger.LogInformation("Unloading plugin {Name}", Plugin.ModuleName);
 
-            var previousCrashOwner = CrashRecorder.EnterPlugin(Plugin.GetType().Assembly.GetName().Name ?? "unknown", "unload");
+            // Safe name: a plugin whose DLL was overwritten while mapped has unreadable metadata,
+            // and GetName() throwing here aborted the unload before anything was torn down.
+            var previousCrashOwner = CrashRecorder.EnterPlugin(Diagnostics.PluginDiagnostics.SafeAssemblyName(Plugin.GetType().Assembly), "unload");
             try
             {
                 Plugin.Unload(hotReload);

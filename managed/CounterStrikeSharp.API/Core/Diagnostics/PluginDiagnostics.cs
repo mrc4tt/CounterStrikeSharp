@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Concurrent;
+using System.IO;
+using System.Reflection;
 
 namespace CounterStrikeSharp.API.Core.Diagnostics;
 
@@ -53,6 +55,56 @@ public static class PluginDiagnostics
             if (key.StartsWith(prefix, StringComparison.Ordinal))
                 _reportCounts.TryRemove(key, out _);
         }
+    }
+
+    /// <summary>
+    /// Simple name of an assembly for error and diagnostic paths. Never throws.
+    /// <para>
+    /// GetName() parses the assembly's metadata and throws when that is unreadable, e.g. a plugin
+    /// DLL overwritten on disk while loaded (CLDB_E_INDEX_NOTFOUND 0x80131124, surfacing as
+    /// "0 is an invalid culture identifier"). Called from the catch block of
+    /// FunctionReference.Dispatch, that second exception escaped the catch and terminated the
+    /// server. Falls back to FullName, then the file name from Location, then "unknown".
+    /// </para>
+    /// </summary>
+    internal static string SafeAssemblyName(Assembly? asm)
+    {
+        if (asm == null) return "unknown";
+
+        try
+        {
+            return asm.GetName().Name ?? "unknown";
+        }
+        catch
+        {
+            // fall through
+        }
+
+        try
+        {
+            var fullName = asm.FullName;
+            if (!string.IsNullOrEmpty(fullName))
+            {
+                var comma = fullName.IndexOf(',');
+                return comma > 0 ? fullName[..comma] : fullName;
+            }
+        }
+        catch
+        {
+            // fall through
+        }
+
+        try
+        {
+            var location = asm.Location;
+            if (!string.IsNullOrEmpty(location)) return Path.GetFileNameWithoutExtension(location);
+        }
+        catch
+        {
+            // fall through
+        }
+
+        return "unknown";
     }
 
     /// <summary>Total runtime errors recorded for a plugin assembly (0 if none).</summary>

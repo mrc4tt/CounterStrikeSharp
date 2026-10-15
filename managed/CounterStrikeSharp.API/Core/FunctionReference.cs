@@ -195,7 +195,7 @@ namespace CounterStrikeSharp.API.Core
             _targetMethod = method;
             _invoker = GetCompiledInvoker(method);
             _invokerTarget = method.Target;
-            _ownerName = method.Method.DeclaringType?.Assembly.GetName().Name ?? "unknown";
+            _ownerName = Diagnostics.PluginDiagnostics.SafeAssemblyName(method.Method.DeclaringType?.Assembly);
             _parameters = method.Method.GetParameters();
             _isManualScriptContext =
                 _parameters.Length > 0 && _parameters[0].ParameterType == typeof(ScriptContext);
@@ -224,7 +224,7 @@ namespace CounterStrikeSharp.API.Core
         {
             var declaring = method.Method.DeclaringType?.Assembly;
             return declaring != null && declaring != typeof(FunctionReference).Assembly
-                ? declaring.GetName().Name ?? "unknown"
+                ? Diagnostics.PluginDiagnostics.SafeAssemblyName(declaring)
                 : CrashRecorder.CurrentOwner ?? "core";
         }
 
@@ -406,23 +406,26 @@ namespace CounterStrikeSharp.API.Core
                         return;
                     }
 
-                    var owner = ResolveOwnerAssembly(e, _targetMethod)?.GetName().Name ?? "unknown";
-                    var root = e.GetBaseException();
-                    CrashRecorder.Exception(_crashOwner != "core" ? _crashOwner : owner, _crashKind,
-                        _crashDetail + ": " + root.GetType().Name + ": " + root.Message);
-                    var throttleKey = owner + "|" + _targetMethod.Method.Name + "|" + e.GetBaseException().GetType().Name;
-                    var decision = Diagnostics.PluginDiagnostics.RecordError(owner, throttleKey);
-
-                    if (decision.LogFull)
+                    // Reporting must never throw. This runs on a native callback with nothing
+                    // above it to catch, so a second exception from here (metadata of a plugin
+                    // whose DLL was overwritten while loaded, a logger failure, ...) used to
+                    // terminate the server instead of losing one report.
+                    try
                     {
-                        Application.Instance.Logger.LogError(e, "Error invoking callback");
-                        Application.Instance.Logger.LogError("\n{Report}", BuildCallbackErrorReport(e, _targetMethod));
+                        ReportCallbackException(e);
                     }
-                    else if (decision.LogSuppressionNotice)
+                    catch (Exception reportFailure)
                     {
-                        Application.Instance.Logger.LogError(
-                            "Plugin '{Owner}' handler '{Handler}' still throwing {Error} ({Count}x total). Report suppressed; see earlier blame report.",
-                            owner, _targetMethod.Method.Name, e.GetBaseException().GetType().Name, decision.TimesSeen);
+                        try
+                        {
+                            Application.Instance.Logger.LogError(
+                                "Callback {Handler} threw {Error}; reporting it failed too ({ReportError}: {ReportMessage})",
+                                SafeMethodName(_targetMethod), e.GetType().Name, reportFailure.GetType().Name, reportFailure.Message);
+                        }
+                        catch
+                        {
+                            // nothing left to report with
+                        }
                     }
                 }
                 finally
@@ -437,6 +440,40 @@ namespace CounterStrikeSharp.API.Core
 
                     _taskCompletionSource.TrySetResult();
                 }
+            }
+        }
+
+        private void ReportCallbackException(Exception e)
+        {
+            var owner = Diagnostics.PluginDiagnostics.SafeAssemblyName(ResolveOwnerAssembly(e, _targetMethod));
+            var root = e.GetBaseException();
+            CrashRecorder.Exception(_crashOwner != "core" ? _crashOwner : owner, _crashKind,
+                _crashDetail + ": " + root.GetType().Name + ": " + root.Message);
+            var throttleKey = owner + "|" + _targetMethod.Method.Name + "|" + e.GetBaseException().GetType().Name;
+            var decision = Diagnostics.PluginDiagnostics.RecordError(owner, throttleKey);
+
+            if (decision.LogFull)
+            {
+                Application.Instance.Logger.LogError(e, "Error invoking callback");
+                Application.Instance.Logger.LogError("\n{Report}", BuildCallbackErrorReport(e, _targetMethod));
+            }
+            else if (decision.LogSuppressionNotice)
+            {
+                Application.Instance.Logger.LogError(
+                    "Plugin '{Owner}' handler '{Handler}' still throwing {Error} ({Count}x total). Report suppressed; see earlier blame report.",
+                    owner, _targetMethod.Method.Name, e.GetBaseException().GetType().Name, decision.TimesSeen);
+            }
+        }
+
+        private static string SafeMethodName(Delegate target)
+        {
+            try
+            {
+                return target.Method.DeclaringType?.Name + "." + target.Method.Name;
+            }
+            catch
+            {
+                return "?";
             }
         }
 
@@ -471,7 +508,7 @@ namespace CounterStrikeSharp.API.Core
             var root = ex.GetBaseException();
             var handler = target.Method;
             var pluginAsm = ResolveOwnerAssembly(ex, target);
-            var owner = pluginAsm?.GetName().Name ?? "unknown";
+            var owner = Diagnostics.PluginDiagnostics.SafeAssemblyName(pluginAsm);
 
             // Deepest frame inside the owning plugin assembly -> file:line of the bug.
             string? loc = null;
