@@ -128,6 +128,10 @@ public class PluginManager : IPluginManager
 
         foreach (var plugin in _loadedPluginContexts)
         {
+            // A plugin whose Load() threw is unloaded and disposed but stays listed (so
+            // css_plugins shows why it failed); it must not get OnAllPluginsLoaded.
+            if (plugin.State != PluginState.Loaded) continue;
+
             try
             {
                 plugin.Plugin?.OnAllPluginsLoaded(false);

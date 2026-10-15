@@ -276,11 +276,7 @@ namespace CounterStrikeSharp.API.Core
                     }
                     else
                     {
-                        plugin.Load(false);
-                        if (plugin.State == PluginState.Loaded)
-                            plugin.Plugin?.OnAllPluginsLoaded(false);
-                        else
-                            info.ReplyToCommand($"Plugin \"{path}\" did not load (see log).");
+                        LoadExistingContext(plugin, hotReload: false, path, info);
                     }
 
                     break;
@@ -334,11 +330,7 @@ namespace CounterStrikeSharp.API.Core
                     }
 
                     plugin.Unload(true);
-                    plugin.Load(true);
-                    if (plugin.State == PluginState.Loaded)
-                        plugin.Plugin?.OnAllPluginsLoaded(true);
-                    else
-                        info.ReplyToCommand($"Plugin \"{pluginIdentifier}\" failed to reload (see log).");
+                    LoadExistingContext(plugin, hotReload: true, pluginIdentifier, info);
                     break;
                 }
 
@@ -349,6 +341,29 @@ namespace CounterStrikeSharp.API.Core
                                         "  stop / unload - Unloads a plugin currently loaded.\n" +
                                         "  restart / reload - Reloads a plugin currently loaded.");
                     break;
+            }
+        }
+
+        // Load (or reload) a context that already exists, from a console command. Load() throws
+        // for pre-instance failures (bad DLL, version mismatch, plugin DI); unguarded that escaped
+        // the command handler with no blame report and no reply to the caller.
+        private void LoadExistingContext(IPluginContext plugin, bool hotReload, string label, CommandInfo info)
+        {
+            try
+            {
+                plugin.Load(hotReload);
+                if (plugin.State == PluginState.Loaded)
+                    plugin.Plugin?.OnAllPluginsLoaded(hotReload);
+                else
+                    info.ReplyToCommand($"Plugin \"{label}\" did not load (see log).");
+            }
+            catch (Exception e)
+            {
+                info.ReplyToCommand($"Could not load plugin \"{label}\" (see log).");
+                Logger.LogError(e, "Could not load plugin \"{Label}\"", label);
+                Logger.LogError("\n{Report}", plugin.State == PluginState.Loaded && plugin.Plugin != null
+                    ? PluginContext.BuildLoadFailureReport(e, plugin.Plugin)
+                    : PluginContext.BuildLoadFailureReportFromPath(e, plugin.FilePath));
             }
         }
 

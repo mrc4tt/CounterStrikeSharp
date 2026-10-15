@@ -309,37 +309,50 @@ namespace CounterStrikeSharp.API.Core.Plugin
                 serviceCollection.TryAddTransient(typeof(IStringLocalizer), typeof(StringLocalizer));
                 ServiceProvider = serviceCollection.BuildServiceProvider();
 
-                var minimumApiVersion = pluginType.GetCustomAttribute<MinimumApiVersion>()?.Version;
-                var currentVersion = Api.GetVersion();
-
-                // Ignore version 0 for local development
-                if (currentVersion > 0 && minimumApiVersion != null && minimumApiVersion > currentVersion)
-                    throw new Exception(
-                        $"Plugin \"{Path.GetFileName(_path)}\" requires a newer version of CounterStrikeSharp. The plugin expects version [{minimumApiVersion}] but the current version is [{currentVersion}].");
-
-                // Pre-load line is Debug — the "Finished loading … in Nms" line below plus
-                // the startup summary table already cover the roster. Keeps boot output lean.
-                _logger.LogDebug("Loading plugin {Name}", pluginType.Assembly.GetName().Name);
-
-                _serviceScope = ServiceProvider!.CreateScope();
-
-                var plugin = _serviceScope.ServiceProvider.GetRequiredService(pluginType) as IPlugin;
-
-                if (plugin == null) throw new Exception("Unable to create plugin instance");
+                // Until the instance exists, a throw is a pre-instance failure that the caller
+                // reports; release what this attempt built so it is not leaked per retry.
+                IPlugin plugin;
+                try
+                {
+                    plugin = CreatePluginInstance(pluginType);
+                }
+                catch
+                {
+                    _serviceScope?.Dispose();
+                    ServiceProvider?.Dispose();
+                    ServiceProvider = null;
+                    throw;
+                }
 
                 Plugin = plugin;
 
                 State = PluginState.Loading;
 
-                Plugin.ModulePath = _path;
-                Plugin.Logger = _serviceScope.ServiceProvider.GetRequiredService<ILoggerFactory>()
-                    .CreateLogger(pluginType);
-                Plugin.CommandManager = _serviceScope.ServiceProvider.GetRequiredService<ICommandManager>();
-                Plugin.RegisterAllAttributes(Plugin);
-                Plugin.Localizer = ServiceProvider.GetRequiredService<IStringLocalizer>();
-                Plugin.Logger = ServiceProvider.GetRequiredService<ILoggerFactory>().CreateLogger(pluginType);
+                // Wiring and config run plugin code (attribute registration, OnConfigParsed)
+                // and can throw on a bad plugin config. Outside a try that left the context
+                // in State=Loading with its commands registered and the ServiceProvider live,
+                // and on reload/hot-reload paths nothing cleaned it up. Treat it like a
+                // Load() failure: report, unload, stay listed with the reason.
+                try
+                {
+                    Plugin.ModulePath = _path;
+                    Plugin.Logger = _serviceScope.ServiceProvider.GetRequiredService<ILoggerFactory>()
+                        .CreateLogger(pluginType);
+                    Plugin.CommandManager = _serviceScope.ServiceProvider.GetRequiredService<ICommandManager>();
+                    Plugin.RegisterAllAttributes(Plugin);
+                    Plugin.Localizer = ServiceProvider.GetRequiredService<IStringLocalizer>();
+                    Plugin.Logger = ServiceProvider.GetRequiredService<ILoggerFactory>().CreateLogger(pluginType);
 
-                Plugin.InitializeConfig(Plugin, pluginType);
+                    Plugin.InitializeConfig(Plugin, pluginType);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Failed to initialize plugin {Name}", Plugin.ModuleName);
+                    _logger.LogError("\n{Report}", BuildLoadFailureReport(ex, Plugin));
+                    this.TerminationReason = ex.Message ?? "Unknown";
+                    Unload(hotReload);
+                    return;
+                }
 
                 if (Plugin is BasePlugin basePlugin)
                 {
@@ -407,6 +420,30 @@ namespace CounterStrikeSharp.API.Core.Plugin
             }
         }
 
+
+        // Version gate + DI resolution of the plugin type; throws for pre-instance failures.
+        private IPlugin CreatePluginInstance(Type pluginType)
+        {
+            var minimumApiVersion = pluginType.GetCustomAttribute<MinimumApiVersion>()?.Version;
+            var currentVersion = Api.GetVersion();
+
+            // Ignore version 0 for local development
+            if (currentVersion > 0 && minimumApiVersion != null && minimumApiVersion > currentVersion)
+                throw new Exception(
+                    $"Plugin \"{Path.GetFileName(_path)}\" requires a newer version of CounterStrikeSharp. The plugin expects version [{minimumApiVersion}] but the current version is [{currentVersion}].");
+
+            // Pre-load line is Debug — the "Finished loading … in Nms" line below plus
+            // the startup summary table already cover the roster. Keeps boot output lean.
+            _logger.LogDebug("Loading plugin {Name}", pluginType.Assembly.GetName().Name);
+
+            _serviceScope = ServiceProvider!.CreateScope();
+
+            var plugin = _serviceScope.ServiceProvider.GetRequiredService(pluginType) as IPlugin;
+
+            if (plugin == null) throw new Exception("Unable to create plugin instance");
+
+            return plugin;
+        }
 
         // Domain-wide reflection must tolerate assemblies whose dependencies don't
         // resolve (leaked dead ALCs, a plugin missing its 'shared' lib). Return the
