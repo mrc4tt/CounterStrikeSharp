@@ -183,7 +183,9 @@ PlayerManager::OnClientPutInServer(IServerGameClients* pGameClients, CPlayerSlot
     {
         pPlayer->m_is_fake_client = true;
 
-        if (!OnClientConnect(pGameClients, slot, pszName, 0, "127.0.0.1", false, new CBufferStringGrowable<255>()).ret)
+        // Stack buffer: this was a `new` per bot connect that nothing ever freed.
+        CBufferStringGrowable<255> rejectReason;
+        if (!OnClientConnect(pGameClients, slot, pszName, 0, "127.0.0.1", false, &rejectReason).ret)
         {
             /* :TODO: kick the bot if it's rejected */
             return { KHook::Action::Ignore };

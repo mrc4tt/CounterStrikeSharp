@@ -389,7 +389,12 @@ public class PluginManager : IPluginManager
             }
         }
 
+        // Sorted by plugin name: Directory.GetDirectories order is whatever the filesystem
+        // returns, so load order (and with it which plugin's OnAllPluginsLoaded/listeners run
+        // first) differed between hosts with identical plugin sets.
         return pluginDirectories
+                .OrderBy(d => Path.GetFileName(d), StringComparer.OrdinalIgnoreCase)
+                .ThenBy(d => d, StringComparer.Ordinal)
                 .Select(d => Path.Combine(d, Path.GetFileName(d) + ".dll"))
                 .ToArray();
     }

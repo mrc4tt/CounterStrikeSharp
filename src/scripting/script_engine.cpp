@@ -32,6 +32,7 @@
 #include "core/utils.h"
 
 static std::unordered_map<uint64_t, counterstrikesharp::TNativeHandler> g_registeredHandlers;
+static std::unordered_map<uint64_t, std::string> g_registeredNames;
 
 namespace counterstrikesharp {
 
@@ -120,6 +121,17 @@ bool ScriptEngine::CallNativeHandler(uint64_t nativeIdentifier, ScriptContext& c
 void ScriptEngine::RegisterNativeHandlerInt(uint64_t nativeIdentifier, TNativeHandler function)
 {
     g_registeredHandlers[nativeIdentifier] = function;
+}
+
+void ScriptEngine::RegisterNativeName(uint64_t nativeIdentifier, const char* nativeName)
+{
+    g_registeredNames[nativeIdentifier] = nativeName;
+}
+
+const char* ScriptEngine::GetNativeName(uint64_t nativeIdentifier)
+{
+    auto it = g_registeredNames.find(nativeIdentifier);
+    return it != g_registeredNames.end() ? it->second.c_str() : "?";
 }
 
 void ScriptEngine::InvokeNative(counterstrikesharp::fxNativeContext& context)

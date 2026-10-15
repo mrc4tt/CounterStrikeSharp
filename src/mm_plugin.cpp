@@ -86,8 +86,8 @@ DLL_EXPORT void InvokeNative(counterstrikesharp::fxNativeContext& context)
             std::lock_guard<std::mutex> lock(s_warnMutex);
             if (s_warnedNatives.insert(context.nativeIdentifier).second)
             {
-                CSSHARP_CORE_CRITICAL("Native {:x} was invoked on a non-main thread (further occurrences suppressed)",
-                                      context.nativeIdentifier);
+                CSSHARP_CORE_CRITICAL("Native {} ({:x}) was invoked on a non-main thread (further occurrences suppressed)",
+                                      counterstrikesharp::ScriptEngine::GetNativeName(context.nativeIdentifier), context.nativeIdentifier);
             }
         }
         return;

@@ -278,6 +278,11 @@ class ScriptEngine
 
     static void RegisterNativeHandlerInt(uint64_t nativeIdentifier, TNativeHandler function);
 
+    // Registered name for a native id, for diagnostics (off-thread warnings); "?" if unknown.
+    // Written only while natives register at load, so lock-free reads from any thread are safe.
+    static const char* GetNativeName(uint64_t nativeIdentifier);
+    static void RegisterNativeName(uint64_t nativeIdentifier, const char* nativeName);
+
     template <typename T> static void RegisterNativeHandler(const char* nativeName, TypedTNativeHandler<T> function)
     {
         auto lambda = [=](counterstrikesharp::ScriptContext& context) {
@@ -288,11 +293,13 @@ class ScriptEngine
             }
         };
 
+        RegisterNativeName(hash_string(nativeName), nativeName);
         RegisterNativeHandlerInt(hash_string(nativeName), lambda);
     }
 
     static void RegisterNativeHandler(const char* nativeName, TypedTNativeHandler<void> function)
     {
+        RegisterNativeName(hash_string(nativeName), nativeName);
         RegisterNativeHandlerInt(hash_string(nativeName), function);
     }
 

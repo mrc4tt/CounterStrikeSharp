@@ -696,9 +696,10 @@ namespace CounterStrikeSharp.API.Core.Plugin
             {
                 Plugin.Unload(hotReload);
             }
-            catch
+            catch (Exception ex)
             {
-                _logger.LogError("Failed to unload {Name} during error recovery, forcing cleanup", Plugin.ModuleName);
+                // The exception used to be dropped, leaving no clue why the unload failed.
+                _logger.LogError(ex, "Plugin {Name} threw from Unload(), forcing cleanup", Plugin.ModuleName);
                 return;
             }
             finally

@@ -38,6 +38,11 @@ public class PluginContextQueryHandler : IPluginContextQueryHandler
 
     public IPluginContext? FindPluginByIdOrName(string query)
     {
-        return _pluginManager.GetLoadedPlugins().FirstOrDefault(x => x.PluginId.ToString() == query || x.Plugin?.ModuleName == query);
+        // "#1" is the documented form (usage text, css_plugins list), so the '#' is optional.
+        var id = query.StartsWith('#') ? query[1..] : query;
+        // Exact name only: a case-insensitive match here would win over the directory-path
+        // fallback in css_plugins unload and could pick a different plugin.
+        return _pluginManager.GetLoadedPlugins()
+            .FirstOrDefault(x => x.PluginId.ToString() == id || x.Plugin?.ModuleName == query);
     }
-}
+}

@@ -75,12 +75,18 @@ namespace CounterStrikeSharp.API.Core
 
         public void Start()
         {
+            // Both handlers used to do nothing for anything but PluginTerminationException, so a plugin's
+            // async void / background-thread crash took the server down with only the runtime's own
+            // trace, and a faulted fire-and-forget task vanished. Name the plugin in both cases.
             AppDomain.CurrentDomain.UnhandledException += (sender, e) =>
             {
-                if ((e.ExceptionObject as Exception) is PluginTerminationException pluginEx)
-                {
-                    return;
-                }
+                if (e.ExceptionObject is not Exception ex || ex is PluginTerminationException) return;
+
+                var owner = OwnerFromStackTrace(ex);
+                // One synchronous line: the process is about to die and the async sinks may not
+                // flush. The runtime prints the full trace itself right after.
+                Console.Error.WriteLine($"Unhandled exception (owner: {owner}); the server is terminating: {ex.GetType().Name}: {ex.Message}");
+                Logger.LogCritical(ex, "Unhandled exception (owner: {Owner}); the server is terminating", owner);
             };
 
             TaskScheduler.UnobservedTaskException += (sender, e) =>
@@ -88,7 +94,19 @@ namespace CounterStrikeSharp.API.Core
                 if (e.Exception.InnerExceptions.Any(ex => ex is PluginTerminationException))
                 {
                     e.SetObserved();
+                    return;
                 }
+
+                // Throttled and counted like callback errors, so a fire-and-forget task failing
+                // every second does not flood the log, and shows in css_plugins errors.
+                var root = e.Exception.GetBaseException();
+                var owner = OwnerFromStackTrace(root);
+                var decision = Diagnostics.PluginDiagnostics.RecordError(owner, owner + "|unobserved|" + root.GetType().Name);
+                if (decision.LogFull)
+                    Logger.LogError(e.Exception, "A task failed and nobody awaited it (owner: {Owner})", owner);
+                else if (decision.LogSuppressionNotice)
+                    Logger.LogError("Plugin '{Owner}' unawaited tasks still failing with {Error} ({Count}x total)",
+                        owner, root.GetType().Name, decision.TimesSeen);
             };
 
             // One line that says what is booting: API version, OS and runtime.
@@ -216,9 +234,52 @@ namespace CounterStrikeSharp.API.Core
                             sb.AppendFormat("    Termination Reason: {0}", plugin.TerminationReason);
                         }
 
+                        sb.Append("\n");
+                        sb.AppendFormat("    Path: {0}", Path.GetRelativePath(_scriptHostConfiguration.RootPath, plugin.FilePath));
+
                         info.ReplyToCommand(sb.ToString());
                     }
 
+                    break;
+                }
+                case "info":
+                {
+                    if (info.ArgCount < 3)
+                    {
+                        info.ReplyToCommand("Valid usage: css_plugins info [plugin name || #plugin id]");
+                        break;
+                    }
+
+                    var pluginIdentifier = info.GetArg(2);
+                    var plugin = _pluginContextQueryHandler.FindPluginByIdOrName(pluginIdentifier);
+                    if (plugin == null)
+                    {
+                        info.ReplyToCommand($"No plugin \"{pluginIdentifier}\"");
+                        break;
+                    }
+
+                    var asmName = plugin.Plugin?.GetType().Assembly.GetName();
+                    var errCount = asmName?.Name != null
+                        ? CounterStrikeSharp.API.Core.Diagnostics.PluginDiagnostics.GetErrorCount(asmName.Name)
+                        : 0;
+                    var termination = plugin is PluginContext ctx ? ctx.TerminationReason : null;
+
+                    var sb = new StringBuilder();
+                    sb.AppendLine($"  #{plugin.PluginId} \"{plugin.Plugin?.ModuleName ?? "Unknown"}\"");
+                    sb.AppendLine($"    State:          {plugin.State}");
+                    sb.AppendLine($"    Version:        {plugin.Plugin?.ModuleVersion ?? "Unknown"}");
+                    if (!string.IsNullOrEmpty(plugin.Plugin?.ModuleAuthor))
+                        sb.AppendLine($"    Author:         {plugin.Plugin.ModuleAuthor}");
+                    if (!string.IsNullOrEmpty(plugin.Plugin?.ModuleDescription))
+                        sb.AppendLine($"    Description:    {plugin.Plugin.ModuleDescription}");
+                    sb.AppendLine($"    Assembly:       {asmName?.Name ?? "?"} {asmName?.Version}");
+                    sb.AppendLine($"    Path:           {plugin.FilePath}");
+                    if (File.Exists(plugin.FilePath))
+                        sb.AppendLine($"    File modified:  {File.GetLastWriteTime(plugin.FilePath):yyyy-MM-dd HH:mm:ss}");
+                    sb.AppendLine($"    Runtime errors: {errCount}");
+                    if (!string.IsNullOrEmpty(termination))
+                        sb.AppendLine($"    Termination:    {termination}");
+                    info.ReplyToCommand(sb.ToString().TrimEnd());
                     break;
                 }
                 case "start":
@@ -306,7 +367,9 @@ namespace CounterStrikeSharp.API.Core
                         break;
                     }
 
+                    var unloadedName = plugin.Plugin?.ModuleName ?? pluginIdentifier;
                     _pluginManager.RemovePlugin(plugin);
+                    info.ReplyToCommand($"Unloaded plugin \"{unloadedName}\" (#{plugin.PluginId}).");
                     break;
                 }
 
@@ -337,6 +400,7 @@ namespace CounterStrikeSharp.API.Core
                 default:
                     info.ReplyToCommand("Valid usage: css_plugins [option]\n" +
                                         "  list - List all plugins currently loaded.\n" +
+                                        "  info - Show details for one plugin (name or #id).\n" +
                                         "  start / load - Loads a plugin not currently loaded.\n" +
                                         "  stop / unload - Unloads a plugin currently loaded.\n" +
                                         "  restart / reload - Reloads a plugin currently loaded.");
@@ -365,6 +429,40 @@ namespace CounterStrikeSharp.API.Core
                     ? PluginContext.BuildLoadFailureReport(e, plugin.Plugin)
                     : PluginContext.BuildLoadFailureReportFromPath(e, plugin.FilePath));
             }
+        }
+
+        // The plugin whose AssemblyLoadContext owns the first plugin-side frame. By ALC, not by
+        // assembly: a throw inside a plugin's own dependency (MySqlConnector, Dapper...) runs in
+        // that plugin's ALC, and naming the library would not say which plugin it was.
+        private string OwnerFromStackTrace(Exception ex)
+        {
+            // Runs on whatever thread crashed, while the game thread may be changing the plugin
+            // list; a diagnostic must never throw out of the crash handler.
+            try
+            {
+                return OwnerFromStackTraceCore(ex);
+            }
+            catch
+            {
+                return "unknown";
+            }
+        }
+
+        private string OwnerFromStackTraceCore(Exception ex)
+        {
+            foreach (var frame in new System.Diagnostics.StackTrace(ex, false).GetFrames())
+            {
+                var asm = frame.GetMethod()?.DeclaringType?.Assembly;
+                if (asm == null) continue;
+                var alc = System.Runtime.Loader.AssemblyLoadContext.GetLoadContext(asm);
+                if (alc == null || alc == System.Runtime.Loader.AssemblyLoadContext.Default) continue;
+
+                var plugin = _pluginManager.GetLoadedPlugins().FirstOrDefault(p =>
+                    p.Plugin != null && System.Runtime.Loader.AssemblyLoadContext.GetLoadContext(p.Plugin.GetType().Assembly) == alc);
+                return plugin?.Plugin?.GetType().Assembly.GetName().Name ?? asm.GetName().Name ?? "unknown";
+            }
+
+            return "unknown (no plugin frame on the stack)";
         }
 
         private void OnLangCommand(CCSPlayerController? player, CommandInfo command)

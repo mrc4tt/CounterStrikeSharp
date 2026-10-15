@@ -172,32 +172,44 @@ namespace CounterStrikeSharp.API.Modules.Admin
                 var adminsFromFile = JsonSerializer.Deserialize<Dictionary<string, AdminData>>(File.ReadAllText(adminDataPath, Encoding.UTF8), settings);
                 if (adminsFromFile == null) { throw new FileNotFoundException(); }
 
-                foreach (var adminDef in adminsFromFile.Values)
+                foreach (var (key, adminDef) in adminsFromFile)
                 {
                     adminDef.InitalizeFlags();
 
-                    if (SteamID.TryParse(adminDef.Identity, out var steamId))
+                    if (!SteamID.TryParse(adminDef.Identity, out var steamId))
                     {
-                        if (Admins.ContainsKey(steamId!))
-                        {
-                            // Merge domains together if we already have pre-existing values.
-                            foreach (var (domain, flags) in adminDef.Flags)
-                            {
-                                if (Admins[steamId!].Flags.ContainsKey(domain))
-                                {
-                                    Admins[steamId!].Flags[domain].UnionWith(flags);
-                                }
-                            }
+                        // Was skipped silently: a typo in "identity" meant that person simply
+                        // had no admin and nothing said why.
+                        _logger.LogWarning("Admin entry \"{Key}\" skipped: \"{Identity}\" is not a valid SteamID", key,
+                            adminDef.Identity);
+                        continue;
+                    }
 
-                            if (adminDef.Immunity > Admins[steamId!].Immunity)
-                            {
-                                Admins[steamId!].Immunity = adminDef.Immunity;
-                            }
-                        }
-                        else
+                    if (Admins.TryGetValue(steamId!, out var existing))
+                    {
+                        // Same SteamID listed twice: union everything. Only domains the first
+                        // entry already had used to be merged, so e.g. a second entry's
+                        // @custom/* flags and its groups were dropped.
+                        foreach (var (domain, flags) in adminDef.Flags)
                         {
-                            Admins.Add(steamId!, adminDef);
+                            if (existing.Flags.TryGetValue(domain, out var existingFlags))
+                                existingFlags.UnionWith(flags);
+                            else
+                                existing.Flags[domain] = new HashSet<string>(flags);
                         }
+
+                        existing.Groups.UnionWith(adminDef.Groups);
+                        foreach (var (command, enabled) in adminDef.CommandOverrides)
+                            existing.CommandOverrides.TryAdd(command, enabled);
+
+                        if (adminDef.Immunity > existing.Immunity)
+                        {
+                            existing.Immunity = adminDef.Immunity;
+                        }
+                    }
+                    else
+                    {
+                        Admins.Add(steamId!, adminDef);
                     }
                 }
 
