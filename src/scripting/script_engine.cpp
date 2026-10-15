@@ -27,6 +27,7 @@
 
 #include <stack>
 #include <unordered_map>
+#include <unordered_set>
 
 #include "core/log.h"
 #include "core/utils.h"
@@ -150,8 +151,19 @@ void ScriptEngine::InvokeNative(counterstrikesharp::fxNativeContext& context)
     }
     else
     {
-        CSSHARP_CORE_WARN("Native Handler was requested but not found: {0:x}", context.nativeIdentifier);
-        assert(false);
+        // Throw instead of returning: the caller used to get a zeroed result (null pointer,
+        // 0, false) and carry on with it. Typically a plugin built against a newer API than
+        // this core. Logged once per id; a plugin calling it every tick flooded the log.
+        counterstrikesharp::ScriptContextRaw scriptContext(context);
+        scriptContext.ThrowNativeError("Native %llx is not available in this CounterStrikeSharp build",
+                                       static_cast<unsigned long long>(context.nativeIdentifier));
+
+        static std::unordered_set<uint64_t> s_warned;
+        if (s_warned.insert(context.nativeIdentifier).second)
+        {
+            CSSHARP_CORE_WARN("Native Handler was requested but not found: {0:x} (plugin built against a newer API?)",
+                              context.nativeIdentifier);
+        }
     }
 }
 

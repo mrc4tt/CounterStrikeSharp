@@ -2219,6 +2219,7 @@ namespace CounterStrikeSharp.API.Core
 			return _ctx.GetResultString();
 		}
 
+        [Obsolete("Leaks unless released with NativeAPI.VectorFree. Use new Vector() instead, which owns and frees its memory.")]
         public static IntPtr VectorNew(){
 			var _ctx = ScriptContext.GlobalScriptContext;
 			_ctx.Reset();
@@ -2228,6 +2229,16 @@ namespace CounterStrikeSharp.API.Core
 			return _ctx.GetResultPrimitive<IntPtr>();
 		}
 
+        public static void VectorFree(IntPtr pointer){
+			var _ctx = ScriptContext.GlobalScriptContext;
+			_ctx.Reset();
+			_ctx.PushPrimitive(pointer);
+			_ctx.SetIdentifier(0x75A5A837);
+			_ctx.Invoke();
+			_ctx.CheckErrors();
+		}
+
+        [Obsolete("Leaks unless released with NativeAPI.Vector2dFree. Use new Vector2D() instead, which owns and frees its memory.")]
         public static IntPtr Vector2dNew(){
 			var _ctx = ScriptContext.GlobalScriptContext;
 			_ctx.Reset();
@@ -2237,6 +2248,16 @@ namespace CounterStrikeSharp.API.Core
 			return _ctx.GetResultPrimitive<IntPtr>();
 		}
 
+        public static void Vector2dFree(IntPtr pointer){
+			var _ctx = ScriptContext.GlobalScriptContext;
+			_ctx.Reset();
+			_ctx.PushPrimitive(pointer);
+			_ctx.SetIdentifier(0xC7B48501);
+			_ctx.Invoke();
+			_ctx.CheckErrors();
+		}
+
+        [Obsolete("Leaks unless released with NativeAPI.Vector4dFree. Use new Vector4D() instead, which owns and frees its memory.")]
         public static IntPtr Vector4dNew(){
 			var _ctx = ScriptContext.GlobalScriptContext;
 			_ctx.Reset();
@@ -2246,6 +2267,16 @@ namespace CounterStrikeSharp.API.Core
 			return _ctx.GetResultPrimitive<IntPtr>();
 		}
 
+        public static void Vector4dFree(IntPtr pointer){
+			var _ctx = ScriptContext.GlobalScriptContext;
+			_ctx.Reset();
+			_ctx.PushPrimitive(pointer);
+			_ctx.SetIdentifier(0xE15FAB87);
+			_ctx.Invoke();
+			_ctx.CheckErrors();
+		}
+
+        [Obsolete("Leaks unless released with NativeAPI.Matrix3x4Free. Use new matrix3x4_t() instead, which owns and frees its memory.")]
         public static IntPtr Matrix3x4New(){
 			var _ctx = ScriptContext.GlobalScriptContext;
 			_ctx.Reset();
@@ -2255,6 +2286,16 @@ namespace CounterStrikeSharp.API.Core
 			return _ctx.GetResultPrimitive<IntPtr>();
 		}
 
+        public static void Matrix3x4Free(IntPtr pointer){
+			var _ctx = ScriptContext.GlobalScriptContext;
+			_ctx.Reset();
+			_ctx.PushPrimitive(pointer);
+			_ctx.SetIdentifier(0x4FF5778A);
+			_ctx.Invoke();
+			_ctx.CheckErrors();
+		}
+
+        [Obsolete("Leaks unless released with NativeAPI.QuaternionFree. Use new Quaternion() instead, which owns and frees its memory.")]
         public static IntPtr QuaternionNew(){
 			var _ctx = ScriptContext.GlobalScriptContext;
 			_ctx.Reset();
@@ -2264,6 +2305,16 @@ namespace CounterStrikeSharp.API.Core
 			return _ctx.GetResultPrimitive<IntPtr>();
 		}
 
+        public static void QuaternionFree(IntPtr pointer){
+			var _ctx = ScriptContext.GlobalScriptContext;
+			_ctx.Reset();
+			_ctx.PushPrimitive(pointer);
+			_ctx.SetIdentifier(0x2230D70E);
+			_ctx.Invoke();
+			_ctx.CheckErrors();
+		}
+
+        [Obsolete("Leaks unless released with NativeAPI.AngleFree. Use new QAngle() instead, which owns and frees its memory.")]
         public static IntPtr AngleNew(){
 			var _ctx = ScriptContext.GlobalScriptContext;
 			_ctx.Reset();
@@ -2271,6 +2322,15 @@ namespace CounterStrikeSharp.API.Core
 			_ctx.Invoke();
 			_ctx.CheckErrors();
 			return _ctx.GetResultPrimitive<IntPtr>();
+		}
+
+        public static void AngleFree(IntPtr pointer){
+			var _ctx = ScriptContext.GlobalScriptContext;
+			_ctx.Reset();
+			_ctx.PushPrimitive(pointer);
+			_ctx.SetIdentifier(0x43A2DBCF);
+			_ctx.Invoke();
+			_ctx.CheckErrors();
 		}
 
         public static float VectorGetX(IntPtr vector){

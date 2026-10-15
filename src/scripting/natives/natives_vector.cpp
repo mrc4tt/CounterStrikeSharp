@@ -38,9 +38,13 @@ CREATE_SETTER_FUNCTION(Vector, float, X, Vector*, obj->x = value);
 CREATE_SETTER_FUNCTION(Vector, float, Y, Vector*, obj->y = value);
 CREATE_SETTER_FUNCTION(Vector, float, Z, Vector*, obj->z = value);
 
-// TODO: These need to be cleared out somehow
-std::vector<Vector*> managed_vectors;
-std::vector<QAngle*> managed_angles;
+// The *_NEW natives hand out heap objects that nothing in core frees: core's own Vector/QAngle
+// wrappers allocate managed-side now (OwnedNativeBlock), so only third-party plugins calling
+// NativeAPI.VectorNew & co. directly still use them. They can release with the matching *_FREE
+// native. These count what is still live, for css_dump_leaks; they used to be vectors holding
+// every pointer ever returned, which grew forever on top of the leak itself.
+static size_t live_vectors = 0;
+static size_t live_angles = 0;
 extern std::unordered_set<IGameEvent*> managed_game_events;
 
 extern size_t GetVirtualFunctionCacheSize();
@@ -49,12 +53,12 @@ CON_COMMAND(css_dump_leaks, "dump css leaks")
 {
     auto virtualFunctionCount = GetVirtualFunctionCacheSize();
     Msg("===== Dumping leaks =====\n");
-    Msg("\tVector: %i (%zu B)\n", managed_vectors.size(), managed_vectors.size() * sizeof(Vector));
-    Msg("\tAngles: %i (%zu B)\n", managed_angles.size(), managed_angles.size() * sizeof(QAngle));
+    Msg("\tVector: %zu (%zu B)\n", live_vectors, live_vectors * sizeof(Vector));
+    Msg("\tAngles: %zu (%zu B)\n", live_angles, live_angles * sizeof(QAngle));
     Msg("\tGameEvents: %i (~B)\n", managed_game_events.size());
     Msg("\tVirtual Functions: %i (%zu B)\n", virtualFunctionCount, virtualFunctionCount * sizeof(ValveFunction));
-    Msg("\tTotal size: %zu B\n", (managed_vectors.size() * sizeof(Vector)) + (managed_angles.size() * sizeof(QAngle)) +
-                                     (virtualFunctionCount * sizeof(ValveFunction)));
+    Msg("\tTotal size: %zu B\n",
+        (live_vectors * sizeof(Vector)) + (live_angles * sizeof(QAngle)) + (virtualFunctionCount * sizeof(ValveFunction)));
     Msg("===== Dumping leaks =====\n");
 }
 
@@ -68,17 +72,41 @@ Quaternion* QuaternionNew(ScriptContext& script_context) { return new Quaternion
 
 Vector* VectorNew(ScriptContext& script_context)
 {
-    auto vec = new Vector();
-    managed_vectors.push_back(vec);
-    return vec;
+    live_vectors++;
+    return new Vector();
 }
 
 QAngle* AngleNew(ScriptContext& script_context)
 {
-    auto ang = new QAngle();
-    managed_angles.push_back(ang);
-    return ang;
+    live_angles++;
+    return new QAngle();
 }
+
+void VectorFree(ScriptContext& script_context)
+{
+    if (auto vec = script_context.GetArgument<Vector*>(0))
+    {
+        delete vec;
+        live_vectors--;
+    }
+}
+
+void AngleFree(ScriptContext& script_context)
+{
+    if (auto ang = script_context.GetArgument<QAngle*>(0))
+    {
+        delete ang;
+        live_angles--;
+    }
+}
+
+void Vector2DFree(ScriptContext& script_context) { delete script_context.GetArgument<Vector2D*>(0); }
+
+void Vector4DFree(ScriptContext& script_context) { delete script_context.GetArgument<Vector4D*>(0); }
+
+void Matrix3x4Free(ScriptContext& script_context) { delete script_context.GetArgument<matrix3x4_t*>(0); }
+
+void QuaternionFree(ScriptContext& script_context) { delete script_context.GetArgument<Quaternion*>(0); }
 
 void NativeVectorAngles(ScriptContext& script_context)
 {
@@ -113,6 +141,12 @@ REGISTER_NATIVES(vector, {
     ScriptEngine::RegisterNativeHandler("MATRIX3X4_NEW", Matrix3x4New);
     ScriptEngine::RegisterNativeHandler("QUATERNION_NEW", QuaternionNew);
     ScriptEngine::RegisterNativeHandler("ANGLE_NEW", AngleNew);
+    ScriptEngine::RegisterNativeHandler("VECTOR_FREE", VectorFree);
+    ScriptEngine::RegisterNativeHandler("ANGLE_FREE", AngleFree);
+    ScriptEngine::RegisterNativeHandler("VECTOR2D_FREE", Vector2DFree);
+    ScriptEngine::RegisterNativeHandler("VECTOR4D_FREE", Vector4DFree);
+    ScriptEngine::RegisterNativeHandler("MATRIX3X4_FREE", Matrix3x4Free);
+    ScriptEngine::RegisterNativeHandler("QUATERNION_FREE", QuaternionFree);
 
     ScriptEngine::RegisterNativeHandler("VECTOR_SET_X", VectorSetX);
     ScriptEngine::RegisterNativeHandler("VECTOR_SET_Y", VectorSetY);

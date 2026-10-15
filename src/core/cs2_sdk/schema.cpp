@@ -25,6 +25,7 @@
 #include "core/log.h"
 
 #include "tier1/utlmap.h"
+#include <mutex>
 #include <unordered_set>
 #include <schemasystem.h>
 #include <entity2/entitysystem.h>
@@ -191,6 +192,13 @@ int16_t schema::FindChainOffset(const char* className)
 
 SchemaKey schema::GetOffset(const char* className, uint32_t classKey, const char* memberName, uint32_t memberKey, bool* found)
 {
+    // GET_SCHEMA_OFFSET is exempt from the main-thread guard (mm_plugin.cpp), so a plugin can
+    // resolve an offset from a worker thread while the game thread does too. The table map is a
+    // plain CUtlMap filled lazily here; unguarded, two first lookups raced on its inserts.
+    // Recursive because a fresh or rebuilt table re-enters GetOffset.
+    static std::recursive_mutex s_lock;
+    std::lock_guard<std::recursive_mutex> guard(s_lock);
+
     if (found) *found = true;
 
     static SchemaTableMap_t schemaTableMap(0, 0);
