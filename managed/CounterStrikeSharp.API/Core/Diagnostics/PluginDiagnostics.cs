@@ -38,6 +38,23 @@ public static class PluginDiagnostics
         return new ThrottleDecision(logFull, logSuppressionNotice, seen, total);
     }
 
+    /// <summary>
+    /// Forgets a plugin's counts and throttle state. Called when the plugin (re)loads: otherwise
+    /// after a fix + reload the same error never got a full report again (it was throttled from
+    /// the previous run) and css_plugins kept showing the old total.
+    /// </summary>
+    public static void Reset(string assemblyName)
+    {
+        if (string.IsNullOrEmpty(assemblyName)) return;
+        _errorCounts.TryRemove(assemblyName, out _);
+        var prefix = assemblyName + "|";
+        foreach (var key in _reportCounts.Keys)
+        {
+            if (key.StartsWith(prefix, StringComparison.Ordinal))
+                _reportCounts.TryRemove(key, out _);
+        }
+    }
+
     /// <summary>Total runtime errors recorded for a plugin assembly (0 if none).</summary>
     public static int GetErrorCount(string assemblyName)
         => assemblyName != null && _errorCounts.TryGetValue(assemblyName, out var c) ? c : 0;

@@ -87,9 +87,11 @@ namespace CounterStrikeSharp.API.Core
         // strings. Allocate cleanup storage only when an unmanaged string is owned.
         private ConcurrentQueue<IntPtr>? ms_finalizers;
 
-        private readonly object ms_lock = new object();
+        // Lazy: only the slow cleanup path below locks, but every native-to-managed callback
+        // creates a context, and an eager `new object()` was one extra allocation per dispatch.
+        private object? ms_lock;
 
-        internal object Lock => ms_lock;
+        internal object Lock => LazyInitializer.EnsureInitialized(ref ms_lock);
 
         internal fxScriptContext m_extContext = new fxScriptContext();
 
@@ -533,7 +535,7 @@ namespace CounterStrikeSharp.API.Core
             if (typeof(NativeObject).IsAssignableFrom(type))
             {
                 var pointer = (IntPtr)GetResult(typeof(IntPtr), ptr);
-                return Activator.CreateInstance(type, pointer)!;
+                return NativeObjectFactory(type)(pointer);
             }
 
             // Color maps to DATA_TYPE_UINT (DataType.cs), so natives, virtual functions and hook
@@ -566,6 +568,27 @@ namespace CounterStrikeSharp.API.Core
             }
 
             return null!;
+        }
+
+        // Compiled `new T(IntPtr)` per NativeObject type. Every event handler argument (GameEvent,
+        // entities) came through Activator.CreateInstance(type, ptr): reflection lookup plus an
+        // object[] on each argument of each event. ConditionalWeakTable so a type from a plugin's
+        // collectible ALC is not pinned by this cache after the plugin unloads.
+        private static readonly ConditionalWeakTable<Type, Func<IntPtr, object>> NativeObjectFactories = new();
+
+        private static Func<IntPtr, object> NativeObjectFactory(Type type)
+        {
+            return NativeObjectFactories.GetValue(type, static t =>
+            {
+                var ctor = t.GetConstructor(new[] { typeof(IntPtr) });
+                if (ctor == null)
+                    return pointer => Activator.CreateInstance(t, pointer)!; // keeps the old error for odd types
+
+                var parameter = System.Linq.Expressions.Expression.Parameter(typeof(IntPtr), "pointer");
+                var body = System.Linq.Expressions.Expression.Convert(
+                    System.Linq.Expressions.Expression.New(ctor, parameter), typeof(object));
+                return System.Linq.Expressions.Expression.Lambda<Func<IntPtr, object>>(body, parameter).Compile();
+            });
         }
 
         [SecurityCritical]
@@ -651,7 +674,7 @@ namespace CounterStrikeSharp.API.Core
         [MethodImpl(MethodImplOptions.NoInlining)]
         private void GlobalCleanUpSlow(ConcurrentQueue<IntPtr> finalizers)
         {
-            lock (ms_lock)
+            lock (Lock)
             {
                 while (finalizers.TryDequeue(out var ptr))
                 {

@@ -195,6 +195,7 @@ namespace CounterStrikeSharp.API.Core.Plugin
             using (Loader.EnterContextualReflection())
             {
                 var defaultAssembly = Loader.LoadDefaultAssembly();
+                Diagnostics.PluginDiagnostics.Reset(defaultAssembly.GetName().Name ?? "");
 
                 Type? pluginType = defaultAssembly.GetExportedTypes()
                     .FirstOrDefault(t => typeof(IPlugin).IsAssignableFrom(t));
@@ -285,7 +286,14 @@ namespace CounterStrikeSharp.API.Core.Plugin
                 // whole scan, so every later plugin fails the load with the unrelated
                 // assembly's missing-dependency error. Swallowing per-assembly keeps the
                 // blame on the plugin that actually needs the missing shared library.
-                Type[] serviceCollectionConfiguratorTypes = AppDomain.CurrentDomain.GetAssemblies()
+                //
+                // Only this plugin's own AssemblyLoadContext is scanned: an implementation of
+                // IPluginServiceCollection<ThisPlugin> has to reference the plugin type, so it
+                // lives in the plugin or a library loaded beside it. Scanning every assembly in
+                // the AppDomain cost O(plugins x all types) at boot.
+                var pluginAssemblies = System.Runtime.Loader.AssemblyLoadContext.GetLoadContext(defaultAssembly)?.Assemblies
+                                       ?? new[] { defaultAssembly };
+                Type[] serviceCollectionConfiguratorTypes = pluginAssemblies
                     .SelectMany(GetLoadableTypes)
                     .Where(type => interfaceType.IsAssignableFrom(type) && !type.IsInterface && !type.IsAbstract)
                     .ToArray();
