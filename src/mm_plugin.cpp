@@ -261,9 +261,17 @@ bool CounterStrikeSharpMMPlugin::Load(PluginId id, ISmmAPI* ismm, char* error, s
 
         CSSHARP_CORE_DEBUG("Initialized GameSystem.");
 
+        // Not a load failure on purpose: game systems and virtual hooks are registered by now and
+        // LoadGuard does not undo those, so returning false here would let Metamod unload the .so
+        // under live engine callbacks. Keep running without managed code, but make it impossible
+        // to miss — a single error line scrolled past and the server looked "up" with no plugins.
         if (!globals::dotnetManager.Initialize())
         {
-            CSSHARP_CORE_ERROR("Failed to initialize .NET runtime");
+            CSSHARP_CORE_ERROR("==================================================================");
+            CSSHARP_CORE_ERROR("Failed to initialize the .NET runtime. NO PLUGINS WILL LOAD.");
+            CSSHARP_CORE_ERROR("See the hostfxr / runtime error above (missing runtime, wrong");
+            CSSHARP_CORE_ERROR("version: CSSHARP_HOSTFXR_VERSION, or a broken dotnet/ folder).");
+            CSSHARP_CORE_ERROR("==================================================================");
         }
 
         // Install AFTER the .NET runtime so our SIGABRT handler runs first (prints the

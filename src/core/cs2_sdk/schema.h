@@ -127,7 +127,10 @@ static std::vector<std::string> CS2BadList = {
 };
 
 int16_t FindChainOffset(const char* className);
-SchemaKey GetOffset(const char* className, uint32_t classKey, const char* memberName, uint32_t memberKey);
+// `found` (optional) is set false when the class or member does not exist. The returned key
+// then has offset 0, which is indistinguishable from a real field at offset 0
+// (CEntityIdentity::m_pInstance), so callers that touch memory must check it.
+SchemaKey GetOffset(const char* className, uint32_t classKey, const char* memberName, uint32_t memberKey, bool* found = nullptr);
 // False until the network serializer database is reachable (the entity system exists): a
 // `networked` flag read before then is not final.
 bool IsNetworkInfoReady();

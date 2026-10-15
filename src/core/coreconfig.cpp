@@ -45,13 +45,22 @@ bool CCoreConfig::Init(char* conf_error, int conf_error_size)
         ofs << exampleIfs.rdbuf();
         ofs.close();
 
+        // An unwritable configs dir used to recurse here until the stack overflowed.
+        if (!ofs)
+        {
+            V_snprintf(conf_error, conf_error_size, "CoreConfig file not found and could not be created from the example.");
+            return false;
+        }
+
         return Init(conf_error, conf_error_size);
     }
 
-    m_json = json::parse(ifs);
-
     try
     {
+        // Comments allowed, matching the managed reader (JsonCommentHandling.Skip): a commented
+        // core.json used to throw here, outside the try, and fail the whole plugin load.
+        m_json = json::parse(ifs, nullptr, true, true);
+
         PublicChatTrigger = m_json.value("PublicChatTrigger", PublicChatTrigger);
         SilentChatTrigger = m_json.value("SilentChatTrigger", SilentChatTrigger);
         FollowCS2ServerGuidelines = m_json.value("FollowCS2ServerGuidelines", FollowCS2ServerGuidelines);

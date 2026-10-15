@@ -73,6 +73,15 @@ static std::unordered_set<uint32_t>& ClassesWithoutNetworkInfo()
 
 bool schema::IsNetworkInfoReady() { return GetNetworkSerializerDatabase() != nullptr; }
 
+// Members looked up and not found, keyed (classKey << 32 | memberKey). A miss is cached in the
+// table as { 0, false }, same as a real non-networked field at offset 0, so this set is what
+// tells the two apart for GetOffset's `found`.
+static std::unordered_set<uint64_t>& MissingFields()
+{
+    static std::unordered_set<uint64_t> fields;
+    return fields;
+}
+
 static bool IsFieldNetworked(CNetworkSerializerClassInfo* pNetworkClassInfo, SchemaClassFieldData_t& field)
 {
     if (!pNetworkClassInfo) return false;
@@ -180,14 +189,18 @@ int16_t schema::FindChainOffset(const char* className)
     return 0;
 }
 
-SchemaKey schema::GetOffset(const char* className, uint32_t classKey, const char* memberName, uint32_t memberKey)
+SchemaKey schema::GetOffset(const char* className, uint32_t classKey, const char* memberName, uint32_t memberKey, bool* found)
 {
+    if (found) *found = true;
+
     static SchemaTableMap_t schemaTableMap(0, 0);
     auto tableMapIndex = schemaTableMap.Find(classKey);
     if (!schemaTableMap.IsValidIndex(tableMapIndex))
     {
-        if (InitSchemaFieldsForClass(&schemaTableMap, className, classKey)) return GetOffset(className, classKey, memberName, memberKey);
+        if (InitSchemaFieldsForClass(&schemaTableMap, className, classKey))
+            return GetOffset(className, classKey, memberName, memberKey, found);
 
+        if (found) *found = false;
         return { 0, 0 };
     }
 
@@ -200,7 +213,7 @@ SchemaKey schema::GetOffset(const char* className, uint32_t classKey, const char
         ClassesWithoutNetworkInfo().erase(classKey);
         schemaTableMap.RemoveAt(tableMapIndex);
         delete tableMap;
-        return GetOffset(className, classKey, memberName, memberKey);
+        return GetOffset(className, classKey, memberName, memberKey, found);
     }
 
     auto memberIndex = tableMap->Find(memberKey);
@@ -216,9 +229,12 @@ SchemaKey schema::GetOffset(const char* className, uint32_t classKey, const char
                               memberName);
         }
         tableMap->Insert(memberKey, { 0, false });
+        MissingFields().insert((uint64_t(classKey) << 32) | memberKey);
+        if (found) *found = false;
         return { 0, 0 };
     }
 
+    if (found && MissingFields().count((uint64_t(classKey) << 32) | memberKey)) *found = false;
     return tableMap->Element(memberIndex);
 }
 

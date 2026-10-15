@@ -76,7 +76,21 @@ void GetSchemaValueByName(ScriptContext& script_context)
     auto classKey = hash_32_fnv1a_const(className);
     auto memberKey = hash_32_fnv1a_const(memberName);
 
-    const auto m_key = schema::GetOffset(className, classKey, memberName, memberKey);
+    if (!instancePointer)
+    {
+        script_context.ThrowNativeError("Cannot read '%s::%s' from a null instance", className, memberName);
+        return;
+    }
+
+    bool found;
+    const auto m_key = schema::GetOffset(className, classKey, memberName, memberKey, &found);
+    if (!found)
+    {
+        // A missing field resolves to offset 0, i.e. the object's vtable pointer; reading that
+        // as e.g. a pointer and dereferencing it crashes far from the cause.
+        script_context.ThrowNativeError("Schema field '%s::%s' not found", className, memberName);
+        return;
+    }
 
     switch (returnType)
     {
@@ -148,7 +162,21 @@ void SetSchemaValueByName(ScriptContext& script_context)
     auto classKey = hash_32_fnv1a_const(className);
     auto memberKey = hash_32_fnv1a_const(memberName);
 
-    const auto m_key = schema::GetOffset(className, classKey, memberName, memberKey);
+    if (!instancePointer)
+    {
+        script_context.ThrowNativeError("Cannot set '%s::%s' on a null instance", className, memberName);
+        return;
+    }
+
+    bool found;
+    const auto m_key = schema::GetOffset(className, classKey, memberName, memberKey, &found);
+    if (!found)
+    {
+        // A missing field resolves to offset 0: writing there overwrites the object's vtable
+        // pointer and the server crashes on its next virtual call.
+        script_context.ThrowNativeError("Schema field '%s::%s' not found", className, memberName);
+        return;
+    }
 
     switch (dataType)
     {
