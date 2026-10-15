@@ -198,3 +198,88 @@ public class InotifyDiagnosticsTests
         Assert.False(InotifyDiagnostics.IsInotifyLimitError(new InvalidOperationException("inotify")));
     }
 }
+
+public class LoadFailureReportTests
+{
+    private const string MissingFullName = "CSSharpUtils, Version=1.0.9.0, Culture=neutral, PublicKeyToken=null";
+
+    private static Exception MissingDependency() =>
+        new System.Reflection.TargetInvocationException(
+            new FileNotFoundException($"Could not load file or assembly '{MissingFullName}'. The system cannot find the file specified.",
+                MissingFullName));
+
+    private static string Report(TempDir dir, string? depsJson)
+    {
+        Core.Plugin.PluginContext.CssRootPath = dir.Path;
+        var pluginPath = dir.Write("plugins/RapidFireFix/RapidFireFix.dll", "");
+        if (depsJson != null) dir.Write("plugins/RapidFireFix/RapidFireFix.deps.json", depsJson);
+        return Core.Plugin.PluginContext.BuildLoadFailureReportFromPath(MissingDependency(), pluginPath);
+    }
+
+    [Fact]
+    public void SummaryUnwrapsReflectionAndNamesTheDependency()
+    {
+        Assert.Equal("missing dependency CSSharpUtils 1.0.9.0", Core.Plugin.PluginContext.Summarize(MissingDependency()));
+    }
+
+    [Fact]
+    public void DependencyShippedByThePluginMeansIncompleteUpload()
+    {
+        using var dir = new TempDir();
+        var report = Report(dir, """
+        { "targets": { ".NETCoreApp,Version=v8.0": {
+            "RapidFireFix/1.0.0": { "runtime": { "RapidFireFix.dll": {} } },
+            "CSSharpUtils/1.0.9": { "runtime": { "lib/net8.0/CSSharpUtils.dll": {} } } } } }
+        """);
+
+        Assert.Contains("Install problem", report);
+        Assert.Contains("own release includes CSSharpUtils.dll 1.0.9", report);
+        Assert.Contains("Put CSSharpUtils.dll next to RapidFireFix.dll", report);
+        Assert.Contains("File:      plugins/RapidFireFix/RapidFireFix.dll", report);
+        Assert.DoesNotContain("Remove this DLL", report);
+    }
+
+    [Fact]
+    public void DependencyNotShippedMeansSharedFolder()
+    {
+        using var dir = new TempDir();
+        var report = Report(dir, """
+        { "targets": { ".NETCoreApp,Version=v8.0": {
+            "RapidFireFix/1.0.0": { "runtime": { "RapidFireFix.dll": {} } } } } }
+        """);
+
+        Assert.Contains("provided by the server", report);
+        Assert.Contains("shared/CSSharpUtils/CSSharpUtils.dll", report);
+    }
+
+    [Fact]
+    public void NoDepsJsonSaysUnknownAndListsCopiesFound()
+    {
+        using var dir = new TempDir();
+        File.Copy(typeof(FactAttribute).Assembly.Location,
+            dir.Write("plugins/OtherPlugin/CSSharpUtils.dll", ""), overwrite: true);
+
+        var report = Report(dir, null);
+
+        Assert.Contains("Expects:   Unknown", report);
+        Assert.Contains("Found:     CSSharpUtils.dll", report);
+        Assert.Contains("plugins/OtherPlugin/", report);
+    }
+
+    [Fact]
+    public void PluginCodeFailureBlamesThePluginAndBannerIsAscii()
+    {
+        using var dir = new TempDir();
+        Core.Plugin.PluginContext.CssRootPath = dir.Path;
+        Exception thrown;
+        try { throw new InvalidOperationException("boom\nsecond line"); }
+        catch (Exception e) { thrown = e; }
+
+        var report = Core.Plugin.PluginContext.BuildLoadFailureReportFromPath(thrown, Path.Combine(dir.Path, "plugins/X/X.dll"));
+
+        Assert.Contains("Error:     InvalidOperationException: boom", report);
+        Assert.DoesNotContain("second line", report);
+        Assert.Contains("the failure is in the plugin's own code", report);
+        Assert.All(report, c => Assert.True(c < 128, $"non-ASCII char U+{(int)c:X4} in banner"));
+    }
+}

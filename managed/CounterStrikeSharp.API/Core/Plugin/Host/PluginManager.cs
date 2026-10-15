@@ -120,8 +120,7 @@ public class PluginManager : IPluginManager
                 }
                 catch (Exception e)
                 {
-                    _logger.LogError(e, "Failed to load plugin from {Path}", path);
-                    _logger.LogError("\n{Report}", PluginContext.BuildLoadFailureReportFromPath(e, path));
+                    PluginContext.LogLoadFailure(_logger, e, path, null);
                 }
             }
         }
@@ -138,9 +137,7 @@ public class PluginManager : IPluginManager
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "OnAllPluginsLoaded failed");
-                if (plugin.Plugin != null)
-                    _logger.LogError("\n{Report}", PluginContext.BuildLoadFailureReport(e, plugin.Plugin));
+                PluginContext.LogLoadFailure(_logger, e, plugin.FilePath, plugin.Plugin, "failed in OnAllPluginsLoaded");
             }
         }
 
@@ -220,7 +217,7 @@ public class PluginManager : IPluginManager
         // the individual crash reports.
         _logger.LogInformation("{Summary}", sb.ToString());
         if (failed > 0)
-            _logger.LogError("{Failed} of {Total} plugin(s) failed to load — see crash reports above.",
+            _logger.LogError("{Failed} of {Total} plugin(s) failed to load - see the reports above.",
                 failed, loaded + failed);
     }
 

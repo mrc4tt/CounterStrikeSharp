@@ -323,16 +323,10 @@ namespace CounterStrikeSharp.API.Core
                         catch (Exception e)
                         {
                             info.ReplyToCommand($"Could not load plugin \"{path}\"");
-                            Logger.LogError(e, "Could not load plugin \"{Path}\"", path);
-
-                            // Blame report: if a plugin instance exists (e.g. it threw
-                            // from OnAllPluginsLoaded) name it directly; otherwise the
-                            // failure was pre-instance, so report from the path.
+                            // If a plugin instance exists (e.g. it threw from OnAllPluginsLoaded)
+                            // name it directly; otherwise the failure was pre-instance.
                             var failedCtx = _pluginContextQueryHandler.FindPluginByModulePath(path);
-                            if (failedCtx?.Plugin != null)
-                                Logger.LogError("\n{Report}", PluginContext.BuildLoadFailureReport(e, failedCtx.Plugin));
-                            else
-                                Logger.LogError("\n{Report}", PluginContext.BuildLoadFailureReportFromPath(e, path));
+                            PluginContext.LogLoadFailure(Logger, e, path, failedCtx?.Plugin);
                         }
                     }
                     else
@@ -424,10 +418,8 @@ namespace CounterStrikeSharp.API.Core
             catch (Exception e)
             {
                 info.ReplyToCommand($"Could not load plugin \"{label}\" (see log).");
-                Logger.LogError(e, "Could not load plugin \"{Label}\"", label);
-                Logger.LogError("\n{Report}", plugin.State == PluginState.Loaded && plugin.Plugin != null
-                    ? PluginContext.BuildLoadFailureReport(e, plugin.Plugin)
-                    : PluginContext.BuildLoadFailureReportFromPath(e, plugin.FilePath));
+                PluginContext.LogLoadFailure(Logger, e, plugin.FilePath,
+                    plugin.State == PluginState.Loaded ? plugin.Plugin : null);
             }
         }
 

@@ -492,7 +492,7 @@ namespace CounterStrikeSharp.API.Core
             sb.AppendLine("Error:     " + root.GetType().Name + ": " + root.Message);
             if (loc != null)
                 sb.AppendLine("Location:  " + loc);
-            sb.AppendLine("Blame:     Plugin '" + owner + "' — this exception came from inside its own handler.");
+            sb.AppendLine("Blame:     Plugin '" + owner + "' - this exception came from inside its own handler.");
             sb.AppendLine("           The server kept running, but that plugin's action did not complete.");
             sb.AppendLine("Action:    Report this trace to the plugin author; disable the plugin if it spams.");
             sb.Append("=============================================================");
