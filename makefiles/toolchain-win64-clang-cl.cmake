@@ -6,9 +6,10 @@
 #         -DCMAKE_TOOLCHAIN_FILE=makefiles/toolchain-win64-clang-cl.cmake \
 #         -DCMAKE_BUILD_TYPE=Release
 #
-# This exists so the Windows half of a change can be verified without a Windows
-# machine. It is NOT the release toolchain -- release artifacts still come from
-# the MSVC build in .github/workflows/build-windows.yml.
+# This is the release toolchain for the Windows zips: the build_windows job in
+# .github/workflows/build-and-publish.yml (run locally via act by
+# create-release.sh) uses it. clang-cl is not MSVC -- codegen and ABI
+# corners differ -- so smoke-test a release DLL on a real Windows server.
 
 set(CMAKE_SYSTEM_NAME Windows)
 set(CMAKE_SYSTEM_PROCESSOR AMD64)
@@ -26,6 +27,12 @@ endif()
 # Left empty, the bare names are used and PATH decides.
 set(LLVM_TOOLCHAIN_BIN "" CACHE PATH "bin directory of the LLVM install to build with")
 
+# CMake re-runs this file inside every try_compile project (compiler probes),
+# and those do not see -D cache values unless listed here. Without it a
+# non-default -DXWIN_ROOT dies in the C compiler probe with "No MSVC CRT at
+# $HOME/.xwin/crt".
+list(APPEND CMAKE_TRY_COMPILE_PLATFORM_VARIABLES XWIN_ROOT LLVM_TOOLCHAIN_BIN)
+
 function(_xwin_tool outputVariable toolName)
     if(LLVM_TOOLCHAIN_BIN)
         set(${outputVariable} "${LLVM_TOOLCHAIN_BIN}/${toolName}" PARENT_SCOPE)
@@ -36,6 +43,14 @@ endfunction()
 
 _xwin_tool(_xwin_clang_cl clang-cl)
 _xwin_tool(_xwin_ml64 llvm-ml64)
+# llvm-ml64 is only a name alias (llvm-ml picks 64-bit mode from it), and LLVM
+# <= 20 packages do not ship it. Fall back to llvm-ml with --m64 instead of
+# requiring a newer LLVM or a hand-made symlink.
+set(_xwin_ml_flags "")
+if(LLVM_TOOLCHAIN_BIN AND NOT EXISTS "${_xwin_ml64}" AND EXISTS "${LLVM_TOOLCHAIN_BIN}/llvm-ml")
+    set(_xwin_ml64 "${LLVM_TOOLCHAIN_BIN}/llvm-ml")
+    set(_xwin_ml_flags "--m64")
+endif()
 _xwin_tool(_xwin_rc llvm-rc)
 _xwin_tool(_xwin_lib llvm-lib)
 _xwin_tool(_xwin_link lld-link)
@@ -44,6 +59,7 @@ _xwin_tool(_xwin_mt llvm-mt)
 set(CMAKE_C_COMPILER   "${_xwin_clang_cl}")
 set(CMAKE_CXX_COMPILER "${_xwin_clang_cl}")
 set(CMAKE_ASM_MASM_COMPILER "${_xwin_ml64}")
+set(CMAKE_ASM_MASM_FLAGS_INIT "${_xwin_ml_flags}")
 set(CMAKE_RC_COMPILER  "${_xwin_rc}")
 set(CMAKE_AR           "${_xwin_lib}")
 set(CMAKE_LINKER       "${_xwin_link}")

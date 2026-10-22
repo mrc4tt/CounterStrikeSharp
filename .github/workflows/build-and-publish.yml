@@ -1,4 +1,4 @@
-name: Build & Publish (Linux + Managed)
+name: Build & Publish (Linux + Windows + Managed)
 
 env:
   BUILD_TYPE: Release
@@ -7,13 +7,14 @@ env:
 # https://docs.github.com/en/actions/using-jobs/assigning-permissions-to-jobs
 permissions: {}
 
-# Windows native builds live in build-windows.yml (GitHub-only, on tags).
 # This workflow does NOT auto-run on GitHub — no push/PR trigger.
-# It is driven entirely locally via `act` to validate + cut the Linux release.
+# It is driven entirely locally via `act` (create-release.sh) to build and
+# publish both halves of a release. Windows is cross-compiled on Linux with
+# clang-cl (build_windows); there is no MSVC build any more.
 # Run locally: `act workflow_dispatch --input confirm_local=LOCAL`
 #
-# Action versions here are capped by what act can run, unlike build-windows.yml
-# which is on the full node24 majors. Tested against act 0.2.87 and 0.2.89:
+# Action versions here are capped by what act can run. Tested against act
+# 0.2.87 and 0.2.89:
 #   - upload-artifact >= v6 / download-artifact >= v7: act's artifact server
 #     answers "unauthorized"; upload-artifact v7 additionally sends a
 #     `mime_type` field it cannot decode. v5 / v6 are the newest that work.
@@ -116,6 +117,103 @@ jobs:
         with:
           name: counterstrikesharp-linux-${{ needs.setup.outputs.gitversion_semver }}
           path: build/output/
+
+  build_windows:
+    # Cross-compiled with clang-cl + lld-link against an MSVC CRT/SDK splatted
+    # by xwin, via makefiles/toolchain-win64-clang-cl.cmake. create-release.sh
+    # mounts the host's ~/.xwin at /opt/xwin when it exists; without it this job
+    # splats a fresh copy (~630MB download).
+    needs: setup
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    env:
+      XWIN_VERSION: "0.6.6"
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          submodules: "recursive"
+
+      # Needs LLVM >= 19: the xwin MSVC STL static_asserts "STL1000: Unexpected
+      # compiler version, expected Clang 19.0.0 or newer", and noble's default
+      # clang is 18. 20 is in the noble archive. The toolchain file falls back
+      # to llvm-ml --m64 since llvm-20 does not package the llvm-ml64 alias.
+      # Every LLVM install carries the tools under /usr/lib/llvm-<N>/bin with
+      # plain names; only the /usr/bin symlinks are distro-dependent, so resolve
+      # a bin directory.
+      - name: Install the LLVM cross toolchain
+        id: llvm
+        run: |
+          set -euo pipefail
+          sudo=$(command -v sudo || true)
+          $sudo apt-get update -qq
+          $sudo apt-get install -y -qq clang-20 lld-20 llvm-20 cmake ninja-build
+
+          tools="clang-cl lld-link llvm-lib llvm-rc llvm-mt llvm-ml llvm-readobj"
+          binDir=""
+          while IFS= read -r dir; do
+            complete=1
+            for tool in $tools; do
+              [ -x "$dir/$tool" ] || complete=0
+            done
+            if [ "$complete" = 1 ]; then binDir=$dir; break; fi
+          done < <(find /usr/lib -mindepth 2 -maxdepth 2 -type d -path '/usr/lib/llvm-*/bin' | sort -V | tac)
+          if [ -z "$binDir" ]; then
+            echo "::error::No LLVM install has the full cross toolchain ($tools)."
+            exit 1
+          fi
+          "$binDir/clang-cl" --version
+          echo "binDir=$binDir" >> "$GITHUB_OUTPUT"
+
+      - name: Splat the MSVC CRT and Windows SDK
+        id: xwin
+        run: |
+          set -euo pipefail
+          if [ -d /opt/xwin/crt/include ]; then
+            echo "root=/opt/xwin" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          cd "${{ runner.temp }}"
+          curl -fsSL -o xwin.tar.gz \
+            "https://github.com/Jake-Shadle/xwin/releases/download/${XWIN_VERSION}/xwin-${XWIN_VERSION}-x86_64-unknown-linux-musl.tar.gz"
+          tar xzf xwin.tar.gz
+          "xwin-${XWIN_VERSION}-x86_64-unknown-linux-musl/xwin" \
+            --accept-license --arch x86_64 splat --output "${{ runner.temp }}/xwin"
+          rm -rf .xwin-cache xwin.tar.gz "xwin-${XWIN_VERSION}-x86_64-unknown-linux-musl"
+          echo "root=${{ runner.temp }}/xwin" >> "$GITHUB_OUTPUT"
+
+      # Build outside the workspace: act copies the local working tree, and a
+      # host build-win64/ with its CMakeCache.txt could come along with it.
+      - name: Build
+        run: |
+          cmake -S . -B "${{ runner.temp }}/build-win64" -G Ninja \
+            -DCMAKE_TOOLCHAIN_FILE=makefiles/toolchain-win64-clang-cl.cmake \
+            -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }} \
+            -DLLVM_TOOLCHAIN_BIN='${{ steps.llvm.outputs.binDir }}' \
+            -DXWIN_ROOT='${{ steps.xwin.outputs.root }}'
+          cmake --build "${{ runner.temp }}/build-win64" -j"$(nproc)"
+
+      # Metamod loads the plugin through CreateInterface and the managed host
+      # calls in through InvokeNative; a DLL without either links but is useless.
+      - name: Check exports and stage
+        run: |
+          set -euo pipefail
+          build="${{ runner.temp }}/build-win64"
+          dll="$build/counterstrikesharp.dll"
+          for symbol in CreateInterface InvokeNative; do
+            "${{ steps.llvm.outputs.binDir }}/llvm-readobj" --coff-exports "$dll" | grep -q "Name: $symbol\$" || {
+              echo "::error::$symbol is not exported"
+              exit 1
+            }
+          done
+          mkdir -p "$build/output/addons/counterstrikesharp/bin/win64"
+          cp -r "$build/addons/." "$build/output/addons/"
+          cp "$dll" "$build/output/addons/counterstrikesharp/bin/win64/"
+
+      - uses: actions/upload-artifact@v5
+        with:
+          name: counterstrikesharp-windows-${{ needs.setup.outputs.gitversion_semver }}
+          path: ${{ runner.temp }}/build-win64/output/
 
   tests_cpp:
     # Host-arch unit tests for src/core/tests/*. Runs on plain ubuntu-latest
@@ -229,7 +327,7 @@ jobs:
     if: ${{ github.event.inputs.confirm_local == 'LOCAL' && github.repository == 'mrc4tt/CounterStrikeSharp' }}
     permissions:
       contents: write
-    needs: ["setup", "build_linux", "build_managed"]
+    needs: ["setup", "build_linux", "build_windows", "build_managed"]
     runs-on: ubuntu-latest
     steps:
       - name: Prepare env
@@ -248,25 +346,26 @@ jobs:
 
       - uses: actions/download-artifact@v6
         with:
+          name: counterstrikesharp-windows-${{ needs.setup.outputs.gitversion_semver }}
+          path: build/windows
+
+      - uses: actions/download-artifact@v6
+        with:
           name: counterstrikesharp-api-${{ needs.setup.outputs.gitversion_semver }}
           path: build/api
 
-      - name: Add API to Linux artifacts
+      - name: Add API to Linux and Windows artifacts
         run: |
-          mkdir -p build/linux/addons/counterstrikesharp/api
-          cp -r build/api/net10.0/publish/* build/linux/addons/counterstrikesharp/api
-          cp -r build/api/raytrace/* build/linux/addons/counterstrikesharp/
+          for os in linux windows; do
+            mkdir -p build/$os/addons/counterstrikesharp/api
+            cp -r build/api/net10.0/publish/* build/$os/addons/counterstrikesharp/api
+            cp -r build/api/raytrace/* build/$os/addons/counterstrikesharp/
+          done
 
-      # The shipped .so loses its symbol table (~2 MB of the 6.8 MB); the symbols ride along as
-      # a separate release asset, linked by .gnu_debuglink, so a native crash address from a
-      # server can still be symbolized: put the .debug file next to the .so for gdb, or run
-      # `addr2line -e counterstrikesharp.so.debug <offset>`.
-      - name: Split native debug symbols
-        run: |
-          so=build/linux/addons/counterstrikesharp/bin/linuxsteamrt64/counterstrikesharp.so
-          objcopy --only-keep-debug "$so" counterstrikesharp-linux-${{ needs.setup.outputs.gitversion_semver }}.so.debug
-          strip --strip-unneeded "$so"
-          objcopy --add-gnu-debuglink=counterstrikesharp-linux-${{ needs.setup.outputs.gitversion_semver }}.so.debug "$so"
+      # The shipped .so loses its symbol table (~2 MB of the 6.8 MB). No separate
+      # .so.debug is published any more.
+      - name: Strip native symbols
+        run: strip --strip-unneeded build/linux/addons/counterstrikesharp/bin/linuxsteamrt64/counterstrikesharp.so
 
       - name: Zip Linux (runtimeless)
         run: (cd build/linux && zip -qq -r ../../counterstrikesharp-linux-${{ needs.setup.outputs.gitversion_semver }}.zip ./*)
@@ -293,6 +392,27 @@ jobs:
           rm -rf build/linux/addons/counterstrikesharp/dotnet/shared/Microsoft.AspNetCore.App
           (cd build/linux && zip -qq -r ../../counterstrikesharp-with-runtime-slim-linux-${{ needs.setup.outputs.gitversion_semver }}.zip ./*)
 
+      - name: Zip Windows (runtimeless)
+        run: (cd build/windows && zip -qq -r ../../counterstrikesharp-windows-${{ needs.setup.outputs.gitversion_semver }}.zip ./*)
+
+      # Same reasoning as the Linux runtime step: drop the crash-dump/debugger-only files.
+      - name: Add dotnet runtime (Windows)
+        run: |
+          mkdir -p build/windows/addons/counterstrikesharp/dotnet
+          curl -fsSL -o dotnet-win.zip https://builds.dotnet.microsoft.com/dotnet/aspnetcore/Runtime/10.0.3/aspnetcore-runtime-10.0.3-win-x64.zip
+          unzip -qq dotnet-win.zip -d build/windows/addons/counterstrikesharp/dotnet
+          rm -f dotnet-win.zip
+          find build/windows/addons/counterstrikesharp/dotnet -type f \
+            \( -name createdump.exe -o -name 'mscordaccore*.dll' -o -name mscordbi.dll \) -delete
+
+      - name: Zip Windows (with runtime)
+        run: (cd build/windows && zip -qq -r ../../counterstrikesharp-with-runtime-windows-${{ needs.setup.outputs.gitversion_semver }}.zip ./*)
+
+      - name: Zip Windows (with slim runtime)
+        run: |
+          rm -rf build/windows/addons/counterstrikesharp/dotnet/shared/Microsoft.AspNetCore.App
+          (cd build/windows && zip -qq -r ../../counterstrikesharp-with-runtime-slim-windows-${{ needs.setup.outputs.gitversion_semver }}.zip ./*)
+
       - name: Generate a changelog
         uses: orhun/git-cliff-action@v4
         id: git-cliff
@@ -313,4 +433,6 @@ jobs:
             counterstrikesharp-linux-${{ needs.setup.outputs.gitversion_semver }}.zip
             counterstrikesharp-with-runtime-linux-${{ needs.setup.outputs.gitversion_semver }}.zip
             counterstrikesharp-with-runtime-slim-linux-${{ needs.setup.outputs.gitversion_semver }}.zip
-            counterstrikesharp-linux-${{ needs.setup.outputs.gitversion_semver }}.so.debug
+            counterstrikesharp-windows-${{ needs.setup.outputs.gitversion_semver }}.zip
+            counterstrikesharp-with-runtime-windows-${{ needs.setup.outputs.gitversion_semver }}.zip
+            counterstrikesharp-with-runtime-slim-windows-${{ needs.setup.outputs.gitversion_semver }}.zip

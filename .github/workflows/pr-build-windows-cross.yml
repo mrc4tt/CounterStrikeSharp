@@ -1,15 +1,15 @@
 name: PR build - Windows (cross)
 
-# Windows release artifacts come from build-windows.yml, which runs on a real
-# MSVC toolchain but only on tags. That left every PR unable to say whether it
-# broke the Windows build until release day.
+# Windows release artifacts are cross-built locally at release time
+# (the build_windows job in build-and-publish.yml, run by create-release.sh via
+# act). That would leave every PR unable to say whether it broke the Windows
+# build until release day.
 #
-# This job cross-compiles counterstrikesharp.dll on an ubuntu runner with
-# clang-cl/lld-link against an MSVC CRT and Windows SDK fetched by xwin. It is a
-# compile-and-link check, not a release build: clang-cl and MSVC differ in
-# codegen and in ABI corners, and nothing here runs the DLL. It catches the
-# common breakage -- a header, API or link change that only Windows sees --
-# minutes after a push instead of at tag time.
+# This job cross-compiles counterstrikesharp.dll on an ubuntu runner with the
+# same clang-cl/lld-link toolchain, against an MSVC CRT and Windows SDK fetched
+# by xwin. It is a compile-and-link check only; nothing here runs the DLL. It
+# catches the common breakage -- a header, API or link change that only Windows
+# sees -- minutes after a push instead of at release time.
 
 on:
   pull_request:
