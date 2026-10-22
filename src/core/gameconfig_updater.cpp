@@ -290,7 +290,7 @@ FetchResult Fetch(const ParsedUrl& url, const std::string&, const std::string& k
 
     httplib::Client client(url.origin);
     client.set_follow_location(true);
-    client.set_connection_timeout(std::min(kConnectTimeoutSeconds, budget), 0);
+    client.set_connection_timeout((std::min)(kConnectTimeoutSeconds, budget), 0);
     client.set_read_timeout(budget, 0);
 
     httplib::Headers headers;
