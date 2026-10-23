@@ -1,3 +1,6 @@
+## What's Changed in v1.0.410
+* fix(deps): KHook vtable index on clang-cl Windows builds ([acedb2b](https://github.com/mrc4tt/CounterStrikeSharp/commit/acedb2bd8bf763db957e39c560953b7ce5a8af5f))
+
 ## What's Changed in v1.0.409
 * build(deps): use mrc4tt/metamod-source cs2-pre-s2sdk ([9b87337](https://github.com/mrc4tt/CounterStrikeSharp/commit/9b87337b48ff0919b56bd64f05eed523c67ab78a))
 * gamedata: 14192 (auto-generated from CS2_VibeSignatures) ([0892ffb](https://github.com/mrc4tt/CounterStrikeSharp/commit/0892ffbd0fe083931387783a18cf824c1819a6a1))
