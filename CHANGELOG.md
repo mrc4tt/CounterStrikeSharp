@@ -1,3 +1,10 @@
+## What's Changed in v1.0.409
+* build(deps): use mrc4tt/metamod-source cs2-pre-s2sdk ([9b87337](https://github.com/mrc4tt/CounterStrikeSharp/commit/9b87337b48ff0919b56bd64f05eed523c67ab78a))
+* gamedata: 14192 (auto-generated from CS2_VibeSignatures) ([0892ffb](https://github.com/mrc4tt/CounterStrikeSharp/commit/0892ffbd0fe083931387783a18cf824c1819a6a1))
+* fix(sdk): IVEngineServer2 vtable shift for CS2 1.41.9.2 ([d594420](https://github.com/mrc4tt/CounterStrikeSharp/commit/d594420005383ab40177da89ac6fe2c0cb1ba1cc))
+* ci(release): cross-build Windows under act, drop MSVC workflow ([ed5d0cf](https://github.com/mrc4tt/CounterStrikeSharp/commit/ed5d0cf1fe29fd418c56cc545362ecc3773104b5))
+* fix(gamedata): parenthesize std::min against windows.h min macro ([ccf01b7](https://github.com/mrc4tt/CounterStrikeSharp/commit/ccf01b7b7b6dd7d69ddbfb73e0bbbae604b9b459))
+
 ## What's Changed in v1.0.408
 * fix(plugins): load plugins and shared libraries into memory again ([8d1c471](https://github.com/mrc4tt/CounterStrikeSharp/commit/8d1c47180010b2fc9f5d5aedc16000afc5d5fb57))
 * fix(plugins): survive unreadable plugin metadata, reload from disk ([8f9244b](https://github.com/mrc4tt/CounterStrikeSharp/commit/8f9244b7e876360db53ee895ded0f7aefee27a38))
