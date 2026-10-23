@@ -1,4 +1,5 @@
 ## What's Changed in v1.0.410
+* fix(core): drop RTTI type descriptor debug print on Windows ([24c811e](https://github.com/mrc4tt/CounterStrikeSharp/commit/24c811e4d4cf3f083fd7f8aa90bcc640e1bbfe5e))
 * fix(deps): KHook vtable index on clang-cl Windows builds ([acedb2b](https://github.com/mrc4tt/CounterStrikeSharp/commit/acedb2bd8bf763db957e39c560953b7ce5a8af5f))
 
 ## What's Changed in v1.0.409
