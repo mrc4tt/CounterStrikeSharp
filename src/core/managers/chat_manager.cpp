@@ -17,9 +17,10 @@
 #include "core/managers/chat_manager.h"
 
 #include <igameevents.h>
-#include <public/eiface.h>
+#include <engine2/ivengineserver2.h>
+#include <engine2/isource2server.h>
 
-#include "characterset.h"
+#include "tier0/utlbuffer.h"
 #include "core/coreconfig.h"
 #include "core/gameconfig.h"
 #include "core/log.h"

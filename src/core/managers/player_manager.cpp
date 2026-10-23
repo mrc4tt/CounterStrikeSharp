@@ -33,15 +33,17 @@
 #include "core/managers/con_command_manager.h"
 #include "core/managers/voice_manager.h"
 
-#include <public/eiface.h>
+#include <engine2/ivengineserver2.h>
+#include <engine2/isource2server.h>
 #include <public/inetchannelinfo.h>
-#include <public/iserver.h>
+#include <engine2/inetworkgameserver.h>
+#include <engine2/inetworkserverservice.h>
 
 #include "core/log.h"
 #include "core/timer_system.h"
 #include "scripting/callback_manager.h"
 #include "player_manager.h"
-#include <entity2/entitysystem.h>
+#include <gameentitysystem.h>
 #include "entity/dump.h"
 #include <vprof.h>
 // extern CEntitySystem *g_pEntitySystem;

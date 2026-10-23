@@ -22,7 +22,8 @@
 #include "core/recipientfilters.h"
 #include "core/cs2_sdk/entity/dump.h"
 #include <vector>
-#include <public/eiface.h>
+#include <engine2/ivengineserver2.h>
+#include <engine2/isource2server.h>
 #include "scripting/callback_manager.h"
 
 namespace counterstrikesharp {

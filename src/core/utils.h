@@ -1,6 +1,7 @@
 #pragma once
 
-#include <public/eiface.h>
+#include <engine2/ivengineserver2.h>
+#include <engine2/isource2server.h>
 #include <string>
 #include <filesystem>
 #include <regex>

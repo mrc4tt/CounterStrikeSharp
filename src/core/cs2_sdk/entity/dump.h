@@ -2,8 +2,8 @@
 #include "core/gameconfig.h"
 #include "core/globals.h"
 #include "public/gametrace.h"
-#include "public/variant.h"
-#include "entity2/entitysystem.h"
+#include "entity2/variant.h"
+#include "gameentitysystem.h"
 #include "game/shared/ehandle.h"
 
 class CGameSceneNode;
@@ -82,11 +82,6 @@ enum class EntityPlatformTypes_t : uint8
     ENTITY_PLATFORM_PLAYER_IGNORES_YAW = 2,
 };
 
-class CEntityIOOutput
-{
-    DECLARE_SCHEMA_CLASS(CEntityIOOutput)
-};
-
 class CNetworkVelocityVector
 {
     DECLARE_SCHEMA_CLASS(CNetworkVelocityVector)
@@ -152,7 +147,6 @@ class CBaseEntity : public CEntityInstance
     SCHEMA_FIELD(uint32, m_spawnflags)
     SCHEMA_FIELD(GameTick_t, m_nNextThinkTick)
     SCHEMA_FIELD(int32, m_nSimulationTick)
-    SCHEMA_FIELD(CEntityIOOutput, m_OnKilled)
     SCHEMA_FIELD(uint32, m_fFlags)
     SCHEMA_FIELD(Vector, m_vecAbsVelocity)
     SCHEMA_FIELD(CNetworkVelocityVector, m_vecVelocity)
@@ -173,10 +167,6 @@ class CBaseEntity : public CEntityInstance
     SCHEMA_FIELD(bool, m_bDisableLowViolence)
     SCHEMA_FIELD(uint8, m_nWaterType)
     SCHEMA_FIELD(int32, m_iEFlags)
-    SCHEMA_FIELD(CEntityIOOutput, m_OnUser1)
-    SCHEMA_FIELD(CEntityIOOutput, m_OnUser2)
-    SCHEMA_FIELD(CEntityIOOutput, m_OnUser3)
-    SCHEMA_FIELD(CEntityIOOutput, m_OnUser4)
     SCHEMA_FIELD(int32, m_iInitialTeamNum)
     SCHEMA_FIELD(GameTime_t, m_flNavIgnoreUntilTime)
     SCHEMA_FIELD(QAngle, m_vecAngVelocity)
@@ -459,7 +449,6 @@ class CBaseModelEntity : public CBaseEntity
 {
     DECLARE_SCHEMA_CLASS(CBaseModelEntity)
 
-    SCHEMA_FIELD(CHitboxComponent, m_CHitboxComponent)
     SCHEMA_FIELD(HitGroup_t, m_nDestructiblePartInitialStateDestructed0)
     SCHEMA_FIELD(HitGroup_t, m_nDestructiblePartInitialStateDestructed1)
     SCHEMA_FIELD(HitGroup_t, m_nDestructiblePartInitialStateDestructed2)
@@ -468,7 +457,6 @@ class CBaseModelEntity : public CBaseEntity
     SCHEMA_FIELD(int32, m_nLastHitDestructiblePartIndex)
     SCHEMA_FIELD(HitGroup_t, m_LastHitGroup)
     SCHEMA_FIELD(GameTime_t, m_flDissolveStartTime)
-    SCHEMA_FIELD(CEntityIOOutput, m_OnIgnite)
     SCHEMA_FIELD(RenderMode_t, m_nRenderMode)
     SCHEMA_FIELD(RenderFx_t, m_nRenderFX)
     SCHEMA_FIELD(bool, m_bAllowFadeInView)
@@ -752,7 +740,6 @@ class CCSPlayerPawnBase : public CBasePlayerPawn
 {
     DECLARE_SCHEMA_CLASS(CCSPlayerPawnBase)
 
-    SCHEMA_FIELD(CTouchExpansionComponent, m_CTouchExpansionComponent)
     SCHEMA_FIELD(GameTime_t, m_blindUntilTime)
     SCHEMA_FIELD(GameTime_t, m_blindStartTime)
     SCHEMA_FIELD(CSPlayerState, m_iPlayerState)

@@ -25,7 +25,7 @@
 #include "const.h"
 #include "mathlib/mathlib.h"
 #include "entity2/entityinstance.h"
-#include "entity2/entitysystem.h"
+#include "gameentitysystem.h"
 #include "entityhandle.h"
 
 namespace counterstrikesharp {

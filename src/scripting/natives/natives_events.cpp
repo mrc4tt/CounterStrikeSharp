@@ -21,6 +21,7 @@
 
 #include "scripting/autonative.h"
 #include "igameevents.h"
+#include "gameentitysystem.h"
 
 namespace counterstrikesharp {
 
@@ -271,7 +272,10 @@ static void SetEntityIndex(ScriptContext& scriptContext)
 
     if (gameEvent != nullptr)
     {
-        gameEvent->SetEntity(keyName, CEntityIndex{ index });
+        // The engine's overload takes a CEntityHandle, not an index (the old SDK
+        // declared it as CEntityIndex, so this used to pass the raw index as a handle).
+        CEntityInstance* pEntity = globals::entitySystem ? globals::entitySystem->GetEntityInstance(CEntityIndex{ index }) : nullptr;
+        gameEvent->SetEntity(keyName, pEntity ? pEntity->GetRefEHandle() : CEntityHandle());
     }
 }
 

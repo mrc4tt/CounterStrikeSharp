@@ -23,7 +23,7 @@
 
 #include "core/globals.h"
 #include "core/managers/player_manager.h"
-#include <entity2/entitysystem.h>
+#include <gameentitysystem.h>
 #include "entity/dump.h"
 
 namespace counterstrikesharp::crash {

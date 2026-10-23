@@ -14,8 +14,10 @@
  *  along with VSP.NET.  If not, see <https://www.gnu.org/licenses/>. *
  */
 
-#include <eiface.h>
+#include <engine2/ivengineserver2.h>
+#include <engine2/isource2server.h>
 #include <networksystem/inetworkmessages.h>
+#include <tier0/icvar.h>
 
 #include "core/log.h"
 #include "core/managers/con_command_manager.h"

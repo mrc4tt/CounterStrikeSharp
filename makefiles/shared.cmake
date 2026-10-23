@@ -53,6 +53,7 @@ include_directories(
     ${SOURCESDK}/game/server
     ${SOURCESDK}/public
     ${SOURCESDK}/public/engine
+    ${SOURCESDK}/public/engine2
     ${SOURCESDK}/public/mathlib
     ${SOURCESDK}/public/tier0
     ${SOURCESDK}/public/tier1

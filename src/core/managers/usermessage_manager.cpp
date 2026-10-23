@@ -16,8 +16,9 @@
 
 #include "core/managers/usermessage_manager.h"
 
-#include <entity2/entitysystem.h>
-#include <public/eiface.h>
+#include <gameentitysystem.h>
+#include <engine2/ivengineserver2.h>
+#include <engine2/isource2server.h>
 
 #include "core/UserMessage.h"
 #include "core/log.h"

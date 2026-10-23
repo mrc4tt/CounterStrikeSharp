@@ -38,17 +38,19 @@
 #include "core/tick_scheduler.h"
 #include "core/timer_system.h"
 #include "core/utils.h"
-#include "entity2/entitysystem.h"
-#include <public/eiface.h>
+#include "gameentitysystem.h"
+#include <engine2/ivengineserver2.h>
+#include <engine2/isource2server.h>
 #include "igameeventsystem.h"
 #include "interfaces/cs2_interfaces.h"
-#include "iserver.h"
+#include "engine2/inetworkgameserver.h"
+#include "engine2/inetworkserverservice.h"
 #include "scripting/callback_manager.h"
 #include "scripting/dotnet_host.h"
 #include "scripting/script_engine.h"
 #include "tier0/vprof.h"
 #include "tier0/icommandline.h"
-#include "tier1/utlstringtoken.h"
+#include "tier0/utlstringtoken.h"
 #include <convar.h>
 
 DLL_IMPORT ICommandLine* CommandLine();
@@ -62,7 +64,10 @@ void* g_pCGameEventManagerVTable = nullptr;
 
 counterstrikesharp::GlobalClass* counterstrikesharp::GlobalClass::head = nullptr;
 
-CGameEntitySystem* GameEntitySystem() { return counterstrikesharp::globals::entitySystem; }
+// GameEntitySystem() is defined by the SDK now (entity2/entitysystem.cpp), reading
+// CGameResourceService::m_pEntityResourceManifestHandler at the SDK's layout offset.
+// globals::entitySystem still comes from the gamedata "GameEntitySystem" offset;
+// Hook_StartupServer logs if the two ever disagree.
 
 // TODO: Workaround for windows, we __MUST__ have COUNTERSTRIKESHARP_API to handle it.
 // like on windows it should be `extern "C" __declspec(dllexport)`, on linux it should be anything else.
@@ -306,6 +311,11 @@ KHook::Return<void> CounterStrikeSharpMMPlugin::Hook_StartupServer(INetworkServe
 {
     CSSHARP_CORE_DEBUG("Hook_StartupServer fired (pGameResourceServiceServer={})", (void*)interfaces::pGameResourceServiceServer);
     globals::entitySystem = interfaces::pGameResourceServiceServer->GetGameEntitySystem();
+    if (globals::entitySystem != GameEntitySystem())
+    {
+        CSSHARP_CORE_CRITICAL("GameEntitySystem mismatch: gamedata offset gives {}, SDK layout gives {}", (void*)globals::entitySystem,
+                              (void*)GameEntitySystem());
+    }
     // Remove before adding to prevent double-registration when workshop addon changes
     // trigger a second StartupServer within the same map session (ss_dead cycle).
     globals::entitySystem->RemoveListenerEntity(&globals::entityManager.entityListener);
