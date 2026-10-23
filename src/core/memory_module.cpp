@@ -923,8 +923,6 @@ void* CModule::FindVirtualTable(const std::string& name)
 
     const uint32_t rttiTDRva = (uintptr_t)typeDescriptor - (uintptr_t)m_base;
 
-    ConMsg("RTTI Type Descriptor RVA: 0x%p\n", rttiTDRva);
-
     SignatureIterator sigIt2(readOnlyData->m_pBase, readOnlyData->m_iSize, (const byte*)&rttiTDRva, sizeof(uint32_t));
 
     while (void* completeObjectLocator = sigIt2.FindNext(false))
