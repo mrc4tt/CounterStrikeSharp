@@ -1,3 +1,10 @@
+## What's Changed in v1.0.411
+* build(api): re-enable ApiCompat against the v1.0.410 fork release ([5fba902](https://github.com/mrc4tt/CounterStrikeSharp/commit/5fba9026cf8c701fee7272895b55bfcf55ded761))
+* fix(core): refuse an implausible SteamID instead of crashing on auth ([5ff9acd](https://github.com/mrc4tt/CounterStrikeSharp/commit/5ff9acd5b2cbe476dda74e26969d8292382af63c))
+* chore(deps): drop vendored httplib ([c6b2003](https://github.com/mrc4tt/CounterStrikeSharp/commit/c6b20036282094ba03577ef6a4a3d22c5bc4c2ba))
+* feat(gamedata): https auto-update on Windows via WinHTTP ([f43096b](https://github.com/mrc4tt/CounterStrikeSharp/commit/f43096b302acc28b4b22be9d5f58638f6d494354))
+* ci(release): pass SEMVER/GITHUB_SHA_SHORT to the Windows build ([89af250](https://github.com/mrc4tt/CounterStrikeSharp/commit/89af2503c5dad4a0efbd56d2710dfce729ea449f))
+
 ## What's Changed in v1.0.410
 * fix(core): drop RTTI type descriptor debug print on Windows ([24c811e](https://github.com/mrc4tt/CounterStrikeSharp/commit/24c811e4d4cf3f083fd7f8aa90bcc640e1bbfe5e))
 * fix(deps): KHook vtable index on clang-cl Windows builds ([acedb2b](https://github.com/mrc4tt/CounterStrikeSharp/commit/acedb2bd8bf763db957e39c560953b7ce5a8af5f))
