@@ -125,6 +125,14 @@ jobs:
             echo "has_changes=false" >> "$GITHUB_OUTPUT"
           fi
 
+      # The API build runs ApiCompat against the last fork release. Schema members the
+      # game removed or retyped are real breaks for plugins using them, but they are not
+      # ours to undo: record them in CompatibilitySuppressions.xml so the schema PR builds
+      # and its diff lists exactly what broke.
+      - name: Record schema API breaks
+        if: steps.changes.outputs.has_changes == 'true'
+        run: dotnet build managed/CounterStrikeSharp.API/CounterStrikeSharp.API.csproj -c Release -p:ApiCompatGenerateSuppressionFile=true
+
       # A PR pushed with GITHUB_TOKEN gets its pull_request runs parked as
       # "action required" until someone approves them, and they expire as
       # failures if nobody does. Pushing as the schema-bot GitHub App instead
@@ -155,6 +163,7 @@ jobs:
             - Updated schema definitions from the game server
             - Regenerated schema code using `CounterStrikeSharp.SchemaGen`
             - Patch Version: `${{ steps.version.outputs.patch_version }}`
+            - Public API members the game removed or changed are listed in `CompatibilitySuppressions.xml` (ApiCompat against the last fork release)
 
             ---
             *This is an automated PR. Please review the changes before merging.*
