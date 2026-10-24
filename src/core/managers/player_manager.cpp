@@ -515,6 +515,31 @@ PlayerManager::PlayerManager()
     memset(m_user_id_lookup, 0, sizeof(int) * (USHRT_MAX + 1));
 }
 
+// CS2 1.41.9.2 inserted a virtual into IVEngineServer2 ahead of GetAppID without bumping the
+// interface version, so a build compiled against the older SDK called GetAppID where it meant
+// GetClientSteamID and stored 730 as a CSteamID pointer. OnAuthorized and every admin check then
+// dereferenced address 0x2DA and segfaulted the server. A pointer this small cannot be a real
+// one, and a real SteamID of a human client is always a valid individual account; anything else
+// means the compiled SDK does not match the engine. The player is left unauthorized (admin checks
+// fail closed) instead of crashing, and the mismatch is logged once.
+static bool IsPlausibleSteamId(const CSteamID* steamId)
+{
+    if (!steamId) return false; // the engine has none yet
+
+    if (reinterpret_cast<uintptr_t>(steamId) >= 0x10000 && steamId->IsValid() && steamId->BIndividualAccount()) return true;
+
+    static bool reported = false;
+    if (!reported)
+    {
+        reported = true;
+        CSSHARP_CORE_ERROR("IVEngineServer2::GetClientSteamID returned {} (not a valid SteamID): the hl2sdk this build was compiled "
+                           "against does not match the engine's vtable layout. Players will not be authorized; update "
+                           "CounterStrikeSharp or rebuild it against a matching hl2sdk.",
+                           static_cast<const void*>(steamId));
+    }
+    return false;
+}
+
 void PlayerManager::RunAuthChecks()
 {
     if (globals::timerSystem.GetTickedTime() - m_last_auth_check_time < 0.5F)
@@ -532,8 +557,11 @@ void PlayerManager::RunAuthChecks()
 
             if (globals::engine->IsClientFullyAuthenticated(i))
             {
+                const CSteamID* steamId = globals::engine->GetClientSteamID(i);
+                if (!IsPlausibleSteamId(steamId)) continue; // stays unauthorized; retried next check
+
                 m_players[i].Authorize();
-                m_players[i].SetSteamId(globals::engine->GetClientSteamID(i));
+                m_players[i].SetSteamId(steamId);
                 OnAuthorized(&m_players[i]);
             }
         }
