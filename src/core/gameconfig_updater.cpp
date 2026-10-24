@@ -15,6 +15,7 @@
 #include <filesystem>
 #include <fstream>
 #include <iterator>
+#include <memory>
 #include <optional>
 #include <string>
 #include <vector>
@@ -22,7 +23,11 @@
 #include <nlohmann/json.hpp>
 
 #ifdef _WIN32
-#include "httplib/httplib.h"
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
+#include <windows.h>
+#include <winhttp.h>
 #else
 #include <dlfcn.h>
 #endif
@@ -270,8 +275,39 @@ FetchResult Fetch(const ParsedUrl&, const std::string& fullUrl, const std::strin
 
 #else
 
-// The Windows build has no TLS backend for httplib, so only http:// URLs work there.
-FetchResult Fetch(const ParsedUrl& url, const std::string&, const std::string& knownETag)
+// WinHTTP ships with every Windows install and uses the system certificate store, so https
+// works without bundling a TLS library -- the Windows counterpart of loading the Steam
+// Runtime's libcurl on Linux. Redirects are followed by WinHTTP's default policy, which
+// refuses an https -> http downgrade.
+namespace winhttp {
+struct HandleCloser
+{
+    void operator()(void* handle) const { WinHttpCloseHandle(handle); }
+};
+using Handle = std::unique_ptr<void, HandleCloser>;
+
+std::wstring Widen(const std::string& text)
+{
+    if (text.empty()) return {};
+    int length = MultiByteToWideChar(CP_UTF8, 0, text.data(), static_cast<int>(text.size()), nullptr, 0);
+    std::wstring wide(length, L'\0');
+    MultiByteToWideChar(CP_UTF8, 0, text.data(), static_cast<int>(text.size()), wide.data(), length);
+    return wide;
+}
+
+std::string Narrow(const std::wstring& text)
+{
+    if (text.empty()) return {};
+    int length = WideCharToMultiByte(CP_UTF8, 0, text.data(), static_cast<int>(text.size()), nullptr, 0, nullptr, nullptr);
+    std::string narrow(length, '\0');
+    WideCharToMultiByte(CP_UTF8, 0, text.data(), static_cast<int>(text.size()), narrow.data(), length, nullptr, nullptr);
+    return narrow;
+}
+
+std::string Failed(const char* call) { return std::string(call) + " failed (WinHTTP error " + std::to_string(GetLastError()) + ")"; }
+} // namespace winhttp
+
+FetchResult Fetch(const ParsedUrl& url, const std::string& fullUrl, const std::string& knownETag)
 {
     FetchResult result;
 
@@ -282,32 +318,117 @@ FetchResult Fetch(const ParsedUrl& url, const std::string&, const std::string& k
         return result;
     }
 
-    if (url.scheme != "http")
+    auto wideUrl = winhttp::Widen(fullUrl);
+    URL_COMPONENTS parts{};
+    parts.dwStructSize = sizeof(parts);
+    parts.dwHostNameLength = static_cast<DWORD>(-1);
+    parts.dwUrlPathLength = static_cast<DWORD>(-1);
+    parts.dwExtraInfoLength = static_cast<DWORD>(-1);
+    if (!WinHttpCrackUrl(wideUrl.c_str(), static_cast<DWORD>(wideUrl.size()), 0, &parts))
     {
-        result.error = "https is not supported by the Windows build; use an http:// AutoUpdateURL";
+        result.error = winhttp::Failed("WinHttpCrackUrl");
+        return result;
+    }
+    std::wstring host(parts.lpszHostName, parts.dwHostNameLength);
+    std::wstring path(parts.lpszUrlPath, parts.dwUrlPathLength);
+    if (parts.lpszExtraInfo) path.append(parts.lpszExtraInfo, parts.dwExtraInfoLength);
+    if (path.empty()) path = L"/";
+
+    winhttp::Handle session(WinHttpOpen(L"CounterStrikeSharp-gamedata-updater", WINHTTP_ACCESS_TYPE_DEFAULT_PROXY, WINHTTP_NO_PROXY_NAME,
+                                        WINHTTP_NO_PROXY_BYPASS, 0));
+    if (!session)
+    {
+        result.error = winhttp::Failed("WinHttpOpen");
         return result;
     }
 
-    httplib::Client client(url.origin);
-    client.set_follow_location(true);
-    client.set_connection_timeout((std::min)(kConnectTimeoutSeconds, budget), 0);
-    client.set_read_timeout(budget, 0);
+    // WinHTTP has no whole-transfer timeout: each phase gets the remaining budget, and the
+    // read loop below checks the deadline between chunks.
+    const int budgetMs = static_cast<int>(budget * 1000);
+    WinHttpSetTimeouts(session.get(), budgetMs, static_cast<int>((std::min)(kConnectTimeoutSeconds, budget) * 1000), budgetMs, budgetMs);
 
-    httplib::Headers headers;
-    if (!knownETag.empty()) headers.emplace("If-None-Match", knownETag);
+    DWORD maxRedirects = 5;
+    WinHttpSetOption(session.get(), WINHTTP_OPTION_MAX_HTTP_AUTOMATIC_REDIRECTS, &maxRedirects, sizeof(maxRedirects));
 
-    auto res = client.Get(url.path, headers);
-    if (!res)
+    winhttp::Handle connection(WinHttpConnect(session.get(), host.c_str(), parts.nPort, 0));
+    if (!connection)
     {
-        result.error = httplib::to_string(res.error());
+        result.error = winhttp::Failed("WinHttpConnect");
         return result;
     }
 
-    result.status = res->status;
-    result.etag = res->get_header_value("ETag");
-    if (res->body.size() <= kMaxBodyBytes) result.body = std::move(res->body);
-    else
-        result.error = "response too large";
+    const DWORD flags = url.scheme == "https" ? WINHTTP_FLAG_SECURE : 0;
+    winhttp::Handle request(
+        WinHttpOpenRequest(connection.get(), L"GET", path.c_str(), nullptr, WINHTTP_NO_REFERER, WINHTTP_DEFAULT_ACCEPT_TYPES, flags));
+    if (!request)
+    {
+        result.error = winhttp::Failed("WinHttpOpenRequest");
+        return result;
+    }
+
+    std::wstring headers;
+    if (!knownETag.empty()) headers = L"If-None-Match: " + winhttp::Widen(knownETag);
+
+    if (!WinHttpSendRequest(request.get(), headers.empty() ? WINHTTP_NO_ADDITIONAL_HEADERS : headers.c_str(),
+                            headers.empty() ? 0 : static_cast<DWORD>(-1L), WINHTTP_NO_REQUEST_DATA, 0, 0, 0))
+    {
+        result.error = winhttp::Failed("WinHttpSendRequest");
+        return result;
+    }
+    if (!WinHttpReceiveResponse(request.get(), nullptr))
+    {
+        result.error = winhttp::Failed("WinHttpReceiveResponse");
+        return result;
+    }
+
+    // Both headers describe the final response of a redirect chain.
+    DWORD status = 0;
+    DWORD statusSize = sizeof(status);
+    if (!WinHttpQueryHeaders(request.get(), WINHTTP_QUERY_STATUS_CODE | WINHTTP_QUERY_FLAG_NUMBER, WINHTTP_HEADER_NAME_BY_INDEX, &status,
+                             &statusSize, WINHTTP_NO_HEADER_INDEX))
+    {
+        result.error = winhttp::Failed("WinHttpQueryHeaders");
+        return result;
+    }
+    result.status = static_cast<int>(status);
+
+    DWORD etagBytes = 0;
+    WinHttpQueryHeaders(request.get(), WINHTTP_QUERY_ETAG, WINHTTP_HEADER_NAME_BY_INDEX, WINHTTP_NO_OUTPUT_BUFFER, &etagBytes,
+                        WINHTTP_NO_HEADER_INDEX);
+    if (GetLastError() == ERROR_INSUFFICIENT_BUFFER && etagBytes > 0)
+    {
+        std::wstring etag(etagBytes / sizeof(wchar_t), L'\0');
+        if (WinHttpQueryHeaders(request.get(), WINHTTP_QUERY_ETAG, WINHTTP_HEADER_NAME_BY_INDEX, etag.data(), &etagBytes,
+                                WINHTTP_NO_HEADER_INDEX))
+        {
+            etag.resize(etagBytes / sizeof(wchar_t));
+            result.etag = winhttp::Narrow(etag);
+        }
+    }
+
+    char buffer[16 * 1024];
+    for (;;)
+    {
+        if (RemainingBudgetSeconds() == 0)
+        {
+            result.error = "update time budget spent";
+            return result;
+        }
+
+        DWORD read = 0;
+        if (!WinHttpReadData(request.get(), buffer, sizeof(buffer), &read))
+        {
+            result.error = winhttp::Failed("WinHttpReadData");
+            return result;
+        }
+        if (read == 0) break;
+        if (result.body.size() + read > kMaxBodyBytes)
+        {
+            result.error = "response too large";
+            return result;
+        }
+        result.body.append(buffer, read);
+    }
     return result;
 }
 
