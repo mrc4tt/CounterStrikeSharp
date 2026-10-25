@@ -15,6 +15,18 @@ Download the latest build from [here](https://github.com/mrc4tt/CounterStrikeSha
 
 Detailed installation instructions can be found in the [docs](https://docs.cssharp.dev/docs/guides/getting-started.html).
 
+## Support
+
+Need help, found a bug, or have a feature idea? Join the Discord support server:
+
+[![Discord](https://img.shields.io/badge/Discord-Join%20the%20server-5865F2?logo=discord&logoColor=white)](https://discord.gg/zuQN3U2ZEh)
+
+- **Questions and setup help:** ask in the support channels on Discord.
+- **Bug reports:** open a [GitHub issue](https://github.com/mrc4tt/CounterStrikeSharp/issues) with your server log, plugin version and steps to reproduce. Discord is fine for a quick check first.
+- **Feature requests:** post them on Discord or open an [issue](https://github.com/mrc4tt/CounterStrikeSharp/issues).
+
+Please do not send support requests by direct message. Asking in the public channels means others can help and find the answer later.
+
 ## What works?
 
 These features are the core of the platform and work pretty well/have a low risk of causing issues.
