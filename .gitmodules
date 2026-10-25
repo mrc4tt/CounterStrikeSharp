@@ -5,7 +5,7 @@
 [submodule "libraries/metamod-source"]
 	path = libraries/metamod-source
 	url = https://github.com/mrc4tt/metamod-source
-	branch = cs2-pre-s2sdk
+	branch = master
 [submodule "libraries/spdlog"]
 	path = libraries/spdlog
 	url = https://github.com/gabime/spdlog
