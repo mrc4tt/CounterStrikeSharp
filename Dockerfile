@@ -23,3 +23,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     rm -rf /var/lib/apt/lists/* && \
     ln -sf /usr/bin/clang-16 /usr/bin/clang && \
     ln -sf /usr/bin/clang++-16 /usr/bin/clang++
+
+# The source tree is bind-mounted from the host and owned by the host user, not
+# by root in here, so git refuses it ("detected dubious ownership"): submodule
+# commands fail and CMake's submodule check cannot run. This image only builds
+# the mounted checkout, so trust every path.
+RUN git config --system --add safe.directory '*'
