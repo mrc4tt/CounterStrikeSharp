@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.18)
 # You must set ASM, otherwise CMAKE_ASM_COMPILE_OBJECT will not work on MSVC
 project(counterstrikesharp C CXX ASM)
 
+include("makefiles/submodules.cmake")
 include("makefiles/shared.cmake")
 
 set(CMAKE_POLICY_VERSION_MINIMUM 3.5)
