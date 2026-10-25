@@ -19,12 +19,15 @@
 
 #include <ISmmPlugin.h>
 #include <functional>
-#include <eiface.h>
-#include <engine/IEngineService.h>
-#include <iserver.h>
+#include <engine2/isource2server.h>
+#include <engine2/ivengineserver2.h>
+#include <engine2/iengineservicemgr.h>
+#include <engine2/networkgameserverbase.h>
+#include <engine2/inetworkserverservice.h>
 #include <igameevents.h>
 #include <vector>
 #include "entitysystem.h"
+#include "gameentitysystem.h"
 #include "core/khook_verified.h"
 
 namespace counterstrikesharp {

@@ -2,7 +2,8 @@
 #include "core/globals.h"
 #include "core/managers/player_manager.h"
 #include "core/tick_scheduler.h"
-#include "iserver.h"
+#include <engine2/networkgameserverbase.h>
+#include <engine2/inetworkserverservice.h>
 #include "managers/event_manager.h"
 #include "scripting/callback_manager.h"
 #include "scripting/dotnet_host.h"
@@ -23,6 +24,7 @@
 #include "core/managers/usermessage_manager.h"
 #include "core/customhudlayout.h"
 #include <public/entity2/entitysystem.h>
+#include "gameentitysystem.h"
 
 #include "core/hooks.h"
 #include <sourcehook/sourcehook.h>

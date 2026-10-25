@@ -17,7 +17,9 @@
 #include "core/managers/voice_manager.h"
 
 #include <entity2/entitysystem.h>
-#include <public/eiface.h>
+#include "gameentitysystem.h"
+#include <engine2/isource2server.h>
+#include <engine2/ivengineserver2.h>
 #include <schema.h>
 
 #include "core/managers/player_manager.h"

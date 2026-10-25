@@ -17,8 +17,9 @@
 #include "igameeventsystem.h"
 
 #include <edict.h>
-#include <eiface.h>
-#include <filesystem.h>
+#include <engine2/isource2server.h>
+#include <engine2/ivengineserver2.h>
+#include <filesystem/ifilesystem.h>
 #include <public/worldsize.h>
 
 #include "mm_plugin.h"

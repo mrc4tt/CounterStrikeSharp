@@ -31,7 +31,8 @@
 
 #include "core/timer_system.h"
 
-#include <public/eiface.h>
+#include <engine2/isource2server.h>
+#include <engine2/ivengineserver2.h>
 
 #include <algorithm>
 #include <unordered_map>

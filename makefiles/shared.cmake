@@ -52,10 +52,9 @@ include_directories(
     ${SOURCESDK}/game/shared
     ${SOURCESDK}/game/server
     ${SOURCESDK}/public
-    ${SOURCESDK}/public/engine
+    ${SOURCESDK}/public/engine2
     ${SOURCESDK}/public/mathlib
     ${SOURCESDK}/public/tier0
-    ${SOURCESDK}/public/tier1
     ${SOURCESDK}/public/entity2
     ${SOURCESDK}/public/game/server
     ${SOURCESDK}/public/schemasystem

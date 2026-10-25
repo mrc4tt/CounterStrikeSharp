@@ -15,6 +15,7 @@
  */
 
 #include <public/entity2/entitysystem.h>
+#include "gameentitysystem.h"
 
 #include <ios>
 #include <sstream>

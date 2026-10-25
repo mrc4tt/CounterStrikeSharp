@@ -24,11 +24,12 @@
 #include "core/memory.h"
 #include "core/log.h"
 
-#include "tier1/utlmap.h"
+#include "tier0/utlmap.h"
 #include <mutex>
 #include <unordered_set>
 #include <schemasystem.h>
 #include <entity2/entitysystem.h>
+#include "gameentitysystem.h"
 #include <entity2/entityclass.h>
 #include <networksystem/inetworkserializer.h>
 
@@ -86,7 +87,7 @@ static std::unordered_set<uint64_t>& MissingFields()
 static bool IsFieldNetworked(CNetworkSerializerClassInfo* pNetworkClassInfo, SchemaClassFieldData_t& field)
 {
     if (!pNetworkClassInfo) return false;
-    return pNetworkClassInfo->FindField(field.m_pszName) != nullptr;
+    return pNetworkClassInfo->FindField(field.m_pName) != nullptr;
 }
 
 static bool InitSchemaFieldsForClass(SchemaTableMap_t* tableMap, const char* className, uint32_t classKey)
@@ -116,7 +117,7 @@ static bool InitSchemaFieldsForClass(SchemaTableMap_t* tableMap, const char* cla
     }
 
     SchemaKeyValueMap_t* keyValueMap = new SchemaKeyValueMap_t(0, 0);
-    keyValueMap->EnsureCapacity(pClassInfo->m_nFieldCount);
+    keyValueMap->EnsureCapacity(pClassInfo->m_nNumFields);
     tableMap->Insert(classKey, keyValueMap);
 
     // Walk the class and then its base classes, so a field is found through any class that
@@ -135,15 +136,15 @@ static bool InitSchemaFieldsForClass(SchemaTableMap_t* tableMap, const char* cla
     {
         const bool isDeclaringClass = pCurrent == pClassInfo;
         CNetworkSerializerClassInfo* pCurrentNetworkInfo =
-            isDeclaringClass ? pNetworkClassInfo : FindNetworkSerializerClassInfo(pCurrent->m_pszName);
+            isDeclaringClass ? pNetworkClassInfo : FindNetworkSerializerClassInfo(pCurrent->m_pName);
 
-        for (int i = 0; i < pCurrent->m_nFieldCount; ++i)
+        for (int i = 0; i < pCurrent->m_nNumFields; ++i)
         {
             SchemaClassFieldData_t& field = pCurrent->m_pFields[i];
 
-            if (!isDeclaringClass && V_strcmp(field.m_pszName, "__m_pChainEntity") == 0) continue;
+            if (!isDeclaringClass && V_strcmp(field.m_pName, "__m_pChainEntity") == 0) continue;
 
-            auto fieldKey = hash_32_fnv1a_const(field.m_pszName);
+            auto fieldKey = hash_32_fnv1a_const(field.m_pName);
             if (keyValueMap->IsValidIndex(keyValueMap->Find(fieldKey))) continue;
 
             auto offset = static_cast<int32_t>(baseOffset + field.m_nSingleInheritanceOffset);
@@ -156,7 +157,7 @@ static bool InitSchemaFieldsForClass(SchemaTableMap_t* tableMap, const char* cla
                 keyValueMap->Insert(fieldKey, { offset, networked });
         }
 
-        if (pCurrent->m_nBaseClassCount == 0 || !pCurrent->m_pBaseClasses) break;
+        if (pCurrent->m_nNumBaseClasses == 0 || !pCurrent->m_pBaseClasses) break;
         baseOffset += pCurrent->m_pBaseClasses[0].m_nOffset;
         pCurrent = pCurrent->m_pBaseClasses[0].m_pClass;
     }
@@ -175,12 +176,12 @@ int16_t schema::FindChainOffset(const char* className)
     do
     {
         SchemaClassFieldData_t* pFields = pClassInfo->m_pFields;
-        short fieldsSize = pClassInfo->m_nFieldCount;
+        short fieldsSize = pClassInfo->m_nNumFields;
         for (int i = 0; i < fieldsSize; ++i)
         {
             SchemaClassFieldData_t& field = pFields[i];
 
-            if (V_strcmp(field.m_pszName, "__m_pChainEntity") == 0)
+            if (V_strcmp(field.m_pName, "__m_pChainEntity") == 0)
             {
                 return field.m_nSingleInheritanceOffset;
             }

@@ -21,6 +21,8 @@
 
 #include "scripting/autonative.h"
 #include "igameevents.h"
+#include "gameentitysystem.h"
+#include "entity2/entityinstance.h"
 
 namespace counterstrikesharp {
 
@@ -271,7 +273,9 @@ static void SetEntityIndex(ScriptContext& scriptContext)
 
     if (gameEvent != nullptr)
     {
-        gameEvent->SetEntity(keyName, CEntityIndex{ index });
+        // The slot takes a handle, not an index: resolve the entity so the serial is right.
+        CEntityInstance* pEntity = GameEntitySystem() ? GameEntitySystem()->GetEntityInstance(CEntityIndex{ index }) : nullptr;
+        gameEvent->SetEntity(keyName, pEntity ? pEntity->GetRefEHandle() : CEntityHandle());
     }
 }
 

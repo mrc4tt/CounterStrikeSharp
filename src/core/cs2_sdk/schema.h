@@ -22,10 +22,10 @@
 #include <type_traits>
 #include <const.h>
 #include <stdint.h>
-#include "schematypes.h"
+#include <schemasystem/schemasystem.h>
 #include "tier0/dbg.h"
 #include "utils/virtual.h"
-#include "tier1/utlvector.h"
+#include "tier0/utlvector.h"
 
 #include <string>
 #include <vector>
@@ -152,7 +152,7 @@ bool IsNetworkInfoReady();
                                                                                                                        \
             return *reinterpret_cast<std::add_pointer_t<type>>((uintptr_t)(pThisClass) + m_key.offset + extra_offset); \
         }                                                                                                              \
-        void Set(type val)                                                                                             \
+        void Set(std::add_lvalue_reference_t<std::add_const_t<type>> val)                                              \
         {                                                                                                              \
             static constexpr auto datatable_hash = hash_32_fnv1a_const(ThisClassName);                                 \
             static constexpr auto prop_hash = hash_32_fnv1a_const(#varName);                                           \
@@ -182,8 +182,8 @@ bool IsNetworkInfoReady();
         operator std::add_lvalue_reference_t<type>() { return Get(); }                                                 \
         std::add_lvalue_reference_t<type> operator()() { return Get(); }                                               \
         std::add_lvalue_reference_t<type> operator->() { return Get(); }                                               \
-        void operator()(type val) { Set(val); }                                                                        \
-        void operator=(type val) { Set(val); }                                                                         \
+        void operator()(std::add_lvalue_reference_t<std::add_const_t<type>> val) { Set(val); }                         \
+        void operator=(std::add_lvalue_reference_t<std::add_const_t<type>> val) { Set(val); }                          \
     } varName;
 
 #define SCHEMA_FIELD_POINTER_OFFSET(type, varName, extra_offset)                                                      \

@@ -2,8 +2,9 @@
 #include "core/gameconfig.h"
 #include "core/globals.h"
 #include "public/gametrace.h"
-#include "public/variant.h"
+#include "entity2/variant.h"
 #include "entity2/entitysystem.h"
+#include "gameentitysystem.h"
 #include "game/shared/ehandle.h"
 
 class CGameSceneNode;
@@ -80,11 +81,6 @@ enum class EntityPlatformTypes_t : uint8
     ENTITY_NOT_PLATFORM = 0,
     ENTITY_PLATFORM_PLAYER_FOLLOWS_YAW = 1,
     ENTITY_PLATFORM_PLAYER_IGNORES_YAW = 2,
-};
-
-class CEntityIOOutput
-{
-    DECLARE_SCHEMA_CLASS(CEntityIOOutput)
 };
 
 class CNetworkVelocityVector

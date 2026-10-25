@@ -1,6 +1,6 @@
 #pragma once
 
-#include <tier1/convar.h>
+#include <tier0/convar.h>
 
 #include <khook.hpp>
 
@@ -12,8 +12,10 @@
 
 #include "ISmmAPI.h"
 #include <sourcehook/sourcehook.h>
-#include "eiface.h"
-#include "iserver.h"
+#include <engine2/isource2server.h>
+#include <engine2/ivengineserver2.h>
+#include <engine2/networkgameserverbase.h>
+#include <engine2/inetworkserverservice.h>
 
 class IGameEventManager2;
 class IBotManager;

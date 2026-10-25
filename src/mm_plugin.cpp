@@ -39,16 +39,19 @@
 #include "core/timer_system.h"
 #include "core/utils.h"
 #include "entity2/entitysystem.h"
-#include <public/eiface.h>
+#include "gameentitysystem.h"
+#include <engine2/isource2server.h>
+#include <engine2/ivengineserver2.h>
 #include "igameeventsystem.h"
 #include "interfaces/cs2_interfaces.h"
-#include "iserver.h"
+#include <engine2/networkgameserverbase.h>
+#include <engine2/inetworkserverservice.h>
 #include "scripting/callback_manager.h"
 #include "scripting/dotnet_host.h"
 #include "scripting/script_engine.h"
 #include "tier0/vprof.h"
 #include "tier0/icommandline.h"
-#include "tier1/utlstringtoken.h"
+#include "tier0/utlstringtoken.h"
 #include <convar.h>
 
 DLL_IMPORT ICommandLine* CommandLine();
@@ -62,7 +65,9 @@ void* g_pCGameEventManagerVTable = nullptr;
 
 counterstrikesharp::GlobalClass* counterstrikesharp::GlobalClass::head = nullptr;
 
-CGameEntitySystem* GameEntitySystem() { return counterstrikesharp::globals::entitySystem; }
+// GameEntitySystem() is defined by the SDK (entity2/entitysystem.cpp), reading
+// CGameResourceService::m_pEntityResourceManifestHandler: 80 linux / 88 windows,
+// the same offset gamedata's "GameEntitySystem" carries.
 
 // TODO: Workaround for windows, we __MUST__ have COUNTERSTRIKESHARP_API to handle it.
 // like on windows it should be `extern "C" __declspec(dllexport)`, on linux it should be anything else.
@@ -95,10 +100,6 @@ DLL_EXPORT void InvokeNative(counterstrikesharp::fxNativeContext& context)
 
     counterstrikesharp::ScriptEngine::InvokeNative(context);
 }
-
-class GameSessionConfiguration_t
-{
-};
 
 PLUGIN_EXPOSE(CounterStrikeSharpMMPlugin, counterstrikesharp::gPlugin);
 

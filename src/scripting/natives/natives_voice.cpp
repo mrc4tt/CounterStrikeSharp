@@ -16,6 +16,7 @@
 
 #include <public/entity2/entityinstance.h>
 #include <public/entity2/entitysystem.h>
+#include "gameentitysystem.h"
 
 #include "core/managers/player_manager.h"
 #include "scripting/autonative.h"
