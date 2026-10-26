@@ -7,7 +7,10 @@ BETA=false
 NO_LOCAL=false
 FORCE=false
 LINUX_ONLY=false
+BUILD_ONLY=false
 ACT_STATUS=0
+# act input for build-and-publish.yml: LOCAL runs its publish job, empty skips it.
+CONFIRM_LOCAL=LOCAL
 
 # Parse command line arguments
 for arg in "$@"; do
@@ -32,6 +35,11 @@ for arg in "$@"; do
             echo "LINUX-ONLY mode - re-running the local act build for the tag at HEAD, no new release"
             shift
             ;;
+        --build-only)
+            BUILD_ONLY=true
+            echo "BUILD-ONLY mode - building every package via act at HEAD, nothing is tagged or published"
+            shift
+            ;;
         --force|-f)
             FORCE=true
             echo "FORCE mode - will tag current HEAD even if no new commits since last release"
@@ -42,9 +50,8 @@ for arg in "$@"; do
     esac
 done
 
-# Runs the Linux + managed build locally via act and appends the Linux zips
-# to the GitHub release. GitHub Actions handles the Windows half on tag push
-# (.github/workflows/build-windows.yml), so this covers the remaining half.
+# Runs build-and-publish.yml locally via act: Linux, Windows (cross-compiled)
+# and managed, then (unless --build-only) uploads every zip to the GitHub release.
 run_local_linux_build() {
     local tag="$1"
 
@@ -147,12 +154,18 @@ run_local_linux_build() {
     # for catthehacker/ubuntu:full-latest is runner (1001). The workspace is
     # mounted at the host path under /root (mode 700), so the GitVersion setup
     # step dies with "Access to the path '/root/CounterStrikeSharp' is denied".
+    # build_windows uses an xwin splat mounted at /opt/xwin instead of
+    # downloading a fresh one (~630MB) when the host has ~/.xwin.
+    local container_opts="--user root"
+    if [ -d "$HOME/.xwin/crt/include" ]; then
+        container_opts+=" -v $HOME/.xwin:/opt/xwin:ro"
+    fi
     local act_status=0
     "${act_cmd[@]}" workflow_dispatch \
         -W .github/workflows/build-and-publish.yml \
-        --input confirm_local=LOCAL \
+        --input confirm_local="$CONFIRM_LOCAL" \
         -P ubuntu-latest=catthehacker/ubuntu:full-latest \
-        --container-options "--user root" \
+        --container-options "$container_opts" \
         --artifact-server-path "$artifact_dir" \
         -s GITHUB_TOKEN="$token" || act_status=$?
 
@@ -165,8 +178,10 @@ run_local_linux_build() {
         echo "Restored remotes: ${stashed_remotes[*]}"
     fi
 
-    if [ "$act_status" -eq 0 ]; then
-        echo "✅ Linux zips appended to release $tag"
+    if [ "$act_status" -eq 0 ] && [ -z "$CONFIRM_LOCAL" ]; then
+        echo "✅ Build finished, nothing published (--build-only)"
+    elif [ "$act_status" -eq 0 ]; then
+        echo "✅ Zips uploaded to release $tag"
     else
         echo "⚠️  act run failed. The GitHub release exists; Windows zips will still"
         echo "   be uploaded by the GitHub workflow. Once fixed, append Linux with:"
@@ -223,6 +238,15 @@ if [ "$LINUX_ONLY" = true ]; then
     echo "Re-running local Linux build for $HEAD_TAG..."
     NO_LOCAL=false
     run_local_linux_build "$HEAD_TAG"
+    exit "$ACT_STATUS"
+fi
+
+# --build-only: the dry run of a release. Builds every package from HEAD with
+# act but skips the publish job; the checkout, tags and GitHub stay untouched.
+if [ "$BUILD_ONLY" = true ]; then
+    NO_LOCAL=false
+    CONFIRM_LOCAL=""
+    run_local_linux_build "(none)"
     exit "$ACT_STATUS"
 fi
 
@@ -396,8 +420,7 @@ Download the latest stable build from the assets below."; then
             fi
         fi
 
-        # GitHub Actions is now handling the Windows build (build-windows.yml);
-        # run act locally to build Linux + managed and append to the same release.
+        # act builds Linux, Windows and managed and uploads them to the release.
         run_local_linux_build "$NEW_TAG"
     fi
 
@@ -416,7 +439,6 @@ Download the latest stable build from the assets below."; then
     else
         echo "   - Commit pushed: Yes"
         echo "   - Tag created and pushed: Yes"
-        echo "   - Windows build: running on GitHub Actions (build-windows.yml)"
         if [ "$NO_LOCAL" = true ]; then
             echo "   - Linux build: SKIPPED (run act manually to append)"
         else
@@ -482,7 +504,6 @@ Download the latest stable build from the assets below."; then
         echo "   - Tag created and pushed: (dry-run)"
     else
         echo "   - Tag created and pushed: Yes"
-        echo "   - Windows build: running on GitHub Actions (build-windows.yml)"
         if [ "$NO_LOCAL" = true ]; then
             echo "   - Linux build: SKIPPED (run act manually to append)"
         else
@@ -553,7 +574,6 @@ Download the latest stable build from the assets below."; then
         echo "   - Tag created and pushed: (dry-run)"
     else
         echo "   - Tag created and pushed: Yes"
-        echo "   - Windows build: running on GitHub Actions (build-windows.yml)"
         if [ "$NO_LOCAL" = true ]; then
             echo "   - Linux build: SKIPPED (run act manually to append)"
         else
