@@ -152,6 +152,11 @@ public partial class CHostage : CHostageExpresserShim
 	[SchemaMember("CHostage", "m_fLastGrabTime")]
 	public ref float LastGrabTime => ref __m_fLastGrabTime.GetRef(this.Handle);
 
+	// m_flGrabStartTime
+	private static readonly SchemaField<float> __m_flGrabStartTime = new("CHostage", "m_flGrabStartTime");
+	[SchemaMember("CHostage", "m_flGrabStartTime")]
+	public ref float GrabStartTime => ref __m_flGrabStartTime.GetRef(this.Handle);
+
 	// m_vecPositionWhenStartedDroppingToGround
 	[SchemaMember("CHostage", "m_vecPositionWhenStartedDroppingToGround")]
 	public Vector PositionWhenStartedDroppingToGround => Schema.GetDeclaredClass<Vector>(this.Handle, "CHostage", "m_vecPositionWhenStartedDroppingToGround");
