@@ -157,6 +157,12 @@ run_local_linux_build() {
     # build_windows uses an xwin splat mounted at /opt/xwin instead of
     # downloading a fresh one (~630MB) when the host has ~/.xwin.
     local container_opts="--user root"
+    # The runner image: act-runner:latest where the host built one (server-ops, ~3 GB, a local
+    # image act must not pull), else catthehacker/ubuntu:full-latest (~75 GB).
+    local -a runner=(-P ubuntu-latest=catthehacker/ubuntu:full-latest)
+    if docker image inspect act-runner:latest >/dev/null 2>&1; then
+        runner=(-P ubuntu-latest=act-runner:latest --pull=false)
+    fi
     if [ -d "$HOME/.xwin/crt/include" ]; then
         container_opts+=" -v $HOME/.xwin:/opt/xwin:ro"
     fi
@@ -164,7 +170,7 @@ run_local_linux_build() {
     "${act_cmd[@]}" workflow_dispatch \
         -W .github/workflows/build-and-publish.yml \
         --input confirm_local="$CONFIRM_LOCAL" \
-        -P ubuntu-latest=catthehacker/ubuntu:full-latest \
+        "${runner[@]}" \
         --container-options "$container_opts" \
         --artifact-server-path "$artifact_dir" \
         -s GITHUB_TOKEN="$token" || act_status=$?
