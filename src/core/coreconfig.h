@@ -18,6 +18,8 @@
 
 #include <nlohmann/json.hpp>
 
+#include "core/gamedata_mirrors.h"
+
 #include <string>
 
 #include "core/globals.h"
@@ -37,6 +39,9 @@ class CCoreConfig
     bool UnlockConVars = true;
     bool AutoUpdateEnabled = true;
     std::string AutoUpdateURL = std::string("https://sig.miksen.me/latest/CounterStrikeSharp/gamedata.json");
+    // What the updater actually tries, in order: "AutoUpdateURLs", else a custom "AutoUpdateURL"
+    // as a list of one, else the default mirrors (gamedata::ResolveMirrors).
+    std::vector<std::string> AutoUpdateURLs = counterstrikesharp::gamedata::DefaultMirrors();
     std::string LogVerbosity = "information";
 
     using json = nlohmann::json;

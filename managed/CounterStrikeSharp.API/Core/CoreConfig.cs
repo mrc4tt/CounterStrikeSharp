@@ -75,6 +75,10 @@ namespace CounterStrikeSharp.API.Core
 
         [JsonPropertyName("AutoUpdateURL")] public string AutoUpdateURL { get; set; } = "https://sig.miksen.me/latest/CounterStrikeSharp/gamedata.json";
 
+        // Mirrors tried in order; read by the native updater (core/gamedata_mirrors.h), declared here
+        // only so it is not reported as an unknown key.
+        [JsonPropertyName("AutoUpdateURLs")] public List<string>? AutoUpdateURLs { get; set; }
+
         [JsonPropertyName("MaximumFrameTasksExecutedPerTick")]
         public int MaximumFrameTasksExecutedPerTick { get; set; } = 1024;
 

@@ -71,6 +71,7 @@ bool CCoreConfig::Init(char* conf_error, int conf_error_size)
         UnlockConVars = m_json.value("UnlockConVars", UnlockConVars);
         AutoUpdateEnabled = m_json.value("AutoUpdateEnabled", AutoUpdateEnabled);
         AutoUpdateURL = m_json.value("AutoUpdateURL", AutoUpdateURL);
+        AutoUpdateURLs = counterstrikesharp::gamedata::ResolveMirrors(m_json);
         LogVerbosity = m_json.value("LogVerbosity", LogVerbosity);
     }
     catch (const std::exception& ex)

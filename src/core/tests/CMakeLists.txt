@@ -19,6 +19,7 @@ add_executable(css_unit_tests
     test_gamedata_signature_check.cpp
     test_gamedata_vtable.cpp
     test_gamedata_custom.cpp
+    test_gamedata_mirrors.cpp
     ${CMAKE_SOURCE_DIR}/libraries/metamod-source/third_party/khook/src/ranges.cpp
     ${CATCH2_AMALG_DIR}/catch_amalgamated.cpp
 )

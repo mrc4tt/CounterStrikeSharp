@@ -4,6 +4,7 @@
 #include "core/log.h"
 #include "core/globals.h"
 #include "core/gamedata_custom.h"
+#include "core/gamedata_mirrors.h"
 #include "core/gamedata_signature_check.h"
 #include "core/gameconfig.h"
 #include "core/memory.h"
@@ -41,10 +42,11 @@ namespace {
 // A gamedata.json is ~100 KiB; anything near this is not a gamedata file.
 constexpr size_t kMaxBodyBytes = 16 * 1024 * 1024;
 constexpr long kConnectTimeoutSeconds = 3;
-// One budget for the whole update (manifest + gamedata), not per request: this runs
-// synchronously in Load(), and two requests with their own 15s limits could hold up server
-// boot for ~30s against a host that accepts connections but answers slowly.
-constexpr long kTotalTimeoutSeconds = 15;
+// One budget per mirror (manifest + gamedata), not per request, and a cap over all mirrors: this
+// runs synchronously in Load(), and requests with their own limits could hold up server boot for
+// a long time against hosts that accept connections but answer slowly.
+constexpr long kMirrorTimeoutSeconds = 15;
+constexpr long kTotalTimeoutSeconds = 25;
 
 std::chrono::steady_clock::time_point g_updateDeadline;
 
@@ -627,12 +629,13 @@ std::optional<std::string> ManifestUrlFor(const std::string& url)
 // this server runs. Pages always serves the newest processed build, which can be ahead of a
 // server that has not taken the game update yet (or behind one that just did); signatures for
 // another build either fail to resolve or, worse, resolve to the wrong function.
-bool GameVersionMatches(const std::string& url, std::string& reason, std::string& matchedTag)
+// `publishedSha` gets the sha256 the manifest lists for the file, empty when it lists none.
+bool GameVersionMatches(const std::string& url, std::string& reason, std::string& matchedTag, std::string& publishedSha)
 {
     auto manifestUrl = ManifestUrlFor(url);
     if (!manifestUrl)
     {
-        CSSHARP_CORE_WARN("AutoUpdateURL has no /latest/manifest.json beside it; skipping the game-version check");
+        CSSHARP_CORE_WARN("{} has no /latest/manifest.json beside it; skipping the game-version check", url);
         return true;
     }
 
@@ -674,6 +677,7 @@ bool GameVersionMatches(const std::string& url, std::string& reason, std::string
 
     CSSHARP_CORE_INFO("Published gamedata is for game build {}, matching this server", published);
     matchedTag = serverTag;
+    publishedSha = gamedata::ManifestSha256For(manifest, url);
     return true;
 }
 
@@ -808,79 +812,97 @@ std::string ServerGameVersion()
 
 bool SignatureResolves(const std::string& library, const std::string& signature) { return SignatureResolvesInProcess(library, signature); }
 
-/// Checks that the published gamedata targets this server's game build, then fetches
-/// AutoUpdateURL with a conditional GET (If-None-Match: <stored ETag>) and, when the
-/// server returns a new file, validates it and atomically replaces gamedata/gamedata.json.
-/// Runs before gamedata is loaded, so a successful update applies to this start.
-bool TryUpdateGameConfig()
+namespace {
+
+enum class MirrorResult
 {
-    const auto& configuredUrl = globals::coreConfig->AutoUpdateURL;
-    CSSHARP_CORE_INFO("AutoUpdate enabled, checking for gamedata updates from {}", configuredUrl);
+    Updated,
+    UpToDate,
+    Failed,
+};
 
-    g_updateDeadline = std::chrono::steady_clock::now() + std::chrono::seconds(kTotalTimeoutSeconds);
+/// Checks that `mirror`'s published gamedata targets this server's game build, then fetches it
+/// with a conditional GET (If-None-Match: the ETag this mirror handed out) and, when it returns a
+/// new file, validates it and atomically replaces gamedata/gamedata.json. A failure is logged as a
+/// warning and leaves gamedata.json alone, so the next mirror can be tried.
+MirrorResult TryMirror(const std::string& mirror, const std::string& firstMirror, LocalEdits localEdits)
+{
+    CSSHARP_CORE_INFO("Checking for gamedata updates from {}", mirror);
 
-    auto url = ParseUrl(configuredUrl);
+    auto url = ParseUrl(mirror);
     if (!url)
     {
-        CSSHARP_CORE_ERROR("AutoUpdateURL '{}' is not an http:// or https:// URL", configuredUrl);
-        return false;
+        CSSHARP_CORE_WARN("Gamedata mirror '{}' is not an http:// or https:// URL", mirror);
+        return MirrorResult::Failed;
     }
 
     auto gamedataPath = utils::GamedataDirectory() + "/gamedata.json";
     auto etagPath = utils::GamedataDirectory() + "/gamedata.etag";
 
-    const auto localEdits = CheckLocalEdits(gamedataPath);
-    if (localEdits == LocalEdits::Edited)
-    {
-        CSSHARP_CORE_WARN("gamedata.json differs from the copy the updater last wrote (edited by hand, or replaced by a deploy). "
-                          "The next gamedata update replaces it: keys the feed does not have move to gamedata/custom/_rescued.json "
-                          "and the old file is backed up to gamedata/backup/, but changed values are kept only in the backup. "
-                          "Put your own signatures/offsets in gamedata/custom/ instead.");
-    }
-
     std::string reason;
     std::string matchedTag;
-    if (!GameVersionMatches(configuredUrl, reason, matchedTag))
+    std::string publishedSha;
+    if (!GameVersionMatches(mirror, reason, matchedTag, publishedSha))
     {
-        CSSHARP_CORE_WARN("Gamedata update skipped, keeping the current gamedata.json: {}", reason);
-        return false;
+        CSSHARP_CORE_WARN("Gamedata mirror {} skipped: {}", mirror, reason);
+        return MirrorResult::Failed;
     }
 
     // Without a gamedata.json there is nothing a 304 could refer to; ask for the full file.
-    auto localETag = std::filesystem::exists(gamedataPath) ? ReadFirstLine(etagPath) : std::string();
+    const auto etagRecord = gamedata::ParseEtagRecord(ReadWholeFile(etagPath));
+    auto localETag = std::filesystem::exists(gamedataPath) ? gamedata::EtagFor(etagRecord, mirror, firstMirror) : std::string();
 
-    auto res = Fetch(*url, configuredUrl, localETag);
+    auto res = Fetch(*url, mirror, localETag);
     if (!res.error.empty())
     {
-        CSSHARP_CORE_ERROR("Gamedata update from {} failed: {}", configuredUrl, res.error);
-        return false;
+        CSSHARP_CORE_WARN("Gamedata update from {} failed: {}", mirror, res.error);
+        return MirrorResult::Failed;
     }
 
     if (res.status == 304)
     {
         CSSHARP_CORE_INFO("Gamedata is up to date, ETag: {}", localETag);
         RecordGamedataBuild(matchedTag, gamedataPath);
-        return true;
+        return MirrorResult::UpToDate;
     }
 
     if (res.status != 200)
     {
-        CSSHARP_CORE_ERROR("Gamedata update from {} failed: HTTP {}", configuredUrl, res.status);
-        return false;
+        CSSHARP_CORE_WARN("Gamedata update from {} failed: HTTP {}", mirror, res.status);
+        return MirrorResult::Failed;
     }
 
     if (!res.etag.empty() && res.etag == localETag)
     {
         CSSHARP_CORE_INFO("Gamedata is up to date, ETag: {}", localETag);
         RecordGamedataBuild(matchedTag, gamedataPath);
-        return true;
+        return MirrorResult::UpToDate;
     }
 
     std::string error;
+    if (!publishedSha.empty() && gamedata::Sha256Hex(res.body) != publishedSha)
+    {
+        CSSHARP_CORE_WARN("Gamedata update from {} rejected: the file does not match the sha256 its manifest publishes "
+                          "(mirror mid-sync, or a stale cache)",
+                          mirror);
+        return MirrorResult::Failed;
+    }
+
+    // Another mirror's copy of the file already on disk: nothing to replace, only the ETag to learn.
+    if (localEdits != LocalEdits::Edited && res.body == ReadWholeFile(gamedataPath))
+    {
+        if (!WriteAtomically(etagPath, gamedata::FormatEtagRecord({ res.etag, mirror }), error))
+            CSSHARP_CORE_WARN("Could not store the gamedata ETag ({}); the next start re-downloads it", error);
+        RecordGamedataBuild(matchedTag, gamedataPath);
+        RecordWrittenHash(gamedataPath);
+        CSSHARP_CORE_INFO("Gamedata is up to date (same file as {})", mirror);
+        return MirrorResult::UpToDate;
+    }
+
     if (!ValidateGamedata(res.body, gamedataPath, error))
     {
-        CSSHARP_CORE_ERROR("Gamedata update from {} rejected: {}", configuredUrl, error);
-        return false;
+        CSSHARP_CORE_WARN("Gamedata update from {} rejected: {}", mirror, error);
+        return MirrorResult::Failed;
     }
 
     nlohmann::json current;
@@ -904,8 +926,8 @@ bool TryUpdateGameConfig()
 
     if (!SignaturesHoldUp(res.body, current, error))
     {
-        CSSHARP_CORE_ERROR("Gamedata update from {} rejected, keeping the current gamedata.json: {}", configuredUrl, error);
-        return false;
+        CSSHARP_CORE_WARN("Gamedata update from {} rejected, keeping the current gamedata.json: {}", mirror, error);
+        return MirrorResult::Failed;
     }
 
     if (localEdits == LocalEdits::Edited || !rescued.empty())
@@ -914,7 +936,7 @@ bool TryUpdateGameConfig()
         if (!BackupGamedata(gamedataPath, backupPath, error))
         {
             CSSHARP_CORE_ERROR("Gamedata update skipped, the local gamedata.json could not be backed up: {}", error);
-            return false;
+            return MirrorResult::Failed;
         }
         CSSHARP_CORE_INFO("Gamedata: backed up the local gamedata.json to {}", backupPath);
     }
@@ -925,7 +947,7 @@ bool TryUpdateGameConfig()
         if (!WriteRescuedKeys(rescued, rescuedPath, error))
         {
             CSSHARP_CORE_ERROR("Gamedata update skipped, keys not in the feed could not be moved to custom/: {}", error);
-            return false;
+            return MirrorResult::Failed;
         }
 
         std::string keys;
@@ -938,11 +960,11 @@ bool TryUpdateGameConfig()
     if (!WriteAtomically(gamedataPath, res.body, error))
     {
         CSSHARP_CORE_ERROR("Gamedata update failed: {}", error);
-        return false;
+        return MirrorResult::Failed;
     }
 
     // An empty ETag is still written: it clears a stale one, so the next start does a full GET.
-    if (!WriteAtomically(etagPath, res.etag, error))
+    if (!WriteAtomically(etagPath, gamedata::FormatEtagRecord({ res.etag, mirror }), error))
     {
         CSSHARP_CORE_WARN("Gamedata updated, but the ETag could not be stored ({}); the next start re-downloads it", error);
     }
@@ -950,8 +972,48 @@ bool TryUpdateGameConfig()
     RecordGamedataBuild(matchedTag, gamedataPath);
     RecordWrittenHash(gamedataPath);
 
-    CSSHARP_CORE_INFO("Gamedata file written to: {} with ETag {}", gamedataPath, res.etag);
-    return true;
+    CSSHARP_CORE_INFO("Gamedata file written to: {} from {} with ETag {}", gamedataPath, mirror, res.etag);
+    return MirrorResult::Updated;
+}
+
+} // namespace
+
+/// Tries the AutoUpdateURLs mirrors in order until one updates gamedata/gamedata.json or confirms
+/// it is current. Runs before gamedata is loaded, so a successful update applies to this start;
+/// when every mirror fails, the gamedata.json already on disk is used as it is.
+bool TryUpdateGameConfig()
+{
+    const auto& mirrors = globals::coreConfig->AutoUpdateURLs;
+    if (mirrors.empty())
+    {
+        CSSHARP_CORE_WARN("AutoUpdate enabled, but no AutoUpdateURLs are configured");
+        return false;
+    }
+    CSSHARP_CORE_INFO("AutoUpdate enabled, {} gamedata mirror(s)", mirrors.size());
+
+    const auto localEdits = CheckLocalEdits(utils::GamedataDirectory() + "/gamedata.json");
+    if (localEdits == LocalEdits::Edited)
+    {
+        CSSHARP_CORE_WARN("gamedata.json differs from the copy the updater last wrote (edited by hand, or replaced by a deploy). "
+                          "The next gamedata update replaces it: keys the feed does not have move to gamedata/custom/_rescued.json "
+                          "and the old file is backed up to gamedata/backup/, but changed values are kept only in the backup. "
+                          "Put your own signatures/offsets in gamedata/custom/ instead.");
+    }
+
+    const auto overallDeadline = std::chrono::steady_clock::now() + std::chrono::seconds(kTotalTimeoutSeconds);
+    for (const auto& mirror : mirrors)
+    {
+        g_updateDeadline = (std::min)(overallDeadline, std::chrono::steady_clock::now() + std::chrono::seconds(kMirrorTimeoutSeconds));
+        if (RemainingBudgetSeconds() == 0)
+        {
+            CSSHARP_CORE_WARN("Gamedata update: time budget spent before {}", mirror);
+            break;
+        }
+        if (TryMirror(mirror, mirrors.front(), localEdits) != MirrorResult::Failed) return true;
+    }
+
+    CSSHARP_CORE_ERROR("Gamedata update failed on every mirror, keeping the current gamedata.json");
+    return false;
 }
 
 bool GamedataMatchesServerBuild()
