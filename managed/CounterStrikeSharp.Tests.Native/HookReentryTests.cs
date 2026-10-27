@@ -17,6 +17,9 @@ public class HookReentryTests
     private static readonly MemoryFunctionWithReturn<int, string, CCSWeaponBaseVData> Function =
         VirtualFunctions.GetCSWeaponDataFromKeyFunc;
 
+    // The game calls this too (bots buying and picking up weapons), so a live handler also counts
+    // those calls in the frames before the test's own Call(); each test resets its counters right
+    // before it. Call() is synchronous on the game thread, so nothing interleaves after the reset.
     private static CCSWeaponBaseVData Call() => Function.Invoke(-1, "weapon_ak47");
 
     // KHook inserts a hook asynchronously (a worker thread, ~5 ms) when the function already has a detour,
@@ -54,6 +57,7 @@ public class HookReentryTests
         await HookAndWaitUntilLive(handler, () => live);
         try
         {
+            handlerCalls = 0;
             Assert.NotNull(Call());
             Assert.Equal(MaxHandlerDepth, handlerCalls);
         }
@@ -91,6 +95,8 @@ public class HookReentryTests
         await HookAndWaitUntilLive(handler, () => live);
         try
         {
+            handlerCalls = 0;
+            nested = 0;
             Call();
             Assert.Equal(3, handlerCalls);
         }
