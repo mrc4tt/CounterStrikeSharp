@@ -1,5 +1,6 @@
 GET_MAP_NAME: -> string
 GET_GAME_DIRECTORY: -> string
+GET_CORE_GAMEDATA: -> string
 IS_MAP_VALID: mapname:string -> bool
 GET_TICK_INTERVAL: -> float
 GET_CURRENT_TIME: -> float

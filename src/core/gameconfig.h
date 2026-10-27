@@ -10,6 +10,8 @@
 #undef snprintf
 #include <nlohmann/json.hpp>
 
+#include "core/gamedata_custom.h"
+
 namespace counterstrikesharp {
 
 class CGameConfig
@@ -20,6 +22,16 @@ class CGameConfig
     ~CGameConfig();
 
     bool Init(char* conf_error, int conf_error_size);
+    // Layers gamedata/custom/*.json over the core file (see core/gamedata_custom.h). Call once,
+    // right after Init() and before anything reads from this config: it rebuilds the lookup
+    // tables, so a pointer returned by GetSignature() & co. before the call would dangle.
+    void ApplyCustomOverrides(const std::string& directory, const std::string& serverTag, const update::SignatureResolver& resolves);
+    // The effective core gamedata (gamedata.json + custom/) as JSON, for the managed loader
+    // (GET_CORE_GAMEDATA) so both sides read the same merge.
+    const char* GetCoreJson();
+    const nlohmann::json& GetJson() const { return m_json; }
+    // "custom/<file>.json" when that file overrode or added `name`, else nullptr.
+    const std::string* GetOverrideSource(const std::string& name) const;
     const std::string GetPath();
     const char* GetLibrary(const std::string& name);
     const char* GetSignature(const std::string& name);
@@ -41,6 +53,8 @@ class CGameConfig
     static std::string FormatSignature(std::string_view src);
 
   private:
+    void RebuildLookups();
+
     std::string m_sPath;
     // use Valve KeyValues in the future.
     // since we'd better make '\' easier.
@@ -50,6 +64,8 @@ class CGameConfig
     std::unordered_map<std::string, void*> m_umAddresses;
     std::unordered_map<std::string, std::string> m_umLibraries;
     std::unordered_map<std::string, std::string> m_umPatches;
+    std::unordered_map<std::string, std::string> m_overrides;
+    std::string m_coreDump;
 };
 
 } // namespace counterstrikesharp

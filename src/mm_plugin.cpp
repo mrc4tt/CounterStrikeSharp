@@ -218,6 +218,13 @@ bool CounterStrikeSharpMMPlugin::Load(PluginId id, ISmmAPI* ismm, char* error, s
             return false;
         }
 
+        // Operator overrides (gamedata/custom/*.json) on top of core gamedata.json, before anything
+        // reads the config. Overridden signatures are checked against the binaries, hence the module
+        // init here; it is idempotent and globals::Initialize() runs it again.
+        modules::Initialize();
+        globals::gameConfig->ApplyCustomOverrides(utils::GamedataDirectory() + "/custom", update::ServerGameVersion(),
+                                                  update::SignatureResolves);
+
         // Before globals::Initialize(): its own signature scans should already get the fallback.
         gamedata::LoadVtableFallbacks(update::GamedataMatchesServerBuild());
 

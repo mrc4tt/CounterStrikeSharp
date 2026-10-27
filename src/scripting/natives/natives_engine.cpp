@@ -25,6 +25,7 @@
 #include "mm_plugin.h"
 #include "core/fatal_reporter.h"
 #include "core/crash_recorder.h"
+#include "core/gameconfig.h"
 #include "core/timer_system.h"
 #include "core/utils.h"
 #include "core/cs2_sdk/compat/IEngineSound.h"
@@ -55,6 +56,13 @@ const char* GetMapName(ScriptContext& script_context)
 }
 
 const char* GetGameDirectory(ScriptContext& script_context) { return strdup(Plat_GetGameDirectory()); }
+
+// Core gamedata as native uses it (gamedata.json + gamedata/custom/), so GameDataProvider reads the
+// same merge instead of re-implementing it. Owned by the config; valid until shutdown.
+const char* GetCoreGamedata(ScriptContext& script_context)
+{
+    return globals::gameConfig != nullptr ? globals::gameConfig->GetCoreJson() : "";
+}
 
 bool IsMapValid(ScriptContext& script_context)
 {
@@ -286,6 +294,7 @@ REGISTER_NATIVES(engine, {
     ScriptEngine::RegisterNativeHandler("SET_FATAL_SUSPECT_PLUGIN", SetFatalSuspectPlugin);
     ScriptEngine::RegisterNativeHandler("GET_CRASH_CONTEXT", GetCrashContext);
     ScriptEngine::RegisterNativeHandler("GET_GAME_DIRECTORY", GetGameDirectory);
+    ScriptEngine::RegisterNativeHandler("GET_CORE_GAMEDATA", GetCoreGamedata);
     ScriptEngine::RegisterNativeHandler("GET_MAP_NAME", GetMapName);
     ScriptEngine::RegisterNativeHandler("IS_MAP_VALID", IsMapValid);
     ScriptEngine::RegisterNativeHandler("GET_TICK_INTERVAL", GetTickInterval);
