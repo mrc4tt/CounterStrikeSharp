@@ -166,30 +166,25 @@ public partial class CCSWeaponBase : CBasePlayerWeapon
 	[SchemaMember("CCSWeaponBase", "m_flTimeSilencerSwitchComplete")]
 	public ref float TimeSilencerSwitchComplete => ref __m_flTimeSilencerSwitchComplete.GetRef(this.Handle);
 
-	// m_bStealthy
-	private static readonly SchemaField<bool> __m_bStealthy = new("CCSWeaponBase", "m_bStealthy");
-	[SchemaMember("CCSWeaponBase", "m_bStealthy")]
-	public ref bool Stealthy => ref __m_bStealthy.GetRef(this.Handle);
+	// m_bIsInStealthReload
+	private static readonly SchemaField<bool> __m_bIsInStealthReload = new("CCSWeaponBase", "m_bIsInStealthReload");
+	[SchemaMember("CCSWeaponBase", "m_bIsInStealthReload")]
+	public ref bool IsInStealthReload => ref __m_bIsInStealthReload.GetRef(this.Handle);
 
 	// m_bInSilentReloadSection
 	private static readonly SchemaField<bool> __m_bInSilentReloadSection = new("CCSWeaponBase", "m_bInSilentReloadSection");
 	[SchemaMember("CCSWeaponBase", "m_bInSilentReloadSection")]
 	public ref bool InSilentReloadSection => ref __m_bInSilentReloadSection.GetRef(this.Handle);
 
-	// m_bSilentReloadStatCounted
-	private static readonly SchemaField<bool> __m_bSilentReloadStatCounted = new("CCSWeaponBase", "m_bSilentReloadStatCounted");
-	[SchemaMember("CCSWeaponBase", "m_bSilentReloadStatCounted")]
-	public ref bool SilentReloadStatCounted => ref __m_bSilentReloadStatCounted.GetRef(this.Handle);
-
 	// m_bSilentReloadStatPending
 	private static readonly SchemaField<bool> __m_bSilentReloadStatPending = new("CCSWeaponBase", "m_bSilentReloadStatPending");
 	[SchemaMember("CCSWeaponBase", "m_bSilentReloadStatPending")]
 	public ref bool SilentReloadStatPending => ref __m_bSilentReloadStatPending.GetRef(this.Handle);
 
-	// m_flStealthHoldStartTime
-	private static readonly SchemaField<float> __m_flStealthHoldStartTime = new("CCSWeaponBase", "m_flStealthHoldStartTime");
-	[SchemaMember("CCSWeaponBase", "m_flStealthHoldStartTime")]
-	public ref float StealthHoldStartTime => ref __m_flStealthHoldStartTime.GetRef(this.Handle);
+	// m_flStealthReloadHoldStartTime
+	private static readonly SchemaField<float> __m_flStealthReloadHoldStartTime = new("CCSWeaponBase", "m_flStealthReloadHoldStartTime");
+	[SchemaMember("CCSWeaponBase", "m_flStealthReloadHoldStartTime")]
+	public ref float StealthReloadHoldStartTime => ref __m_flStealthReloadHoldStartTime.GetRef(this.Handle);
 
 	// m_bReloadHeldSinceStart
 	private static readonly SchemaField<bool> __m_bReloadHeldSinceStart = new("CCSWeaponBase", "m_bReloadHeldSinceStart");
