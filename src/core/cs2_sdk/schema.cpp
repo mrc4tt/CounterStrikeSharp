@@ -37,14 +37,7 @@
 #include "tier0/memdbgon.h"
 
 using SchemaKeyValueMap_t = CUtlOrderedMap<uint32_t, SchemaKey>;
-// Tracks whether networked flags were resolved when this table was built.
-struct SchemaClassTable
-{
-    SchemaKeyValueMap_t* fields;
-    bool networkResolved;
-};
-
-using SchemaTableMap_t = CUtlOrderedMap<uint32_t, SchemaClassTable>;
+using SchemaTableMap_t = CUtlOrderedMap<uint32_t, SchemaKeyValueMap_t*>;
 
 static CNetworkSerializerCodeGenDatabase* GetNetworkSerializerDatabase()
 {
@@ -108,13 +101,12 @@ static bool InitSchemaFieldsForClass(SchemaTableMap_t* tableMap, const char* cla
     if (!pClassInfo)
     {
         SchemaKeyValueMap_t* map = new SchemaKeyValueMap_t(0, 0);
-        tableMap->Insert(classKey, { map, true });
+        tableMap->Insert(classKey, map);
 
         Warning("InitSchemaFieldsForClass(): '%s' was not found!\n", className);
         return false;
     }
 
-    const bool networkResolved = GetNetworkSerializerDatabase() != nullptr;
     CNetworkSerializerClassInfo* pNetworkClassInfo = FindNetworkSerializerClassInfo(className);
     if (!schema::IsNetworkInfoReady())
     {
@@ -126,7 +118,7 @@ static bool InitSchemaFieldsForClass(SchemaTableMap_t* tableMap, const char* cla
 
     SchemaKeyValueMap_t* keyValueMap = new SchemaKeyValueMap_t(0, 0);
     keyValueMap->EnsureCapacity(pClassInfo->m_nNumFields);
-    tableMap->Insert(classKey, { keyValueMap, networkResolved });
+    tableMap->Insert(classKey, keyValueMap);
 
     // Walk the class and then its base classes, so a field is found through any class that
     // inherits it: `SetStateChanged(pawn, "CCSPlayer_WeaponServices", "m_hActiveWeapon")`
@@ -171,28 +163,6 @@ static bool InitSchemaFieldsForClass(SchemaTableMap_t* tableMap, const char* cla
     }
 
     return true;
-}
-
-// Update networked flags once serializer information is available.
-static void ResolveNetworkedFlags(SchemaClassTable& table, const char* className)
-{
-    CSchemaSystemTypeScope* pType = counterstrikesharp::globals::schemaSystem->FindTypeScopeForModule(MODULE_PREFIX "server" MODULE_EXT);
-    SchemaClassInfoData_t* pClassInfo = pType ? pType->FindDeclaredClass(className).Get() : nullptr;
-    if (!pClassInfo) return;
-
-    CNetworkSerializerClassInfo* pNetworkClassInfo = FindNetworkSerializerClassInfo(className);
-
-    const auto fieldsSize = pClassInfo->m_nNumFields;
-    SchemaClassFieldData_t* pFields = pClassInfo->m_pFields;
-
-    for (int i = 0; i < fieldsSize; ++i)
-    {
-        SchemaClassFieldData_t& field = pFields[i];
-        auto index = table.fields->Find(hash_32_fnv1a_const(field.m_pName));
-        if (table.fields->IsValidIndex(index)) table.fields->Element(index).networked = IsFieldNetworked(pNetworkClassInfo, field);
-    }
-
-    table.networkResolved = true;
 }
 
 int16_t schema::FindChainOffset(const char* className)
@@ -243,10 +213,7 @@ SchemaKey schema::GetOffset(const char* className, uint32_t classKey, const char
         return { 0, 0 };
     }
 
-    SchemaClassTable& table = schemaTableMap[tableMapIndex];
-    if (!table.networkResolved && GetNetworkSerializerDatabase() != nullptr) ResolveNetworkedFlags(table, className);
-
-    SchemaKeyValueMap_t* tableMap = table.fields;
+    SchemaKeyValueMap_t* tableMap = schemaTableMap[tableMapIndex];
 
     // Built without network info and the database is reachable now: rebuild, so `networked`
     // stops reading false. Callers get SchemaKey by value, so dropping the old table is safe.
