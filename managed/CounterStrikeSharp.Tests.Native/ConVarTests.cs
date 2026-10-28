@@ -10,8 +10,9 @@ public class ConVarTests
     [Fact]
     public async Task BoolConVar()
     {
+        // Server commands run from the command buffer, not necessarily by the next frame.
         Server.ExecuteCommand("sv_cheats 1");
-        await WaitOneFrame();
+        await WaitUntil(() => ConVar<bool>.Find("sv_cheats")?.Value == true);
 
         var boolConVar = ConVar<bool>.Find("sv_cheats");
         Assert.NotNull(boolConVar);
@@ -32,7 +33,7 @@ public class ConVarTests
     public async Task IntConVar()
     {
         Server.ExecuteCommand("mp_td_dmgtokick 300");
-        await WaitOneFrame();
+        await WaitUntil(() => ConVar<int>.Find("mp_td_dmgtokick")?.Value == 300);
 
         var intConVar = ConVar<int>.Find("mp_td_dmgtokick");
         Assert.NotNull(intConVar);
@@ -48,7 +49,7 @@ public class ConVarTests
     public async Task FloatConVar()
     {
         Server.ExecuteCommand("inferno_damage 40.0");
-        await WaitOneFrame();
+        await WaitUntil(() => ConVar<float>.Find("inferno_damage")?.Value == 40.0f);
 
         var floatConVar = ConVar<float>.Find("inferno_damage");
         Assert.NotNull(floatConVar);
@@ -63,7 +64,7 @@ public class ConVarTests
     public async Task VectorConVar()
     {
         Server.ExecuteCommand("fog_color -1 -1 -1");
-        await WaitOneFrame();
+        await WaitUntil(() => ConVar<Vector>.Find("fog_color")?.Value is { X: -1, Y: -1, Z: -1 });
 
         var vectorConVar = ConVar<Vector>.Find("fog_color");
         Assert.NotNull(vectorConVar);
@@ -81,7 +82,7 @@ public class ConVarTests
     public async Task StringConVar()
     {
         Server.ExecuteCommand("mp_backup_round_file backup");
-        await WaitOneFrame();
+        await WaitUntil(() => ConVar<string>.Find("mp_backup_round_file")?.Value == "backup");
 
         var stringConVar = ConVar<string>.Find("mp_backup_round_file");
         Assert.NotNull(stringConVar);
