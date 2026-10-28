@@ -143,7 +143,8 @@ class PlayerManager : public GlobalClass
                                              const char* pszNetworkID,
                                              bool unk1,
                                              CBufferString* pRejectReason);
-    KHook::Return<void> OnClientPutInServer(IServerGameClients* pGameClients, CPlayerSlot slot, char const* pszName, int type, uint64 xuid);
+    KHook::Return<void>
+    OnClientPutInServer(IServerGameClients* pGameClients, CPlayerSlot slot, char const* pszName, ClientPutInServerType_t type, uint64 xuid);
     KHook::Return<void> OnClientDisconnect(IServerGameClients* pGameClients,
                                            CPlayerSlot slot,
                                            ENetworkDisconnectionReason reason,
@@ -168,7 +169,7 @@ class PlayerManager : public GlobalClass
 
   private:
     hooks::Virtual<IServerGameClients, bool, CPlayerSlot, const char*, uint64, const char*, bool, CBufferString*> m_ClientConnect;
-    hooks::Virtual<IServerGameClients, void, CPlayerSlot, char const*, int, uint64> m_ClientPutInServer;
+    hooks::Virtual<IServerGameClients, void, CPlayerSlot, char const*, ClientPutInServerType_t, uint64> m_ClientPutInServer;
     hooks::Virtual<IServerGameClients, void, CPlayerSlot, ENetworkDisconnectionReason, const char*, uint64, const char*> m_ClientDisconnect;
     hooks::Virtual<IServerGameClients, void, CPlayerSlot, const CCommand&> m_ClientCommand;
     hooks::Virtual<IServerGameClients, void, CPlayerSlot> m_ClientVoice;

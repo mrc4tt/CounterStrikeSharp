@@ -1,6 +1,7 @@
 version: 2
 updates:
-  # Update the submodule in libraries/hl2sdk-cs2 every day
+  # Bump hl2sdk-cs2 (mrc4tt/hl2sdk cs2), metamod-source and Protobufs daily.
+  # The gitsubmodule ecosystem follows each submodule's `branch` in .gitmodules.
   - package-ecosystem: "gitsubmodule"
     directory: "/"
     allow:
