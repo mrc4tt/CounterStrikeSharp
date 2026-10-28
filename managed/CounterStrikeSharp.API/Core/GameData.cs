@@ -81,7 +81,7 @@ public sealed class GameDataProvider : IStartupService
                 Dictionary<string, LoadedGameData>? loadedMethods;
                 try
                 {
-                    string jsonContent = File.ReadAllText(filePath, Encoding.UTF8);
+                    string jsonContent = IsCoreFile(fileName) ? ReadCoreGameData(filePath) : File.ReadAllText(filePath, Encoding.UTF8);
                     loadedMethods = JsonSerializer.Deserialize<Dictionary<string, LoadedGameData>>(jsonContent);
                 }
                 catch (Exception ex)
@@ -120,6 +120,27 @@ public sealed class GameDataProvider : IStartupService
         {
             _logger.LogError(ex, "Failed to load game data");
         }
+    }
+
+    private static bool IsCoreFile(string fileName) => fileName.Equals("gamedata.json", StringComparison.OrdinalIgnoreCase);
+
+    // Core gamedata comes from native, which has already layered gamedata/custom/*.json over
+    // gamedata.json (per-field merge, _gameVersion pins, signature checks: core/gamedata_custom.h).
+    // Reading the file here instead would let managed bindings and native hooks disagree on the
+    // same key. The file is the fallback for when there is no native side (tests, tooling).
+    private string ReadCoreGameData(string filePath)
+    {
+        try
+        {
+            var effective = NativeAPI.GetCoreGamedata();
+            if (!string.IsNullOrEmpty(effective)) return effective;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogDebug("Core gamedata not available from native ({Error}), reading {Path}", ex.Message, filePath);
+        }
+
+        return File.ReadAllText(filePath, Encoding.UTF8);
     }
 
     // Fork-only: after loading, warn about entries that are missing a signature/offset

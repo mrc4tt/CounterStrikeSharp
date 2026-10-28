@@ -1,5 +1,8 @@
 #include "core/vtable_fallback.h"
 
+#include "core/gameconfig.h"
+#include "core/globals.h"
+
 #include "core/log.h"
 #include "core/memory_module.h"
 #include "core/utils.h"
@@ -42,11 +45,26 @@ void LoadVtableFallbacks(bool gamedataJsonTrusted)
     {
         if (file.path().extension() != ".json") continue;
 
+        if (file.path().filename() == "gamedata.json" && globals::gameConfig != nullptr)
+        {
+            // Core gamedata as it is in effect, custom/ overrides included. A key a custom/ file
+            // touched is not covered by the gamever vouch, so its slot only cross-checks.
+            const auto& core = globals::gameConfig->GetJson();
+            nlohmann::json vouched = nlohmann::json::object();
+            nlohmann::json overridden = nlohmann::json::object();
+            for (const auto& [key, entry] : core.items())
+                (globals::gameConfig->GetOverrideSource(key) ? overridden : vouched)[key] = entry;
+
+            g_fallbacks.Add(vouched, platform, gamedataJsonTrusted);
+            g_fallbacks.Add(overridden, platform, false);
+            continue;
+        }
+
         std::ifstream in(file.path());
         auto json = nlohmann::json::parse(in, nullptr, false);
         if (json.is_discarded()) continue; // GameDataProvider reports unreadable files
 
-        g_fallbacks.Add(json, platform, gamedataJsonTrusted && file.path().filename() == "gamedata.json");
+        g_fallbacks.Add(json, platform, false);
     }
 
     for (const auto& signature : g_fallbacks.Conflicting())

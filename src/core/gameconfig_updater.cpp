@@ -3,7 +3,9 @@
 #include "core/coreconfig.h"
 #include "core/log.h"
 #include "core/globals.h"
+#include "core/gamedata_custom.h"
 #include "core/gamedata_signature_check.h"
+#include "core/gameconfig.h"
 #include "core/memory.h"
 #include "core/memory_module.h"
 #include "core/vtable_fallback.h"
@@ -536,13 +538,9 @@ void* SlotInProcess(const std::string& library, const gamedata::VtableSlot& slot
 // Blocks an update that would break a signature the current gamedata resolves. The game
 // build already matches (checked first), so a signature that stops resolving is a bad
 // publish, not a game update. Offsets cannot be verified this way and are not checked.
-bool SignaturesHoldUp(const std::string& body, const std::string& currentPath, std::string& error)
+bool SignaturesHoldUp(const std::string& body, const nlohmann::json& current, std::string& error)
 {
-    std::ifstream currentFile(currentPath);
-    if (!currentFile.is_open()) return true; // nothing working to protect
-
-    auto current = nlohmann::json::parse(currentFile, nullptr, false);
-    if (current.is_discarded()) return true; // the current file is broken anyway
+    if (!current.is_object()) return true; // nothing working to protect, or the current file is broken anyway
 
     auto incoming = nlohmann::json::parse(body, nullptr, false);
 
@@ -704,7 +702,111 @@ void RecordGamedataBuild(const std::string& gameTag, const std::string& gamedata
         CSSHARP_CORE_WARN("Could not record the gamedata game build ({}); vtable fallbacks stay off", error);
 }
 
+// gamedata/gamedata.written: ContentHash of the gamedata.json this updater last wrote. A
+// gamedata.json that no longer matches it was edited by hand, and the next update would replace
+// those edits; they belong in gamedata/custom/ (core/gamedata_custom.h).
+std::string WrittenHashPath() { return utils::GamedataDirectory() + "/gamedata.written"; }
+
+enum class LocalEdits
+{
+    None,
+    Edited,
+    Unknown, // no record yet (first update since this was added): treat like Edited, but say so
+};
+
+LocalEdits CheckLocalEdits(const std::string& gamedataPath)
+{
+    if (!std::filesystem::exists(gamedataPath)) return LocalEdits::None;
+    const auto recorded = ReadFirstLine(WrittenHashPath());
+    if (recorded.empty()) return LocalEdits::Unknown;
+    return recorded == gamedata::ContentHash(ReadWholeFile(gamedataPath)) ? LocalEdits::None : LocalEdits::Edited;
+}
+
+void RecordWrittenHash(const std::string& gamedataPath)
+{
+    std::string error;
+    if (!WriteAtomically(WrittenHashPath(), gamedata::ContentHash(ReadWholeFile(gamedataPath)) + "\n", error))
+        CSSHARP_CORE_WARN("Could not record the written gamedata.json ({}); local edits will not be detected", error);
+}
+
+constexpr size_t kMaxBackups = 5;
+
+// Copies gamedata.json to gamedata/backup/gamedata-<UTC time>.json and keeps the newest kMaxBackups.
+bool BackupGamedata(const std::string& gamedataPath, std::string& backupPath, std::string& error)
+{
+    namespace fs = std::filesystem;
+    const fs::path dir = fs::path(utils::GamedataDirectory()) / "backup";
+    std::error_code ec;
+    fs::create_directories(dir, ec);
+
+    char stamp[32];
+    const auto now = std::time(nullptr);
+    std::tm utc{};
+#ifdef _WIN32
+    gmtime_s(&utc, &now);
+#else
+    gmtime_r(&now, &utc);
+#endif
+    std::strftime(stamp, sizeof(stamp), "%Y%m%d-%H%M%S", &utc);
+
+    backupPath = (dir / ("gamedata-" + std::string(stamp) + ".json")).string();
+    if (!WriteAtomically(backupPath, ReadWholeFile(gamedataPath), error)) return false;
+
+    std::vector<fs::path> backups;
+    for (const auto& entry : fs::directory_iterator(dir, ec))
+    {
+        const auto name = entry.path().filename().string();
+        if (name.rfind("gamedata-", 0) == 0 && entry.path().extension() == ".json") backups.push_back(entry.path());
+    }
+    // The timestamp sorts lexically.
+    std::sort(backups.begin(), backups.end());
+    while (backups.size() > kMaxBackups)
+    {
+        fs::remove(backups.front(), ec);
+        backups.erase(backups.begin());
+    }
+    return true;
+}
+
+// Adds `rescued` to gamedata/custom/_rescued.json. A key already there is kept as it is: it was
+// rescued earlier, and the operator may have fixed it since.
+bool WriteRescuedKeys(const nlohmann::json& rescued, std::string& path, std::string& error)
+{
+    namespace fs = std::filesystem;
+    const fs::path dir = fs::path(utils::GamedataDirectory()) / "custom";
+    std::error_code ec;
+    fs::create_directories(dir, ec);
+    path = (dir / "_rescued.json").string();
+
+    nlohmann::json existing = nlohmann::json::object();
+    if (fs::exists(path))
+    {
+        std::ifstream in(path);
+        existing = nlohmann::json::parse(in, nullptr, false);
+        if (existing.is_discarded() || !existing.is_object())
+        {
+            error = path + " exists but is not a JSON object; not touching it";
+            return false;
+        }
+    }
+
+    for (const auto& [key, value] : rescued.items())
+        if (!existing.contains(key)) existing[key] = value;
+
+    return WriteAtomically(path, existing.dump(2) + "\n", error);
+}
+
 } // namespace
+
+std::string ServerGameVersion()
+{
+    std::string error;
+    auto tag = ServerGameVersionTag(error);
+    if (tag.empty()) CSSHARP_CORE_WARN("Gamedata: {}", error);
+    return tag;
+}
+
+bool SignatureResolves(const std::string& library, const std::string& signature) { return SignatureResolvesInProcess(library, signature); }
 
 /// Checks that the published gamedata targets this server's game build, then fetches
 /// AutoUpdateURL with a conditional GET (If-None-Match: <stored ETag>) and, when the
@@ -724,6 +826,18 @@ bool TryUpdateGameConfig()
         return false;
     }
 
+    auto gamedataPath = utils::GamedataDirectory() + "/gamedata.json";
+    auto etagPath = utils::GamedataDirectory() + "/gamedata.etag";
+
+    const auto localEdits = CheckLocalEdits(gamedataPath);
+    if (localEdits == LocalEdits::Edited)
+    {
+        CSSHARP_CORE_WARN("gamedata.json differs from the copy the updater last wrote (edited by hand, or replaced by a deploy). "
+                          "The next gamedata update replaces it: keys the feed does not have move to gamedata/custom/_rescued.json "
+                          "and the old file is backed up to gamedata/backup/, but changed values are kept only in the backup. "
+                          "Put your own signatures/offsets in gamedata/custom/ instead.");
+    }
+
     std::string reason;
     std::string matchedTag;
     if (!GameVersionMatches(configuredUrl, reason, matchedTag))
@@ -731,9 +845,6 @@ bool TryUpdateGameConfig()
         CSSHARP_CORE_WARN("Gamedata update skipped, keeping the current gamedata.json: {}", reason);
         return false;
     }
-
-    auto gamedataPath = utils::GamedataDirectory() + "/gamedata.json";
-    auto etagPath = utils::GamedataDirectory() + "/gamedata.etag";
 
     // Without a gamedata.json there is nothing a 304 could refer to; ask for the full file.
     auto localETag = std::filesystem::exists(gamedataPath) ? ReadFirstLine(etagPath) : std::string();
@@ -772,10 +883,56 @@ bool TryUpdateGameConfig()
         return false;
     }
 
-    if (!SignaturesHoldUp(res.body, gamedataPath, error))
+    nlohmann::json current;
+    {
+        std::ifstream currentFile(gamedataPath);
+        if (currentFile.is_open()) current = nlohmann::json::parse(currentFile, nullptr, false);
+    }
+
+    // Keys only the local file has were added by hand (or, when edits are Unknown, may have been):
+    // they move to custom/, so they survive the update and do not count as removed below. A key the
+    // file shares with the feed is the feed's; a hand-changed value of one is only kept in the backup.
+    nlohmann::json rescued = nlohmann::json::object();
+    if (localEdits != LocalEdits::None && current.is_object())
+    {
+        auto incoming = nlohmann::json::parse(res.body, nullptr, false);
+        for (const auto& [key, value] : current.items())
+            if (!gamedata::IsMetadataKey(key) && !incoming.contains(key)) rescued[key] = value;
+        for (const auto& [key, value] : rescued.items())
+            current.erase(key);
+    }
+
+    if (!SignaturesHoldUp(res.body, current, error))
     {
         CSSHARP_CORE_ERROR("Gamedata update from {} rejected, keeping the current gamedata.json: {}", configuredUrl, error);
         return false;
+    }
+
+    if (localEdits == LocalEdits::Edited || !rescued.empty())
+    {
+        std::string backupPath;
+        if (!BackupGamedata(gamedataPath, backupPath, error))
+        {
+            CSSHARP_CORE_ERROR("Gamedata update skipped, the local gamedata.json could not be backed up: {}", error);
+            return false;
+        }
+        CSSHARP_CORE_INFO("Gamedata: backed up the local gamedata.json to {}", backupPath);
+    }
+
+    if (!rescued.empty())
+    {
+        std::string rescuedPath;
+        if (!WriteRescuedKeys(rescued, rescuedPath, error))
+        {
+            CSSHARP_CORE_ERROR("Gamedata update skipped, keys not in the feed could not be moved to custom/: {}", error);
+            return false;
+        }
+
+        std::string keys;
+        for (const auto& [key, value] : rescued.items())
+            keys += (keys.empty() ? "" : ", ") + key;
+        CSSHARP_CORE_WARN("Gamedata: moved {} key(s) the feed does not have to {}: {}{}", rescued.size(), rescuedPath, keys,
+                          localEdits == LocalEdits::Unknown ? ". If you never added these, the feed dropped them; delete the file." : "");
     }
 
     if (!WriteAtomically(gamedataPath, res.body, error))
@@ -791,6 +948,7 @@ bool TryUpdateGameConfig()
     }
 
     RecordGamedataBuild(matchedTag, gamedataPath);
+    RecordWrittenHash(gamedataPath);
 
     CSSHARP_CORE_INFO("Gamedata file written to: {} with ETag {}", gamedataPath, res.etag);
     return true;
@@ -847,10 +1005,19 @@ void WriteGamedataStatus()
     auto vtableMismatch = nlohmann::json::array();
     int checked = 0;
 
+    const auto coreFile = root / "gamedata" / "gamedata.json";
+
     for (const auto& file : files)
     {
-        std::ifstream in(file);
-        auto json = nlohmann::json::parse(in, nullptr, false);
+        // Core gamedata is reported as it is in effect, custom/ overrides included.
+        const bool isCore = file == coreFile && globals::gameConfig != nullptr;
+        nlohmann::json json;
+        if (isCore) json = globals::gameConfig->GetJson();
+        else
+        {
+            std::ifstream in(file);
+            json = nlohmann::json::parse(in, nullptr, false);
+        }
         if (json.is_discarded() || !json.is_object()) continue;
 
         const auto relative = fs::relative(file, root, ec).generic_string();
@@ -874,10 +1041,12 @@ void WriteGamedataStatus()
             void* slotted = slot ? SlotInProcess(library, *slot) : nullptr;
 
             // Same rule as the runtime (vtable_fallback.cpp): only a slot from a gamedata.json
-            // proven to be for this game build stands in for a failed signature.
-            const bool trusted = file == root / "gamedata" / "gamedata.json" && gamedataTrusted;
+            // proven to be for this game build stands in for a failed signature, and not for a key
+            // a custom/ file touched.
+            const auto* overrideSource = isCore ? globals::gameConfig->GetOverrideSource(name) : nullptr;
+            const bool trusted = file == coreFile && gamedataTrusted && overrideSource == nullptr;
 
-            nlohmann::json row = { { "name", name }, { "file", relative } };
+            nlohmann::json row = { { "name", name }, { "file", overrideSource ? "gamedata/" + *overrideSource : relative } };
             if (!scanned && !(slotted && trusted)) missing.push_back(row);
             else if (!scanned)
                 viaVtable.push_back(row);

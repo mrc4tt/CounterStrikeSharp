@@ -45,6 +45,7 @@ set(SOURCE_FILES
     src/core/khook_verified.cpp
     src/core/coreconfig.h
     src/core/coreconfig.cpp
+    src/core/gamedata_custom.h
     src/core/gameconfig.h
     src/core/gameconfig.cpp
     src/core/gameconfig_updater.h

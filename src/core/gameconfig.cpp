@@ -1,11 +1,22 @@
 #include "core/gameconfig.h"
 #include "core/signature_pattern.h"
 
+#include <algorithm>
+#include <filesystem>
 #include <fstream>
+#include <stdexcept>
 
 #include "log.h"
 
 namespace counterstrikesharp {
+
+namespace {
+#if _WIN32
+constexpr auto kPlatform = "windows";
+#else
+constexpr auto kPlatform = "linux";
+#endif
+} // namespace
 
 CGameConfig::CGameConfig(const std::string& path) { m_sPath = path; }
 
@@ -20,46 +31,13 @@ bool CGameConfig::Init(char* conf_error, int conf_error_size)
         return false;
     }
 
-#if _WIN32
-    constexpr auto platform = "windows";
-#else
-    constexpr auto platform = "linux";
-#endif
-
     try
     {
         // Inside the try: a truncated / half-written gamedata.json (the auto-updater
         // rewrites it in place) used to throw out of Init() and std::terminate the server.
         m_json = json::parse(ifs);
-
-        for (auto& [k, v] : m_json.items())
-        {
-            if (v.contains("signatures"))
-            {
-                if (auto library = v["signatures"]["library"]; library.is_string())
-                {
-                    m_umLibraries[k] = library.get<std::string>();
-                }
-                if (auto signature = v["signatures"][platform]; signature.is_string())
-                {
-                    m_umSignatures[k] = signature.get<std::string>();
-                }
-            }
-            if (v.contains("offsets"))
-            {
-                if (auto offset = v["offsets"][platform]; offset.is_number_integer())
-                {
-                    m_umOffsets[k] = offset.get<std::int64_t>();
-                }
-            }
-            if (v.contains("patches"))
-            {
-                if (auto patch = v["patches"][platform]; patch.is_string())
-                {
-                    m_umPatches[k] = patch.get<std::string>();
-                }
-            }
-        }
+        if (!m_json.is_object()) throw std::runtime_error("top level is not a JSON object");
+        RebuildLookups();
     }
     catch (const std::exception& ex)
     {
@@ -67,6 +45,110 @@ bool CGameConfig::Init(char* conf_error, int conf_error_size)
         return false;
     }
     return true;
+}
+
+void CGameConfig::RebuildLookups()
+{
+    m_umOffsets.clear();
+    m_umSignatures.clear();
+    m_umLibraries.clear();
+    m_umPatches.clear();
+    m_coreDump.clear();
+
+    for (auto& [k, v] : m_json.items())
+    {
+        if (!v.is_object()) continue;
+        if (v.contains("signatures") && v["signatures"].is_object())
+        {
+            const auto& signatures = v["signatures"];
+            if (signatures.contains("library") && signatures["library"].is_string())
+            {
+                m_umLibraries[k] = signatures["library"].get<std::string>();
+            }
+            if (signatures.contains(kPlatform) && signatures[kPlatform].is_string())
+            {
+                m_umSignatures[k] = signatures[kPlatform].get<std::string>();
+            }
+        }
+        if (v.contains("offsets") && v["offsets"].is_object())
+        {
+            if (const auto& offsets = v["offsets"]; offsets.contains(kPlatform) && offsets[kPlatform].is_number_integer())
+            {
+                m_umOffsets[k] = offsets[kPlatform].get<std::int64_t>();
+            }
+        }
+        if (v.contains("patches") && v["patches"].is_object())
+        {
+            if (const auto& patches = v["patches"]; patches.contains(kPlatform) && patches[kPlatform].is_string())
+            {
+                m_umPatches[k] = patches[kPlatform].get<std::string>();
+            }
+        }
+    }
+}
+
+void CGameConfig::ApplyCustomOverrides(const std::string& directory,
+                                       const std::string& serverTag,
+                                       const update::SignatureResolver& resolves)
+{
+    namespace fs = std::filesystem;
+
+    m_overrides.clear();
+
+    std::vector<fs::path> paths;
+    std::error_code ec;
+    for (const auto& entry : fs::directory_iterator(directory, ec))
+        if (entry.is_regular_file() && entry.path().extension() == ".json") paths.push_back(entry.path());
+    if (paths.empty()) return;
+
+    // Later files win, so the order has to be the same on every host.
+    std::sort(paths.begin(), paths.end(), [](const fs::path& a, const fs::path& b) {
+        return a.filename() < b.filename();
+    });
+
+    std::vector<gamedata::CustomFile> files;
+    for (const auto& path : paths)
+    {
+        const auto name = "custom/" + path.filename().string();
+        std::ifstream in(path);
+        auto parsed = json::parse(in, nullptr, false);
+        if (parsed.is_discarded())
+        {
+            CSSHARP_CORE_ERROR("Gamedata: skipping {}, it is not valid JSON", name);
+            continue;
+        }
+        files.push_back({ name, std::move(parsed) });
+    }
+
+    auto result = gamedata::ApplyCustomFiles(m_json, files, serverTag, kPlatform, resolves);
+
+    for (const auto& skipped : result.skippedFiles)
+        CSSHARP_CORE_WARN("Gamedata: skipping {}; core gamedata.json applies instead", skipped);
+    for (const auto& warning : result.warnings)
+        CSSHARP_CORE_WARN("Gamedata: {}", warning);
+
+    for (const auto& applied : result.applied)
+    {
+        std::string fields;
+        for (const auto& field : applied.fields)
+            fields += (fields.empty() ? "" : ", ") + field;
+        CSSHARP_CORE_INFO("Gamedata override: {} [{}{}] <- {}", applied.key, applied.added ? "added; " : "", fields, applied.file);
+        m_overrides[applied.key] = applied.file;
+    }
+
+    RebuildLookups();
+}
+
+const char* CGameConfig::GetCoreJson()
+{
+    if (m_coreDump.empty()) m_coreDump = m_json.dump();
+    return m_coreDump.c_str();
+}
+
+const std::string* CGameConfig::GetOverrideSource(const std::string& name) const
+{
+    auto it = m_overrides.find(name);
+    return it == m_overrides.end() ? nullptr : &it->second;
 }
 
 const std::string CGameConfig::GetPath() { return m_sPath; }

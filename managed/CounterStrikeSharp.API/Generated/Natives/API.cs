@@ -665,6 +665,15 @@ namespace CounterStrikeSharp.API.Core
 			return _ctx.GetResultString();
 		}
 
+        public static string GetCoreGamedata(){
+			var _ctx = ScriptContext.GlobalScriptContext;
+			_ctx.Reset();
+			_ctx.SetIdentifier(0xC2B5F836);
+			_ctx.Invoke();
+			_ctx.CheckErrors();
+			return _ctx.GetResultString();
+		}
+
         public static bool IsMapValid(string mapname){
 			var _ctx = ScriptContext.GlobalScriptContext;
 			_ctx.Reset();
