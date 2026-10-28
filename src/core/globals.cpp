@@ -15,6 +15,7 @@
 #include "utils/virtual.h"
 #include "core/memory.h"
 #include "core/managers/con_command_manager.h"
+#include "core/managers/convar_manager.h"
 #include "core/managers/chat_manager.h"
 #include "memory_module.h"
 #include "interfaces/cs2_interfaces.h"
@@ -79,6 +80,7 @@ ISource2GameEntities* gameEntities = nullptr;
 
 // Custom Managers
 CallbackManager callbackManager;
+ConVarManager convarManager;
 EventManager eventManager;
 PlayerManager playerManager;
 TimerSystem timerSystem;

@@ -60,7 +60,7 @@ public class FakeConVar<T> where T : IComparable<T>
         
         if (Flags.HasFlag(ConVarFlags.FCVAR_CHEAT))
         {
-            var cheats = ConVar.Find("sv_cheats")!.GetPrimitiveValue<bool>();
+            var cheats = ConVar<bool>.Find("sv_cheats")!.Value;
             if (!cheats)
             {
                 args.ReplyToCommand($"SV: Convar '{Name}' is cheat protected, change ignored");

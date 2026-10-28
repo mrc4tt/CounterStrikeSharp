@@ -214,6 +214,8 @@ namespace CounterStrikeSharp.API.Core
         internal readonly Dictionary<Delegate, EntityIO.EntityOutputCallback> EntitySingleOutputHooks =
             new Dictionary<Delegate, EntityIO.EntityOutputCallback>();
 
+        internal readonly List<ConVarBase> ConVars = [];
+
         public readonly List<CommandDefinition> CommandDefinitions = new List<CommandDefinition>();
 
         public readonly List<Timer> Timers = new List<Timer>();
@@ -525,6 +527,7 @@ namespace CounterStrikeSharp.API.Core
             this.RegisterAttributeHandlers(instance);
             this.RegisterConsoleCommandAttributeHandlers(instance);
             this.RegisterEntityOutputAttributeHandlers(instance);
+            this.RegisterConVars(instance);
             this.RegisterFakeConVars(instance);
         }
 
@@ -691,6 +694,36 @@ namespace CounterStrikeSharp.API.Core
             }
         }
 
+        public void RegisterConVars(Type type, object? instance = null)
+        {
+            // Every owned ConVar<T> found here is deleted on unload. Fields-only (upstream) missed
+            // `public ConVar<int> Foo { get; } = new(...)` and private fields, so those outlived the
+            // plugin and the next hot reload / css_plugins reload failed with
+            // "Convar with name '...' already exists.". Probe properties and non-public members too;
+            // auto-property backing fields make duplicates likely, hence the Contains check.
+            var flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static |
+                        (instance != null ? BindingFlags.Instance : 0);
+
+            var values = type.GetFields(flags)
+                .Where(field => typeof(ConVarBase).IsAssignableFrom(field.FieldType))
+                .Select(field => field.GetValue(instance))
+                .Concat(type.GetProperties(flags)
+                    .Where(prop => typeof(ConVarBase).IsAssignableFrom(prop.PropertyType) &&
+                                   prop.CanRead && prop.GetIndexParameters().Length == 0)
+                    .Select(prop =>
+                    {
+                        // A getter can throw or compute a fresh wrapper; neither may fail plugin load.
+                        try { return prop.GetValue(instance); }
+                        catch { return null; }
+                    }));
+
+            foreach (var value in values)
+            {
+                if (value is ConVarBase { Owned: true } conVar && !ConVars.Contains(conVar))
+                    ConVars.Add(conVar);
+            }
+        }
+
         /// <summary>
         /// Used to bind a fake ConVar to a plugin command. Only required for ConVars that are not public properties of the plugin class.
         /// </summary>
@@ -699,6 +732,11 @@ namespace CounterStrikeSharp.API.Core
         public void RegisterFakeConVars(object instance)
         {
             RegisterFakeConVars(instance.GetType(), instance);
+        }
+
+        public void RegisterConVars(object instance)
+        {
+            RegisterConVars(instance.GetType(), instance);
         }
 
         /// <summary>
@@ -829,6 +867,13 @@ namespace CounterStrikeSharp.API.Core
             foreach (var subscriber in EntityOutputHooks.Values.ToList())
             {
                 subscriber.Dispose();
+            }
+
+            foreach (var convar in ConVars.ToList())
+            {
+                if (!convar.IsValid) continue;
+
+                convar.Delete();
             }
 
             foreach (var definition in CommandDefinitions.ToList())

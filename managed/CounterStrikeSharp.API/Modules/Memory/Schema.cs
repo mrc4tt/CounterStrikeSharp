@@ -179,7 +179,14 @@ public class Schema
             return networked;
 
         networked = NativeAPI.IsSchemaFieldNetworked(className, propertyName);
-        _networkedByValue[key] = networked;
+
+        // Before the entity system exists the native side cannot see the network serializer and
+        // reports false for every field; caching that kept SetStateChanged a no-op for the field
+        // until a restart when it was first asked in Load(). Same rule as SchemaField: a "yes" is
+        // final, a "no" only once network info is ready.
+        if (networked || NativeAPI.IsSchemaNetworkInfoReady())
+            _networkedByValue[key] = networked;
+
         return networked;
     }
 

@@ -87,11 +87,12 @@ public class GameTests
         Assert.False(pawn.WeaponServices!.MyWeapons.Any());
 
         var weapon = player.GiveNamedItem<CMolotovGrenade>("weapon_ak47");
-        await WaitOneFrame();
 
         Assert.NotNull(weapon);
         Assert.Equal("weapon_ak47", weapon.DesignerName);
-        // Contains, not Single: a live bot can buy or pick up a weapon of its own in the same frame.
+        // Checked in the same frame as the give: the bot is live, and a frame later a respawn or
+        // round restart could already have replaced its loadout. Contains, not Single, for the
+        // same reason.
         Assert.Contains(pawn.WeaponServices.MyWeapons, handle => handle.Index == weapon.Index);
     }
 
