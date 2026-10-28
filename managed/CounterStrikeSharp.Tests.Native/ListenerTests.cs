@@ -162,7 +162,8 @@ public class ListenerTests
             NativeAPI.AddListener("OnConVarChanged", methodCallback);
             await WaitOneFrame();
             NativeAPI.IssueServerCommand($"{convar.Name} 1");
-            await WaitOneFrame();
+            // The command runs from the command buffer, not necessarily by the next frame.
+            await WaitUntil(() => mock.Invocations.Count > 0);
             Assert.Single(mock.Invocations);
         }
         finally
