@@ -334,6 +334,11 @@ public partial class CCSGameRules : CTeamplayRules
 	[SchemaMember("CCSGameRules", "m_TeamRespawnWaveTimes")]
 	public Span<float> TeamRespawnWaveTimes => Schema.GetFixedArray<float>(this.Handle, "CCSGameRules", "m_TeamRespawnWaveTimes", 32);
 
+	// m_nActiveMutators
+	private static readonly SchemaField<Int32> __m_nActiveMutators = new("CCSGameRules", "m_nActiveMutators");
+	[SchemaMember("CCSGameRules", "m_nActiveMutators")]
+	public ref Int32 ActiveMutators => ref __m_nActiveMutators.GetRef(this.Handle);
+
 	// m_flNextRespawnWave
 	[SchemaMember("CCSGameRules", "m_flNextRespawnWave")]
 	public Span<float> NextRespawnWave => Schema.GetFixedArray<float>(this.Handle, "CCSGameRules", "m_flNextRespawnWave", 32);

@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- https://learn.microsoft.com/dotnet/fundamentals/package-validation/diagnostic-ids -->
+<Suppressions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:CounterStrikeSharp.API.Core.CCSPlayerPawn.get_Modifier0</Target>
+    <Left>./ApiCompat/v1.0.410.dll</Left>
+    <Right>obj/Release/net10.0/CounterStrikeSharp.API.dll</Right>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:CounterStrikeSharp.API.Core.CCSWeaponBase.get_SilentReloadStatCounted</Target>
+    <Left>./ApiCompat/v1.0.410.dll</Left>
+    <Right>obj/Release/net10.0/CounterStrikeSharp.API.dll</Right>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:CounterStrikeSharp.API.Core.CCSWeaponBase.get_StealthHoldStartTime</Target>
+    <Left>./ApiCompat/v1.0.410.dll</Left>
+    <Right>obj/Release/net10.0/CounterStrikeSharp.API.dll</Right>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:CounterStrikeSharp.API.Core.CCSWeaponBase.get_Stealthy</Target>
+    <Left>./ApiCompat/v1.0.410.dll</Left>
+    <Right>obj/Release/net10.0/CounterStrikeSharp.API.dll</Right>
+  </Suppression>
+</Suppressions>
