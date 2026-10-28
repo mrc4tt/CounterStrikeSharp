@@ -280,6 +280,16 @@ namespace CounterStrikeSharp.API.Core
 			return _ctx.GetResultPrimitive<ushort>();
 		}
 
+        public static bool IsConvarValid(ushort convar){
+			var _ctx = ScriptContext.GlobalScriptContext;
+			_ctx.Reset();
+			_ctx.PushPrimitive(convar);
+			_ctx.SetIdentifier(0x89F882AE);
+			_ctx.Invoke();
+			_ctx.CheckErrors();
+			return _ctx.GetResultPrimitive<bool>();
+		}
+
         public static T GetConvarValue<T>(ushort convar){
 			var _ctx = ScriptContext.GlobalScriptContext;
 			_ctx.Reset();
@@ -326,6 +336,42 @@ namespace CounterStrikeSharp.API.Core
 			_ctx.PushPrimitive(convar);
 			_ctx.Push(value);
 			_ctx.SetIdentifier(0xB3DDAA0B);
+			_ctx.Invoke();
+			_ctx.CheckErrors();
+		}
+
+        public static bool HasConvarBound(ushort convar, bool minimum, short type){
+			var _ctx = ScriptContext.GlobalScriptContext;
+			_ctx.Reset();
+			_ctx.PushPrimitive(convar);
+			_ctx.PushPrimitive(minimum);
+			_ctx.PushPrimitive(type);
+			_ctx.SetIdentifier(0x4B74206A);
+			_ctx.Invoke();
+			_ctx.CheckErrors();
+			return _ctx.GetResultPrimitive<bool>();
+		}
+
+        public static T GetConvarBound<T>(ushort convar, bool minimum, short type){
+			var _ctx = ScriptContext.GlobalScriptContext;
+			_ctx.Reset();
+			_ctx.PushPrimitive(convar);
+			_ctx.PushPrimitive(minimum);
+			_ctx.PushPrimitive(type);
+			_ctx.SetIdentifier(0x94C3B4E6);
+			_ctx.Invoke();
+			_ctx.CheckErrors();
+			return (T)_ctx.GetResult(typeof(T));
+		}
+
+        public static void SetConvarBound<T>(ushort convar, bool minimum, short type, T value){
+			var _ctx = ScriptContext.GlobalScriptContext;
+			_ctx.Reset();
+			_ctx.PushPrimitive(convar);
+			_ctx.PushPrimitive(minimum);
+			_ctx.PushPrimitive(type);
+			_ctx.Push(value);
+			_ctx.SetIdentifier(0xB2774B72);
 			_ctx.Invoke();
 			_ctx.CheckErrors();
 		}

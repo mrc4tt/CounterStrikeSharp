@@ -197,7 +197,9 @@ public partial class CCSPlayerController
         return NativeAPI.GetClientConvarValue(Slot, conVar);
     }
 
+#pragma warning disable CS0618 // public overload over the obsolete non-generic ConVar, kept for API compat
     public string GetConVarValue(ConVar? conVar)
+#pragma warning restore CS0618
     {
         if (conVar == null)
         {
@@ -227,7 +229,9 @@ public partial class CCSPlayerController
     /// </summary>
     /// <exception cref="ArgumentException"><paramref name="conVar"/> is <see langword="null"/></exception>
     /// <inheritdoc cref="SetFakeClientConVar(string,string)" select="exception"/>
+#pragma warning disable CS0618 // public overload over the obsolete non-generic ConVar, kept for API compat
     public void SetFakeClientConVar(ConVar conVar, string value)
+#pragma warning restore CS0618
     {
         if (conVar == null)
         {
