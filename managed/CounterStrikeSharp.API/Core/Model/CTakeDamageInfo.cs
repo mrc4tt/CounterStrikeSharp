@@ -15,6 +15,16 @@ public partial class CTakeDamageInfo
     /// </returns>
     public HitGroup_t GetHitGroup()
     {
+        // The engine records the hitgroup on the damage info itself (m_iHitGroupId). Prefer it:
+        // the pointer walk below goes through undocumented offsets that read garbage (or fault)
+        // whenever a game update moves them. It stays as the fallback for damage where the
+        // schema field is left at GENERIC, so callers that relied on it see no change.
+        var hitGroup = HitGroupId;
+        if (hitGroup > HitGroup_t.HITGROUP_GENERIC && hitGroup < HitGroup_t.HITGROUP_COUNT)
+        {
+            return hitGroup;
+        }
+
         IntPtr v4 = Marshal.ReadIntPtr(Handle, s_hitGroupOffset.Value);
 
         if (v4 == nint.Zero)
