@@ -33,7 +33,11 @@ public abstract class BaseMemoryFunction : NativeObject
     private static IntPtr CreateValveFunctionByOffset(string symbolName, int offset, DataType returnType,
         DataType[] argumentTypes, Func<nint> nativeCaller)
     {
-        string constructKey = $"{symbolName}_{offset}";
+        // Types are part of the key for the same reason as NativeFunctionCache: the native
+        // ValveFunction fixes its argument list at creation, so two bindings of one symbol/offset
+        // with different arguments must not share an instance.
+        string constructKey =
+            $"{symbolName}_{offset}:{(int)returnType}:{string.Join(",", argumentTypes.Select(t => (int)t))}";
 
         if (!_createdOffsetFunctions.TryGetValue(constructKey, out var function))
         {
@@ -45,7 +49,7 @@ public abstract class BaseMemoryFunction : NativeObject
             catch (Exception ex)
             {
                 Application.Instance.Logger.LogError(ex,
-                    "Failed to resolve native function by offset \"{Key}\"", constructKey);
+                    "Failed to resolve native function by offset \"{Symbol}_{Offset}\"", symbolName, offset);
             }
         }
 
