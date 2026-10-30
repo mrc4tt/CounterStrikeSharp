@@ -164,16 +164,23 @@ struct EntityIOConnectionDesc_t
 
 struct EntityIOConnection_t : EntityIOConnectionDesc_t
 {
+    // CPulseInputParamMap (KeyValues3 + bool) in the SDK's ientity2_entityio.h; kept opaque here.
+    uint8 m_paramMap[24];
     bool m_bMarkedForRemoval;
     EntityIOConnection_t* m_pNext;
 };
+static_assert(sizeof(EntityIOConnectionDesc_t) == 40, "EntityIOConnectionDesc_t layout drifted");
+static_assert(sizeof(EntityIOConnection_t) == 80, "EntityIOConnection_t layout drifted");
 
+// EntOutput_t in the SDK's entitycomponent.h.
 struct EntityIOOutputDesc_t
 {
     const char* m_pName;
     uint32 m_nFlags;
+    void* m_pfnGetOutputOwner;
     uint32 m_nOutputOffset;
 };
+static_assert(offsetof(EntityIOOutputDesc_t, m_nOutputOffset) == 24, "EntityIOOutputDesc_t layout drifted");
 
 class CEntityIOOutput
 {
