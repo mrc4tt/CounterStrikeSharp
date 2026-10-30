@@ -358,12 +358,7 @@ namespace CounterStrikeSharp.API.Core
                     }
 
                     var pluginIdentifier = info.GetArg(2);
-                    string path;
-                    path = Path.Combine(_scriptHostConfiguration.RootPath,
-                        !pluginIdentifier.EndsWith(".dll") ? $"plugins/{pluginIdentifier}/{pluginIdentifier}.dll" : pluginIdentifier);
-
-                    var plugin = _pluginContextQueryHandler.FindPluginByIdOrName(pluginIdentifier)
-                                 ?? _pluginContextQueryHandler.FindPluginByModulePath(path);
+                    var plugin = FindPluginByIdentifier(pluginIdentifier);
 
                     if (plugin == null)
                     {
@@ -388,7 +383,7 @@ namespace CounterStrikeSharp.API.Core
                     }
 
                     var pluginIdentifier = info.GetArg(2);
-                    var plugin = _pluginContextQueryHandler.FindPluginByIdOrName(pluginIdentifier);
+                    var plugin = FindPluginByIdentifier(pluginIdentifier);
 
                     if (plugin == null)
                     {
@@ -415,6 +410,18 @@ namespace CounterStrikeSharp.API.Core
         // Load (or reload) a context that already exists, from a console command. Load() throws
         // for pre-instance failures (bad DLL, version mismatch, plugin DI); unguarded that escaped
         // the command handler with no blame report and no reply to the caller.
+        // Id (#1), module name, or the plugin's folder / DLL path as `css_plugins load` takes it. unload and
+        // reload share this: reload used to accept only the id or name, so `reload MyPlugin` failed whenever
+        // the folder and the ModuleName differed.
+        private IPluginContext? FindPluginByIdentifier(string pluginIdentifier)
+        {
+            var path = Path.Combine(_scriptHostConfiguration.RootPath,
+                !pluginIdentifier.EndsWith(".dll") ? $"plugins/{pluginIdentifier}/{pluginIdentifier}.dll" : pluginIdentifier);
+
+            return _pluginContextQueryHandler.FindPluginByIdOrName(pluginIdentifier)
+                   ?? _pluginContextQueryHandler.FindPluginByModulePath(path);
+        }
+
         private void LoadExistingContext(IPluginContext plugin, bool hotReload, string label, CommandInfo info)
         {
             try
