@@ -240,25 +240,40 @@ namespace CounterStrikeSharp.API
         /// </summary>
         public static List<CCSPlayerController> GetPlayers()
         {
-            // Pre-sized: plugins call this every tick, and a default-capacity List grows
-            // 0 -> 4 -> 8 -> 16 -> 32 -> 64, discarding every intermediate array as Gen0
-            // garbage on each call.
+            // Plugins call this every tick. Sized exactly: a default-capacity List grows 0 -> 4 -> ... -> 64
+            // discarding every intermediate array, and sizing it to MaxPlayers (64) allocated a 528-byte
+            // backing array per call even with a handful of players. The mask pass is ~64 pointer reads.
+            //
+            // Slots are checked on the raw entity pointer and a wrapper is built only for connected
+            // players. Building one for every slot cost a native handle lookup plus two more handle
+            // resolutions (IsValid, Connected) per slot, every tick, for every plugin calling this.
             var maxPlayers = Server.MaxPlayers;
-            List<CCSPlayerController> players = new(maxPlayers);
-
-            for (int i = 0; i < maxPlayers; i++)
+            if (maxPlayers <= 64)
             {
-                // Check the slot on the raw entity pointer first and only build a wrapper for connected
-                // players. Building one for every slot cost a native handle lookup plus two more handle
-                // resolutions (IsValid, Connected) per slot, every tick, for every plugin calling this.
-                var pointer = GetConnectedControllerPointer(i);
-                if (pointer == IntPtr.Zero)
-                    continue;
+                var mask = GetConnectedPlayersMask();
+                var players = new List<CCSPlayerController>(System.Numerics.BitOperations.PopCount(mask));
+                while (mask != 0)
+                {
+                    var slot = System.Numerics.BitOperations.TrailingZeroCount(mask);
+                    mask &= mask - 1;
 
-                players.Add(new CCSPlayerController(pointer));
+                    var pointer = GetConnectedControllerPointer(slot);
+                    if (pointer != IntPtr.Zero)
+                        players.Add(new CCSPlayerController(pointer));
+                }
+
+                return players;
             }
 
-            return players;
+            var all = new List<CCSPlayerController>(maxPlayers);
+            for (int i = 0; i < maxPlayers; i++)
+            {
+                var pointer = GetConnectedControllerPointer(i);
+                if (pointer != IntPtr.Zero)
+                    all.Add(new CCSPlayerController(pointer));
+            }
+
+            return all;
         }
 
         private static readonly SchemaField<PlayerConnectedState> s_connectedField = new("CBasePlayerController", "m_iConnected");
