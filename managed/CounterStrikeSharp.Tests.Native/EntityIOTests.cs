@@ -2,6 +2,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CounterStrikeSharp.API;
 using CounterStrikeSharp.API.Core;
+using CounterStrikeSharp.API.Modules.Memory;
 using Moq;
 using Xunit;
 
@@ -110,5 +111,44 @@ public class EntityIOTests
             FunctionReference.Remove(callback.Identifier);
             entity.Remove();
         }
+    }
+
+    [Fact]
+    public void EntityIOOutput_Description_MatchesTheOwningField()
+    {
+        var relay = Utilities.CreateEntityByName<CLogicRelay>("logic_relay");
+        Assert.NotNull(relay);
+
+        try
+        {
+            relay.DispatchSpawn();
+
+            var description = relay.OnTrigger.Description;
+            Assert.Equal("OnTrigger", description.Name);
+            Assert.Equal((uint)Schema.GetSchemaOffset("CLogicRelay", "m_OnTrigger"), description.OutputOffset);
+        }
+        finally
+        {
+            relay.Remove();
+        }
+    }
+
+    [Fact]
+    public void EntityIOOutput_Connections_WalkWithoutReadingGarbage()
+    {
+        // Map-authored I/O: every connection must read back as a target input and the chain must end.
+        var walked = 0;
+        foreach (var relay in Utilities.FindAllEntitiesByDesignerName<CLogicRelay>("logic_relay"))
+        {
+            var hops = 0;
+            for (var connection = relay.OnTrigger.Connections; connection != null; connection = connection.Next)
+            {
+                Assert.True(++hops < 1000, "connection list does not terminate");
+                Assert.False(string.IsNullOrEmpty(connection.TargetInput));
+                walked++;
+            }
+        }
+
+        Console.WriteLine($"[EntityIOTests] walked {walked} logic_relay OnTrigger connection(s)");
     }
 }
