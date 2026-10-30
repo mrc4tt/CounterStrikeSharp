@@ -233,14 +233,13 @@ public static class GameData
         return signature;
     }
 
+    // Called per invoke by high-level wrappers (e.g. CBaseEntity.IsPlayerPawn), so one lookup.
     public static int GetOffset(string key)
     {
-        if (!GameDataProvider.Methods.ContainsKey(key))
+        if (!GameDataProvider.Methods.TryGetValue(key, out var methodMetadata))
         {
             throw new ArgumentException(BuildMissingKeyMessage(key));
         }
-
-        var methodMetadata = GameDataProvider.Methods[key];
 
         if (methodMetadata.Offsets == null)
         {
@@ -248,7 +247,7 @@ public static class GameData
         }
 
         int offset;
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+        if (OperatingSystem.IsLinux())
         {
             offset = methodMetadata.Offsets?.Linux ?? throw new InvalidOperationException($"No Linux offset for {key} in gamedata.json");
         }

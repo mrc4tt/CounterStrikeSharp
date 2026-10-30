@@ -246,6 +246,8 @@ public abstract class BaseMemoryFunction : NativeObject
         }
     }
 
+    // Kept for derived classes outside the API; MemoryFunctionVoid/WithReturn call
+    // VirtualFunctionInvoker directly to avoid the object[] and boxing.
     protected T InvokeInternal<T>(bool bypass, params object[] args)
     {
         return NativeAPI.ExecuteVirtualFunction<T>(Handle, bypass, args);

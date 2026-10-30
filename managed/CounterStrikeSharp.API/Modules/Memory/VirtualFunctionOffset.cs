@@ -91,7 +91,7 @@ namespace CounterStrikeSharp.API.Modules.Memory
             var virtualFunctionPointer = CreateVirtualFunction(objectPtr, offset, arguments,
                 DataType.DATA_TYPE_VOID, arguments.Cast<object>().ToArray());
 
-            return DelegateCache<Action>.Store(cacheKey, () => { NativeAPI.ExecuteVirtualFunction<object>(virtualFunctionPointer, false, new object[] { }); });
+            return DelegateCache<Action>.Store(cacheKey, () => { VirtualFunctionInvoker.InvokeVoid(virtualFunctionPointer, false); });
         }
 
         public static Action Create(IntPtr objectPtr, int offset, bool bypasshook)
@@ -107,7 +107,7 @@ namespace CounterStrikeSharp.API.Modules.Memory
             var virtualFunctionPointer = CreateVirtualFunction(objectPtr, offset, arguments,
                 DataType.DATA_TYPE_VOID, arguments.Cast<object>().ToArray());
 
-            return DelegateCache<Action>.Store(cacheKey, () => { NativeAPI.ExecuteVirtualFunction<object>(virtualFunctionPointer, bypasshook, new object[] { }); });
+            return DelegateCache<Action>.Store(cacheKey, () => { VirtualFunctionInvoker.InvokeVoid(virtualFunctionPointer, bypasshook); });
         }
 
         public static Action<TArg1> CreateVoid<TArg1>(IntPtr objectPtr, int offset)
@@ -133,7 +133,7 @@ namespace CounterStrikeSharp.API.Modules.Memory
 
             return DelegateCache<Action<TArg1>>.Store(cacheKey, (arg1) =>
             {
-                NativeAPI.ExecuteVirtualFunction<object>(virtualFunctionPointer, false, new object[] { arg1 });
+                VirtualFunctionInvoker.InvokeVoid<TArg1>(virtualFunctionPointer, false, arg1);
             });
         }
 
@@ -160,7 +160,7 @@ namespace CounterStrikeSharp.API.Modules.Memory
 
             return DelegateCache<Action<TArg1>>.Store(cacheKey, (arg1) =>
             {
-                NativeAPI.ExecuteVirtualFunction<object>(virtualFunctionPointer, bypasshook, new object[] { arg1 });
+                VirtualFunctionInvoker.InvokeVoid<TArg1>(virtualFunctionPointer, bypasshook, arg1);
             });
         }
 
@@ -188,7 +188,7 @@ namespace CounterStrikeSharp.API.Modules.Memory
 
             return DelegateCache<Action<TArg1, TArg2>>.Store(cacheKey, (arg1, arg2) =>
             {
-                NativeAPI.ExecuteVirtualFunction<object>(virtualFunctionPointer, false, new object[] { arg1, arg2 });
+                VirtualFunctionInvoker.InvokeVoid<TArg1, TArg2>(virtualFunctionPointer, false, arg1, arg2);
             });
         }
 
@@ -216,7 +216,7 @@ namespace CounterStrikeSharp.API.Modules.Memory
 
             return DelegateCache<Action<TArg1, TArg2>>.Store(cacheKey, (arg1, arg2) =>
             {
-                NativeAPI.ExecuteVirtualFunction<object>(virtualFunctionPointer, bypasshook, new object[] { arg1, arg2 });
+                VirtualFunctionInvoker.InvokeVoid<TArg1, TArg2>(virtualFunctionPointer, bypasshook, arg1, arg2);
             });
         }
 
@@ -245,7 +245,7 @@ namespace CounterStrikeSharp.API.Modules.Memory
 
             return DelegateCache<Action<TArg1, TArg2, TArg3>>.Store(cacheKey, (arg1, arg2, arg3) =>
             {
-                NativeAPI.ExecuteVirtualFunction<object>(virtualFunctionPointer, false, new object[] { arg1, arg2, arg3 });
+                VirtualFunctionInvoker.InvokeVoid<TArg1, TArg2, TArg3>(virtualFunctionPointer, false, arg1, arg2, arg3);
             });
         }
 
@@ -274,7 +274,7 @@ namespace CounterStrikeSharp.API.Modules.Memory
 
             return DelegateCache<Action<TArg1, TArg2, TArg3>>.Store(cacheKey, (arg1, arg2, arg3) =>
             {
-                NativeAPI.ExecuteVirtualFunction<object>(virtualFunctionPointer, bypasshook, new object[] { arg1, arg2, arg3 });
+                VirtualFunctionInvoker.InvokeVoid<TArg1, TArg2, TArg3>(virtualFunctionPointer, bypasshook, arg1, arg2, arg3);
             });
         }
 
@@ -305,8 +305,7 @@ namespace CounterStrikeSharp.API.Modules.Memory
 
             return DelegateCache<Action<TArg1, TArg2, TArg3, TArg4>>.Store(cacheKey, (arg1, arg2, arg3, arg4) =>
             {
-                NativeAPI.ExecuteVirtualFunction<object>(virtualFunctionPointer, false,
-                    new object[] { arg1, arg2, arg3, arg4 });
+                VirtualFunctionInvoker.InvokeVoid<TArg1, TArg2, TArg3, TArg4>(virtualFunctionPointer, false, arg1, arg2, arg3, arg4);
             });
         }
 
@@ -337,8 +336,7 @@ namespace CounterStrikeSharp.API.Modules.Memory
 
             return DelegateCache<Action<TArg1, TArg2, TArg3, TArg4>>.Store(cacheKey, (arg1, arg2, arg3, arg4) =>
             {
-                NativeAPI.ExecuteVirtualFunction<object>(virtualFunctionPointer, bypasshook,
-                    new object[] { arg1, arg2, arg3, arg4 });
+                VirtualFunctionInvoker.InvokeVoid<TArg1, TArg2, TArg3, TArg4>(virtualFunctionPointer, bypasshook, arg1, arg2, arg3, arg4);
             });
         }
 
@@ -370,8 +368,7 @@ namespace CounterStrikeSharp.API.Modules.Memory
 
             return DelegateCache<Action<TArg1, TArg2, TArg3, TArg4, TArg5>>.Store(cacheKey, (arg1, arg2, arg3, arg4, arg5) =>
             {
-                NativeAPI.ExecuteVirtualFunction<object>(virtualFunctionPointer, false,
-                    new object[] { arg1, arg2, arg3, arg4, arg5 });
+                VirtualFunctionInvoker.InvokeVoid<TArg1, TArg2, TArg3, TArg4, TArg5>(virtualFunctionPointer, false, arg1, arg2, arg3, arg4, arg5);
             });
         }
 
@@ -403,8 +400,7 @@ namespace CounterStrikeSharp.API.Modules.Memory
 
             return DelegateCache<Action<TArg1, TArg2, TArg3, TArg4, TArg5>>.Store(cacheKey, (arg1, arg2, arg3, arg4, arg5) =>
             {
-                NativeAPI.ExecuteVirtualFunction<object>(virtualFunctionPointer, bypasshook,
-                    new object[] { arg1, arg2, arg3, arg4, arg5 });
+                VirtualFunctionInvoker.InvokeVoid<TArg1, TArg2, TArg3, TArg4, TArg5>(virtualFunctionPointer, bypasshook, arg1, arg2, arg3, arg4, arg5);
             });
         }
 
@@ -438,8 +434,7 @@ namespace CounterStrikeSharp.API.Modules.Memory
 
             return DelegateCache<Action<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6>>.Store(cacheKey, (arg1, arg2, arg3, arg4, arg5, arg6) =>
             {
-                NativeAPI.ExecuteVirtualFunction<object>(virtualFunctionPointer, false,
-                    new object[] { arg1, arg2, arg3, arg4, arg5, arg6 });
+                VirtualFunctionInvoker.InvokeVoid<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6>(virtualFunctionPointer, false, arg1, arg2, arg3, arg4, arg5, arg6);
             });
         }
 
@@ -473,8 +468,7 @@ namespace CounterStrikeSharp.API.Modules.Memory
 
             return DelegateCache<Action<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6>>.Store(cacheKey, (arg1, arg2, arg3, arg4, arg5, arg6) =>
             {
-                NativeAPI.ExecuteVirtualFunction<object>(virtualFunctionPointer, bypasshook,
-                    new object[] { arg1, arg2, arg3, arg4, arg5, arg6 });
+                VirtualFunctionInvoker.InvokeVoid<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6>(virtualFunctionPointer, bypasshook, arg1, arg2, arg3, arg4, arg5, arg6);
             });
         }
 
@@ -509,8 +503,7 @@ namespace CounterStrikeSharp.API.Modules.Memory
 
             return DelegateCache<Action<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7>>.Store(cacheKey, (arg1, arg2, arg3, arg4, arg5, arg6, arg7) =>
             {
-                NativeAPI.ExecuteVirtualFunction<object>(virtualFunctionPointer, false,
-                    new object[] { arg1, arg2, arg3, arg4, arg5, arg6, arg7 });
+                VirtualFunctionInvoker.InvokeVoid<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7>(virtualFunctionPointer, false, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
             });
         }
 
@@ -545,8 +538,7 @@ namespace CounterStrikeSharp.API.Modules.Memory
 
             return DelegateCache<Action<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7>>.Store(cacheKey, (arg1, arg2, arg3, arg4, arg5, arg6, arg7) =>
             {
-                NativeAPI.ExecuteVirtualFunction<object>(virtualFunctionPointer, bypasshook,
-                    new object[] { arg1, arg2, arg3, arg4, arg5, arg6, arg7 });
+                VirtualFunctionInvoker.InvokeVoid<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7>(virtualFunctionPointer, bypasshook, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
             });
         }
 
@@ -582,8 +574,7 @@ namespace CounterStrikeSharp.API.Modules.Memory
 
             return DelegateCache<Action<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8>>.Store(cacheKey, (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8) =>
             {
-                NativeAPI.ExecuteVirtualFunction<object>(virtualFunctionPointer, false,
-                    new object[] { arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8 });
+                VirtualFunctionInvoker.InvokeVoid<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8>(virtualFunctionPointer, false, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8);
             });
         }
 
@@ -619,8 +610,7 @@ namespace CounterStrikeSharp.API.Modules.Memory
 
             return DelegateCache<Action<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8>>.Store(cacheKey, (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8) =>
             {
-                NativeAPI.ExecuteVirtualFunction<object>(virtualFunctionPointer, bypasshook,
-                    new object[] { arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8 });
+                VirtualFunctionInvoker.InvokeVoid<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8>(virtualFunctionPointer, bypasshook, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8);
             });
         }
 
@@ -657,8 +647,7 @@ namespace CounterStrikeSharp.API.Modules.Memory
 
             return DelegateCache<Action<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9>>.Store(cacheKey, (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9) =>
             {
-                NativeAPI.ExecuteVirtualFunction<object>(virtualFunctionPointer, false,
-                    new object[] { arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9 });
+                VirtualFunctionInvoker.InvokeVoid<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9>(virtualFunctionPointer, false, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9);
             });
         }
 
@@ -695,8 +684,7 @@ namespace CounterStrikeSharp.API.Modules.Memory
 
             return DelegateCache<Action<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9>>.Store(cacheKey, (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9) =>
             {
-                NativeAPI.ExecuteVirtualFunction<object>(virtualFunctionPointer, bypasshook,
-                    new object[] { arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9 });
+                VirtualFunctionInvoker.InvokeVoid<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9>(virtualFunctionPointer, bypasshook, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9);
             });
         }
 
@@ -734,8 +722,7 @@ namespace CounterStrikeSharp.API.Modules.Memory
 
             return DelegateCache<Action<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10>>.Store(cacheKey, (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10) =>
             {
-                NativeAPI.ExecuteVirtualFunction<object>(virtualFunctionPointer, false,
-                    new object[] { arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10 });
+                VirtualFunctionInvoker.InvokeVoid<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10>(virtualFunctionPointer, false, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10);
             });
         }
 
@@ -773,8 +760,7 @@ namespace CounterStrikeSharp.API.Modules.Memory
 
             return DelegateCache<Action<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10>>.Store(cacheKey, (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10) =>
             {
-                NativeAPI.ExecuteVirtualFunction<object>(virtualFunctionPointer, bypasshook,
-                    new object[] { arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10 });
+                VirtualFunctionInvoker.InvokeVoid<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10>(virtualFunctionPointer, bypasshook, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10);
             });
         }
 
@@ -800,7 +786,7 @@ namespace CounterStrikeSharp.API.Modules.Memory
             var virtualFunctionPointer = CreateVirtualFunction(objectPtr, offset, arguments,
                 (DataType)typeof(TResult).ToDataType()!, arguments.Cast<object>().ToArray());
 
-            return DelegateCache<Func<TResult>>.Store(cacheKey, () => NativeAPI.ExecuteVirtualFunction<TResult>(virtualFunctionPointer, false, new object[] { }));
+            return DelegateCache<Func<TResult>>.Store(cacheKey, () => VirtualFunctionInvoker.Invoke<TResult>(virtualFunctionPointer, false));
         }
 
         public static Func<TResult> Create<TResult>(IntPtr objectPtr, int offset, bool bypasshook)
@@ -821,7 +807,7 @@ namespace CounterStrikeSharp.API.Modules.Memory
             var virtualFunctionPointer = CreateVirtualFunction(objectPtr, offset, arguments,
                 (DataType)typeof(TResult).ToDataType()!, arguments.Cast<object>().ToArray());
 
-            return DelegateCache<Func<TResult>>.Store(cacheKey, () => NativeAPI.ExecuteVirtualFunction<TResult>(virtualFunctionPointer, bypasshook, new object[] { }));
+            return DelegateCache<Func<TResult>>.Store(cacheKey, () => VirtualFunctionInvoker.Invoke<TResult>(virtualFunctionPointer, bypasshook));
         }
 
         public static Func<TArg1, TResult> Create<TArg1, TResult>(IntPtr objectPtr, int offset)
@@ -845,7 +831,7 @@ namespace CounterStrikeSharp.API.Modules.Memory
             var virtualFunctionPointer = CreateVirtualFunction(objectPtr, offset, arguments.Cast<DataType>(),
                 (DataType)typeof(TResult).ToDataType()!, arguments.Cast<object>().ToArray());
 
-            return DelegateCache<Func<TArg1, TResult>>.Store(cacheKey, (arg1) => NativeAPI.ExecuteVirtualFunction<TResult>(virtualFunctionPointer, false, new object[] { arg1 }));
+            return DelegateCache<Func<TArg1, TResult>>.Store(cacheKey, (arg1) => VirtualFunctionInvoker.Invoke<TArg1, TResult>(virtualFunctionPointer, false, arg1));
         }
 
         public static Func<TArg1, TResult> Create<TArg1, TResult>(IntPtr objectPtr, int offset, bool bypasshook)
@@ -869,7 +855,7 @@ namespace CounterStrikeSharp.API.Modules.Memory
             var virtualFunctionPointer = CreateVirtualFunction(objectPtr, offset, arguments.Cast<DataType>(),
                 (DataType)typeof(TResult).ToDataType()!, arguments.Cast<object>().ToArray());
 
-            return DelegateCache<Func<TArg1, TResult>>.Store(cacheKey, (arg1) => NativeAPI.ExecuteVirtualFunction<TResult>(virtualFunctionPointer, bypasshook, new object[] { arg1 }));
+            return DelegateCache<Func<TArg1, TResult>>.Store(cacheKey, (arg1) => VirtualFunctionInvoker.Invoke<TArg1, TResult>(virtualFunctionPointer, bypasshook, arg1));
         }
 
         public static Func<TArg1, TArg2, TResult> Create<TArg1, TArg2, TResult>(IntPtr objectPtr, int offset)
@@ -895,7 +881,7 @@ namespace CounterStrikeSharp.API.Modules.Memory
                 (DataType)typeof(TResult).ToDataType()!, arguments.Cast<object>().ToArray());
 
             return DelegateCache<Func<TArg1, TArg2, TResult>>.Store(cacheKey, (arg1, arg2) =>
-                NativeAPI.ExecuteVirtualFunction<TResult>(virtualFunctionPointer, false, new object[] { arg1, arg2 }));
+                VirtualFunctionInvoker.Invoke<TArg1, TArg2, TResult>(virtualFunctionPointer, false, arg1, arg2));
         }
 
         public static Func<TArg1, TArg2, TResult> Create<TArg1, TArg2, TResult>(IntPtr objectPtr, int offset, bool bypasshook)
@@ -921,7 +907,7 @@ namespace CounterStrikeSharp.API.Modules.Memory
                 (DataType)typeof(TResult).ToDataType()!, arguments.Cast<object>().ToArray());
 
             return DelegateCache<Func<TArg1, TArg2, TResult>>.Store(cacheKey, (arg1, arg2) =>
-                NativeAPI.ExecuteVirtualFunction<TResult>(virtualFunctionPointer, bypasshook, new object[] { arg1, arg2 }));
+                VirtualFunctionInvoker.Invoke<TArg1, TArg2, TResult>(virtualFunctionPointer, bypasshook, arg1, arg2));
         }
 
         public static Func<TArg1, TArg2, TArg3, TResult> Create<TArg1, TArg2, TArg3, TResult>(IntPtr objectPtr,
@@ -949,7 +935,7 @@ namespace CounterStrikeSharp.API.Modules.Memory
                 (DataType)typeof(TResult).ToDataType()!, arguments.Cast<object>().ToArray());
 
             return DelegateCache<Func<TArg1, TArg2, TArg3, TResult>>.Store(cacheKey, (arg1, arg2, arg3) =>
-                NativeAPI.ExecuteVirtualFunction<TResult>(virtualFunctionPointer, false, new object[] { arg1, arg2, arg3 }));
+                VirtualFunctionInvoker.Invoke<TArg1, TArg2, TArg3, TResult>(virtualFunctionPointer, false, arg1, arg2, arg3));
         }
 
         public static Func<TArg1, TArg2, TArg3, TResult> Create<TArg1, TArg2, TArg3, TResult>(IntPtr objectPtr,
@@ -977,7 +963,7 @@ namespace CounterStrikeSharp.API.Modules.Memory
                 (DataType)typeof(TResult).ToDataType()!, arguments.Cast<object>().ToArray());
 
             return DelegateCache<Func<TArg1, TArg2, TArg3, TResult>>.Store(cacheKey, (arg1, arg2, arg3) =>
-                NativeAPI.ExecuteVirtualFunction<TResult>(virtualFunctionPointer, bypasshook, new object[] { arg1, arg2, arg3 }));
+                VirtualFunctionInvoker.Invoke<TArg1, TArg2, TArg3, TResult>(virtualFunctionPointer, bypasshook, arg1, arg2, arg3));
         }
 
         public static Func<TArg1, TArg2, TArg3, TArg4, TResult> Create<TArg1, TArg2, TArg3, TArg4, TResult>(
@@ -1006,8 +992,7 @@ namespace CounterStrikeSharp.API.Modules.Memory
                 (DataType)typeof(TResult).ToDataType()!, arguments.Cast<object>().ToArray());
 
             return DelegateCache<Func<TArg1, TArg2, TArg3, TArg4, TResult>>.Store(cacheKey, (arg1, arg2, arg3, arg4) =>
-                NativeAPI.ExecuteVirtualFunction<TResult>(virtualFunctionPointer, false,
-                    new object[] { arg1, arg2, arg3, arg4 }));
+                VirtualFunctionInvoker.Invoke<TArg1, TArg2, TArg3, TArg4, TResult>(virtualFunctionPointer, false, arg1, arg2, arg3, arg4));
         }
 
         public static Func<TArg1, TArg2, TArg3, TArg4, TResult> Create<TArg1, TArg2, TArg3, TArg4, TResult>(
@@ -1036,8 +1021,7 @@ namespace CounterStrikeSharp.API.Modules.Memory
                 (DataType)typeof(TResult).ToDataType()!, arguments.Cast<object>().ToArray());
 
             return DelegateCache<Func<TArg1, TArg2, TArg3, TArg4, TResult>>.Store(cacheKey, (arg1, arg2, arg3, arg4) =>
-                NativeAPI.ExecuteVirtualFunction<TResult>(virtualFunctionPointer, bypasshook,
-                    new object[] { arg1, arg2, arg3, arg4 }));
+                VirtualFunctionInvoker.Invoke<TArg1, TArg2, TArg3, TArg4, TResult>(virtualFunctionPointer, bypasshook, arg1, arg2, arg3, arg4));
         }
 
         public static Func<TArg1, TArg2, TArg3, TArg4, TArg5, TResult> Create<TArg1, TArg2, TArg3, TArg4, TArg5,
@@ -1067,8 +1051,7 @@ namespace CounterStrikeSharp.API.Modules.Memory
                 (DataType)typeof(TResult).ToDataType()!, arguments.Cast<object>().ToArray());
 
             return DelegateCache<Func<TArg1, TArg2, TArg3, TArg4, TArg5, TResult>>.Store(cacheKey, (arg1, arg2, arg3, arg4, arg5) =>
-                NativeAPI.ExecuteVirtualFunction<TResult>(virtualFunctionPointer, false,
-                    new object[] { arg1, arg2, arg3, arg4, arg5 }));
+                VirtualFunctionInvoker.Invoke<TArg1, TArg2, TArg3, TArg4, TArg5, TResult>(virtualFunctionPointer, false, arg1, arg2, arg3, arg4, arg5));
         }
 
         public static Func<TArg1, TArg2, TArg3, TArg4, TArg5, TResult> Create<TArg1, TArg2, TArg3, TArg4, TArg5,
@@ -1098,8 +1081,7 @@ namespace CounterStrikeSharp.API.Modules.Memory
                 (DataType)typeof(TResult).ToDataType()!, arguments.Cast<object>().ToArray());
 
             return DelegateCache<Func<TArg1, TArg2, TArg3, TArg4, TArg5, TResult>>.Store(cacheKey, (arg1, arg2, arg3, arg4, arg5) =>
-                NativeAPI.ExecuteVirtualFunction<TResult>(virtualFunctionPointer, bypasshook,
-                    new object[] { arg1, arg2, arg3, arg4, arg5 }));
+                VirtualFunctionInvoker.Invoke<TArg1, TArg2, TArg3, TArg4, TArg5, TResult>(virtualFunctionPointer, bypasshook, arg1, arg2, arg3, arg4, arg5));
         }
 
         public static Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TResult> Create<TArg1, TArg2, TArg3, TArg4, TArg5,
@@ -1130,8 +1112,7 @@ namespace CounterStrikeSharp.API.Modules.Memory
                 (DataType)typeof(TResult).ToDataType()!, arguments.Cast<object>().ToArray());
 
             return DelegateCache<Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TResult>>.Store(cacheKey, (arg1, arg2, arg3, arg4, arg5, arg6) =>
-                NativeAPI.ExecuteVirtualFunction<TResult>(virtualFunctionPointer, false,
-                    new object[] { arg1, arg2, arg3, arg4, arg5, arg6 }));
+                VirtualFunctionInvoker.Invoke<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TResult>(virtualFunctionPointer, false, arg1, arg2, arg3, arg4, arg5, arg6));
         }
 
         public static Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TResult> Create<TArg1, TArg2, TArg3, TArg4, TArg5,
@@ -1162,8 +1143,7 @@ namespace CounterStrikeSharp.API.Modules.Memory
                 (DataType)typeof(TResult).ToDataType()!, arguments.Cast<object>().ToArray());
 
             return DelegateCache<Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TResult>>.Store(cacheKey, (arg1, arg2, arg3, arg4, arg5, arg6) =>
-                NativeAPI.ExecuteVirtualFunction<TResult>(virtualFunctionPointer, bypasshook,
-                    new object[] { arg1, arg2, arg3, arg4, arg5, arg6 }));
+                VirtualFunctionInvoker.Invoke<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TResult>(virtualFunctionPointer, bypasshook, arg1, arg2, arg3, arg4, arg5, arg6));
         }
 
         public static Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TResult> Create<TArg1, TArg2, TArg3, TArg4,
@@ -1195,8 +1175,7 @@ namespace CounterStrikeSharp.API.Modules.Memory
                 (DataType)typeof(TResult).ToDataType()!, arguments.Cast<object>().ToArray());
 
             return DelegateCache<Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TResult>>.Store(cacheKey, (arg1, arg2, arg3, arg4, arg5, arg6, arg7) =>
-                NativeAPI.ExecuteVirtualFunction<TResult>(virtualFunctionPointer, false,
-                    new object[] { arg1, arg2, arg3, arg4, arg5, arg6, arg7 }));
+                VirtualFunctionInvoker.Invoke<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TResult>(virtualFunctionPointer, false, arg1, arg2, arg3, arg4, arg5, arg6, arg7));
         }
 
         public static Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TResult> Create<TArg1, TArg2, TArg3, TArg4,
@@ -1228,8 +1207,7 @@ namespace CounterStrikeSharp.API.Modules.Memory
                 (DataType)typeof(TResult).ToDataType()!, arguments.Cast<object>().ToArray());
 
             return DelegateCache<Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TResult>>.Store(cacheKey, (arg1, arg2, arg3, arg4, arg5, arg6, arg7) =>
-                NativeAPI.ExecuteVirtualFunction<TResult>(virtualFunctionPointer, bypasshook,
-                    new object[] { arg1, arg2, arg3, arg4, arg5, arg6, arg7 }));
+                VirtualFunctionInvoker.Invoke<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TResult>(virtualFunctionPointer, bypasshook, arg1, arg2, arg3, arg4, arg5, arg6, arg7));
         }
 
         public static Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TResult> Create<TArg1, TArg2, TArg3,
@@ -1262,8 +1240,7 @@ namespace CounterStrikeSharp.API.Modules.Memory
                 (DataType)typeof(TResult).ToDataType()!, arguments.Cast<object>().ToArray());
 
             return DelegateCache<Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TResult>>.Store(cacheKey, (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8) =>
-                NativeAPI.ExecuteVirtualFunction<TResult>(virtualFunctionPointer, false,
-                    new object[] { arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8 }));
+                VirtualFunctionInvoker.Invoke<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TResult>(virtualFunctionPointer, false, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8));
         }
 
         public static Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TResult> Create<TArg1, TArg2, TArg3,
@@ -1296,8 +1273,7 @@ namespace CounterStrikeSharp.API.Modules.Memory
                 (DataType)typeof(TResult).ToDataType()!, arguments.Cast<object>().ToArray());
 
             return DelegateCache<Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TResult>>.Store(cacheKey, (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8) =>
-                NativeAPI.ExecuteVirtualFunction<TResult>(virtualFunctionPointer, bypasshook,
-                    new object[] { arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8 }));
+                VirtualFunctionInvoker.Invoke<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TResult>(virtualFunctionPointer, bypasshook, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8));
         }
 
         public static Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TResult> Create<TArg1, TArg2,
@@ -1331,8 +1307,7 @@ namespace CounterStrikeSharp.API.Modules.Memory
                 (DataType)typeof(TResult).ToDataType()!, arguments.Cast<object>().ToArray());
 
             return DelegateCache<Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TResult>>.Store(cacheKey, (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9) =>
-                NativeAPI.ExecuteVirtualFunction<TResult>(virtualFunctionPointer, false,
-                    new object[] { arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9 }));
+                VirtualFunctionInvoker.Invoke<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TResult>(virtualFunctionPointer, false, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9));
         }
 
         public static Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TResult> Create<TArg1, TArg2,
@@ -1366,8 +1341,7 @@ namespace CounterStrikeSharp.API.Modules.Memory
                 (DataType)typeof(TResult).ToDataType()!, arguments.Cast<object>().ToArray());
 
             return DelegateCache<Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TResult>>.Store(cacheKey, (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9) =>
-                NativeAPI.ExecuteVirtualFunction<TResult>(virtualFunctionPointer, bypasshook,
-                    new object[] { arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9 }));
+                VirtualFunctionInvoker.Invoke<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TResult>(virtualFunctionPointer, bypasshook, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9));
         }
 
         public static Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10, TResult> Create<TArg1,
@@ -1402,8 +1376,7 @@ namespace CounterStrikeSharp.API.Modules.Memory
                 (DataType)typeof(TResult).ToDataType()!, arguments.Cast<object>().ToArray());
 
             return DelegateCache<Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10, TResult>>.Store(cacheKey, (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10) =>
-                NativeAPI.ExecuteVirtualFunction<TResult>(virtualFunctionPointer, false,
-                    new object[] { arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10 }));
+                VirtualFunctionInvoker.Invoke<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10, TResult>(virtualFunctionPointer, false, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10));
         }
 
         public static Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10, TResult> Create<TArg1,
@@ -1439,8 +1412,7 @@ namespace CounterStrikeSharp.API.Modules.Memory
                 (DataType)typeof(TResult).ToDataType()!, arguments.Cast<object>().ToArray());
 
             return DelegateCache<Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10, TResult>>.Store(cacheKey, (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10) =>
-                NativeAPI.ExecuteVirtualFunction<TResult>(virtualFunctionPointer, bypasshook,
-                    new object[] { arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10 }));
+                VirtualFunctionInvoker.Invoke<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10, TResult>(virtualFunctionPointer, bypasshook, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10));
         }
 
         #endregion

@@ -467,6 +467,15 @@ public class ScriptContextBenchmarks
     }
 
     [Fact]
+    public void Benchmark_Profiler_GetGameRulesCached()
+    {
+        Run("Get Game Rules (Utilities.GetGameRules)", "Profiler Scenarios", () =>
+        {
+            var rules = Utilities.GetGameRules();
+        });
+    }
+
+    [Fact]
     public void Benchmark_Profiler_GetPlayers()
     {
         Run("Utilities.GetPlayers", "Profiler Scenarios", () =>

@@ -627,6 +627,45 @@ namespace CounterStrikeSharp.API.Core
             }
         }
 
+        // Generic Push(object) without the box: the typeof(T) checks fold away per instantiation, so a
+        // primitive argument compiles to one slot write. Bytes match TryPushPrimitive (bool as a 4-byte
+        // BOOL). Reference types reach Push(object) unboxed; other value types (enums, Color, structs)
+        // still take the boxing path, unchanged.
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal void PushArg<T>(T arg)
+        {
+            if (typeof(T) == typeof(IntPtr)) PushPrimitive(Unsafe.As<T, IntPtr>(ref arg));
+            else if (typeof(T) == typeof(int)) PushPrimitive(Unsafe.As<T, int>(ref arg));
+            else if (typeof(T) == typeof(uint)) PushPrimitive(Unsafe.As<T, uint>(ref arg));
+            else if (typeof(T) == typeof(float)) PushPrimitive(Unsafe.As<T, float>(ref arg));
+            else if (typeof(T) == typeof(bool)) PushPrimitive(Unsafe.As<T, bool>(ref arg) ? 1 : 0);
+            else if (typeof(T) == typeof(long)) PushPrimitive(Unsafe.As<T, long>(ref arg));
+            else if (typeof(T) == typeof(ulong)) PushPrimitive(Unsafe.As<T, ulong>(ref arg));
+            else if (typeof(T) == typeof(double)) PushPrimitive(Unsafe.As<T, double>(ref arg));
+            else if (typeof(T) == typeof(UIntPtr)) PushPrimitive(Unsafe.As<T, UIntPtr>(ref arg));
+            else if (typeof(T) == typeof(short)) PushPrimitive(Unsafe.As<T, short>(ref arg));
+            else if (typeof(T) == typeof(ushort)) PushPrimitive(Unsafe.As<T, ushort>(ref arg));
+            else if (typeof(T) == typeof(byte)) PushPrimitive(Unsafe.As<T, byte>(ref arg));
+            else if (typeof(T) == typeof(sbyte)) PushPrimitive(Unsafe.As<T, sbyte>(ref arg));
+            else Push(arg);
+        }
+
+        // Generic (T)GetResult(typeof(T)) without the box, for the primitives GetResult(Type, byte*)
+        // reads directly. Anything else goes through it unchanged.
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal T GetResultArg<T>()
+        {
+            if (typeof(T) == typeof(IntPtr)) { var v = GetResultPrimitive<IntPtr>(); return Unsafe.As<IntPtr, T>(ref v); }
+            if (typeof(T) == typeof(int)) { var v = GetResultPrimitive<int>(); return Unsafe.As<int, T>(ref v); }
+            if (typeof(T) == typeof(uint)) { var v = GetResultPrimitive<uint>(); return Unsafe.As<uint, T>(ref v); }
+            if (typeof(T) == typeof(float)) { var v = GetResultPrimitive<float>(); return Unsafe.As<float, T>(ref v); }
+            if (typeof(T) == typeof(bool)) { var v = GetResultPrimitive<int>() != 0; return Unsafe.As<bool, T>(ref v); }
+            if (typeof(T) == typeof(long)) { var v = GetResultPrimitive<long>(); return Unsafe.As<long, T>(ref v); }
+            if (typeof(T) == typeof(ulong)) { var v = GetResultPrimitive<ulong>(); return Unsafe.As<ulong, T>(ref v); }
+            if (typeof(T) == typeof(double)) { var v = GetResultPrimitive<double>(); return Unsafe.As<double, T>(ref v); }
+            return (T)GetResult(typeof(T));
+        }
+
         /// <summary>
         /// Reads a pointer result from the context and creates a NativeObject-derived
         /// instance using FastGenericNew. Avoids Activator.CreateInstance overhead.

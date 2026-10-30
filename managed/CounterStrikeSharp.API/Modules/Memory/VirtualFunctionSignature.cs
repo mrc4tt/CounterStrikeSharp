@@ -49,7 +49,7 @@ public partial class VirtualFunction
         var virtualFunctionPointer = CreateVirtualFunctionBySignature(signature, arguments,
             (DataType)typeof(TResult).ToDataType()!, arguments.Cast<object>().ToArray());
 
-        return () => NativeAPI.ExecuteVirtualFunction<TResult>(virtualFunctionPointer, false, new object[] { });
+        return () => VirtualFunctionInvoker.Invoke<TResult>(virtualFunctionPointer, false);
     }
 
     public static Func<TResult> Create<TResult>(string signature, bool bypasshook)
@@ -64,7 +64,7 @@ public partial class VirtualFunction
         var virtualFunctionPointer = CreateVirtualFunctionBySignature(signature, arguments,
             (DataType)typeof(TResult).ToDataType()!, arguments.Cast<object>().ToArray());
 
-        return () => NativeAPI.ExecuteVirtualFunction<TResult>(virtualFunctionPointer, bypasshook, new object[] { });
+        return () => VirtualFunctionInvoker.Invoke<TResult>(virtualFunctionPointer, bypasshook);
     }
 
     public static Func<TArg1, TResult> Create<TArg1, TResult>(string signature)
@@ -82,7 +82,7 @@ public partial class VirtualFunction
         var virtualFunctionPointer = CreateVirtualFunctionBySignature(signature, arguments.Cast<DataType>(),
             (DataType)typeof(TResult).ToDataType()!, arguments.Cast<object>().ToArray());
 
-        return (arg1) => NativeAPI.ExecuteVirtualFunction<TResult>(virtualFunctionPointer, false, new object[] { arg1 });
+        return (arg1) => VirtualFunctionInvoker.Invoke<TArg1, TResult>(virtualFunctionPointer, false, arg1);
     }
 
     public static Func<TArg1, TResult> Create<TArg1, TResult>(string signature, bool bypasshook)
@@ -100,7 +100,7 @@ public partial class VirtualFunction
         var virtualFunctionPointer = CreateVirtualFunctionBySignature(signature, arguments.Cast<DataType>(),
             (DataType)typeof(TResult).ToDataType()!, arguments.Cast<object>().ToArray());
 
-        return (arg1) => NativeAPI.ExecuteVirtualFunction<TResult>(virtualFunctionPointer, bypasshook, new object[] { arg1 });
+        return (arg1) => VirtualFunctionInvoker.Invoke<TArg1, TResult>(virtualFunctionPointer, bypasshook, arg1);
     }
 
     public static Func<TArg1, TArg2, TResult> Create<TArg1, TArg2, TResult>(string signature)
@@ -120,7 +120,7 @@ public partial class VirtualFunction
             (DataType)typeof(TResult).ToDataType()!, arguments.Cast<object>().ToArray());
 
         return (arg1, arg2) =>
-            NativeAPI.ExecuteVirtualFunction<TResult>(virtualFunctionPointer, false, new object[] { arg1, arg2 });
+            VirtualFunctionInvoker.Invoke<TArg1, TArg2, TResult>(virtualFunctionPointer, false, arg1, arg2);
     }
 
     public static Func<TArg1, TArg2, TResult> Create<TArg1, TArg2, TResult>(string signature, bool bypasshook)
@@ -140,7 +140,7 @@ public partial class VirtualFunction
             (DataType)typeof(TResult).ToDataType()!, arguments.Cast<object>().ToArray());
 
         return (arg1, arg2) =>
-            NativeAPI.ExecuteVirtualFunction<TResult>(virtualFunctionPointer, bypasshook, new object[] { arg1, arg2 });
+            VirtualFunctionInvoker.Invoke<TArg1, TArg2, TResult>(virtualFunctionPointer, bypasshook, arg1, arg2);
     }
 
     public static Func<TArg1, TArg2, TArg3, TResult> Create<TArg1, TArg2, TArg3, TResult>(string signature)
@@ -161,7 +161,7 @@ public partial class VirtualFunction
             (DataType)typeof(TResult).ToDataType()!, arguments.Cast<object>().ToArray());
 
         return (arg1, arg2, arg3) =>
-            NativeAPI.ExecuteVirtualFunction<TResult>(virtualFunctionPointer, false, new object[] { arg1, arg2, arg3 });
+            VirtualFunctionInvoker.Invoke<TArg1, TArg2, TArg3, TResult>(virtualFunctionPointer, false, arg1, arg2, arg3);
     }
 
     public static Func<TArg1, TArg2, TArg3, TResult> Create<TArg1, TArg2, TArg3, TResult>(string signature, bool bypasshook)
@@ -182,7 +182,7 @@ public partial class VirtualFunction
             (DataType)typeof(TResult).ToDataType()!, arguments.Cast<object>().ToArray());
 
         return (arg1, arg2, arg3) =>
-            NativeAPI.ExecuteVirtualFunction<TResult>(virtualFunctionPointer, bypasshook, new object[] { arg1, arg2, arg3 });
+            VirtualFunctionInvoker.Invoke<TArg1, TArg2, TArg3, TResult>(virtualFunctionPointer, bypasshook, arg1, arg2, arg3);
     }
 
     public static Func<TArg1, TArg2, TArg3, TArg4, TResult> Create<TArg1, TArg2, TArg3, TArg4, TResult>(
@@ -205,7 +205,7 @@ public partial class VirtualFunction
             (DataType)typeof(TResult).ToDataType()!, arguments.Cast<object>().ToArray());
 
         return (arg1, arg2, arg3, arg4) =>
-            NativeAPI.ExecuteVirtualFunction<TResult>(virtualFunctionPointer, false, new object[] { arg1, arg2, arg3, arg4 });
+            VirtualFunctionInvoker.Invoke<TArg1, TArg2, TArg3, TArg4, TResult>(virtualFunctionPointer, false, arg1, arg2, arg3, arg4);
     }
 
     public static Func<TArg1, TArg2, TArg3, TArg4, TResult> Create<TArg1, TArg2, TArg3, TArg4, TResult>(
@@ -228,7 +228,7 @@ public partial class VirtualFunction
             (DataType)typeof(TResult).ToDataType()!, arguments.Cast<object>().ToArray());
 
         return (arg1, arg2, arg3, arg4) =>
-            NativeAPI.ExecuteVirtualFunction<TResult>(virtualFunctionPointer, bypasshook, new object[] { arg1, arg2, arg3, arg4 });
+            VirtualFunctionInvoker.Invoke<TArg1, TArg2, TArg3, TArg4, TResult>(virtualFunctionPointer, bypasshook, arg1, arg2, arg3, arg4);
     }
 
     public static Func<TArg1, TArg2, TArg3, TArg4, TArg5, TResult> Create<TArg1, TArg2, TArg3, TArg4, TArg5, TResult>(
@@ -252,8 +252,7 @@ public partial class VirtualFunction
             (DataType)typeof(TResult).ToDataType()!, arguments.Cast<object>().ToArray());
 
         return (arg1, arg2, arg3, arg4, arg5) =>
-            NativeAPI.ExecuteVirtualFunction<TResult>(virtualFunctionPointer, false,
-                new object[] { arg1, arg2, arg3, arg4, arg5 });
+            VirtualFunctionInvoker.Invoke<TArg1, TArg2, TArg3, TArg4, TArg5, TResult>(virtualFunctionPointer, false, arg1, arg2, arg3, arg4, arg5);
     }
 
     public static Func<TArg1, TArg2, TArg3, TArg4, TArg5, TResult> Create<TArg1, TArg2, TArg3, TArg4, TArg5, TResult>(
@@ -277,8 +276,7 @@ public partial class VirtualFunction
             (DataType)typeof(TResult).ToDataType()!, arguments.Cast<object>().ToArray());
 
         return (arg1, arg2, arg3, arg4, arg5) =>
-            NativeAPI.ExecuteVirtualFunction<TResult>(virtualFunctionPointer, bypasshook,
-                new object[] { arg1, arg2, arg3, arg4, arg5 });
+            VirtualFunctionInvoker.Invoke<TArg1, TArg2, TArg3, TArg4, TArg5, TResult>(virtualFunctionPointer, bypasshook, arg1, arg2, arg3, arg4, arg5);
     }
 
     public static Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TResult> Create<TArg1, TArg2, TArg3, TArg4, TArg5,
@@ -302,8 +300,7 @@ public partial class VirtualFunction
         var virtualFunctionPointer = CreateVirtualFunctionBySignature(signature, arguments.Cast<DataType>(),
             (DataType)typeof(TResult).ToDataType()!, arguments.Cast<object>().ToArray());
 
-        return (arg1, arg2, arg3, arg4, arg5, arg6) => NativeAPI.ExecuteVirtualFunction<TResult>(virtualFunctionPointer,
-            false, new object[] { arg1, arg2, arg3, arg4, arg5, arg6 });
+        return (arg1, arg2, arg3, arg4, arg5, arg6) => VirtualFunctionInvoker.Invoke<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TResult>(virtualFunctionPointer, false, arg1, arg2, arg3, arg4, arg5, arg6);
     }
 
     public static Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TResult> Create<TArg1, TArg2, TArg3, TArg4, TArg5,
@@ -327,8 +324,7 @@ public partial class VirtualFunction
         var virtualFunctionPointer = CreateVirtualFunctionBySignature(signature, arguments.Cast<DataType>(),
             (DataType)typeof(TResult).ToDataType()!, arguments.Cast<object>().ToArray());
 
-        return (arg1, arg2, arg3, arg4, arg5, arg6) => NativeAPI.ExecuteVirtualFunction<TResult>(virtualFunctionPointer,
-            bypasshook, new object[] { arg1, arg2, arg3, arg4, arg5, arg6 });
+        return (arg1, arg2, arg3, arg4, arg5, arg6) => VirtualFunctionInvoker.Invoke<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TResult>(virtualFunctionPointer, bypasshook, arg1, arg2, arg3, arg4, arg5, arg6);
     }
 
     public static Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TResult> Create<TArg1, TArg2, TArg3, TArg4,
@@ -354,8 +350,7 @@ public partial class VirtualFunction
             (DataType)typeof(TResult).ToDataType()!, arguments.Cast<object>().ToArray());
 
         return (arg1, arg2, arg3, arg4, arg5, arg6, arg7) =>
-            NativeAPI.ExecuteVirtualFunction<TResult>(virtualFunctionPointer, false,
-                new object[] { arg1, arg2, arg3, arg4, arg5, arg6, arg7 });
+            VirtualFunctionInvoker.Invoke<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TResult>(virtualFunctionPointer, false, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
     }
 
     public static Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TResult> Create<TArg1, TArg2, TArg3, TArg4,
@@ -381,8 +376,7 @@ public partial class VirtualFunction
             (DataType)typeof(TResult).ToDataType()!, arguments.Cast<object>().ToArray());
 
         return (arg1, arg2, arg3, arg4, arg5, arg6, arg7) =>
-            NativeAPI.ExecuteVirtualFunction<TResult>(virtualFunctionPointer, bypasshook,
-                new object[] { arg1, arg2, arg3, arg4, arg5, arg6, arg7 });
+            VirtualFunctionInvoker.Invoke<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TResult>(virtualFunctionPointer, bypasshook, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
     }
 
     public static Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TResult> Create<TArg1, TArg2, TArg3,
@@ -409,8 +403,7 @@ public partial class VirtualFunction
             (DataType)typeof(TResult).ToDataType()!, arguments.Cast<object>().ToArray());
 
         return (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8) =>
-            NativeAPI.ExecuteVirtualFunction<TResult>(virtualFunctionPointer, false,
-                new object[] { arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8 });
+            VirtualFunctionInvoker.Invoke<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TResult>(virtualFunctionPointer, false, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8);
     }
 
     public static Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TResult> Create<TArg1, TArg2, TArg3,
@@ -437,8 +430,7 @@ public partial class VirtualFunction
             (DataType)typeof(TResult).ToDataType()!, arguments.Cast<object>().ToArray());
 
         return (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8) =>
-            NativeAPI.ExecuteVirtualFunction<TResult>(virtualFunctionPointer, bypasshook,
-                new object[] { arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8 });
+            VirtualFunctionInvoker.Invoke<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TResult>(virtualFunctionPointer, bypasshook, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8);
     }
 
     public static Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TResult> Create<TArg1, TArg2,
@@ -466,8 +458,7 @@ public partial class VirtualFunction
             (DataType)typeof(TResult).ToDataType()!, arguments.Cast<object>().ToArray());
 
         return (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9) =>
-            NativeAPI.ExecuteVirtualFunction<TResult>(virtualFunctionPointer, false,
-                new object[] { arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9 });
+            VirtualFunctionInvoker.Invoke<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TResult>(virtualFunctionPointer, false, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9);
     }
 
     public static Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TResult> Create<TArg1, TArg2,
@@ -495,8 +486,7 @@ public partial class VirtualFunction
             (DataType)typeof(TResult).ToDataType()!, arguments.Cast<object>().ToArray());
 
         return (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9) =>
-            NativeAPI.ExecuteVirtualFunction<TResult>(virtualFunctionPointer, bypasshook,
-                new object[] { arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9 });
+            VirtualFunctionInvoker.Invoke<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TResult>(virtualFunctionPointer, bypasshook, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9);
     }
 
     public static Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10, TResult> Create<TArg1,
@@ -525,8 +515,7 @@ public partial class VirtualFunction
             (DataType)typeof(TResult).ToDataType()!, arguments.Cast<object>().ToArray());
 
         return (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10) =>
-            NativeAPI.ExecuteVirtualFunction<TResult>(virtualFunctionPointer, false,
-                new object[] { arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10 });
+            VirtualFunctionInvoker.Invoke<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10, TResult>(virtualFunctionPointer, false, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10);
     }
 
     public static Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10, TResult> Create<TArg1,
@@ -555,8 +544,7 @@ public partial class VirtualFunction
             (DataType)typeof(TResult).ToDataType()!, arguments.Cast<object>().ToArray());
 
         return (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10) =>
-            NativeAPI.ExecuteVirtualFunction<TResult>(virtualFunctionPointer, bypasshook,
-                new object[] { arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10 });
+            VirtualFunctionInvoker.Invoke<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10, TResult>(virtualFunctionPointer, bypasshook, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10);
     }
 
     #endregion
@@ -574,7 +562,7 @@ public partial class VirtualFunction
         var virtualFunctionPointer = CreateVirtualFunctionBySignature(signature, binarypath,  arguments,
             (DataType)typeof(TResult).ToDataType()!, arguments.Cast<object>().ToArray());
 
-        return () => NativeAPI.ExecuteVirtualFunction<TResult>(virtualFunctionPointer, false, new object[] { });
+        return () => VirtualFunctionInvoker.Invoke<TResult>(virtualFunctionPointer, false);
     }
 
     public static Func<TResult> Create<TResult>(string signature, string binarypath, bool bypasshook)
@@ -589,7 +577,7 @@ public partial class VirtualFunction
         var virtualFunctionPointer = CreateVirtualFunctionBySignature(signature, binarypath,  arguments,
             (DataType)typeof(TResult).ToDataType()!, arguments.Cast<object>().ToArray());
 
-        return () => NativeAPI.ExecuteVirtualFunction<TResult>(virtualFunctionPointer, bypasshook, new object[] { });
+        return () => VirtualFunctionInvoker.Invoke<TResult>(virtualFunctionPointer, bypasshook);
     }
 
     public static Func<TArg1, TResult> Create<TArg1, TResult>(string signature, string binarypath)
@@ -607,7 +595,7 @@ public partial class VirtualFunction
         var virtualFunctionPointer = CreateVirtualFunctionBySignature(signature, binarypath, arguments.Cast<DataType>(),
             (DataType)typeof(TResult).ToDataType()!, arguments.Cast<object>().ToArray());
 
-        return (arg1) => NativeAPI.ExecuteVirtualFunction<TResult>(virtualFunctionPointer, false, new object[] { arg1 });
+        return (arg1) => VirtualFunctionInvoker.Invoke<TArg1, TResult>(virtualFunctionPointer, false, arg1);
     }
 
     public static Func<TArg1, TResult> Create<TArg1, TResult>(string signature, string binarypath, bool bypasshook)
@@ -625,7 +613,7 @@ public partial class VirtualFunction
         var virtualFunctionPointer = CreateVirtualFunctionBySignature(signature, binarypath, arguments.Cast<DataType>(),
             (DataType)typeof(TResult).ToDataType()!, arguments.Cast<object>().ToArray());
 
-        return (arg1) => NativeAPI.ExecuteVirtualFunction<TResult>(virtualFunctionPointer, bypasshook, new object[] { arg1 });
+        return (arg1) => VirtualFunctionInvoker.Invoke<TArg1, TResult>(virtualFunctionPointer, bypasshook, arg1);
     }
 
     public static Func<TArg1, TArg2, TResult> Create<TArg1, TArg2, TResult>(string signature, string binarypath)
@@ -645,7 +633,7 @@ public partial class VirtualFunction
             (DataType)typeof(TResult).ToDataType()!, arguments.Cast<object>().ToArray());
 
         return (arg1, arg2) =>
-            NativeAPI.ExecuteVirtualFunction<TResult>(virtualFunctionPointer, false, new object[] { arg1, arg2 });
+            VirtualFunctionInvoker.Invoke<TArg1, TArg2, TResult>(virtualFunctionPointer, false, arg1, arg2);
     }
 
     public static Func<TArg1, TArg2, TResult> Create<TArg1, TArg2, TResult>(string signature, string binarypath, bool bypasshook)
@@ -665,7 +653,7 @@ public partial class VirtualFunction
             (DataType)typeof(TResult).ToDataType()!, arguments.Cast<object>().ToArray());
 
         return (arg1, arg2) =>
-            NativeAPI.ExecuteVirtualFunction<TResult>(virtualFunctionPointer, bypasshook, new object[] { arg1, arg2 });
+            VirtualFunctionInvoker.Invoke<TArg1, TArg2, TResult>(virtualFunctionPointer, bypasshook, arg1, arg2);
     }
 
     public static Func<TArg1, TArg2, TArg3, TResult> Create<TArg1, TArg2, TArg3, TResult>(string signature, string binarypath)
@@ -686,7 +674,7 @@ public partial class VirtualFunction
             (DataType)typeof(TResult).ToDataType()!, arguments.Cast<object>().ToArray());
 
         return (arg1, arg2, arg3) =>
-            NativeAPI.ExecuteVirtualFunction<TResult>(virtualFunctionPointer, false, new object[] { arg1, arg2, arg3 });
+            VirtualFunctionInvoker.Invoke<TArg1, TArg2, TArg3, TResult>(virtualFunctionPointer, false, arg1, arg2, arg3);
     }
 
     public static Func<TArg1, TArg2, TArg3, TResult> Create<TArg1, TArg2, TArg3, TResult>(string signature, string binarypath, bool bypasshook)
@@ -707,7 +695,7 @@ public partial class VirtualFunction
             (DataType)typeof(TResult).ToDataType()!, arguments.Cast<object>().ToArray());
 
         return (arg1, arg2, arg3) =>
-            NativeAPI.ExecuteVirtualFunction<TResult>(virtualFunctionPointer, bypasshook, new object[] { arg1, arg2, arg3 });
+            VirtualFunctionInvoker.Invoke<TArg1, TArg2, TArg3, TResult>(virtualFunctionPointer, bypasshook, arg1, arg2, arg3);
     }
 
     public static Func<TArg1, TArg2, TArg3, TArg4, TResult> Create<TArg1, TArg2, TArg3, TArg4, TResult>(
@@ -730,7 +718,7 @@ public partial class VirtualFunction
             (DataType)typeof(TResult).ToDataType()!, arguments.Cast<object>().ToArray());
 
         return (arg1, arg2, arg3, arg4) =>
-            NativeAPI.ExecuteVirtualFunction<TResult>(virtualFunctionPointer, false, new object[] { arg1, arg2, arg3, arg4 });
+            VirtualFunctionInvoker.Invoke<TArg1, TArg2, TArg3, TArg4, TResult>(virtualFunctionPointer, false, arg1, arg2, arg3, arg4);
     }
 
     public static Func<TArg1, TArg2, TArg3, TArg4, TResult> Create<TArg1, TArg2, TArg3, TArg4, TResult>(
@@ -753,7 +741,7 @@ public partial class VirtualFunction
             (DataType)typeof(TResult).ToDataType()!, arguments.Cast<object>().ToArray());
 
         return (arg1, arg2, arg3, arg4) =>
-            NativeAPI.ExecuteVirtualFunction<TResult>(virtualFunctionPointer, bypasshook, new object[] { arg1, arg2, arg3, arg4 });
+            VirtualFunctionInvoker.Invoke<TArg1, TArg2, TArg3, TArg4, TResult>(virtualFunctionPointer, bypasshook, arg1, arg2, arg3, arg4);
     }
 
     public static Func<TArg1, TArg2, TArg3, TArg4, TArg5, TResult> Create<TArg1, TArg2, TArg3, TArg4, TArg5, TResult>(
@@ -777,8 +765,7 @@ public partial class VirtualFunction
             (DataType)typeof(TResult).ToDataType()!, arguments.Cast<object>().ToArray());
 
         return (arg1, arg2, arg3, arg4, arg5) =>
-            NativeAPI.ExecuteVirtualFunction<TResult>(virtualFunctionPointer, false,
-                new object[] { arg1, arg2, arg3, arg4, arg5 });
+            VirtualFunctionInvoker.Invoke<TArg1, TArg2, TArg3, TArg4, TArg5, TResult>(virtualFunctionPointer, false, arg1, arg2, arg3, arg4, arg5);
     }
 
     public static Func<TArg1, TArg2, TArg3, TArg4, TArg5, TResult> Create<TArg1, TArg2, TArg3, TArg4, TArg5, TResult>(
@@ -802,8 +789,7 @@ public partial class VirtualFunction
             (DataType)typeof(TResult).ToDataType()!, arguments.Cast<object>().ToArray());
 
         return (arg1, arg2, arg3, arg4, arg5) =>
-            NativeAPI.ExecuteVirtualFunction<TResult>(virtualFunctionPointer, bypasshook,
-                new object[] { arg1, arg2, arg3, arg4, arg5 });
+            VirtualFunctionInvoker.Invoke<TArg1, TArg2, TArg3, TArg4, TArg5, TResult>(virtualFunctionPointer, bypasshook, arg1, arg2, arg3, arg4, arg5);
     }
 
     public static Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TResult> Create<TArg1, TArg2, TArg3, TArg4, TArg5,
@@ -827,8 +813,7 @@ public partial class VirtualFunction
         var virtualFunctionPointer = CreateVirtualFunctionBySignature(signature, binarypath, arguments.Cast<DataType>(),
             (DataType)typeof(TResult).ToDataType()!, arguments.Cast<object>().ToArray());
 
-        return (arg1, arg2, arg3, arg4, arg5, arg6) => NativeAPI.ExecuteVirtualFunction<TResult>(virtualFunctionPointer,
-            false, new object[] { arg1, arg2, arg3, arg4, arg5, arg6 });
+        return (arg1, arg2, arg3, arg4, arg5, arg6) => VirtualFunctionInvoker.Invoke<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TResult>(virtualFunctionPointer, false, arg1, arg2, arg3, arg4, arg5, arg6);
     }
 
     public static Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TResult> Create<TArg1, TArg2, TArg3, TArg4, TArg5,
@@ -852,8 +837,7 @@ public partial class VirtualFunction
         var virtualFunctionPointer = CreateVirtualFunctionBySignature(signature, binarypath, arguments.Cast<DataType>(),
             (DataType)typeof(TResult).ToDataType()!, arguments.Cast<object>().ToArray());
 
-        return (arg1, arg2, arg3, arg4, arg5, arg6) => NativeAPI.ExecuteVirtualFunction<TResult>(virtualFunctionPointer,
-            bypasshook, new object[] { arg1, arg2, arg3, arg4, arg5, arg6 });
+        return (arg1, arg2, arg3, arg4, arg5, arg6) => VirtualFunctionInvoker.Invoke<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TResult>(virtualFunctionPointer, bypasshook, arg1, arg2, arg3, arg4, arg5, arg6);
     }
 
     public static Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TResult> Create<TArg1, TArg2, TArg3, TArg4,
@@ -879,8 +863,7 @@ public partial class VirtualFunction
             (DataType)typeof(TResult).ToDataType()!, arguments.Cast<object>().ToArray());
 
         return (arg1, arg2, arg3, arg4, arg5, arg6, arg7) =>
-            NativeAPI.ExecuteVirtualFunction<TResult>(virtualFunctionPointer, false,
-                new object[] { arg1, arg2, arg3, arg4, arg5, arg6, arg7 });
+            VirtualFunctionInvoker.Invoke<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TResult>(virtualFunctionPointer, false, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
     }
 
     public static Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TResult> Create<TArg1, TArg2, TArg3, TArg4,
@@ -906,8 +889,7 @@ public partial class VirtualFunction
             (DataType)typeof(TResult).ToDataType()!, arguments.Cast<object>().ToArray());
 
         return (arg1, arg2, arg3, arg4, arg5, arg6, arg7) =>
-            NativeAPI.ExecuteVirtualFunction<TResult>(virtualFunctionPointer, bypasshook,
-                new object[] { arg1, arg2, arg3, arg4, arg5, arg6, arg7 });
+            VirtualFunctionInvoker.Invoke<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TResult>(virtualFunctionPointer, bypasshook, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
     }
 
     public static Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TResult> Create<TArg1, TArg2, TArg3,
@@ -934,8 +916,7 @@ public partial class VirtualFunction
             (DataType)typeof(TResult).ToDataType()!, arguments.Cast<object>().ToArray());
 
         return (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8) =>
-            NativeAPI.ExecuteVirtualFunction<TResult>(virtualFunctionPointer, false,
-                new object[] { arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8 });
+            VirtualFunctionInvoker.Invoke<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TResult>(virtualFunctionPointer, false, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8);
     }
 
     public static Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TResult> Create<TArg1, TArg2, TArg3,
@@ -962,8 +943,7 @@ public partial class VirtualFunction
             (DataType)typeof(TResult).ToDataType()!, arguments.Cast<object>().ToArray());
 
         return (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8) =>
-            NativeAPI.ExecuteVirtualFunction<TResult>(virtualFunctionPointer, bypasshook,
-                new object[] { arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8 });
+            VirtualFunctionInvoker.Invoke<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TResult>(virtualFunctionPointer, bypasshook, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8);
     }
 
     public static Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TResult> Create<TArg1, TArg2,
@@ -991,8 +971,7 @@ public partial class VirtualFunction
             (DataType)typeof(TResult).ToDataType()!, arguments.Cast<object>().ToArray());
 
         return (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9) =>
-            NativeAPI.ExecuteVirtualFunction<TResult>(virtualFunctionPointer, false,
-                new object[] { arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9 });
+            VirtualFunctionInvoker.Invoke<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TResult>(virtualFunctionPointer, false, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9);
     }
 
     public static Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TResult> Create<TArg1, TArg2,
@@ -1020,8 +999,7 @@ public partial class VirtualFunction
             (DataType)typeof(TResult).ToDataType()!, arguments.Cast<object>().ToArray());
 
         return (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9) =>
-            NativeAPI.ExecuteVirtualFunction<TResult>(virtualFunctionPointer, bypasshook,
-                new object[] { arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9 });
+            VirtualFunctionInvoker.Invoke<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TResult>(virtualFunctionPointer, bypasshook, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9);
     }
 
     public static Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10, TResult> Create<TArg1,
@@ -1050,8 +1028,7 @@ public partial class VirtualFunction
             (DataType)typeof(TResult).ToDataType()!, arguments.Cast<object>().ToArray());
 
         return (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10) =>
-            NativeAPI.ExecuteVirtualFunction<TResult>(virtualFunctionPointer, false,
-                new object[] { arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10 });
+            VirtualFunctionInvoker.Invoke<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10, TResult>(virtualFunctionPointer, false, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10);
     }
 
     public static Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10, TResult> Create<TArg1,
@@ -1080,8 +1057,7 @@ public partial class VirtualFunction
             (DataType)typeof(TResult).ToDataType()!, arguments.Cast<object>().ToArray());
 
         return (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10) =>
-            NativeAPI.ExecuteVirtualFunction<TResult>(virtualFunctionPointer, bypasshook,
-                new object[] { arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10 });
+            VirtualFunctionInvoker.Invoke<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10, TResult>(virtualFunctionPointer, bypasshook, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10);
     }
     #endregion
 
@@ -1094,7 +1070,7 @@ public partial class VirtualFunction
         var virtualFunctionPointer = CreateVirtualFunctionBySignature(signature, arguments,
             DataType.DATA_TYPE_VOID, arguments.Cast<object>().ToArray());
 
-        return () => { NativeAPI.ExecuteVirtualFunction<object>(virtualFunctionPointer, false, new object[] { }); };
+        return () => { VirtualFunctionInvoker.InvokeVoid(virtualFunctionPointer, false); };
     }
 
     public static Action CreateVoid(string signature, bool bypasshook)
@@ -1104,7 +1080,7 @@ public partial class VirtualFunction
         var virtualFunctionPointer = CreateVirtualFunctionBySignature(signature, arguments,
             DataType.DATA_TYPE_VOID, arguments.Cast<object>().ToArray());
 
-        return () => { NativeAPI.ExecuteVirtualFunction<object>(virtualFunctionPointer, bypasshook, new object[] { }); };
+        return () => { VirtualFunctionInvoker.InvokeVoid(virtualFunctionPointer, bypasshook); };
     }
 
     public static Action<TArg1> CreateVoid<TArg1>(string signature)
@@ -1122,7 +1098,7 @@ public partial class VirtualFunction
         var virtualFunctionPointer = CreateVirtualFunctionBySignature(signature, arguments.Cast<DataType>(),
             DataType.DATA_TYPE_VOID, arguments.Cast<object>().ToArray());
 
-        return (arg1) => { NativeAPI.ExecuteVirtualFunction<object>(virtualFunctionPointer, false, new object[] { arg1 }); };
+        return (arg1) => { VirtualFunctionInvoker.InvokeVoid<TArg1>(virtualFunctionPointer, false, arg1); };
     }
 
     public static Action<TArg1> CreateVoid<TArg1>(string signature, bool bypasshook)
@@ -1140,7 +1116,7 @@ public partial class VirtualFunction
         var virtualFunctionPointer = CreateVirtualFunctionBySignature(signature, arguments.Cast<DataType>(),
             DataType.DATA_TYPE_VOID, arguments.Cast<object>().ToArray());
 
-        return (arg1) => { NativeAPI.ExecuteVirtualFunction<object>(virtualFunctionPointer, bypasshook, new object[] { arg1 }); };
+        return (arg1) => { VirtualFunctionInvoker.InvokeVoid<TArg1>(virtualFunctionPointer, bypasshook, arg1); };
     }
 
     public static Action<TArg1, TArg2> CreateVoid<TArg1, TArg2>(string signature)
@@ -1161,7 +1137,7 @@ public partial class VirtualFunction
 
         return (arg1, arg2) =>
         {
-            NativeAPI.ExecuteVirtualFunction<object>(virtualFunctionPointer, false, new object[] { arg1, arg2 });
+            VirtualFunctionInvoker.InvokeVoid<TArg1, TArg2>(virtualFunctionPointer, false, arg1, arg2);
         };
     }
 
@@ -1183,7 +1159,7 @@ public partial class VirtualFunction
 
         return (arg1, arg2) =>
         {
-            NativeAPI.ExecuteVirtualFunction<object>(virtualFunctionPointer, bypasshook, new object[] { arg1, arg2 });
+            VirtualFunctionInvoker.InvokeVoid<TArg1, TArg2>(virtualFunctionPointer, bypasshook, arg1, arg2);
         };
     }
 
@@ -1206,7 +1182,7 @@ public partial class VirtualFunction
 
         return (arg1, arg2, arg3) =>
         {
-            NativeAPI.ExecuteVirtualFunction<object>(virtualFunctionPointer, false, new object[] { arg1, arg2, arg3 });
+            VirtualFunctionInvoker.InvokeVoid<TArg1, TArg2, TArg3>(virtualFunctionPointer, false, arg1, arg2, arg3);
         };
     }
 
@@ -1229,7 +1205,7 @@ public partial class VirtualFunction
 
         return (arg1, arg2, arg3) =>
         {
-            NativeAPI.ExecuteVirtualFunction<object>(virtualFunctionPointer, bypasshook, new object[] { arg1, arg2, arg3 });
+            VirtualFunctionInvoker.InvokeVoid<TArg1, TArg2, TArg3>(virtualFunctionPointer, bypasshook, arg1, arg2, arg3);
         };
     }
 
@@ -1253,8 +1229,7 @@ public partial class VirtualFunction
 
         return (arg1, arg2, arg3, arg4) =>
         {
-            NativeAPI.ExecuteVirtualFunction<object>(virtualFunctionPointer, false,
-                new object[] { arg1, arg2, arg3, arg4 });
+            VirtualFunctionInvoker.InvokeVoid<TArg1, TArg2, TArg3, TArg4>(virtualFunctionPointer, false, arg1, arg2, arg3, arg4);
         };
     }
 
@@ -1278,8 +1253,7 @@ public partial class VirtualFunction
 
         return (arg1, arg2, arg3, arg4) =>
         {
-            NativeAPI.ExecuteVirtualFunction<object>(virtualFunctionPointer, bypasshook,
-                new object[] { arg1, arg2, arg3, arg4 });
+            VirtualFunctionInvoker.InvokeVoid<TArg1, TArg2, TArg3, TArg4>(virtualFunctionPointer, bypasshook, arg1, arg2, arg3, arg4);
         };
     }
 
@@ -1305,8 +1279,7 @@ public partial class VirtualFunction
 
         return (arg1, arg2, arg3, arg4, arg5) =>
         {
-            NativeAPI.ExecuteVirtualFunction<object>(virtualFunctionPointer, false,
-                new object[] { arg1, arg2, arg3, arg4, arg5 });
+            VirtualFunctionInvoker.InvokeVoid<TArg1, TArg2, TArg3, TArg4, TArg5>(virtualFunctionPointer, false, arg1, arg2, arg3, arg4, arg5);
         };
     }
 
@@ -1332,8 +1305,7 @@ public partial class VirtualFunction
 
         return (arg1, arg2, arg3, arg4, arg5) =>
         {
-            NativeAPI.ExecuteVirtualFunction<object>(virtualFunctionPointer, bypasshook,
-                new object[] { arg1, arg2, arg3, arg4, arg5 });
+            VirtualFunctionInvoker.InvokeVoid<TArg1, TArg2, TArg3, TArg4, TArg5>(virtualFunctionPointer, bypasshook, arg1, arg2, arg3, arg4, arg5);
         };
     }
 
@@ -1360,8 +1332,7 @@ public partial class VirtualFunction
 
         return (arg1, arg2, arg3, arg4, arg5, arg6) =>
         {
-            NativeAPI.ExecuteVirtualFunction<object>(virtualFunctionPointer, false,
-                new object[] { arg1, arg2, arg3, arg4, arg5, arg6 });
+            VirtualFunctionInvoker.InvokeVoid<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6>(virtualFunctionPointer, false, arg1, arg2, arg3, arg4, arg5, arg6);
         };
     }
 
@@ -1388,8 +1359,7 @@ public partial class VirtualFunction
 
         return (arg1, arg2, arg3, arg4, arg5, arg6) =>
         {
-            NativeAPI.ExecuteVirtualFunction<object>(virtualFunctionPointer, bypasshook,
-                new object[] { arg1, arg2, arg3, arg4, arg5, arg6 });
+            VirtualFunctionInvoker.InvokeVoid<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6>(virtualFunctionPointer, bypasshook, arg1, arg2, arg3, arg4, arg5, arg6);
         };
     }
 
@@ -1417,8 +1387,7 @@ public partial class VirtualFunction
 
         return (arg1, arg2, arg3, arg4, arg5, arg6, arg7) =>
         {
-            NativeAPI.ExecuteVirtualFunction<object>(virtualFunctionPointer, false,
-                new object[] { arg1, arg2, arg3, arg4, arg5, arg6, arg7 });
+            VirtualFunctionInvoker.InvokeVoid<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7>(virtualFunctionPointer, false, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
         };
     }
 
@@ -1446,8 +1415,7 @@ public partial class VirtualFunction
 
         return (arg1, arg2, arg3, arg4, arg5, arg6, arg7) =>
         {
-            NativeAPI.ExecuteVirtualFunction<object>(virtualFunctionPointer, bypasshook,
-                new object[] { arg1, arg2, arg3, arg4, arg5, arg6, arg7 });
+            VirtualFunctionInvoker.InvokeVoid<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7>(virtualFunctionPointer, bypasshook, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
         };
     }
 
@@ -1476,8 +1444,7 @@ public partial class VirtualFunction
 
         return (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8) =>
         {
-            NativeAPI.ExecuteVirtualFunction<object>(virtualFunctionPointer, false,
-                new object[] { arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8 });
+            VirtualFunctionInvoker.InvokeVoid<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8>(virtualFunctionPointer, false, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8);
         };
     }
 
@@ -1506,8 +1473,7 @@ public partial class VirtualFunction
 
         return (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8) =>
         {
-            NativeAPI.ExecuteVirtualFunction<object>(virtualFunctionPointer, bypasshook,
-                new object[] { arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8 });
+            VirtualFunctionInvoker.InvokeVoid<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8>(virtualFunctionPointer, bypasshook, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8);
         };
     }
 
@@ -1537,8 +1503,7 @@ public partial class VirtualFunction
 
         return (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9) =>
         {
-            NativeAPI.ExecuteVirtualFunction<object>(virtualFunctionPointer, false,
-                new object[] { arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9 });
+            VirtualFunctionInvoker.InvokeVoid<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9>(virtualFunctionPointer, false, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9);
         };
     }
 
@@ -1568,8 +1533,7 @@ public partial class VirtualFunction
 
         return (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9) =>
         {
-            NativeAPI.ExecuteVirtualFunction<object>(virtualFunctionPointer, bypasshook,
-                new object[] { arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9 });
+            VirtualFunctionInvoker.InvokeVoid<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9>(virtualFunctionPointer, bypasshook, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9);
         };
     }
 
@@ -1600,8 +1564,7 @@ public partial class VirtualFunction
 
         return (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10) =>
         {
-            NativeAPI.ExecuteVirtualFunction<object>(virtualFunctionPointer, false,
-                new object[] { arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10 });
+            VirtualFunctionInvoker.InvokeVoid<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10>(virtualFunctionPointer, false, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10);
         };
     }
 
@@ -1632,8 +1595,7 @@ public partial class VirtualFunction
 
         return (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10) =>
         {
-            NativeAPI.ExecuteVirtualFunction<object>(virtualFunctionPointer, bypasshook,
-                new object[] { arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10 });
+            VirtualFunctionInvoker.InvokeVoid<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10>(virtualFunctionPointer, bypasshook, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10);
         };
     }
 
@@ -1647,7 +1609,7 @@ public partial class VirtualFunction
         var virtualFunctionPointer = CreateVirtualFunctionBySignature(signature, binarypath, arguments,
             DataType.DATA_TYPE_VOID, arguments.Cast<object>().ToArray());
 
-        return () => { NativeAPI.ExecuteVirtualFunction<object>(virtualFunctionPointer, false, new object[] { }); };
+        return () => { VirtualFunctionInvoker.InvokeVoid(virtualFunctionPointer, false); };
     }
 
     public static Action CreateVoid(string signature, string binarypath, bool bypasshook)
@@ -1657,7 +1619,7 @@ public partial class VirtualFunction
         var virtualFunctionPointer = CreateVirtualFunctionBySignature(signature, binarypath, arguments,
             DataType.DATA_TYPE_VOID, arguments.Cast<object>().ToArray());
 
-        return () => { NativeAPI.ExecuteVirtualFunction<object>(virtualFunctionPointer, bypasshook, new object[] { }); };
+        return () => { VirtualFunctionInvoker.InvokeVoid(virtualFunctionPointer, bypasshook); };
     }
 
     public static Action<TArg1> CreateVoid<TArg1>(string signature, string binarypath)
@@ -1675,7 +1637,7 @@ public partial class VirtualFunction
         var virtualFunctionPointer = CreateVirtualFunctionBySignature(signature, binarypath, arguments.Cast<DataType>(),
             DataType.DATA_TYPE_VOID, arguments.Cast<object>().ToArray());
 
-        return (arg1) => { NativeAPI.ExecuteVirtualFunction<object>(virtualFunctionPointer, false, new object[] { arg1 }); };
+        return (arg1) => { VirtualFunctionInvoker.InvokeVoid<TArg1>(virtualFunctionPointer, false, arg1); };
     }
 
     public static Action<TArg1> CreateVoid<TArg1>(string signature, string binarypath, bool bypasshook)
@@ -1693,7 +1655,7 @@ public partial class VirtualFunction
         var virtualFunctionPointer = CreateVirtualFunctionBySignature(signature, binarypath, arguments.Cast<DataType>(),
             DataType.DATA_TYPE_VOID, arguments.Cast<object>().ToArray());
 
-        return (arg1) => { NativeAPI.ExecuteVirtualFunction<object>(virtualFunctionPointer, bypasshook, new object[] { arg1 }); };
+        return (arg1) => { VirtualFunctionInvoker.InvokeVoid<TArg1>(virtualFunctionPointer, bypasshook, arg1); };
     }
 
     public static Action<TArg1, TArg2> CreateVoid<TArg1, TArg2>(string signature, string binarypath)
@@ -1714,7 +1676,7 @@ public partial class VirtualFunction
 
         return (arg1, arg2) =>
         {
-            NativeAPI.ExecuteVirtualFunction<object>(virtualFunctionPointer, false, new object[] { arg1, arg2 });
+            VirtualFunctionInvoker.InvokeVoid<TArg1, TArg2>(virtualFunctionPointer, false, arg1, arg2);
         };
     }
 
@@ -1736,7 +1698,7 @@ public partial class VirtualFunction
 
         return (arg1, arg2) =>
         {
-            NativeAPI.ExecuteVirtualFunction<object>(virtualFunctionPointer, bypasshook, new object[] { arg1, arg2 });
+            VirtualFunctionInvoker.InvokeVoid<TArg1, TArg2>(virtualFunctionPointer, bypasshook, arg1, arg2);
         };
     }
 
@@ -1759,7 +1721,7 @@ public partial class VirtualFunction
 
         return (arg1, arg2, arg3) =>
         {
-            NativeAPI.ExecuteVirtualFunction<object>(virtualFunctionPointer, false, new object[] { arg1, arg2, arg3 });
+            VirtualFunctionInvoker.InvokeVoid<TArg1, TArg2, TArg3>(virtualFunctionPointer, false, arg1, arg2, arg3);
         };
     }
 
@@ -1782,7 +1744,7 @@ public partial class VirtualFunction
 
         return (arg1, arg2, arg3) =>
         {
-            NativeAPI.ExecuteVirtualFunction<object>(virtualFunctionPointer, bypasshook, new object[] { arg1, arg2, arg3 });
+            VirtualFunctionInvoker.InvokeVoid<TArg1, TArg2, TArg3>(virtualFunctionPointer, bypasshook, arg1, arg2, arg3);
         };
     }
 
@@ -1806,8 +1768,7 @@ public partial class VirtualFunction
 
         return (arg1, arg2, arg3, arg4) =>
         {
-            NativeAPI.ExecuteVirtualFunction<object>(virtualFunctionPointer, false,
-                new object[] { arg1, arg2, arg3, arg4 });
+            VirtualFunctionInvoker.InvokeVoid<TArg1, TArg2, TArg3, TArg4>(virtualFunctionPointer, false, arg1, arg2, arg3, arg4);
         };
     }
 
@@ -1831,8 +1792,7 @@ public partial class VirtualFunction
 
         return (arg1, arg2, arg3, arg4) =>
         {
-            NativeAPI.ExecuteVirtualFunction<object>(virtualFunctionPointer, bypasshook,
-                new object[] { arg1, arg2, arg3, arg4 });
+            VirtualFunctionInvoker.InvokeVoid<TArg1, TArg2, TArg3, TArg4>(virtualFunctionPointer, bypasshook, arg1, arg2, arg3, arg4);
         };
     }
 
@@ -1858,8 +1818,7 @@ public partial class VirtualFunction
 
         return (arg1, arg2, arg3, arg4, arg5) =>
         {
-            NativeAPI.ExecuteVirtualFunction<object>(virtualFunctionPointer, false,
-                new object[] { arg1, arg2, arg3, arg4, arg5 });
+            VirtualFunctionInvoker.InvokeVoid<TArg1, TArg2, TArg3, TArg4, TArg5>(virtualFunctionPointer, false, arg1, arg2, arg3, arg4, arg5);
         };
     }
 
@@ -1885,8 +1844,7 @@ public partial class VirtualFunction
 
         return (arg1, arg2, arg3, arg4, arg5) =>
         {
-            NativeAPI.ExecuteVirtualFunction<object>(virtualFunctionPointer, bypasshook,
-                new object[] { arg1, arg2, arg3, arg4, arg5 });
+            VirtualFunctionInvoker.InvokeVoid<TArg1, TArg2, TArg3, TArg4, TArg5>(virtualFunctionPointer, bypasshook, arg1, arg2, arg3, arg4, arg5);
         };
     }
 
@@ -1913,8 +1871,7 @@ public partial class VirtualFunction
 
         return (arg1, arg2, arg3, arg4, arg5, arg6) =>
         {
-            NativeAPI.ExecuteVirtualFunction<object>(virtualFunctionPointer, false,
-                new object[] { arg1, arg2, arg3, arg4, arg5, arg6 });
+            VirtualFunctionInvoker.InvokeVoid<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6>(virtualFunctionPointer, false, arg1, arg2, arg3, arg4, arg5, arg6);
         };
     }
 
@@ -1941,8 +1898,7 @@ public partial class VirtualFunction
 
         return (arg1, arg2, arg3, arg4, arg5, arg6) =>
         {
-            NativeAPI.ExecuteVirtualFunction<object>(virtualFunctionPointer, bypasshook,
-                new object[] { arg1, arg2, arg3, arg4, arg5, arg6 });
+            VirtualFunctionInvoker.InvokeVoid<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6>(virtualFunctionPointer, bypasshook, arg1, arg2, arg3, arg4, arg5, arg6);
         };
     }
 
@@ -1970,8 +1926,7 @@ public partial class VirtualFunction
 
         return (arg1, arg2, arg3, arg4, arg5, arg6, arg7) =>
         {
-            NativeAPI.ExecuteVirtualFunction<object>(virtualFunctionPointer, false,
-                new object[] { arg1, arg2, arg3, arg4, arg5, arg6, arg7 });
+            VirtualFunctionInvoker.InvokeVoid<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7>(virtualFunctionPointer, false, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
         };
     }
 
@@ -1999,8 +1954,7 @@ public partial class VirtualFunction
 
         return (arg1, arg2, arg3, arg4, arg5, arg6, arg7) =>
         {
-            NativeAPI.ExecuteVirtualFunction<object>(virtualFunctionPointer, bypasshook,
-                new object[] { arg1, arg2, arg3, arg4, arg5, arg6, arg7 });
+            VirtualFunctionInvoker.InvokeVoid<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7>(virtualFunctionPointer, bypasshook, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
         };
     }
 
@@ -2029,8 +1983,7 @@ public partial class VirtualFunction
 
         return (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8) =>
         {
-            NativeAPI.ExecuteVirtualFunction<object>(virtualFunctionPointer, false,
-                new object[] { arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8 });
+            VirtualFunctionInvoker.InvokeVoid<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8>(virtualFunctionPointer, false, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8);
         };
     }
 
@@ -2059,8 +2012,7 @@ public partial class VirtualFunction
 
         return (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8) =>
         {
-            NativeAPI.ExecuteVirtualFunction<object>(virtualFunctionPointer, bypasshook,
-                new object[] { arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8 });
+            VirtualFunctionInvoker.InvokeVoid<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8>(virtualFunctionPointer, bypasshook, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8);
         };
     }
 
@@ -2090,8 +2042,7 @@ public partial class VirtualFunction
 
         return (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9) =>
         {
-            NativeAPI.ExecuteVirtualFunction<object>(virtualFunctionPointer, false,
-                new object[] { arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9 });
+            VirtualFunctionInvoker.InvokeVoid<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9>(virtualFunctionPointer, false, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9);
         };
     }
 
@@ -2121,8 +2072,7 @@ public partial class VirtualFunction
 
         return (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9) =>
         {
-            NativeAPI.ExecuteVirtualFunction<object>(virtualFunctionPointer, bypasshook,
-                new object[] { arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9 });
+            VirtualFunctionInvoker.InvokeVoid<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9>(virtualFunctionPointer, bypasshook, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9);
         };
     }
 
@@ -2153,8 +2103,7 @@ public partial class VirtualFunction
 
         return (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10) =>
         {
-            NativeAPI.ExecuteVirtualFunction<object>(virtualFunctionPointer, false,
-                new object[] { arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10 });
+            VirtualFunctionInvoker.InvokeVoid<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10>(virtualFunctionPointer, false, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10);
         };
     }
 
@@ -2185,8 +2134,7 @@ public partial class VirtualFunction
 
         return (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10) =>
         {
-            NativeAPI.ExecuteVirtualFunction<object>(virtualFunctionPointer, bypasshook,
-                new object[] { arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10 });
+            VirtualFunctionInvoker.InvokeVoid<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10>(virtualFunctionPointer, bypasshook, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10);
         };
     }
     #endregion

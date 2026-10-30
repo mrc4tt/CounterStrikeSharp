@@ -25,4 +25,20 @@ public class EntityTests
         });
     }
 
+    [Fact]
+    public void GetGameRulesMatchesEntityWalk()
+    {
+        var proxy = Utilities.FindAllEntitiesByDesignerName<CCSGameRulesProxy>("cs_gamerules").FirstOrDefault();
+        Assert.NotNull(proxy);
+
+        var cachedProxy = Utilities.GetGameRulesProxy();
+        Assert.NotNull(cachedProxy);
+        Assert.Equal(proxy.Handle, cachedProxy.Handle);
+        Assert.Same(cachedProxy, Utilities.GetGameRulesProxy());
+
+        var rules = Utilities.GetGameRules();
+        Assert.NotNull(rules);
+        Assert.Equal(proxy.GameRules!.Handle, rules.Handle);
+        Assert.Same(rules, Utilities.GetGameRules());
+    }
 }

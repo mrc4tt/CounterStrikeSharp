@@ -147,6 +147,56 @@ namespace CounterStrikeSharp.API
             }
         }
 
+        // The usual idiom, FindAllEntitiesByDesignerName<CCSGameRulesProxy>("cs_gamerules").First().GameRules,
+        // walks the whole entity list (~2us on a live server) and plugins run it per tick or per event.
+        // The proxy is cached by its entity handle: the serial check in GetEntityPointerByRawHandle fails
+        // once the proxy is deleted (map change, round restart re-creating it), and then we walk again.
+        private static uint s_gameRulesProxyHandle = 0xFFFFFFFF;
+        private static CCSGameRulesProxy? s_gameRulesProxy;
+        private static CCSGameRules? s_gameRules;
+
+        /// <summary>
+        /// Returns the <c>cs_gamerules</c> proxy entity, or null when there is none (e.g. no map loaded).
+        /// Cached; the entity list is only walked again once the cached proxy no longer exists.
+        /// </summary>
+        public static CCSGameRulesProxy? GetGameRulesProxy()
+        {
+            var cached = s_gameRulesProxy;
+            if (cached != null && EntitySystem.GetEntityPointerByRawHandle(s_gameRulesProxyHandle) == cached.Handle)
+                return cached;
+
+            var proxy = FindAllEntitiesByDesignerName<CCSGameRulesProxy>("cs_gamerules").FirstOrDefault();
+            s_gameRulesProxy = proxy;
+            s_gameRulesProxyHandle = proxy?.EntityHandle.Raw ?? 0xFFFFFFFF;
+            s_gameRules = null;
+            return proxy;
+        }
+
+        /// <summary>
+        /// Returns the current <see cref="CCSGameRules"/>, or null when there is no gamerules proxy.
+        /// Equivalent to <c>FindAllEntitiesByDesignerName&lt;CCSGameRulesProxy&gt;("cs_gamerules").First().GameRules</c>
+        /// without walking the entity list on every call.
+        /// </summary>
+        public static CCSGameRules? GetGameRules()
+        {
+            var proxy = GetGameRulesProxy();
+            if (proxy == null)
+                return null;
+
+            // m_pGameRules is re-read each call; only the wrapper is reused while it points at the same object.
+            var pointer = s_gameRulesPointerField.Get(proxy.Handle);
+            if (pointer == IntPtr.Zero)
+                return null;
+
+            var rules = s_gameRules;
+            if (rules == null || rules.Handle != pointer)
+                s_gameRules = rules = new CCSGameRules(pointer);
+
+            return rules;
+        }
+
+        private static readonly SchemaField<IntPtr> s_gameRulesPointerField = new("CCSGameRulesProxy", "m_pGameRules");
+
         private static readonly SchemaField<IntPtr> s_identityDesignerNameField = new("CEntityIdentity", "m_designerName");
         private static readonly SchemaField<IntPtr> s_identityNextField = new("CEntityIdentity", "m_pNext");
 
