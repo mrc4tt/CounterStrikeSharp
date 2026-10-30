@@ -20,6 +20,8 @@ namespace CounterStrikeSharp.API.Core;
 
 public partial class CGameSceneNode
 {
+    private static readonly GameDataOffset s_getSkeletonInstanceOffset = new("CGameSceneNode_GetSkeletonInstance");
+
     /// <summary>
     /// Gets the <see cref="CSkeletonInstance"/> instance from the node.
     /// </summary>
@@ -28,6 +30,6 @@ public partial class CGameSceneNode
     {
         if (Handle == IntPtr.Zero) throw new InvalidOperationException("GameSceneNode points to null.");
 
-        return new CSkeletonInstance(VirtualFunction.Create<nint, nint>(Handle, GameData.GetOffset("CGameSceneNode_GetSkeletonInstance"))(Handle));
+        return new CSkeletonInstance(VirtualFunction.Create<nint, nint>(Handle, s_getSkeletonInstanceOffset.Value)(Handle));
     }
 }

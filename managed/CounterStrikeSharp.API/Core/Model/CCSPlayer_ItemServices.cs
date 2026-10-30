@@ -24,6 +24,10 @@ namespace CounterStrikeSharp.API.Core;
 
 public partial class CCSPlayer_ItemServices
 {
+    private static readonly GameDataOffset s_dropActivePlayerWeaponOffset = new("CCSPlayer_ItemServices_DropActivePlayerWeapon");
+    private static readonly GameDataOffset s_removeWeaponsOffset = new("CCSPlayer_ItemServices_RemoveWeapons");
+    private static readonly GameDataOffset s_giveNamedItemOffset = new("CCSPlayer_ItemServices_GiveNamedItem");
+
     /// <summary>
     /// Drops the active player weapon on the ground.
     /// </summary>
@@ -41,7 +45,7 @@ public partial class CCSPlayer_ItemServices
         unsafe
         {
             var dropMomentum = new Vector3();
-            VirtualFunction.CreateVoid<nint, nint, nint>(Handle, GameData.GetOffset("CCSPlayer_ItemServices_DropActivePlayerWeapon"))(Handle, activeWeapon.Handle, (nint)(&dropMomentum));
+            VirtualFunction.CreateVoid<nint, nint, nint>(Handle, s_dropActivePlayerWeaponOffset.Value)(Handle, activeWeapon.Handle, (nint)(&dropMomentum));
         }
     }
 
@@ -65,12 +69,12 @@ public partial class CCSPlayer_ItemServices
         // also clears m_bHasHelmet and the pawn's m_ArmorValue (m_bHasDefuser is cleared
         // either way). Binding it with only `this` left that flag to whatever the previous
         // native call had left in the register (rsi / rdx), so armor was removed at random.
-        VirtualFunction.CreateVoid<nint, bool>(Handle, GameData.GetOffset("CCSPlayer_ItemServices_RemoveWeapons"))(Handle, removeArmor);
+        VirtualFunction.CreateVoid<nint, bool>(Handle, s_removeWeaponsOffset.Value)(Handle, removeArmor);
     }
 
     public T? GiveNamedItem<T>(string item) where T : CEntityInstance
     {
-        var pointer = VirtualFunction.Create<nint, string, nint>(Handle, GameData.GetOffset("CCSPlayer_ItemServices_GiveNamedItem"))(Handle, item);
+        var pointer = VirtualFunction.Create<nint, string, nint>(Handle, s_giveNamedItemOffset.Value)(Handle, item);
         if (pointer == IntPtr.Zero)
             return null;
 

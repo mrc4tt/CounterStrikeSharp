@@ -5,6 +5,8 @@ namespace CounterStrikeSharp.API.Core;
 
 public partial class CBasePlayerPawn
 {
+    private static readonly GameDataOffset s_commitSuicideOffset = new("CBasePlayerPawn_CommitSuicide");
+
     /// <summary>
     /// Force player suicide
     /// </summary>
@@ -15,7 +17,7 @@ public partial class CBasePlayerPawn
     {
         Guard.IsValidEntity(this);
 
-        VirtualFunction.CreateVoid<IntPtr, bool, bool>(Handle,  GameData.GetOffset("CBasePlayerPawn_CommitSuicide"))(Handle, explode, force);
+        VirtualFunction.CreateVoid<IntPtr, bool, bool>(Handle,  s_commitSuicideOffset.Value)(Handle, explode, force);
     }
 
     /// <summary>

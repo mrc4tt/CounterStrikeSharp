@@ -4,6 +4,8 @@ namespace CounterStrikeSharp.API.Core;
 
 public partial class CTakeDamageInfo
 {
+    private static readonly GameDataOffset s_hitGroupOffset = new("CTakeDamageInfo_HitGroup");
+
     /// <summary>
     /// Retrieves the hitgroup
     /// </summary>
@@ -13,7 +15,7 @@ public partial class CTakeDamageInfo
     /// </returns>
     public HitGroup_t GetHitGroup()
     {
-        IntPtr v4 = Marshal.ReadIntPtr(Handle, GameData.GetOffset("CTakeDamageInfo_HitGroup"));
+        IntPtr v4 = Marshal.ReadIntPtr(Handle, s_hitGroupOffset.Value);
 
         if (v4 == nint.Zero)
         {

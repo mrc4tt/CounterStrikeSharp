@@ -58,29 +58,13 @@ public partial class CBaseEntity
             // on every teleport. The target is the same vtable slot, so hooks on it still run.
             var entity = Handle;
             var function = (delegate* unmanaged<nint, nint, nint, nint, void>)
-                ((nint*)*(nint*)entity)[TeleportOffset];
+                ((nint*)*(nint*)entity)[s_teleportOffset.Value];
             function(entity, (nint)positionPtr, (nint)anglePtr, (nint)velocityPtr);
         }
     }
 
-    // Cached per loaded gamedata set: GameData.Load builds a new Methods dictionary, so a reload
-    // (e.g. after a gamedata update) is picked up.
-    private static Dictionary<string, LoadedGameData>? s_teleportOffsetSource;
-    private static int s_teleportOffset;
-
-    private static int TeleportOffset
-    {
-        get
-        {
-            var methods = GameData.GameDataProvider.Methods;
-            if (!ReferenceEquals(methods, s_teleportOffsetSource))
-            {
-                s_teleportOffset = GameData.GetOffset("CBaseEntity_Teleport");
-                s_teleportOffsetSource = methods;
-            }
-            return s_teleportOffset;
-        }
-    }
+    private static readonly GameDataOffset s_teleportOffset = new("CBaseEntity_Teleport");
+    private static readonly GameDataOffset s_isPlayerPawnOffset = new("CBaseEntity_IsPlayerPawn");
 
     /// <exception cref="InvalidOperationException">Entity is not valid</exception>
     public void DispatchSpawn(CEntityKeyValues? keyValues)
@@ -148,6 +132,6 @@ public partial class CBaseEntity
     {
         Guard.IsValidEntity(this);
 
-        return VirtualFunction.Create<IntPtr, bool>(Handle, GameData.GetOffset("CBaseEntity_IsPlayerPawn"))(Handle);
+        return VirtualFunction.Create<IntPtr, bool>(Handle, s_isPlayerPawnOffset.Value)(Handle);
     }
 }

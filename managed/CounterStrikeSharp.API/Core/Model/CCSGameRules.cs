@@ -22,6 +22,8 @@ namespace CounterStrikeSharp.API.Core;
 
 public partial class CCSGameRules
 {
+    private static readonly GameDataOffset s_findPickerEntityOffset = new("CCSGameRules_FindPickerEntity");
+
     private static readonly Lazy<bool> IsWindows = new(() => RuntimeInformation.IsOSPlatform(OSPlatform.Windows));
 
     /// <summary>
@@ -45,12 +47,12 @@ public partial class CCSGameRules
         // the third parameter seems to be something like `CDefaultTypedEntityInstanceFilter<CBaseEntity>` but its optional (earlier it was a string?)
         if (IsWindows.Value)
         {
-            VirtualFunctionWithReturn<CCSGameRules, CBasePlayerController, IntPtr, CBaseEntity> CCSGameRules_FindPickerEntity = new(Handle, GameData.GetOffset("CCSGameRules_FindPickerEntity"));
+            VirtualFunctionWithReturn<CCSGameRules, CBasePlayerController, IntPtr, CBaseEntity> CCSGameRules_FindPickerEntity = new(Handle, s_findPickerEntityOffset.Value);
             return CCSGameRules_FindPickerEntity.Invoke(this, player, IntPtr.Zero);
         }
         else
         {
-            VirtualFunctionWithReturn<CCSGameRules, CBasePlayerController, IntPtr, double, double, CBaseEntity> CCSGameRules_FindPickerEntity = new(Handle, GameData.GetOffset("CCSGameRules_FindPickerEntity"));
+            VirtualFunctionWithReturn<CCSGameRules, CBasePlayerController, IntPtr, double, double, CBaseEntity> CCSGameRules_FindPickerEntity = new(Handle, s_findPickerEntityOffset.Value);
             return CCSGameRules_FindPickerEntity.Invoke(this, player, IntPtr.Zero, 0, 0); // on linux we have a fourth and fifth parameter aswell, but they are unused because the condition for them is always unmet.
         }
     }

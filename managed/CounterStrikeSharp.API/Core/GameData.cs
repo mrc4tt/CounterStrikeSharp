@@ -343,3 +343,33 @@ public static class GameData
         return null;
     }
 }
+// A gamedata offset resolved once per loaded gamedata set, for wrappers that read it on every call
+// (CBaseEntity.IsPlayerPawn, Teleport, ...). GameData.GetOffset is a string-keyed dictionary lookup
+// plus null checks; this is a reference compare. GameDataProvider.Load builds a new Methods
+// dictionary, so a reload (e.g. after a gamedata update) is picked up. A missing key is not cached:
+// it throws on every call, as GetOffset did.
+internal sealed class GameDataOffset
+{
+    private readonly string _key;
+    private Dictionary<string, LoadedGameData>? _source;
+    private int _value;
+
+    public GameDataOffset(string key)
+    {
+        _key = key;
+    }
+
+    public int Value
+    {
+        get
+        {
+            var methods = GameData.GameDataProvider.Methods;
+            if (!ReferenceEquals(methods, _source))
+            {
+                _value = GameData.GetOffset(_key);
+                _source = methods;
+            }
+            return _value;
+        }
+    }
+}

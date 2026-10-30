@@ -10,6 +10,9 @@ namespace CounterStrikeSharp.API.Core;
 
 public partial class CCSPlayerController
 {
+    private static readonly GameDataOffset s_respawnOffset = new("CCSPlayerController_Respawn");
+    private static readonly GameDataOffset s_changeTeamOffset = new("CCSPlayerController_ChangeTeam");
+
     public int? UserId => NativeAPI.GetUseridFromIndex((int)Index);
     public CsTeam Team => (CsTeam)TeamNum;
 
@@ -151,7 +154,7 @@ public partial class CCSPlayerController
             SetPawn(PlayerPawn.Value);
         }
 
-        VirtualFunction.CreateVoid<IntPtr>(Handle, GameData.GetOffset("CCSPlayerController_Respawn"))(Handle);
+        VirtualFunction.CreateVoid<IntPtr>(Handle, s_respawnOffset.Value)(Handle);
     }
 
     public bool IsBot => ((PlayerFlags)Flags).HasFlag(PlayerFlags.FL_FAKECLIENT);
@@ -180,7 +183,7 @@ public partial class CCSPlayerController
     {
         Guard.IsValidEntity(this);
 
-        VirtualFunction.CreateVoid<IntPtr, CsTeam>(Handle, GameData.GetOffset("CCSPlayerController_ChangeTeam"))(Handle,
+        VirtualFunction.CreateVoid<IntPtr, CsTeam>(Handle, s_changeTeamOffset.Value)(Handle,
             team);
     }
 

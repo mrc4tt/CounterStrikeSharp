@@ -84,7 +84,9 @@ namespace CounterStrikeSharp.API.Core
 
     public sealed class CCheckTransmitInfoList : NativeObject, IReadOnlyList<(CCheckTransmitInfo info, CCSPlayerController? player)>
     {
-        private int CheckTransmitPlayerSlotOffset = GameData.GetOffset("CheckTransmitPlayerSlot");
+        // A new list wraps every CheckTransmit call (each tick), so the offset is resolved once, not per instance.
+        private static readonly GameDataOffset s_checkTransmitPlayerSlotOffset = new("CheckTransmitPlayerSlot");
+        private static int CheckTransmitPlayerSlotOffset => s_checkTransmitPlayerSlotOffset.Value;
 
         private unsafe nint* Inner => (nint*)base.Handle;
 
