@@ -23,25 +23,23 @@ namespace CounterStrikeSharp.API.Modules.Admin
             var adminData = AdminManager.GetPlayerAdminData(caller.AuthorizedSteamID);
             if (adminData == null) return false;
             
-            // Check to see if the caller has a root flag for any of the domains in our permissions.
-            // If they do, remove all of the user flags and groups that belong to the domain
-            // from our permission check.
-            var domains = Permissions.Where(
-                flag => flag.StartsWith(PermissionCharacters.GroupPermissionChar))
-                .Distinct()
-                .Select(domain => domain.Split('/').First()[1..]);
+            return HasAnyPermission(caller.AuthorizedSteamID!, adminData);
+        }
 
-            foreach (var domain in domains)
+        // Any one requirement is enough. User flags go through PlayerHasPermissions one at a time,
+        // which honours @domain/root (and /*) and permission aliases the same way RequiresPermissions
+        // does. This used to strip root-covered flags out of Permissions itself: that only ever
+        // looked at #group entries, so @css/root never matched a list of @css/ flags, and it
+        // permanently mutated the attribute's shared set for every later caller.
+        internal bool HasAnyPermission(SteamID steamId, AdminData adminData)
+        {
+            if (Permissions.Any(perm => perm.StartsWith(PermissionCharacters.GroupPermissionChar) && adminData.Groups.Contains(perm)))
             {
-                if (adminData.DomainHasRootFlag(domain))
-                {
-                    Permissions.RemoveWhere(flag => flag.Contains(domain + '/'));
-                }
+                return true;
             }
 
-            var groupPermissions = Permissions.Where(perm => perm.StartsWith(PermissionCharacters.GroupPermissionChar));
-            var userPermissions = Permissions.Where(perm => perm.StartsWith(PermissionCharacters.UserPermissionChar));
-            return (groupPermissions.Intersect(adminData.Groups).Count() + userPermissions.Intersect(adminData.GetAllFlags()).Count()) > 0;
+            return Permissions.Any(perm => perm.StartsWith(PermissionCharacters.UserPermissionChar)
+                && AdminManager.PlayerHasPermissions(steamId, perm));
         }
     }
 }
