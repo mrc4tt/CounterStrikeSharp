@@ -72,10 +72,11 @@ void EntityManager::OnAllInitialized()
     m_pFireOutputInternal = reinterpret_cast<FireOutputInternal>(
         modules::server->FindSignature(globals::gameConfig->GetSignature("CEntityIOOutput_FireOutputInternal")));
 
+    // A missing signature disables only what uses it. These used to `return`, so one stale sig also
+    // silently skipped every binding below it (OnTakeDamage, the FireOutputInternal detour).
     if (m_pFireOutputInternal == nullptr)
     {
         CSSHARP_CORE_CRITICAL("Failed to find signature for \'CEntityIOOutput_FireOutputInternal\'");
-        return;
     }
 
     CEntityInstance_AcceptInput = decltype(CEntityInstance_AcceptInput)(
@@ -108,7 +109,6 @@ void EntityManager::OnAllInitialized()
     if (!CBaseEntity_DispatchSpawn)
     {
         CSSHARP_CORE_CRITICAL("Failed to find signature for \'CBaseEntity_DispatchSpawn\'");
-        return;
     }
 
     CBaseEntity_TakeDamageOld = (decltype(CBaseEntity_TakeDamageOld))((
@@ -116,14 +116,18 @@ void EntityManager::OnAllInitialized()
     if (!CBaseEntity_TakeDamageOld)
     {
         CSSHARP_CORE_CRITICAL("Failed to find signature for \'CBaseEntity_TakeDamageOld\'");
-        return;
+    }
+    else
+    {
+        Func_OnTakeDamage =
+            new ValveFunction((void*)CBaseEntity_TakeDamageOld, CALL_CONV,
+                              std::vector<DataType_t>{ DATA_TYPE_POINTER, DATA_TYPE_POINTER, DATA_TYPE_POINTER }, DATA_TYPE_LONG_LONG);
     }
 
-    Func_OnTakeDamage =
-        new ValveFunction((void*)CBaseEntity_TakeDamageOld, CALL_CONV,
-                          std::vector<DataType_t>{ DATA_TYPE_POINTER, DATA_TYPE_POINTER, DATA_TYPE_POINTER }, DATA_TYPE_LONG_LONG);
-
-    m_hooks.AddFunction(reinterpret_cast<void*>(m_pFireOutputInternal), &DetourFireOutputInternal);
+    if (m_pFireOutputInternal != nullptr)
+    {
+        m_hooks.AddFunction(reinterpret_cast<void*>(m_pFireOutputInternal), &DetourFireOutputInternal);
+    }
 
     // Listener is added in ServerStartup as entity system is not initialised at this stage.
 }

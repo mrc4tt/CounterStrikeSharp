@@ -100,7 +100,7 @@ class EntityManager : public GlobalClass
     std::map<OutputKey_t, CallbackPair*> m_pHookMap;
     bool Hook_OnTakeDamage_Alive_Pre(CBaseEntity* entity, CTakeDamageInfo* info, CTakeDamageResult* pResult);
     void Hook_OnTakeDamage_Alive_Post(CBaseEntity* entity, CTakeDamageInfo* info, CTakeDamageResult* pResult);
-    ValveFunction* Func_OnTakeDamage;
+    ValveFunction* Func_OnTakeDamage = nullptr;
 
   private:
     KHook::Return<void> CheckTransmit(ISource2GameEntities* pGameEntities,
