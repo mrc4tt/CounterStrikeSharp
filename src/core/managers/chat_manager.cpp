@@ -16,6 +16,8 @@
 
 #include "core/managers/chat_manager.h"
 
+#include <algorithm>
+
 #include <igameevents.h>
 #include <engine2/isource2server.h>
 #include <engine2/ivengineserver2.h>
@@ -57,6 +59,20 @@ void ChatManager::OnShutdown()
 
 KHook::Return<void> DetourHostSay(CEntityInstance* pController, CCommand& args, bool teamonly, int unk1, const char* unk2)
 {
+    // Messagemode (typing in the chat box) wraps the whole message in surrounding quotes, but
+    // `say`/`say_team` from a key bind (bind c "say !throw arg") does not, and its args[1] is only
+    // the first word. Take the text from ArgS() with an optional leading/trailing quote stripped so
+    // both paths parse identically. Copied before Host_Say runs, which edits the buffer in place.
+    std::string message = args.ArgS();
+    if (!message.empty() && message.front() == '"')
+    {
+        message.erase(0, 1);
+    }
+    if (!message.empty() && message.back() == '"')
+    {
+        message.pop_back();
+    }
+
     std::string prefix;
     bool bSilent = globals::coreConfig->IsSilentChatTrigger(args[1], prefix);
     bool bCommand = globals::coreConfig->IsPublicChatTrigger(args[1], prefix) || bSilent;
@@ -68,24 +84,23 @@ KHook::Return<void> DetourHostSay(CEntityInstance* pController, CCommand& args, 
 
     if (bCommand)
     {
-        char* pszMessage = (char*)(args.ArgS() + prefix.length() + 1);
+        // Drop the trigger prefix (e.g. "!" or "/"). The old `ArgS() + prefix.length() + 1` assumed the
+        // messagemode quote, so the bind path lost its first real char (!throw -> css_hrow).
+        std::string commandText = message.substr(std::min(prefix.length(), message.length()));
 
-        // Trailing slashes are only removed if Host_Say has been called.
-        if (bSilent) pszMessage[V_strlen(pszMessage) - 1] = 0;
+        CCommand cmd;
+        cmd.Tokenize(commandText.c_str());
 
-        CCommand args;
-        args.Tokenize(pszMessage);
-
-        auto prefixedPhrase = std::string("css_") + args.Arg(0);
+        auto prefixedPhrase = std::string("css_") + cmd.Arg(0);
         auto bValidWithPrefix = globals::conCommandManager.IsValidValveCommand(prefixedPhrase.c_str());
 
         if (bValidWithPrefix)
         {
             // Re-tokenize with a `css_` prefix if we have found that its a valid command.
-            args.Tokenize(("css_" + std::string(pszMessage)).c_str());
+            cmd.Tokenize(("css_" + commandText).c_str());
         }
 
-        globals::chatManager.OnSayCommandPost(pController, args);
+        globals::chatManager.OnSayCommandPost(pController, cmd);
     }
 
     if (pController)
@@ -96,7 +111,7 @@ KHook::Return<void> DetourHostSay(CEntityInstance* pController, CCommand& args, 
         {
             callback->ScriptContext().Reset();
             callback->ScriptContext().Push(pController);
-            callback->ScriptContext().Push(args.Arg(1));
+            callback->ScriptContext().Push(message.c_str());
             callback->ScriptContext().Push(teamonly);
             callback->Execute();
         }
@@ -106,7 +121,7 @@ KHook::Return<void> DetourHostSay(CEntityInstance* pController, CCommand& args, 
         {
             pEvent->SetBool("teamonly", teamonly);
             pEvent->SetInt("userid", pController->GetEntityIndex().Get() - 1);
-            pEvent->SetString("text", args[1]);
+            pEvent->SetString("text", message.c_str());
 
             globals::gameEventManager->FireEvent(pEvent, false);
         }
