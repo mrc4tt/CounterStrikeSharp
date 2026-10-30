@@ -20,6 +20,7 @@
 #pragma once
 #include <cstdio>
 #include <cstdint>
+#include <mutex>
 #include <unordered_map>
 #include <optional>
 #include <string>
@@ -163,6 +164,17 @@ class CModule
     std::uintptr_t m_baseAddress{};
     std::unordered_map<std::string, std::uintptr_t> _symbols{};
     std::unordered_map<std::string, std::uintptr_t> _interfaces{};
+
+    // ScanSignature results by signature text, misses included. The module's code does not change
+    // while it is loaded, so a pattern resolves the same way every time; without this every binding,
+    // the vtable cross-check and the updater rescanned the whole binary for a pattern already found.
+    // WriteGamedataStatus scans every gamedata signature at load, so in practice a binding's first
+    // invoke or hook on the game thread is a lookup here instead of a scan. Mutex: the updater may
+    // scan from its own thread.
+    std::unordered_map<std::string, void*> m_scanCache{};
+    std::mutex m_scanCacheMutex{};
+
+    void* ScanSignatureUncached(const char* signature);
     using fnCreateInterface = void* (*)(const char*);
     fnCreateInterface m_fnCreateInterface{};
 
