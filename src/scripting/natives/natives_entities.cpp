@@ -103,6 +103,11 @@ void DispatchSpawn(ScriptContext& scriptContext)
 {
     auto entity = scriptContext.GetArgument<void*>(0);
     auto keyValues = scriptContext.GetArgument<CEntityKeyValues*>(1);
+    if (!CBaseEntity_DispatchSpawn)
+    {
+        scriptContext.ThrowNativeError("Failed to find signature for \'CBaseEntity_DispatchSpawn\'");
+        return;
+    }
     CBaseEntity_DispatchSpawn(entity, keyValues);
 }
 
