@@ -275,18 +275,22 @@ namespace CounterStrikeSharp.API
 
         public static bool IsMapValid(string mapName) => NativeAPI.IsMapValid(mapName);
 
+        /// <summary>
+        /// Map names listed in <c>maplist.txt</c> that the engine can load, or an empty array when there is no maplist.
+        /// </summary>
         public static string[] GetMapList()
         {
-            var mapListPath = Path.Join(GameDirectory, "maplist.txt");
-            if (!File.Exists(mapListPath)) throw new Exception("Maplist.txt could not be found!");
+            // CS2 keeps maplist.txt (and the maps, as .vpk) under game/csgo; GameDirectory is game/.
+            // The old lookup only tried game/maplist.txt and then filtered on game/maps/<map>.bsp,
+            // which never exists in CS2, so it threw or returned nothing.
+            var mapListPath = new[] { Path.Join(GameDirectory, "csgo", "maplist.txt"), Path.Join(GameDirectory, "maplist.txt") }
+                .FirstOrDefault(File.Exists);
+            if (mapListPath == null) return [];
 
-            var mapNames = File.ReadAllLines(mapListPath);
-
-            return mapNames.Where(map =>
-            {
-                var filePath = Path.Join(GameDirectory, "maps", $"{map}.bsp");
-                return File.Exists(filePath) && IsMapValid(map);
-            }).ToArray();
+            return File.ReadAllLines(mapListPath)
+                .Select(line => line.Trim())
+                .Where(map => map.Length > 0 && !map.StartsWith("//") && IsMapValid(map))
+                .ToArray();
         }
 
         public static void PrintToConsole(string s) => NativeAPI.PrintToServerConsole($"{s}\n\0");

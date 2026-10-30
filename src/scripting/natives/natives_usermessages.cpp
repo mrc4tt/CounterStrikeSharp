@@ -446,7 +446,8 @@ static void PbSetString(ScriptContext& scriptContext)
     GET_MESSAGE_OR_ERR();
     GET_FIELD_NAME_OR_ERR();
 
-    auto value = strdup(std::string(scriptContext.GetArgument<const char*>(2)).c_str());
+    // SetString/SetRepeatedString copy into the message; the strdup this used to make was never freed.
+    std::string value = scriptContext.GetArgument<const char*>(2);
     auto index = scriptContext.GetArgument<int>(3);
 
     if (index < 0)
