@@ -93,13 +93,22 @@ public class ConVar
                 throw new InvalidOperationException("Reference types must be accessed using `GetReferenceValue`");
         }
 
-        var address = NativeAPI.GetConvarValueAddress(AccessIndex);
+        var address = GetValueAddress();
         if (address == IntPtr.Zero)
         {
             throw new InvalidOperationException($"ConVar {Name} is not initialized or does not have a value.");
         }
 
         return ref Unsafe.AsRef<T>((void*)address);
+    }
+
+    // The value address through the fast native table (~5 ns instead of a ~40 ns ScriptContext call).
+    // The fast entry reports an invalid access index as null instead of throwing, so ask the
+    // ScriptContext native again in that case: it throws the same NativeException as before.
+    private IntPtr GetValueAddress()
+    {
+        var address = FastNatives.GetConvarValueAddress(AccessIndex);
+        return address != IntPtr.Zero ? address : NativeAPI.GetConvarValueAddress(AccessIndex);
     }
 
     public void SetValue<T>(T value)
@@ -139,7 +148,7 @@ public class ConVar
 
     private unsafe string GetStringValueCached()
     {
-        var address = NativeAPI.GetConvarValueAddress(AccessIndex);
+        var address = GetValueAddress();
         if (address == IntPtr.Zero)
             return NativeAPI.GetConvarValueAsString(AccessIndex);
 

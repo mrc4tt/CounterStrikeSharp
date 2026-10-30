@@ -212,7 +212,7 @@ public sealed class SchemaField<T>
 
         if (IsNetworked && _chainOffset != 0)
         {
-            NativeAPI.SchemaNetworkStateChanged(handle + _chainOffset, (uint)Offset, 0xFFFFFFFF, 0xFFFFFFFF);
+            FastNatives.NetworkStateChanged(handle + _chainOffset, (uint)Offset, 0xFFFFFFFF, 0xFFFFFFFF);
         }
     }
 
@@ -282,7 +282,7 @@ public sealed class SchemaField<T>
 
         if (_chainOffset != 0)
         {
-            NativeAPI.SchemaNetworkStateChanged(obj.Handle + _chainOffset, (uint)offset, 0xFFFFFFFF, 0xFFFFFFFF);
+            FastNatives.NetworkStateChanged(obj.Handle + _chainOffset, (uint)offset, 0xFFFFFFFF, 0xFFFFFFFF);
             return;
         }
 
@@ -315,7 +315,7 @@ public sealed class SchemaField<T>
     {
         var networked = Schema.IsSchemaFieldNetworked(ClassName, FieldName);
 
-        // Same chain lookup as Utilities.SetStateChanged (FindSchemaChain). Only needed, and
+        // Same chain lookup as Utilities.SetStateChanged (Schema.TryGetStateChangedTarget). Only needed, and
         // only resolved, for networked fields.
         _chainOffset = networked ? Schema.ResolveEntry(ClassName, "__m_pChainEntity").Offset : 0;
 

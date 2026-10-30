@@ -336,8 +336,6 @@ namespace CounterStrikeSharp.API
             return FastNew.CreateInstance<T, IntPtr>(pointerTo);
         }
 
-        private static int FindSchemaChain(string className) => Schema.GetSchemaOffset(className, "__m_pChainEntity");
-
         /// <summary>
         /// Marks a field as changed for network transmission.
         /// Not all schema fields are network enabled, so please check the schema before using this.
@@ -358,7 +356,7 @@ namespace CounterStrikeSharp.API
             // weapon-slot sub-fields on CCSPlayerController, e.g. offset 3920). The previous fork
             // behaviour forwarded anyway (commit 727c6f98, no rationale) which caused the spam.
             // Mark the correct networked parent (the pointer/handle field) instead.
-            if (!Schema.IsSchemaFieldNetworked(className, fieldName))
+            if (!Schema.TryGetStateChangedTarget(className, fieldName, out var offset, out var chainOffset))
             {
                 Application.Instance.Logger.LogDebug(
                     "Field {ClassName}:{FieldName} is not send-table networked; skipping SetStateChanged "
@@ -366,9 +364,6 @@ namespace CounterStrikeSharp.API
                     className, fieldName);
                 return;
             }
-
-            int offset = Schema.GetSchemaOffset(className, fieldName);
-            int chainOffset = FindSchemaChain(className);
 
             NotifyStateChanged(entity, offset + extraOffset, chainOffset);
         }
@@ -383,11 +378,11 @@ namespace CounterStrikeSharp.API
         {
             if (chainOffset != 0)
             {
-                NativeAPI.SchemaNetworkStateChanged(entity.Handle + chainOffset, (uint)offset, 0xFFFFFFFF, 0xFFFFFFFF);
+                FastNatives.NetworkStateChanged(entity.Handle + chainOffset, (uint)offset, 0xFFFFFFFF, 0xFFFFFFFF);
                 return;
             }
 
-            NativeAPI.SchemaSetStateChanged(entity.Handle, (uint)offset, 0xFFFFFFFF, 0xFFFFFFFF);
+            FastNatives.SetStateChanged(entity.Handle, (uint)offset, 0xFFFFFFFF, 0xFFFFFFFF);
 
             entity.LastNetworkChange = Server.CurrentTime;
             entity.IsSteadyState.Clear();
