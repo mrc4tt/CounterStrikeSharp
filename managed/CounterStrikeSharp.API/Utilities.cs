@@ -292,6 +292,25 @@ namespace CounterStrikeSharp.API
             return s_connectedField.GetRef(entity) == PlayerConnectedState.Connected ? entity : IntPtr.Zero;
         }
 
+        // GetConnectedPlayersMask, remembered for the current tick: ~64 slot reads per call otherwise, and
+        // RecipientFilter.AddAllPlayers runs it per message. Within a tick a player who disconnected is
+        // still filtered out by AddAllPlayers' per-slot pointer check; one who connected mid-tick is
+        // picked up on the next tick.
+        private static int s_connectedMaskTick = int.MinValue;
+        private static ulong s_connectedMask;
+
+        internal static ulong GetConnectedPlayersMaskThisTick()
+        {
+            var tick = Server.TickCount;
+            if (tick == System.Threading.Volatile.Read(ref s_connectedMaskTick))
+                return s_connectedMask;
+
+            var mask = GetConnectedPlayersMask();
+            s_connectedMask = mask;
+            System.Threading.Volatile.Write(ref s_connectedMaskTick, tick);
+            return mask;
+        }
+
         /// <summary>Bit mask (bit = slot) of the players GetPlayers would return, without building wrappers.</summary>
         internal static ulong GetConnectedPlayersMask()
         {

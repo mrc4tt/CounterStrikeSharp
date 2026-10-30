@@ -28,6 +28,18 @@ public class RecipientFilter : IList<CCSPlayerController>, IMarshalToNative
 
     internal Action? CollectionChanged;
 
+    // GetRecipientMask walked every recipient and read its Slot on each call, and AddAllPlayers calls
+    // it every time (a sound-event hook adding all players runs it per message). Cached until the next
+    // change; every mutation goes through Changed().
+    private ulong _recipientMask;
+    private bool _recipientMaskValid;
+
+    private void Changed()
+    {
+        _recipientMaskValid = false;
+        CollectionChanged?.Invoke();
+    }
+
     public RecipientFilter()
     {
     }
@@ -66,12 +78,17 @@ public class RecipientFilter : IList<CCSPlayerController>, IMarshalToNative
 
     public ulong GetRecipientMask()
     {
+        if (_recipientMaskValid)
+            return _recipientMask;
+
         ulong recipientMask = 0;
         foreach (var recipient in _recipients)
         {
             recipientMask |= (ulong)1 << recipient.Slot;
         }
 
+        _recipientMask = recipientMask;
+        _recipientMaskValid = true;
         return recipientMask;
     }
 
@@ -83,13 +100,13 @@ public class RecipientFilter : IList<CCSPlayerController>, IMarshalToNative
     public void Insert(int index, CCSPlayerController item)
     {
         _recipients.Insert(index, item);
-        CollectionChanged?.Invoke();
+        Changed();
     }
 
     public void RemoveAt(int index)
     {
         _recipients.RemoveAt(index);
-        CollectionChanged?.Invoke();
+        Changed();
     }
 
     public CCSPlayerController this[int index]
@@ -104,7 +121,7 @@ public class RecipientFilter : IList<CCSPlayerController>, IMarshalToNative
         if (player != null)
         {
             _recipients.Add(player);
-            CollectionChanged?.Invoke();
+            Changed();
         }
     }
 
@@ -115,7 +132,7 @@ public class RecipientFilter : IList<CCSPlayerController>, IMarshalToNative
     /// </summary>
     public void AddAllPlayers()
     {
-        var missing = Utilities.GetConnectedPlayersMask() & ~GetRecipientMask();
+        var missing = Utilities.GetConnectedPlayersMaskThisTick() & ~GetRecipientMask();
         if (missing == 0)
             return; // the recipient mask wouldn't change
 
@@ -129,7 +146,7 @@ public class RecipientFilter : IList<CCSPlayerController>, IMarshalToNative
                 _recipients.Add(new CCSPlayerController(pointer));
         }
 
-        CollectionChanged?.Invoke();
+        Changed();
     }
 
     public IEnumerator<CCSPlayerController> GetEnumerator()
@@ -145,13 +162,13 @@ public class RecipientFilter : IList<CCSPlayerController>, IMarshalToNative
     public void Add(CCSPlayerController item)
     {
         _recipients.Add(item);
-        CollectionChanged?.Invoke();
+        Changed();
     }
 
     public void Clear()
     {
         _recipients.Clear();
-        CollectionChanged?.Invoke();
+        Changed();
     }
 
     public bool Contains(CCSPlayerController item)
@@ -167,7 +184,7 @@ public class RecipientFilter : IList<CCSPlayerController>, IMarshalToNative
     public bool Remove(CCSPlayerController item)
     {
         var success = _recipients.Remove(item);
-        CollectionChanged?.Invoke();
+        Changed();
         return success;
     }
 
