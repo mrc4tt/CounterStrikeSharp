@@ -17,8 +17,6 @@ public class Target
     private string Raw { get; }
     private string Slug { get; }
 
-    internal CCSGameRulesProxy? _gameRulesEntity = null;
-
     public static readonly IReadOnlyDictionary<string, TargetType> TargetTypeMap = new Dictionary<string, TargetType>(StringComparer.OrdinalIgnoreCase)
     {
         { "@all", TargetType.GroupAll },
@@ -112,15 +110,11 @@ public class Target
 
     public TargetResult GetTarget(CCSPlayerController? caller)
     {
-        if (Type == TargetType.PlayerAim)
-        {
-            if (_gameRulesEntity == null || !_gameRulesEntity.IsValid)
-            {
-                _gameRulesEntity = Utilities.FindAllEntitiesByDesignerName<CCSGameRulesProxy>("cs_gamerules").FirstOrDefault();
-            }
-        }
+        // Only @aim needs the gamerules (FindPickerEntity). A Target is built per command, so the
+        // old per-instance cache walked the entity list every time; GetGameRules caches globally.
+        var gameRules = Type == TargetType.PlayerAim ? Utilities.GetGameRules() : null;
 
-        return new TargetResult() { Players = Utilities.GetPlayers().Where(player => TargetPredicate(player, caller, _gameRulesEntity?.GameRules)).ToList() };
+        return new TargetResult() { Players = Utilities.GetPlayers().Where(player => TargetPredicate(player, caller, gameRules)).ToList() };
     }
 
     /// <summary>
