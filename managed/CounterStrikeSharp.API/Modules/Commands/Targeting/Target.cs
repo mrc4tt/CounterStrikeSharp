@@ -89,7 +89,7 @@ public class Target
     {
         return Type switch
         {
-            TargetType.PlayerAim => caller != null && player == gameRules!.GetClientAimTarget(caller),
+            TargetType.PlayerAim => caller != null && gameRules != null && player == gameRules.GetClientAimTarget(caller),
             TargetType.TeamCt => player.Team == CsTeam.CounterTerrorist,
             TargetType.TeamT => player.Team == CsTeam.Terrorist,
             TargetType.TeamSpec => player.Team == CsTeam.Spectator,

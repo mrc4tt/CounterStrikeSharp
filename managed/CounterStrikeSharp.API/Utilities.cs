@@ -156,7 +156,7 @@ namespace CounterStrikeSharp.API
         private static CCSGameRules? s_gameRules;
 
         /// <summary>
-        /// Returns the <c>cs_gamerules</c> proxy entity, or null when there is none (e.g. no map loaded).
+        /// Returns the <c>cs_gamerules</c> proxy entity, or null when there is none (no map loaded, or the entity system does not exist yet).
         /// Cached; the entity list is only walked again once the cached proxy no longer exists.
         /// </summary>
         public static CCSGameRulesProxy? GetGameRulesProxy()
@@ -165,7 +165,18 @@ namespace CounterStrikeSharp.API
             if (cached != null && EntitySystem.GetEntityPointerByRawHandle(s_gameRulesProxyHandle) == cached.Handle)
                 return cached;
 
-            var proxy = FindAllEntitiesByDesignerName<CCSGameRulesProxy>("cs_gamerules").FirstOrDefault();
+            CCSGameRulesProxy? proxy;
+            try
+            {
+                proxy = FindAllEntitiesByDesignerName<CCSGameRulesProxy>("cs_gamerules").FirstOrDefault();
+            }
+            catch (NativeException)
+            {
+                // Entity system not created yet (e.g. called from Load() on a cold start). Nothing is
+                // cached, so the next call after the map is up walks the entity list again.
+                proxy = null;
+            }
+
             s_gameRulesProxy = proxy;
             s_gameRulesProxyHandle = proxy?.EntityHandle.Raw ?? 0xFFFFFFFF;
             s_gameRules = null;
