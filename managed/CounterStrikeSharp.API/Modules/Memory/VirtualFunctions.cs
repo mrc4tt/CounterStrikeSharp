@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.ComponentModel;
 using CounterStrikeSharp.API.Modules.Utils;
 using CounterStrikeSharp.API.Modules.Entities.Constants;
@@ -39,10 +39,14 @@ public static class VirtualFunctions
 {
     public static readonly MemoryFunctionVoid<IntPtr, HudDestination, string, IntPtr, IntPtr, IntPtr, IntPtr> ClientPrintFunc =
         new(GameData.GetSignature("ClientPrint"));
+    // Raw engine call: the first argument must be a live CBasePlayerController pointer, and a stale or
+    // non-controller handle crashes the server. The wrappers below go through a native that resolves the slot.
+    [Obsolete("Use CCSPlayerController.PrintToChat / PrintToCenter / PrintToCenterAlert instead.")]
     public static readonly Action<IntPtr, HudDestination, string, IntPtr, IntPtr, IntPtr, IntPtr> ClientPrint = ClientPrintFunc.Invoke;
 
     public static readonly MemoryFunctionVoid<HudDestination, string, IntPtr, IntPtr, IntPtr, IntPtr, IntPtr> ClientPrintAllFunc =
         new(GameData.GetSignature("UTIL_ClientPrintAll"));
+    [Obsolete("Use Server.PrintToChatAll, or CCSPlayerController.PrintToCenter per player, instead.")]
     public static readonly Action<HudDestination, string, IntPtr, IntPtr, IntPtr, IntPtr, IntPtr> ClientPrintAll = ClientPrintAllFunc.Invoke;
 
     // void (*FnGiveNamedItem)(void* itemService,const char* pchName, void* iSubType,void* pScriptItem, void* a5,void* a6) = nullptr;
