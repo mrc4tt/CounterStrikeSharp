@@ -116,4 +116,28 @@ public class AdminTests
         Assert.True(AdminManager.CommandIsOverriden("runtime_command_b"));
         Assert.False(AdminManager.GetPermissionOverrides("runtime_command_b").Any());
     }
+
+    [Fact]
+    public void RequiresPermissionsOr_RootFlagSatisfiesAnyFlagInTheDomain()
+    {
+        // Erikj gets @css/root through #css/admin but holds neither of these flags directly.
+        var steamId = (SteamID)76561197960265731;
+        var adminData = AdminManager.GetPlayerAdminData(steamId)!;
+        var attribute = new RequiresPermissionsOr("@css/not-granted-1", "@css/not-granted-2");
+
+        Assert.True(attribute.HasAnyPermission(steamId, adminData));
+        Assert.True(attribute.HasAnyPermission(steamId, adminData));
+        Assert.Equal(2, attribute.Permissions.Count);
+    }
+
+    [Fact]
+    public void RequiresPermissionsOr_MatchesOneOfSeveral()
+    {
+        var steamId = (SteamID)76561197960265731;
+        var adminData = AdminManager.GetPlayerAdminData(steamId)!;
+
+        Assert.True(new RequiresPermissionsOr("@otherplugin/nope", "@css/custom-flag-1").HasAnyPermission(steamId, adminData));
+        Assert.True(new RequiresPermissionsOr("#otherplugin/group", "#css/admin").HasAnyPermission(steamId, adminData));
+        Assert.False(new RequiresPermissionsOr("@otherplugin/nope", "#otherplugin/group").HasAnyPermission(steamId, adminData));
+    }
 }
