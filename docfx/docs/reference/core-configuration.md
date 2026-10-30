@@ -36,6 +36,10 @@ When enabled, plugins are automatically reloaded when their .dll file is updated
 
 When enabled, plugins are automatically loaded from the plugins directory on server start.
 
+## PluginPreJitEnabled
+
+When enabled (the default), a plugin's methods are compiled right after it loads, in small slices spread over the next frames, instead of the first time each one runs. That moves the plugin's one-off JIT cost out of gameplay: without it, the first event, command or round a plugin handles pays several milliseconds of compilation inside that game frame. Disable it if a plugin relies on a static initializer running at a particular moment.
+
 ## ServerLanguage
 
 Configures the default language to use for server commands & messages. The format for the culture name based on RFC 4646 is `languagecode2-country`/`regioncode2`, where `languagecode2` is the two-letter language code and `country/regioncode2` is the two-letter subculture code. Examples include `ja-JP` for Japanese (Japan) and `en-US` for English (United States). Defaults to "en".
