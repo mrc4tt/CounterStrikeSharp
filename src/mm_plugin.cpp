@@ -314,10 +314,20 @@ KHook::Return<void> CounterStrikeSharpMMPlugin::Hook_StartupServer(INetworkServe
 {
     CSSHARP_CORE_DEBUG("Hook_StartupServer fired (pGameResourceServiceServer={})", (void*)interfaces::pGameResourceServiceServer);
     globals::entitySystem = interfaces::pGameResourceServiceServer->GetGameEntitySystem();
-    // Remove before adding to prevent double-registration when workshop addon changes
-    // trigger a second StartupServer within the same map session (ss_dead cycle).
-    globals::entitySystem->RemoveListenerEntity(&globals::entityManager.entityListener);
-    globals::entitySystem->AddListenerEntity(&globals::entityManager.entityListener);
+    // The entity system can still be null here (seen under emulation); dereferencing it kills
+    // the server. Leave it null instead: Hook_GameFrame lazy-initializes it and registers the
+    // listener once the engine has created it.
+    if (globals::entitySystem)
+    {
+        // Remove before adding to prevent double-registration when workshop addon changes
+        // trigger a second StartupServer within the same map session (ss_dead cycle).
+        globals::entitySystem->RemoveListenerEntity(&globals::entityManager.entityListener);
+        globals::entitySystem->AddListenerEntity(&globals::entityManager.entityListener);
+    }
+    else
+    {
+        CSSHARP_CORE_WARN("Hook_StartupServer: entity system not created yet, deferring to GameFrame");
+    }
 
     // Workshop ss_dead reload cycles fire Hook_StartupServer without a
     // preceding OnLevelShutdown. We pass that distinction down so that:
