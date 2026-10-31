@@ -26,6 +26,28 @@ public partial class CCSGameRules
 
     private static readonly Lazy<bool> IsWindows = new(() => RuntimeInformation.IsOSPlatform(OSPlatform.Windows));
 
+    private const int BigHeadMutator = 1 << 0;
+
+    /// <summary>
+    /// Enables or disables the big-head mutator without changing other active mutators.
+    /// </summary>
+    /// <remarks>
+    /// This is a global game rule. Use <see cref="CCSPlayerPawn.SetBigHeadScale"/>
+    /// to set the head scale of an individual pawn.
+    /// </remarks>
+    /// <param name="enabled">Whether the big-head mutator is enabled.</param>
+    public void SetBigHeadEnabled(bool enabled)
+    {
+        int mutators = enabled ? ActiveMutators | BigHeadMutator : ActiveMutators & ~BigHeadMutator;
+        if (mutators == ActiveMutators) return;
+
+        ActiveMutators = mutators;
+        // The chain entity is declared on CGameRules, and SetStateChanged/SchemaField only look it up
+        // on the named class (CCSGameRules), so notify through the chainer directly.
+        NativeAPI.SchemaNetworkStateChanged(__m_pChainEntity.Handle,
+            (uint)Schema.GetSchemaOffset("CCSGameRules", "m_nActiveMutators"), 0xFFFFFFFF, 0xFFFFFFFF);
+    }
+
     /// <summary>
     /// Terminate the round with the given delay and reason.
     /// </summary>
