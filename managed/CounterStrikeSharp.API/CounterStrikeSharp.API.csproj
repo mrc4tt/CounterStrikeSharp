@@ -49,8 +49,10 @@
              (MissingFieldException / MissingMethodException), so it fails the build here
              instead. The old baseline was upstream's v202.dll, which this fork no longer
              matches (800+ stale suppressions); it is gone.
-             - Intentional break: rebuild with -p:ApiCompatGenerateSuppressionFile=true and
-               commit the CompatibilitySuppressions.xml it writes.
+             - Intentional break: rebuild with -p:ApiCompatGenerateSuppressionFile=true, delete
+               the <Left>/<Right> lines it writes (they name obj/<Configuration>/, so a Release-
+               generated entry fails a Debug build and vice versa; target-only entries match
+               both), and commit CompatibilitySuppressions.xml.
              - Schema sync: game-driven schema removals are recorded the same way by
                sync-schema.yaml, so they show up in the schema PR's diff.
              - Re-baseline after a release: replace ApiCompat/<ver>.dll with that release's

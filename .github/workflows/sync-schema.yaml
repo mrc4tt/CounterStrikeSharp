@@ -97,7 +97,12 @@ jobs:
       # and its diff lists exactly what broke.
       - name: Record schema API breaks
         if: steps.changes.outputs.has_changes == 'true'
-        run: dotnet build managed/CounterStrikeSharp.API/CounterStrikeSharp.API.csproj -c Release -p:ApiCompatGenerateSuppressionFile=true
+        # The generator keys each entry on <Left>/<Right> paths, and <Right> carries the
+        # configuration (obj/Release/...), so a Debug build would neither match them nor
+        # accept them as needed. Target-only entries apply to every configuration.
+        run: |
+          dotnet build managed/CounterStrikeSharp.API/CounterStrikeSharp.API.csproj -c Release -p:ApiCompatGenerateSuppressionFile=true
+          sed -i '/<Left>\|<Right>/d' managed/CounterStrikeSharp.API/CompatibilitySuppressions.xml
 
       # A PR pushed with GITHUB_TOKEN gets its pull_request runs parked as
       # "action required" until someone approves them, and they expire as
