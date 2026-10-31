@@ -71,7 +71,13 @@ KHook::Return<void> DetourHostSay(CEntityInstance* pController, CCommand& args, 
         char* pszMessage = (char*)(args.ArgS() + prefix.length() + 1);
 
         // Trailing slashes are only removed if Host_Say has been called.
-        if (bSilent) pszMessage[V_strlen(pszMessage) - 1] = 0;
+        // A lone silent trigger ("/") leaves an empty message; without the length check this
+        // writes one byte before the buffer.
+        if (bSilent)
+        {
+            int len = V_strlen(pszMessage);
+            if (len > 0) pszMessage[len - 1] = 0;
+        }
 
         CCommand args;
         args.Tokenize(pszMessage);
