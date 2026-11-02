@@ -49,12 +49,14 @@ public class CommandManager : ICommandManager
     {
         _logger.LogDebug("Removing command {Command}", definition.Name);
 
-        if (_commandDefinitions.TryGetValue(definition.Name, out var commandDefinition))
-        {
-            commandDefinition.Remove(definition);
-        }
+        // Removing a command that is already gone is a no-op. The indexer below used to throw
+        // KeyNotFoundException for it, e.g. CS2-SimpleAdmin's modules unregistering commands
+        // that a reload of CS2-SimpleAdmin itself had already removed.
+        if (!_commandDefinitions.TryGetValue(definition.Name, out var commandDefinition)) return;
 
-        if (_commandDefinitions[definition.Name].Count == 0)
+        commandDefinition.Remove(definition);
+
+        if (commandDefinition.Count == 0)
         {
             NativeAPI.RemoveCommand(definition.Name, _internalFunctionReference);
             _commandDefinitions.Remove(definition.Name);
