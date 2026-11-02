@@ -358,6 +358,13 @@ bool CounterStrikeSharpMMPlugin::Unload(char* error, size_t maxlen)
     // so teardown happens in reverse order of init.
     CALL_GLOBAL_LISTENER(OnShutdown());
 
+    // Mirror of ConVar_Register in Load: unregister our static CON_COMMANDs/ConVars
+    // (css_dump_schema, css_dump_leaks) while the cvar system is still alive. It also
+    // invalidates their refs, so ~ConCommand at dlclose/exit() no longer calls
+    // UnregisterConCommandCallbacks into a cvar system the engine may have shut down
+    // already (segfault in libtier0 on `quit`, exit code 139).
+    ConVar_Unregister();
+
     m_GameFrame.Remove(globals::server);
     m_StartupServer.Remove(globals::networkServerService);
     m_RegisterLoopMode.Remove(globals::engineServiceManager);
