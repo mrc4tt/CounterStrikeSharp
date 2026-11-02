@@ -81,7 +81,21 @@ TimerSystem::TimerSystem()
 }
 
 void TimerSystem::OnAllInitialized() { m_on_tick_callback_ = globals::callbackManager.CreateCallback("OnTick"); }
-void TimerSystem::OnShutdown() { globals::callbackManager.ReleaseCallback(m_on_tick_callback_); }
+void TimerSystem::OnShutdown()
+{
+    globals::callbackManager.ReleaseCallback(m_on_tick_callback_);
+    m_on_tick_callback_ = nullptr;
+
+    // `meta unload`: plugins kill their own timers while they unload, but anything left would
+    // otherwise fire after a later `meta load` into callbacks of the previous load. ~Timer drops
+    // the serial, so a stale managed Kill of one of these is a no-op.
+    for (auto* timer : m_once_off_timers)
+        delete timer;
+    for (auto* timer : m_repeat_timers)
+        delete timer;
+    m_once_off_timers.clear();
+    m_repeat_timers.clear();
+}
 
 void TimerSystem::OnLevelEnd()
 {

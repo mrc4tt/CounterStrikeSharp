@@ -73,8 +73,44 @@ namespace CounterStrikeSharp.API.Core
             _instance = this;
         }
 
+        // Static, not per instance: after `meta unload` + `meta load` Bootstrap.Run builds a new
+        // Application in the same runtime, and a second pair of AppDomain handlers would report
+        // every unhandled exception twice.
+        private static bool _processHandlersInstalled;
+
+        /// <summary>
+        /// `meta unload`: unload and dispose every plugin while the natives still work, so each
+        /// plugin's listeners, commands, timers and hooks are removed before the native side
+        /// tears its managers down. The runtime itself keeps running (CoreCLR cannot be
+        /// restarted); a later `meta load` calls Bootstrap.Run again and builds a new Application.
+        /// </summary>
+        internal void Shutdown()
+        {
+            Logger.LogInformation("Unloading all plugins (CounterStrikeSharp is being unloaded)");
+            foreach (var plugin in _pluginManager.GetLoadedPlugins().ToList())
+            {
+                try
+                {
+                    _pluginManager.RemovePlugin(plugin);
+                }
+                catch (Exception e)
+                {
+                    Logger.LogError(e, "Failed to unload plugin {Path} during CounterStrikeSharp unload", plugin.FilePath);
+                }
+            }
+
+            Server.ClearPendingTasks();
+        }
+
         public void Start()
         {
+            if (_processHandlersInstalled)
+            {
+                StartCore();
+                return;
+            }
+            _processHandlersInstalled = true;
+
             // Both handlers used to do nothing for anything but PluginTerminationException, so a plugin's
             // async void / background-thread crash took the server down with only the runtime's own
             // trace, and a faulted fire-and-forget task vanished. Name the plugin in both cases.
@@ -109,6 +145,11 @@ namespace CounterStrikeSharp.API.Core
                         owner, root.GetType().Name, decision.TimesSeen);
             };
 
+            StartCore();
+        }
+
+        private void StartCore()
+        {
             // One line that says what is booting: API version, OS and runtime.
             Logger.LogInformation("CounterStrikeSharp v{Version} starting ({Os}, {Runtime})", Api.GetVersion(),
                 System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows) ? "Windows" : "Linux",

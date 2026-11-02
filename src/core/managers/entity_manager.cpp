@@ -141,7 +141,8 @@ void EntityManager::OnShutdown()
     globals::callbackManager.ReleaseCallback(on_player_take_damage_post_callback);
 
     globals::callbackManager.ReleaseCallback(check_transmit);
-    globals::entitySystem->RemoveListenerEntity(&entityListener);
+    // Null until the first StartupServer / GameFrame.
+    if (globals::entitySystem) globals::entitySystem->RemoveListenerEntity(&entityListener);
     if (globals::gameEntities != nullptr)
     {
         m_CheckTransmit.RemoveGlobal(globals::gameEntities);

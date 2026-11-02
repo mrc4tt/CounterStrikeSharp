@@ -416,6 +416,8 @@ void DynamicHook::CollectRetired()
                live.end());
 }
 
+bool DynamicHook::IsEnabled() const { return m_state && m_state->enabled.load(); }
+
 void DynamicHook::ShutdownAll()
 {
     std::vector<std::shared_ptr<State>> states;

@@ -373,6 +373,11 @@ KHook::Action ValveFunction::DispatchHook(bool post, DynamicHookContext& hook)
 
 void ValveFunction::EnsureHook()
 {
+    // A ValveFunction outlives `meta unload`: the managed VirtualFunctions bindings keep it, and
+    // so does the native cache, while DynamicHook::ShutdownAll disabled its hook for good. Kept,
+    // every hook a plugin added through it after `meta load` was silently dead.
+    if (m_hook && !m_hook->IsEnabled()) m_hook.reset();
+
     if (!m_hook)
         m_hook = std::make_unique<DynamicHook>(m_ulAddr, m_Args, m_eReturnType, [this](bool post, DynamicHookContext& hook) {
             return DispatchHook(post, hook);

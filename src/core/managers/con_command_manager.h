@@ -114,6 +114,10 @@ class ConCommandManager : public GlobalClass
     std::map<std::string, ConCommandInfo*, CaseInsensitiveComparator> m_cmd_lookup;
     std::map<const CCommand*, CommandCallingContext> m_cmd_contexts;
     ConCommandInfo m_global_cmd = ConCommandInfo(true);
+    ConCommand* m_dumpSchemaCommand = nullptr;
+    ConCommand* m_dumpLeaksCommand = nullptr;
 };
+
+void DumpLeaksCommand(const CCommand& args);
 
 } // namespace counterstrikesharp

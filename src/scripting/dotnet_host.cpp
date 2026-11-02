@@ -224,61 +224,85 @@ CDotNetManager::CDotNetManager() {}
 
 CDotNetManager::~CDotNetManager() {}
 
+namespace {
+typedef int(CORECLR_DELEGATE_CALLTYPE* custom_entry_point_fn)();
+
+// Bootstrap.Run / Bootstrap.Shutdown, resolved once per process. CoreCLR cannot be shut down
+// or started a second time, and after `meta unload` this .so stays mapped (the runtime holds
+// its own dlopen of it for the InvokeNative P/Invoke), so these statics survive into the next
+// `meta load`. That load reuses the running runtime and calls Run again instead of going
+// through hostfxr, which would refuse a second initialization.
+custom_entry_point_fn s_run_entry = nullptr;
+custom_entry_point_fn s_shutdown_entry = nullptr;
+} // namespace
+
 bool CDotNetManager::Initialize()
 {
-    const std::string base_dir = counterstrikesharp::utils::GetRootDirectory();
-
-    CSSHARP_CORE_DEBUG("Loading .NET runtime...");
-
-    if (!load_hostfxr())
+    if (!s_run_entry)
     {
-        CSSHARP_CORE_ERROR("Failed to initialize .NET runtime.");
-        return false;
-    }
-    CSSHARP_CORE_DEBUG(".NET Runtime Initialised.");
-    namespace css = counterstrikesharp;
+        const std::string base_dir = counterstrikesharp::utils::GetRootDirectory();
+
+        CSSHARP_CORE_DEBUG("Loading .NET runtime...");
+
+        if (!load_hostfxr())
+        {
+            CSSHARP_CORE_ERROR("Failed to initialize .NET runtime.");
+            return false;
+        }
+        CSSHARP_CORE_DEBUG(".NET Runtime Initialised.");
+        namespace css = counterstrikesharp;
 #if _WIN32
-    const auto wide_str = std::wstring(css::widen(base_dir) + L"\\api\\CounterStrikeSharp.API.runtimeconfig.json");
-    CSSHARP_CORE_DEBUG("Loading CSS API, Runtime config: {}", counterstrikesharp::narrow(wide_str).c_str());
+        const auto wide_str = std::wstring(css::widen(base_dir) + L"\\api\\CounterStrikeSharp.API.runtimeconfig.json");
+        CSSHARP_CORE_DEBUG("Loading CSS API, Runtime config: {}", counterstrikesharp::narrow(wide_str).c_str());
 #else
-    std::string wide_str = std::string((base_dir + "/api/CounterStrikeSharp.API.runtimeconfig.json").c_str());
-    CSSHARP_CORE_DEBUG("Loading CSS API, Runtime Config: {}", wide_str);
+        std::string wide_str = std::string((base_dir + "/api/CounterStrikeSharp.API.runtimeconfig.json").c_str());
+        CSSHARP_CORE_DEBUG("Loading CSS API, Runtime Config: {}", wide_str);
 #endif
 
-    const auto load_assembly_and_get_function_pointer = get_dotnet_load_assembly(wide_str.c_str());
-    if (load_assembly_and_get_function_pointer == nullptr)
-    {
-        CSSHARP_CORE_ERROR("Failed to load CSS API.");
-        return false;
-    }
+        const auto load_assembly_and_get_function_pointer = get_dotnet_load_assembly(wide_str.c_str());
+        if (load_assembly_and_get_function_pointer == nullptr)
+        {
+            CSSHARP_CORE_ERROR("Failed to load CSS API.");
+            return false;
+        }
 
 #if _WIN32
-    const auto dotnetlib_path = std::wstring(css::widen(base_dir) + L"\\api\\CounterStrikeSharp.API.dll");
-    CSSHARP_CORE_DEBUG("CSS API DLL: {}", counterstrikesharp::narrow(dotnetlib_path));
+        const auto dotnetlib_path = std::wstring(css::widen(base_dir) + L"\\api\\CounterStrikeSharp.API.dll");
+        CSSHARP_CORE_DEBUG("CSS API DLL: {}", counterstrikesharp::narrow(dotnetlib_path));
 #else
-    const std::string dotnetlib_path = std::string((base_dir + "/api/CounterStrikeSharp.API.dll").c_str());
+        const std::string dotnetlib_path = std::string((base_dir + "/api/CounterStrikeSharp.API.dll").c_str());
 #endif
-    const auto dotnet_type = STR("CounterStrikeSharp.API.Bootstrap, CounterStrikeSharp.API");
-    // Namespace, assembly name
+        const auto dotnet_type = STR("CounterStrikeSharp.API.Bootstrap, CounterStrikeSharp.API");
+        // Namespace, assembly name
 
-    typedef int(CORECLR_DELEGATE_CALLTYPE * custom_entry_point_fn)();
-    custom_entry_point_fn entry_point = nullptr;
-    const int rc = load_assembly_and_get_function_pointer(dotnetlib_path.c_str(), dotnet_type, STR("Run"), UNMANAGEDCALLERSONLY_METHOD,
-                                                          nullptr, reinterpret_cast<void**>(&entry_point));
-    if (entry_point == nullptr)
+        custom_entry_point_fn entry_point = nullptr;
+        load_assembly_and_get_function_pointer(dotnetlib_path.c_str(), dotnet_type, STR("Run"), UNMANAGEDCALLERSONLY_METHOD, nullptr,
+                                               reinterpret_cast<void**>(&entry_point));
+        if (entry_point == nullptr)
+        {
+            CSSHARP_CORE_ERROR("Trying to get entry point \"Bootstrap::Run\" but failed.");
+            return false;
+        }
+
+        // Optional: an API assembly without it still loads, it just cannot be unloaded cleanly.
+        load_assembly_and_get_function_pointer(dotnetlib_path.c_str(), dotnet_type, STR("Shutdown"), UNMANAGEDCALLERSONLY_METHOD, nullptr,
+                                               reinterpret_cast<void**>(&s_shutdown_entry));
+        if (s_shutdown_entry == nullptr) CSSHARP_CORE_WARN("Bootstrap::Shutdown not found; `meta unload` will not unload plugins.");
+
+        s_run_entry = entry_point;
+    }
+    else
     {
-        CSSHARP_CORE_ERROR("Trying to get entry point \"Bootstrap::Run\" but failed.");
-        return false;
+        CSSHARP_CORE_INFO("Reusing the .NET runtime from the previous load.");
     }
 
-    assert(rc == 0 && entry_point != nullptr && "Failure: load_assembly_and_get_function_pointer()");
-
-    if (const int invoke_result_code = entry_point(); invoke_result_code == 0)
+    if (const int invoke_result_code = s_run_entry(); invoke_result_code == 0)
     {
         CSSHARP_CORE_ERROR("Bootstrap::Run return failure.");
         return false;
     }
 
+    m_running = true;
     CSSHARP_CORE_INFO("CounterStrikeSharp.API Loaded Successfully.");
     return true;
 }
@@ -287,9 +311,13 @@ void CDotNetManager::UnloadPlugin(PluginContext* context) {}
 
 void CDotNetManager::Shutdown()
 {
-    // CoreCLR does not currently supporting unloading... :(
-    // I think this is intentionally, you should handle Init/Shutdown manually.
-    // Better rework in the future, but not now.
+    // CoreCLR cannot be unloaded; this only unloads the managed plugins (Bootstrap.Shutdown) so
+    // nothing managed is left registered with the native side when it tears down. Must run while
+    // the natives still work, i.e. first in Unload.
+    if (!m_running) return;
+    m_running = false;
+
+    if (s_shutdown_entry && s_shutdown_entry() == 0) CSSHARP_CORE_ERROR("Bootstrap::Shutdown return failure.");
 }
 
 PluginContext* CDotNetManager::FindContext(std::string path) { return nullptr; }

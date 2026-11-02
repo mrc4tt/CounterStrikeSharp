@@ -18,6 +18,10 @@
 
 #include <khook.hpp>
 
+#include <algorithm>
+#include <unordered_map>
+#include <vector>
+
 namespace counterstrikesharp {
 namespace hooks {
 
@@ -30,6 +34,46 @@ void ReportHookRegistration(const char* name, void** vtable, int slot, bool ok, 
 // Logs one Info line with how many hooks ReportHookRegistration has seen so far.
 // Implemented in khook_verified.cpp.
 void LogHookSummary();
+
+// Every hooks::Virtual, so Unload can detach them all (DetachAll) without each manager
+// having to list its members. Header-only: src/core/tests links this header without
+// khook_verified.cpp.
+class Detachable
+{
+  public:
+    Detachable() { Registry().push_back(this); }
+    virtual ~Detachable() { std::erase(Registry(), this); }
+    Detachable(const Detachable&) = delete;
+    Detachable& operator=(const Detachable&) = delete;
+
+    virtual void Detach() = 0;
+
+    // Function-local: the hooks::Virtual members of static managers register during static
+    // initialisation, in no particular order relative to any other file.
+    static std::vector<Detachable*>& Registry()
+    {
+        static std::vector<Detachable*> registry;
+        return registry;
+    }
+};
+
+// Removes the KHook detour of every hooks::Virtual and forgets its ids. Last thing in Unload.
+//
+// Remove()/RemoveGlobal() only take the instance out of KHook::Virtual's gate; the detour
+// itself is removed by Metamod after Unload returns, asynchronously, through the plugin's
+// KHookImpl. KHook::Virtual keeps its vtable-slot -> hook-id map until that removal reports
+// back, and _Setup skips a slot that is still in the map. So a `meta load` right after
+// `meta unload` (in one command line, or before the removal was processed) found every slot
+// "already hooked" and installed nothing, then the pending removal took the old detour away:
+// every virtual hook was dead (console commands, GameFrame, events...). Detach forgets the
+// ids right away, so the next Add installs a fresh hook while the old one is still being
+// removed; whichever of Detach's and Metamod's removals of an id runs second completes at once
+// (KHook answers immediately for an id it no longer has).
+inline void DetachAll()
+{
+    for (auto* detachable : Detachable::Registry())
+        detachable->Detach();
+}
 
 // KHook can refuse to install a hook, and says so only through a return value the
 // plain API hides from us.
@@ -48,12 +92,30 @@ void LogHookSummary();
 // They deliberately log rather than throw: a missing hook degrades one feature,
 // while an exception out of a manager's OnAllInitialized takes down the whole
 // plugin load.
-template <class CLASS, class RETURN, class... ARGS> class Virtual : public KHook::Virtual<CLASS, RETURN, ARGS...>
+template <class CLASS, class RETURN, class... ARGS> class Virtual : public KHook::Virtual<CLASS, RETURN, ARGS...>, public Detachable
 {
     using Base = KHook::Virtual<CLASS, RETURN, ARGS...>;
 
   public:
     using Base::Base;
+
+    void Detach() override
+    {
+        std::unordered_map<KHook::HookID_t, void*> ids;
+        {
+            std::lock_guard guard(this->_hooks_stored);
+            ids.swap(this->_hook_ids_addr);
+            this->_addr_hook_ids.clear();
+        }
+        // Asynchronous: `meta unload` runs inside our own ICvar::DispatchConCommand detour, and
+        // a synchronous removal waits for the detour it is running in to exit (KHook only
+        // try-locks the capsule and retries) - a watchdog timeout. The worker thread removes
+        // these once the capsules are free; with the ids gone from the maps above, its
+        // _KHook_RemovedHook callback finds nothing and leaves a re-added hook's entry alone.
+        // Outside the lock: an id KHook no longer has calls _KHook_RemovedHook at once.
+        for (auto& [id, address] : ids)
+            ::KHook::RemoveHook(id, true);
+    }
 
     // Hooks this instance's vtable. Returns false (and logs) if KHook did not take it.
     bool Add(CLASS* instance, const char* name)

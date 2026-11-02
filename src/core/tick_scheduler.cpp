@@ -44,4 +44,10 @@ void TickScheduler::getCallbacks(int currentTick, std::vector<std::function<void
         scheduledTasks.pop();
     }
 }
+
+void TickScheduler::clear()
+{
+    std::lock_guard<std::mutex> lock(taskMutex);
+    scheduledTasks = {};
+}
 } // namespace counterstrikesharp

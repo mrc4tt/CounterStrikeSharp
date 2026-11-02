@@ -33,6 +33,7 @@
 #include "core/khook_verified.h"
 #include "core/log.h"
 #include "core/managers/entity_manager.h"
+#include "core/managers/event_manager.h"
 #include "core/managers/chat_manager.h"
 #include "core/managers/player_manager.h"
 #include "core/tick_scheduler.h"
@@ -138,6 +139,7 @@ bool CounterStrikeSharpMMPlugin::Load(PluginId id, ISmmAPI* ismm, char* error, s
         {
             if (!succeeded)
             {
+                StopGameSystems();
                 HookSet::ClearAll();
                 DynamicHook::ShutdownAll();
             }
@@ -261,6 +263,17 @@ bool CounterStrikeSharpMMPlugin::Load(PluginId id, ISmmAPI* ismm, char* error, s
             CSSHARP_CORE_ERROR("Failed to find the CGameEventManager vtable, game events will not be available.");
         }
 
+        // `meta load` after an earlier `meta unload` in the same process: the engine is already
+        // up, so the hooks that normally attach these (StartupServer for the entity listener,
+        // the CGameEventManager::Init detour for the FireEvent hook) will not fire again until
+        // the next map, and entity and game events would be dead until then.
+        if (globals::entitySystem)
+        {
+            globals::entitySystem->RemoveListenerEntity(&globals::entityManager.entityListener);
+            globals::entitySystem->AddListenerEntity(&globals::entityManager.entityListener);
+        }
+        if (globals::gameEventManager) globals::eventManager.OnAllInitialized_Post();
+
         if (!InitGameSystems())
         {
             CSSHARP_CORE_ERROR("Failed to initialize GameSystem!");
@@ -346,9 +359,25 @@ bool CounterStrikeSharpMMPlugin::Unload(char* error, size_t maxlen)
     // so no engine call path can re-enter this .so while the managers below release
     // their script callbacks. Leaving any of them installed means the next engine
     // call after unload jumps into freed code and crashes the server on Metamod reload.
+    // The game system cannot be removed from the engine, only told to stop (see
+    // CGameSystem::sm_Active): without this, the next ServerPreEntityThink after
+    // `meta unload` executed a released callback and segfaulted the server.
+    // Managed plugins first, while every native they call to unregister themselves still works.
+    globals::dotnetManager.Shutdown();
+    globals::tickScheduler.clear();
+
+    StopGameSystems();
     HookSet::ClearAll();
     globals::ShutdownHooks();
     DynamicHook::ShutdownAll();
+
+    // Mirror of ConVar_Register in Load. Before the managers' OnShutdown: commands created
+    // before ConVar_Register (ConCommandManager's css_dump_* in OnAllInitialized) sit in the
+    // SDK's static registration list, which UnregisterAll walks; OnShutdown deletes them, so
+    // walking the list afterwards would read freed objects. Unregistering here invalidates their
+    // refs, and the deletes later are no-ops. Also resets the SDK's "registered" flag, so the
+    // next `meta load` registers again.
+    ConVar_Unregister();
 
     // Fire OnShutdown on every registered manager — the mirror of the
     // CALL_GLOBAL_LISTENER(OnAllInitialized()) done in Load(). Without this the
@@ -357,13 +386,6 @@ bool CounterStrikeSharpMMPlugin::Unload(char* error, size_t maxlen)
     // every Metamod unload/reload. Run before removing our own virtual hooks below
     // so teardown happens in reverse order of init.
     CALL_GLOBAL_LISTENER(OnShutdown());
-
-    // Mirror of ConVar_Register in Load: unregister our static CON_COMMANDs/ConVars
-    // (css_dump_schema, css_dump_leaks) while the cvar system is still alive. It also
-    // invalidates their refs, so ~ConCommand at dlclose/exit() no longer calls
-    // UnregisterConCommandCallbacks into a cvar system the engine may have shut down
-    // already (segfault in libtier0 on `quit`, exit code 139).
-    ConVar_Unregister();
 
     m_GameFrame.Remove(globals::server);
     m_StartupServer.Remove(globals::networkServerService);
@@ -381,6 +403,12 @@ bool CounterStrikeSharpMMPlugin::Unload(char* error, size_t maxlen)
     globals::callbackManager.ReleaseCallback(on_activate_callback);
     globals::callbackManager.ReleaseCallback(on_map_end_callback);
     globals::callbackManager.ReleaseCallback(on_metamod_all_plugins_loaded_callback);
+    on_activate_callback = nullptr;
+    on_map_end_callback = nullptr;
+    on_metamod_all_plugins_loaded_callback = nullptr;
+
+    // After every Remove/RemoveGlobal above and in the managers' OnShutdown.
+    hooks::DetachAll();
 
     return true;
 }

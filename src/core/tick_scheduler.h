@@ -39,6 +39,10 @@ class TickScheduler
     // NextFrame work queued. A buffer the caller keeps alive reuses its capacity.
     void getCallbacks(int currentTick, std::vector<std::function<void()>>& out);
 
+    // Drops every pending task (`meta unload`: they call into managed callbacks of the load
+    // that is going away).
+    void clear();
+
   private:
     std::priority_queue<std::pair<int, std::function<void()>>, std::vector<std::pair<int, std::function<void()>>>, TaskComparator>
         scheduledTasks;

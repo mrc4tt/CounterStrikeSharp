@@ -33,6 +33,15 @@ namespace CounterStrikeSharp.API
         private static readonly ConcurrentQueue<Action> _onTickTaskQueue = new();
         private static readonly ConcurrentQueue<Action> _onWorldUpdateTaskQueue = new();
 
+        // `meta unload`: the queued tasks belong to plugins that are being unloaded, and the
+        // listeners that drain the queues are gone. Running them after a later `meta load`
+        // would call into unloaded plugin code.
+        internal static void ClearPendingTasks()
+        {
+            _onTickTaskQueue.Clear();
+            _onWorldUpdateTaskQueue.Clear();
+        }
+
         internal static void OnTick()
         {
             ExecuteTickTasks(_onTickTaskQueue);

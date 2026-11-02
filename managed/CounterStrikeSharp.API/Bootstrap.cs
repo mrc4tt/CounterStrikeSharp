@@ -22,6 +22,9 @@ namespace CounterStrikeSharp.API;
 
 public static class Bootstrap
 {
+    // The running Application, for Shutdown. Null until Run succeeds and after Shutdown.
+    private static Application? _application;
+
     [UnmanagedCallersOnly]
     // Used by .NET Host in C++ to initiate loading
     public static int Run()
@@ -69,6 +72,7 @@ public static class Bootstrap
 
             var application = rootScope.ServiceProvider.GetRequiredService<Application>();
             application.Start();
+            _application = application;
 
             return 1;
         }
@@ -76,6 +80,27 @@ public static class Bootstrap
         {
             Console.Error.WriteLine(e);
             Log.Fatal(e, "Failed to start application");
+            return 0;
+        }
+    }
+
+    [UnmanagedCallersOnly]
+    // Called from the native Unload (`meta unload`), before the native managers shut down.
+    public static int Shutdown()
+    {
+        var application = _application;
+        _application = null;
+        if (application == null) return 1;
+
+        try
+        {
+            application.Shutdown();
+            return 1;
+        }
+        catch (Exception e)
+        {
+            Console.Error.WriteLine(e);
+            Log.Error(e, "Failed to shut down application");
             return 0;
         }
     }

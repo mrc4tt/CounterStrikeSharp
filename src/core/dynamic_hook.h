@@ -138,6 +138,9 @@ class DynamicHook
     static void CollectRetired();
     static void ShutdownAll(); // synchronous; call outside hook callbacks
 
+    // False once ShutdownAll disabled it (`meta unload`): it will never dispatch again.
+    bool IsEnabled() const;
+
   private:
     struct State;
     std::shared_ptr<State> m_state;

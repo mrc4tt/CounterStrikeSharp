@@ -47,4 +47,6 @@ class CDotNetManager
 
   private:
     std::vector<std::shared_ptr<PluginContext>> m_app_domains;
+    // Bootstrap.Run succeeded and Shutdown has not run yet.
+    bool m_running = false;
 };

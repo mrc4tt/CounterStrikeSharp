@@ -39,6 +39,12 @@ std::unique_ptr<spdlog::formatter> MakeFormatter(const std::string& pattern)
 
 void Log::Init()
 {
+    // `meta unload` + `meta load`: the .so stays mapped (see CDotNetManager::Initialize), so the
+    // logger from the first load is still registered. Building a second one replaced spdlog's
+    // thread pool under it ("async flush: thread pool doesn't exist anymore" every 2 s) and
+    // register_logger threw "logger with name 'CSSharp' already exists". Keep the first one.
+    if (m_core_logger) return;
+
     // Console sink only. The file sink is attached later via AttachFileSink once
     // the addons root is known — Init() runs before the engine interfaces (and
     // thus the root directory) are available, and a relative log path here would
@@ -80,6 +86,12 @@ void Log::Init()
 void Log::AttachFileSink(const std::string& logDirectory)
 {
     if (!m_core_logger) return;
+
+    // Once per process: the logger survives `meta unload` (see Init), and a second sink with
+    // truncate=true cut the file the first one was still writing.
+    static bool s_attached = false;
+    if (s_attached) return;
+    s_attached = true;
 
     // A failure to open the log file must NOT take down the server. Degrade to
     // console-only logging and warn, rather than letting spdlog's exception

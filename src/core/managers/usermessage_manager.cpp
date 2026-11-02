@@ -49,7 +49,20 @@ UserMessageManager::~UserMessageManager() {}
 
 void UserMessageManager::OnAllInitialized() { m_PostEventAbstract.Add(globals::gameEventSystem, "IGameEventSystem::PostEventAbstract"); }
 
-void UserMessageManager::OnShutdown() { m_PostEventAbstract.Remove(globals::gameEventSystem); }
+void UserMessageManager::OnShutdown()
+{
+    m_PostEventAbstract.Remove(globals::gameEventSystem);
+
+    // Same as EventManager::OnShutdown: hooks left here would keep the previous load's
+    // listeners attached after `meta unload` + `meta load`.
+    for (auto& [id, pHook] : m_hooksMap)
+    {
+        globals::callbackManager.ReleaseCallback(pHook->m_pPreHook);
+        globals::callbackManager.ReleaseCallback(pHook->m_pPostHook);
+        delete pHook;
+    }
+    m_hooksMap.clear();
+}
 
 void UserMessageManager::HookUserMessage(int messageId, CallbackT fnCallback, HookMode mode)
 {

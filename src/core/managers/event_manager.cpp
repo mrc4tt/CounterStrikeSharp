@@ -71,6 +71,21 @@ void EventManager::OnAllInitialized_Post() { m_FireEvent.Add(globals::gameEventM
 
 void EventManager::OnShutdown()
 {
+    // Release every hook's callbacks. Kept, the core's own event hooks from the previous load
+    // stayed attached across `meta unload` + `meta load`, and the new load added its listeners
+    // to the same callbacks: each of those events ran twice, once into the old Application.
+    for (auto& [name, pHook] : m_hooksMap)
+    {
+        globals::callbackManager.ReleaseCallback(pHook->m_pPreHook);
+        globals::callbackManager.ReleaseCallback(pHook->m_pPostHook);
+        delete pHook;
+    }
+    m_hooksMap.clear();
+
+    // Null when CSSharp was loaded after the engine created its event manager: neither the
+    // CGameEventManager::Init detour nor LoadEventsFromFile fired, so there is nothing to undo.
+    if (!globals::gameEventManager) return;
+
     m_FireEvent.Remove(globals::gameEventManager);
 
     globals::gameEventManager->RemoveListener(this);

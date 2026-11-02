@@ -30,6 +30,7 @@ CBaseGameSystemFactory** CBaseGameSystemFactory::sm_pFirst = nullptr;
 
 CGameSystem g_GameSystem;
 IGameSystemFactory* CGameSystem::sm_Factory = nullptr;
+bool CGameSystem::sm_Active = false;
 
 IEntityResourceManifest* m_exportResourceManifest = nullptr;
 
@@ -58,14 +59,25 @@ bool InitGameSystems()
     // Now grab our pointer
     CBaseGameSystemFactory::sm_pFirst = (CBaseGameSystemFactory**)(ptr + offset);
 
-    // And insert the game system(s)
-    CGameSystem::sm_Factory = new CGameSystemStaticFactory<CGameSystem>("CSSharp_GameSystem", &g_GameSystem);
+    // And insert the game system(s). On `meta unload` + `meta load` the .so is still the same
+    // mapping (see sm_Active), so the factory from the first load is still linked into the
+    // engine's list and g_GameSystem is still registered: reuse it rather than link a second
+    // factory for the same object.
+    if (!CGameSystem::sm_Factory)
+    {
+        CGameSystem::sm_Factory = new CGameSystemStaticFactory<CGameSystem>("CSSharp_GameSystem", &g_GameSystem);
+    }
 
+    CGameSystem::sm_Active = true;
     return true;
 }
 
+void StopGameSystems() { CGameSystem::sm_Active = false; }
+
 GS_EVENT_MEMBER(CGameSystem, BuildGameSessionManifest)
 {
+    if (!sm_Active) return;
+
     IEntityResourceManifest* pResourceManifest = msg->m_pResourceManifest;
 
     CSSHARP_CORE_INFO("CGameSystem::BuildGameSessionManifest");
@@ -77,6 +89,8 @@ GS_EVENT_MEMBER(CGameSystem, BuildGameSessionManifest)
 
 GS_EVENT_MEMBER(CGameSystem, ServerPreEntityThink)
 {
+    if (!sm_Active) return;
+
     // VPROF_BUDGET("CS#::CGameSystem::ServerPreEntityThink", "CS# On Frame");
     auto callback = counterstrikesharp::globals::serverManager.on_server_pre_entity_think;
 
@@ -95,6 +109,8 @@ GS_EVENT_MEMBER(CGameSystem, ServerPreEntityThink)
 
 GS_EVENT_MEMBER(CGameSystem, ServerPostEntityThink)
 {
+    if (!sm_Active) return;
+
     // VPROF_BUDGET("CS#::CGameSystem::ServerPostEntityThink", "CS# On Frame");
     auto callback = counterstrikesharp::globals::serverManager.on_server_post_entity_think;
 

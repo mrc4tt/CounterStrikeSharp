@@ -97,7 +97,7 @@ json WriteTypeJson(json obj, CSchemaType* current_type)
     return obj;
 }
 
-CON_COMMAND(css_dump_schema, "dump schema symbols")
+static void DumpSchemaCommand(const CCommand& args)
 {
     std::ofstream output(utils::GamedataDirectory() + "/schema.json");
 
@@ -205,6 +205,15 @@ ConCommandManager::~ConCommandManager() {}
 
 void ConCommandManager::OnAllInitialized()
 {
+    // Heap objects owned by this manager instead of static CON_COMMANDs. A static ConCommand is
+    // destroyed from exit(), after the engine has shut the cvar system down, and its destructor
+    // segfaulted in libtier0 on every `quit` (upstream PR 1482). And ConVar_Unregister deletes
+    // the SDK's static registration list, so a static CON_COMMAND never registered again after
+    // `meta unload` + `meta load`. These register in their constructor (or with ConVar_Register
+    // in Load) and unregister in their destructor, in OnShutdown.
+    m_dumpSchemaCommand = new ConCommand("css_dump_schema", DumpSchemaCommand, "dump schema symbols");
+    m_dumpLeaksCommand = new ConCommand("css_dump_leaks", DumpLeaksCommand, "dump css leaks");
+
     m_DispatchConCommand.Add(globals::cvars, "ICvar::DispatchConCommand");
 
     m_global_cmd.callback_pre = globals::callbackManager.CreateCallback("OnClientCommandGlobalPre");
@@ -256,6 +265,11 @@ void UnlockConCommands()
 
 void ConCommandManager::OnShutdown()
 {
+    delete m_dumpSchemaCommand;
+    delete m_dumpLeaksCommand;
+    m_dumpSchemaCommand = nullptr;
+    m_dumpLeaksCommand = nullptr;
+
     m_DispatchConCommand.Remove(globals::cvars);
 
     globals::callbackManager.ReleaseCallback(m_global_cmd.callback_pre);
@@ -267,6 +281,23 @@ void ConCommandManager::OnShutdown()
     // corruption (out)" on shutdown. ReleaseCallback(nullptr) is a safe no-op.
     m_global_cmd.callback_pre = nullptr;
     m_global_cmd.callback_post = nullptr;
+
+    // Every command managed code added (core: css, css_plugins, admin commands; plugins' own)
+    // and every command listener. Kept, they outlive `meta unload`: the engine commands stay
+    // registered, and after `meta load` the new Application's AddCommand finds the name in
+    // m_cmd_lookup and adds a second listener to it, so each core command ran twice.
+    for (auto& [name, pInfo] : m_cmd_lookup)
+    {
+        if (!pInfo) continue;
+        if (pInfo->command)
+        {
+            auto hCommand = globals::cvars->FindConCommand(name.c_str());
+            if (hCommand.IsValidRef()) globals::cvars->UnregisterConCommandCallbacks(hCommand);
+        }
+        delete pInfo; // releases callback_pre / callback_post
+    }
+    m_cmd_lookup.clear();
+    m_cmd_contexts.clear();
 }
 
 void CommandCallback(const CCommandContext& context, const CCommand& command)

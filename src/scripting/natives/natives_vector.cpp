@@ -49,7 +49,8 @@ extern std::unordered_set<IGameEvent*> managed_game_events;
 
 extern size_t GetVirtualFunctionCacheSize();
 
-CON_COMMAND(css_dump_leaks, "dump css leaks")
+// Registered by ConCommandManager (see m_dumpLeaksCommand), not a static CON_COMMAND.
+void DumpLeaksCommand(const CCommand& args)
 {
     auto virtualFunctionCount = GetVirtualFunctionCacheSize();
     Msg("===== Dumping leaks =====\n");

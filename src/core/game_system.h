@@ -31,6 +31,8 @@
 #endif
 
 bool InitGameSystems();
+// Stops g_GameSystem's event handlers from touching the managers. Called from Unload.
+void StopGameSystems();
 
 class CGameSystem : public CBaseGameSystem
 {
@@ -66,6 +68,13 @@ class CGameSystem : public CBaseGameSystem
     bool DoesGameSystemReallocate() override { return sm_Factory != nullptr && sm_Factory->IsReallocating(); }
 
     static IGameSystemFactory* sm_Factory;
+
+    // False after Unload. The engine has no API to take a game system back out of its system
+    // list and event dispatcher, so g_GameSystem keeps receiving ServerPreEntityThink etc. every
+    // tick after `meta unload`, while the managers have released the callbacks it executes. The
+    // .so stays mapped (the CLR holds its own dlopen of it for the P/Invoke), so the handlers do
+    // run: they jumped through a freed ScriptCallback and segfaulted the server.
+    static bool sm_Active;
 };
 
 extern IEntityResourceManifest* m_exportResourceManifest;

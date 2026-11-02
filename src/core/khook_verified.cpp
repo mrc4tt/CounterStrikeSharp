@@ -50,6 +50,11 @@ void LogHookSummary()
     if (s_hooksFailed == 0) CSSHARP_CORE_INFO("Engine hooks installed: {}", s_hooksInstalled);
     else
         CSSHARP_CORE_ERROR("Engine hooks installed: {}, FAILED: {} (see errors above)", s_hooksInstalled, s_hooksFailed);
+
+    // Per load: the statics survive `meta unload` + `meta load` (the .so stays mapped), and the
+    // count kept growing by one load's worth of hooks per reload.
+    s_hooksInstalled = 0;
+    s_hooksFailed = 0;
 }
 
 } // namespace hooks
