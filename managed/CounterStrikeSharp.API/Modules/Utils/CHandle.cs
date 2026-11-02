@@ -57,8 +57,23 @@ public class CHandle<T> : IEquatable<CHandle<T>> where T : NativeEntity
     }
 
 
-    /// <inheritdoc cref="Get"/>
-    public T? Value => Get();
+    /// <summary>
+    /// Gets the entity this handle refers to (see <see cref="Get"/>), or points the handle at
+    /// another entity. Setting <c>null</c> writes the engine's invalid handle (<c>0xFFFFFFFF</c>).
+    /// </summary>
+    /// <remarks>
+    /// When this handle wraps an entity's schema field, the setter writes game memory directly and
+    /// does not mark the field as changed: for a networked field, call
+    /// <c>Utilities.SetStateChanged</c> afterwards or clients will not see the new value.
+    /// </remarks>
+    public T? Value
+    {
+        get => Get();
+        // INVALID_EHANDLE_INDEX, not MaxEntities - 1: IsValid accepts either, but the engine
+        // compares against 0xFFFFFFFF, so a 0x7FFF written into game memory reads as a live
+        // handle to slot 32767 there.
+        set => Raw = value?.EntityHandle.Raw ?? 0xFFFFFFFF;
+    }
 
     /// <summary>
     /// Retrieves the instance of the entity this handle refers to.
@@ -86,6 +101,12 @@ public class CHandle<T> : IEquatable<CHandle<T>> where T : NativeEntity
     public uint SerialNum => Raw >> Utilities.MaxEntityBits;
 
     public static implicit operator uint(CHandle<T> handle) => handle.Raw;
+
+    /// <summary>
+    /// Resolves the handle to its entity, or <c>null</c> when the handle (or the entity) is gone.
+    /// Each conversion is an entity lookup plus a new wrapper object.
+    /// </summary>
+    public static implicit operator T?(CHandle<T>? handle) => handle?.Value;
 
     public bool Equals(CHandle<T>? other)
     {
