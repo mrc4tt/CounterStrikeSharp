@@ -87,7 +87,10 @@ namespace CounterStrikeSharp.API.Core
         internal void Shutdown()
         {
             Logger.LogInformation("Unloading all plugins (CounterStrikeSharp is being unloaded)");
-            foreach (var plugin in _pluginManager.GetLoadedPlugins().ToList())
+            // Reverse load order, dependents first: the CS2-SimpleAdmin modules unregister their
+            // commands through CS2-SimpleAdmin's API in their own Unload, which threw
+            // KeyNotFoundException when CS2-SimpleAdmin had already unloaded and removed them.
+            foreach (var plugin in _pluginManager.GetLoadedPlugins().Reverse().ToList())
             {
                 try
                 {
