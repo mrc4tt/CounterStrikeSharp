@@ -44,10 +44,12 @@ namespace CounterStrikeSharp.API.Core
         {
             RegisterListener<Listeners.OnMapEnd>(() =>
             {
-                foreach (KeyValuePair<Delegate, EntityIO.EntityOutputCallback> callback in EntitySingleOutputHooks)
+                foreach (var callback in EntitySingleOutputHooks.Values.SelectMany(list => list).ToList())
                 {
-                    UnhookSingleEntityOutputInternal(callback.Value.Classname, callback.Value.Output, callback.Value.Handler);
+                    UnhookEntityOutput(callback.Classname, callback.Output, callback.Handler);
                 }
+
+                EntitySingleOutputHooks.Clear();
             });
         }
 
@@ -182,7 +184,9 @@ namespace CounterStrikeSharp.API.Core
             _handlerRegistrations.RemoveAt(index);
 
             registration.Unhook();
-            FunctionReference.Remove(subscriber.GetReferenceIdentifier());
+            // Native has dropped the pointer, so the stub may go to the bounded window instead of
+            // staying rooted for the life of the process (one per unregister).
+            FunctionReference.RemoveReleased(subscriber.GetReferenceIdentifier());
 
             // Keep the compatibility map pointing at a live registration of this handler, if any is left.
             var remaining = _handlerRegistrations.FindLastIndex(r => r.Handler.Equals(registration.Handler));
@@ -205,14 +209,34 @@ namespace CounterStrikeSharp.API.Core
         private readonly List<(string? Name, Delegate Handler, bool Post, CallbackSubscriber Subscriber)>
             _commandListenerRegistrations = new();
 
+        /// <summary>
+        /// Most recent subscriber per handler. Kept for compatibility; the full set lives in
+        /// <see cref="_listenerRegistrations"/>.
+        /// </summary>
         public readonly Dictionary<Delegate, CallbackSubscriber> Listeners =
             new Dictionary<Delegate, CallbackSubscriber>();
 
+        // Every RegisterListener call. Keyed only by handler, registering one handler twice (e.g. again
+        // in OnMapStart) overwrote the first subscriber: its native listener was never removed and kept
+        // calling the plugin, and its reference rooted the plugin after unload.
+        private readonly List<(string Name, Delegate Handler, CallbackSubscriber Subscriber)> _listenerRegistrations = new();
+
+        /// <summary>
+        /// Most recent subscriber per handler. Kept for compatibility; the full set lives in
+        /// <see cref="_entityOutputRegistrations"/>.
+        /// </summary>
         public readonly Dictionary<Delegate, CallbackSubscriber> EntityOutputHooks =
             new Dictionary<Delegate, CallbackSubscriber>();
 
-        internal readonly Dictionary<Delegate, EntityIO.EntityOutputCallback> EntitySingleOutputHooks =
-            new Dictionary<Delegate, EntityIO.EntityOutputCallback>();
+        // Every HookEntityOutput call. Same problem as listeners: one handler hooked for two outputs (or
+        // Pre and Post) lost the first registration, which stayed hooked natively after unload.
+        private readonly List<(string Classname, string Output, HookMode Mode, Delegate Handler, CallbackSubscriber Subscriber)>
+            _entityOutputRegistrations = new();
+
+        // Per plugin handler, every single-entity hook made with it: the usual pattern hooks one handler
+        // for many entities, and keeping only the last left the others hooked until the plugin unloaded.
+        internal readonly Dictionary<Delegate, List<EntityIO.EntityOutputCallback>> EntitySingleOutputHooks =
+            new Dictionary<Delegate, List<EntityIO.EntityOutputCallback>>();
 
         internal readonly List<ConVarBase> ConVars = [];
 
@@ -352,7 +376,7 @@ namespace CounterStrikeSharp.API.Core
             _commandListenerRegistrations.RemoveAt(index);
 
             NativeAPI.RemoveCommandListener(registration.Name, subscriber.GetInputArgument(), registration.Post);
-            FunctionReference.Remove(subscriber.GetReferenceIdentifier());
+            FunctionReference.RemoveReleased(subscriber.GetReferenceIdentifier());
 
             // Keep the compatibility map pointing at a live registration of this handler, if any is left.
             var remaining = _commandListenerRegistrations.FindLastIndex(r => r.Handler.Equals(registration.Handler));
@@ -438,6 +462,7 @@ namespace CounterStrikeSharp.API.Core
 #pragma warning restore CS0618
 
             NativeAPI.AddListener(listenerName, subscriber.GetInputArgument());
+            _listenerRegistrations.Add((listenerName, handler, subscriber));
             Listeners[handler] = subscriber;
         }
 
@@ -456,11 +481,7 @@ namespace CounterStrikeSharp.API.Core
                     nameof(T));
             }
 
-            if (!Listeners.TryGetValue(handler, out var subscriber)) return;
-
-            NativeAPI.RemoveListener(listenerName, subscriber.GetInputArgument());
-            FunctionReference.Remove(subscriber.GetReferenceIdentifier());
-            Listeners.Remove(handler);
+            RemoveListenerRegistrations(listenerName, handler);
         }
 
         /// <summary>
@@ -471,11 +492,28 @@ namespace CounterStrikeSharp.API.Core
         [Obsolete("Use the generic version of this method")]
         public void RemoveListener(string name, Delegate handler)
         {
-            if (!Listeners.TryGetValue(handler, out var subscriber)) return;
+            RemoveListenerRegistrations(name, handler);
+        }
 
-            NativeAPI.RemoveListener(name, subscriber.GetInputArgument());
-            FunctionReference.Remove(subscriber.GetReferenceIdentifier());
-            Listeners.Remove(handler);
+        // Removes every registration of the handler for this listener (a handler registered twice was
+        // called twice, so it is unregistered from both).
+        private void RemoveListenerRegistrations(string name, Delegate handler)
+        {
+            var matching = _listenerRegistrations.Where(r => r.Name == name && r.Handler.Equals(handler)).ToList();
+            if (matching.Count == 0) return;
+
+            foreach (var registration in matching)
+            {
+                _listenerRegistrations.Remove(registration);
+                NativeAPI.RemoveListener(name, registration.Subscriber.GetInputArgument());
+                FunctionReference.RemoveReleased(registration.Subscriber.GetReferenceIdentifier());
+            }
+
+            var remaining = _listenerRegistrations.FindLastIndex(r => r.Handler.Equals(handler));
+            if (remaining >= 0)
+                Listeners[handler] = _listenerRegistrations[remaining].Subscriber;
+            else
+                Listeners.Remove(handler);
         }
 
         /// <summary>
@@ -747,12 +785,14 @@ namespace CounterStrikeSharp.API.Core
         /// <param name="handler">Handler to call</param>
         public void HookEntityOutput(string classname, string outputName, EntityIO.EntityOutputHandler handler, HookMode mode = HookMode.Pre)
         {
-            var subscriber = new CallbackSubscriber(handler, handler,
-                // mode must be captured: native keeps separate pre/post listener lists, and the
-                // default (Pre) left every Post hook registered after the plugin unloaded.
-                () => UnhookEntityOutput(classname, outputName, handler, mode));
+            CallbackSubscriber? subscriber = null;
+            // Own reference per registration (uniqueReference): with the shared one, removing either of
+            // two registrations of the same handler removed the reference the other was still using.
+            subscriber = new CallbackSubscriber(handler, handler, () => RemoveEntityOutputRegistration(subscriber!),
+                null, null, uniqueReference: true);
 
             NativeAPI.HookEntityOutput(classname, outputName, subscriber.GetInputArgument(), mode);
+            _entityOutputRegistrations.Add((classname, outputName, mode, handler, subscriber));
             EntityOutputHooks[handler] = subscriber;
         }
 
@@ -779,11 +819,33 @@ namespace CounterStrikeSharp.API.Core
         /// <inheritdoc cref="HookEntityOutput"/>
         public void UnhookEntityOutput(string classname, string outputName, EntityIO.EntityOutputHandler handler, HookMode mode = HookMode.Pre)
         {
-            if (!EntityOutputHooks.TryGetValue(handler, out var subscriber)) return;
+            foreach (var registration in _entityOutputRegistrations
+                         .Where(r => r.Classname == classname && r.Output == outputName && r.Mode == mode &&
+                                     r.Handler.Equals(handler))
+                         .ToList())
+            {
+                RemoveEntityOutputRegistration(registration.Subscriber);
+            }
+        }
 
-            NativeAPI.UnhookEntityOutput(classname, outputName, subscriber.GetInputArgument(), mode);
-            FunctionReference.Remove(subscriber.GetReferenceIdentifier());
-            EntityOutputHooks.Remove(handler);
+        private void RemoveEntityOutputRegistration(CallbackSubscriber subscriber)
+        {
+            var index = _entityOutputRegistrations.FindIndex(r => ReferenceEquals(r.Subscriber, subscriber));
+            if (index < 0) return;
+
+            var registration = _entityOutputRegistrations[index];
+            _entityOutputRegistrations.RemoveAt(index);
+
+            // Mode comes from the registration: native keeps separate pre and post listener lists.
+            NativeAPI.UnhookEntityOutput(registration.Classname, registration.Output, subscriber.GetInputArgument(),
+                registration.Mode);
+            FunctionReference.RemoveReleased(subscriber.GetReferenceIdentifier());
+
+            var remaining = _entityOutputRegistrations.FindLastIndex(r => r.Handler.Equals(registration.Handler));
+            if (remaining >= 0)
+                EntityOutputHooks[registration.Handler] = _entityOutputRegistrations[remaining].Subscriber;
+            else
+                EntityOutputHooks.Remove(registration.Handler);
         }
 
         /// <summary>
@@ -812,7 +874,12 @@ namespace CounterStrikeSharp.API.Core
             // but the plugin could only pass the original handler for unhooking.
             // (this dictionary does not needed to be cleared on dispose as it has no unmanaged reference and those are already being disposed, but on map end)
             // (the internal class is needed to be able to remove them on map start)
-            EntitySingleOutputHooks[handler] = new EntityIO.EntityOutputCallback(entityInstance.DesignerName, outputName, internalHandler);
+            if (!EntitySingleOutputHooks.TryGetValue(handler, out var hooks))
+                EntitySingleOutputHooks[handler] = hooks = new List<EntityIO.EntityOutputCallback>();
+            hooks.Add(new EntityIO.EntityOutputCallback(entityInstance.DesignerName, outputName, internalHandler)
+            {
+                EntityHandle = entityInstance.EntityHandle.Raw
+            });
         }
 
         /// <summary>
@@ -821,15 +888,17 @@ namespace CounterStrikeSharp.API.Core
         /// <inheritdoc cref="HookSingleEntityOutput"/>
         public void UnhookSingleEntityOutput(CEntityInstance entityInstance, string outputName, EntityIO.EntityOutputHandler handler)
         {
-            UnhookSingleEntityOutputInternal(entityInstance.DesignerName, outputName, handler);
-        }
+            if (!EntitySingleOutputHooks.TryGetValue(handler, out var hooks)) return;
 
-        private void UnhookSingleEntityOutputInternal(string classname, string outputName, EntityIO.EntityOutputHandler handler)
-        {
-            if (!EntitySingleOutputHooks.TryGetValue(handler, out var internalHandler)) return;
+            var raw = entityInstance.EntityHandle.Raw;
+            foreach (var hook in hooks.Where(h => h.EntityHandle == raw && h.Output == outputName).ToList())
+            {
+                UnhookEntityOutput(hook.Classname, hook.Output, hook.Handler);
+                hooks.Remove(hook);
+            }
 
-            UnhookEntityOutput(classname, outputName, internalHandler.Handler);
-            EntitySingleOutputHooks.Remove(handler);
+            if (hooks.Count == 0)
+                EntitySingleOutputHooks.Remove(handler);
         }
 
         public void Dispose()
@@ -861,9 +930,19 @@ namespace CounterStrikeSharp.API.Core
                 registration.Subscriber.Dispose();
             }
 
+            foreach (var registration in _listenerRegistrations.ToList())
+            {
+                registration.Subscriber.Dispose();
+            }
+
             foreach (var subscriber in Listeners.Values.ToList())
             {
                 subscriber.Dispose();
+            }
+
+            foreach (var registration in _entityOutputRegistrations.ToList())
+            {
+                registration.Subscriber.Dispose();
             }
 
             foreach (var subscriber in EntityOutputHooks.Values.ToList())

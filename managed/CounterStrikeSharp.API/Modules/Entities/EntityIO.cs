@@ -28,6 +28,9 @@ namespace CounterStrikeSharp.API.Modules.Entities
 
             public EntityOutputHandler Handler;
 
+            // Raw handle of the entity a single-entity hook is for (0xFFFFFFFF for none).
+            public uint EntityHandle = 0xFFFFFFFF;
+
             public EntityOutputCallback(string classname, string output, EntityOutputHandler handler)
             {
                 Classname = classname;
