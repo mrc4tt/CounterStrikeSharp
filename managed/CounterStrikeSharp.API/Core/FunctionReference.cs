@@ -357,7 +357,7 @@ namespace CounterStrikeSharp.API.Core
             {
                 try
                 {
-                    var scriptContext = new ScriptContext(context);
+                    var scriptContext = new ScriptContext(context) { IsCallbackContext = true };
 
                     // Allow for manual handling of the script context
                     if (_isManualScriptContext)

@@ -97,6 +97,17 @@ namespace CounterStrikeSharp.API.Core
 
         internal bool isCleanupLocked = false;
 
+        // Set for the context a native-to-managed callback dispatches with. Its finalizer queue is
+        // never drained (GlobalCleanUp runs from Invoke, which callbacks never call), so a string
+        // result allocated into it leaked once per call. See SetResultString.
+        internal bool IsCallbackContext { get; init; }
+
+        // The string the last callback on this thread returned. Native reads a callback's result
+        // right after Execute returns, before the next callback on the same thread can set one
+        // (a nested callback runs before the outer one sets its result), so the previous buffer
+        // is freed when the next one is made.
+        [ThreadStatic] private static IntPtr t_lastCallbackResultString;
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [SecuritySafeCritical]
         public void Reset()
@@ -433,7 +444,17 @@ namespace CounterStrikeSharp.API.Core
             int written = Encoding.UTF8.GetBytes(str, dest);
             dest[written] = 0;
 
-            LazyInitializer.EnsureInitialized(ref ms_finalizers).Enqueue(ptr);
+            if (IsCallbackContext)
+            {
+                var previous = t_lastCallbackResultString;
+                t_lastCallbackResultString = ptr;
+                if (previous != IntPtr.Zero) Marshal.FreeHGlobal(previous);
+            }
+            else
+            {
+                LazyInitializer.EnsureInitialized(ref ms_finalizers).Enqueue(ptr);
+            }
+
             *(IntPtr*)(&cxt->result[8]) = ptr;
         }
 
