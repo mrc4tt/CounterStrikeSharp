@@ -748,7 +748,9 @@ namespace CounterStrikeSharp.API.Core
         public void HookEntityOutput(string classname, string outputName, EntityIO.EntityOutputHandler handler, HookMode mode = HookMode.Pre)
         {
             var subscriber = new CallbackSubscriber(handler, handler,
-                () => UnhookEntityOutput(classname, outputName, handler));
+                // mode must be captured: native keeps separate pre/post listener lists, and the
+                // default (Pre) left every Post hook registered after the plugin unloaded.
+                () => UnhookEntityOutput(classname, outputName, handler, mode));
 
             NativeAPI.HookEntityOutput(classname, outputName, subscriber.GetInputArgument(), mode);
             EntityOutputHooks[handler] = subscriber;
