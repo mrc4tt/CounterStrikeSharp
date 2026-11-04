@@ -15,6 +15,7 @@ namespace NativeTestsPlugin;
 /// script can grep them out of the console log.
 ///   css_leak_stats              RSS, managed heap and the AssemblyLoadContexts still holding this plugin
 ///   css_leak_usermsg N [batch]  create, fill and dispose N user messages, batch per frame
+///   css_leak_frames [reset]     frame interval/work percentiles and GC pauses (see FrameProbe)
 /// </summary>
 public static class LeakProbe
 {
@@ -36,6 +37,7 @@ public static class LeakProbe
     public static void Register(BasePlugin plugin)
     {
         LoadedContexts().Add(new WeakReference(AssemblyLoadContext.GetLoadContext(typeof(LeakProbe).Assembly)));
+        FrameProbe.Register(plugin);
 
         plugin.AddCommand("css_leak_stats", "Print memory and load-context stats.", (_, _) => { var t = Stats(); });
         plugin.AddCommand("css_leak_usermsg", "Stress user message create/delete.", (caller, info) =>
@@ -69,6 +71,10 @@ public static class LeakProbe
         Server.PrintToConsole(
             $"LEAKPROBE stats rss_kb={RssKb()} managed_kb={GC.GetTotalMemory(true) / 1024} " +
             $"plugin_loads={loaded.Count} plugin_alcs_alive={contexts}");
+
+        // The forced collections above are this command's own slow frames; keep them out of the
+        // next frame window.
+        FrameProbe.Reset();
     }
 
     private static async Task UserMessageStress(int total, int batch)
