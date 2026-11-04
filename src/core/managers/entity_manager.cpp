@@ -119,9 +119,16 @@ void EntityManager::OnAllInitialized()
         return;
     }
 
-    Func_OnTakeDamage =
-        new ValveFunction((void*)CBaseEntity_TakeDamageOld, CALL_CONV,
-                          std::vector<DataType_t>{ DATA_TYPE_POINTER, DATA_TYPE_POINTER, DATA_TYPE_POINTER }, DATA_TYPE_LONG_LONG);
+    // Reused across meta unload / meta load instead of allocating a new one per Load: the managed API
+    // lives for the process and may still hold this pointer (CreateVirtualFunctionBySignature hands
+    // it out for TakeDamageOld), so the old object can be neither leaked per reload nor freed.
+    // EnsureHook re-installs its detour after DynamicHook::ShutdownAll.
+    if (Func_OnTakeDamage == nullptr || Func_OnTakeDamage->m_ulAddr != (void*)CBaseEntity_TakeDamageOld)
+    {
+        Func_OnTakeDamage =
+            new ValveFunction((void*)CBaseEntity_TakeDamageOld, CALL_CONV,
+                              std::vector<DataType_t>{ DATA_TYPE_POINTER, DATA_TYPE_POINTER, DATA_TYPE_POINTER }, DATA_TYPE_LONG_LONG);
+    }
 
     m_hooks.AddFunction(reinterpret_cast<void*>(m_pFireOutputInternal), &DetourFireOutputInternal);
 

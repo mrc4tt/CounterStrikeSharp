@@ -289,7 +289,14 @@ void ConCommandManager::OnShutdown()
     for (auto& [name, pInfo] : m_cmd_lookup)
     {
         if (!pInfo) continue;
-        if (pInfo->command)
+        if (pInfo->owned_command)
+        {
+            // Unload runs ConVar_Unregister before OnShutdown, so the SDK list is gone and even
+            // commands created before ConVar_Register can be freed now.
+            delete pInfo->owned_command; // unregisters its callbacks
+            pInfo->owned_command = nullptr;
+        }
+        else if (pInfo->command)
         {
             auto hCommand = globals::cvars->FindConCommand(name.c_str());
             if (hCommand.IsValidRef()) globals::cvars->UnregisterConCommandCallbacks(hCommand);
@@ -298,6 +305,11 @@ void ConCommandManager::OnShutdown()
     }
     m_cmd_lookup.clear();
     m_cmd_contexts.clear();
+
+    for (auto* pCommand : m_deferredCommandDeletes)
+        delete pCommand;
+    m_deferredCommandDeletes.clear();
+    m_sdkCommandsRegistered = false;
 }
 
 void CommandCallback(const CCommandContext& context, const CCommand& command)
@@ -394,10 +406,29 @@ bool ConCommandManager::AddValveCommand(const char* name, const char* descriptio
         m_cmd_lookup[std::string(name)] = pInfo;
     }
 
+    ReleaseOwnedCommand(pInfo); // a re-add after the engine dropped the old one
+    pInfo->owned_command = conCommand;
+    pInfo->owned_in_sdk_list = !m_sdkCommandsRegistered;
     pInfo->command = conCommand->GetRawData();
     pInfo->server_only = server_only;
 
     return true;
+}
+
+void ConCommandManager::ReleaseOwnedCommand(ConCommandInfo* pInfo)
+{
+    if (!pInfo->owned_command) return;
+
+    // A command created before ConVar_Register is still referenced by the SDK's static
+    // ConCommandRegList; freeing it here made the next ConVar_Unregister (first meta unload) walk a
+    // freed object and segfault in libtier0. Its callbacks are already unregistered by the caller
+    // or never registered, so only the delete is deferred.
+    if (pInfo->owned_in_sdk_list) m_deferredCommandDeletes.push_back(pInfo->owned_command);
+    else
+        delete pInfo->owned_command;
+
+    pInfo->owned_command = nullptr;
+    pInfo->owned_in_sdk_list = false;
 }
 
 bool ConCommandManager::RemoveValveCommand(const char* name)
@@ -409,15 +440,18 @@ bool ConCommandManager::RemoveValveCommand(const char* name)
         return false;
     }
 
-    globals::cvars->UnregisterConCommandCallbacks(hFoundCommand);
-
     // find, not operator[]: operator[] inserts a default null entry for any name not
     // already present, growing the map unbounded with every command name the server sees.
     auto it = m_cmd_lookup.find(name);
     if (it == m_cmd_lookup.end() || !it->second)
     {
+        globals::cvars->UnregisterConCommandCallbacks(hFoundCommand);
         return true;
     }
+
+    // The ConCommand was leaked here before (one per command per plugin reload).
+    globals::cvars->UnregisterConCommandCallbacks(hFoundCommand);
+    ReleaseOwnedCommand(it->second);
 
     it->second->command = nullptr;
 

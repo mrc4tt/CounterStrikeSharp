@@ -80,6 +80,13 @@ class ConCommandInfo
 
   private:
     ConCommandData* command;
+    // The ConCommand AddValveCommand created, if any. Deleting it unregisters the callbacks
+    // (ConCommand::~ConCommand -> UnRegisterConCommand). Its name/description strdups are not
+    // freed: the engine keeps those pointers in its ConCommandData ("name should be static data").
+    ConCommand* owned_command = nullptr;
+    // Created before ConVar_Register: the SDK parked a pointer to it in its static
+    // ConCommandRegList, which ConVar_Unregister walks. Such a command may only be freed after that.
+    bool owned_in_sdk_list = false;
     ScriptCallback* callback_pre;
     ScriptCallback* callback_post;
     bool server_only;
@@ -116,6 +123,17 @@ class ConCommandManager : public GlobalClass
     ConCommandInfo m_global_cmd = ConCommandInfo(true);
     ConCommand* m_dumpSchemaCommand = nullptr;
     ConCommand* m_dumpLeaksCommand = nullptr;
+
+    // Commands removed while their pointer was still in the SDK's registration list; freed in
+    // OnShutdown, after ConVar_Unregister. Bounded by the commands created during Load.
+    std::vector<ConCommand*> m_deferredCommandDeletes;
+    bool m_sdkCommandsRegistered = false;
+    void ReleaseOwnedCommand(ConCommandInfo* pInfo);
+
+  public:
+    // ConVar_Register / ConVar_Unregister ran (mm_plugin): commands created from now on are
+    // registered directly instead of through the SDK's static list.
+    void SetSdkCommandsRegistered(bool registered) { m_sdkCommandsRegistered = registered; }
 };
 
 void DumpLeaksCommand(const CCommand& args);

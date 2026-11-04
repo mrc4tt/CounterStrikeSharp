@@ -13,6 +13,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with CounterStrikeSharp.  If not, see <https://www.gnu.org/licenses/>. *
  */
+#include <unordered_set>
 #include "core/UserMessage.h"
 #include "core/globals.h"
 #include "core/log.h"
@@ -34,7 +35,9 @@ namespace counterstrikesharp {
 
 #define GET_FIELD_NAME_OR_ERR() const char* fieldName = scriptContext.GetArgument<const char*>(1);
 
-std::vector<UserMessage*> managed_usermessages;
+// Messages created by managed code (and only those may be deleted by it). A set: the managed side
+// deletes in bulk on the next frame, and a vector made each delete a linear search.
+std::unordered_set<UserMessage*> managed_usermessages;
 
 static void HookUserMessage(ScriptContext& script_context)
 {
@@ -690,7 +693,7 @@ static void UserMessageCreate(ScriptContext& scriptContext)
         return;
     }
 
-    managed_usermessages.push_back(message);
+    managed_usermessages.insert(message);
 
     scriptContext.SetResult(message);
 }
@@ -707,7 +710,7 @@ static void UserMessageCreateById(ScriptContext& scriptContext)
         return;
     }
 
-    managed_usermessages.push_back(message);
+    managed_usermessages.insert(message);
 
     scriptContext.SetResult(message);
 }
@@ -762,10 +765,8 @@ static void UserMessageDelete(ScriptContext& scriptContext)
 {
     auto message = scriptContext.GetArgument<UserMessage*>(0);
 
-    auto it = std::find(managed_usermessages.begin(), managed_usermessages.end(), message);
-    if (it != managed_usermessages.end())
+    if (managed_usermessages.erase(message) != 0)
     {
-        managed_usermessages.erase(it);
         delete message;
     }
 }

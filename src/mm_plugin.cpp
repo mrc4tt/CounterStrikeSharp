@@ -32,6 +32,7 @@
 #include "core/khook_original_return.h"
 #include "core/khook_verified.h"
 #include "core/log.h"
+#include "core/managers/con_command_manager.h"
 #include "core/managers/entity_manager.h"
 #include "core/managers/event_manager.h"
 #include "core/managers/chat_manager.h"
@@ -187,6 +188,9 @@ bool CounterStrikeSharpMMPlugin::Load(PluginId id, ISmmAPI* ismm, char* error, s
         Log::AttachFileSink(utils::GetRootDirectory() + "/logs");
 
         auto coreconfig_path = std::string(utils::ConfigsDirectory() + "/core");
+        // meta unload / meta load runs Load again in the same process: free the previous load's
+        // config instead of leaking it. Nothing from that load is running any more.
+        delete globals::coreConfig;
         globals::coreConfig = new CCoreConfig(coreconfig_path);
         char coreconfig_error[255] = "";
 
@@ -211,6 +215,7 @@ bool CounterStrikeSharpMMPlugin::Load(PluginId id, ISmmAPI* ismm, char* error, s
         }
 
         auto gamedata_path = std::string(utils::GamedataDirectory() + "/gamedata.json");
+        delete globals::gameConfig; // previous meta load's, see coreConfig above
         globals::gameConfig = new CGameConfig(gamedata_path);
         char conf_error[255] = "";
 
@@ -307,6 +312,7 @@ bool CounterStrikeSharpMMPlugin::Load(PluginId id, ISmmAPI* ismm, char* error, s
         // Used by Metamod Console Commands
         g_pCVar = globals::cvars;
         ConVar_Register(FCVAR_RELEASE | FCVAR_CLIENT_CAN_EXECUTE | FCVAR_GAMEDLL);
+        globals::conCommandManager.SetSdkCommandsRegistered(true);
 
         guard.succeeded = true;
         return true;
