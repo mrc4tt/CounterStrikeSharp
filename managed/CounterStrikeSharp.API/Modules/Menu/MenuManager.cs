@@ -44,6 +44,17 @@ public static class MenuManager
         ActiveMenus.Remove(player.Handle);
     }
     
+    // Drops an instance by value: its player may be gone, and then player.Handle no longer finds it.
+    internal static void RemoveInstance(IMenuInstance instance)
+    {
+        foreach (var (key, value) in ActiveMenus)
+        {
+            if (!ReferenceEquals(value, instance)) continue;
+            ActiveMenus.Remove(key);
+            return;
+        }
+    }
+
     public static void OpenChatMenu(CCSPlayerController player, ChatMenu menu)
     {
         CloseActiveMenu(player);

@@ -76,6 +76,13 @@ public class CenterHtmlMenuInstance : BaseMenuInstance
 
     public override void Display()
     {
+        // The player left: the menu stays in ActiveMenus under the old controller pointer and this
+        // listener ran every tick for the plugin's lifetime (and printed to whoever took the slot).
+        if (!Player.IsValid)
+        {
+            MenuManager.RemoveInstance(this);
+        }
+
         if (MenuManager.GetActiveMenu(Player) != this)
         {
             Reset();
