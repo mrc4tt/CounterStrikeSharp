@@ -49,6 +49,12 @@ namespace CounterStrikeSharp.API.Modules.Timers
         private static readonly System.Collections.Generic.HashSet<Timer> MapChangeTimers = new();
         private static bool _mapEndListenerAdded;
 
+        // Every live timer with the assembly its callback belongs to. BasePlugin only tracks timers
+        // made through AddTimer, so a repeating `new Timer(...)` kept running the unloaded plugin's
+        // code and its reference rooted the plugin. Game thread only, like the timers.
+        private static readonly System.Collections.Generic.HashSet<Timer> LiveTimers = new();
+        private readonly System.Reflection.Assembly? _ownerAssembly;
+
         public Timer(float interval, Action callback, TimerFlags? flags = null) : base(IntPtr.Zero)
         {
             var repeat = ((flags ?? 0) & TimerFlags.REPEAT) != 0;
@@ -71,6 +77,7 @@ namespace CounterStrikeSharp.API.Modules.Timers
             }
 
             _functionReferenceIdentifier = functionReference.Identifier;
+            _ownerAssembly = callback.Method.Module.Assembly;
             // Handle is the native timer's serial, not a pointer (see natives_timers.cpp).
             Handle = NativeAPI.CreateTimer(interval, functionReference, (int)(flags ?? 0));
 
@@ -78,6 +85,18 @@ namespace CounterStrikeSharp.API.Modules.Timers
             {
                 EnsureMapEndListener();
                 MapChangeTimers.Add(this);
+            }
+
+            LiveTimers.Add(this);
+        }
+
+        /// <summary>Kills every live timer whose callback belongs to <paramref name="assembly"/>. Called on plugin unload.</summary>
+        internal static void KillTimersForAssembly(System.Reflection.Assembly assembly)
+        {
+            foreach (var timer in new System.Collections.Generic.List<Timer>(LiveTimers))
+            {
+                if (timer._ownerAssembly == assembly)
+                    timer.Kill();
             }
         }
 
@@ -99,6 +118,7 @@ namespace CounterStrikeSharp.API.Modules.Timers
             if (_finished) return;
             _finished = true;
             MapChangeTimers.Remove(this);
+            LiveTimers.Remove(this);
             Finished?.Invoke(this);
         }
 

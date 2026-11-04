@@ -899,6 +899,9 @@ namespace CounterStrikeSharp.API.Core
             // delegates would otherwise pin this plugin's AssemblyLoadContext forever.
             Modules.Memory.DynamicFunctions.BaseMemoryFunction.RemoveHooksForAssembly(GetType().Assembly);
 
+            // Timers made with `new Timer(...)` instead of AddTimer are not in Timers.
+            Timer.KillTimersForAssembly(GetType().Assembly);
+
             // Compiled invokers for this plugin's handlers live in a static cache keyed by MethodInfo.
             FunctionReference.RemoveInvokersForAssembly(GetType().Assembly);
 
