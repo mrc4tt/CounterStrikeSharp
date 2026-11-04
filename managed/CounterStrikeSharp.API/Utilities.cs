@@ -162,7 +162,9 @@ namespace CounterStrikeSharp.API
         public static CCSGameRulesProxy? GetGameRulesProxy()
         {
             var cached = s_gameRulesProxy;
-            if (cached != null && EntitySystem.GetEntityPointerByRawHandle(s_gameRulesProxyHandle) == cached.Handle)
+            // NativeEntity.Handle resolves through the same raw handle, so comparing the two would be
+            // Zero == Zero once the proxy is deleted and the stale proxy would be returned forever.
+            if (cached != null && EntitySystem.GetEntityPointerByRawHandle(s_gameRulesProxyHandle) != IntPtr.Zero)
                 return cached;
 
             var proxy = FindAllEntitiesByDesignerName<CCSGameRulesProxy>("cs_gamerules").FirstOrDefault();
