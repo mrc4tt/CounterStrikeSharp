@@ -62,6 +62,8 @@ public class CenterHtmlMenu : BaseMenu
 public class CenterHtmlMenuInstance : BaseMenuInstance
 {
     private readonly BasePlugin _plugin;
+    internal BasePlugin Plugin => _plugin;
+    private bool _onTickRemovalScheduled;
     public override int NumPerPage => 5; // one less than the actual number of items per page to avoid truncated options
     protected override int MenuItemsPerPage => (Menu.ExitButton ? 0 : 1) + ((HasPrevButton && HasNextButton) ? NumPerPage - 1 : NumPerPage);
 
@@ -77,6 +79,16 @@ public class CenterHtmlMenuInstance : BaseMenuInstance
         if (MenuManager.GetActiveMenu(Player) != this)
         {
             Reset();
+
+            // Replaced by another menu or closed through MenuManager.CloseActiveMenu, which only
+            // calls Reset(): without this the OnTick listener (and this instance, its player and
+            // the menu's option closures) stayed registered for the plugin's lifetime, one more
+            // per menu opened. Deferred because we are inside the OnTick dispatch.
+            if (!_onTickRemovalScheduled)
+            {
+                _onTickRemovalScheduled = true;
+                Server.NextFrame(RemoveOnTickListener);
+            }
             return;
         }
 

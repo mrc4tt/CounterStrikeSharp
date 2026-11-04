@@ -15,6 +15,8 @@
  */
 
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 
 namespace CounterStrikeSharp.API.Modules.Menu;
 
@@ -64,6 +66,29 @@ public static class MenuManager
         
         ActiveMenus[player.Handle] = new ConsoleMenuInstance(player, menu);
         ActiveMenus[player.Handle].Display();
+    }
+
+    // ActiveMenus is static in the API, and its instances hold the owning plugin and the menu's
+    // option delegates, which rooted the plugin's AssemblyLoadContext after unload. Called from
+    // BasePlugin.Dispose.
+    internal static void RemoveMenusForAssembly(BasePlugin plugin, Assembly assembly)
+    {
+        List<IntPtr>? stale = null;
+        foreach (var (key, instance) in ActiveMenus)
+        {
+            if (instance is CenterHtmlMenuInstance html && html.Plugin == plugin
+                || instance.GetType().Assembly == assembly
+                || instance is BaseMenuInstance { Menu: var menu }
+                   && (menu.GetType().Assembly == assembly
+                       || menu.MenuOptions.Any(o => o.OnSelect?.Method.Module.Assembly == assembly)))
+            {
+                (stale ??= new()).Add(key);
+            }
+        }
+
+        if (stale == null) return;
+        foreach (var key in stale)
+            ActiveMenus.Remove(key);
     }
 
     public static void OnKeyPress(CCSPlayerController player, int key)

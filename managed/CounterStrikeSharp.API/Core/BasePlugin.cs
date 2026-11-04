@@ -899,6 +899,12 @@ namespace CounterStrikeSharp.API.Core
             // delegates would otherwise pin this plugin's AssemblyLoadContext forever.
             Modules.Memory.DynamicFunctions.BaseMemoryFunction.RemoveHooksForAssembly(GetType().Assembly);
 
+            // Compiled invokers for this plugin's handlers live in a static cache keyed by MethodInfo.
+            FunctionReference.RemoveInvokersForAssembly(GetType().Assembly);
+
+            // Open menus of this plugin hold it (and its option delegates) in a static dictionary.
+            Modules.Menu.MenuManager.RemoveMenusForAssembly(this, GetType().Assembly);
+
             _disposed = true;
         }
     }

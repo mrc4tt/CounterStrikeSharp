@@ -134,6 +134,40 @@ namespace CounterStrikeSharp.API.Core
             return InvokerCache.GetOrAdd(method.Method, BuildInvokerForMethod);
         }
 
+        // The cache is static in the default load context and its keys and compiled invokers reference
+        // plugin types, so without this every plugin that registered a callback stayed rooted (its
+        // AssemblyLoadContext never collected) after unload or reload. Called from BasePlugin.Dispose.
+        internal static void RemoveInvokersForAssembly(Assembly assembly)
+        {
+            foreach (var mi in InvokerCache.Keys)
+            {
+                if (ReferencesAssembly(mi, assembly))
+                    InvokerCache.TryRemove(mi, out _);
+            }
+        }
+
+        // A method can belong to another assembly and still close over plugin types through generic
+        // arguments (e.g. an API generic instantiated with a plugin type), which roots them just as well.
+        private static bool ReferencesAssembly(MethodInfo mi, Assembly assembly)
+        {
+            if (mi.Module.Assembly == assembly) return true;
+
+            if (mi.IsGenericMethod)
+            {
+                foreach (var t in mi.GetGenericArguments())
+                    if (t.Assembly == assembly) return true;
+            }
+
+            var declaring = mi.DeclaringType;
+            if (declaring is { IsGenericType: true })
+            {
+                foreach (var t in declaring.GetGenericArguments())
+                    if (t.Assembly == assembly) return true;
+            }
+
+            return false;
+        }
+
         private static Func<object, object[], object>? BuildInvokerForMethod(MethodInfo mi)
         {
             try
