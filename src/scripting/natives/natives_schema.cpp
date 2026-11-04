@@ -14,6 +14,7 @@
  *  along with CounterStrikeSharp.  If not, see <https://www.gnu.org/licenses/>. *
  */
 
+#include <unordered_set>
 #include <ios>
 #include <sstream>
 
@@ -236,8 +237,14 @@ void SetSchemaValueByName(ScriptContext& script_context)
             break;
         case DATA_TYPE_STRING:
         {
-            auto duplicated = strdup(script_context.GetArgument<const char*>(4));
-            *reinterpret_cast<char**>((uintptr_t)(instancePointer) + m_key.offset) = duplicated;
+            // string_t / char* fields hold a pointer the engine may copy elsewhere (name tables,
+            // other entities), so a previous value can never be freed safely. A strdup per write
+            // leaked on every set (plugins renaming entities per round); interning keeps one stable
+            // copy per distinct value instead. Game thread only, like every schema write.
+            static std::unordered_set<std::string> s_internedSchemaStrings;
+            const char* value = script_context.GetArgument<const char*>(4);
+            const char* interned = value ? s_internedSchemaStrings.emplace(value).first->c_str() : nullptr;
+            *reinterpret_cast<const char**>((uintptr_t)(instancePointer) + m_key.offset) = interned;
             break;
         }
         default:
