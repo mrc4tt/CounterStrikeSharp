@@ -17,7 +17,14 @@ public abstract class BaseMemoryFunction : NativeObject
     // hook. Without this the handler delegate stays rooted in FunctionReference's maps and
     // pins the plugin's AssemblyLoadContext permanently — one dead ALC per reload. Cleanup
     // is therefore keyed by the handler's owning assembly.
-    private readonly record struct HookRegistration(IntPtr Handle, Func<DynamicHook, HookResult> Handler, bool Post, int ReferenceId);
+    // Reference is kept so Unhook passes native the exact pointer it hooked with. Converting the raw
+    // handler again (InputArgument's Delegate operator) calls FunctionReference.Create, which mints a
+    // new permanent reference whenever the original is gone: native did not know that pointer, so
+    // the unhook did nothing, and the new reference rooted the plugin for good.
+    private readonly record struct HookRegistration(IntPtr Handle, Func<DynamicHook, HookResult> Handler, bool Post, FunctionReference Reference)
+    {
+        public int ReferenceId => Reference.Identifier;
+    }
 
     private static readonly List<HookRegistration> _activeHooks = new();
     private static readonly object _hooksLock = new();
@@ -183,7 +190,7 @@ public abstract class BaseMemoryFunction : NativeObject
         }
 
         lock (_hooksLock)
-            _activeHooks.Add(new HookRegistration(handle, handler, post, reference.Identifier));
+            _activeHooks.Add(new HookRegistration(handle, handler, post, reference));
 
         // Info on purpose: which plugin detours which engine function is the first thing to
         // check when two plugins fight over one, and it is a handful of lines per boot.
@@ -197,25 +204,34 @@ public abstract class BaseMemoryFunction : NativeObject
     public void Unhook(Func<DynamicHook, HookResult> handler, HookMode mode)
     {
         bool post = mode == HookMode.Post;
+        var handle = Handle;
 
-        NativeAPI.UnhookFunction(Handle, handler, post);
-
-        Application.Instance.Logger.LogInformation("Plugin '{Owner}' unhooked {Handler} ({Mode}) at 0x{Address:X}",
-            FunctionReference.OwnerOf(handler), DescribeHandler(handler), post ? "post" : "pre", (long)Handle);
-
-        int referenceId;
+        HookRegistration registration;
+        bool stillShared;
         lock (_hooksLock)
         {
-            int idx = _activeHooks.FindIndex(h => h.Handle == Handle && h.Handler == handler && h.Post == post);
+            // Look the registration up before touching native: an Unhook without a matching Hook
+            // (or a second Unhook) used to reach native with a freshly minted reference.
+            int idx = _activeHooks.FindIndex(h => h.Handle == handle && h.Handler == handler && h.Post == post);
             if (idx < 0) return;
 
-            referenceId = _activeHooks[idx].ReferenceId;
+            registration = _activeHooks[idx];
             _activeHooks.RemoveAt(idx);
+
+            // The same handler hooked twice (pre and post, or two functions) shares one reference.
+            stillShared = _activeHooks.Any(h => h.ReferenceId == registration.ReferenceId);
         }
 
-        // Drop the managed reference so the handler delegate (and the plugin ALC it
-        // captures) is no longer rooted. Previously Unhook left it pinned forever.
-        FunctionReference.Remove(referenceId);
+        NativeAPI.UnhookFunction(handle, registration.Reference, post);
+
+        Application.Instance.Logger.LogInformation("Plugin '{Owner}' unhooked {Handler} ({Mode}) at 0x{Address:X}",
+            FunctionReference.OwnerOf(handler), DescribeHandler(handler), post ? "post" : "pre", (long)handle);
+
+        // Drop the managed reference so the handler delegate (and the plugin ALC it captures) is no
+        // longer rooted. RemoveReleased: native no longer holds the pointer, so the stub goes to the
+        // bounded window instead of staying rooted forever.
+        if (!stillShared)
+            FunctionReference.RemoveReleased(registration.ReferenceId);
     }
 
     /// <summary>
@@ -239,10 +255,13 @@ public abstract class BaseMemoryFunction : NativeObject
             // The target function (server binary) is still loaded at unload time, so the
             // native unhook is safe. Guard anyway: even if it fails we must still drop the
             // managed reference, which is what actually releases the ALC.
-            try { NativeAPI.UnhookFunction(h.Handle, h.Handler, h.Post); }
+            bool unhooked = false;
+            try { NativeAPI.UnhookFunction(h.Handle, h.Reference, h.Post); unhooked = true; }
             catch { /* ignore — still remove the managed reference below */ }
 
-            FunctionReference.Remove(h.ReferenceId);
+            // A failed native unhook may still call the pointer: then keep the stub rooted.
+            if (unhooked) FunctionReference.RemoveReleased(h.ReferenceId);
+            else FunctionReference.Remove(h.ReferenceId);
         }
     }
 
