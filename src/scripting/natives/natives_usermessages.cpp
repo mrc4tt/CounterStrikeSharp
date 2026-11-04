@@ -446,7 +446,8 @@ static void PbSetString(ScriptContext& scriptContext)
     GET_MESSAGE_OR_ERR();
     GET_FIELD_NAME_OR_ERR();
 
-    auto value = strdup(std::string(scriptContext.GetArgument<const char*>(2)).c_str());
+    // SetString/SetRepeatedString copy into the protobuf; a strdup here leaked per call.
+    auto value = scriptContext.GetArgument<const char*>(2);
     auto index = scriptContext.GetArgument<int>(3);
 
     if (index < 0)
@@ -684,6 +685,7 @@ static void UserMessageCreate(ScriptContext& scriptContext)
 
     if (message->GetSerializableMessage() == nullptr)
     {
+        delete message;
         scriptContext.ThrowNativeError("Failed to create user message: %s", messageName);
         return;
     }
@@ -700,6 +702,7 @@ static void UserMessageCreateById(ScriptContext& scriptContext)
 
     if (message->GetSerializableMessage() == nullptr)
     {
+        delete message;
         scriptContext.ThrowNativeError("Failed to create user message: %d", messageId);
         return;
     }

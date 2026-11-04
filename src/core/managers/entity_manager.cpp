@@ -141,6 +141,12 @@ void EntityManager::OnShutdown()
     globals::callbackManager.ReleaseCallback(on_player_take_damage_post_callback);
 
     globals::callbackManager.ReleaseCallback(check_transmit);
+
+    // Output hooks a plugin never unhooked would otherwise survive into the next meta load.
+    for (auto& [key, pCallbackPair] : m_pHookMap)
+        delete pCallbackPair;
+    m_pHookMap.clear();
+
     // Null until the first StartupServer / GameFrame.
     if (globals::entitySystem) globals::entitySystem->RemoveListenerEntity(&entityListener);
     if (globals::gameEntities != nullptr)
@@ -229,7 +235,8 @@ void EntityManager::UnhookEntityOutput(const char* szClassname, const char* szOu
 
         if (!pCallbackPair->HasCallbacks())
         {
-            m_pHookMap.erase(outputKey);
+            m_pHookMap.erase(search);
+            delete pCallbackPair;
         }
     }
 }

@@ -55,7 +55,9 @@ const char* GetMapName(ScriptContext& script_context)
     return globals::getGlobalVars()->mapname.ToCStr();
 }
 
-const char* GetGameDirectory(ScriptContext& script_context) { return strdup(Plat_GetGameDirectory()); }
+// Plat_GetGameDirectory returns process-lifetime storage, and the managed side only copies the
+// result (GetResultString), so the old strdup leaked once per Server.GameDirectory read.
+const char* GetGameDirectory(ScriptContext& script_context) { return Plat_GetGameDirectory(); }
 
 // Core gamedata as native uses it (gamedata.json + gamedata/custom/), so GameDataProvider reads the
 // same merge instead of re-implementing it. Owned by the config; valid until shutdown.

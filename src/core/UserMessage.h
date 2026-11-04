@@ -123,7 +123,13 @@ class UserMessage
 
     ~UserMessage()
     {
-        if (manuallyAllocated) delete this->recipientMask;
+        // msg comes from AllocateMessage() in the owning constructors; PostEventAbstract
+        // serializes it and keeps no reference, so it is ours to free.
+        if (manuallyAllocated)
+        {
+            delete this->msg;
+            delete this->recipientMask;
+        }
     }
 
     std::string GetMessageName();
