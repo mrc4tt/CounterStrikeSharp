@@ -54,7 +54,7 @@
                generated entry fails a Debug build and vice versa; target-only entries match
                both), and commit CompatibilitySuppressions.xml.
              - Schema sync: game-driven schema removals are recorded the same way by
-               sync-schema.yaml, so they show up in the schema PR's diff.
+               cs2-schema-sync (server-ops), so they show up in the schema PR's diff.
              - Re-baseline after a release: replace ApiCompat/<ver>.dll with that release's
                addons/counterstrikesharp/api/CounterStrikeSharp.API.dll, point
                ApiCompatContractAssembly at it, delete CompatibilitySuppressions.xml.
