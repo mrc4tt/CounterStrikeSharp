@@ -276,8 +276,8 @@ bool CDotNetManager::Initialize()
         // Namespace, assembly name
 
         custom_entry_point_fn entry_point = nullptr;
-        const int rc = load_assembly_and_get_function_pointer(dotnetlib_path.c_str(), dotnet_type, STR("Run"),
-                                                              UNMANAGEDCALLERSONLY_METHOD, nullptr, reinterpret_cast<void**>(&entry_point));
+        const int rc = load_assembly_and_get_function_pointer(dotnetlib_path.c_str(), dotnet_type, STR("Run"), UNMANAGEDCALLERSONLY_METHOD,
+                                                              nullptr, reinterpret_cast<void**>(&entry_point));
         if (entry_point == nullptr)
         {
             // hostfxr's status code is the only clue to why this failed; it used to be dropped.
