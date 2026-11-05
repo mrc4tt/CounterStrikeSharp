@@ -371,5 +371,25 @@
       "windows": "40 55 53 56 57 41 54 48 8D 6C 24 ? 48 81 EC ? ? ? ? 4D 8B E0",
       "linux": "55 66 0F EF C0 48 89 E5 41 57 41 56 41 55 49 89 FD 31 FF"
     }
+  },
+  "CNavPhysicsInterface_vtable": {
+    "signatures": {
+      "library": "server",
+      "windows": "48 8D 0D ? ? ? ? 48 89 08 EB ? 48 8B C6 48 8B D0 48 8B CF E8 ? ? ? ? B9 ? ? ? ? E8 ? ? ? ? 48 8D 2D ? ? ? ?",
+      "linux": "48 8D 05 ? ? ? ? 48 89 06 E8 ? ? ? ? BF ? ? ? ? E8 ? ? ? ? 66 0F EF C9"
+    }
+  },
+  "CNavPhysicsInterface_TraceShape": {
+    "offsets": {
+      "windows": 3,
+      "linux": 5
+    }
+  },
+  "CTraceFilterLOS_vtable": {
+    "signatures": {
+      "library": "server",
+      "windows": "48 8D 05 ? ? ? ? 48 89 03 48 8B C3 48 83 C4 ? 5B C3 CC CC CC CC 0F B6 41 ?",
+      "linux": "48 8D 05 ? ? ? ? 49 89 04 24 48 83 C4 ?"
+    }
   }
 }
