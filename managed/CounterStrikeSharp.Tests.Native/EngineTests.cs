@@ -26,6 +26,15 @@ public class EngineTests
     }
 
     [Fact]
+    public void GetMapList_ReturnsOnlyLoadableMaps()
+    {
+        var maps = Server.GetMapList();
+
+        Console.WriteLine($"[EngineTests] GetMapList returned {maps.Length} map(s)");
+        Assert.All(maps, map => Assert.True(Server.IsMapValid(map), map));
+    }
+
+    [Fact]
     public void IsMapValid_ReturnsTrueForCurrentMap()
     {
         var mapName = Server.MapName;

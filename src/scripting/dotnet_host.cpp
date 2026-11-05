@@ -276,11 +276,38 @@ bool CDotNetManager::Initialize()
         // Namespace, assembly name
 
         custom_entry_point_fn entry_point = nullptr;
-        load_assembly_and_get_function_pointer(dotnetlib_path.c_str(), dotnet_type, STR("Run"), UNMANAGEDCALLERSONLY_METHOD, nullptr,
-                                               reinterpret_cast<void**>(&entry_point));
+        const int rc = load_assembly_and_get_function_pointer(dotnetlib_path.c_str(), dotnet_type, STR("Run"), UNMANAGEDCALLERSONLY_METHOD,
+                                                              nullptr, reinterpret_cast<void**>(&entry_point));
         if (entry_point == nullptr)
         {
-            CSSHARP_CORE_ERROR("Trying to get entry point \"Bootstrap::Run\" but failed.");
+            // hostfxr's status code is the only clue to why this failed; it used to be dropped.
+            const auto status = static_cast<uint32_t>(rc);
+            const char* hint = "";
+            switch (status)
+            {
+                case 0x80070002: // HRESULT_FROM_WIN32(ERROR_FILE_NOT_FOUND)
+                case 0x80070003: // HRESULT_FROM_WIN32(ERROR_PATH_NOT_FOUND)
+                    hint = " CounterStrikeSharp.API.dll or one of its dependencies is missing from api/.";
+                    break;
+                case 0x80131040: // FUSION_E_REF_DEF_MISMATCH
+                case 0x80131513: // COR_E_MISSINGMETHOD
+                case 0x80131522: // COR_E_TYPELOAD
+                    hint = " api/ does not match this counterstrikesharp binary; deploy the native and managed halves from the same "
+                           "build.";
+                    break;
+                default:
+                    break;
+            }
+
+#if _WIN32
+            const auto dllPathForLog = counterstrikesharp::narrow(dotnetlib_path);
+#else
+            const auto& dllPathForLog = dotnetlib_path;
+#endif
+            std::error_code ec;
+            const bool dllExists = std::filesystem::exists(dotnetlib_path, ec);
+            CSSHARP_CORE_ERROR("Trying to get entry point \"Bootstrap::Run\" but failed (status 0x{:08X}, {} {}).{}", status, dllPathForLog,
+                               dllExists ? "exists" : "does not exist", hint);
             return false;
         }
 

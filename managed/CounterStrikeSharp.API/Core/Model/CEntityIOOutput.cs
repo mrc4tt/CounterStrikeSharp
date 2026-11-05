@@ -19,7 +19,8 @@ public class EntityIOOutputDesc_t : NativeObject
  
     public string Name => Utilities.ReadStringUtf8(Handle + 0); 
     public unsafe ref uint Flags => ref Unsafe.AsRef<uint>((void*)(Handle + 8)); 
-    public unsafe ref uint OutputOffset => ref Unsafe.AsRef<uint>((void*)(Handle + 16)); 
+    // EntOutput_t: m_pfnGetOutputOwner (a function pointer) sits at +16, the offset after it.
+    public unsafe ref uint OutputOffset => ref Unsafe.AsRef<uint>((void*)(Handle + 24)); 
 } 
  
 public class EntityIOConnection_t : EntityIOConnectionDesc_t 
@@ -28,9 +29,11 @@ public class EntityIOConnection_t : EntityIOConnectionDesc_t
     { 
     } 
  
-    public unsafe ref bool MarkedForRemoval => ref Unsafe.AsRef<bool>((void*)(Handle + 40)); 
+    // A 24-byte CPulseInputParamMap (KeyValues3 + bool) follows the description at +40; reading
+    // Next at the old +48 got KeyValues3 data and crashed the next string read.
+    public unsafe ref bool MarkedForRemoval => ref Unsafe.AsRef<bool>((void*)(Handle + 64)); 
  
-    public EntityIOConnection_t? Next => Utilities.GetPointer<EntityIOConnection_t>(Handle + 48); 
+    public EntityIOConnection_t? Next => Utilities.GetPointer<EntityIOConnection_t>(Handle + 72); 
 } 
  
 public class EntityIOConnectionDesc_t : NativeObject 
