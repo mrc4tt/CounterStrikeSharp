@@ -180,7 +180,6 @@ libraries/mono/
 [Ll]ogs/
 *.lo
 # Local AI-assistant guidance. Kept out of the repo so they are not published or
-# Local credentials for eng/update-schema.sh
 .localhistory/
 # Local History for Visual Studio
 *.log
