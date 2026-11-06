@@ -40,6 +40,7 @@ namespace CounterStrikeSharp.API
         {
             _onTickTaskQueue.Clear();
             _onWorldUpdateTaskQueue.Clear();
+            GameThreadReleaseQueue.RearmAfterClear();
         }
 
         internal static void OnTick()

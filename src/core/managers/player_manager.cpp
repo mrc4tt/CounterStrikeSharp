@@ -438,6 +438,14 @@ void PlayerManager::InvalidatePlayer(CPlayer* pPlayer) const
     if (userid.Get() != -1) m_user_id_lookup[userid.Get()] = 0;
 
     pPlayer->Disconnect();
+
+    // Disconnect() clears the leaving player's own overrides; the other players' overrides
+    // toward this slot stayed, and whoever took the slot next inherited them.
+    const int slot = pPlayer->m_slot.Get();
+    for (int i = 0; i < 66; i++)
+    {
+        m_players[i].SetListen(slot, Listen_Default);
+    }
 }
 
 CPlayer::CPlayer() {}
@@ -669,6 +677,10 @@ void CPlayer::Disconnect()
     m_selfMutes->ClearAll();
     memset(m_listenMap, 0, sizeof m_listenMap);
     m_voiceFlag = 0;
+    // The next occupant of this slot: no button delta against the old player's last buttons,
+    // and no Steam ID until it authenticates itself.
+    m_buttonState = ~0;
+    m_steamId = nullptr;
 }
 
 const CSteamID* CPlayer::GetSteamId() { return m_steamId; }
