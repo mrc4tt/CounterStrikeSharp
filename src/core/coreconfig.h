@@ -37,7 +37,12 @@ class CCoreConfig
     bool UnlockConCommands = true;
     bool UnlockConVars = true;
     bool AutoUpdateEnabled = true;
-    std::string AutoUpdateURL = std::string("https://sig.miksen.me/latest/CounterStrikeSharp/gamedata.json");
+    static constexpr const char* kDefaultAutoUpdateURL = "https://sig.miksen.me/latest/CounterStrikeSharp/gamedata.json";
+    std::string AutoUpdateURL = std::string(kDefaultAutoUpdateURL);
+    // The AutoUpdateURL core.json named when it was upstream's feed (gamedata.cssharp.dev), which
+    // the fork's gamedata does not match; AutoUpdateURL then holds the default instead. Empty
+    // otherwise. Logged by update::TryUpdateGameConfig.
+    std::string ReplacedAutoUpdateURL;
     std::string LogVerbosity = "information";
     // Plugin gamedata auto-update (gameconfig_updater.cpp, core/gamedata_plugin_update.h): swaps
     // signatures that do not resolve in gamedata/*.json (not plugins/*/gamedata/ copies) for the

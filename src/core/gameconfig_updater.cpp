@@ -865,6 +865,10 @@ bool SignatureResolves(const std::string& library, const std::string& signature)
 bool TryUpdateGameConfig()
 {
     const auto& configuredUrl = globals::coreConfig->AutoUpdateURL;
+    if (!globals::coreConfig->ReplacedAutoUpdateURL.empty())
+        CSSHARP_CORE_WARN("AutoUpdateURL '{}' is upstream's gamedata, which does not match this build; using {} instead. "
+                          "Set AutoUpdateURL in configs/core.json to silence this",
+                          globals::coreConfig->ReplacedAutoUpdateURL, configuredUrl);
     CSSHARP_CORE_INFO("AutoUpdate enabled, checking for gamedata updates from {}", configuredUrl);
 
     g_updateDeadline = std::chrono::steady_clock::now() + std::chrono::seconds(kTotalTimeoutSeconds);
