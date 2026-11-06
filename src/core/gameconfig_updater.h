@@ -10,6 +10,15 @@ bool TryUpdateGameConfig();
 // when those resolve here (core/gamedata_plugin_update.h). Never replaces a whole file.
 void TryUpdatePluginGamedata();
 
+// Crash-loop guard for gamedata updates (core/gamedata_update_guard.h). CheckPreviousStart runs
+// first thing, before any update or gamedata read: when the previous start died early after an
+// update it retries once, then restores the backups. StartUpdateConfirmTimer, after the updates,
+// keeps them for good once this start has run a few minutes; StopUpdateConfirmTimer(true) on a
+// clean Unload does the same at once.
+void CheckPreviousStart();
+void StartUpdateConfirmTimer();
+void StopUpdateConfirmTimer(bool cleanShutdown);
+
 // Opt-in (GamedataReportEnabled): posts which plugin gamedata files this server runs (names,
 // sha256, key names, broken keys; no file text) to GamedataReportURL from a thread of its own.
 // The answer helps the next start's TryUpdatePluginGamedata identify each file.

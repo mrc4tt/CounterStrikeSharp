@@ -88,6 +88,10 @@ namespace CounterStrikeSharp.API.Core
         [JsonPropertyName("GamedataReportURL")]
         public string? GamedataReportURL { get; set; }
 
+        // Read by the native updater only; null or "" turns the manifest signature check off.
+        [JsonPropertyName("GamedataSigningKey")]
+        public string? GamedataSigningKey { get; set; }
+
         [JsonPropertyName("MaximumFrameTasksExecutedPerTick")]
         public int MaximumFrameTasksExecutedPerTick { get; set; } = 1024;
 

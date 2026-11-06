@@ -18,6 +18,8 @@
 
 #include <nlohmann/json.hpp>
 
+#include "core/gamedata_signature.h"
+
 #include <map>
 #include <string>
 
@@ -57,6 +59,10 @@ class CCoreConfig
     // generate yet can get a generator. See update::ReportGamedata.
     bool GamedataReportEnabled = false;
     std::string GamedataReportURL = std::string("https://sig-api.miksen.me/api/report");
+    // Ed25519 public key (base64) the feed's latest/manifest.json.sig must verify against before
+    // the updaters apply anything from it (core/gamedata_signature.h). "" turns the check off, for
+    // a self-hosted feed; VibeSignatures' is signed.
+    std::string GamedataSigningKey = std::string(update::signing::kDefaultPublicKey);
 
     using json = nlohmann::json;
     CCoreConfig(const std::string& path);

@@ -6,13 +6,17 @@
 #include "core/gamedata_custom.h"
 #include "core/gamedata_signature_check.h"
 #include "core/gamedata_plugin_update.h"
+#include "core/gamedata_signature.h"
+#include "core/gamedata_update_guard.h"
 #include "core/gameconfig.h"
 #include "core/memory.h"
 #include "core/memory_module.h"
 #include "core/vtable_fallback.h"
 
 #include <algorithm>
+#include <atomic>
 #include <chrono>
+#include <condition_variable>
 #include <cstring>
 #include <ctime>
 #include <filesystem>
@@ -22,6 +26,7 @@
 #include <mutex>
 #include <random>
 #include <thread>
+#include <utility>
 #include <map>
 #include <optional>
 #include <set>
@@ -651,11 +656,75 @@ std::optional<std::string> ManifestUrlFor(const std::string& url)
     return url.substr(0, pos) + "/latest/manifest.json";
 }
 
+std::string FetchError(const std::string& url, const FetchResult& res)
+{
+    return "could not fetch " + url + " (" + (res.error.empty() ? "HTTP " + std::to_string(res.status) : res.error) + ")";
+}
+
+bool SigningEnabled() { return !globals::coreConfig->GamedataSigningKey.empty(); }
+
+// <site>/latest/manifest.json, which lists the sha256 of every published file. With signing on
+// (GamedataSigningKey, see core/gamedata_signature.h) it must come with a manifest.json.sig that
+// verifies, and then every file the updaters apply is checked against its sha256 here: an
+// unsigned or tampered manifest stops the update rather than downgrading to "trust the host".
+std::optional<nlohmann::json> FetchManifest(const std::string& manifestUrl, std::string& error)
+{
+    auto parsed = ParseUrl(manifestUrl);
+    if (!parsed)
+    {
+        error = "invalid manifest URL " + manifestUrl;
+        return std::nullopt;
+    }
+    auto res = Fetch(*parsed, manifestUrl, "");
+    if (!res.error.empty() || res.status != 200)
+    {
+        error = FetchError(manifestUrl, res);
+        return std::nullopt;
+    }
+
+    if (SigningEnabled())
+    {
+        const auto signatureUrl = manifestUrl + ".sig";
+        auto parsedSignature = ParseUrl(signatureUrl);
+        auto sig = parsedSignature ? Fetch(*parsedSignature, signatureUrl, "") : FetchResult{};
+        if (!sig.error.empty() || sig.status != 200)
+        {
+            error = "the manifest is not signed (" + FetchError(signatureUrl, sig) +
+                    "); set GamedataSigningKey to \"\" in core.json only if this feed is not VibeSignatures'";
+            return std::nullopt;
+        }
+        std::string why;
+        if (!signing::VerifySignature(res.body, sig.body, globals::coreConfig->GamedataSigningKey, why))
+        {
+            error = manifestUrl + " failed its signature check: " + why;
+            return std::nullopt;
+        }
+    }
+
+    auto manifest = nlohmann::json::parse(res.body, nullptr, false);
+    if (manifest.is_discarded() || !manifest.is_object())
+    {
+        error = manifestUrl + " is not a JSON object";
+        return std::nullopt;
+    }
+    return manifest;
+}
+
+// The sha256 the manifest publishes for <site>/latest/<relative>, empty when it lists no such file.
+std::string ManifestSha256(const nlohmann::json& manifest, const std::string& relative)
+{
+    if (!manifest.contains("files") || !manifest["files"].is_array()) return {};
+    for (const auto& file : manifest["files"])
+        if (file.is_object() && file.value("url", "") == relative && file.contains("sha256") && file["sha256"].is_string())
+            return plugin_gamedata::Lower(file["sha256"].get<std::string>());
+    return {};
+}
+
 // Only lets an update through when the published gamedata was generated for the game build
 // this server runs. Pages always serves the newest processed build, which can be ahead of a
 // server that has not taken the game update yet (or behind one that just did); signatures for
 // another build either fail to resolve or, worse, resolve to the wrong function.
-bool GameVersionMatches(const std::string& url, std::string& reason, std::string& matchedTag)
+bool GameVersionMatches(const std::string& url, std::string& reason, std::string& matchedTag, nlohmann::json& manifestOut)
 {
     auto manifestUrl = ManifestUrlFor(url);
     if (!manifestUrl)
@@ -672,22 +741,10 @@ bool GameVersionMatches(const std::string& url, std::string& reason, std::string
         return false;
     }
 
-    auto parsedManifestUrl = ParseUrl(*manifestUrl);
-    if (!parsedManifestUrl)
-    {
-        reason = "invalid manifest URL " + *manifestUrl;
-        return false;
-    }
-
-    auto res = Fetch(*parsedManifestUrl, *manifestUrl, "");
-    if (!res.error.empty() || res.status != 200)
-    {
-        reason = "could not fetch " + *manifestUrl + " (" + (res.error.empty() ? "HTTP " + std::to_string(res.status) : res.error) + ")";
-        return false;
-    }
-
-    auto manifest = nlohmann::json::parse(res.body, nullptr, false);
-    if (manifest.is_discarded() || !manifest.is_object() || !manifest.contains("gameVersion") || !manifest["gameVersion"].is_string())
+    auto fetched = FetchManifest(*manifestUrl, reason);
+    if (!fetched) return false;
+    auto& manifest = *fetched;
+    if (!manifest.contains("gameVersion") || !manifest["gameVersion"].is_string())
     {
         reason = *manifestUrl + " has no gameVersion";
         return false;
@@ -702,6 +759,7 @@ bool GameVersionMatches(const std::string& url, std::string& reason, std::string
 
     CSSHARP_CORE_INFO("Published gamedata is for game build {}, matching this server", published);
     matchedTag = serverTag;
+    manifestOut = std::move(manifest);
     return true;
 }
 
@@ -772,6 +830,29 @@ std::string UtcStamp()
 #endif
     std::strftime(stamp, sizeof(stamp), "%Y%m%d-%H%M%S", &utc);
     return stamp;
+}
+
+// Crash-loop guard state (core/gamedata_update_guard.h). g_pendingUpdate: gamedata/update.pending
+// exists and this process is the one to confirm it.
+std::atomic<bool> g_pendingUpdate{ false };
+
+// Shared with a detached thread, never destroyed: a joinable std::thread still alive at exit()
+// would std::terminate the server, and static mutex/condvar destructors would race the thread.
+struct ConfirmTimer
+{
+    std::mutex mutex;
+    std::condition_variable wake;
+    bool stop = false;
+};
+std::shared_ptr<ConfirmTimer> g_confirmTimer;
+
+void NotePendingWrite(const std::string& path, const std::string& backup, const std::string& sha256)
+{
+    std::string error;
+    if (guard::RecordPending(utils::GamedataDirectory(), { path, backup, sha256 }, error)) g_pendingUpdate = true;
+    else
+        CSSHARP_CORE_WARN("Could not record the gamedata update for the crash-loop guard ({}); it cannot be rolled back automatically",
+                          error);
 }
 
 // Copies gamedata.json to gamedata/backup/gamedata-<UTC time>.json and keeps the newest kMaxBackups.
@@ -894,7 +975,8 @@ bool TryUpdateGameConfig()
 
     std::string reason;
     std::string matchedTag;
-    if (!GameVersionMatches(configuredUrl, reason, matchedTag))
+    nlohmann::json manifest;
+    if (!GameVersionMatches(configuredUrl, reason, matchedTag, manifest))
     {
         CSSHARP_CORE_WARN("Gamedata update skipped, keeping the current gamedata.json: {}", reason);
         return false;
@@ -930,6 +1012,39 @@ bool TryUpdateGameConfig()
         return true;
     }
 
+    const auto bodySha256 = plugin_gamedata::Sha256Hex(res.body);
+    if (SigningEnabled())
+    {
+        // GameVersionMatches only passes a signed manifest (or none: a URL outside <site>/latest/,
+        // which cannot be vouched for at all).
+        const auto latest = configuredUrl.rfind("/latest/");
+        const auto expected = latest == std::string::npos || manifest.is_null()
+                                  ? std::string()
+                                  : ManifestSha256(manifest, configuredUrl.substr(latest + sizeof("/latest/") - 1));
+        if (expected.empty())
+        {
+            CSSHARP_CORE_ERROR("Gamedata update from {} rejected: no signed manifest lists this file (set GamedataSigningKey to \"\" "
+                               "in core.json only for a feed that is not VibeSignatures')",
+                               configuredUrl);
+            return false;
+        }
+        if (expected != bodySha256)
+        {
+            CSSHARP_CORE_ERROR("Gamedata update from {} rejected: its sha256 is not the one the signed manifest lists "
+                               "(published mid-download, or tampered with); the next start tries again",
+                               configuredUrl);
+            return false;
+        }
+    }
+
+    if (guard::Rejected(utils::GamedataDirectory()).count(bodySha256))
+    {
+        CSSHARP_CORE_WARN("Gamedata update skipped: this gamedata.json (sha256 {}) was rolled back after the server died early "
+                          "with it twice; waiting for a newer one. Delete gamedata/update.rejected to try it again",
+                          bodySha256);
+        return false;
+    }
+
     std::string error;
     if (!ValidateGamedata(res.body, gamedataPath, error))
     {
@@ -962,15 +1077,17 @@ bool TryUpdateGameConfig()
         return false;
     }
 
-    if (localEdits == LocalEdits::Edited || !rescued.empty())
+    // Always backed up now: it is what the crash-loop guard (core/gamedata_update_guard.h) restores.
+    std::string backupPath;
+    if (std::filesystem::exists(gamedataPath))
     {
-        std::string backupPath;
         if (!BackupGamedata(gamedataPath, backupPath, error))
         {
             CSSHARP_CORE_ERROR("Gamedata update skipped, the local gamedata.json could not be backed up: {}", error);
             return false;
         }
-        CSSHARP_CORE_INFO("Gamedata: backed up the local gamedata.json to {}", backupPath);
+        if (localEdits == LocalEdits::Edited || !rescued.empty())
+            CSSHARP_CORE_INFO("Gamedata: backed up the local gamedata.json to {}", backupPath);
     }
 
     if (!rescued.empty())
@@ -994,6 +1111,7 @@ bool TryUpdateGameConfig()
         CSSHARP_CORE_ERROR("Gamedata update failed: {}", error);
         return false;
     }
+    NotePendingWrite(gamedataPath, backupPath, bodySha256);
 
     // An empty ETag is still written: it clears a stale one, so the next start does a full GET.
     if (!WriteAtomically(etagPath, res.etag, error))
@@ -1006,6 +1124,87 @@ bool TryUpdateGameConfig()
 
     CSSHARP_CORE_INFO("Gamedata file written to: {} with ETag {}", gamedataPath, res.etag);
     return true;
+}
+
+/// Crash-loop guard, first half: runs before any gamedata is updated or read. See
+/// core/gamedata_update_guard.h.
+void CheckPreviousStart()
+{
+    const auto directory = utils::GamedataDirectory();
+    const auto gamedataPath = directory + "/gamedata.json";
+    auto check = guard::CheckPreviousStart(directory);
+    for (const auto& error : check.errors)
+        CSSHARP_CORE_WARN("Gamedata crash-loop guard: {}", error);
+
+    g_pendingUpdate = check.outcome == guard::Outcome::Retry;
+    if (check.outcome == guard::Outcome::Retry)
+    {
+        CSSHARP_CORE_WARN("The previous start stopped within {}s of applying a gamedata update, without a clean shutdown. "
+                          "Keeping the update for one more start; if this one dies early too it is rolled back "
+                          "(gamedata/update.pending)",
+                          guard::kConfirmAfterSeconds);
+    }
+    else if (check.outcome == guard::Outcome::RolledBack)
+    {
+        std::string restored;
+        for (const auto& path : check.restored)
+            restored += (restored.empty() ? "" : ", ") + path;
+        CSSHARP_CORE_ERROR("The server died early {} starts in a row after a gamedata update. Rolled back: {}. "
+                           "Those exact files will not be applied again (gamedata/update.rejected; delete it to retry)",
+                           check.earlyDeaths, restored.empty() ? "nothing" : restored);
+
+        if (std::find(check.restored.begin(), check.restored.end(), gamedataPath) != check.restored.end())
+        {
+            // The restored file is not the one the ETag describes, and the updater cannot vouch for its
+            // build any more; it is, however, what the updater last put there.
+            std::error_code ec;
+            std::filesystem::remove(directory + "/gamedata.etag", ec);
+            RecordGamedataBuild("", gamedataPath);
+            RecordWrittenHash(gamedataPath);
+        }
+    }
+}
+
+/// Crash-loop guard, second half: once this start has run kConfirmAfterSeconds, the update it
+/// applied (or retried) is kept for good. A thread, not a game-frame check, so a hibernating server
+/// confirms too; a crash takes it down with the process, which is the point.
+void StartUpdateConfirmTimer()
+{
+    StopUpdateConfirmTimer(false);
+    if (!g_pendingUpdate) return;
+
+    auto timer = std::make_shared<ConfirmTimer>();
+    g_confirmTimer = timer;
+    const auto directory = utils::GamedataDirectory();
+    std::thread([timer, directory] {
+        std::unique_lock lock(timer->mutex);
+        if (timer->wake.wait_for(lock, std::chrono::seconds(guard::kConfirmAfterSeconds), [&] {
+            return timer->stop;
+        }))
+            return;
+        guard::Confirm(directory);
+        g_pendingUpdate = false;
+        // No logging from here: the log sinks are not ours to call from a foreign thread.
+    }).detach();
+}
+
+/// A clean shutdown (or `meta unload`) is not a crash: confirm whatever is pending.
+void StopUpdateConfirmTimer(bool cleanShutdown)
+{
+    if (auto timer = std::exchange(g_confirmTimer, nullptr))
+    {
+        {
+            std::lock_guard lock(timer->mutex);
+            timer->stop = true;
+        }
+        timer->wake.notify_all();
+    }
+
+    if (cleanShutdown && g_pendingUpdate)
+    {
+        guard::Confirm(utils::GamedataDirectory());
+        g_pendingUpdate = false;
+    }
 }
 
 namespace {
@@ -1173,7 +1372,7 @@ void TryUpdatePluginGamedata()
     // Same gate as the core update: the site serves its newest processed build, which need not
     // be the one this server runs.
     std::string error;
-    auto manifest = FetchJson(site + "/latest/manifest.json", error);
+    auto manifest = FetchManifest(site + "/latest/manifest.json", error);
     if (!manifest)
     {
         CSSHARP_CORE_WARN("Plugin gamedata update skipped: {}", error);
@@ -1222,6 +1421,11 @@ void TryUpdatePluginGamedata()
         const auto expected = std::find_if(feed.begin(), feed.end(), [&](const pg::FeedFile& f) {
             return f.url == url;
         });
+        if (SigningEnabled() && (expected == feed.end() || expected->sha256.empty()))
+        {
+            CSSHARP_CORE_WARN("Plugin gamedata: {} is not in the signed manifest, not used", url);
+            return nullptr;
+        }
         if (expected != feed.end() && !expected->sha256.empty() && pg::Sha256Hex(*body) != expected->sha256)
         {
             CSSHARP_CORE_WARN("Plugin gamedata: {} does not match the manifest's sha256 (changed mid-publish?), not used", url);
@@ -1328,6 +1532,16 @@ void TryUpdatePluginGamedata()
             continue;
         }
 
+        const auto textSha256 = pg::Sha256Hex(text);
+        if (guard::Rejected(utils::GamedataDirectory()).count(textSha256))
+        {
+            CSSHARP_CORE_WARN("Plugin gamedata: {} not updated: this exact fix was rolled back after the server died early with it "
+                              "twice. Delete gamedata/update.rejected to try it again",
+                              file.relative);
+            keysLeft += result.patched.size();
+            continue;
+        }
+
         std::string backupPath;
         if (!BackupPluginGamedata(file.relative, file.text, backupPath, error))
         {
@@ -1341,6 +1555,7 @@ void TryUpdatePluginGamedata()
             keysLeft += result.patched.size();
             continue;
         }
+        NotePendingWrite(file.path.string(), backupPath, textSha256);
 
         std::string keys;
         for (const auto& key : result.patched)
