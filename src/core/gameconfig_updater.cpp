@@ -2054,9 +2054,9 @@ void UploadUnknownFiles(const std::string& reportUrl, const std::string& build, 
             continue;
         }
         records[file.relative] = record;
-        CSSHARP_CORE_INFO("Gamedata upload: {} the text of {} to {} (GamedataUploadEnabled). From the next start its broken "
+        CSSHARP_CORE_INFO("Gamedata upload: {} the text of {} on {} (GamedataUploadEnabled). From the next start its broken "
                           "signatures are fixed from {}, signatures only; the manage token is in gamedata/plugin-gamedata.uploads",
-                          action == upload::Action::Replace ? "replaced" : "sent", file.relative, *origin,
+                          action == upload::Action::Replace ? "replaced" : "stored", file.relative, *origin,
                           upload::ReadUrl(*origin, record));
     }
 }
