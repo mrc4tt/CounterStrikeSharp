@@ -646,16 +646,6 @@ std::string StripBuildSuffix(std::string version)
     return version;
 }
 
-// The VibeSignatures Pages layout is <site>/latest/<plugin>/<file> next to
-// <site>/latest/manifest.json, which names the game build the files were generated for.
-// Any other URL has no manifest to check against.
-std::optional<std::string> ManifestUrlFor(const std::string& url)
-{
-    auto pos = url.rfind("/latest/");
-    if (pos == std::string::npos) return std::nullopt;
-    return url.substr(0, pos) + "/latest/manifest.json";
-}
-
 std::string FetchError(const std::string& url, const FetchResult& res)
 {
     return "could not fetch " + url + " (" + (res.error.empty() ? "HTTP " + std::to_string(res.status) : res.error) + ")";
@@ -720,14 +710,63 @@ std::string ManifestSha256(const nlohmann::json& manifest, const std::string& re
     return {};
 }
 
-// Only lets an update through when the published gamedata was generated for the game build
-// this server runs. Pages always serves the newest processed build, which can be ahead of a
-// server that has not taken the game update yet (or behind one that just did); signatures for
-// another build either fail to resolve or, worse, resolve to the wrong function.
-bool GameVersionMatches(const std::string& url, std::string& reason, std::string& matchedTag, nlohmann::json& manifestOut)
+struct ServerManifest
 {
-    auto manifestUrl = ManifestUrlFor(url);
-    if (!manifestUrl)
+    nlohmann::json manifest;
+    // "latest" or "builds/<build>": where under <site>/ this server's files are.
+    std::string directory;
+    std::string published;
+};
+
+// The signed manifest for the game build this server runs. <site>/latest/ serves the newest
+// processed build only, which can be ahead of a server that has not taken the game update yet;
+// VibeSignatures also publishes every build as <site>/builds/<build>/ (same layout, same
+// signing), so on a mismatch the server asks for its own build there. Signatures for another
+// build either fail to resolve or, worse, resolve to the wrong function, so without a match
+// nothing is applied.
+std::optional<ServerManifest> ManifestForServer(const std::string& site, const std::string& serverTag, std::string& reason)
+{
+    auto read = [&](const std::string& directory, std::string& error) -> std::optional<ServerManifest> {
+        const auto manifestUrl = site + "/" + directory + "/manifest.json";
+        auto fetched = FetchManifest(manifestUrl, error);
+        if (!fetched) return std::nullopt;
+        if (!fetched->contains("gameVersion") || !(*fetched)["gameVersion"].is_string())
+        {
+            error = manifestUrl + " has no gameVersion";
+            return std::nullopt;
+        }
+        ServerManifest out{ std::move(*fetched), directory, {} };
+        out.published = out.manifest["gameVersion"].get<std::string>();
+        return out;
+    };
+
+    auto latest = read("latest", reason);
+    if (!latest) return std::nullopt;
+    if (StripBuildSuffix(latest->published) == serverTag) return latest;
+
+    const auto directory = "builds/" + serverTag;
+    std::string error;
+    auto own = read(directory, error);
+    if (own && StripBuildSuffix(own->published) == serverTag)
+    {
+        CSSHARP_CORE_INFO("Newest published gamedata is for game build {}; using {}/{}/ for this server's build {}", latest->published,
+                          site, directory, serverTag);
+        return own;
+    }
+    reason = "published gamedata is for game build " + latest->published + ", this server runs " + serverTag +
+             ", and the feed has no gamedata for " + serverTag + " (" +
+             (own ? site + "/" + directory + "/manifest.json names build " + own->published : error) + ")";
+    return std::nullopt;
+}
+
+// Gates the core update on the game build (see ManifestForServer). feedUrl is the URL to fetch
+// gamedata.json from: url itself, or its builds/<build>/ counterpart.
+bool GameVersionMatches(
+    const std::string& url, std::string& reason, std::string& matchedTag, nlohmann::json& manifestOut, std::string& feedUrl)
+{
+    feedUrl = url;
+    const auto pos = url.rfind("/latest/");
+    if (pos == std::string::npos)
     {
         CSSHARP_CORE_WARN("AutoUpdateURL has no /latest/manifest.json beside it; skipping the game-version check");
         return true;
@@ -741,25 +780,13 @@ bool GameVersionMatches(const std::string& url, std::string& reason, std::string
         return false;
     }
 
-    auto fetched = FetchManifest(*manifestUrl, reason);
-    if (!fetched) return false;
-    auto& manifest = *fetched;
-    if (!manifest.contains("gameVersion") || !manifest["gameVersion"].is_string())
-    {
-        reason = *manifestUrl + " has no gameVersion";
-        return false;
-    }
+    auto found = ManifestForServer(url.substr(0, pos), serverTag, reason);
+    if (!found) return false;
 
-    auto published = manifest["gameVersion"].get<std::string>();
-    if (StripBuildSuffix(published) != serverTag)
-    {
-        reason = "published gamedata is for game build " + published + ", this server runs " + serverTag;
-        return false;
-    }
-
-    CSSHARP_CORE_INFO("Published gamedata is for game build {}, matching this server", published);
+    CSSHARP_CORE_INFO("Published gamedata is for game build {}, matching this server", found->published);
+    feedUrl = url.substr(0, pos) + "/" + found->directory + "/" + url.substr(pos + sizeof("/latest/") - 1);
     matchedTag = serverTag;
-    manifestOut = std::move(manifest);
+    manifestOut = std::move(found->manifest);
     return true;
 }
 
@@ -976,7 +1003,8 @@ bool TryUpdateGameConfig()
     std::string reason;
     std::string matchedTag;
     nlohmann::json manifest;
-    if (!GameVersionMatches(configuredUrl, reason, matchedTag, manifest))
+    std::string feedUrl;
+    if (!GameVersionMatches(configuredUrl, reason, matchedTag, manifest, feedUrl))
     {
         CSSHARP_CORE_WARN("Gamedata update skipped, keeping the current gamedata.json: {}", reason);
         return false;
@@ -985,10 +1013,17 @@ bool TryUpdateGameConfig()
     // Without a gamedata.json there is nothing a 304 could refer to; ask for the full file.
     auto localETag = std::filesystem::exists(gamedataPath) ? ReadFirstLine(etagPath) : std::string();
 
-    auto res = Fetch(*url, configuredUrl, localETag);
+    auto feed = ParseUrl(feedUrl);
+    if (!feed)
+    {
+        CSSHARP_CORE_ERROR("Gamedata feed URL '{}' is not an http:// or https:// URL", feedUrl);
+        return false;
+    }
+
+    auto res = Fetch(*feed, feedUrl, localETag);
     if (!res.error.empty())
     {
-        CSSHARP_CORE_ERROR("Gamedata update from {} failed: {}", configuredUrl, res.error);
+        CSSHARP_CORE_ERROR("Gamedata update from {} failed: {}", feedUrl, res.error);
         return false;
     }
 
@@ -1001,7 +1036,7 @@ bool TryUpdateGameConfig()
 
     if (res.status != 200)
     {
-        CSSHARP_CORE_ERROR("Gamedata update from {} failed: HTTP {}", configuredUrl, res.status);
+        CSSHARP_CORE_ERROR("Gamedata update from {} failed: HTTP {}", feedUrl, res.status);
         return false;
     }
 
@@ -1025,14 +1060,14 @@ bool TryUpdateGameConfig()
         {
             CSSHARP_CORE_ERROR("Gamedata update from {} rejected: no signed manifest lists this file (set GamedataSigningKey to \"\" "
                                "in core.json only for a feed that is not VibeSignatures')",
-                               configuredUrl);
+                               feedUrl);
             return false;
         }
         if (expected != bodySha256)
         {
             CSSHARP_CORE_ERROR("Gamedata update from {} rejected: its sha256 is not the one the signed manifest lists "
                                "(published mid-download, or tampered with); the next start tries again",
-                               configuredUrl);
+                               feedUrl);
             return false;
         }
     }
@@ -1048,7 +1083,7 @@ bool TryUpdateGameConfig()
     std::string error;
     if (!ValidateGamedata(res.body, gamedataPath, error))
     {
-        CSSHARP_CORE_ERROR("Gamedata update from {} rejected: {}", configuredUrl, error);
+        CSSHARP_CORE_ERROR("Gamedata update from {} rejected: {}", feedUrl, error);
         return false;
     }
 
@@ -1073,7 +1108,7 @@ bool TryUpdateGameConfig()
 
     if (!SignaturesHoldUp(res.body, current, error))
     {
-        CSSHARP_CORE_ERROR("Gamedata update from {} rejected, keeping the current gamedata.json: {}", configuredUrl, error);
+        CSSHARP_CORE_ERROR("Gamedata update from {} rejected, keeping the current gamedata.json: {}", feedUrl, error);
         return false;
     }
 
@@ -1369,27 +1404,23 @@ void TryUpdatePluginGamedata()
 
     g_updateDeadline = std::chrono::steady_clock::now() + std::chrono::seconds(kPluginTotalTimeoutSeconds);
 
-    // Same gate as the core update: the site serves its newest processed build, which need not
-    // be the one this server runs.
+    // Same gate as the core update (ManifestForServer): this server's build, from latest/ or
+    // builds/<build>/.
     std::string error;
-    auto manifest = FetchManifest(site + "/latest/manifest.json", error);
-    if (!manifest)
+    const auto serverTag = ServerGameVersionTag(error);
+    if (serverTag.empty())
+    {
+        CSSHARP_CORE_WARN("Plugin gamedata update skipped: could not determine this server's game version ({})", error);
+        return;
+    }
+    auto found = ManifestForServer(site, serverTag, error);
+    if (!found)
     {
         CSSHARP_CORE_WARN("Plugin gamedata update skipped: {}", error);
         return;
     }
-    const auto published = manifest->contains("gameVersion") && (*manifest)["gameVersion"].is_string()
-                               ? (*manifest)["gameVersion"].get<std::string>()
-                               : std::string();
-    const auto serverTag = ServerGameVersionTag(error);
-    if (serverTag.empty() || StripBuildSuffix(published) != serverTag)
-    {
-        CSSHARP_CORE_WARN("Plugin gamedata update skipped: {}",
-                          serverTag.empty() ? "could not determine this server's game version (" + error + ")"
-                                            : "published gamedata is for game build " + (published.empty() ? "?" : published) +
-                                                  ", this server runs " + serverTag);
-        return;
-    }
+    const auto* manifest = &found->manifest;
+    const auto feedBase = site + "/" + found->directory + "/";
     const auto feed = pg::ParseManifestFiles(*manifest);
 
     // Which feed file each local file was patched from last time: a patched file no longer
@@ -1412,7 +1443,7 @@ void TryUpdatePluginGamedata()
 
         auto& slot = feedCache[url];
         std::string fetchError;
-        auto body = FetchBody(site + "/latest/" + url, fetchError);
+        auto body = FetchBody(feedBase + url, fetchError);
         if (!body)
         {
             CSSHARP_CORE_WARN("Plugin gamedata: {}", fetchError);
