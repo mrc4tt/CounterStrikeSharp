@@ -86,7 +86,7 @@ KHook::Return<void> DetourHostSay(CEntityInstance* pController, CCommand& args, 
     {
         // Drop the trigger prefix (e.g. "!" or "/"). The old `ArgS() + prefix.length() + 1` assumed the
         // messagemode quote, so the bind path lost its first real char (!throw -> css_hrow).
-        std::string commandText = message.substr(std::min(prefix.length(), message.length()));
+        std::string commandText = message.substr((std::min)(prefix.length(), message.length()));
 
         CCommand cmd;
         cmd.Tokenize(commandText.c_str());

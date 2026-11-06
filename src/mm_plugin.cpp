@@ -207,12 +207,17 @@ bool CounterStrikeSharpMMPlugin::Load(PluginId id, ISmmAPI* ismm, char* error, s
 
         CSSHARP_CORE_DEBUG("CoreConfig loaded.");
 
+        // Rolls back a gamedata update the previous start died with, before anything reads gamedata.
+        update::CheckPreviousStart();
+
         // A failed update is logged inside and never fatal: the gamedata.json already on disk is
         // loaded below either way.
         if (globals::coreConfig->AutoUpdateEnabled)
         {
             update::TryUpdateGameConfig();
+            if (globals::coreConfig->PluginGamedataAutoUpdate) update::TryUpdatePluginGamedata();
         }
+        update::StartUpdateConfirmTimer();
 
         auto gamedata_path = std::string(utils::GamedataDirectory() + "/gamedata.json");
         delete globals::gameConfig; // previous meta load's, see coreConfig above
@@ -239,6 +244,7 @@ bool CounterStrikeSharpMMPlugin::Load(PluginId id, ISmmAPI* ismm, char* error, s
 
         // Which gamedata signatures resolve on this CS2 build, for the hosting panel.
         update::WriteGamedataStatus();
+        if (globals::coreConfig->GamedataReportEnabled) update::ReportGamedata();
 
         CSSHARP_CORE_DEBUG("Globals loaded.");
         globals::mmPlugin = &gPlugin;
@@ -381,6 +387,9 @@ bool CounterStrikeSharpMMPlugin::Unload(char* error, size_t maxlen)
     // Managed plugins first, while every native they call to unregister themselves still works.
     globals::dotnetManager.Shutdown();
     globals::tickScheduler.clear();
+
+    // A clean unload is not a crash: keep a pending gamedata update (core/gamedata_update_guard.h).
+    update::StopUpdateConfirmTimer(true);
 
     StopGameSystems();
     HookSet::ClearAll();

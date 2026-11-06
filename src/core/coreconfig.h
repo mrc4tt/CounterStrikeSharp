@@ -18,6 +18,9 @@
 
 #include <nlohmann/json.hpp>
 
+#include "core/gamedata_signature.h"
+
+#include <map>
 #include <string>
 
 #include "core/globals.h"
@@ -36,8 +39,30 @@ class CCoreConfig
     bool UnlockConCommands = true;
     bool UnlockConVars = true;
     bool AutoUpdateEnabled = true;
-    std::string AutoUpdateURL = std::string("https://sig.miksen.me/latest/CounterStrikeSharp/gamedata.json");
+    static constexpr const char* kDefaultAutoUpdateURL = "https://sig.miksen.me/latest/CounterStrikeSharp/gamedata.json";
+    std::string AutoUpdateURL = std::string(kDefaultAutoUpdateURL);
+    // The AutoUpdateURL core.json named when it was upstream's feed (gamedata.cssharp.dev), which
+    // the fork's gamedata does not match; AutoUpdateURL then holds the default instead. Empty
+    // otherwise. Logged by update::TryUpdateGameConfig.
+    std::string ReplacedAutoUpdateURL;
     std::string LogVerbosity = "information";
+    // Plugin gamedata auto-update (gameconfig_updater.cpp, core/gamedata_plugin_update.h): swaps
+    // signatures that do not resolve in gamedata/*.json (not plugins/*/gamedata/ copies) for the
+    // feed's, from the same site as AutoUpdateURL. Needs AutoUpdateEnabled as well.
+    bool PluginGamedataAutoUpdate = true;
+    // Local file (path relative to addons/counterstrikesharp, or bare file name) -> feed file
+    // ("<plugin>/<fileName>" under <site>/latest/), for files the updater cannot identify by
+    // itself. An empty value turns the update off for that file.
+    std::map<std::string, std::string> PluginGamedataFeeds;
+    // Opt-in: tell VibeSignatures which plugin gamedata files this server runs (file names, key
+    // names, sha256 and which keys don't resolve; never the file text), so files it does not
+    // generate yet can get a generator. See update::ReportGamedata.
+    bool GamedataReportEnabled = false;
+    std::string GamedataReportURL = std::string("https://sig-api.miksen.me/api/report");
+    // Ed25519 public key(s) (base64, space- or comma-separated) the feed's latest/manifest.json.sig
+    // must verify against before the updaters apply anything from it (core/gamedata_signature.h).
+    // "" turns the check off, for a self-hosted feed; VibeSignatures' is signed.
+    std::string GamedataSigningKey = std::string(update::signing::kDefaultPublicKeys);
 
     using json = nlohmann::json;
     CCoreConfig(const std::string& path);

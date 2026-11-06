@@ -10,6 +10,10 @@
     "UnlockConVars": true,
     "AutoUpdateEnabled": true,
     "AutoUpdateURL": "https://sig.miksen.me/latest/CounterStrikeSharp/gamedata.json",
+    "PluginGamedataAutoUpdate": true,
+    "PluginGamedataFeeds": {},
+    "GamedataReportEnabled": false,
+    "GamedataReportURL": "https://sig-api.miksen.me/api/report",
     "MaximumFrameTasksExecutedPerTick": 1024,
     "LogVerbosity": "information",
     "PluginLogFiles": false

@@ -50,6 +50,11 @@ set(SOURCE_FILES
     src/core/gameconfig.cpp
     src/core/gameconfig_updater.h
     src/core/gameconfig_updater.cpp
+    src/core/gamedata_signature.h
+    src/core/gamedata_signature.cpp
+    src/core/gamedata_update_guard.h
+    src/core/gamedata_update_guard.cpp
+    libraries/tweetnacl/tweetnacl.c
     src/core/gamedata_vtable.h
     src/core/vtable_fallback.h
     src/core/vtable_fallback.cpp

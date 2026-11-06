@@ -16,11 +16,31 @@
 
 #include "core/coreconfig.h"
 
+#include <algorithm>
+#include <cctype>
 #include <fstream>
 
 #include "core/log.h"
 
 namespace counterstrikesharp {
+
+namespace {
+
+// http(s)://gamedata.cssharp.dev[/...], upstream's gamedata feed and the old AutoUpdateURL default.
+bool IsUpstreamGamedataUrl(std::string url)
+{
+    std::transform(url.begin(), url.end(), url.begin(), [](unsigned char c) {
+        return static_cast<char>(std::tolower(c));
+    });
+    for (const char* prefix : { "http://gamedata.cssharp.dev", "https://gamedata.cssharp.dev" })
+    {
+        const std::string p(prefix);
+        if (url.compare(0, p.size(), p) == 0 && (url.size() == p.size() || url[p.size()] == '/' || url[p.size()] == ':')) return true;
+    }
+    return false;
+}
+
+} // namespace
 
 CCoreConfig::CCoreConfig(const std::string& path) { m_sPath = path; }
 
@@ -71,7 +91,29 @@ bool CCoreConfig::Init(char* conf_error, int conf_error_size)
         UnlockConVars = m_json.value("UnlockConVars", UnlockConVars);
         AutoUpdateEnabled = m_json.value("AutoUpdateEnabled", AutoUpdateEnabled);
         AutoUpdateURL = m_json.value("AutoUpdateURL", AutoUpdateURL);
+        if (IsUpstreamGamedataUrl(AutoUpdateURL))
+        {
+            // Every core.json written before the fork moved to VibeSignatures carries upstream's
+            // feed. Its gamedata is upstream's, not this fork's, so the regression check would
+            // reject it at best; point such configs at the fork's feed. AutoUpdateEnabled is
+            // still the owner's call.
+            ReplacedAutoUpdateURL = AutoUpdateURL;
+            AutoUpdateURL = kDefaultAutoUpdateURL;
+        }
         LogVerbosity = m_json.value("LogVerbosity", LogVerbosity);
+        PluginGamedataAutoUpdate = m_json.value("PluginGamedataAutoUpdate", PluginGamedataAutoUpdate);
+        GamedataReportEnabled = m_json.value("GamedataReportEnabled", GamedataReportEnabled);
+        GamedataReportURL = m_json.value("GamedataReportURL", GamedataReportURL);
+        if (m_json.contains("GamedataSigningKey") && m_json["GamedataSigningKey"].is_null()) GamedataSigningKey.clear();
+        else
+            GamedataSigningKey = m_json.value("GamedataSigningKey", GamedataSigningKey);
+        if (m_json.contains("PluginGamedataFeeds") && m_json["PluginGamedataFeeds"].is_object())
+        {
+            for (const auto& [file, feed] : m_json["PluginGamedataFeeds"].items())
+                if (feed.is_string()) PluginGamedataFeeds[file] = feed.get<std::string>();
+                else if (feed.is_null())
+                    PluginGamedataFeeds[file] = "";
+        }
     }
     catch (const std::exception& ex)
     {
