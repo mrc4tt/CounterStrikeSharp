@@ -193,3 +193,141 @@ TEST_CASE("Serialize keeps key order, indentation, line endings and the trailing
 
     CHECK(DetectIndent("{\"A\":1}").width == 4);
 }
+
+TEST_CASE("ContentSha256s matches a file with or without a UTF-8 BOM", "[plugin-gamedata]")
+{
+    const std::string text = "{ \"A\": {} }\n";
+    const auto plain = ContentSha256s(text);
+    const auto bom = ContentSha256s(std::string(kUtf8Bom) + text);
+    REQUIRE(plain.size() == 2);
+    CHECK(plain[0] == Sha256Hex(text));
+    CHECK(plain[1] == Sha256Hex(std::string(kUtf8Bom) + text));
+    // The same two hashes, whichever variant is on disk.
+    CHECK(std::set<std::string>(plain.begin(), plain.end()) == std::set<std::string>(bom.begin(), bom.end()));
+
+    std::map<std::string, std::set<std::string>> hashes = { { Sha256Hex(text), { "matchzy/matchzy.json" } } };
+    auto c = FindCandidates("matchzy.json", bom, Feed(), hashes, nullptr, "");
+    CHECK(c.match == Match::Hash);
+}
+
+TEST_CASE("CompareBuilds orders by number, then rebuild suffix", "[plugin-gamedata]")
+{
+    CHECK(CompareBuilds("14195", "14196") < 0);
+    CHECK(CompareBuilds("14196", "14196") == 0);
+    CHECK(CompareBuilds("14178", "14178b") < 0);
+    CHECK(CompareBuilds("14178b", "14179") < 0);
+    CHECK(CompareBuilds("9999", "14000") < 0);
+    CHECK(CompareBuilds("014196", "14196") == 0);
+}
+
+namespace {
+
+std::map<std::string, std::vector<Publication>> Publications()
+{
+    auto index = nlohmann::json::parse(R"({ "versions": [
+        { "gameVersion": "14196", "files": [ { "plugin": "matchzy", "fileName": "matchzy.json", "content": { "sha256": "new" } } ] },
+        { "gameVersion": "14195", "files": [ { "plugin": "matchzy", "fileName": "matchzy.json", "content": { "sha256": "old" } },
+                                             { "plugin": "matchzy-original", "fileName": "matchzy.json", "content": { "sha256": "fork" } } ] },
+        { "gameVersion": "14194", "files": [ { "plugin": "matchzy", "fileName": "matchzy.json", "content": { "sha256": "OLD" } } ] },
+        { "gameVersion": "14197", "files": [ { "plugin": "matchzy", "fileName": "matchzy.json", "content": { "sha256": "ahead" } } ] }
+    ] })");
+    return ParseIndexPublications(index);
+}
+
+} // namespace
+
+TEST_CASE("ParseIndexPublications keeps the build of every publication", "[plugin-gamedata]")
+{
+    auto publications = Publications();
+    REQUIRE(publications["old"].size() == 2);
+    CHECK(publications["old"][0].url == "matchzy/matchzy.json");
+    CHECK(publications["old"][0].build == "14195");
+    CHECK(publications["old"][1].build == "14194");
+    CHECK(publications.count("fork") == 1);
+}
+
+TEST_CASE("DecideWholeFileRefresh: an unmodified copy from an earlier build takes this build's file", "[plugin-gamedata]")
+{
+    auto d = DecideWholeFileRefresh({ "old" }, "matchzy/matchzy.json", "14196", "new", true, Publications());
+    CHECK(d.refresh);
+    // The newest earlier build it was published for.
+    CHECK(d.fromBuild == "14195");
+}
+
+TEST_CASE("DecideWholeFileRefresh refuses anything it cannot prove", "[plugin-gamedata]")
+{
+    const auto publications = Publications();
+
+    SECTION("already this build's file")
+    {
+        auto d = DecideWholeFileRefresh({ "new" }, "matchzy/matchzy.json", "14196", "new", true, publications);
+        CHECK_FALSE(d.refresh);
+        CHECK(d.current);
+    }
+    SECTION("edited locally: no published hash")
+    {
+        auto d = DecideWholeFileRefresh({ "edited" }, "matchzy/matchzy.json", "14196", "new", true, publications);
+        CHECK_FALSE(d.refresh);
+        CHECK_FALSE(d.current);
+    }
+    SECTION("published, but as another feed file")
+    {
+        auto d = DecideWholeFileRefresh({ "fork" }, "matchzy/matchzy.json", "14196", "new", true, publications);
+        CHECK_FALSE(d.refresh);
+    }
+    SECTION("published only for a later build than this server's")
+    {
+        auto d = DecideWholeFileRefresh({ "ahead" }, "matchzy/matchzy.json", "14196", "new", true, publications);
+        CHECK_FALSE(d.refresh);
+    }
+    SECTION("unsigned manifest")
+    {
+        auto d = DecideWholeFileRefresh({ "old" }, "matchzy/matchzy.json", "14196", "new", false, publications);
+        CHECK_FALSE(d.refresh);
+        CHECK(d.why.find("not signed") != std::string::npos);
+    }
+    SECTION("this build's manifest does not list the file")
+    {
+        auto d = DecideWholeFileRefresh({ "old" }, "matchzy/matchzy.json", "14196", "", true, publications);
+        CHECK_FALSE(d.refresh);
+    }
+    SECTION("a rebuild of the same game build counts as later")
+    {
+        auto d = DecideWholeFileRefresh({ "new" }, "matchzy/matchzy.json", "14196b", "rebuilt", true, publications);
+        CHECK(d.refresh);
+        CHECK(d.fromBuild == "14196");
+    }
+}
+
+TEST_CASE("DroppedKeys lists gamedata keys the incoming file lacks", "[plugin-gamedata]")
+{
+    auto local = ordered_json::parse(R"({ "_comment": 1, "A": {}, "B": {} })");
+    CHECK(DroppedKeys(local, ordered_json::parse(R"({ "A": {}, "B": {}, "C": {} })")).empty());
+    CHECK(DroppedKeys(local, ordered_json::parse(R"({ "A": {} })")) == std::vector<std::string>{ "B" });
+}
+
+TEST_CASE("DiffEntries names the platform of every changed signature and offset", "[plugin-gamedata]")
+{
+    auto before = ordered_json::parse(R"({
+        "Same": { "signatures": { "library": "server", "linux": "AA" } },
+        "Sig": { "signatures": { "library": "server", "linux": "AA", "windows": "BB" } },
+        "Off": { "offsets": { "linux": 1, "windows": 2 } },
+        "Gone": { "offsets": { "linux": 1 } }
+    })");
+    auto after = ordered_json::parse(R"({
+        "Same": { "signatures": { "library": "server", "linux": "AA" } },
+        "Sig": { "signatures": { "library": "engine", "linux": "AC", "windows": "BB" } },
+        "Off": { "offsets": { "linux": 1, "windows": 3 }, "vtable": { "class": "X" } },
+        "New": { "offsets": { "linux": 5 } }
+    })");
+    auto diff = DiffEntries(before, after);
+    REQUIRE(diff.size() == 4);
+    CHECK(diff[0].name == "Sig");
+    CHECK(diff[0].changed == std::vector<std::string>{ "signatures.library", "signatures.linux" });
+    CHECK(diff[1].name == "Off");
+    CHECK(diff[1].changed == std::vector<std::string>{ "offsets.windows", "vtable" });
+    CHECK(diff[2].name == "New");
+    CHECK(diff[2].changed == std::vector<std::string>{ "added" });
+    CHECK(diff[3].name == "Gone");
+    CHECK(diff[3].changed == std::vector<std::string>{ "removed" });
+}

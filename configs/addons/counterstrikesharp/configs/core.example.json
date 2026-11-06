@@ -14,6 +14,7 @@
     "PluginGamedataFeeds": {},
     "GamedataReportEnabled": false,
     "GamedataReportURL": "https://sig-api.miksen.me/api/report",
+    "GamedataUploadEnabled": false,
     "MaximumFrameTasksExecutedPerTick": 1024,
     "LogVerbosity": "information",
     "PluginLogFiles": false

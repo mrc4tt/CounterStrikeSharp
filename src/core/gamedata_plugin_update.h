@@ -121,6 +121,44 @@ inline std::string Lower(std::string text)
     return text;
 }
 
+constexpr const char kUtf8Bom[] = "\xEF\xBB\xBF";
+
+// sha256 of `text` and of its other UTF-8 BOM variant (without the BOM when it has one, with one
+// when it has none). An editor that adds or drops a BOM changes no byte the gamedata readers
+// look at (nlohmann and System.Text.Json both skip it), so a published file saved that way is
+// still that published file.
+inline std::vector<std::string> ContentSha256s(const std::string& text)
+{
+    const bool hasBom = text.rfind(kUtf8Bom, 0) == 0;
+    return { Sha256Hex(text), Sha256Hex(hasBom ? text.substr(3) : std::string(kUtf8Bom) + text) };
+}
+
+inline bool AnyOf(const std::vector<std::string>& shas, const std::string& sha)
+{
+    return std::find(shas.begin(), shas.end(), Lower(sha)) != shas.end();
+}
+
+// Game builds as VibeSignatures names them: "14196", or "14178b" for a rebuild of 14178 (which
+// comes after it). <0, 0, >0 like strcmp; a build without digits sorts first.
+inline int CompareBuilds(const std::string& a, const std::string& b)
+{
+    auto split = [](const std::string& build) {
+        size_t digits = 0;
+        while (digits < build.size() && std::isdigit(static_cast<unsigned char>(build[digits])))
+            ++digits;
+        std::string number = build.substr(0, digits);
+        // Leading zeros off; (std::min) because windows.h may define a min macro.
+        number.erase(0, (std::min)(number.find_first_not_of('0'), number.size()));
+        return std::make_pair(number, build.substr(digits));
+    };
+    const auto [numberA, suffixA] = split(a);
+    const auto [numberB, suffixB] = split(b);
+    if (numberA.size() != numberB.size()) return numberA.size() < numberB.size() ? -1 : 1;
+    if (const int c = numberA.compare(numberB); c != 0) return c < 0 ? -1 : 1;
+    if (const int c = suffixA.compare(suffixB); c != 0) return c < 0 ? -1 : 1;
+    return 0;
+}
+
 // --- Site metadata ---
 
 struct FeedFile
@@ -176,6 +214,41 @@ inline std::map<std::string, std::set<std::string>> ParseIndexHashes(const nlohm
     return out;
 }
 
+// One appearance of a file in gamedata/index.json: published as `url` ("<plugin>/<fileName>")
+// for game build `build`.
+struct Publication
+{
+    std::string url;
+    std::string build;
+};
+
+// gamedata/index.json: sha256 -> every (url, build) it was published as. ParseIndexHashes without
+// the builds is enough to identify a file; deciding whether it is an *older* copy needs them.
+inline std::map<std::string, std::vector<Publication>> ParseIndexPublications(const nlohmann::json& index)
+{
+    std::map<std::string, std::vector<Publication>> out;
+    if (!index.is_object() || !index.contains("versions") || !index["versions"].is_array()) return out;
+
+    for (const auto& version : index["versions"])
+    {
+        if (!version.is_object() || !version.contains("gameVersion") || !version["gameVersion"].is_string() || !version.contains("files") ||
+            !version["files"].is_array())
+            continue;
+        const auto build = version["gameVersion"].get<std::string>();
+        for (const auto& file : version["files"])
+        {
+            if (!file.is_object() || !file.contains("plugin") || !file.contains("fileName") || !file.contains("content")) continue;
+            const auto& content = file["content"];
+            if (!file["plugin"].is_string() || !file["fileName"].is_string() || !content.is_object() || !content.contains("sha256") ||
+                !content["sha256"].is_string())
+                continue;
+            out[Lower(content["sha256"].get<std::string>())].push_back(
+                { file["plugin"].get<std::string>() + "/" + file["fileName"].get<std::string>(), build });
+        }
+    }
+    return out;
+}
+
 // --- Identification ---
 
 enum class Match
@@ -221,8 +294,9 @@ inline bool InFeed(const std::vector<FeedFile>& feed, const std::string& url)
 
 // explicitUrl: the core.json mapping for this file, if any ("" = do not update this file).
 // hashes: ParseIndexHashes, may be empty when index.json could not be fetched.
+// localSha256s: ContentSha256s of the file (or just its sha256): any of them may match.
 inline Candidates FindCandidates(const std::string& fileName,
-                                 const std::string& localSha256,
+                                 const std::vector<std::string>& localSha256s,
                                  const std::vector<FeedFile>& feed,
                                  const std::map<std::string, std::set<std::string>>& hashes,
                                  const std::string* explicitUrl,
@@ -246,11 +320,16 @@ inline Candidates FindCandidates(const std::string& fileName,
     // A published byte-for-byte copy names the plugin exactly. If it was published under more
     // than one name (a fork shipping the same file), the one remembered from last time decides,
     // otherwise key overlap does.
-    auto hashed = hashes.find(Lower(localSha256));
-    if (hashed != hashes.end())
+    std::set<std::string> hashedUrls;
+    for (const auto& sha : localSha256s)
+    {
+        auto hashed = hashes.find(Lower(sha));
+        if (hashed != hashes.end()) hashedUrls.insert(hashed->second.begin(), hashed->second.end());
+    }
+    if (!hashedUrls.empty())
     {
         std::vector<std::string> live;
-        for (const auto& url : hashed->second)
+        for (const auto& url : hashedUrls)
             if (InFeed(feed, url)) live.push_back(url);
         if (!live.empty())
         {
@@ -276,6 +355,16 @@ inline Candidates FindCandidates(const std::string& fileName,
     else
         out.note = "no feed file is named " + fileName;
     return out;
+}
+
+inline Candidates FindCandidates(const std::string& fileName,
+                                 const std::string& localSha256,
+                                 const std::vector<FeedFile>& feed,
+                                 const std::map<std::string, std::set<std::string>>& hashes,
+                                 const std::string* explicitUrl,
+                                 const std::string& rememberedUrl)
+{
+    return FindCandidates(fileName, std::vector<std::string>{ localSha256 }, feed, hashes, explicitUrl, rememberedUrl);
 }
 
 inline bool IsGamedataKey(const std::string& key) { return !key.empty() && key[0] != '_'; }
@@ -401,6 +490,148 @@ PatchBrokenSignatures(ordered_json& local, const ordered_json& feed, const char*
         result.patched.push_back(key);
     }
     return result;
+}
+
+// --- Taking this build's file whole (offsets included) ---
+//
+// Offsets cannot be checked in this process: a wrong offset reads or writes the wrong field and
+// nothing notices until a crash. So a plugin file's offsets only change when the file provably
+// is VibeSignatures' own and unmodified, just from an earlier build: byte-identical (BOM aside)
+// to a file gamedata/index.json lists as published under the same feed URL for an earlier
+// build, while this server's build has a newer version of that same feed file in its signed
+// manifest. Then nothing in the local file is the operator's or the plugin author's, and this
+// build's file is what VibeSignatures generated from the same source for this build: it is
+// taken whole, byte for byte. Whole rather than per key so the result is again a published
+// file, which keeps it identifiable by hash and eligible for the same step on the next build
+// (a per-key merge would never match a published hash again). Any local difference keeps the
+// signature-only rule above.
+
+struct RefreshDecision
+{
+    bool refresh = false;
+    bool current = false; // already this build's file: nothing to do
+    std::string fromBuild; // newest earlier build the local file was published for
+    std::string why; // why not, for the log
+};
+
+// localSha256s: ContentSha256s of the local file. url: the feed file it was identified as.
+// feedBuild: the gameVersion of the signed manifest this server's build uses; feedSha256: the
+// sha256 that manifest lists for url ("" when it lists none). signedManifest: the manifest's
+// signature was verified (GamedataSigningKey set); without one no file is taken whole.
+inline RefreshDecision DecideWholeFileRefresh(const std::vector<std::string>& localSha256s,
+                                              const std::string& url,
+                                              const std::string& feedBuild,
+                                              const std::string& feedSha256,
+                                              bool signedManifest,
+                                              const std::map<std::string, std::vector<Publication>>& publications)
+{
+    RefreshDecision out;
+    if (AnyOf(localSha256s, feedSha256) && !feedSha256.empty())
+    {
+        out.current = true;
+        out.why = "already the file published for build " + feedBuild;
+        return out;
+    }
+
+    for (const auto& sha : localSha256s)
+    {
+        auto it = publications.find(Lower(sha));
+        if (it == publications.end()) continue;
+        for (const auto& publication : it->second)
+            if (publication.url == url && CompareBuilds(publication.build, feedBuild) < 0 &&
+                (out.fromBuild.empty() || CompareBuilds(publication.build, out.fromBuild) > 0))
+                out.fromBuild = publication.build;
+    }
+
+    if (out.fromBuild.empty())
+    {
+        out.why = "not a published copy of " + url + " for an earlier build (edited, or another release)";
+        return out;
+    }
+    if (!signedManifest)
+    {
+        out.why = "the manifest is not signed (GamedataSigningKey is off)";
+        return out;
+    }
+    if (feedSha256.empty())
+    {
+        out.why = "build " + feedBuild + "'s manifest lists no sha256 for " + url;
+        return out;
+    }
+    out.refresh = true;
+    return out;
+}
+
+// Gamedata keys `local` has and `incoming` does not. Taking a file whole must not drop a key
+// the plugin may still read; when it would, the file keeps the signature-only rule.
+inline std::vector<std::string> DroppedKeys(const ordered_json& local, const ordered_json& incoming)
+{
+    std::vector<std::string> out;
+    if (!local.is_object()) return out;
+    for (const auto& [key, value] : local.items())
+        if (IsGamedataKey(key) && (!incoming.is_object() || !incoming.contains(key))) out.push_back(key);
+    return out;
+}
+
+// One key the updater changed, and what in it: "signatures.linux", "offsets.windows",
+// "signatures.library", "added", or the name of any other field that changed.
+struct KeyChange
+{
+    std::string name;
+    std::vector<std::string> changed;
+};
+
+inline std::vector<KeyChange> DiffEntries(const ordered_json& before, const ordered_json& after)
+{
+    std::vector<KeyChange> out;
+    if (!after.is_object()) return out;
+    for (const auto& [key, value] : after.items())
+    {
+        if (!IsGamedataKey(key)) continue;
+        if (!before.is_object() || !before.contains(key))
+        {
+            out.push_back({ key, { "added" } });
+            continue;
+        }
+        const auto& old = before[key];
+        if (old == value) continue;
+
+        KeyChange change{ key, {} };
+        if (!old.is_object() || !value.is_object())
+        {
+            change.changed.push_back("value");
+            out.push_back(std::move(change));
+            continue;
+        }
+        std::set<std::string> fields;
+        for (const auto& [field, unused] : old.items())
+            fields.insert(field);
+        for (const auto& [field, unused] : value.items())
+            fields.insert(field);
+        for (const auto& field : fields)
+        {
+            const auto* a = old.contains(field) ? &old[field] : nullptr;
+            const auto* b = value.contains(field) ? &value[field] : nullptr;
+            if (a && b && *a == *b) continue;
+            // signatures/offsets: per platform (and library), the part the status is read for.
+            if ((field == "signatures" || field == "offsets") && a && b && a->is_object() && b->is_object())
+            {
+                std::set<std::string> subs;
+                for (const auto& [sub, unused] : a->items())
+                    subs.insert(sub);
+                for (const auto& [sub, unused] : b->items())
+                    subs.insert(sub);
+                for (const auto& sub : subs)
+                    if (!a->contains(sub) || !b->contains(sub) || (*a)[sub] != (*b)[sub]) change.changed.push_back(field + "." + sub);
+                continue;
+            }
+            change.changed.push_back(field);
+        }
+        out.push_back(std::move(change));
+    }
+    for (const auto& key : DroppedKeys(before, after))
+        out.push_back({ key, { "removed" } });
+    return out;
 }
 
 // --- Writing back in the file's own style ---

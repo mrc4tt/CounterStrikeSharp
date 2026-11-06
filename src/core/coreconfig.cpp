@@ -104,6 +104,7 @@ bool CCoreConfig::Init(char* conf_error, int conf_error_size)
         PluginGamedataAutoUpdate = m_json.value("PluginGamedataAutoUpdate", PluginGamedataAutoUpdate);
         GamedataReportEnabled = m_json.value("GamedataReportEnabled", GamedataReportEnabled);
         GamedataReportURL = m_json.value("GamedataReportURL", GamedataReportURL);
+        GamedataUploadEnabled = m_json.value("GamedataUploadEnabled", GamedataUploadEnabled);
         if (m_json.contains("GamedataSigningKey") && m_json["GamedataSigningKey"].is_null()) GamedataSigningKey.clear();
         else
             GamedataSigningKey = m_json.value("GamedataSigningKey", GamedataSigningKey);
