@@ -8,6 +8,8 @@
 #include "core/gamedata_plugin_update.h"
 #include "core/gamedata_signature.h"
 #include "core/gamedata_update_guard.h"
+#include "core/gamedata_update_status.h"
+#include "core/gamedata_upload.h"
 #include "core/gameconfig.h"
 #include "core/memory.h"
 #include "core/memory_module.h"
@@ -21,6 +23,7 @@
 #include <ctime>
 #include <filesystem>
 #include <fstream>
+#include <functional>
 #include <iterator>
 #include <memory>
 #include <mutex>
@@ -59,6 +62,11 @@ constexpr long kTotalTimeoutSeconds = 15;
 
 std::chrono::steady_clock::time_point g_updateDeadline;
 
+// What the updaters did on this start, for the "patched" block of logs/gamedata-status.json.
+// Game thread only: CheckPreviousStart resets it, the updaters and WriteGamedataStatus run after
+// it in the same Load().
+status::StartRecord g_startRecord;
+
 // Seconds left of the update budget, or 0 when it is spent.
 long RemainingBudgetSeconds(const std::chrono::steady_clock::time_point* deadline = nullptr)
 {
@@ -74,6 +82,19 @@ struct FetchResult
     std::string etag;
     std::string body;
     std::string error;
+};
+
+// A plain GET unless told otherwise. Every request runs against the update budget
+// (g_updateDeadline) unless `deadline` names another.
+struct FetchOptions
+{
+    const std::string* body = nullptr; // JSON request body: POST, unless `method` says otherwise
+    const char* method = nullptr; // e.g. "PUT"
+    std::string header; // one extra request header, "Name: value"
+    // Off for anything that must come from one host only (the upload read links): a redirect
+    // would hand the request, and the answer, to another.
+    bool followRedirects = true;
+    const std::chrono::steady_clock::time_point* deadline = nullptr;
 };
 
 struct ParsedUrl
@@ -118,6 +139,7 @@ constexpr int OPT_WRITEDATA = 10001;
 constexpr int OPT_URL = 10002;
 constexpr int OPT_POSTFIELDS = 10015;
 constexpr int OPT_POSTFIELDSIZE = 60;
+constexpr int OPT_CUSTOMREQUEST = 10036;
 constexpr int OPT_TIMEOUT = 13;
 constexpr int OPT_USERAGENT = 10018;
 constexpr int OPT_HTTPHEADER = 10023;
@@ -233,13 +255,11 @@ size_t OnHeader(char* data, size_t size, size_t count, void* userdata)
 }
 } // namespace curl
 
-FetchResult Fetch(const ParsedUrl&,
-                  const std::string& fullUrl,
-                  const std::string& knownETag,
-                  const std::string* postJson = nullptr,
-                  const std::chrono::steady_clock::time_point* deadline = nullptr)
+FetchResult Fetch(const ParsedUrl&, const std::string& fullUrl, const std::string& knownETag, const FetchOptions& options = {})
 {
     FetchResult result;
+    const auto* postJson = options.body;
+    const auto* deadline = options.deadline;
 
     const long budget = RemainingBudgetSeconds(deadline);
     if (budget == 0)
@@ -270,9 +290,11 @@ FetchResult Fetch(const ParsedUrl&,
         api->easy_setopt(easy, curl::OPT_POSTFIELDSIZE, static_cast<long>(postJson->size()));
         api->easy_setopt(easy, curl::OPT_POSTFIELDS, postJson->data());
     }
+    if (!options.header.empty()) headers = api->slist_append(headers, options.header.c_str());
+    if (options.method) api->easy_setopt(easy, curl::OPT_CUSTOMREQUEST, options.method);
 
     api->easy_setopt(easy, curl::OPT_URL, fullUrl.c_str());
-    api->easy_setopt(easy, curl::OPT_FOLLOWLOCATION, 1L);
+    api->easy_setopt(easy, curl::OPT_FOLLOWLOCATION, options.followRedirects ? 1L : 0L);
     api->easy_setopt(easy, curl::OPT_MAXREDIRS, 5L);
     api->easy_setopt(easy, curl::OPT_CONNECTTIMEOUT, std::min(kConnectTimeoutSeconds, budget));
     api->easy_setopt(easy, curl::OPT_TIMEOUT, budget);
@@ -335,13 +357,11 @@ std::string Narrow(const std::wstring& text)
 std::string Failed(const char* call) { return std::string(call) + " failed (WinHTTP error " + std::to_string(GetLastError()) + ")"; }
 } // namespace winhttp
 
-FetchResult Fetch(const ParsedUrl& url,
-                  const std::string& fullUrl,
-                  const std::string& knownETag,
-                  const std::string* postJson = nullptr,
-                  const std::chrono::steady_clock::time_point* deadline = nullptr)
+FetchResult Fetch(const ParsedUrl& url, const std::string& fullUrl, const std::string& knownETag, const FetchOptions& options = {})
 {
     FetchResult result;
+    const auto* postJson = options.body;
+    const auto* deadline = options.deadline;
 
     const long budget = RemainingBudgetSeconds(deadline);
     if (budget == 0)
@@ -390,17 +410,24 @@ FetchResult Fetch(const ParsedUrl& url,
     }
 
     const DWORD flags = url.scheme == "https" ? WINHTTP_FLAG_SECURE : 0;
-    winhttp::Handle request(WinHttpOpenRequest(connection.get(), postJson ? L"POST" : L"GET", path.c_str(), nullptr, WINHTTP_NO_REFERER,
-                                               WINHTTP_DEFAULT_ACCEPT_TYPES, flags));
+    const std::wstring verb = options.method ? winhttp::Widen(options.method) : postJson ? L"POST" : L"GET";
+    winhttp::Handle request(
+        WinHttpOpenRequest(connection.get(), verb.c_str(), path.c_str(), nullptr, WINHTTP_NO_REFERER, WINHTTP_DEFAULT_ACCEPT_TYPES, flags));
     if (!request)
     {
         result.error = winhttp::Failed("WinHttpOpenRequest");
         return result;
     }
+    if (!options.followRedirects)
+    {
+        DWORD policy = WINHTTP_OPTION_REDIRECT_POLICY_NEVER;
+        WinHttpSetOption(request.get(), WINHTTP_OPTION_REDIRECT_POLICY, &policy, sizeof(policy));
+    }
 
     std::wstring headers;
     if (!knownETag.empty()) headers = L"If-None-Match: " + winhttp::Widen(knownETag);
     if (postJson) headers += std::wstring(headers.empty() ? L"" : L"\r\n") + L"Content-Type: application/json";
+    if (!options.header.empty()) headers += std::wstring(headers.empty() ? L"" : L"\r\n") + winhttp::Widen(options.header);
 
     void* data = postJson ? const_cast<char*>(postJson->data()) : WINHTTP_NO_REQUEST_DATA;
     const DWORD dataSize = postJson ? static_cast<DWORD>(postJson->size()) : 0;
@@ -981,10 +1008,19 @@ bool TryUpdateGameConfig()
 
     g_updateDeadline = std::chrono::steady_clock::now() + std::chrono::seconds(kTotalTimeoutSeconds);
 
+    auto& core = g_startRecord.core;
+    core = {};
+    core.feed = configuredUrl;
+    auto outcome = [&](const char* result, std::string detail) {
+        core.result = result;
+        core.detail = std::move(detail);
+    };
+
     auto url = ParseUrl(configuredUrl);
     if (!url)
     {
         CSSHARP_CORE_ERROR("AutoUpdateURL '{}' is not an http:// or https:// URL", configuredUrl);
+        outcome("failed", "AutoUpdateURL is not an http:// or https:// URL");
         return false;
     }
 
@@ -1007,8 +1043,12 @@ bool TryUpdateGameConfig()
     if (!GameVersionMatches(configuredUrl, reason, matchedTag, manifest, feedUrl))
     {
         CSSHARP_CORE_WARN("Gamedata update skipped, keeping the current gamedata.json: {}", reason);
+        outcome("skipped", reason);
         return false;
     }
+    core.feed = feedUrl;
+    if (manifest.is_object() && manifest.contains("gameVersion") && manifest["gameVersion"].is_string())
+        core.build = manifest["gameVersion"].get<std::string>();
 
     // Without a gamedata.json there is nothing a 304 could refer to; ask for the full file.
     auto localETag = std::filesystem::exists(gamedataPath) ? ReadFirstLine(etagPath) : std::string();
@@ -1017,6 +1057,7 @@ bool TryUpdateGameConfig()
     if (!feed)
     {
         CSSHARP_CORE_ERROR("Gamedata feed URL '{}' is not an http:// or https:// URL", feedUrl);
+        outcome("failed", "the feed URL is not an http:// or https:// URL");
         return false;
     }
 
@@ -1024,6 +1065,7 @@ bool TryUpdateGameConfig()
     if (!res.error.empty())
     {
         CSSHARP_CORE_ERROR("Gamedata update from {} failed: {}", feedUrl, res.error);
+        outcome("failed", res.error);
         return false;
     }
 
@@ -1031,12 +1073,14 @@ bool TryUpdateGameConfig()
     {
         CSSHARP_CORE_INFO("Gamedata is up to date, ETag: {}", localETag);
         RecordGamedataBuild(matchedTag, gamedataPath);
+        outcome("up-to-date", "ETag " + localETag);
         return true;
     }
 
     if (res.status != 200)
     {
         CSSHARP_CORE_ERROR("Gamedata update from {} failed: HTTP {}", feedUrl, res.status);
+        outcome("failed", "HTTP " + std::to_string(res.status));
         return false;
     }
 
@@ -1044,6 +1088,7 @@ bool TryUpdateGameConfig()
     {
         CSSHARP_CORE_INFO("Gamedata is up to date, ETag: {}", localETag);
         RecordGamedataBuild(matchedTag, gamedataPath);
+        outcome("up-to-date", "ETag " + localETag);
         return true;
     }
 
@@ -1061,6 +1106,7 @@ bool TryUpdateGameConfig()
             CSSHARP_CORE_ERROR("Gamedata update from {} rejected: no signed manifest lists this file (set GamedataSigningKey to \"\" "
                                "in core.json only for a feed that is not VibeSignatures')",
                                feedUrl);
+            outcome("rejected", "no signed manifest lists this file");
             return false;
         }
         if (expected != bodySha256)
@@ -1068,6 +1114,7 @@ bool TryUpdateGameConfig()
             CSSHARP_CORE_ERROR("Gamedata update from {} rejected: its sha256 is not the one the signed manifest lists "
                                "(published mid-download, or tampered with); the next start tries again",
                                feedUrl);
+            outcome("rejected", "its sha256 is not the one the signed manifest lists");
             return false;
         }
     }
@@ -1077,6 +1124,7 @@ bool TryUpdateGameConfig()
         CSSHARP_CORE_WARN("Gamedata update skipped: this gamedata.json (sha256 {}) was rolled back after the server died early "
                           "with it twice; waiting for a newer one. Delete gamedata/update.rejected to try it again",
                           bodySha256);
+        outcome("skipped", "this file (sha256 " + bodySha256 + ") was rolled back after the server died early with it twice");
         return false;
     }
 
@@ -1084,6 +1132,7 @@ bool TryUpdateGameConfig()
     if (!ValidateGamedata(res.body, gamedataPath, error))
     {
         CSSHARP_CORE_ERROR("Gamedata update from {} rejected: {}", feedUrl, error);
+        outcome("rejected", error);
         return false;
     }
 
@@ -1109,6 +1158,7 @@ bool TryUpdateGameConfig()
     if (!SignaturesHoldUp(res.body, current, error))
     {
         CSSHARP_CORE_ERROR("Gamedata update from {} rejected, keeping the current gamedata.json: {}", feedUrl, error);
+        outcome("rejected", error);
         return false;
     }
 
@@ -1119,6 +1169,7 @@ bool TryUpdateGameConfig()
         if (!BackupGamedata(gamedataPath, backupPath, error))
         {
             CSSHARP_CORE_ERROR("Gamedata update skipped, the local gamedata.json could not be backed up: {}", error);
+            outcome("failed", "could not back up the current file: " + error);
             return false;
         }
         if (localEdits == LocalEdits::Edited || !rescued.empty())
@@ -1131,6 +1182,7 @@ bool TryUpdateGameConfig()
         if (!WriteRescuedKeys(rescued, rescuedPath, error))
         {
             CSSHARP_CORE_ERROR("Gamedata update skipped, keys not in the feed could not be moved to custom/: {}", error);
+            outcome("failed", "could not move keys the feed does not have to custom/: " + error);
             return false;
         }
 
@@ -1144,6 +1196,7 @@ bool TryUpdateGameConfig()
     if (!WriteAtomically(gamedataPath, res.body, error))
     {
         CSSHARP_CORE_ERROR("Gamedata update failed: {}", error);
+        outcome("failed", error);
         return false;
     }
     NotePendingWrite(gamedataPath, backupPath, bodySha256);
@@ -1158,6 +1211,9 @@ bool TryUpdateGameConfig()
     RecordWrittenHash(gamedataPath);
 
     CSSHARP_CORE_INFO("Gamedata file written to: {} with ETag {}", gamedataPath, res.etag);
+    outcome("updated", res.etag.empty() ? std::string() : "ETag " + res.etag);
+    core.sha256 = bodySha256;
+    core.backup = backupPath;
     return true;
 }
 
@@ -1167,7 +1223,17 @@ void CheckPreviousStart()
 {
     const auto directory = utils::GamedataDirectory();
     const auto gamedataPath = directory + "/gamedata.json";
+    // A new start (or `meta load`): nothing updated yet.
+    g_startRecord = {};
+    if (!globals::coreConfig->AutoUpdateEnabled) g_startRecord.core.detail = "AutoUpdateEnabled is off";
+
     auto check = guard::CheckPreviousStart(directory);
+    for (const auto& path : check.restored)
+    {
+        std::error_code ec;
+        auto relative = std::filesystem::relative(path, utils::GetRootDirectory(), ec).generic_string();
+        g_startRecord.rolledBack.push_back(ec || relative.empty() ? path : relative);
+    }
     for (const auto& error : check.errors)
         CSSHARP_CORE_WARN("Gamedata crash-loop guard: {}", error);
 
@@ -1338,12 +1404,53 @@ ExplicitFeedFor(const std::map<std::string, std::string>& feeds, const std::stri
     return byName;
 }
 
+// gamedata/plugin-gamedata.uploads (core/gamedata_upload.h). Written by the report's thread and
+// by the plugin updater; every change re-reads under this lock so neither drops the other's.
+std::string UploadsPath() { return utils::GamedataDirectory() + "/plugin-gamedata.uploads"; }
+
+// Never destroyed: the report's detached thread may still hold it while the process exits.
+std::mutex& UploadsMutex()
+{
+    static auto* mutex = new std::mutex;
+    return *mutex;
+}
+
+std::map<std::string, upload::Record> ReadUploads()
+{
+    auto json = nlohmann::json::parse(ReadWholeFile(UploadsPath()), nullptr, false);
+    return upload::ParseState(json.is_discarded() ? nlohmann::json() : json);
+}
+
+bool ChangeUploads(const std::function<void(std::map<std::string, upload::Record>&)>& change, std::string& error)
+{
+    std::lock_guard lock(UploadsMutex());
+    auto records = ReadUploads();
+    change(records);
+    return WriteAtomically(UploadsPath(), upload::SerializeState(records).dump(2) + "\n", error);
+}
+
+// Plugin files often leave "library" out, which means the server module; the regression check
+// reads it as given.
+bool PluginSignatureResolves(const std::string& library, const std::string& signature)
+{
+    return SignatureResolvesInProcess(library.empty() ? "server" : library, signature);
+}
+
+std::string JoinKeys(const std::vector<std::string>& keys)
+{
+    std::string out;
+    for (const auto& key : keys)
+        out += (out.empty() ? "" : ", ") + key;
+    return out;
+}
+
 } // namespace
 
 /// Fixes the signatures that do not resolve in gamedata/*.json (other than gamedata.json) from the
 /// same VibeSignatures site AutoUpdateURL points at. Only broken signatures are touched, and only
-/// with one that resolves here; see
-/// core/gamedata_plugin_update.h for the rules. Runs before gamedata and plugins load.
+/// with one that resolves here; a file that is an unmodified published copy from an earlier build
+/// is replaced by this build's (offsets included). See core/gamedata_plugin_update.h for the
+/// rules. Runs before gamedata and plugins load.
 void TryUpdatePluginGamedata()
 {
 #ifdef _WIN32
@@ -1373,11 +1480,13 @@ void TryUpdatePluginGamedata()
         fs::path path;
         std::string relative;
         std::string text;
+        std::vector<std::string> sha256s; // pg::ContentSha256s(text)
         pg::ordered_json json;
         size_t broken = 0;
     };
 
-    std::vector<LocalFile> work;
+    std::vector<LocalFile> files;
+    size_t brokenFiles = 0;
     for (const auto& path : GamedataFiles(root))
     {
         if (path == coreFile) continue; // the core updater's, replaced whole
@@ -1392,13 +1501,36 @@ void TryUpdatePluginGamedata()
         file.json = pg::ordered_json::parse(file.text, nullptr, false);
         if (file.json.is_discarded() || !file.json.is_object()) continue;
 
+        file.sha256s = pg::ContentSha256s(file.text);
         file.broken = pg::BrokenSignatures(file.json, platform, SignatureResolvesInProcess).size();
-        if (file.broken > 0) work.push_back(std::move(file));
+        if (file.broken > 0) ++brokenFiles;
+        files.push_back(std::move(file));
     }
 
-    if (work.empty())
+    // Which feed file each local file was patched from last time: a patched file no longer
+    // matches any published hash. Not ".json", so no gamedata reader picks it up. "_build": the
+    // game build every file was last looked at for (below).
+    const auto statePath = utils::GamedataDirectory() + "/plugin-gamedata.state";
+    auto state = nlohmann::json::parse(ReadWholeFile(statePath), nullptr, false);
+    if (state.is_discarded() || !state.is_object()) state = nlohmann::json::object();
+    bool stateChanged = false;
+
+    std::string error;
+    const auto serverTag = files.empty() ? std::string() : ServerGameVersionTag(error);
+    if (!files.empty() && serverTag.empty())
     {
-        CSSHARP_CORE_DEBUG("Plugin gamedata: every signature resolves, nothing to update");
+        if (brokenFiles > 0)
+            CSSHARP_CORE_WARN("Plugin gamedata update skipped: could not determine this server's game version ({})", error);
+        return;
+    }
+
+    // Offsets go stale on a game update without any signature breaking, and only a published copy
+    // can have them refreshed (DecideWholeFileRefresh). So once per game build every file is
+    // looked at; otherwise only files with a broken signature go to the network.
+    const bool buildCheck = !files.empty() && upload::Text(state, "_build") != serverTag;
+    if (brokenFiles == 0 && !buildCheck)
+    {
+        CSSHARP_CORE_DEBUG("Plugin gamedata: every signature resolves and build {} was checked already, nothing to update", serverTag);
         return;
     }
 
@@ -1406,38 +1538,58 @@ void TryUpdatePluginGamedata()
 
     // Same gate as the core update (ManifestForServer): this server's build, from latest/ or
     // builds/<build>/.
-    std::string error;
-    const auto serverTag = ServerGameVersionTag(error);
-    if (serverTag.empty())
-    {
-        CSSHARP_CORE_WARN("Plugin gamedata update skipped: could not determine this server's game version ({})", error);
-        return;
-    }
     auto found = ManifestForServer(site, serverTag, error);
     if (!found)
     {
-        CSSHARP_CORE_WARN("Plugin gamedata update skipped: {}", error);
+        if (brokenFiles > 0) CSSHARP_CORE_WARN("Plugin gamedata update skipped: {}", error);
+        else
+            CSSHARP_CORE_INFO("Plugin gamedata check for build {} skipped, retried next start: {}", serverTag, error);
         return;
     }
     const auto* manifest = &found->manifest;
     const auto feedBase = site + "/" + found->directory + "/";
     const auto feed = pg::ParseManifestFiles(*manifest);
-
-    // Which feed file each local file was patched from last time: a patched file no longer
-    // matches any published hash. Not ".json", so no gamedata reader picks it up.
-    const auto statePath = utils::GamedataDirectory() + "/plugin-gamedata.state";
-    auto state = nlohmann::json::parse(ReadWholeFile(statePath), nullptr, false);
-    if (state.is_discarded() || !state.is_object()) state = nlohmann::json::object();
-    bool stateChanged = false;
+    auto feedSha256 = [&](const std::string& url) {
+        auto it = std::find_if(feed.begin(), feed.end(), [&](const pg::FeedFile& f) {
+            return f.url == url;
+        });
+        return it == feed.end() ? std::string() : it->sha256;
+    };
 
     auto hints = nlohmann::json::parse(ReadWholeFile(utils::GamedataDirectory() + "/plugin-gamedata.report"), nullptr, false);
     if (hints.is_discarded() || !hints.is_object()) hints = nlohmann::json::object();
 
-    std::map<std::string, std::set<std::string>> hashes;
-    bool hashesFetched = false;
+    // This server's own uploads (GamedataUploadEnabled), read from the GamedataReportURL host only.
+    std::map<std::string, upload::Record> uploads;
+    std::optional<std::string> uploadOrigin;
+    if (config.GamedataUploadEnabled)
+    {
+        uploads = ReadUploads();
+        std::string why;
+        uploadOrigin = upload::ServiceOrigin(config.GamedataReportURL, why);
+        if (!uploadOrigin && !uploads.empty()) CSSHARP_CORE_WARN("Plugin gamedata: uploaded copies not used: {}", why);
+    }
 
-    std::map<std::string, std::optional<pg::ordered_json>> feedCache;
-    auto loadFeed = [&](const std::string& url) -> const pg::ordered_json* {
+    // Every build's published files: identification by hash, and whether a file is an older copy.
+    std::map<std::string, std::set<std::string>> hashes;
+    std::map<std::string, std::vector<pg::Publication>> publications;
+    bool indexFetched = false;
+    if (auto index = FetchJson(site + "/gamedata/index.json", error))
+    {
+        hashes = pg::ParseIndexHashes(*index);
+        publications = pg::ParseIndexPublications(*index);
+        indexFetched = true;
+    }
+    else
+        CSSHARP_CORE_WARN("Plugin gamedata: {}; identifying plugin files by name only, offsets are not updated", error);
+
+    struct FeedBody
+    {
+        pg::ordered_json json;
+        std::string body;
+    };
+    std::map<std::string, std::optional<FeedBody>> feedCache;
+    auto loadFeed = [&](const std::string& url) -> const FeedBody* {
         auto cached = feedCache.find(url);
         if (cached != feedCache.end()) return cached->second ? &*cached->second : nullptr;
 
@@ -1449,15 +1601,13 @@ void TryUpdatePluginGamedata()
             CSSHARP_CORE_WARN("Plugin gamedata: {}", fetchError);
             return nullptr;
         }
-        const auto expected = std::find_if(feed.begin(), feed.end(), [&](const pg::FeedFile& f) {
-            return f.url == url;
-        });
-        if (SigningEnabled() && (expected == feed.end() || expected->sha256.empty()))
+        const auto expected = feedSha256(url);
+        if (SigningEnabled() && expected.empty())
         {
             CSSHARP_CORE_WARN("Plugin gamedata: {} is not in the signed manifest, not used", url);
             return nullptr;
         }
-        if (expected != feed.end() && !expected->sha256.empty() && pg::Sha256Hex(*body) != expected->sha256)
+        if (!expected.empty() && pg::Sha256Hex(*body) != expected)
         {
             CSSHARP_CORE_WARN("Plugin gamedata: {} does not match the manifest's sha256 (changed mid-publish?), not used", url);
             return nullptr;
@@ -1468,24 +1618,96 @@ void TryUpdatePluginGamedata()
             CSSHARP_CORE_WARN("Plugin gamedata: {} is not a JSON object, not used", url);
             return nullptr;
         }
-        slot = std::move(json);
+        slot = FeedBody{ std::move(json), std::move(*body) };
         return &*slot;
     };
 
-    size_t filesPatched = 0, keysPatched = 0, keysLeft = 0;
-    for (auto& file : work)
+    size_t filesPatched = 0, filesRefreshed = 0, keysPatched = 0, keysLeft = 0;
+    std::map<std::string, std::string> uploadsWritten; // relative path -> sha256 written
+    // Read links the service answered 404 for (deleted, or expired unread after 90 days): dropped,
+    // so the next report uploads the file again.
+    std::set<std::string> uploadsGone;
+    // A file that should have been replaced with this build's and was not (network, disk): the
+    // build check runs again next start.
+    bool checkAgain = false;
+
+    // Backup, write, crash-loop guard: the same for every way a file gets written.
+    auto writeFile = [&](LocalFile& file, const std::string& text, status::FilePatch patch) {
+        const auto textSha256 = pg::Sha256Hex(text);
+        if (guard::Rejected(utils::GamedataDirectory()).count(textSha256))
+        {
+            CSSHARP_CORE_WARN("Plugin gamedata: {} not updated: this exact file was rolled back after the server died early with it "
+                              "twice. Delete gamedata/update.rejected to try it again",
+                              file.relative);
+            return false;
+        }
+
+        std::string writeError;
+        std::string backupPath;
+        if (!BackupPluginGamedata(file.relative, file.text, backupPath, writeError))
+        {
+            CSSHARP_CORE_ERROR("Plugin gamedata: {} not updated, it could not be backed up: {}", file.relative, writeError);
+            return false;
+        }
+        if (!WriteAtomically(file.path.string(), text, writeError))
+        {
+            CSSHARP_CORE_ERROR("Plugin gamedata: {} not updated: {}", file.relative, writeError);
+            return false;
+        }
+        NotePendingWrite(file.path.string(), backupPath, textSha256);
+        if (uploads.count(file.relative)) uploadsWritten[file.relative] = textSha256;
+
+        patch.file = file.relative;
+        patch.platform = platform;
+        patch.backup = backupPath;
+        patch.sha256 = textSha256;
+        g_startRecord.files.push_back(std::move(patch));
+        return true;
+    };
+
+    // Signature-only patch of `file` from `source`, written back in the file's own style.
+    auto patchSignatures = [&](LocalFile& file, const pg::ordered_json& source, status::FilePatch patch) {
+        auto result = pg::PatchBrokenSignatures(file.json, source, platform, SignatureResolvesInProcess);
+        for (const auto& reason : result.unresolved)
+            CSSHARP_CORE_WARN("Plugin gamedata: {} {} ({} {})", file.relative, reason, patch.source, patch.feed);
+        keysLeft += result.unresolved.size();
+        if (result.patched.empty()) return;
+
+        std::string text;
+        try
+        {
+            text = pg::Serialize(file.json, file.text);
+        }
+        catch (const std::exception& ex)
+        {
+            CSSHARP_CORE_ERROR("Plugin gamedata: {} not updated, could not serialize it: {}", file.relative, ex.what());
+            keysLeft += result.patched.size();
+            return;
+        }
+
+        const auto sourceName = patch.source;
+        const auto feedName = patch.feed;
+        const auto matchedBy = patch.matchedBy;
+        patch.mode = "signatures";
+        patch.keys = status::SignatureChanges(result.patched, platform);
+        if (!writeFile(file, text, std::move(patch)))
+        {
+            keysLeft += result.patched.size();
+            return;
+        }
+        CSSHARP_CORE_INFO("Plugin gamedata: {} fixed {} {} signature(s) from {} {} (matched by {}, backup {}): {}", file.relative,
+                          result.patched.size(), platform, sourceName, feedName, matchedBy, g_startRecord.files.back().backup,
+                          JoinKeys(result.patched));
+        ++filesPatched;
+        keysPatched += result.patched.size();
+    };
+
+    for (auto& file : files)
     {
+        if (file.broken == 0 && !buildCheck) continue;
+
         const auto fileName = file.path.filename().string();
         const auto* explicitUrl = ExplicitFeedFor(config.PluginGamedataFeeds, file.relative, fileName);
-
-        if (!explicitUrl && !hashesFetched)
-        {
-            hashesFetched = true;
-            auto index = FetchJson(site + "/gamedata/index.json", error);
-            if (index) hashes = pg::ParseIndexHashes(*index);
-            else
-                CSSHARP_CORE_WARN("Plugin gamedata: {}; identifying plugin files by name only", error);
-        }
 
         // The feed this file was patched from before, else the one the last gamedata report's
         // answer named (ReportGamedata).
@@ -1493,7 +1715,41 @@ void TryUpdatePluginGamedata()
         if (state.contains(file.relative) && state[file.relative].is_string()) remembered = state[file.relative].get<std::string>();
         else if (hints.contains(file.relative) && hints[file.relative].is_string())
             remembered = hints[file.relative].get<std::string>();
-        auto candidates = pg::FindCandidates(fileName, pg::Sha256Hex(file.text), feed, hashes, explicitUrl, remembered);
+        auto candidates = pg::FindCandidates(fileName, file.sha256s, feed, hashes, explicitUrl, remembered);
+
+        // This server's upload of the file (GamedataUploadEnabled) beats a guess by memory or name,
+        // but not the operator's mapping or a published copy. Unsigned: signatures only.
+        const bool strongMatch = candidates.match == pg::Match::Explicit || candidates.match == pg::Match::Hash;
+        auto uploaded = uploadOrigin && !strongMatch ? uploads.find(file.relative) : uploads.end();
+        if (uploaded != uploads.end())
+        {
+            if (file.broken == 0) continue;
+            const auto readUrl = upload::ReadUrl(*uploadOrigin, uploaded->second);
+            FetchOptions oneHost;
+            oneHost.followRedirects = false;
+            const auto parsed = ParseUrl(readUrl);
+            auto res = parsed ? Fetch(*parsed, readUrl, "", oneHost) : FetchResult{ 0, {}, {}, "invalid URL" };
+            auto json = res.error.empty() && res.status == 200 ? pg::ordered_json::parse(res.body, nullptr, false) : pg::ordered_json();
+            if (json.is_object())
+            {
+                status::FilePatch patch;
+                patch.source = "upload";
+                patch.feed = readUrl;
+                patch.matchedBy = "upload";
+                patchSignatures(file, json, std::move(patch));
+                continue;
+            }
+            CSSHARP_CORE_WARN("Plugin gamedata: could not use the uploaded copy of {} ({}); trying the signed feed", file.relative,
+                              !res.error.empty()  ? res.error
+                              : res.status != 200 ? "HTTP " + std::to_string(res.status) + " from " + readUrl
+                                                  : std::string("not a JSON object"));
+            if (res.error.empty() && res.status == 404) uploadsGone.insert(file.relative);
+        }
+
+        // A file without broken signatures is only here for the build check, which concerns
+        // published copies: nothing to say about the rest.
+        const bool quiet = file.broken == 0;
+        if (quiet && !strongMatch) continue;
 
         if (candidates.urls.empty())
         {
@@ -1510,14 +1766,16 @@ void TryUpdatePluginGamedata()
         {
             std::vector<const pg::ordered_json*> options;
             for (const auto& url : candidates.urls)
-                options.push_back(loadFeed(url));
+            {
+                const auto* loaded = loadFeed(url);
+                options.push_back(loaded ? &loaded->json : nullptr);
+            }
             const int picked = pg::PickByKeyOverlap(file.json, options);
             if (picked < 0)
             {
-                std::string names;
-                for (const auto& url : candidates.urls)
-                    names += (names.empty() ? "" : ", ") + url;
-                if (picked == pg::kOverlapNone)
+                std::string names = JoinKeys(candidates.urls);
+                if (quiet) CSSHARP_CORE_DEBUG("Plugin gamedata: {} could be any of {}, not refreshed", file.relative, names);
+                else if (picked == pg::kOverlapNone)
                     CSSHARP_CORE_WARN("Plugin gamedata: {} shares its name but no keys with {}, not updated; name its feed file in "
                                       "PluginGamedataFeeds in core.json if it has one",
                                       file.relative, names);
@@ -1530,18 +1788,6 @@ void TryUpdatePluginGamedata()
             chosen = candidates.urls[picked];
         }
 
-        const auto* feedJson = loadFeed(chosen);
-        if (!feedJson)
-        {
-            keysLeft += file.broken;
-            continue;
-        }
-
-        auto result = pg::PatchBrokenSignatures(file.json, *feedJson, platform, SignatureResolvesInProcess);
-        for (const auto& reason : result.unresolved)
-            CSSHARP_CORE_WARN("Plugin gamedata: {} {} (feed {})", file.relative, reason, chosen);
-        keysLeft += result.unresolved.size();
-
         // Remember the identification even when nothing could be fixed this time: the next build may.
         if (remembered != chosen && candidates.match != pg::Match::Explicit)
         {
@@ -1549,60 +1795,98 @@ void TryUpdatePluginGamedata()
             stateChanged = true;
         }
 
-        if (result.patched.empty()) continue;
+        // Our own unmodified file from an earlier build: take this build's whole, offsets included.
+        const auto decision =
+            pg::DecideWholeFileRefresh(file.sha256s, chosen, found->published, feedSha256(chosen), SigningEnabled(), publications);
+        if (decision.refresh)
+        {
+            const auto* loaded = loadFeed(chosen);
+            std::string refused;
+            if (loaded)
+            {
+                const auto dropped = pg::DroppedKeys(file.json, loaded->json);
+                const auto check = CheckSignatureRegressions(file.json, loaded->json, platform, PluginSignatureResolves);
+                if (!dropped.empty()) refused = "build " + found->published + "'s file drops " + JoinKeys(dropped);
+                else if (!check.regressions.empty())
+                    refused = JoinKeys(check.regressions);
+            }
+            else
+            {
+                refused = "this build's file could not be fetched";
+                checkAgain = true;
+            }
 
-        std::string text;
-        try
-        {
-            text = pg::Serialize(file.json, file.text);
+            if (refused.empty())
+            {
+                status::FilePatch patch;
+                patch.mode = "file";
+                patch.feed = chosen;
+                patch.build = found->published;
+                patch.fromBuild = decision.fromBuild;
+                patch.matchedBy = pg::MatchName(candidates.match);
+                patch.keys = pg::DiffEntries(file.json, loaded->json);
+                const auto changed = patch.keys.size();
+                if (writeFile(file, loaded->body, std::move(patch)))
+                {
+                    CSSHARP_CORE_INFO("Plugin gamedata: {} was the published {} for build {}, unmodified; replaced with build {}'s "
+                                      "(signatures and offsets, {} key(s) changed, backup {})",
+                                      file.relative, chosen, decision.fromBuild, found->published, changed,
+                                      g_startRecord.files.back().backup);
+                    ++filesRefreshed;
+                    continue;
+                }
+                checkAgain = true;
+            }
+            else
+                CSSHARP_CORE_WARN("Plugin gamedata: {} not replaced with build {}'s {} ({}); signatures only", file.relative,
+                                  found->published, chosen, refused);
         }
-        catch (const std::exception& ex)
+        else if (quiet)
         {
-            CSSHARP_CORE_ERROR("Plugin gamedata: {} not updated, could not serialize it: {}", file.relative, ex.what());
-            keysLeft += result.patched.size();
+            CSSHARP_CORE_DEBUG("Plugin gamedata: {} ({}) not refreshed: {}", file.relative, chosen, decision.why);
             continue;
         }
 
-        const auto textSha256 = pg::Sha256Hex(text);
-        if (guard::Rejected(utils::GamedataDirectory()).count(textSha256))
-        {
-            CSSHARP_CORE_WARN("Plugin gamedata: {} not updated: this exact fix was rolled back after the server died early with it "
-                              "twice. Delete gamedata/update.rejected to try it again",
-                              file.relative);
-            keysLeft += result.patched.size();
-            continue;
-        }
+        if (file.broken == 0) continue;
 
-        std::string backupPath;
-        if (!BackupPluginGamedata(file.relative, file.text, backupPath, error))
+        const auto* loaded = loadFeed(chosen);
+        if (!loaded)
         {
-            CSSHARP_CORE_ERROR("Plugin gamedata: {} not updated, it could not be backed up: {}", file.relative, error);
-            keysLeft += result.patched.size();
+            keysLeft += file.broken;
             continue;
         }
-        if (!WriteAtomically(file.path.string(), text, error))
-        {
-            CSSHARP_CORE_ERROR("Plugin gamedata: {} not updated: {}", file.relative, error);
-            keysLeft += result.patched.size();
-            continue;
-        }
-        NotePendingWrite(file.path.string(), backupPath, textSha256);
+        status::FilePatch patch;
+        patch.feed = chosen;
+        patch.build = found->published;
+        patch.matchedBy = pg::MatchName(candidates.match);
+        patchSignatures(file, loaded->json, std::move(patch));
+    }
 
-        std::string keys;
-        for (const auto& key : result.patched)
-            keys += (keys.empty() ? "" : ", ") + key;
-        CSSHARP_CORE_INFO("Plugin gamedata: {} fixed {} signature(s) from {} (matched by {}, backup {}): {}", file.relative,
-                          result.patched.size(), chosen, pg::MatchName(candidates.match), backupPath, keys);
-        ++filesPatched;
-        keysPatched += result.patched.size();
+    // Every file has been looked at for this build; offsets need not be looked at again until the
+    // next one. Not when the index could not be fetched (then nothing could be judged), nor when a
+    // replacement failed.
+    if (buildCheck && indexFetched && !checkAgain)
+    {
+        state["_build"] = serverTag;
+        stateChanged = true;
     }
 
     if (stateChanged && !WriteAtomically(statePath, state.dump(2) + "\n", error))
         CSSHARP_CORE_WARN("Plugin gamedata: could not record which feed files were used ({})", error);
 
-    if (keysPatched > 0 || keysLeft > 0)
-        CSSHARP_CORE_INFO("Plugin gamedata: fixed {} signature(s) in {} file(s), {} still don't resolve", keysPatched, filesPatched,
-                          keysLeft);
+    // The updater's own writes are not local changes: the next report must not re-upload them.
+    if ((!uploadsWritten.empty() || !uploadsGone.empty()) && !ChangeUploads([&](std::map<std::string, upload::Record>& records) {
+        for (const auto& [file, sha] : uploadsWritten)
+            if (auto it = records.find(file); it != records.end()) it->second.written = sha;
+        for (const auto& file : uploadsGone)
+            records.erase(file);
+    }, error))
+        CSSHARP_CORE_WARN("Plugin gamedata: could not record the updated files in plugin-gamedata.uploads ({})", error);
+
+    if (keysPatched > 0 || keysLeft > 0 || filesRefreshed > 0)
+        CSSHARP_CORE_INFO("Plugin gamedata: fixed {} signature(s) in {} file(s), replaced {} unmodified file(s) with this build's, "
+                          "{} signature(s) still don't resolve",
+                          keysPatched, filesPatched, filesRefreshed, keysLeft);
 }
 
 namespace {
@@ -1630,6 +1914,151 @@ std::string ReportInstallId()
     std::string error;
     if (!WriteAtomically(path, id + "\n", error)) CSSHARP_CORE_WARN("Gamedata report: could not store the install id ({})", error);
     return id;
+}
+
+// GamedataUploadEnabled (core/gamedata_upload.h). The service stores 2 files a minute per address
+// (burst 3), and it and nginx cap a body at 256 KiB, JSON escaping included.
+constexpr size_t kMaxUploadsPerStart = 3;
+constexpr size_t kMaxUploadBytes = 200 * 1024;
+constexpr long kUploadTimeoutSeconds = 20;
+
+struct UploadCandidate
+{
+    std::string relative;
+    std::string fileName;
+    std::string text;
+    std::string sha256;
+};
+
+// One POST /api/files or PUT /api/files/manage; the checked answer, or nullopt with status/error.
+std::optional<upload::Record> SendUpload(const std::string& url,
+                                         const char* method,
+                                         const std::string& header,
+                                         const nlohmann::json& body,
+                                         const upload::Record* existing,
+                                         const std::chrono::steady_clock::time_point& deadline,
+                                         int& status,
+                                         std::string& error)
+{
+    std::string payload;
+    try
+    {
+        payload = body.dump();
+    }
+    catch (const std::exception& ex)
+    {
+        error = std::string("the file cannot be sent as JSON (") + ex.what() + ")";
+        return std::nullopt;
+    }
+
+    FetchOptions options;
+    options.body = &payload;
+    options.method = method;
+    options.header = header;
+    options.followRedirects = false;
+    options.deadline = &deadline;
+    const auto parsed = ParseUrl(url);
+    auto res = parsed ? Fetch(*parsed, url, "", options) : FetchResult{ 0, {}, {}, "invalid URL " + url };
+    status = res.status;
+    if (!res.error.empty() || (res.status != 200 && res.status != 201))
+    {
+        error = res.error.empty() ? "HTTP " + std::to_string(res.status) : res.error;
+        auto answer = nlohmann::json::parse(res.body, nullptr, false);
+        if (const auto why = upload::Text(answer, "error"); !why.empty()) error += ": " + why;
+        return std::nullopt;
+    }
+    return upload::ParseAnswer(nlohmann::json::parse(res.body, nullptr, false), existing, error);
+}
+
+// Sends the text of the files the report answer called unknown to the GamedataReportURL host,
+// unless this server uploaded that exact file already, and records where it can be read back.
+// Runs on the report's thread; touches only its own copies and plugin-gamedata.uploads.
+void UploadUnknownFiles(const std::string& reportUrl, const std::string& build, const std::vector<UploadCandidate>& files)
+{
+    std::string error;
+    const auto origin = upload::ServiceOrigin(reportUrl, error);
+    if (!origin)
+    {
+        CSSHARP_CORE_WARN("Gamedata upload skipped: {}", error);
+        return;
+    }
+
+    const auto deadline = std::chrono::steady_clock::now() + std::chrono::seconds(kUploadTimeoutSeconds);
+    std::map<std::string, upload::Record> records;
+    {
+        std::lock_guard lock(UploadsMutex());
+        records = ReadUploads();
+    }
+
+    size_t sent = 0;
+    for (size_t i = 0; i < files.size(); ++i)
+    {
+        const auto& file = files[i];
+        const auto it = records.find(file.relative);
+        const auto* existing = it == records.end() ? nullptr : &it->second;
+        auto action = upload::Decide(existing, file.sha256);
+        if (action == upload::Action::None)
+        {
+            CSSHARP_CORE_DEBUG("Gamedata upload: {} was uploaded already and has not changed", file.relative);
+            continue;
+        }
+        if (file.text.size() > kMaxUploadBytes)
+        {
+            CSSHARP_CORE_WARN("Gamedata upload: {} is larger than {} KiB, not uploaded", file.relative, kMaxUploadBytes / 1024);
+            continue;
+        }
+        if (sent == kMaxUploadsPerStart)
+        {
+            CSSHARP_CORE_INFO("Gamedata upload: at most {} file(s) per start; the rest go on the next one", kMaxUploadsPerStart);
+            break;
+        }
+        ++sent;
+
+        int status = 0;
+        std::optional<upload::Record> stored;
+        if (action == upload::Action::Replace)
+        {
+            // Same links, new text: the plugin was updated since the upload.
+            stored = SendUpload(upload::ManageUrl(*origin), "PUT", "X-Manage-Token: " + existing->manage,
+                                upload::UploadBody(file.text, file.fileName, build), existing, deadline, status, error);
+            // 404: the service no longer has it (deleted on its manage page, or unread for 90 days).
+            if (!stored && status == 404) action = upload::Action::Create;
+        }
+        if (action == upload::Action::Create)
+        {
+            stored = SendUpload(upload::CreateUrl(*origin), nullptr, "", upload::UploadBody(file.text, file.fileName, build), nullptr,
+                                deadline, status, error);
+            // The service only takes builds it has binaries for; a server ahead of it sends none, and
+            // the service starts from its newest.
+            if (!stored && status == 400 && error.find("build") != std::string::npos)
+                stored = SendUpload(upload::CreateUrl(*origin), nullptr, "", upload::UploadBody(file.text, file.fileName, ""), nullptr,
+                                    deadline, status, error);
+        }
+        if (!stored)
+        {
+            CSSHARP_CORE_WARN("Gamedata upload of {} to {} failed: {}", file.relative, *origin, error);
+            continue;
+        }
+
+        stored->sha256 = file.sha256;
+        stored->written.clear();
+        stored->build = build;
+        stored->at = static_cast<long long>(std::time(nullptr));
+        const auto record = *stored;
+        if (!ChangeUploads([&](std::map<std::string, upload::Record>& all) {
+            all[file.relative] = record;
+        }, error))
+        {
+            CSSHARP_CORE_WARN("Gamedata upload: {} was uploaded but could not be recorded ({}); it is sent again next start", file.relative,
+                              error);
+            continue;
+        }
+        records[file.relative] = record;
+        CSSHARP_CORE_INFO("Gamedata upload: {} the text of {} on {} (GamedataUploadEnabled). From the next start its broken "
+                          "signatures are fixed from {}, signatures only; the manage token is in gamedata/plugin-gamedata.uploads",
+                          action == upload::Action::Replace ? "replaced" : "stored", file.relative, *origin,
+                          upload::ReadUrl(*origin, record));
+    }
 }
 
 } // namespace
@@ -1670,6 +2099,9 @@ void ReportGamedata()
     const auto coreFile = root / "gamedata" / "gamedata.json";
     auto files = nlohmann::json::array();
     std::vector<std::string> paths;
+    // GamedataUploadEnabled: the text of each reported file, in case the answer calls it unknown.
+    const bool uploadEnabled = globals::coreConfig->GamedataUploadEnabled;
+    std::vector<UploadCandidate> texts;
     for (const auto& path : GamedataFiles(root))
     {
         // Ours: VibeSignatures generates it.
@@ -1692,6 +2124,7 @@ void ReportGamedata()
                           { "sha256", pg::Sha256Hex(text) },
                           { "keys", std::move(keys) },
                           { "broken", pg::BrokenSignatures(json, platform, SignatureResolvesInProcess) } });
+        if (uploadEnabled) texts.push_back({ relative, path.filename().string(), text, pg::Sha256Hex(text) });
         paths.push_back(std::move(relative));
     }
 
@@ -1714,10 +2147,13 @@ void ReportGamedata()
     }
 
     const auto hintsPath = utils::GamedataDirectory() + "/plugin-gamedata.report";
-    std::thread([url, payload = std::move(payload), paths = std::move(paths), hintsPath] {
+    std::thread([url, build, uploadEnabled, payload = std::move(payload), paths = std::move(paths), texts = std::move(texts), hintsPath] {
         const auto deadline = std::chrono::steady_clock::now() + std::chrono::seconds(kReportTimeoutSeconds);
         const auto parsed = ParseUrl(url);
-        auto res = Fetch(*parsed, url, "", &payload, &deadline);
+        FetchOptions post;
+        post.body = &payload;
+        post.deadline = &deadline;
+        auto res = Fetch(*parsed, url, "", post);
         if (!res.error.empty() || res.status != 200)
         {
             CSSHARP_CORE_WARN("Gamedata report to {} failed: {}", url,
@@ -1735,6 +2171,7 @@ void ReportGamedata()
 
         auto hints = nlohmann::json::object();
         size_t known = 0, unknown = 0;
+        std::vector<UploadCandidate> uploads;
         for (size_t i = 0; i < paths.size(); ++i)
         {
             const auto& entry = answer["files"][i];
@@ -1749,6 +2186,7 @@ void ReportGamedata()
             {
                 CSSHARP_CORE_INFO("Gamedata report: {} is not one VibeSignatures generates yet; reported", paths[i]);
                 ++unknown;
+                if (uploadEnabled) uploads.push_back(texts[i]);
             }
         }
 
@@ -1756,6 +2194,8 @@ void ReportGamedata()
         if (!WriteAtomically(hintsPath, hints.dump(2) + "\n", writeError))
             CSSHARP_CORE_WARN("Gamedata report: could not store the answer ({})", writeError);
         CSSHARP_CORE_INFO("Gamedata report sent: {} file(s), {} known to VibeSignatures, {} not yet", paths.size(), known, unknown);
+
+        if (!uploads.empty()) UploadUnknownFiles(url, build, uploads);
     }).detach();
 }
 
@@ -1852,6 +2292,8 @@ void WriteGamedataStatus()
         // gamedata.gamever vouches for this gamedata.json on this game build: only then can a
         // vtable slot stand in for a failed signature (vtable_fallback.cpp).
         { "gamedataBuildVerified", gamedataTrusted },
+        // What the updaters wrote on this start, and the core update's outcome (status::StartRecord).
+        { "patched", status::ToJson(g_startRecord) },
     };
 
     std::error_code mkdirError;

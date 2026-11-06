@@ -54,6 +54,8 @@ set(SOURCE_FILES
     src/core/gamedata_signature.cpp
     src/core/gamedata_update_guard.h
     src/core/gamedata_update_guard.cpp
+    src/core/gamedata_update_status.h
+    src/core/gamedata_upload.h
     libraries/tweetnacl/tweetnacl.c
     src/core/gamedata_vtable.h
     src/core/vtable_fallback.h
