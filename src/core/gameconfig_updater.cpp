@@ -829,9 +829,12 @@ bool WriteRescuedKeys(const nlohmann::json& rescued, std::string& path, std::str
     return WriteAtomically(path, existing.dump(2) + "\n", error);
 }
 
-// gamedata/*.json, then the files plugins ship themselves (plugins/<Name>/gamedata/<file>.json),
-// switched off ones in plugins/disabled/ too: a host that turns a plugin off because its
-// gamedata is missing must still see when it works again (and get it fixed).
+// gamedata/*.json: the one directory CounterStrikeSharp loads gamedata from (GameDataProvider
+// merges every file in it) and where plugins read their own file from too. plugins/<Name>/gamedata/
+// is deliberately not looked at: it is a build-output copy no one reads (WeaponPaints and
+// RetakesAllocator read addons/counterstrikesharp/gamedata/<file>; the plugin folder is at most
+// a fallback when that root cannot be found), and a stale copy there only produced false
+// "doesn't resolve" reports.
 std::vector<std::filesystem::path> GamedataFiles(const std::filesystem::path& root)
 {
     namespace fs = std::filesystem;
@@ -840,18 +843,6 @@ std::vector<std::filesystem::path> GamedataFiles(const std::filesystem::path& ro
 
     for (const auto& entry : fs::directory_iterator(root / "gamedata", ec))
         if (entry.path().extension() == ".json") files.push_back(entry.path());
-
-    for (const auto& folder : { root / "plugins", root / "plugins" / "disabled" })
-    {
-        std::error_code outer;
-        for (const auto& plugin : fs::directory_iterator(folder, outer))
-        {
-            if (!plugin.is_directory() || plugin.path() == root / "plugins" / "disabled") continue;
-            std::error_code inner;
-            for (const auto& entry : fs::directory_iterator(plugin.path() / "gamedata", inner))
-                if (entry.path().extension() == ".json") files.push_back(entry.path());
-        }
-    }
     return files;
 }
 
@@ -1111,9 +1102,9 @@ ExplicitFeedFor(const std::map<std::string, std::string>& feeds, const std::stri
 
 } // namespace
 
-/// Fixes the signatures that do not resolve in gamedata/*.json (other than gamedata.json) and
-/// plugins/*/gamedata/*.json from the same VibeSignatures site AutoUpdateURL points at. Only
-/// broken signatures are touched, and only with one that resolves here; see
+/// Fixes the signatures that do not resolve in gamedata/*.json (other than gamedata.json) from the
+/// same VibeSignatures site AutoUpdateURL points at. Only broken signatures are touched, and only
+/// with one that resolves here; see
 /// core/gamedata_plugin_update.h for the rules. Runs before gamedata and plugins load.
 void TryUpdatePluginGamedata()
 {

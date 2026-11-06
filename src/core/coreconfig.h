@@ -40,7 +40,7 @@ class CCoreConfig
     std::string AutoUpdateURL = std::string("https://sig.miksen.me/latest/CounterStrikeSharp/gamedata.json");
     std::string LogVerbosity = "information";
     // Plugin gamedata auto-update (gameconfig_updater.cpp, core/gamedata_plugin_update.h): swaps
-    // signatures that do not resolve in gamedata/*.json and plugins/*/gamedata/*.json for the
+    // signatures that do not resolve in gamedata/*.json (not plugins/*/gamedata/ copies) for the
     // feed's, from the same site as AutoUpdateURL. Needs AutoUpdateEnabled as well.
     bool PluginGamedataAutoUpdate = true;
     // Local file (path relative to addons/counterstrikesharp, or bare file name) -> feed file

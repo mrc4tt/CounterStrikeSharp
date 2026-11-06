@@ -5,8 +5,8 @@
 namespace counterstrikesharp::update {
 bool TryUpdateGameConfig();
 
-// Swaps signatures that don't resolve in gamedata/*.json (other than gamedata.json) and
-// plugins/*/gamedata/*.json for the ones the AutoUpdateURL site publishes for the same plugin,
+// Swaps signatures that don't resolve in gamedata/*.json (other than gamedata.json) for the ones
+// the AutoUpdateURL site publishes for the same plugin,
 // when those resolve here (core/gamedata_plugin_update.h). Never replaces a whole file.
 void TryUpdatePluginGamedata();
 
@@ -23,7 +23,8 @@ std::string ServerGameVersion();
 // scan, without the vtable fallback. modules::Initialize() must have run.
 bool SignatureResolves(const std::string& library, const std::string& signature);
 
-// Checks every signature in gamedata/*.json and plugins/*/gamedata/*.json against the loaded
+// Checks every signature in gamedata/*.json (plugins/*/gamedata/ copies are not read by anyone,
+// so not checked either: GamedataFiles in gameconfig_updater.cpp) against the loaded
 // binaries and writes logs/gamedata-status.json: which ones don't resolve, and from which
 // file, so a hosting panel can tell which plugin a CS2 update broke.
 void WriteGamedataStatus();
