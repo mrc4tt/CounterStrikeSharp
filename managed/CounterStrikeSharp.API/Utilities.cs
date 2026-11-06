@@ -228,10 +228,13 @@ namespace CounterStrikeSharp.API
 
         public static IEnumerable<CEntityInstance> GetAllEntities()
         {
-            var pEntity = new CEntityIdentity(EntitySystem.FirstActiveEntity);
-            for (; pEntity != null && pEntity.Handle != IntPtr.Zero; pEntity = pEntity.Next)
+            // Raw identity walk, like FindAllEntitiesByDesignerName: the old loop built a CEntityIdentity
+            // wrapper per entity and read m_pNext through it, two allocations per entity on top of the
+            // one yielded. Plugins run this on grenade detonations and per tick (thousands of entities).
+            var nextOffset = s_identityNextField.Offset;
+            for (var identity = EntitySystem.FirstActiveEntity; identity != IntPtr.Zero; identity = Marshal.ReadIntPtr(identity + nextOffset))
             {
-                yield return new PointerTo<CEntityInstance>(pEntity.Handle).Value;
+                yield return new PointerTo<CEntityInstance>(identity).Value;
             }
         }
 
