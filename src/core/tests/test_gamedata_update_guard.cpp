@@ -84,6 +84,23 @@ TEST_CASE("VerifySignature accepts a signature made with VibeSignatures' key", "
     CHECK_FALSE(signing::VerifySignature(message + " ", signature, signing::kDefaultPublicKey, error));
 }
 
+TEST_CASE("VerifySignatureWithAnyKey accepts the reserve key and refuses keys that did not sign", "[gamedata-signing]")
+{
+    const std::string message = "gamedata manifest test vector\n";
+    // Made with the offline reserve key (kReservePublicKey), which never signs the feed.
+    const std::string byReserve = "wetjfU84IGBkeH5Xe+CHZsnKhXVpI2AwOD8gW8hEoveFrmvepIbfzJGAsvlVFC4wCQihIX0JwYmL8Spdh5pFAA==";
+    const std::string byPrimary = "wjVq6ZZmxaIxJjmjsuKzNkejCOQfz9exaegjy6u+9r7jVTQ8KaKcF6C8pdQDpdDVf1nwLcnXKW9pKQv3C2d0CQ==";
+    std::string error;
+    CHECK(signing::VerifySignatureWithAnyKey(message, byPrimary, signing::kDefaultPublicKeys, error));
+    CHECK(signing::VerifySignatureWithAnyKey(message, byReserve, signing::kDefaultPublicKeys, error));
+    CHECK(signing::VerifySignatureWithAnyKey(message, byReserve, std::string(",") + signing::kReservePublicKey + ",", error));
+    CHECK_FALSE(signing::VerifySignatureWithAnyKey(message, byReserve, signing::kDefaultPublicKey, error));
+    CHECK_FALSE(signing::VerifySignatureWithAnyKey(message + "x", byPrimary, signing::kDefaultPublicKeys, error));
+    CHECK(error == "the signature does not verify (with any of 2 keys)");
+    CHECK_FALSE(signing::VerifySignatureWithAnyKey(message, byPrimary, " , ", error));
+    CHECK(error == "no signing public key configured");
+}
+
 TEST_CASE("Guard: nothing pending is a clean start", "[gamedata-guard]")
 {
     TempDir dir;

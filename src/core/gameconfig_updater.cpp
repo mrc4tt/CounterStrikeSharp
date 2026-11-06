@@ -694,7 +694,7 @@ std::optional<nlohmann::json> FetchManifest(const std::string& manifestUrl, std:
             return std::nullopt;
         }
         std::string why;
-        if (!signing::VerifySignature(res.body, sig.body, globals::coreConfig->GamedataSigningKey, why))
+        if (!signing::VerifySignatureWithAnyKey(res.body, sig.body, globals::coreConfig->GamedataSigningKey, why))
         {
             error = manifestUrl + " failed its signature check: " + why;
             return std::nullopt;

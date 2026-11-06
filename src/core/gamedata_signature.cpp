@@ -86,4 +86,27 @@ bool VerifySignature(const std::string& message, const std::string& signatureTex
     return true;
 }
 
+bool VerifySignatureWithAnyKey(const std::string& message,
+                               const std::string& signatureText,
+                               const std::string& publicKeys,
+                               std::string& error)
+{
+    size_t tried = 0;
+    size_t pos = 0;
+    while (pos < publicKeys.size())
+    {
+        const auto start = publicKeys.find_first_not_of(" \t\r\n,", pos);
+        if (start == std::string::npos) break;
+        auto end = publicKeys.find_first_of(" \t\r\n,", start);
+        if (end == std::string::npos) end = publicKeys.size();
+        ++tried;
+        if (VerifySignature(message, signatureText, publicKeys.substr(start, end - start), error)) return true;
+        pos = end;
+    }
+    if (tried == 0) error = "no signing public key configured";
+    else if (tried > 1)
+        error += " (with any of " + std::to_string(tried) + " keys)";
+    return false;
+}
+
 } // namespace counterstrikesharp::update::signing
