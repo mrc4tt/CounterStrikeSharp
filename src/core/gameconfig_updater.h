@@ -10,6 +10,11 @@ bool TryUpdateGameConfig();
 // when those resolve here (core/gamedata_plugin_update.h). Never replaces a whole file.
 void TryUpdatePluginGamedata();
 
+// Opt-in (GamedataReportEnabled): posts which plugin gamedata files this server runs (names,
+// sha256, key names, broken keys; no file text) to GamedataReportURL from a thread of its own.
+// The answer helps the next start's TryUpdatePluginGamedata identify each file.
+void ReportGamedata();
+
 // The running game build as steam.inf names it ("1.41.9.2" -> "14192"), empty (and logged) when
 // steam.inf cannot be read. Pins gamedata/custom/ files (core/gamedata_custom.h).
 std::string ServerGameVersion();

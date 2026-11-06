@@ -82,6 +82,12 @@ namespace CounterStrikeSharp.API.Core
         [JsonPropertyName("PluginGamedataFeeds")]
         public System.Collections.Generic.Dictionary<string, string?>? PluginGamedataFeeds { get; set; }
 
+        [JsonPropertyName("GamedataReportEnabled")]
+        public bool GamedataReportEnabled { get; set; }
+
+        [JsonPropertyName("GamedataReportURL")]
+        public string? GamedataReportURL { get; set; }
+
         [JsonPropertyName("MaximumFrameTasksExecutedPerTick")]
         public int MaximumFrameTasksExecutedPerTick { get; set; } = 1024;
 

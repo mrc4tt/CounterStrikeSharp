@@ -73,6 +73,8 @@ bool CCoreConfig::Init(char* conf_error, int conf_error_size)
         AutoUpdateURL = m_json.value("AutoUpdateURL", AutoUpdateURL);
         LogVerbosity = m_json.value("LogVerbosity", LogVerbosity);
         PluginGamedataAutoUpdate = m_json.value("PluginGamedataAutoUpdate", PluginGamedataAutoUpdate);
+        GamedataReportEnabled = m_json.value("GamedataReportEnabled", GamedataReportEnabled);
+        GamedataReportURL = m_json.value("GamedataReportURL", GamedataReportURL);
         if (m_json.contains("PluginGamedataFeeds") && m_json["PluginGamedataFeeds"].is_object())
         {
             for (const auto& [file, feed] : m_json["PluginGamedataFeeds"].items())

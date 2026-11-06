@@ -47,6 +47,11 @@ class CCoreConfig
     // ("<plugin>/<fileName>" under <site>/latest/), for files the updater cannot identify by
     // itself. An empty value turns the update off for that file.
     std::map<std::string, std::string> PluginGamedataFeeds;
+    // Opt-in: tell VibeSignatures which plugin gamedata files this server runs (file names, key
+    // names, sha256 and which keys don't resolve; never the file text), so files it does not
+    // generate yet can get a generator. See update::ReportGamedata.
+    bool GamedataReportEnabled = false;
+    std::string GamedataReportURL = std::string("https://sig-api.miksen.me/api/report");
 
     using json = nlohmann::json;
     CCoreConfig(const std::string& path);

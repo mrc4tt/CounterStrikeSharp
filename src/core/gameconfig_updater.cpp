@@ -19,6 +19,9 @@
 #include <fstream>
 #include <iterator>
 #include <memory>
+#include <mutex>
+#include <random>
+#include <thread>
 #include <map>
 #include <optional>
 #include <set>
@@ -52,9 +55,11 @@ constexpr long kTotalTimeoutSeconds = 15;
 std::chrono::steady_clock::time_point g_updateDeadline;
 
 // Seconds left of the update budget, or 0 when it is spent.
-long RemainingBudgetSeconds()
+long RemainingBudgetSeconds(const std::chrono::steady_clock::time_point* deadline = nullptr)
 {
-    auto left = std::chrono::duration_cast<std::chrono::seconds>(g_updateDeadline - std::chrono::steady_clock::now()).count();
+    auto left =
+        std::chrono::duration_cast<std::chrono::seconds>((deadline ? *deadline : g_updateDeadline) - std::chrono::steady_clock::now())
+            .count();
     return left > 0 ? static_cast<long>(left) : 0;
 }
 
@@ -106,6 +111,8 @@ std::optional<ParsedUrl> ParseUrl(const std::string& url)
 namespace curl {
 constexpr int OPT_WRITEDATA = 10001;
 constexpr int OPT_URL = 10002;
+constexpr int OPT_POSTFIELDS = 10015;
+constexpr int OPT_POSTFIELDSIZE = 60;
 constexpr int OPT_TIMEOUT = 13;
 constexpr int OPT_USERAGENT = 10018;
 constexpr int OPT_HTTPHEADER = 10023;
@@ -143,12 +150,12 @@ struct Api
 const Api* Load(std::string& error)
 {
     static Api api;
-    static bool attempted = false;
+    static std::once_flag attempted;
     static std::string loadError;
 
-    if (!attempted)
-    {
-        attempted = true;
+    // The gamedata report fetches from its own thread (ReportGamedata), possibly while a later
+    // `meta load` runs the updater on the game thread.
+    std::call_once(attempted, [] {
         void* handle = nullptr;
         for (const char* name : { "libcurl.so.4", "libcurl.so", "libcurl-gnutls.so.4" })
         {
@@ -177,7 +184,7 @@ const Api* Load(std::string& error)
                 loadError = "libcurl is missing an expected symbol";
             }
         }
-    }
+    });
 
     if (!loadError.empty())
     {
@@ -221,11 +228,15 @@ size_t OnHeader(char* data, size_t size, size_t count, void* userdata)
 }
 } // namespace curl
 
-FetchResult Fetch(const ParsedUrl&, const std::string& fullUrl, const std::string& knownETag)
+FetchResult Fetch(const ParsedUrl&,
+                  const std::string& fullUrl,
+                  const std::string& knownETag,
+                  const std::string* postJson = nullptr,
+                  const std::chrono::steady_clock::time_point* deadline = nullptr)
 {
     FetchResult result;
 
-    const long budget = RemainingBudgetSeconds();
+    const long budget = RemainingBudgetSeconds(deadline);
     if (budget == 0)
     {
         result.error = "update time budget spent";
@@ -246,6 +257,13 @@ FetchResult Fetch(const ParsedUrl&, const std::string& fullUrl, const std::strin
     if (!knownETag.empty())
     {
         headers = api->slist_append(headers, ("If-None-Match: " + knownETag).c_str());
+    }
+    if (postJson)
+    {
+        headers = api->slist_append(headers, "Content-Type: application/json");
+        // POSTFIELDS does not copy: *postJson outlives easy_perform below.
+        api->easy_setopt(easy, curl::OPT_POSTFIELDSIZE, static_cast<long>(postJson->size()));
+        api->easy_setopt(easy, curl::OPT_POSTFIELDS, postJson->data());
     }
 
     api->easy_setopt(easy, curl::OPT_URL, fullUrl.c_str());
@@ -312,11 +330,15 @@ std::string Narrow(const std::wstring& text)
 std::string Failed(const char* call) { return std::string(call) + " failed (WinHTTP error " + std::to_string(GetLastError()) + ")"; }
 } // namespace winhttp
 
-FetchResult Fetch(const ParsedUrl& url, const std::string& fullUrl, const std::string& knownETag)
+FetchResult Fetch(const ParsedUrl& url,
+                  const std::string& fullUrl,
+                  const std::string& knownETag,
+                  const std::string* postJson = nullptr,
+                  const std::chrono::steady_clock::time_point* deadline = nullptr)
 {
     FetchResult result;
 
-    const long budget = RemainingBudgetSeconds();
+    const long budget = RemainingBudgetSeconds(deadline);
     if (budget == 0)
     {
         result.error = "update time budget spent";
@@ -363,8 +385,8 @@ FetchResult Fetch(const ParsedUrl& url, const std::string& fullUrl, const std::s
     }
 
     const DWORD flags = url.scheme == "https" ? WINHTTP_FLAG_SECURE : 0;
-    winhttp::Handle request(
-        WinHttpOpenRequest(connection.get(), L"GET", path.c_str(), nullptr, WINHTTP_NO_REFERER, WINHTTP_DEFAULT_ACCEPT_TYPES, flags));
+    winhttp::Handle request(WinHttpOpenRequest(connection.get(), postJson ? L"POST" : L"GET", path.c_str(), nullptr, WINHTTP_NO_REFERER,
+                                               WINHTTP_DEFAULT_ACCEPT_TYPES, flags));
     if (!request)
     {
         result.error = winhttp::Failed("WinHttpOpenRequest");
@@ -373,9 +395,12 @@ FetchResult Fetch(const ParsedUrl& url, const std::string& fullUrl, const std::s
 
     std::wstring headers;
     if (!knownETag.empty()) headers = L"If-None-Match: " + winhttp::Widen(knownETag);
+    if (postJson) headers += std::wstring(headers.empty() ? L"" : L"\r\n") + L"Content-Type: application/json";
 
+    void* data = postJson ? const_cast<char*>(postJson->data()) : WINHTTP_NO_REQUEST_DATA;
+    const DWORD dataSize = postJson ? static_cast<DWORD>(postJson->size()) : 0;
     if (!WinHttpSendRequest(request.get(), headers.empty() ? WINHTTP_NO_ADDITIONAL_HEADERS : headers.c_str(),
-                            headers.empty() ? 0 : static_cast<DWORD>(-1L), WINHTTP_NO_REQUEST_DATA, 0, 0, 0))
+                            headers.empty() ? 0 : static_cast<DWORD>(-1L), data, dataSize, dataSize, 0))
     {
         result.error = winhttp::Failed("WinHttpSendRequest");
         return result;
@@ -414,7 +439,7 @@ FetchResult Fetch(const ParsedUrl& url, const std::string& fullUrl, const std::s
     char buffer[16 * 1024];
     for (;;)
     {
-        if (RemainingBudgetSeconds() == 0)
+        if (RemainingBudgetSeconds(deadline) == 0)
         {
             result.error = "update time budget spent";
             return result;
@@ -1180,6 +1205,9 @@ void TryUpdatePluginGamedata()
     if (state.is_discarded() || !state.is_object()) state = nlohmann::json::object();
     bool stateChanged = false;
 
+    auto hints = nlohmann::json::parse(ReadWholeFile(utils::GamedataDirectory() + "/plugin-gamedata.report"), nullptr, false);
+    if (hints.is_discarded() || !hints.is_object()) hints = nlohmann::json::object();
+
     std::map<std::string, std::set<std::string>> hashes;
     bool hashesFetched = false;
 
@@ -1229,8 +1257,12 @@ void TryUpdatePluginGamedata()
                 CSSHARP_CORE_WARN("Plugin gamedata: {}; identifying plugin files by name only", error);
         }
 
-        const auto remembered =
-            state.contains(file.relative) && state[file.relative].is_string() ? state[file.relative].get<std::string>() : std::string();
+        // The feed this file was patched from before, else the one the last gamedata report's
+        // answer named (ReportGamedata).
+        std::string remembered;
+        if (state.contains(file.relative) && state[file.relative].is_string()) remembered = state[file.relative].get<std::string>();
+        else if (hints.contains(file.relative) && hints[file.relative].is_string())
+            remembered = hints[file.relative].get<std::string>();
         auto candidates = pg::FindCandidates(fileName, pg::Sha256Hex(file.text), feed, hashes, explicitUrl, remembered);
 
         if (candidates.urls.empty())
@@ -1330,6 +1362,160 @@ void TryUpdatePluginGamedata()
     if (keysPatched > 0 || keysLeft > 0)
         CSSHARP_CORE_INFO("Plugin gamedata: fixed {} signature(s) in {} file(s), {} still don't resolve", keysPatched, filesPatched,
                           keysLeft);
+}
+
+namespace {
+
+constexpr long kReportTimeoutSeconds = 10;
+constexpr size_t kReportMaxFiles = 200;
+
+// A random id, kept in gamedata/report.id, so VibeSignatures can count servers rather than
+// reports. It names nothing: the service stores only a truncated hash of it.
+std::string ReportInstallId()
+{
+    const auto path = utils::GamedataDirectory() + "/report.id";
+    auto id = ReadFirstLine(path);
+    if (id.size() == 32 && std::all_of(id.begin(), id.end(), [](char c) {
+        return (c >= '0' && c <= '9') || (c >= 'a' && c <= 'f');
+    }))
+        return id;
+
+    static constexpr char hex[] = "0123456789abcdef";
+    std::random_device random;
+    id.clear();
+    for (int i = 0; i < 32; ++i)
+        id += hex[random() & 0xf];
+
+    std::string error;
+    if (!WriteAtomically(path, id + "\n", error)) CSSHARP_CORE_WARN("Gamedata report: could not store the install id ({})", error);
+    return id;
+}
+
+} // namespace
+
+/// Tells VibeSignatures which gamedata files this server runs (name, sha256, key names, which
+/// keys don't resolve; never the file text), on a thread of its own so boot does not wait. The
+/// answer says, per file, whether VibeSignatures generates it, and under which feed file; that is
+/// kept in gamedata/plugin-gamedata.report for the next start's plugin update to identify the file
+/// by. Files it does not know are recorded there as demand for a generator.
+void ReportGamedata()
+{
+#ifdef _WIN32
+    constexpr auto platform = "windows";
+#else
+    constexpr auto platform = "linux";
+#endif
+    namespace fs = std::filesystem;
+    namespace pg = plugin_gamedata;
+
+    const auto url = globals::coreConfig->GamedataReportURL;
+    if (!ParseUrl(url))
+    {
+        CSSHARP_CORE_WARN("Gamedata report skipped: GamedataReportURL '{}' is not an http:// or https:// URL", url);
+        return;
+    }
+
+    std::string error;
+    const auto build = ServerGameVersionTag(error);
+    if (build.empty())
+    {
+        CSSHARP_CORE_WARN("Gamedata report skipped: {}", error);
+        return;
+    }
+
+    modules::Initialize();
+
+    const fs::path root = utils::GetRootDirectory();
+    const auto coreFile = root / "gamedata" / "gamedata.json";
+    auto files = nlohmann::json::array();
+    std::vector<std::string> paths;
+    for (const auto& path : GamedataFiles(root))
+    {
+        // Ours: VibeSignatures generates it.
+        if (path == coreFile) continue;
+        if (paths.size() >= kReportMaxFiles) break;
+
+        const auto text = ReadWholeFile(path.string());
+        const auto json = pg::ordered_json::parse(text, nullptr, false);
+        if (json.is_discarded() || !json.is_object()) continue;
+
+        auto keys = nlohmann::json::array();
+        for (const auto& [key, value] : json.items())
+            if (pg::IsGamedataKey(key)) keys.push_back(key);
+
+        std::error_code ec;
+        auto relative = fs::relative(path, root, ec).generic_string();
+        if (ec) relative = path.filename().generic_string();
+
+        files.push_back({ { "name", path.filename().string() },
+                          { "sha256", pg::Sha256Hex(text) },
+                          { "keys", std::move(keys) },
+                          { "broken", pg::BrokenSignatures(json, platform, SignatureResolvesInProcess) } });
+        paths.push_back(std::move(relative));
+    }
+
+    if (paths.empty())
+    {
+        CSSHARP_CORE_DEBUG("Gamedata report: no plugin gamedata files to report");
+        return;
+    }
+
+    nlohmann::json body = { { "build", build }, { "platform", platform }, { "install", ReportInstallId() }, { "files", std::move(files) } };
+    std::string payload;
+    try
+    {
+        payload = body.dump();
+    }
+    catch (const std::exception& ex)
+    {
+        CSSHARP_CORE_WARN("Gamedata report skipped: {}", ex.what());
+        return;
+    }
+
+    const auto hintsPath = utils::GamedataDirectory() + "/plugin-gamedata.report";
+    std::thread([url, payload = std::move(payload), paths = std::move(paths), hintsPath] {
+        const auto deadline = std::chrono::steady_clock::now() + std::chrono::seconds(kReportTimeoutSeconds);
+        const auto parsed = ParseUrl(url);
+        auto res = Fetch(*parsed, url, "", &payload, &deadline);
+        if (!res.error.empty() || res.status != 200)
+        {
+            CSSHARP_CORE_WARN("Gamedata report to {} failed: {}", url,
+                              res.error.empty() ? "HTTP " + std::to_string(res.status) : res.error);
+            return;
+        }
+
+        auto answer = nlohmann::json::parse(res.body, nullptr, false);
+        if (answer.is_discarded() || !answer.is_object() || !answer.contains("files") || !answer["files"].is_array() ||
+            answer["files"].size() != paths.size())
+        {
+            CSSHARP_CORE_WARN("Gamedata report to {}: the answer is not one entry per reported file", url);
+            return;
+        }
+
+        auto hints = nlohmann::json::object();
+        size_t known = 0, unknown = 0;
+        for (size_t i = 0; i < paths.size(); ++i)
+        {
+            const auto& entry = answer["files"][i];
+            if (!entry.is_object()) continue;
+            const auto status = entry.value("status", std::string());
+            if ((status == "known" || status == "plugin") && entry.contains("feed") && entry["feed"].is_string())
+            {
+                hints[paths[i]] = entry["feed"];
+                ++known;
+            }
+            else if (status == "unknown")
+            {
+                CSSHARP_CORE_INFO("Gamedata report: {} is not one VibeSignatures generates yet; reported", paths[i]);
+                ++unknown;
+            }
+        }
+
+        std::string writeError;
+        if (!WriteAtomically(hintsPath, hints.dump(2) + "\n", writeError))
+            CSSHARP_CORE_WARN("Gamedata report: could not store the answer ({})", writeError);
+        CSSHARP_CORE_INFO("Gamedata report sent: {} file(s), {} known to VibeSignatures, {} not yet", paths.size(), known, unknown);
+    }).detach();
 }
 
 bool GamedataMatchesServerBuild()
