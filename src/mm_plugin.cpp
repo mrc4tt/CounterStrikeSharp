@@ -212,6 +212,7 @@ bool CounterStrikeSharpMMPlugin::Load(PluginId id, ISmmAPI* ismm, char* error, s
         if (globals::coreConfig->AutoUpdateEnabled)
         {
             update::TryUpdateGameConfig();
+            if (globals::coreConfig->PluginGamedataAutoUpdate) update::TryUpdatePluginGamedata();
         }
 
         auto gamedata_path = std::string(utils::GamedataDirectory() + "/gamedata.json");

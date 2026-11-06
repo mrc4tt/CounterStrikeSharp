@@ -5,6 +5,7 @@
 #include "core/globals.h"
 #include "core/gamedata_custom.h"
 #include "core/gamedata_signature_check.h"
+#include "core/gamedata_plugin_update.h"
 #include "core/gameconfig.h"
 #include "core/memory.h"
 #include "core/memory_module.h"
@@ -18,7 +19,9 @@
 #include <fstream>
 #include <iterator>
 #include <memory>
+#include <map>
 #include <optional>
+#include <set>
 #include <string>
 #include <vector>
 
@@ -731,14 +734,9 @@ void RecordWrittenHash(const std::string& gamedataPath)
 
 constexpr size_t kMaxBackups = 5;
 
-// Copies gamedata.json to gamedata/backup/gamedata-<UTC time>.json and keeps the newest kMaxBackups.
-bool BackupGamedata(const std::string& gamedataPath, std::string& backupPath, std::string& error)
+// "20261106-142233": sorts lexically, safe in a file name.
+std::string UtcStamp()
 {
-    namespace fs = std::filesystem;
-    const fs::path dir = fs::path(utils::GamedataDirectory()) / "backup";
-    std::error_code ec;
-    fs::create_directories(dir, ec);
-
     char stamp[32];
     const auto now = std::time(nullptr);
     std::tm utc{};
@@ -748,8 +746,18 @@ bool BackupGamedata(const std::string& gamedataPath, std::string& backupPath, st
     gmtime_r(&now, &utc);
 #endif
     std::strftime(stamp, sizeof(stamp), "%Y%m%d-%H%M%S", &utc);
+    return stamp;
+}
 
-    backupPath = (dir / ("gamedata-" + std::string(stamp) + ".json")).string();
+// Copies gamedata.json to gamedata/backup/gamedata-<UTC time>.json and keeps the newest kMaxBackups.
+bool BackupGamedata(const std::string& gamedataPath, std::string& backupPath, std::string& error)
+{
+    namespace fs = std::filesystem;
+    const fs::path dir = fs::path(utils::GamedataDirectory()) / "backup";
+    std::error_code ec;
+    fs::create_directories(dir, ec);
+
+    backupPath = (dir / ("gamedata-" + UtcStamp() + ".json")).string();
     if (!WriteAtomically(backupPath, ReadWholeFile(gamedataPath), error)) return false;
 
     std::vector<fs::path> backups;
@@ -794,6 +802,32 @@ bool WriteRescuedKeys(const nlohmann::json& rescued, std::string& path, std::str
         if (!existing.contains(key)) existing[key] = value;
 
     return WriteAtomically(path, existing.dump(2) + "\n", error);
+}
+
+// gamedata/*.json, then the files plugins ship themselves (plugins/<Name>/gamedata/<file>.json),
+// switched off ones in plugins/disabled/ too: a host that turns a plugin off because its
+// gamedata is missing must still see when it works again (and get it fixed).
+std::vector<std::filesystem::path> GamedataFiles(const std::filesystem::path& root)
+{
+    namespace fs = std::filesystem;
+    std::vector<fs::path> files;
+    std::error_code ec;
+
+    for (const auto& entry : fs::directory_iterator(root / "gamedata", ec))
+        if (entry.path().extension() == ".json") files.push_back(entry.path());
+
+    for (const auto& folder : { root / "plugins", root / "plugins" / "disabled" })
+    {
+        std::error_code outer;
+        for (const auto& plugin : fs::directory_iterator(folder, outer))
+        {
+            if (!plugin.is_directory() || plugin.path() == root / "plugins" / "disabled") continue;
+            std::error_code inner;
+            for (const auto& entry : fs::directory_iterator(plugin.path() / "gamedata", inner))
+                if (entry.path().extension() == ".json") files.push_back(entry.path());
+        }
+    }
+    return files;
 }
 
 } // namespace
@@ -954,6 +988,350 @@ bool TryUpdateGameConfig()
     return true;
 }
 
+namespace {
+
+// The plugin update gets its own budget, after the core one: it only goes to the network when a
+// plugin file has a broken signature, and then fetches the manifest, the index and one small file
+// per broken plugin.
+constexpr long kPluginTotalTimeoutSeconds = 10;
+
+// "<site>" of "<site>/latest/CounterStrikeSharp/gamedata.json", empty for any other URL.
+std::string FeedSiteFor(const std::string& url)
+{
+    auto pos = url.rfind("/latest/");
+    return pos == std::string::npos ? std::string() : url.substr(0, pos);
+}
+
+std::optional<std::string> FetchBody(const std::string& url, std::string& error)
+{
+    auto parsed = ParseUrl(url);
+    if (!parsed)
+    {
+        error = "invalid URL " + url;
+        return std::nullopt;
+    }
+    auto res = Fetch(*parsed, url, "");
+    if (!res.error.empty() || res.status != 200)
+    {
+        error = "could not fetch " + url + " (" + (res.error.empty() ? "HTTP " + std::to_string(res.status) : res.error) + ")";
+        return std::nullopt;
+    }
+    return std::move(res.body);
+}
+
+std::optional<nlohmann::json> FetchJson(const std::string& url, std::string& error)
+{
+    auto body = FetchBody(url, error);
+    if (!body) return std::nullopt;
+    auto json = nlohmann::json::parse(*body, nullptr, false);
+    if (json.is_discarded() || !json.is_object())
+    {
+        error = url + " is not a JSON object";
+        return std::nullopt;
+    }
+    return json;
+}
+
+// gamedata/backup/plugins/<path with '/' as '_'>.<UTC time>.bak, newest kMaxBackups per file.
+// ".bak", not ".json": nothing that loads gamedata may pick a backup up.
+bool BackupPluginGamedata(const std::string& relative, const std::string& contents, std::string& backupPath, std::string& error)
+{
+    namespace fs = std::filesystem;
+    const fs::path dir = fs::path(utils::GamedataDirectory()) / "backup" / "plugins";
+    std::error_code ec;
+    fs::create_directories(dir, ec);
+
+    std::string flat = relative;
+    std::replace(flat.begin(), flat.end(), '/', '_');
+    backupPath = (dir / (flat + "." + UtcStamp() + ".bak")).string();
+    if (!WriteAtomically(backupPath, contents, error)) return false;
+
+    std::vector<fs::path> backups;
+    for (const auto& entry : fs::directory_iterator(dir, ec))
+    {
+        const auto name = entry.path().filename().string();
+        if (name.size() == flat.size() + 1 + 15 + 4 && name.rfind(flat + ".", 0) == 0 && entry.path().extension() == ".bak")
+            backups.push_back(entry.path());
+    }
+    std::sort(backups.begin(), backups.end());
+    while (backups.size() > kMaxBackups)
+    {
+        fs::remove(backups.front(), ec);
+        backups.erase(backups.begin());
+    }
+    return true;
+}
+
+// PluginGamedataFeeds entry for a file: by its path relative to addons/counterstrikesharp
+// first, then by bare file name (both compared case-insensitively, '\' read as '/').
+const std::string*
+ExplicitFeedFor(const std::map<std::string, std::string>& feeds, const std::string& relative, const std::string& fileName)
+{
+    namespace pg = plugin_gamedata;
+    auto normalize = [](std::string text) {
+        std::replace(text.begin(), text.end(), '\\', '/');
+        return pg::Lower(text);
+    };
+    const auto wantedPath = normalize(relative);
+    const auto wantedName = pg::Lower(fileName);
+    const std::string* byName = nullptr;
+    for (const auto& [file, feed] : feeds)
+    {
+        const auto key = normalize(file);
+        if (key == wantedPath) return &feed;
+        if (key == wantedName) byName = &feed;
+    }
+    return byName;
+}
+
+} // namespace
+
+/// Fixes the signatures that do not resolve in gamedata/*.json (other than gamedata.json) and
+/// plugins/*/gamedata/*.json from the same VibeSignatures site AutoUpdateURL points at. Only
+/// broken signatures are touched, and only with one that resolves here; see
+/// core/gamedata_plugin_update.h for the rules. Runs before gamedata and plugins load.
+void TryUpdatePluginGamedata()
+{
+#ifdef _WIN32
+    constexpr auto platform = "windows";
+#else
+    constexpr auto platform = "linux";
+#endif
+    namespace fs = std::filesystem;
+    namespace pg = plugin_gamedata;
+
+    const auto& config = *globals::coreConfig;
+    const auto site = FeedSiteFor(config.AutoUpdateURL);
+    if (site.empty())
+    {
+        CSSHARP_CORE_INFO("Plugin gamedata update skipped: AutoUpdateURL is not a <site>/latest/... feed URL");
+        return;
+    }
+
+    // Idempotent; globals::Initialize() calls it again later.
+    modules::Initialize();
+
+    const fs::path root = utils::GetRootDirectory();
+    const auto coreFile = root / "gamedata" / "gamedata.json";
+
+    struct LocalFile
+    {
+        fs::path path;
+        std::string relative;
+        std::string text;
+        pg::ordered_json json;
+        size_t broken = 0;
+    };
+
+    std::vector<LocalFile> work;
+    for (const auto& path : GamedataFiles(root))
+    {
+        if (path == coreFile) continue; // the core updater's, replaced whole
+
+        LocalFile file;
+        file.path = path;
+        std::error_code ec;
+        file.relative = fs::relative(path, root, ec).generic_string();
+        if (ec) file.relative = path.filename().generic_string();
+        file.text = ReadWholeFile(path.string());
+        // Strict JSON only: a file with comments would lose them when written back.
+        file.json = pg::ordered_json::parse(file.text, nullptr, false);
+        if (file.json.is_discarded() || !file.json.is_object()) continue;
+
+        file.broken = pg::BrokenSignatures(file.json, platform, SignatureResolvesInProcess).size();
+        if (file.broken > 0) work.push_back(std::move(file));
+    }
+
+    if (work.empty())
+    {
+        CSSHARP_CORE_DEBUG("Plugin gamedata: every signature resolves, nothing to update");
+        return;
+    }
+
+    g_updateDeadline = std::chrono::steady_clock::now() + std::chrono::seconds(kPluginTotalTimeoutSeconds);
+
+    // Same gate as the core update: the site serves its newest processed build, which need not
+    // be the one this server runs.
+    std::string error;
+    auto manifest = FetchJson(site + "/latest/manifest.json", error);
+    if (!manifest)
+    {
+        CSSHARP_CORE_WARN("Plugin gamedata update skipped: {}", error);
+        return;
+    }
+    const auto published = manifest->contains("gameVersion") && (*manifest)["gameVersion"].is_string()
+                               ? (*manifest)["gameVersion"].get<std::string>()
+                               : std::string();
+    const auto serverTag = ServerGameVersionTag(error);
+    if (serverTag.empty() || StripBuildSuffix(published) != serverTag)
+    {
+        CSSHARP_CORE_WARN("Plugin gamedata update skipped: {}",
+                          serverTag.empty() ? "could not determine this server's game version (" + error + ")"
+                                            : "published gamedata is for game build " + (published.empty() ? "?" : published) +
+                                                  ", this server runs " + serverTag);
+        return;
+    }
+    const auto feed = pg::ParseManifestFiles(*manifest);
+
+    // Which feed file each local file was patched from last time: a patched file no longer
+    // matches any published hash. Not ".json", so no gamedata reader picks it up.
+    const auto statePath = utils::GamedataDirectory() + "/plugin-gamedata.state";
+    auto state = nlohmann::json::parse(ReadWholeFile(statePath), nullptr, false);
+    if (state.is_discarded() || !state.is_object()) state = nlohmann::json::object();
+    bool stateChanged = false;
+
+    std::map<std::string, std::set<std::string>> hashes;
+    bool hashesFetched = false;
+
+    std::map<std::string, std::optional<pg::ordered_json>> feedCache;
+    auto loadFeed = [&](const std::string& url) -> const pg::ordered_json* {
+        auto cached = feedCache.find(url);
+        if (cached != feedCache.end()) return cached->second ? &*cached->second : nullptr;
+
+        auto& slot = feedCache[url];
+        std::string fetchError;
+        auto body = FetchBody(site + "/latest/" + url, fetchError);
+        if (!body)
+        {
+            CSSHARP_CORE_WARN("Plugin gamedata: {}", fetchError);
+            return nullptr;
+        }
+        const auto expected = std::find_if(feed.begin(), feed.end(), [&](const pg::FeedFile& f) {
+            return f.url == url;
+        });
+        if (expected != feed.end() && !expected->sha256.empty() && pg::Sha256Hex(*body) != expected->sha256)
+        {
+            CSSHARP_CORE_WARN("Plugin gamedata: {} does not match the manifest's sha256 (changed mid-publish?), not used", url);
+            return nullptr;
+        }
+        auto json = pg::ordered_json::parse(*body, nullptr, false);
+        if (json.is_discarded() || !json.is_object())
+        {
+            CSSHARP_CORE_WARN("Plugin gamedata: {} is not a JSON object, not used", url);
+            return nullptr;
+        }
+        slot = std::move(json);
+        return &*slot;
+    };
+
+    size_t filesPatched = 0, keysPatched = 0, keysLeft = 0;
+    for (auto& file : work)
+    {
+        const auto fileName = file.path.filename().string();
+        const auto* explicitUrl = ExplicitFeedFor(config.PluginGamedataFeeds, file.relative, fileName);
+
+        if (!explicitUrl && !hashesFetched)
+        {
+            hashesFetched = true;
+            auto index = FetchJson(site + "/gamedata/index.json", error);
+            if (index) hashes = pg::ParseIndexHashes(*index);
+            else
+                CSSHARP_CORE_WARN("Plugin gamedata: {}; identifying plugin files by name only", error);
+        }
+
+        const auto remembered =
+            state.contains(file.relative) && state[file.relative].is_string() ? state[file.relative].get<std::string>() : std::string();
+        auto candidates = pg::FindCandidates(fileName, pg::Sha256Hex(file.text), feed, hashes, explicitUrl, remembered);
+
+        if (candidates.urls.empty())
+        {
+            CSSHARP_CORE_WARN("Plugin gamedata: {} has {} signature(s) that don't resolve, not updated: {}", file.relative, file.broken,
+                              candidates.note);
+            keysLeft += file.broken;
+            continue;
+        }
+
+        // A file name alone is weak evidence (every other plugin calls its file gamedata.json), so a
+        // name match must also share keys with the local file, and the most of them among several.
+        std::string chosen = candidates.urls.front();
+        if (candidates.urls.size() > 1 || candidates.match == pg::Match::Name)
+        {
+            std::vector<const pg::ordered_json*> options;
+            for (const auto& url : candidates.urls)
+                options.push_back(loadFeed(url));
+            const int picked = pg::PickByKeyOverlap(file.json, options);
+            if (picked < 0)
+            {
+                std::string names;
+                for (const auto& url : candidates.urls)
+                    names += (names.empty() ? "" : ", ") + url;
+                if (candidates.urls.size() == 1)
+                    CSSHARP_CORE_WARN("Plugin gamedata: {} shares its name but no keys with {}, not updated; name its feed file in "
+                                      "PluginGamedataFeeds in core.json if it has one",
+                                      file.relative, names);
+                else
+                    CSSHARP_CORE_WARN("Plugin gamedata: {} could be any of {} ({}); name one in PluginGamedataFeeds in core.json",
+                                      file.relative, names, pg::MatchName(candidates.match));
+                keysLeft += file.broken;
+                continue;
+            }
+            chosen = candidates.urls[picked];
+        }
+
+        const auto* feedJson = loadFeed(chosen);
+        if (!feedJson)
+        {
+            keysLeft += file.broken;
+            continue;
+        }
+
+        auto result = pg::PatchBrokenSignatures(file.json, *feedJson, platform, SignatureResolvesInProcess);
+        for (const auto& reason : result.unresolved)
+            CSSHARP_CORE_WARN("Plugin gamedata: {} {} (feed {})", file.relative, reason, chosen);
+        keysLeft += result.unresolved.size();
+
+        // Remember the identification even when nothing could be fixed this time: the next build may.
+        if (remembered != chosen && candidates.match != pg::Match::Explicit)
+        {
+            state[file.relative] = chosen;
+            stateChanged = true;
+        }
+
+        if (result.patched.empty()) continue;
+
+        std::string text;
+        try
+        {
+            text = pg::Serialize(file.json, file.text);
+        }
+        catch (const std::exception& ex)
+        {
+            CSSHARP_CORE_ERROR("Plugin gamedata: {} not updated, could not serialize it: {}", file.relative, ex.what());
+            keysLeft += result.patched.size();
+            continue;
+        }
+
+        std::string backupPath;
+        if (!BackupPluginGamedata(file.relative, file.text, backupPath, error))
+        {
+            CSSHARP_CORE_ERROR("Plugin gamedata: {} not updated, it could not be backed up: {}", file.relative, error);
+            keysLeft += result.patched.size();
+            continue;
+        }
+        if (!WriteAtomically(file.path.string(), text, error))
+        {
+            CSSHARP_CORE_ERROR("Plugin gamedata: {} not updated: {}", file.relative, error);
+            keysLeft += result.patched.size();
+            continue;
+        }
+
+        std::string keys;
+        for (const auto& key : result.patched)
+            keys += (keys.empty() ? "" : ", ") + key;
+        CSSHARP_CORE_INFO("Plugin gamedata: {} fixed {} signature(s) from {} (matched by {}, backup {}): {}", file.relative,
+                          result.patched.size(), chosen, pg::MatchName(candidates.match), backupPath, keys);
+        ++filesPatched;
+        keysPatched += result.patched.size();
+    }
+
+    if (stateChanged && !WriteAtomically(statePath, state.dump(2) + "\n", error))
+        CSSHARP_CORE_WARN("Plugin gamedata: could not record which feed files were used ({})", error);
+
+    if (keysPatched > 0 || keysLeft > 0)
+        CSSHARP_CORE_INFO("Plugin gamedata: fixed {} signature(s) in {} file(s), {} still don't resolve", keysPatched, filesPatched,
+                          keysLeft);
+}
+
 bool GamedataMatchesServerBuild()
 {
     std::string error;
@@ -975,26 +1353,8 @@ void WriteGamedataStatus()
     modules::Initialize();
 
     const fs::path root = utils::GetRootDirectory();
-    std::vector<fs::path> files;
+    const auto files = GamedataFiles(root);
     std::error_code ec;
-
-    for (const auto& entry : fs::directory_iterator(root / "gamedata", ec))
-        if (entry.path().extension() == ".json") files.push_back(entry.path());
-
-    // Plugins that ship their own gamedata (plugins/<Name>/gamedata/<file>.json), switched
-    // off ones in plugins/disabled/ too: a host that turns a plugin off because its
-    // gamedata is missing must still see when it works again.
-    for (const auto& folder : { root / "plugins", root / "plugins" / "disabled" })
-    {
-        std::error_code outer;
-        for (const auto& plugin : fs::directory_iterator(folder, outer))
-        {
-            if (!plugin.is_directory() || plugin.path() == root / "plugins" / "disabled") continue;
-            std::error_code inner;
-            for (const auto& entry : fs::directory_iterator(plugin.path() / "gamedata", inner))
-                if (entry.path().extension() == ".json") files.push_back(entry.path());
-        }
-    }
 
     const bool gamedataTrusted = GamedataMatchesServerBuild();
 

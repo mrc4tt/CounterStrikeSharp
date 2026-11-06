@@ -75,6 +75,13 @@ namespace CounterStrikeSharp.API.Core
 
         [JsonPropertyName("AutoUpdateURL")] public string AutoUpdateURL { get; set; } = "https://sig.miksen.me/latest/CounterStrikeSharp/gamedata.json";
 
+        // Read by native only (gameconfig_updater.cpp); declared so Load() does not report them as unknown keys.
+        [JsonPropertyName("PluginGamedataAutoUpdate")]
+        public bool PluginGamedataAutoUpdate { get; set; } = true;
+
+        [JsonPropertyName("PluginGamedataFeeds")]
+        public System.Collections.Generic.Dictionary<string, string?>? PluginGamedataFeeds { get; set; }
+
         [JsonPropertyName("MaximumFrameTasksExecutedPerTick")]
         public int MaximumFrameTasksExecutedPerTick { get; set; } = 1024;
 

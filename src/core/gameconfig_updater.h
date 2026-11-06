@@ -5,6 +5,11 @@
 namespace counterstrikesharp::update {
 bool TryUpdateGameConfig();
 
+// Swaps signatures that don't resolve in gamedata/*.json (other than gamedata.json) and
+// plugins/*/gamedata/*.json for the ones the AutoUpdateURL site publishes for the same plugin,
+// when those resolve here (core/gamedata_plugin_update.h). Never replaces a whole file.
+void TryUpdatePluginGamedata();
+
 // The running game build as steam.inf names it ("1.41.9.2" -> "14192"), empty (and logged) when
 // steam.inf cannot be read. Pins gamedata/custom/ files (core/gamedata_custom.h).
 std::string ServerGameVersion();

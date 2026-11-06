@@ -72,6 +72,14 @@ bool CCoreConfig::Init(char* conf_error, int conf_error_size)
         AutoUpdateEnabled = m_json.value("AutoUpdateEnabled", AutoUpdateEnabled);
         AutoUpdateURL = m_json.value("AutoUpdateURL", AutoUpdateURL);
         LogVerbosity = m_json.value("LogVerbosity", LogVerbosity);
+        PluginGamedataAutoUpdate = m_json.value("PluginGamedataAutoUpdate", PluginGamedataAutoUpdate);
+        if (m_json.contains("PluginGamedataFeeds") && m_json["PluginGamedataFeeds"].is_object())
+        {
+            for (const auto& [file, feed] : m_json["PluginGamedataFeeds"].items())
+                if (feed.is_string()) PluginGamedataFeeds[file] = feed.get<std::string>();
+                else if (feed.is_null())
+                    PluginGamedataFeeds[file] = "";
+        }
     }
     catch (const std::exception& ex)
     {

@@ -18,6 +18,7 @@
 
 #include <nlohmann/json.hpp>
 
+#include <map>
 #include <string>
 
 #include "core/globals.h"
@@ -38,6 +39,14 @@ class CCoreConfig
     bool AutoUpdateEnabled = true;
     std::string AutoUpdateURL = std::string("https://sig.miksen.me/latest/CounterStrikeSharp/gamedata.json");
     std::string LogVerbosity = "information";
+    // Plugin gamedata auto-update (gameconfig_updater.cpp, core/gamedata_plugin_update.h): swaps
+    // signatures that do not resolve in gamedata/*.json and plugins/*/gamedata/*.json for the
+    // feed's, from the same site as AutoUpdateURL. Needs AutoUpdateEnabled as well.
+    bool PluginGamedataAutoUpdate = true;
+    // Local file (path relative to addons/counterstrikesharp, or bare file name) -> feed file
+    // ("<plugin>/<fileName>" under <site>/latest/), for files the updater cannot identify by
+    // itself. An empty value turns the update off for that file.
+    std::map<std::string, std::string> PluginGamedataFeeds;
 
     using json = nlohmann::json;
     CCoreConfig(const std::string& path);
