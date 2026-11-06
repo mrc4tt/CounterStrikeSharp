@@ -135,8 +135,9 @@ TEST_CASE("PickByKeyOverlap picks the feed file sharing most keys and refuses ti
     auto none = ordered_json::parse(R"({ "Z": {}, "_comment": {} })");
 
     CHECK(PickByKeyOverlap(local, { &one, &two }) == 1);
-    CHECK(PickByKeyOverlap(local, { &one, &one }) == -1);
-    CHECK(PickByKeyOverlap(local, { &none }) == -1);
+    CHECK(PickByKeyOverlap(local, { &one, &one }) == kOverlapTie);
+    CHECK(PickByKeyOverlap(local, { &none }) == kOverlapNone);
+    CHECK(PickByKeyOverlap(local, { &none, nullptr }) == kOverlapNone);
     CHECK(PickByKeyOverlap(local, { nullptr, &one }) == 1);
 }
 

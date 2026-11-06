@@ -1255,7 +1255,7 @@ void TryUpdatePluginGamedata()
                 std::string names;
                 for (const auto& url : candidates.urls)
                     names += (names.empty() ? "" : ", ") + url;
-                if (candidates.urls.size() == 1)
+                if (picked == pg::kOverlapNone)
                     CSSHARP_CORE_WARN("Plugin gamedata: {} shares its name but no keys with {}, not updated; name its feed file in "
                                       "PluginGamedataFeeds in core.json if it has one",
                                       file.relative, names);

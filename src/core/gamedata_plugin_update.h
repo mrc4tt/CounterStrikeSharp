@@ -280,8 +280,11 @@ inline Candidates FindCandidates(const std::string& fileName,
 
 inline bool IsGamedataKey(const std::string& key) { return !key.empty() && key[0] != '_'; }
 
-// Index into `options` of the feed file sharing the most gamedata keys with `local`, or -1 when
-// none shares any or two share the same, highest number.
+// Index into `options` of the feed file sharing the most gamedata keys with `local`;
+// kOverlapTie when two share the same, highest number, kOverlapNone when none shares any.
+constexpr int kOverlapTie = -1;
+constexpr int kOverlapNone = -2;
+
 inline int PickByKeyOverlap(const ordered_json& local, const std::vector<const ordered_json*>& options)
 {
     int best = -1;
@@ -303,7 +306,8 @@ inline int PickByKeyOverlap(const ordered_json& local, const std::vector<const o
         else if (count == bestCount)
             tie = true;
     }
-    return tie ? -1 : best;
+    if (best < 0) return kOverlapNone;
+    return tie ? kOverlapTie : best;
 }
 
 // --- Patching ---
