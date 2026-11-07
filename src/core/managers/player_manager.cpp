@@ -441,7 +441,11 @@ void PlayerManager::InvalidatePlayer(CPlayer* pPlayer) const
 
     // Disconnect() clears the leaving player's own overrides; the other players' overrides
     // toward this slot stayed, and whoever took the slot next inherited them.
-    const int slot = pPlayer->m_slot.Get();
+    // A CPlayer that was never Initialize()d (a client already connected when CSSharp was
+    // loaded late) still has the default slot -1: skip it, or SetListen would be called with
+    // -1 for every player and log an out-of-range warning each time.
+    const CPlayerSlot slot = pPlayer->m_slot;
+    if (!slot.IsValid()) return;
     for (int i = 0; i < 66; i++)
     {
         m_players[i].SetListen(slot, Listen_Default);
