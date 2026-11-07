@@ -24,6 +24,13 @@ public static class PerfLoop
         plugin.AddCommand("css_perfloop", "Repeat a profiler scenario: write|virtual|read [seconds]", (_, info) =>
         {
             var scenario = info.ArgCount > 1 ? info.GetArg(1) : "";
+            if (scenario == "spawngrow")
+            {
+                var task = SpawnGrow(info.ArgCount > 2 && int.TryParse(info.GetArg(2), out var gr) ? gr : 20,
+                    info.ArgCount > 3 && int.TryParse(info.GetArg(3), out var gw) ? gw : 2,
+                    info.ArgCount > 4 && info.GetArg(4) == "framework");
+                return;
+            }
             if (scenario == "spawnab") { var task = SpawnAb(info.ArgCount > 2 && int.TryParse(info.GetArg(2), out var r) ? r : 20, info.ArgCount > 3 && info.GetArg(3) == "swap"); return; }
             var seconds = info.ArgCount > 2 && double.TryParse(info.GetArg(2), out var s) ? s : 5;
             Action<CBaseEntity[]>? body = scenario switch
@@ -91,6 +98,76 @@ public static class PerfLoop
         var n = (rounds - 1) * (Count / 2);
         Console.WriteLine(FormattableString.Invariant(
             $"PERFLOOP spawnab{(swap ? " swap" : "")} rounds={rounds - 1} framework={framework * 1000 / n:F0} ns/entity raw={raw * 1000 / n:F0} ns/entity"));
+    }
+
+    // Leak hunt: per round, create 1024 point_worldtext and spawn them in creation order (raw
+    // function pointers, or the framework API with "framework"), time even and odd creation
+    // positions apart, then remove them and wait `waitFrames` frames. Prints one line per round
+    // with the entity-slot picture: how many of this round's slots were used by an earlier round,
+    // how many entities are active before create and after the wait.
+    private static async System.Threading.Tasks.Task SpawnGrow(int rounds, int waitFrames, bool framework)
+    {
+        var createAddress = CounterStrikeSharp.API.Core.NativeAPI.FindSignature(
+            CounterStrikeSharp.API.Modules.Memory.Addresses.ServerPath,
+            CounterStrikeSharp.API.Core.GameData.GetSignature("UTIL_CreateEntityByName"));
+        var spawnAddress = CounterStrikeSharp.API.Core.NativeAPI.FindSignature(
+            CounterStrikeSharp.API.Modules.Memory.Addresses.ServerPath,
+            CounterStrikeSharp.API.Core.GameData.GetSignature("CBaseEntity_DispatchSpawn"));
+        var name = System.Text.Encoding.UTF8.GetBytes("point_worldtext\0");
+        var seen = new System.Collections.Generic.HashSet<uint>();
+        var ticksToUs = 1_000_000.0 / Stopwatch.Frequency;
+
+        for (var round = 0; round < rounds; round++)
+        {
+            var activeBefore = CountActive();
+            var pointers = new IntPtr[Count];
+            var cs = Stopwatch.StartNew();
+            for (var i = 0; i < Count; i++)
+                pointers[i] = framework
+                    ? Utilities.CreateEntityByName<CPointWorldText>("point_worldtext")!.RawHandle
+                    : RawCreate(createAddress, name);
+            var createMs = cs.Elapsed.TotalMilliseconds;
+
+            double even = 0, odd = 0;
+            for (var i = 0; i < Count; i++)
+            {
+                var t0 = Stopwatch.GetTimestamp();
+                if (framework) new CBaseEntity(pointers[i]).DispatchSpawn();
+                else RawSpawn(spawnAddress, pointers[i]);
+                var dt = (Stopwatch.GetTimestamp() - t0) * ticksToUs;
+                if ((i & 1) == 0) even += dt; else odd += dt;
+            }
+
+            int reused = 0, minIndex = int.MaxValue, maxIndex = 0;
+            foreach (var pointer in pointers)
+            {
+                var entity = new CBaseEntity(pointer);
+                var index = entity.Index;
+                if (!seen.Add(index)) reused++;
+                minIndex = Math.Min(minIndex, (int)index);
+                maxIndex = Math.Max(maxIndex, (int)index);
+                if (entity.IsValid) entity.Remove();
+            }
+
+            for (var f = 0; f < waitFrames; f++)
+                await Server.NextFrameAsync(() => { });
+
+            Console.WriteLine(FormattableString.Invariant(
+                $"PERFLOOP spawngrow round={round} create={createMs:F2}ms spawnEven={even * 2 / Count:F0}ns spawnOdd={odd * 2 / Count:F0}ns reused={reused} index={minIndex}-{maxIndex} activeBefore={activeBefore} activeAfterWait={CountActive()}"));
+        }
+    }
+
+    private static int CountActive()
+    {
+        var n = 0;
+        foreach (var _ in Utilities.GetAllEntities()) n++;
+        return n;
+    }
+
+    private static unsafe IntPtr RawCreate(IntPtr address, byte[] name)
+    {
+        fixed (byte* p = name)
+            return ((delegate* unmanaged<byte*, int, IntPtr>)address)(p, -1);
     }
 
     private static unsafe void RawSpawn(IntPtr address, IntPtr entity)
