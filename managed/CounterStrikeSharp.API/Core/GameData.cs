@@ -60,6 +60,7 @@ public sealed class GameDataProvider : IStartupService
         try
         {
             Methods = new Dictionary<string, LoadedGameData>();
+            GameData.InvalidateLibraryLookup();
             var loadedFiles = new List<string>();
             // Per-file breakdown collected for ONE combined summary line instead of
             // N "Successfully loaded …" lines (one per gamedata file) at boot.
@@ -231,6 +232,73 @@ public static class GameData
         }
 
         return signature;
+    }
+
+    /// <summary>
+    /// Full path of the binary the signature of <paramref name="key"/> belongs to, from the entry's
+    /// <c>"library"</c> (<c>server</c>, <c>engine</c>, <c>tier0</c>, <c>vscript</c>, <c>schemasystem</c>).
+    /// An entry without one is a <c>server</c> signature.
+    /// </summary>
+    public static string GetSignatureLibraryPath(string key)
+    {
+        if (!GameDataProvider.Methods.TryGetValue(key, out var methodMetadata))
+        {
+            throw new ArgumentException(BuildMissingKeyMessage(key));
+        }
+
+        return LibraryPath(methodMetadata.Signatures?.Library)
+               ?? throw new InvalidOperationException(
+                   $"Unknown library \"{methodMetadata.Signatures?.Library}\" for {key} in gamedata");
+    }
+
+    private static string? LibraryPath(string? library) => library?.ToLowerInvariant() switch
+    {
+        null or "" or "server" => Modules.Memory.Addresses.ServerPath,
+        "engine" or "engine2" => Modules.Memory.Addresses.EnginePath,
+        "tier0" => Modules.Memory.Addresses.Tier0Path,
+        "vscript" => Modules.Memory.Addresses.VScriptPath,
+        "schemasystem" => Modules.Memory.Addresses.SchemaSystemPath,
+        _ => null,
+    };
+
+    // Signature text -> binary, for gamedata entries outside server. Plugins build memory functions
+    // from the text alone (`new MemoryFunctionVoid(GameData.GetSignature("Key"))`), so the text is
+    // all the binding receives; without this an "engine" entry was scanned for in libserver and
+    // never found. Built on first use and dropped whenever gamedata is reloaded.
+    private static Dictionary<string, string>? _nonServerSignatures;
+    private static readonly object LibraryLookupLock = new();
+
+    internal static void InvalidateLibraryLookup()
+    {
+        lock (LibraryLookupLock) _nonServerSignatures = null;
+    }
+
+    /// <summary>The binary a gamedata signature text belongs to, or null for server (or unknown text).</summary>
+    internal static string? NonServerLibraryPathForSignature(string signature)
+    {
+        Dictionary<string, string>? map;
+        lock (LibraryLookupLock)
+        {
+            map = _nonServerSignatures;
+            if (map == null)
+            {
+                map = new Dictionary<string, string>(StringComparer.Ordinal);
+                foreach (var (_, entry) in GameDataProvider?.Methods ?? new Dictionary<string, LoadedGameData>())
+                {
+                    var library = entry.Signatures?.Library;
+                    if (string.IsNullOrEmpty(library) || library.Equals("server", StringComparison.OrdinalIgnoreCase)) continue;
+
+                    var text = OperatingSystem.IsLinux() ? entry.Signatures?.Linux : entry.Signatures?.Windows;
+                    var path = LibraryPath(library);
+                    if (string.IsNullOrEmpty(text) || path == null) continue;
+                    map.TryAdd(text, path);
+                }
+
+                _nonServerSignatures = map;
+            }
+        }
+
+        return map.TryGetValue(signature, out var found) ? found : null;
     }
 
     // Called per invoke by high-level wrappers (e.g. CBaseEntity.IsPlayerPawn), so one lookup.
