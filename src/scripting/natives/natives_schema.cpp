@@ -14,7 +14,6 @@
  *  along with CounterStrikeSharp.  If not, see <https://www.gnu.org/licenses/>. *
  */
 
-#include <unordered_set>
 #include <ios>
 #include <sstream>
 
@@ -237,14 +236,16 @@ void SetSchemaValueByName(ScriptContext& script_context)
             break;
         case DATA_TYPE_STRING:
         {
-            // string_t / char* fields hold a pointer the engine may copy elsewhere (name tables,
-            // other entities), so a previous value can never be freed safely. A strdup per write
-            // leaked on every set (plugins renaming entities per round); interning keeps one stable
-            // copy per distinct value instead. Game thread only, like every schema write.
-            static std::unordered_set<std::string> s_internedSchemaStrings;
+            // Every write gets its own malloc'd copy, as before 6bc8ef4. That commit interned values
+            // in a static std::unordered_set<std::string> and wrote c_str() into the field: short
+            // values (SSO) then pointed into the middle of a hash node, and one pointer was shared by
+            // every entity holding the same value. The engine apparently does not treat string_t / char* fields
+            // as borrowed, and with interned pointers practice grenade rethrows (Globalname set on
+            // the projectile) corrupted the heap and later faulted in vphysics. Bisected v1.0.411 ->
+            // d53fd92 to 6bc8ef4 alone. The copy is never freed: the engine may still hold the old
+            // pointer, so the previous value cannot be released (a small leak per write).
             const char* value = script_context.GetArgument<const char*>(4);
-            const char* interned = value ? s_internedSchemaStrings.emplace(value).first->c_str() : nullptr;
-            *reinterpret_cast<const char**>((uintptr_t)(instancePointer) + m_key.offset) = interned;
+            *reinterpret_cast<char**>((uintptr_t)(instancePointer) + m_key.offset) = value ? strdup(value) : nullptr;
             break;
         }
         default:
