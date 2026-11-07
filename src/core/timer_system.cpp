@@ -159,63 +159,61 @@ double TimerSystem::CalculateNextThink(double last_think_time, float interval)
 
 void TimerSystem::RunFrame()
 {
-    // Erase by value, never by the captured index: the managed callback can call
-    // KillTimer on a *different* timer, which erases from this vector and shifts
-    // every element after it. erase(begin() + i) would then remove the wrong
-    // element, leaving the already-executed (and deleted) timer in the vector
-    // for the next frame to dereference and jump through its freed ScriptCallback.
-    for (int i = m_once_off_timers.size() - 1; i >= 0; i--)
+    // The execute phase never erases or deletes: a callback may kill any timer (itself, an older
+    // or a newer one) or create new ones, and KillTimer only flags it. Erasing mid-walk shifted
+    // the vector under the loop index, so a repeat timer could be visited twice in one frame and
+    // fire twice when its interval is shorter than a tick; finding each fired timer again by value
+    // also cost a full scan per timer. SweepKilledTimers deletes everything flagged afterwards.
+    // The sizes are captured first, so a timer created inside a callback fires on a later frame.
+    const size_t once_off_count = m_once_off_timers.size();
+    for (size_t i = once_off_count; i-- > 0;)
     {
-        if (i >= static_cast<int>(m_once_off_timers.size())) continue;
-
         auto timer = m_once_off_timers[i];
-        if (timers::universal_time >= timer->m_exec_time)
-        {
-            timer->m_in_exec = true;
-            timer->m_callback->ScriptContext().Reset();
-            timer->m_callback->Execute();
+        if (timer->m_kill_me || timers::universal_time < timer->m_exec_time) continue;
 
-            auto it = std::find(m_once_off_timers.begin(), m_once_off_timers.end(), timer);
-            if (it == m_once_off_timers.end()) continue;
-
-            m_once_off_timers.erase(it);
-            delete timer;
-        }
+        timer->m_in_exec = true;
+        timer->m_callback->ScriptContext().Reset();
+        timer->m_callback->Execute();
+        timer->m_in_exec = false;
+        timer->m_kill_me = true;
     }
 
-    for (int i = m_repeat_timers.size() - 1; i >= 0; i--)
+    const size_t repeat_count = m_repeat_timers.size();
+    for (size_t i = repeat_count; i-- > 0;)
     {
-        if (i >= static_cast<int>(m_repeat_timers.size())) continue;
-
         auto timer = m_repeat_timers[i];
-        if (timers::universal_time >= timer->m_exec_time)
+        if (timer->m_kill_me || timers::universal_time < timer->m_exec_time) continue;
+
+        timer->m_in_exec = true;
+        timer->m_callback->ScriptContext().Reset();
+        timer->m_callback->Execute();
+        timer->m_in_exec = false;
+
+        if (!timer->m_kill_me)
         {
-            timer->m_in_exec = true;
-            timer->m_callback->ScriptContext().Reset();
-            timer->m_callback->Execute();
-
-            // The callback may have removed this very timer from the vector; if so it
-            // is already freed and must not be touched.
-            auto it = std::find(m_repeat_timers.begin(), m_repeat_timers.end(), timer);
-            if (it == m_repeat_timers.end()) continue;
-
-            if (timer->m_kill_me)
-            {
-                m_repeat_timers.erase(it);
-                delete timer;
-                continue;
-            }
-
-            timer->m_in_exec = false;
             timer->m_exec_time = CalculateNextThink(timer->m_exec_time, timer->m_interval);
         }
     }
+
+    SweepKilledTimers();
+}
+
+void TimerSystem::SweepKilledTimers()
+{
+    auto isKilled = [](timers::Timer* timer) {
+        if (!timer->m_kill_me) return false;
+        delete timer;
+        return true;
+    };
+
+    std::erase_if(m_once_off_timers, isKilled);
+    std::erase_if(m_repeat_timers, isKilled);
 }
 
 void TimerSystem::RemoveMapChangeTimers()
 {
     auto isMapChangeTimer = [](timers::Timer* timer) {
-        bool shouldRemove = timer->m_flags & TIMER_FLAG_NO_MAPCHANGE;
+        bool shouldRemove = timer->m_kill_me || (timer->m_flags & TIMER_FLAG_NO_MAPCHANGE);
         if (shouldRemove)
         {
             delete timer;
@@ -245,43 +243,12 @@ timers::Timer* TimerSystem::CreateTimer(float interval, CallbackT callback, int 
 
 void TimerSystem::KillTimer(timers::Timer* timer)
 {
+    // Only flagged: the timer never runs again and SweepKilledTimers (end of RunFrame) or
+    // RemoveMapChangeTimers deletes it. Deleting here shifted the vectors RunFrame was walking
+    // when the kill came from inside another timer's callback. The serial stays registered until
+    // the delete, so a repeated Kill of the same handle just finds the flag already set.
     if (!timer) return;
-
-    if (std::find(m_repeat_timers.begin(), m_repeat_timers.end(), timer) == m_repeat_timers.end() &&
-        std::find(m_once_off_timers.begin(), m_once_off_timers.end(), timer) == m_once_off_timers.end())
-    {
-        return;
-    }
-
-    if (timer->m_kill_me) return;
-
-    // If were executing, make sure it doesn't run again next time.
-    if (timer->m_in_exec)
-    {
-        timer->m_kill_me = true;
-        return;
-    }
-
-    if (timer->m_flags & TIMER_FLAG_REPEAT)
-    {
-        auto it = std::remove_if(m_repeat_timers.begin(), m_repeat_timers.end(), [timer](timers::Timer* i) {
-            return timer == i;
-        });
-
-        bool success;
-        if ((success = it != m_repeat_timers.end())) m_repeat_timers.erase(it, m_repeat_timers.end());
-        delete timer;
-    }
-    else
-    {
-        auto it = std::remove_if(m_once_off_timers.begin(), m_once_off_timers.end(), [timer](timers::Timer* i) {
-            return timer == i;
-        });
-
-        bool success;
-        if ((success = it != m_once_off_timers.end())) m_once_off_timers.erase(it, m_once_off_timers.end());
-        delete timer;
-    }
+    timer->m_kill_me = true;
 }
 
 void TimerSystem::KillTimerBySerial(uint64_t serial)
