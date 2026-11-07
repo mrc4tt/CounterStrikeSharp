@@ -17,6 +17,8 @@
 #include "core/managers/chat_manager.h"
 
 #include <algorithm>
+#include <cctype>
+#include <string>
 
 #include <igameevents.h>
 #include <engine2/isource2server.h>
@@ -25,12 +27,53 @@
 #include "core/coreconfig.h"
 #include "core/gameconfig.h"
 #include "core/log.h"
+#include "core/globals.h"
 #include "core/managers/con_command_manager.h"
 #include "core/memory.h"
 #include "core/memory_module.h"
 #include "scripting/callback_manager.h"
 
 namespace counterstrikesharp {
+
+namespace {
+// CS2Fixes fires its own "player_chat" from its Host_Say hook; firing ours as well delivered
+// every chat line twice to game event listeners (both plugins' handlers ran for each message).
+// Looked up per chat message rather than once: Metamod plugins can be loaded and unloaded at any
+// time, and a chat line is rare enough that walking the plugin list costs nothing noticeable.
+bool AnotherPluginFiresPlayerChat()
+{
+    static SourceMM::ISmmPluginManager* pluginManager =
+        globals::ismm ? static_cast<SourceMM::ISmmPluginManager*>(globals::ismm->MetaFactory(MMIFACE_PLMANAGER, nullptr, nullptr))
+                      : nullptr;
+    if (!pluginManager) return false;
+
+    // Plugin ids are handed out incrementally and never reused, so unloads leave gaps; walk a fixed
+    // range (Query is a short list lookup) rather than stopping at the first free id.
+    for (int id = 1; id < 1024; id++)
+    {
+        const char* file = nullptr;
+        SourceMM::Pl_Status status;
+        if (!pluginManager->Query(id, &file, &status, nullptr)) continue;
+        if (status != SourceMM::Pl_Running || !file) continue;
+
+        std::string name(file);
+        std::transform(name.begin(), name.end(), name.begin(), [](unsigned char c) {
+            return std::tolower(c);
+        });
+        if (name.find("cs2fixes") != std::string::npos)
+        {
+            static bool logged = false;
+            if (!logged)
+            {
+                CSSHARP_CORE_INFO("CS2Fixes is loaded ({}): it fires \"player_chat\" itself, so CounterStrikeSharp does not.", file);
+                logged = true;
+            }
+            return true;
+        }
+    }
+    return false;
+}
+} // namespace
 
 ChatManager::ChatManager() {}
 
@@ -116,7 +159,7 @@ KHook::Return<void> DetourHostSay(CEntityInstance* pController, CCommand& args, 
             callback->Execute();
         }
 
-        auto pEvent = globals::gameEventManager->CreateEvent("player_chat", true);
+        auto pEvent = AnotherPluginFiresPlayerChat() ? nullptr : globals::gameEventManager->CreateEvent("player_chat", true);
         if (pEvent)
         {
             pEvent->SetBool("teamonly", teamonly);
