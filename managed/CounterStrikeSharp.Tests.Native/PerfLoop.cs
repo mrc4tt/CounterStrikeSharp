@@ -28,7 +28,8 @@ public static class PerfLoop
             {
                 var task = SpawnGrow(info.ArgCount > 2 && int.TryParse(info.GetArg(2), out var gr) ? gr : 20,
                     info.ArgCount > 3 && int.TryParse(info.GetArg(3), out var gw) ? gw : 2,
-                    info.ArgCount > 4 && info.GetArg(4) == "framework");
+                    info.ArgCount > 4 && info.GetArg(4) == "framework",
+                    info.ArgCount > 5 ? info.GetArg(5) : "point_worldtext");
                 return;
             }
             if (scenario == "spawnab") { var task = SpawnAb(info.ArgCount > 2 && int.TryParse(info.GetArg(2), out var r) ? r : 20, info.ArgCount > 3 && info.GetArg(3) == "swap"); return; }
@@ -103,9 +104,9 @@ public static class PerfLoop
     // Leak hunt: per round, create 1024 point_worldtext and spawn them in creation order (raw
     // function pointers, or the framework API with "framework"), time even and odd creation
     // positions apart, then remove them and wait `waitFrames` frames. Prints one line per round
-    // with the entity-slot picture: how many of this round's slots were used by an earlier round,
+    // (designer name optional, default point_worldtext) with the entity-slot picture: how many of this round's slots were used by an earlier round,
     // how many entities are active before create and after the wait.
-    private static async System.Threading.Tasks.Task SpawnGrow(int rounds, int waitFrames, bool framework)
+    private static async System.Threading.Tasks.Task SpawnGrow(int rounds, int waitFrames, bool framework, string designerName)
     {
         var createAddress = CounterStrikeSharp.API.Core.NativeAPI.FindSignature(
             CounterStrikeSharp.API.Modules.Memory.Addresses.ServerPath,
@@ -113,7 +114,7 @@ public static class PerfLoop
         var spawnAddress = CounterStrikeSharp.API.Core.NativeAPI.FindSignature(
             CounterStrikeSharp.API.Modules.Memory.Addresses.ServerPath,
             CounterStrikeSharp.API.Core.GameData.GetSignature("CBaseEntity_DispatchSpawn"));
-        var name = System.Text.Encoding.UTF8.GetBytes("point_worldtext\0");
+        var name = System.Text.Encoding.UTF8.GetBytes(designerName + "\0");
         var seen = new System.Collections.Generic.HashSet<uint>();
         var ticksToUs = 1_000_000.0 / Stopwatch.Frequency;
 
@@ -124,7 +125,7 @@ public static class PerfLoop
             var cs = Stopwatch.StartNew();
             for (var i = 0; i < Count; i++)
                 pointers[i] = framework
-                    ? Utilities.CreateEntityByName<CPointWorldText>("point_worldtext")!.RawHandle
+                    ? Utilities.CreateEntityByName<CBaseEntity>(designerName)!.RawHandle
                     : RawCreate(createAddress, name);
             var createMs = cs.Elapsed.TotalMilliseconds;
 
@@ -153,7 +154,7 @@ public static class PerfLoop
                 await Server.NextFrameAsync(() => { });
 
             Console.WriteLine(FormattableString.Invariant(
-                $"PERFLOOP spawngrow round={round} create={createMs:F2}ms spawnEven={even * 2 / Count:F0}ns spawnOdd={odd * 2 / Count:F0}ns reused={reused} index={minIndex}-{maxIndex} activeBefore={activeBefore} activeAfterWait={CountActive()}"));
+                $"PERFLOOP spawngrow {designerName} round={round} create={createMs:F2}ms spawnEven={even * 2 / Count:F1}us spawnOdd={odd * 2 / Count:F1}us reused={reused} index={minIndex}-{maxIndex} activeBefore={activeBefore} activeAfterWait={CountActive()}"));
         }
     }
 
