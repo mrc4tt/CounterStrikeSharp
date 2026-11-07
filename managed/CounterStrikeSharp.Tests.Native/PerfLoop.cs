@@ -24,6 +24,7 @@ public static class PerfLoop
         plugin.AddCommand("css_perfloop", "Repeat a profiler scenario: write|virtual|read [seconds]", (_, info) =>
         {
             var scenario = info.ArgCount > 1 ? info.GetArg(1) : "";
+            if (scenario == "spawnab") { var task = SpawnAb(info.ArgCount > 2 && int.TryParse(info.GetArg(2), out var r) ? r : 20); return; }
             var seconds = info.ArgCount > 2 && double.TryParse(info.GetArg(2), out var s) ? s : 5;
             Action<CBaseEntity[]>? body = scenario switch
             {
@@ -52,6 +53,47 @@ public static class PerfLoop
                 if (e.IsValid) e.Remove();
             Console.WriteLine(FormattableString.Invariant($"PERFLOOP {scenario} passes={passes} us/pass={us:F1}"));
         });
+    }
+
+    // Spawn A/B: each round creates 1024 entities, then spawns them interleaved, even indices through
+    // CBaseEntity.DispatchSpawn() and odd ones through a bare function pointer to the same server
+    // function, timing each call. Interleaving cancels order and cache effects between the two.
+    private static async System.Threading.Tasks.Task SpawnAb(int rounds)
+    {
+        var spawnAddress = CounterStrikeSharp.API.Core.NativeAPI.FindSignature(
+            CounterStrikeSharp.API.Modules.Memory.Addresses.ServerPath,
+            CounterStrikeSharp.API.Core.GameData.GetSignature("CBaseEntity_DispatchSpawn"));
+        double framework = 0, raw = 0;
+        var ticksToUs = 1_000_000.0 / Stopwatch.Frequency;
+        for (var round = 0; round < rounds; round++)
+        {
+            var entities = new CPointWorldText[Count];
+            for (var i = 0; i < Count; i++)
+                entities[i] = Utilities.CreateEntityByName<CPointWorldText>("point_worldtext")!;
+            double f = 0, r = 0;
+            for (var i = 0; i < Count; i++)
+            {
+                var t0 = Stopwatch.GetTimestamp();
+                if ((i & 1) == 0) entities[i].DispatchSpawn();
+                else RawSpawn(spawnAddress, entities[i].RawHandle);
+                var dt = (Stopwatch.GetTimestamp() - t0) * ticksToUs;
+                if ((i & 1) == 0) f += dt; else r += dt;
+            }
+            foreach (var e in entities)
+                if (e.IsValid) e.Remove();
+            await Server.NextFrameAsync(() => { });
+            await Server.NextFrameAsync(() => { });
+            if (round == 0) continue; // cold
+            framework += f; raw += r;
+        }
+        var n = (rounds - 1) * (Count / 2);
+        Console.WriteLine(FormattableString.Invariant(
+            $"PERFLOOP spawnab rounds={rounds - 1} framework={framework * 1000 / n:F0} ns/entity raw={raw * 1000 / n:F0} ns/entity"));
+    }
+
+    private static unsafe void RawSpawn(IntPtr address, IntPtr entity)
+    {
+        ((delegate* unmanaged<IntPtr, IntPtr, void>)address)(entity, IntPtr.Zero);
     }
 
     // Bodies copied from the profiler's CSSharpProfiler/Entitites.cs (loop shape and API calls).
