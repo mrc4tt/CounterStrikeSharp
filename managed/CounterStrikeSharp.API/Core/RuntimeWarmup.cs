@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Drawing;
 using System.Numerics;
 using System.Runtime.InteropServices;
@@ -29,8 +30,9 @@ namespace CounterStrikeSharp.API.Core;
 /// replaces them with optimized code on its background thread before gameplay.
 /// <para>
 /// Only harmless work: strings and colours are written to a private scratch buffer, entity access
-/// reads the world entity, schema lookups are pure, and the one engine call is a state-change
-/// notification for the world's (unchanged) health field.
+/// reads the world entity and the game rules, Teleport is called without arguments (it throws
+/// before reaching the engine), schema lookups are pure, and the one engine call is a
+/// state-change notification for the world's (unchanged) health field.
 /// Runs on the game thread (entity access and schema lookups call natives that must run there).
 /// </para>
 /// </remarks>
@@ -112,6 +114,18 @@ internal static class RuntimeWarmup
             // Pure lookup (offset, chain offset, networked) for the notify path; does not notify.
             _ = Schema.TryGetStateChangedTarget("CBaseEntity", "m_iHealth", out _, out _);
         }
+
+        // Teleport's managed side (validity, argument handling) without moving anything: with no
+        // argument it throws before the engine call. 64 caught exceptions, once, at load.
+        for (var i = 0; i < Calls; i++)
+        {
+            try { world.Teleport((Vector3?)null, null, null); } catch (ArgumentException) { }
+            try { world.Teleport((Modules.Utils.Vector?)null, null, null); } catch (ArgumentException) { }
+        }
+
+        // The usual game rules idiom: entity list walk by designer name, then a pointer field.
+        for (var i = 0; i < Calls; i++)
+            _ = Utilities.FindAllEntitiesByDesignerName<CCSGameRulesProxy>("cs_gamerules").FirstOrDefault()?.GameRules;
 
         // The notify path itself (SetStateChanged -> engine). Marks the world's unchanged health
         // field as changed: at worst one redundant delta of an unchanged value, and at load there
