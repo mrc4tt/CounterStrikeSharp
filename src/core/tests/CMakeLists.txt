@@ -21,6 +21,7 @@ add_executable(css_unit_tests
     test_gamedata_custom.cpp
     test_gamedata_plugin_update.cpp
     test_gamedata_update_guard.cpp
+    test_gamedata_upload.cpp
     ${CMAKE_SOURCE_DIR}/src/core/gamedata_signature.cpp
     ${CMAKE_SOURCE_DIR}/src/core/gamedata_update_guard.cpp
     ${CMAKE_SOURCE_DIR}/libraries/tweetnacl/tweetnacl.c

@@ -59,6 +59,12 @@ class CCoreConfig
     // generate yet can get a generator. See update::ReportGamedata.
     bool GamedataReportEnabled = false;
     std::string GamedataReportURL = std::string("https://sig-api.miksen.me/api/report");
+    // Opt-in, and unlike the report it sends file TEXT: a plugin gamedata file the report's answer
+    // calls unknown is uploaded to POST /api/files on the GamedataReportURL host (https only), which
+    // keeps it up to date per game build; the plugin updater then fixes that file's broken
+    // signatures from the upload's read link (signatures only, never offsets: it is not signed).
+    // Needs GamedataReportEnabled. See core/gamedata_upload.h.
+    bool GamedataUploadEnabled = false;
     // Ed25519 public key(s) (base64, space- or comma-separated) the feed's latest/manifest.json.sig
     // must verify against before the updaters apply anything from it (core/gamedata_signature.h).
     // "" turns the check off, for a self-hosted feed; VibeSignatures' is signed.
