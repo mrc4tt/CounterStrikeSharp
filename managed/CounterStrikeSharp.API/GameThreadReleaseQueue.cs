@@ -19,11 +19,34 @@ namespace CounterStrikeSharp.API
         private readonly int _maxPerFrame;
         private int _drainScheduled;
 
+        // Every queue, so Server.ClearPendingTasks can re-arm them. The queues are static
+        // singletons that outlive a `meta unload` / `meta load` (the runtime is reused), and
+        // ClearPendingTasks drops their scheduled Drain while _drainScheduled stays 1: from then
+        // on nothing ever drained them and every finalized pointer stayed unreleased.
+        private static readonly ConcurrentBag<GameThreadReleaseQueue> All = new();
+
         public GameThreadReleaseQueue(Action<IntPtr> release, int maxPerFrame)
         {
             _release = release;
             _maxPerFrame = maxPerFrame;
             _drain = Drain;
+            All.Add(this);
+        }
+
+        /// <summary>
+        /// Called after the frame task queues were cleared: forget the dropped Drain and schedule a
+        /// new one for any queue that still holds pointers (it runs once frames are dispatched again).
+        /// </summary>
+        internal static void RearmAfterClear()
+        {
+            foreach (var queue in All)
+            {
+                Volatile.Write(ref queue._drainScheduled, 0);
+                if (!queue._pending.IsEmpty)
+                {
+                    queue.ScheduleDrain();
+                }
+            }
         }
 
         internal int PendingCount => _pending.Count;

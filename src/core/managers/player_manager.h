@@ -111,7 +111,7 @@ class CPlayer
     bool m_is_authorized = false;
     int m_user_id = 1;
     CPlayerSlot m_slot = CPlayerSlot(-1);
-    const CSteamID* m_steamId;
+    const CSteamID* m_steamId = nullptr;
     std::string m_ip_address;
     ListenOverride m_listenMap[66] = {};
     VoiceFlag_t m_voiceFlag = 0;

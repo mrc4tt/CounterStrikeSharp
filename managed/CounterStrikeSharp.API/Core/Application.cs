@@ -103,6 +103,7 @@ namespace CounterStrikeSharp.API.Core
             }
 
             Server.ClearPendingTasks();
+            CounterStrikeSharp.API.Modules.Timers.Timer.OnCoreShutdown();
         }
 
         public void Start()

@@ -25,7 +25,6 @@
 
 #include "scripting/script_engine.h"
 
-#include <stack>
 #include <unordered_map>
 #include <unordered_set>
 
@@ -37,31 +36,36 @@ static std::unordered_map<uint64_t, std::string> g_registeredNames;
 
 namespace counterstrikesharp {
 
-std::stack<std::string> errors;
+// Error text handed out by ThrowNativeError as the context's result. It used to be a global
+// std::stack<std::string> popped only by the native ScriptContext::Reset(); managed callers
+// (ScriptContext.CheckErrors) reset their own copy of the struct and never popped, so every
+// NativeException left one string behind for the life of the process. A small per-thread ring
+// instead: the reader copies the text right away (CheckErrors marshals it before Reset), so a
+// slot only has to survive the next few errors raised on the same thread, nesting included.
+namespace {
+constexpr size_t kErrorSlots = 16;
+constexpr size_t kErrorLength = 256;
+thread_local char t_errorText[kErrorSlots][kErrorLength];
+thread_local size_t t_nextError = 0;
+} // namespace
 
 void ScriptContext::ThrowNativeError(const char* msg, ...)
 {
+    char* buff = t_errorText[t_nextError];
+    t_nextError = (t_nextError + 1) % kErrorSlots;
+
     va_list arglist;
-    char buff[256];
     va_start(arglist, msg);
-    vsnprintf(buff, sizeof(buff), msg, arglist);
+    vsnprintf(buff, kErrorLength, msg, arglist);
     va_end(arglist);
 
-    auto error_string = std::string(buff);
-    errors.push(error_string);
-
-    const char* ptr = errors.top().c_str();
+    const char* ptr = buff;
     this->SetResult(ptr);
     *this->m_has_error = 1;
 }
 
 void ScriptContext::Reset()
 {
-    if (*m_has_error)
-    {
-        errors.pop();
-    }
-
     m_numResults = 0;
     m_numArguments = 0;
     *m_has_error = 0;
