@@ -87,6 +87,7 @@ class TimerSystem : public GlobalClass
     double CalculateNextThink(double last_think_time, float interval);
     void RunFrame();
     void RemoveMapChangeTimers();
+    void SweepKilledTimers();
     timers::Timer* CreateTimer(float interval, CallbackT callback, int flags);
     void KillTimer(timers::Timer* timer);
     // Kill by the handle managed code holds (Timer::m_serial); unknown/stale serials are a no-op.
