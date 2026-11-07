@@ -56,6 +56,7 @@ namespace NativeTestsPlugin
             // Server.NextWorldUpdate(() => RunTests());
             LeakProbe.Register(this);
             JitProbe.Register(this);
+            PerfLoop.Register(this);
             AddCommand("css_run_tests", "Runs the xUnit tests for the native plugin.", (player, info) => { _ = RunTests(); });
         }
 
