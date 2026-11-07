@@ -24,7 +24,7 @@ public static class PerfLoop
         plugin.AddCommand("css_perfloop", "Repeat a profiler scenario: write|virtual|read [seconds]", (_, info) =>
         {
             var scenario = info.ArgCount > 1 ? info.GetArg(1) : "";
-            if (scenario == "spawnab") { var task = SpawnAb(info.ArgCount > 2 && int.TryParse(info.GetArg(2), out var r) ? r : 20); return; }
+            if (scenario == "spawnab") { var task = SpawnAb(info.ArgCount > 2 && int.TryParse(info.GetArg(2), out var r) ? r : 20, info.ArgCount > 3 && info.GetArg(3) == "swap"); return; }
             var seconds = info.ArgCount > 2 && double.TryParse(info.GetArg(2), out var s) ? s : 5;
             Action<CBaseEntity[]>? body = scenario switch
             {
@@ -57,8 +57,9 @@ public static class PerfLoop
 
     // Spawn A/B: each round creates 1024 entities, then spawns them interleaved, even indices through
     // CBaseEntity.DispatchSpawn() and odd ones through a bare function pointer to the same server
-    // function, timing each call. Interleaving cancels order and cache effects between the two.
-    private static async System.Threading.Tasks.Task SpawnAb(int rounds)
+    // function, timing each call. Interleaving cancels order and cache effects between the two;
+    // "swap" flips which half goes through the framework, to catch a cost tied to the position.
+    private static async System.Threading.Tasks.Task SpawnAb(int rounds, bool swap)
     {
         var spawnAddress = CounterStrikeSharp.API.Core.NativeAPI.FindSignature(
             CounterStrikeSharp.API.Modules.Memory.Addresses.ServerPath,
@@ -73,11 +74,12 @@ public static class PerfLoop
             double f = 0, r = 0;
             for (var i = 0; i < Count; i++)
             {
+                var useFramework = ((i & 1) == 0) != swap;
                 var t0 = Stopwatch.GetTimestamp();
-                if ((i & 1) == 0) entities[i].DispatchSpawn();
+                if (useFramework) entities[i].DispatchSpawn();
                 else RawSpawn(spawnAddress, entities[i].RawHandle);
                 var dt = (Stopwatch.GetTimestamp() - t0) * ticksToUs;
-                if ((i & 1) == 0) f += dt; else r += dt;
+                if (useFramework) f += dt; else r += dt;
             }
             foreach (var e in entities)
                 if (e.IsValid) e.Remove();
@@ -88,7 +90,7 @@ public static class PerfLoop
         }
         var n = (rounds - 1) * (Count / 2);
         Console.WriteLine(FormattableString.Invariant(
-            $"PERFLOOP spawnab rounds={rounds - 1} framework={framework * 1000 / n:F0} ns/entity raw={raw * 1000 / n:F0} ns/entity"));
+            $"PERFLOOP spawnab{(swap ? " swap" : "")} rounds={rounds - 1} framework={framework * 1000 / n:F0} ns/entity raw={raw * 1000 / n:F0} ns/entity"));
     }
 
     private static unsafe void RawSpawn(IntPtr address, IntPtr entity)
