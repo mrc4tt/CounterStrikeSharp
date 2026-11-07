@@ -434,18 +434,20 @@ void PlayerManager::RunThink() const
 
 void PlayerManager::InvalidatePlayer(CPlayer* pPlayer) const
 {
-    auto userid = globals::engine->GetPlayerUserId(pPlayer->m_slot);
+    // The slot comes from the array position, not pPlayer->m_slot: m_slot stays -1 until
+    // Initialize() runs, and a -1 here would skip the listen reset below (the slot's next
+    // occupant inheriting the old overrides) and call into the engine with an invalid slot.
+    const auto index = pPlayer - m_players;
+    if (index < 0 || index >= 66) return;
+    const CPlayerSlot slot(static_cast<int>(index));
+
+    auto userid = globals::engine->GetPlayerUserId(slot);
     if (userid.Get() != -1) m_user_id_lookup[userid.Get()] = 0;
 
     pPlayer->Disconnect();
 
     // Disconnect() clears the leaving player's own overrides; the other players' overrides
     // toward this slot stayed, and whoever took the slot next inherited them.
-    // A CPlayer that was never Initialize()d (a client already connected when CSSharp was
-    // loaded late) still has the default slot -1: skip it, or SetListen would be called with
-    // -1 for every player and log an out-of-range warning each time.
-    const CPlayerSlot slot = pPlayer->m_slot;
-    if (!slot.IsValid()) return;
     for (int i = 0; i < 66; i++)
     {
         m_players[i].SetListen(slot, Listen_Default);
