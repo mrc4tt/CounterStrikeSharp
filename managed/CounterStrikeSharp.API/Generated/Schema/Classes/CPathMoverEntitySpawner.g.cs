@@ -24,16 +24,19 @@ public partial class CPathMoverEntitySpawner : CLogicalEntity
 	public ref CPathMoverEntitySpawnerTemplateChoiceStrategy_t TemplateChoiceStrategy => ref __m_eTemplateChoiceStrategy.GetRef(this.Handle);
 
 	// m_szSpawnTemplates
+	private static readonly SchemaField<byte> __m_szSpawnTemplates = new("CPathMoverEntitySpawner", "m_szSpawnTemplates");
 	[SchemaMember("CPathMoverEntitySpawner", "m_szSpawnTemplates")]
-	public Span<string> SpawnTemplates => Schema.GetFixedArray<string>(this.Handle, "CPathMoverEntitySpawner", "m_szSpawnTemplates", 4);
+	public Span<string> SpawnTemplates => Schema.GetFixedArrayAt<string>(this.Handle, __m_szSpawnTemplates.Offset, 4);
 
 	// m_szSpawnTemplateParams
+	private static readonly SchemaField<byte> __m_szSpawnTemplateParams = new("CPathMoverEntitySpawner", "m_szSpawnTemplateParams");
 	[SchemaMember("CPathMoverEntitySpawner", "m_szSpawnTemplateParams")]
-	public Span<Int32> SpawnTemplateParams => Schema.GetFixedArray<Int32>(this.Handle, "CPathMoverEntitySpawner", "m_szSpawnTemplateParams", 4);
+	public Span<Int32> SpawnTemplateParams => Schema.GetFixedArrayAt<Int32>(this.Handle, __m_szSpawnTemplateParams.Offset, 4);
 
 	// m_szSpawnTemplateCount
+	private static readonly SchemaField<byte> __m_szSpawnTemplateCount = new("CPathMoverEntitySpawner", "m_szSpawnTemplateCount");
 	[SchemaMember("CPathMoverEntitySpawner", "m_szSpawnTemplateCount")]
-	public Span<Int32> SpawnTemplateCount => Schema.GetFixedArray<Int32>(this.Handle, "CPathMoverEntitySpawner", "m_szSpawnTemplateCount", 4);
+	public Span<Int32> SpawnTemplateCount => Schema.GetFixedArrayAt<Int32>(this.Handle, __m_szSpawnTemplateCount.Offset, 4);
 
 	// m_nSpawnIndex
 	private static readonly SchemaField<Int32> __m_nSpawnIndex = new("CPathMoverEntitySpawner", "m_nSpawnIndex");

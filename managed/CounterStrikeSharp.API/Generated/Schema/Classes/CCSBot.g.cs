@@ -23,11 +23,12 @@ public partial class CCSBot : CBot
 	public Vector EyePosition => Schema.GetDeclaredClass<Vector>(this.Handle, "CCSBot", "m_eyePosition");
 
 	// m_name
+	private static readonly SchemaField<byte> __m_name = new("CCSBot", "m_name");
 	[SchemaMember("CCSBot", "m_name")]
 	public string Name
 	{
-		get { return Schema.GetString(this.Handle, "CCSBot", "m_name"); }
-		set { Schema.SetStringBytes(this.Handle, "CCSBot", "m_name", value, 64); }
+		get { return Schema.GetStringAt(this.Handle, __m_name.Offset); }
+		set { Schema.SetStringBytesAt(this.Handle, __m_name.Offset, value, 64); }
 	}
 
 	// m_combatRange
@@ -213,8 +214,9 @@ public partial class CCSBot : CBot
 	public CountdownTimer UpdateTravelDistanceTimer => Schema.GetDeclaredClass<CountdownTimer>(this.Handle, "CCSBot", "m_updateTravelDistanceTimer");
 
 	// m_playerTravelDistance
+	private static readonly SchemaField<byte> __m_playerTravelDistance = new("CCSBot", "m_playerTravelDistance");
 	[SchemaMember("CCSBot", "m_playerTravelDistance")]
-	public Span<float> PlayerTravelDistance => Schema.GetFixedArray<float>(this.Handle, "CCSBot", "m_playerTravelDistance", 64);
+	public Span<float> PlayerTravelDistance => Schema.GetFixedArrayAt<float>(this.Handle, __m_playerTravelDistance.Offset, 64);
 
 	// m_travelDistancePhase
 	private static readonly SchemaField<byte> __m_travelDistancePhase = new("CCSBot", "m_travelDistancePhase");
@@ -269,8 +271,9 @@ public partial class CCSBot : CBot
 	public ref float NoiseTimestamp => ref __m_noiseTimestamp.GetRef(this.Handle);
 
 	// m_noiseSource
+	private static readonly SchemaField<byte> __m_noiseSource = new("CCSBot", "m_noiseSource");
 	[SchemaMember("CCSBot", "m_noiseSource")]
-	public CCSPlayerPawn? NoiseSource => Schema.GetPointer<CCSPlayerPawn>(this.Handle, "CCSBot", "m_noiseSource");
+	public CCSPlayerPawn? NoiseSource => Schema.GetPointerAt<CCSPlayerPawn>(this.Handle, __m_noiseSource.Offset);
 
 	// m_noiseBendTimer
 	[SchemaMember("CCSBot", "m_noiseBendTimer")]
@@ -623,8 +626,9 @@ public partial class CCSBot : CBot
 	public ref float NextCleanupCheckTimestamp => ref __m_nextCleanupCheckTimestamp.GetRef(this.Handle);
 
 	// m_avgVel
+	private static readonly SchemaField<byte> __m_avgVel = new("CCSBot", "m_avgVel");
 	[SchemaMember("CCSBot", "m_avgVel")]
-	public Span<float> AvgVel => Schema.GetFixedArray<float>(this.Handle, "CCSBot", "m_avgVel", 10);
+	public Span<float> AvgVel => Schema.GetFixedArrayAt<float>(this.Handle, __m_avgVel.Offset, 10);
 
 	// m_avgVelIndex
 	private static readonly SchemaField<Int32> __m_avgVelIndex = new("CCSBot", "m_avgVelIndex");

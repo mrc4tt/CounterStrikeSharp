@@ -19,8 +19,9 @@ public partial class CLogicCase : CLogicalEntity
     public CLogicCase (IntPtr pointer) : base(pointer) {}
 
 	// m_nCase
+	private static readonly SchemaField<byte> __m_nCase = new("CLogicCase", "m_nCase");
 	[SchemaMember("CLogicCase", "m_nCase")]
-	public Span<string> Case => Schema.GetFixedArray<string>(this.Handle, "CLogicCase", "m_nCase", 32);
+	public Span<string> Case => Schema.GetFixedArrayAt<string>(this.Handle, __m_nCase.Offset, 32);
 
 	// m_nShuffleCases
 	private static readonly SchemaField<Int32> __m_nShuffleCases = new("CLogicCase", "m_nShuffleCases");
@@ -33,11 +34,13 @@ public partial class CLogicCase : CLogicalEntity
 	public ref Int32 LastShuffleCase => ref __m_nLastShuffleCase.GetRef(this.Handle);
 
 	// m_uchShuffleCaseMap
+	private static readonly SchemaField<byte> __m_uchShuffleCaseMap = new("CLogicCase", "m_uchShuffleCaseMap");
 	[SchemaMember("CLogicCase", "m_uchShuffleCaseMap")]
-	public Span<byte> UchShuffleCaseMap => Schema.GetFixedArray<byte>(this.Handle, "CLogicCase", "m_uchShuffleCaseMap", 32);
+	public Span<byte> UchShuffleCaseMap => Schema.GetFixedArrayAt<byte>(this.Handle, __m_uchShuffleCaseMap.Offset, 32);
 
 	// m_OnCase
+	private static readonly SchemaField<byte> __m_OnCase = new("CLogicCase", "m_OnCase");
 	[SchemaMember("CLogicCase", "m_OnCase")]
-	public Span<CEntityIOOutput> OnCase => Schema.GetFixedArray<CEntityIOOutput>(this.Handle, "CLogicCase", "m_OnCase", 32);
+	public Span<CEntityIOOutput> OnCase => Schema.GetFixedArrayAt<CEntityIOOutput>(this.Handle, __m_OnCase.Offset, 32);
 
 }

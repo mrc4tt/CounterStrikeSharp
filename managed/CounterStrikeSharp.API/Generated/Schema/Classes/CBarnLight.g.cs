@@ -29,11 +29,12 @@ public partial class CBarnLight : CBaseModelEntity
 	public ref Int32 ColorMode => ref __m_nColorMode.GetRef(this.Handle);
 
 	// m_Color
+	private static readonly SchemaField<byte> __m_Color = new("CBarnLight", "m_Color");
 	[SchemaMember("CBarnLight", "m_Color")]
 	public Color Color
 	{
-		get { return Schema.GetCustomMarshalledType<Color>(this.Handle, "CBarnLight", "m_Color"); }
-		set { Schema.SetCustomMarshalledType<Color>(this.Handle, "CBarnLight", "m_Color", value); }
+		get { return Schema.GetColorAt(this.Handle, __m_Color.Offset); }
+		set { Schema.SetColorAt(this.Handle, __m_Color.Offset, value); }
 	}
 
 	// m_flColorTemperature
@@ -112,8 +113,9 @@ public partial class CBarnLight : CBaseModelEntity
 	public NetworkedVector<CHandle<CBaseModelEntity>> LightStyleTargets => Schema.GetDeclaredClass<NetworkedVector<CHandle<CBaseModelEntity>>>(this.Handle, "CBarnLight", "m_LightStyleTargets");
 
 	// m_StyleEvent
+	private static readonly SchemaField<byte> __m_StyleEvent = new("CBarnLight", "m_StyleEvent");
 	[SchemaMember("CBarnLight", "m_StyleEvent")]
-	public Span<CEntityIOOutput> StyleEvent => Schema.GetFixedArray<CEntityIOOutput>(this.Handle, "CBarnLight", "m_StyleEvent", 4);
+	public Span<CEntityIOOutput> StyleEvent => Schema.GetFixedArrayAt<CEntityIOOutput>(this.Handle, __m_StyleEvent.Offset, 4);
 
 	// m_hLightCookie
 	[SchemaMember("CBarnLight", "m_hLightCookie")]

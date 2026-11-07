@@ -58,7 +58,37 @@ namespace CounterStrikeSharp.API
 
         public static T? CreateEntityByName<T>(string name) where T : CBaseEntity
         {
-            return FastNew.CreateInstance<T, IntPtr>(VirtualFunctions.UTIL_CreateEntityByNameFunc.Invoke(name, -1))!;
+            return FastNew.CreateInstance<T, IntPtr>(CreateEntityByNamePointer(name))!;
+        }
+
+        // UTIL_CreateEntityByName called through a function pointer instead of ExecuteVirtualFunction
+        // (ScriptContext + dyncall per call). Same target: ExecuteVirtualFunction without bypass calls
+        // the function's address too, so a DynamicHook on it (an inline detour) still runs. The
+        // address comes from the native ValveFunction, which refuses the same targets Call() does;
+        // when it refuses, or the core is older than the fast table entry, the ScriptContext path
+        // runs and raises its usual error.
+        private static unsafe delegate* unmanaged<byte*, int, IntPtr> s_createEntityByName;
+        private static bool s_createEntityByNameResolved;
+
+        private static unsafe IntPtr CreateEntityByNamePointer(string name)
+        {
+            if (!s_createEntityByNameResolved)
+            {
+                // Reading Handle resolves the gamedata signature and throws if it is missing, as Invoke did.
+                s_createEntityByName = (delegate* unmanaged<byte*, int, IntPtr>)
+                    Core.FastNatives.GetFunctionDirectTarget(VirtualFunctions.UTIL_CreateEntityByNameFunc.Handle);
+                s_createEntityByNameResolved = true;
+            }
+
+            var function = s_createEntityByName;
+            if (function == null || name.Length > 256)
+                return VirtualFunctions.UTIL_CreateEntityByNameFunc.Invoke(name, -1);
+
+            // Designer names are short ASCII; 256 chars is at most 768 UTF-8 bytes plus the terminator.
+            var buffer = stackalloc byte[769];
+            var length = Encoding.UTF8.GetBytes(name, new Span<byte>(buffer, 768));
+            buffer[length] = 0;
+            return function(buffer, -1);
         }
 
         public static CCSPlayerController? GetPlayerFromIndex(int index)
@@ -136,15 +166,65 @@ namespace CounterStrikeSharp.API
             // entity got a CEntityIdentity wrapper, and its designer name was decoded into a new string twice
             // (null check + Contains), byte by byte: hundreds of allocations per call on a full server.
             // Same rule as before: the designer name contains designerName (ordinal), null names never match.
-            var needle = Encoding.UTF8.GetBytes(designerName);
+            var needle = NeedleBytes(designerName);
             var designerNameOffset = s_identityDesignerNameField.Offset;
             var nextOffset = s_identityNextField.Offset;
+            var walk = ++t_designerNameWalk;
 
             for (var identity = EntitySystem.FirstActiveEntity; identity != IntPtr.Zero; identity = Marshal.ReadIntPtr(identity + nextOffset))
             {
-                if (!DesignerNameContains(identity + designerNameOffset, needle)) continue;
+                if (!DesignerNameMatches(Marshal.ReadIntPtr(identity + designerNameOffset), needle, walk)) continue;
                 yield return new PointerTo<T>(identity).Value;
             }
+        }
+
+        // The needle of the last call on this thread, by reference: callers pass the same literal
+        // every time (per tick, per event), so its UTF-8 bytes are encoded once instead of per call.
+        [ThreadStatic] private static string? t_lastNeedleText;
+        [ThreadStatic] private static byte[]? t_lastNeedle;
+
+        private static byte[] NeedleBytes(string designerName)
+        {
+            if (ReferenceEquals(designerName, t_lastNeedleText) && t_lastNeedle != null)
+                return t_lastNeedle;
+
+            var bytes = Encoding.UTF8.GetBytes(designerName);
+            t_lastNeedleText = designerName;
+            t_lastNeedle = bytes;
+            return bytes;
+        }
+
+        // Entities of one class share their designer name string (same char*), so within one walk
+        // each distinct name is compared once and remembered by its pointer. Entries are stamped
+        // with the walk that wrote them and only trusted by that walk, so nothing carries over
+        // between calls (a freed name's address reused for another name cannot give a stale
+        // answer) and a nested walk with another needle only costs the outer walk a recompare.
+        private const int DesignerNameMemoSize = 64;
+        [ThreadStatic] private static DesignerNameMemoEntry[]? t_designerNameMemo;
+        [ThreadStatic] private static int t_designerNameWalk;
+
+        private struct DesignerNameMemoEntry
+        {
+            public IntPtr Name;
+            public int Walk;
+            public bool Matches;
+        }
+
+        private static unsafe bool DesignerNameMatches(IntPtr name, byte[] needle, int walk)
+        {
+            if (name == IntPtr.Zero)
+                return false;
+
+            var memo = t_designerNameMemo ??= new DesignerNameMemoEntry[DesignerNameMemoSize];
+            ref var entry = ref memo[(int)((ulong)name >> 3) & (DesignerNameMemoSize - 1)];
+            if (entry.Name == name && entry.Walk == walk)
+                return entry.Matches;
+
+            var matches = MemoryMarshal.CreateReadOnlySpanFromNullTerminated((byte*)name).IndexOf(needle) >= 0;
+            entry.Name = name;
+            entry.Walk = walk;
+            entry.Matches = matches;
+            return matches;
         }
 
         // The usual idiom, FindAllEntitiesByDesignerName<CCSGameRulesProxy>("cs_gamerules").First().GameRules,
@@ -212,19 +292,6 @@ namespace CounterStrikeSharp.API
 
         private static readonly SchemaField<IntPtr> s_identityDesignerNameField = new("CEntityIdentity", "m_designerName");
         private static readonly SchemaField<IntPtr> s_identityNextField = new("CEntityIdentity", "m_pNext");
-
-        private static unsafe bool DesignerNameContains(IntPtr designerNameField, byte[] needle)
-        {
-            var name = *(byte**)designerNameField;
-            if (name == null)
-                return false;
-
-            var length = 0;
-            while (name[length] != 0)
-                length++;
-
-            return new ReadOnlySpan<byte>(name, length).IndexOf(needle) >= 0;
-        }
 
         public static IEnumerable<CEntityInstance> GetAllEntities()
         {
@@ -384,7 +451,11 @@ namespace CounterStrikeSharp.API
         /// <exception cref="InvalidOperationException">Entity is not valid</exception>
         public static void SetStateChanged(CBaseEntity entity, string className, string fieldName, int extraOffset = 0)
         {
-            Guard.IsValidEntity(entity);
+            // One handle resolve: Handle is Zero for an entity that is gone or an invalid handle
+            // (what Guard.IsValidEntity checked, with a second resolve).
+            var pointer = entity.Handle;
+            if (pointer == IntPtr.Zero)
+                throw new InvalidOperationException("Entity is not valid");
 
             // Skip non-networked fields BEFORE forwarding on either path (matches upstream).
             // A field with no send-table entry cannot be resolved by the engine; forwarding it
@@ -402,7 +473,7 @@ namespace CounterStrikeSharp.API
                 return;
             }
 
-            NotifyStateChanged(entity, offset + extraOffset, chainOffset);
+            NotifyStateChanged(pointer, offset + extraOffset, chainOffset);
         }
 
         /// <summary>
@@ -413,16 +484,27 @@ namespace CounterStrikeSharp.API
         /// </summary>
         internal static void NotifyStateChanged(CBaseEntity entity, int offset, int chainOffset)
         {
+            NotifyStateChanged(entity.Handle, offset, chainOffset);
+        }
+
+        // m_lastNetworkChange / m_isSteadyState are touched on every notification: offsets cached
+        // once, and the entity pointer resolved once by the caller, instead of the generated
+        // properties (a handle resolve each, and a name lookup for the IsSteadyState span).
+        private static readonly SchemaField<float> s_lastNetworkChange = new("CBaseEntity", "m_lastNetworkChange");
+        private static readonly SchemaField<ulong> s_isSteadyState = new("CBaseEntity", "m_isSteadyState");
+
+        internal static unsafe void NotifyStateChanged(IntPtr entity, int offset, int chainOffset)
+        {
             if (chainOffset != 0)
             {
-                FastNatives.NetworkStateChanged(entity.Handle + chainOffset, (uint)offset, 0xFFFFFFFF, 0xFFFFFFFF);
+                FastNatives.NetworkStateChanged(entity + chainOffset, (uint)offset, 0xFFFFFFFF, 0xFFFFFFFF);
                 return;
             }
 
-            FastNatives.SetStateChanged(entity.Handle, (uint)offset, 0xFFFFFFFF, 0xFFFFFFFF);
+            FastNatives.SetStateChanged(entity, (uint)offset, 0xFFFFFFFF, 0xFFFFFFFF);
 
-            entity.LastNetworkChange = Server.CurrentTime;
-            entity.IsSteadyState.Clear();
+            *(float*)(entity + s_lastNetworkChange.Offset) = FastNatives.CurrentTime();
+            *(ulong*)(entity + s_isSteadyState.Offset) = 0; // CBitVec<64>: 8 bytes, all cleared
         }
 
         /// <summary>

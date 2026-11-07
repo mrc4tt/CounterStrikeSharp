@@ -104,7 +104,10 @@ public static class EntitySystem
         // engine entity. The previous managed implementation chased raw pointers
         // through Schema (m_pEntity → identity + 0x10) which crashes with an
         // uncatchable AccessViolationException if the entity pointer is stale.
-        return NativeAPI.GetRefFromEntityPointer(pointer);
+        // Through the fast native table: every entity wrapper built from a pointer (As<T>,
+        // CreateEntityByName, GetPlayers...) lands here, and the ScriptContext round trip was
+        // most of the wrapper's cost.
+        return Core.FastNatives.GetRefFromEntityPointer(pointer);
     }
 
 }

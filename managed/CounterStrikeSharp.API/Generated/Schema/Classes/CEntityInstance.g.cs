@@ -25,11 +25,13 @@ public partial class CEntityInstance : NativeEntity
 	}
 
 	// m_pEntity
+	private static readonly SchemaField<byte> __m_pEntity = new("CEntityInstance", "m_pEntity");
 	[SchemaMember("CEntityInstance", "m_pEntity")]
-	public CEntityIdentity? Entity => Schema.GetPointer<CEntityIdentity>(this.Handle, "CEntityInstance", "m_pEntity");
+	public CEntityIdentity? Entity => Schema.GetPointerAt<CEntityIdentity>(this.Handle, __m_pEntity.Offset);
 
 	// m_CScriptComponent
+	private static readonly SchemaField<byte> __m_CScriptComponent = new("CEntityInstance", "m_CScriptComponent");
 	[SchemaMember("CEntityInstance", "m_CScriptComponent")]
-	public CScriptComponent? CScriptComponent => Schema.GetPointer<CScriptComponent>(this.Handle, "CEntityInstance", "m_CScriptComponent");
+	public CScriptComponent? CScriptComponent => Schema.GetPointerAt<CScriptComponent>(this.Handle, __m_CScriptComponent.Offset);
 
 }

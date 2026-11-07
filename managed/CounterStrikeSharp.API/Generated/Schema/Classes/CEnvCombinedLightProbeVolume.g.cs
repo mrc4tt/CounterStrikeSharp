@@ -19,11 +19,12 @@ public partial class CEnvCombinedLightProbeVolume : CBaseEntity
     public CEnvCombinedLightProbeVolume (IntPtr pointer) : base(pointer) {}
 
 	// m_Entity_Color
+	private static readonly SchemaField<byte> __m_Entity_Color = new("CEnvCombinedLightProbeVolume", "m_Entity_Color");
 	[SchemaMember("CEnvCombinedLightProbeVolume", "m_Entity_Color")]
 	public Color Entity_Color
 	{
-		get { return Schema.GetCustomMarshalledType<Color>(this.Handle, "CEnvCombinedLightProbeVolume", "m_Entity_Color"); }
-		set { Schema.SetCustomMarshalledType<Color>(this.Handle, "CEnvCombinedLightProbeVolume", "m_Entity_Color", value); }
+		get { return Schema.GetColorAt(this.Handle, __m_Entity_Color.Offset); }
+		set { Schema.SetColorAt(this.Handle, __m_Entity_Color.Offset, value); }
 	}
 
 	// m_Entity_flBrightness

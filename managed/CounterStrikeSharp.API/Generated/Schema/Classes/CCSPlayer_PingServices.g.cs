@@ -19,8 +19,9 @@ public partial class CCSPlayer_PingServices : CPlayerPawnComponent
     public CCSPlayer_PingServices (IntPtr pointer) : base(pointer) {}
 
 	// m_flPlayerPingTokens
+	private static readonly SchemaField<byte> __m_flPlayerPingTokens = new("CCSPlayer_PingServices", "m_flPlayerPingTokens");
 	[SchemaMember("CCSPlayer_PingServices", "m_flPlayerPingTokens")]
-	public Span<float> PlayerPingTokens => Schema.GetFixedArray<float>(this.Handle, "CCSPlayer_PingServices", "m_flPlayerPingTokens", 5);
+	public Span<float> PlayerPingTokens => Schema.GetFixedArrayAt<float>(this.Handle, __m_flPlayerPingTokens.Offset, 5);
 
 	// m_hPlayerPing
 	[SchemaMember("CCSPlayer_PingServices", "m_hPlayerPing")]

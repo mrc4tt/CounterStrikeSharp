@@ -23,7 +23,8 @@ public partial class CAttributeList : NativeObject
 	public NetworkedVector<CEconItemAttribute> Attributes => Schema.GetDeclaredClass<NetworkedVector<CEconItemAttribute>>(this.Handle, "CAttributeList", "m_Attributes");
 
 	// m_pManager
+	private static readonly SchemaField<byte> __m_pManager = new("CAttributeList", "m_pManager");
 	[SchemaMember("CAttributeList", "m_pManager")]
-	public CAttributeManager? Manager => Schema.GetPointer<CAttributeManager>(this.Handle, "CAttributeList", "m_pManager");
+	public CAttributeManager? Manager => Schema.GetPointerAt<CAttributeManager>(this.Handle, __m_pManager.Offset);
 
 }

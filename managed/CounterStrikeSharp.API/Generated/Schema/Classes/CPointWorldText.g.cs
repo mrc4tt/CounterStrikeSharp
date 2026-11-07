@@ -19,27 +19,30 @@ public partial class CPointWorldText : CModelPointEntity
     public CPointWorldText (IntPtr pointer) : base(pointer) {}
 
 	// m_messageText
+	private static readonly SchemaField<byte> __m_messageText = new("CPointWorldText", "m_messageText");
 	[SchemaMember("CPointWorldText", "m_messageText")]
 	public string MessageText
 	{
-		get { return Schema.GetString(this.Handle, "CPointWorldText", "m_messageText"); }
-		set { Schema.SetStringBytes(this.Handle, "CPointWorldText", "m_messageText", value, 512); }
+		get { return Schema.GetStringAt(this.Handle, __m_messageText.Offset); }
+		set { Schema.SetStringBytesAt(this.Handle, __m_messageText.Offset, value, 512); }
 	}
 
 	// m_FontName
+	private static readonly SchemaField<byte> __m_FontName = new("CPointWorldText", "m_FontName");
 	[SchemaMember("CPointWorldText", "m_FontName")]
 	public string FontName
 	{
-		get { return Schema.GetString(this.Handle, "CPointWorldText", "m_FontName"); }
-		set { Schema.SetStringBytes(this.Handle, "CPointWorldText", "m_FontName", value, 64); }
+		get { return Schema.GetStringAt(this.Handle, __m_FontName.Offset); }
+		set { Schema.SetStringBytesAt(this.Handle, __m_FontName.Offset, value, 64); }
 	}
 
 	// m_BackgroundMaterialName
+	private static readonly SchemaField<byte> __m_BackgroundMaterialName = new("CPointWorldText", "m_BackgroundMaterialName");
 	[SchemaMember("CPointWorldText", "m_BackgroundMaterialName")]
 	public string BackgroundMaterialName
 	{
-		get { return Schema.GetString(this.Handle, "CPointWorldText", "m_BackgroundMaterialName"); }
-		set { Schema.SetStringBytes(this.Handle, "CPointWorldText", "m_BackgroundMaterialName", value, 64); }
+		get { return Schema.GetStringAt(this.Handle, __m_BackgroundMaterialName.Offset); }
+		set { Schema.SetStringBytesAt(this.Handle, __m_BackgroundMaterialName.Offset, value, 64); }
 	}
 
 	// m_bEnabled
@@ -88,11 +91,12 @@ public partial class CPointWorldText : CModelPointEntity
 	public ref float BackgroundWorldToUV => ref __m_flBackgroundWorldToUV.GetRef(this.Handle);
 
 	// m_Color
+	private static readonly SchemaField<byte> __m_Color = new("CPointWorldText", "m_Color");
 	[SchemaMember("CPointWorldText", "m_Color")]
 	public Color Color
 	{
-		get { return Schema.GetCustomMarshalledType<Color>(this.Handle, "CPointWorldText", "m_Color"); }
-		set { Schema.SetCustomMarshalledType<Color>(this.Handle, "CPointWorldText", "m_Color", value); }
+		get { return Schema.GetColorAt(this.Handle, __m_Color.Offset); }
+		set { Schema.SetColorAt(this.Handle, __m_Color.Offset, value); }
 	}
 
 	// m_nJustifyHorizontal

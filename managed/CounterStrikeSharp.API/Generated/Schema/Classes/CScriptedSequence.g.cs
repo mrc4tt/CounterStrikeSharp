@@ -394,8 +394,9 @@ public partial class CScriptedSequence : CBaseEntity
 	public CEntityIOOutput OnCancelFailedSequence => Schema.GetDeclaredClass<CEntityIOOutput>(this.Handle, "CScriptedSequence", "m_OnCancelFailedSequence");
 
 	// m_OnScriptEvent
+	private static readonly SchemaField<byte> __m_OnScriptEvent = new("CScriptedSequence", "m_OnScriptEvent");
 	[SchemaMember("CScriptedSequence", "m_OnScriptEvent")]
-	public Span<CEntityIOOutput> OnScriptEvent => Schema.GetFixedArray<CEntityIOOutput>(this.Handle, "CScriptedSequence", "m_OnScriptEvent", 8);
+	public Span<CEntityIOOutput> OnScriptEvent => Schema.GetFixedArrayAt<CEntityIOOutput>(this.Handle, __m_OnScriptEvent.Offset, 8);
 
 	// m_matOtherToMain
 	[SchemaMember("CScriptedSequence", "m_matOtherToMain")]

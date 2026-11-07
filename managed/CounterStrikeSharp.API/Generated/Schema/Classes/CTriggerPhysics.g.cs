@@ -19,8 +19,9 @@ public partial class CTriggerPhysics : CBaseTrigger
     public CTriggerPhysics (IntPtr pointer) : base(pointer) {}
 
 	// m_pController
+	private static readonly SchemaField<byte> __m_pController = new("CTriggerPhysics", "m_pController");
 	[SchemaMember("CTriggerPhysics", "m_pController")]
-	public IPhysicsMotionController? Controller => Schema.GetPointer<IPhysicsMotionController>(this.Handle, "CTriggerPhysics", "m_pController");
+	public IPhysicsMotionController? Controller => Schema.GetPointerAt<IPhysicsMotionController>(this.Handle, __m_pController.Offset);
 
 	// m_gravityScale
 	private static readonly SchemaField<float> __m_gravityScale = new("CTriggerPhysics", "m_gravityScale");

@@ -19,20 +19,24 @@ public partial class CCSPlayerController : CBasePlayerController
     public CCSPlayerController (IntPtr pointer) : base(pointer) {}
 
 	// m_pInGameMoneyServices
+	private static readonly SchemaField<byte> __m_pInGameMoneyServices = new("CCSPlayerController", "m_pInGameMoneyServices");
 	[SchemaMember("CCSPlayerController", "m_pInGameMoneyServices")]
-	public CCSPlayerController_InGameMoneyServices? InGameMoneyServices => Schema.GetPointer<CCSPlayerController_InGameMoneyServices>(this.Handle, "CCSPlayerController", "m_pInGameMoneyServices");
+	public CCSPlayerController_InGameMoneyServices? InGameMoneyServices => Schema.GetPointerAt<CCSPlayerController_InGameMoneyServices>(this.Handle, __m_pInGameMoneyServices.Offset);
 
 	// m_pInventoryServices
+	private static readonly SchemaField<byte> __m_pInventoryServices = new("CCSPlayerController", "m_pInventoryServices");
 	[SchemaMember("CCSPlayerController", "m_pInventoryServices")]
-	public CCSPlayerController_InventoryServices? InventoryServices => Schema.GetPointer<CCSPlayerController_InventoryServices>(this.Handle, "CCSPlayerController", "m_pInventoryServices");
+	public CCSPlayerController_InventoryServices? InventoryServices => Schema.GetPointerAt<CCSPlayerController_InventoryServices>(this.Handle, __m_pInventoryServices.Offset);
 
 	// m_pActionTrackingServices
+	private static readonly SchemaField<byte> __m_pActionTrackingServices = new("CCSPlayerController", "m_pActionTrackingServices");
 	[SchemaMember("CCSPlayerController", "m_pActionTrackingServices")]
-	public CCSPlayerController_ActionTrackingServices? ActionTrackingServices => Schema.GetPointer<CCSPlayerController_ActionTrackingServices>(this.Handle, "CCSPlayerController", "m_pActionTrackingServices");
+	public CCSPlayerController_ActionTrackingServices? ActionTrackingServices => Schema.GetPointerAt<CCSPlayerController_ActionTrackingServices>(this.Handle, __m_pActionTrackingServices.Offset);
 
 	// m_pDamageServices
+	private static readonly SchemaField<byte> __m_pDamageServices = new("CCSPlayerController", "m_pDamageServices");
 	[SchemaMember("CCSPlayerController", "m_pDamageServices")]
-	public CCSPlayerController_DamageServices? DamageServices => Schema.GetPointer<CCSPlayerController_DamageServices>(this.Handle, "CCSPlayerController", "m_pDamageServices");
+	public CCSPlayerController_DamageServices? DamageServices => Schema.GetPointerAt<CCSPlayerController_DamageServices>(this.Handle, __m_pDamageServices.Offset);
 
 	// m_iPing
 	private static readonly SchemaField<UInt32> __m_iPing = new("CCSPlayerController", "m_iPing");
@@ -362,8 +366,9 @@ public partial class CCSPlayerController : CBasePlayerController
 	public ref Int32 RoundsWon => ref __m_iRoundsWon.GetRef(this.Handle);
 
 	// m_recentKillQueue
+	private static readonly SchemaField<byte> __m_recentKillQueue = new("CCSPlayerController", "m_recentKillQueue");
 	[SchemaMember("CCSPlayerController", "m_recentKillQueue")]
-	public Span<byte> RecentKillQueue => Schema.GetFixedArray<byte>(this.Handle, "CCSPlayerController", "m_recentKillQueue", 8);
+	public Span<byte> RecentKillQueue => Schema.GetFixedArrayAt<byte>(this.Handle, __m_recentKillQueue.Offset, 8);
 
 	// m_nFirstKill
 	private static readonly SchemaField<byte> __m_nFirstKill = new("CCSPlayerController", "m_nFirstKill");

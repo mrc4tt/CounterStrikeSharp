@@ -19,19 +19,21 @@ public partial class hudtextparms_t : NativeObject
     public hudtextparms_t (IntPtr pointer) : base(pointer) {}
 
 	// color1
+	private static readonly SchemaField<byte> __color1 = new("hudtextparms_t", "color1");
 	[SchemaMember("hudtextparms_t", "color1")]
 	public Color Color1
 	{
-		get { return Schema.GetCustomMarshalledType<Color>(this.Handle, "hudtextparms_t", "color1"); }
-		set { Schema.SetCustomMarshalledType<Color>(this.Handle, "hudtextparms_t", "color1", value); }
+		get { return Schema.GetColorAt(this.Handle, __color1.Offset); }
+		set { Schema.SetColorAt(this.Handle, __color1.Offset, value); }
 	}
 
 	// color2
+	private static readonly SchemaField<byte> __color2 = new("hudtextparms_t", "color2");
 	[SchemaMember("hudtextparms_t", "color2")]
 	public Color Color2
 	{
-		get { return Schema.GetCustomMarshalledType<Color>(this.Handle, "hudtextparms_t", "color2"); }
-		set { Schema.SetCustomMarshalledType<Color>(this.Handle, "hudtextparms_t", "color2", value); }
+		get { return Schema.GetColorAt(this.Handle, __color2.Offset); }
+		set { Schema.SetColorAt(this.Handle, __color2.Offset, value); }
 	}
 
 	// effect

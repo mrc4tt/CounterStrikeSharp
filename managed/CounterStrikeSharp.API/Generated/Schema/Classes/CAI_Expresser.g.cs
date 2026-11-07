@@ -69,7 +69,8 @@ public partial class CAI_Expresser : NativeObject
 	public ref Int32 LastSpokenPriority => ref __m_nLastSpokenPriority.GetRef(this.Handle);
 
 	// m_pOuter
+	private static readonly SchemaField<byte> __m_pOuter = new("CAI_Expresser", "m_pOuter");
 	[SchemaMember("CAI_Expresser", "m_pOuter")]
-	public CBaseModelEntity? Outer => Schema.GetPointer<CBaseModelEntity>(this.Handle, "CAI_Expresser", "m_pOuter");
+	public CBaseModelEntity? Outer => Schema.GetPointerAt<CBaseModelEntity>(this.Handle, __m_pOuter.Offset);
 
 }

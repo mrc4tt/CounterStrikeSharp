@@ -19,16 +19,18 @@ public partial class CBaseModelEntity : CBaseEntity
     public CBaseModelEntity (IntPtr pointer) : base(pointer) {}
 
 	// m_CRenderComponent
+	private static readonly SchemaField<byte> __m_CRenderComponent = new("CBaseModelEntity", "m_CRenderComponent");
 	[SchemaMember("CBaseModelEntity", "m_CRenderComponent")]
-	public CRenderComponent? CRenderComponent => Schema.GetPointer<CRenderComponent>(this.Handle, "CBaseModelEntity", "m_CRenderComponent");
+	public CRenderComponent? CRenderComponent => Schema.GetPointerAt<CRenderComponent>(this.Handle, __m_CRenderComponent.Offset);
 
 	// m_CHitboxComponent
 	[SchemaMember("CBaseModelEntity", "m_CHitboxComponent")]
 	public CHitboxComponent CHitboxComponent => Schema.GetDeclaredClass<CHitboxComponent>(this.Handle, "CBaseModelEntity", "m_CHitboxComponent");
 
 	// m_pChoreoComponent
+	private static readonly SchemaField<byte> __m_pChoreoComponent = new("CBaseModelEntity", "m_pChoreoComponent");
 	[SchemaMember("CBaseModelEntity", "m_pChoreoComponent")]
-	public CChoreoComponent? ChoreoComponent => Schema.GetPointer<CChoreoComponent>(this.Handle, "CBaseModelEntity", "m_pChoreoComponent");
+	public CChoreoComponent? ChoreoComponent => Schema.GetPointerAt<CChoreoComponent>(this.Handle, __m_pChoreoComponent.Offset);
 
 	// m_nDestructiblePartInitialStateDestructed0
 	private static readonly SchemaField<HitGroup_t> __m_nDestructiblePartInitialStateDestructed0 = new("CBaseModelEntity", "m_nDestructiblePartInitialStateDestructed0");
@@ -106,8 +108,9 @@ public partial class CBaseModelEntity : CBaseEntity
 	public ref bool DestructiblePartInitialStateDestructed4_GenerateBreakpieces => ref __m_bDestructiblePartInitialStateDestructed4_GenerateBreakpieces.GetRef(this.Handle);
 
 	// m_pDestructiblePartsSystemComponent
+	private static readonly SchemaField<byte> __m_pDestructiblePartsSystemComponent = new("CBaseModelEntity", "m_pDestructiblePartsSystemComponent");
 	[SchemaMember("CBaseModelEntity", "m_pDestructiblePartsSystemComponent")]
-	public CDestructiblePartsComponent? DestructiblePartsSystemComponent => Schema.GetPointer<CDestructiblePartsComponent>(this.Handle, "CBaseModelEntity", "m_pDestructiblePartsSystemComponent");
+	public CDestructiblePartsComponent? DestructiblePartsSystemComponent => Schema.GetPointerAt<CDestructiblePartsComponent>(this.Handle, __m_pDestructiblePartsSystemComponent.Offset);
 
 	// m_flDissolveStartTime
 	private static readonly SchemaField<float> __m_flDissolveStartTime = new("CBaseModelEntity", "m_flDissolveStartTime");
@@ -134,11 +137,12 @@ public partial class CBaseModelEntity : CBaseEntity
 	public ref bool AllowFadeInView => ref __m_bAllowFadeInView.GetRef(this.Handle);
 
 	// m_clrRender
+	private static readonly SchemaField<byte> __m_clrRender = new("CBaseModelEntity", "m_clrRender");
 	[SchemaMember("CBaseModelEntity", "m_clrRender")]
 	public Color Render
 	{
-		get { return Schema.GetCustomMarshalledType<Color>(this.Handle, "CBaseModelEntity", "m_clrRender"); }
-		set { Schema.SetCustomMarshalledType<Color>(this.Handle, "CBaseModelEntity", "m_clrRender", value); }
+		get { return Schema.GetColorAt(this.Handle, __m_clrRender.Offset); }
+		set { Schema.SetColorAt(this.Handle, __m_clrRender.Offset, value); }
 	}
 
 	// m_vecRenderAttributes
@@ -212,7 +216,8 @@ public partial class CBaseModelEntity : CBaseEntity
 	public CNetworkViewOffsetVector ViewOffset => Schema.GetDeclaredClass<CNetworkViewOffsetVector>(this.Handle, "CBaseModelEntity", "m_vecViewOffset");
 
 	// m_bvDisabledHitGroups
+	private static readonly SchemaField<byte> __m_bvDisabledHitGroups = new("CBaseModelEntity", "m_bvDisabledHitGroups");
 	[SchemaMember("CBaseModelEntity", "m_bvDisabledHitGroups")]
-	public Span<UInt32> DisabledHitGroups => Schema.GetFixedArray<UInt32>(this.Handle, "CBaseModelEntity", "m_bvDisabledHitGroups", 1);
+	public Span<UInt32> DisabledHitGroups => Schema.GetFixedArrayAt<UInt32>(this.Handle, __m_bvDisabledHitGroups.Offset, 1);
 
 }

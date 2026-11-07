@@ -43,8 +43,9 @@ public partial class CPlayer_MovementServices : CPlayerPawnComponent
 	public ref UInt64 ButtonDoublePressed => ref __m_nButtonDoublePressed.GetRef(this.Handle);
 
 	// m_pButtonPressedCmdNumber
+	private static readonly SchemaField<byte> __m_pButtonPressedCmdNumber = new("CPlayer_MovementServices", "m_pButtonPressedCmdNumber");
 	[SchemaMember("CPlayer_MovementServices", "m_pButtonPressedCmdNumber")]
-	public Span<UInt32> ButtonPressedCmdNumber => Schema.GetFixedArray<UInt32>(this.Handle, "CPlayer_MovementServices", "m_pButtonPressedCmdNumber", 64);
+	public Span<UInt32> ButtonPressedCmdNumber => Schema.GetFixedArrayAt<UInt32>(this.Handle, __m_pButtonPressedCmdNumber.Offset, 64);
 
 	// m_nLastCommandNumberProcessed
 	private static readonly SchemaField<UInt32> __m_nLastCommandNumberProcessed = new("CPlayer_MovementServices", "m_nLastCommandNumberProcessed");
@@ -77,8 +78,9 @@ public partial class CPlayer_MovementServices : CPlayerPawnComponent
 	public ref float Maxspeed => ref __m_flMaxspeed.GetRef(this.Handle);
 
 	// m_arrForceSubtickMoveWhen
+	private static readonly SchemaField<byte> __m_arrForceSubtickMoveWhen = new("CPlayer_MovementServices", "m_arrForceSubtickMoveWhen");
 	[SchemaMember("CPlayer_MovementServices", "m_arrForceSubtickMoveWhen")]
-	public Span<float> ForceSubtickMoveWhen => Schema.GetFixedArray<float>(this.Handle, "CPlayer_MovementServices", "m_arrForceSubtickMoveWhen", 4);
+	public Span<float> ForceSubtickMoveWhen => Schema.GetFixedArrayAt<float>(this.Handle, __m_arrForceSubtickMoveWhen.Offset, 4);
 
 	// m_flForwardMove
 	private static readonly SchemaField<float> __m_flForwardMove = new("CPlayer_MovementServices", "m_flForwardMove");

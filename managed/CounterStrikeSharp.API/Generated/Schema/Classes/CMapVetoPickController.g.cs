@@ -49,44 +49,54 @@ public partial class CMapVetoPickController : CBaseEntity
 	public ref Int32 TeamWinningCoinToss => ref __m_nTeamWinningCoinToss.GetRef(this.Handle);
 
 	// m_nTeamWithFirstChoice
+	private static readonly SchemaField<byte> __m_nTeamWithFirstChoice = new("CMapVetoPickController", "m_nTeamWithFirstChoice");
 	[SchemaMember("CMapVetoPickController", "m_nTeamWithFirstChoice")]
-	public Span<Int32> TeamWithFirstChoice => Schema.GetFixedArray<Int32>(this.Handle, "CMapVetoPickController", "m_nTeamWithFirstChoice", 64);
+	public Span<Int32> TeamWithFirstChoice => Schema.GetFixedArrayAt<Int32>(this.Handle, __m_nTeamWithFirstChoice.Offset, 64);
 
 	// m_nVoteMapIdsList
+	private static readonly SchemaField<byte> __m_nVoteMapIdsList = new("CMapVetoPickController", "m_nVoteMapIdsList");
 	[SchemaMember("CMapVetoPickController", "m_nVoteMapIdsList")]
-	public Span<Int32> VoteMapIdsList => Schema.GetFixedArray<Int32>(this.Handle, "CMapVetoPickController", "m_nVoteMapIdsList", 7);
+	public Span<Int32> VoteMapIdsList => Schema.GetFixedArrayAt<Int32>(this.Handle, __m_nVoteMapIdsList.Offset, 7);
 
 	// m_nAccountIDs
+	private static readonly SchemaField<byte> __m_nAccountIDs = new("CMapVetoPickController", "m_nAccountIDs");
 	[SchemaMember("CMapVetoPickController", "m_nAccountIDs")]
-	public Span<Int32> AccountIDs => Schema.GetFixedArray<Int32>(this.Handle, "CMapVetoPickController", "m_nAccountIDs", 64);
+	public Span<Int32> AccountIDs => Schema.GetFixedArrayAt<Int32>(this.Handle, __m_nAccountIDs.Offset, 64);
 
 	// m_nMapId0
+	private static readonly SchemaField<byte> __m_nMapId0 = new("CMapVetoPickController", "m_nMapId0");
 	[SchemaMember("CMapVetoPickController", "m_nMapId0")]
-	public Span<Int32> MapId0 => Schema.GetFixedArray<Int32>(this.Handle, "CMapVetoPickController", "m_nMapId0", 64);
+	public Span<Int32> MapId0 => Schema.GetFixedArrayAt<Int32>(this.Handle, __m_nMapId0.Offset, 64);
 
 	// m_nMapId1
+	private static readonly SchemaField<byte> __m_nMapId1 = new("CMapVetoPickController", "m_nMapId1");
 	[SchemaMember("CMapVetoPickController", "m_nMapId1")]
-	public Span<Int32> MapId1 => Schema.GetFixedArray<Int32>(this.Handle, "CMapVetoPickController", "m_nMapId1", 64);
+	public Span<Int32> MapId1 => Schema.GetFixedArrayAt<Int32>(this.Handle, __m_nMapId1.Offset, 64);
 
 	// m_nMapId2
+	private static readonly SchemaField<byte> __m_nMapId2 = new("CMapVetoPickController", "m_nMapId2");
 	[SchemaMember("CMapVetoPickController", "m_nMapId2")]
-	public Span<Int32> MapId2 => Schema.GetFixedArray<Int32>(this.Handle, "CMapVetoPickController", "m_nMapId2", 64);
+	public Span<Int32> MapId2 => Schema.GetFixedArrayAt<Int32>(this.Handle, __m_nMapId2.Offset, 64);
 
 	// m_nMapId3
+	private static readonly SchemaField<byte> __m_nMapId3 = new("CMapVetoPickController", "m_nMapId3");
 	[SchemaMember("CMapVetoPickController", "m_nMapId3")]
-	public Span<Int32> MapId3 => Schema.GetFixedArray<Int32>(this.Handle, "CMapVetoPickController", "m_nMapId3", 64);
+	public Span<Int32> MapId3 => Schema.GetFixedArrayAt<Int32>(this.Handle, __m_nMapId3.Offset, 64);
 
 	// m_nMapId4
+	private static readonly SchemaField<byte> __m_nMapId4 = new("CMapVetoPickController", "m_nMapId4");
 	[SchemaMember("CMapVetoPickController", "m_nMapId4")]
-	public Span<Int32> MapId4 => Schema.GetFixedArray<Int32>(this.Handle, "CMapVetoPickController", "m_nMapId4", 64);
+	public Span<Int32> MapId4 => Schema.GetFixedArrayAt<Int32>(this.Handle, __m_nMapId4.Offset, 64);
 
 	// m_nMapId5
+	private static readonly SchemaField<byte> __m_nMapId5 = new("CMapVetoPickController", "m_nMapId5");
 	[SchemaMember("CMapVetoPickController", "m_nMapId5")]
-	public Span<Int32> MapId5 => Schema.GetFixedArray<Int32>(this.Handle, "CMapVetoPickController", "m_nMapId5", 64);
+	public Span<Int32> MapId5 => Schema.GetFixedArrayAt<Int32>(this.Handle, __m_nMapId5.Offset, 64);
 
 	// m_nStartingSide0
+	private static readonly SchemaField<byte> __m_nStartingSide0 = new("CMapVetoPickController", "m_nStartingSide0");
 	[SchemaMember("CMapVetoPickController", "m_nStartingSide0")]
-	public Span<Int32> StartingSide0 => Schema.GetFixedArray<Int32>(this.Handle, "CMapVetoPickController", "m_nStartingSide0", 64);
+	public Span<Int32> StartingSide0 => Schema.GetFixedArrayAt<Int32>(this.Handle, __m_nStartingSide0.Offset, 64);
 
 	// m_nCurrentPhase
 	private static readonly SchemaField<Int32> __m_nCurrentPhase = new("CMapVetoPickController", "m_nCurrentPhase");

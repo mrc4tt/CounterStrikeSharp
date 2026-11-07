@@ -29,8 +29,9 @@ public partial class CVoteController : CBaseEntity
 	public ref Int32 OnlyTeamToVote => ref __m_iOnlyTeamToVote.GetRef(this.Handle);
 
 	// m_nVoteOptionCount
+	private static readonly SchemaField<byte> __m_nVoteOptionCount = new("CVoteController", "m_nVoteOptionCount");
 	[SchemaMember("CVoteController", "m_nVoteOptionCount")]
-	public Span<Int32> VoteOptionCount => Schema.GetFixedArray<Int32>(this.Handle, "CVoteController", "m_nVoteOptionCount", 5);
+	public Span<Int32> VoteOptionCount => Schema.GetFixedArrayAt<Int32>(this.Handle, __m_nVoteOptionCount.Offset, 5);
 
 	// m_nPotentialVotes
 	private static readonly SchemaField<Int32> __m_nPotentialVotes = new("CVoteController", "m_nPotentialVotes");
@@ -55,8 +56,9 @@ public partial class CVoteController : CBaseEntity
 	public CountdownTimer ResetVoteTimer => Schema.GetDeclaredClass<CountdownTimer>(this.Handle, "CVoteController", "m_resetVoteTimer");
 
 	// m_nVotesCast
+	private static readonly SchemaField<byte> __m_nVotesCast = new("CVoteController", "m_nVotesCast");
 	[SchemaMember("CVoteController", "m_nVotesCast")]
-	public Span<Int32> VotesCast => Schema.GetFixedArray<Int32>(this.Handle, "CVoteController", "m_nVotesCast", 64);
+	public Span<Int32> VotesCast => Schema.GetFixedArrayAt<Int32>(this.Handle, __m_nVotesCast.Offset, 64);
 
 	// m_playerHoldingVote
 	private static readonly SchemaField<Int32> __m_playerHoldingVote = new("CVoteController", "m_playerHoldingVote");

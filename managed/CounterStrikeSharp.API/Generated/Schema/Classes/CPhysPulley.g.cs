@@ -23,8 +23,9 @@ public partial class CPhysPulley : CPhysConstraint
 	public Vector Position2 => Schema.GetDeclaredClass<Vector>(this.Handle, "CPhysPulley", "m_position2");
 
 	// m_offset
+	private static readonly SchemaField<byte> __m_offset = new("CPhysPulley", "m_offset");
 	[SchemaMember("CPhysPulley", "m_offset")]
-	public Span<Vector> Offset => Schema.GetFixedArray<Vector>(this.Handle, "CPhysPulley", "m_offset", 2);
+	public Span<Vector> Offset => Schema.GetFixedArrayAt<Vector>(this.Handle, __m_offset.Offset, 2);
 
 	// m_addLength
 	private static readonly SchemaField<float> __m_addLength = new("CPhysPulley", "m_addLength");

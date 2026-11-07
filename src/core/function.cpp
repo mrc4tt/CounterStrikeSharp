@@ -156,6 +156,19 @@ static const char* DescribeUncallableTarget(const void* target)
     return nullptr;
 }
 
+void* ValveFunction::DirectCallTarget()
+{
+    if (!IsCallable() || m_ulAddr == nullptr) return nullptr;
+
+    if (!m_targetChecked)
+    {
+        m_targetProblem = DescribeUncallableTarget(m_ulAddr);
+        m_targetChecked = true;
+    }
+
+    return m_targetProblem == nullptr ? m_ulAddr : nullptr;
+}
+
 namespace {
 // One dyncall VM per nesting level and thread, reused across calls. A fresh 4KB VM used to be
 // malloc'd and freed on every native function call. Indexed by depth because a call can re-enter

@@ -34,11 +34,12 @@ public partial class CCSTeam : CTeam
 	public ref bool Surrendered => ref __m_bSurrendered.GetRef(this.Handle);
 
 	// m_szTeamMatchStat
+	private static readonly SchemaField<byte> __m_szTeamMatchStat = new("CCSTeam", "m_szTeamMatchStat");
 	[SchemaMember("CCSTeam", "m_szTeamMatchStat")]
 	public string TeamMatchStat
 	{
-		get { return Schema.GetString(this.Handle, "CCSTeam", "m_szTeamMatchStat"); }
-		set { Schema.SetStringBytes(this.Handle, "CCSTeam", "m_szTeamMatchStat", value, 512); }
+		get { return Schema.GetStringAt(this.Handle, __m_szTeamMatchStat.Offset); }
+		set { Schema.SetStringBytesAt(this.Handle, __m_szTeamMatchStat.Offset, value, 512); }
 	}
 
 	// m_numMapVictories
@@ -62,11 +63,12 @@ public partial class CCSTeam : CTeam
 	public ref Int32 ScoreOvertime => ref __m_scoreOvertime.GetRef(this.Handle);
 
 	// m_szClanTeamname
+	private static readonly SchemaField<byte> __m_szClanTeamname = new("CCSTeam", "m_szClanTeamname");
 	[SchemaMember("CCSTeam", "m_szClanTeamname")]
 	public string ClanTeamname
 	{
-		get { return Schema.GetString(this.Handle, "CCSTeam", "m_szClanTeamname"); }
-		set { Schema.SetStringBytes(this.Handle, "CCSTeam", "m_szClanTeamname", value, 129); }
+		get { return Schema.GetStringAt(this.Handle, __m_szClanTeamname.Offset); }
+		set { Schema.SetStringBytesAt(this.Handle, __m_szClanTeamname.Offset, value, 129); }
 	}
 
 	// m_iClanID
@@ -75,19 +77,21 @@ public partial class CCSTeam : CTeam
 	public ref UInt32 ClanID => ref __m_iClanID.GetRef(this.Handle);
 
 	// m_szTeamFlagImage
+	private static readonly SchemaField<byte> __m_szTeamFlagImage = new("CCSTeam", "m_szTeamFlagImage");
 	[SchemaMember("CCSTeam", "m_szTeamFlagImage")]
 	public string TeamFlagImage
 	{
-		get { return Schema.GetString(this.Handle, "CCSTeam", "m_szTeamFlagImage"); }
-		set { Schema.SetStringBytes(this.Handle, "CCSTeam", "m_szTeamFlagImage", value, 8); }
+		get { return Schema.GetStringAt(this.Handle, __m_szTeamFlagImage.Offset); }
+		set { Schema.SetStringBytesAt(this.Handle, __m_szTeamFlagImage.Offset, value, 8); }
 	}
 
 	// m_szTeamLogoImage
+	private static readonly SchemaField<byte> __m_szTeamLogoImage = new("CCSTeam", "m_szTeamLogoImage");
 	[SchemaMember("CCSTeam", "m_szTeamLogoImage")]
 	public string TeamLogoImage
 	{
-		get { return Schema.GetString(this.Handle, "CCSTeam", "m_szTeamLogoImage"); }
-		set { Schema.SetStringBytes(this.Handle, "CCSTeam", "m_szTeamLogoImage", value, 8); }
+		get { return Schema.GetStringAt(this.Handle, __m_szTeamLogoImage.Offset); }
+		set { Schema.SetStringBytesAt(this.Handle, __m_szTeamLogoImage.Offset, value, 8); }
 	}
 
 	// m_flNextResourceTime

@@ -94,11 +94,12 @@ public partial class CColorCorrection : CBaseEntity
 	public ref float CurWeight => ref __m_flCurWeight.GetRef(this.Handle);
 
 	// m_netlookupFilename
+	private static readonly SchemaField<byte> __m_netlookupFilename = new("CColorCorrection", "m_netlookupFilename");
 	[SchemaMember("CColorCorrection", "m_netlookupFilename")]
 	public string NetlookupFilename
 	{
-		get { return Schema.GetString(this.Handle, "CColorCorrection", "m_netlookupFilename"); }
-		set { Schema.SetStringBytes(this.Handle, "CColorCorrection", "m_netlookupFilename", value, 512); }
+		get { return Schema.GetStringAt(this.Handle, __m_netlookupFilename.Offset); }
+		set { Schema.SetStringBytesAt(this.Handle, __m_netlookupFilename.Offset, value, 512); }
 	}
 
 	// m_lookupFilename

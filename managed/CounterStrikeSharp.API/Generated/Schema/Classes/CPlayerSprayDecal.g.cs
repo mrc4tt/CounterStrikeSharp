@@ -85,7 +85,8 @@ public partial class CPlayerSprayDecal : CModelPointEntity
 	public ref byte Version => ref __m_nVersion.GetRef(this.Handle);
 
 	// m_ubSignature
+	private static readonly SchemaField<byte> __m_ubSignature = new("CPlayerSprayDecal", "m_ubSignature");
 	[SchemaMember("CPlayerSprayDecal", "m_ubSignature")]
-	public Span<byte> Signature => Schema.GetFixedArray<byte>(this.Handle, "CPlayerSprayDecal", "m_ubSignature", 128);
+	public Span<byte> Signature => Schema.GetFixedArrayAt<byte>(this.Handle, __m_ubSignature.Offset, 128);
 
 }

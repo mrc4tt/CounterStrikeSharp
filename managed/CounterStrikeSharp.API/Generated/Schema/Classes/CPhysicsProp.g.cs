@@ -142,11 +142,12 @@ public partial class CPhysicsProp : CBreakableProp
 	public ref Int32 GlowRangeMin => ref __m_nGlowRangeMin.GetRef(this.Handle);
 
 	// m_glowColor
+	private static readonly SchemaField<byte> __m_glowColor = new("CPhysicsProp", "m_glowColor");
 	[SchemaMember("CPhysicsProp", "m_glowColor")]
 	public Color GlowColor
 	{
-		get { return Schema.GetCustomMarshalledType<Color>(this.Handle, "CPhysicsProp", "m_glowColor"); }
-		set { Schema.SetCustomMarshalledType<Color>(this.Handle, "CPhysicsProp", "m_glowColor", value); }
+		get { return Schema.GetColorAt(this.Handle, __m_glowColor.Offset); }
+		set { Schema.SetColorAt(this.Handle, __m_glowColor.Offset, value); }
 	}
 
 	// m_bShouldAutoConvertBackFromDebris
@@ -190,12 +191,14 @@ public partial class CPhysicsProp : CBreakableProp
 	public ref CPhysicsPropCrateType_t CrateType => ref __m_CrateType.GetRef(this.Handle);
 
 	// m_strItemClass
+	private static readonly SchemaField<byte> __m_strItemClass = new("CPhysicsProp", "m_strItemClass");
 	[SchemaMember("CPhysicsProp", "m_strItemClass")]
-	public Span<string> StrItemClass => Schema.GetFixedArray<string>(this.Handle, "CPhysicsProp", "m_strItemClass", 4);
+	public Span<string> StrItemClass => Schema.GetFixedArrayAt<string>(this.Handle, __m_strItemClass.Offset, 4);
 
 	// m_nItemCount
+	private static readonly SchemaField<byte> __m_nItemCount = new("CPhysicsProp", "m_nItemCount");
 	[SchemaMember("CPhysicsProp", "m_nItemCount")]
-	public Span<Int32> ItemCount => Schema.GetFixedArray<Int32>(this.Handle, "CPhysicsProp", "m_nItemCount", 4);
+	public Span<Int32> ItemCount => Schema.GetFixedArrayAt<Int32>(this.Handle, __m_nItemCount.Offset, 4);
 
 	// m_bRemovableForAmmoBalancing
 	private static readonly SchemaField<bool> __m_bRemovableForAmmoBalancing = new("CPhysicsProp", "m_bRemovableForAmmoBalancing");

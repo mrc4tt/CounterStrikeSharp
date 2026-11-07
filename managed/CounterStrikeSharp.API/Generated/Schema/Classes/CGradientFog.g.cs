@@ -68,11 +68,12 @@ public partial class CGradientFog : CBaseEntity
 	public ref float FogVerticalExponent => ref __m_flFogVerticalExponent.GetRef(this.Handle);
 
 	// m_fogColor
+	private static readonly SchemaField<byte> __m_fogColor = new("CGradientFog", "m_fogColor");
 	[SchemaMember("CGradientFog", "m_fogColor")]
 	public Color FogColor
 	{
-		get { return Schema.GetCustomMarshalledType<Color>(this.Handle, "CGradientFog", "m_fogColor"); }
-		set { Schema.SetCustomMarshalledType<Color>(this.Handle, "CGradientFog", "m_fogColor", value); }
+		get { return Schema.GetColorAt(this.Handle, __m_fogColor.Offset); }
+		set { Schema.SetColorAt(this.Handle, __m_fogColor.Offset, value); }
 	}
 
 	// m_flFogStrength

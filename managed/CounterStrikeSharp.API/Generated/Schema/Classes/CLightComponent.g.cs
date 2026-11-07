@@ -23,19 +23,21 @@ public partial class CLightComponent : CEntityComponent
 	public CNetworkVarChainer __m_pChainEntity => Schema.GetDeclaredClass<CNetworkVarChainer>(this.Handle, "CLightComponent", "__m_pChainEntity");
 
 	// m_Color
+	private static readonly SchemaField<byte> __m_Color = new("CLightComponent", "m_Color");
 	[SchemaMember("CLightComponent", "m_Color")]
 	public Color Color
 	{
-		get { return Schema.GetCustomMarshalledType<Color>(this.Handle, "CLightComponent", "m_Color"); }
-		set { Schema.SetCustomMarshalledType<Color>(this.Handle, "CLightComponent", "m_Color", value); }
+		get { return Schema.GetColorAt(this.Handle, __m_Color.Offset); }
+		set { Schema.SetColorAt(this.Handle, __m_Color.Offset, value); }
 	}
 
 	// m_SecondaryColor
+	private static readonly SchemaField<byte> __m_SecondaryColor = new("CLightComponent", "m_SecondaryColor");
 	[SchemaMember("CLightComponent", "m_SecondaryColor")]
 	public Color SecondaryColor
 	{
-		get { return Schema.GetCustomMarshalledType<Color>(this.Handle, "CLightComponent", "m_SecondaryColor"); }
-		set { Schema.SetCustomMarshalledType<Color>(this.Handle, "CLightComponent", "m_SecondaryColor", value); }
+		get { return Schema.GetColorAt(this.Handle, __m_SecondaryColor.Offset); }
+		set { Schema.SetColorAt(this.Handle, __m_SecondaryColor.Offset, value); }
 	}
 
 	// m_flBrightness
@@ -331,11 +333,12 @@ public partial class CLightComponent : CEntityComponent
 	public ref float NearClipPlane => ref __m_flNearClipPlane.GetRef(this.Handle);
 
 	// m_SkyColor
+	private static readonly SchemaField<byte> __m_SkyColor = new("CLightComponent", "m_SkyColor");
 	[SchemaMember("CLightComponent", "m_SkyColor")]
 	public Color SkyColor
 	{
-		get { return Schema.GetCustomMarshalledType<Color>(this.Handle, "CLightComponent", "m_SkyColor"); }
-		set { Schema.SetCustomMarshalledType<Color>(this.Handle, "CLightComponent", "m_SkyColor", value); }
+		get { return Schema.GetColorAt(this.Handle, __m_SkyColor.Offset); }
+		set { Schema.SetColorAt(this.Handle, __m_SkyColor.Offset, value); }
 	}
 
 	// m_flSkyIntensity
@@ -344,11 +347,12 @@ public partial class CLightComponent : CEntityComponent
 	public ref float SkyIntensity => ref __m_flSkyIntensity.GetRef(this.Handle);
 
 	// m_SkyAmbientBounce
+	private static readonly SchemaField<byte> __m_SkyAmbientBounce = new("CLightComponent", "m_SkyAmbientBounce");
 	[SchemaMember("CLightComponent", "m_SkyAmbientBounce")]
 	public Color SkyAmbientBounce
 	{
-		get { return Schema.GetCustomMarshalledType<Color>(this.Handle, "CLightComponent", "m_SkyAmbientBounce"); }
-		set { Schema.SetCustomMarshalledType<Color>(this.Handle, "CLightComponent", "m_SkyAmbientBounce", value); }
+		get { return Schema.GetColorAt(this.Handle, __m_SkyAmbientBounce.Offset); }
+		set { Schema.SetColorAt(this.Handle, __m_SkyAmbientBounce.Offset, value); }
 	}
 
 	// m_bUseSecondaryColor

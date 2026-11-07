@@ -51,8 +51,9 @@ public partial class CEnvSoundscape : CBaseEntity
 	public ref Int32 SoundscapeEntityListId => ref __m_soundscapeEntityListId.GetRef(this.Handle);
 
 	// m_positionNames
+	private static readonly SchemaField<byte> __m_positionNames = new("CEnvSoundscape", "m_positionNames");
 	[SchemaMember("CEnvSoundscape", "m_positionNames")]
-	public Span<string> PositionNames => Schema.GetFixedArray<string>(this.Handle, "CEnvSoundscape", "m_positionNames", 8);
+	public Span<string> PositionNames => Schema.GetFixedArrayAt<string>(this.Handle, __m_positionNames.Offset, 8);
 
 	// m_hProxySoundscape
 	[SchemaMember("CEnvSoundscape", "m_hProxySoundscape")]

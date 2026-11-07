@@ -249,7 +249,8 @@ SchemaKey schema::GetOffset(const char* className, uint32_t classKey, const char
 
 void NetworkStateChanged(uintptr_t chainEntity, uint32_t offset, uint32_t nArrayIndex, uint32_t nPathIndex)
 {
-    CNetworkStateChangedInfo info(offset, nArrayIndex, nPathIndex);
+    uint32_t offsets[4]; // declared before info: it must outlive it
+    CNetworkStateChangedInfo info(offsets, 4, offset, nArrayIndex, nPathIndex);
 
     if (counterstrikesharp::globals::NetworkStateChanged)
         counterstrikesharp::globals::NetworkStateChanged(reinterpret_cast<void*>(chainEntity), info);
@@ -257,7 +258,8 @@ void NetworkStateChanged(uintptr_t chainEntity, uint32_t offset, uint32_t nArray
 
 void SetStateChanged(uintptr_t pEntity, uint32_t offset, uint32_t nArrayIndex, uint32_t nPathIndex)
 {
-    CNetworkStateChangedInfo info(offset, nArrayIndex, nPathIndex);
+    uint32_t offsets[4]; // declared before info: it must outlive it
+    CNetworkStateChangedInfo info(offsets, 4, offset, nArrayIndex, nPathIndex);
 
     static auto fnOffset = counterstrikesharp::globals::gameConfig->GetOffset("SetStateChanged");
 

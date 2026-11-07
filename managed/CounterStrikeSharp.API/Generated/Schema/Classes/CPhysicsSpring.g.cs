@@ -19,8 +19,9 @@ public partial class CPhysicsSpring : CBaseEntity
     public CPhysicsSpring (IntPtr pointer) : base(pointer) {}
 
 	// m_pSpringJoint
+	private static readonly SchemaField<byte> __m_pSpringJoint = new("CPhysicsSpring", "m_pSpringJoint");
 	[SchemaMember("CPhysicsSpring", "m_pSpringJoint")]
-	public IPhysicsJoint? SpringJoint => Schema.GetPointer<IPhysicsJoint>(this.Handle, "CPhysicsSpring", "m_pSpringJoint");
+	public IPhysicsJoint? SpringJoint => Schema.GetPointerAt<IPhysicsJoint>(this.Handle, __m_pSpringJoint.Offset);
 
 	// m_flFrequency
 	private static readonly SchemaField<float> __m_flFrequency = new("CPhysicsSpring", "m_flFrequency");

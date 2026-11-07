@@ -19,8 +19,9 @@ public partial class CPhysConstraint : CLogicalEntity
     public CPhysConstraint (IntPtr pointer) : base(pointer) {}
 
 	// m_hJoint
+	private static readonly SchemaField<byte> __m_hJoint = new("CPhysConstraint", "m_hJoint");
 	[SchemaMember("CPhysConstraint", "m_hJoint")]
-	public IPhysicsJoint? Joint => Schema.GetPointer<IPhysicsJoint>(this.Handle, "CPhysConstraint", "m_hJoint");
+	public IPhysicsJoint? Joint => Schema.GetPointerAt<IPhysicsJoint>(this.Handle, __m_hJoint.Offset);
 
 	// m_nameAttach1
 	[SchemaMember("CPhysConstraint", "m_nameAttach1")]

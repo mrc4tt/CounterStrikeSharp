@@ -28,11 +28,12 @@ public partial class fogplayerparams_t : NativeObject
 	public ref float TransitionTime => ref __m_flTransitionTime.GetRef(this.Handle);
 
 	// m_OldColor
+	private static readonly SchemaField<byte> __m_OldColor = new("fogplayerparams_t", "m_OldColor");
 	[SchemaMember("fogplayerparams_t", "m_OldColor")]
 	public Color OldColor
 	{
-		get { return Schema.GetCustomMarshalledType<Color>(this.Handle, "fogplayerparams_t", "m_OldColor"); }
-		set { Schema.SetCustomMarshalledType<Color>(this.Handle, "fogplayerparams_t", "m_OldColor", value); }
+		get { return Schema.GetColorAt(this.Handle, __m_OldColor.Offset); }
+		set { Schema.SetColorAt(this.Handle, __m_OldColor.Offset, value); }
 	}
 
 	// m_flOldStart
@@ -61,11 +62,12 @@ public partial class fogplayerparams_t : NativeObject
 	public ref float OldFarZ => ref __m_flOldFarZ.GetRef(this.Handle);
 
 	// m_NewColor
+	private static readonly SchemaField<byte> __m_NewColor = new("fogplayerparams_t", "m_NewColor");
 	[SchemaMember("fogplayerparams_t", "m_NewColor")]
 	public Color NewColor
 	{
-		get { return Schema.GetCustomMarshalledType<Color>(this.Handle, "fogplayerparams_t", "m_NewColor"); }
-		set { Schema.SetCustomMarshalledType<Color>(this.Handle, "fogplayerparams_t", "m_NewColor", value); }
+		get { return Schema.GetColorAt(this.Handle, __m_NewColor.Offset); }
+		set { Schema.SetColorAt(this.Handle, __m_NewColor.Offset, value); }
 	}
 
 	// m_flNewStart

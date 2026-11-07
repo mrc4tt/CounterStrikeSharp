@@ -56,11 +56,12 @@ public partial class CPathParticleRope : CBaseEntity
 	public ref float Radius => ref __m_flRadius.GetRef(this.Handle);
 
 	// m_ColorTint
+	private static readonly SchemaField<byte> __m_ColorTint = new("CPathParticleRope", "m_ColorTint");
 	[SchemaMember("CPathParticleRope", "m_ColorTint")]
 	public Color ColorTint
 	{
-		get { return Schema.GetCustomMarshalledType<Color>(this.Handle, "CPathParticleRope", "m_ColorTint"); }
-		set { Schema.SetCustomMarshalledType<Color>(this.Handle, "CPathParticleRope", "m_ColorTint", value); }
+		get { return Schema.GetColorAt(this.Handle, __m_ColorTint.Offset); }
+		set { Schema.SetColorAt(this.Handle, __m_ColorTint.Offset, value); }
 	}
 
 	// m_nEffectState

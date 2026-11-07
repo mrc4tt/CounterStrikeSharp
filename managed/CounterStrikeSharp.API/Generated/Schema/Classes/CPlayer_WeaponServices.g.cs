@@ -31,8 +31,9 @@ public partial class CPlayer_WeaponServices : CPlayerPawnComponent
 	public CHandle<CBasePlayerWeapon> LastWeapon => Schema.GetDeclaredClass<CHandle<CBasePlayerWeapon>>(this.Handle, "CPlayer_WeaponServices", "m_hLastWeapon");
 
 	// m_iAmmo
+	private static readonly SchemaField<byte> __m_iAmmo = new("CPlayer_WeaponServices", "m_iAmmo");
 	[SchemaMember("CPlayer_WeaponServices", "m_iAmmo")]
-	public Span<UInt16> Ammo => Schema.GetFixedArray<UInt16>(this.Handle, "CPlayer_WeaponServices", "m_iAmmo", 32);
+	public Span<UInt16> Ammo => Schema.GetFixedArrayAt<UInt16>(this.Handle, __m_iAmmo.Offset, 32);
 
 	// m_bPreventWeaponPickup
 	private static readonly SchemaField<bool> __m_bPreventWeaponPickup = new("CPlayer_WeaponServices", "m_bPreventWeaponPickup");

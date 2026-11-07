@@ -23,11 +23,13 @@ public partial class CSceneListManager : CLogicalEntity
 	public NetworkedVector<CHandle<CSceneListManager>> ListManagers => Schema.GetDeclaredClass<NetworkedVector<CHandle<CSceneListManager>>>(this.Handle, "CSceneListManager", "m_hListManagers");
 
 	// m_iszScenes
+	private static readonly SchemaField<byte> __m_iszScenes = new("CSceneListManager", "m_iszScenes");
 	[SchemaMember("CSceneListManager", "m_iszScenes")]
-	public Span<string> IszScenes => Schema.GetFixedArray<string>(this.Handle, "CSceneListManager", "m_iszScenes", 16);
+	public Span<string> IszScenes => Schema.GetFixedArrayAt<string>(this.Handle, __m_iszScenes.Offset, 16);
 
 	// m_hScenes
+	private static readonly SchemaField<byte> __m_hScenes = new("CSceneListManager", "m_hScenes");
 	[SchemaMember("CSceneListManager", "m_hScenes")]
-	public Span<CHandle<CBaseEntity>> HScenes => Schema.GetFixedArray<CHandle<CBaseEntity>>(this.Handle, "CSceneListManager", "m_hScenes", 16);
+	public Span<CHandle<CBaseEntity>> HScenes => Schema.GetFixedArrayAt<CHandle<CBaseEntity>>(this.Handle, __m_hScenes.Offset, 16);
 
 }

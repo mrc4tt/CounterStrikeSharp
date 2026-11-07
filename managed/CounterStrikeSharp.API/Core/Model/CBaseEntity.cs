@@ -26,7 +26,11 @@ public partial class CBaseEntity
     /// <exception cref="ArgumentException">At least one parameter must be specified</exception>
     public void Teleport(Vector3? position = null, Vector3? angles = null, Vector3? velocity = null)
     {
-        Guard.IsValidEntity(this);
+        // One handle resolve for the validity check and the call (Guard.IsValidEntity resolved it
+        // a second time). Handle is Zero for an entity that is gone or an invalid handle.
+        var entity = Handle;
+        if (entity == IntPtr.Zero)
+            throw new InvalidOperationException("Entity is not valid");
 
         if (position == null && angles == null && velocity == null)
             throw new ArgumentException("At least one parameter must be specified");
@@ -56,7 +60,6 @@ public partial class CBaseEntity
             // Call the vtable entry directly: the old path looked up the gamedata offset, built a new
             // VirtualFunction (LINQ, boxing, a native CreateVirtualFunction) and dynamically invoked it
             // on every teleport. The target is the same vtable slot, so hooks on it still run.
-            var entity = Handle;
             var function = (delegate* unmanaged<nint, nint, nint, nint, void>)
                 ((nint*)*(nint*)entity)[s_teleportOffset.Value];
             function(entity, (nint)positionPtr, (nint)anglePtr, (nint)velocityPtr);

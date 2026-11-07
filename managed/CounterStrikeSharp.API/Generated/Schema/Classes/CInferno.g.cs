@@ -19,20 +19,24 @@ public partial class CInferno : CBaseModelEntity
     public CInferno (IntPtr pointer) : base(pointer) {}
 
 	// m_firePositions
+	private static readonly SchemaField<byte> __m_firePositions = new("CInferno", "m_firePositions");
 	[SchemaMember("CInferno", "m_firePositions")]
-	public Span<Vector> FirePositions => Schema.GetFixedArray<Vector>(this.Handle, "CInferno", "m_firePositions", 64);
+	public Span<Vector> FirePositions => Schema.GetFixedArrayAt<Vector>(this.Handle, __m_firePositions.Offset, 64);
 
 	// m_fireParentPositions
+	private static readonly SchemaField<byte> __m_fireParentPositions = new("CInferno", "m_fireParentPositions");
 	[SchemaMember("CInferno", "m_fireParentPositions")]
-	public Span<Vector> FireParentPositions => Schema.GetFixedArray<Vector>(this.Handle, "CInferno", "m_fireParentPositions", 64);
+	public Span<Vector> FireParentPositions => Schema.GetFixedArrayAt<Vector>(this.Handle, __m_fireParentPositions.Offset, 64);
 
 	// m_bFireIsBurning
+	private static readonly SchemaField<byte> __m_bFireIsBurning = new("CInferno", "m_bFireIsBurning");
 	[SchemaMember("CInferno", "m_bFireIsBurning")]
-	public Span<bool> FireIsBurning => Schema.GetFixedArray<bool>(this.Handle, "CInferno", "m_bFireIsBurning", 64);
+	public Span<bool> FireIsBurning => Schema.GetFixedArrayAt<bool>(this.Handle, __m_bFireIsBurning.Offset, 64);
 
 	// m_BurnNormal
+	private static readonly SchemaField<byte> __m_BurnNormal = new("CInferno", "m_BurnNormal");
 	[SchemaMember("CInferno", "m_BurnNormal")]
-	public Span<Vector> BurnNormal => Schema.GetFixedArray<Vector>(this.Handle, "CInferno", "m_BurnNormal", 64);
+	public Span<Vector> BurnNormal => Schema.GetFixedArrayAt<Vector>(this.Handle, __m_BurnNormal.Offset, 64);
 
 	// m_fireCount
 	private static readonly SchemaField<Int32> __m_fireCount = new("CInferno", "m_fireCount");

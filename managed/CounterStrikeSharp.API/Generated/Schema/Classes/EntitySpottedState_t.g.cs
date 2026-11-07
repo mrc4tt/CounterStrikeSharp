@@ -24,7 +24,8 @@ public partial class EntitySpottedState_t : NativeObject
 	public ref bool Spotted => ref __m_bSpotted.GetRef(this.Handle);
 
 	// m_bSpottedByMask
+	private static readonly SchemaField<byte> __m_bSpottedByMask = new("EntitySpottedState_t", "m_bSpottedByMask");
 	[SchemaMember("EntitySpottedState_t", "m_bSpottedByMask")]
-	public Span<UInt32> SpottedByMask => Schema.GetFixedArray<UInt32>(this.Handle, "EntitySpottedState_t", "m_bSpottedByMask", 2);
+	public Span<UInt32> SpottedByMask => Schema.GetFixedArrayAt<UInt32>(this.Handle, __m_bSpottedByMask.Offset, 2);
 
 }

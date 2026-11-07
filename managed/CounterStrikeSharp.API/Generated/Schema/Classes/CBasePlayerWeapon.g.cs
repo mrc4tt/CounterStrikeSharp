@@ -49,8 +49,9 @@ public partial class CBasePlayerWeapon : CEconEntity
 	public ref Int32 Clip2 => ref __m_iClip2.GetRef(this.Handle);
 
 	// m_pReserveAmmo
+	private static readonly SchemaField<byte> __m_pReserveAmmo = new("CBasePlayerWeapon", "m_pReserveAmmo");
 	[SchemaMember("CBasePlayerWeapon", "m_pReserveAmmo")]
-	public Span<Int32> ReserveAmmo => Schema.GetFixedArray<Int32>(this.Handle, "CBasePlayerWeapon", "m_pReserveAmmo", 2);
+	public Span<Int32> ReserveAmmo => Schema.GetFixedArrayAt<Int32>(this.Handle, __m_pReserveAmmo.Offset, 2);
 
 	// m_OnPlayerUse
 	[SchemaMember("CBasePlayerWeapon", "m_OnPlayerUse")]

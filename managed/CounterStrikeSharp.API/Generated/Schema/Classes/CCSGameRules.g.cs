@@ -209,35 +209,39 @@ public partial class CCSGameRules : CTeamplayRules
 	public ref Int32 NextMapInMapgroup => ref __m_nNextMapInMapgroup.GetRef(this.Handle);
 
 	// m_szTournamentEventName
+	private static readonly SchemaField<byte> __m_szTournamentEventName = new("CCSGameRules", "m_szTournamentEventName");
 	[SchemaMember("CCSGameRules", "m_szTournamentEventName")]
 	public string TournamentEventName
 	{
-		get { return Schema.GetString(this.Handle, "CCSGameRules", "m_szTournamentEventName"); }
-		set { Schema.SetStringBytes(this.Handle, "CCSGameRules", "m_szTournamentEventName", value, 512); }
+		get { return Schema.GetStringAt(this.Handle, __m_szTournamentEventName.Offset); }
+		set { Schema.SetStringBytesAt(this.Handle, __m_szTournamentEventName.Offset, value, 512); }
 	}
 
 	// m_szTournamentEventStage
+	private static readonly SchemaField<byte> __m_szTournamentEventStage = new("CCSGameRules", "m_szTournamentEventStage");
 	[SchemaMember("CCSGameRules", "m_szTournamentEventStage")]
 	public string TournamentEventStage
 	{
-		get { return Schema.GetString(this.Handle, "CCSGameRules", "m_szTournamentEventStage"); }
-		set { Schema.SetStringBytes(this.Handle, "CCSGameRules", "m_szTournamentEventStage", value, 512); }
+		get { return Schema.GetStringAt(this.Handle, __m_szTournamentEventStage.Offset); }
+		set { Schema.SetStringBytesAt(this.Handle, __m_szTournamentEventStage.Offset, value, 512); }
 	}
 
 	// m_szMatchStatTxt
+	private static readonly SchemaField<byte> __m_szMatchStatTxt = new("CCSGameRules", "m_szMatchStatTxt");
 	[SchemaMember("CCSGameRules", "m_szMatchStatTxt")]
 	public string MatchStatTxt
 	{
-		get { return Schema.GetString(this.Handle, "CCSGameRules", "m_szMatchStatTxt"); }
-		set { Schema.SetStringBytes(this.Handle, "CCSGameRules", "m_szMatchStatTxt", value, 512); }
+		get { return Schema.GetStringAt(this.Handle, __m_szMatchStatTxt.Offset); }
+		set { Schema.SetStringBytesAt(this.Handle, __m_szMatchStatTxt.Offset, value, 512); }
 	}
 
 	// m_szTournamentPredictionsTxt
+	private static readonly SchemaField<byte> __m_szTournamentPredictionsTxt = new("CCSGameRules", "m_szTournamentPredictionsTxt");
 	[SchemaMember("CCSGameRules", "m_szTournamentPredictionsTxt")]
 	public string TournamentPredictionsTxt
 	{
-		get { return Schema.GetString(this.Handle, "CCSGameRules", "m_szTournamentPredictionsTxt"); }
-		set { Schema.SetStringBytes(this.Handle, "CCSGameRules", "m_szTournamentPredictionsTxt", value, 512); }
+		get { return Schema.GetStringAt(this.Handle, __m_szTournamentPredictionsTxt.Offset); }
+		set { Schema.SetStringBytesAt(this.Handle, __m_szTournamentPredictionsTxt.Offset, value, 512); }
 	}
 
 	// m_nTournamentPredictionsPct
@@ -276,12 +280,14 @@ public partial class CCSGameRules : CTeamplayRules
 	public ref bool BombPlanted => ref __m_bBombPlanted.GetRef(this.Handle);
 
 	// m_arrProhibitedItemIndices
+	private static readonly SchemaField<byte> __m_arrProhibitedItemIndices = new("CCSGameRules", "m_arrProhibitedItemIndices");
 	[SchemaMember("CCSGameRules", "m_arrProhibitedItemIndices")]
-	public Span<UInt16> ProhibitedItemIndices => Schema.GetFixedArray<UInt16>(this.Handle, "CCSGameRules", "m_arrProhibitedItemIndices", 100);
+	public Span<UInt16> ProhibitedItemIndices => Schema.GetFixedArrayAt<UInt16>(this.Handle, __m_arrProhibitedItemIndices.Offset, 100);
 
 	// m_arrTournamentActiveCasterAccounts
+	private static readonly SchemaField<byte> __m_arrTournamentActiveCasterAccounts = new("CCSGameRules", "m_arrTournamentActiveCasterAccounts");
 	[SchemaMember("CCSGameRules", "m_arrTournamentActiveCasterAccounts")]
-	public Span<UInt32> TournamentActiveCasterAccounts => Schema.GetFixedArray<UInt32>(this.Handle, "CCSGameRules", "m_arrTournamentActiveCasterAccounts", 4);
+	public Span<UInt32> TournamentActiveCasterAccounts => Schema.GetFixedArrayAt<UInt32>(this.Handle, __m_arrTournamentActiveCasterAccounts.Offset, 4);
 
 	// m_numBestOfMaps
 	private static readonly SchemaField<Int32> __m_numBestOfMaps = new("CCSGameRules", "m_numBestOfMaps");
@@ -319,20 +325,24 @@ public partial class CCSGameRules : CTeamplayRules
 	public ref bool CTCantBuy => ref __m_bCTCantBuy.GetRef(this.Handle);
 
 	// m_iMatchStats_RoundResults
+	private static readonly SchemaField<byte> __m_iMatchStats_RoundResults = new("CCSGameRules", "m_iMatchStats_RoundResults");
 	[SchemaMember("CCSGameRules", "m_iMatchStats_RoundResults")]
-	public Span<Int32> MatchStats_RoundResults => Schema.GetFixedArray<Int32>(this.Handle, "CCSGameRules", "m_iMatchStats_RoundResults", 30);
+	public Span<Int32> MatchStats_RoundResults => Schema.GetFixedArrayAt<Int32>(this.Handle, __m_iMatchStats_RoundResults.Offset, 30);
 
 	// m_iMatchStats_PlayersAlive_CT
+	private static readonly SchemaField<byte> __m_iMatchStats_PlayersAlive_CT = new("CCSGameRules", "m_iMatchStats_PlayersAlive_CT");
 	[SchemaMember("CCSGameRules", "m_iMatchStats_PlayersAlive_CT")]
-	public Span<Int32> MatchStats_PlayersAlive_CT => Schema.GetFixedArray<Int32>(this.Handle, "CCSGameRules", "m_iMatchStats_PlayersAlive_CT", 30);
+	public Span<Int32> MatchStats_PlayersAlive_CT => Schema.GetFixedArrayAt<Int32>(this.Handle, __m_iMatchStats_PlayersAlive_CT.Offset, 30);
 
 	// m_iMatchStats_PlayersAlive_T
+	private static readonly SchemaField<byte> __m_iMatchStats_PlayersAlive_T = new("CCSGameRules", "m_iMatchStats_PlayersAlive_T");
 	[SchemaMember("CCSGameRules", "m_iMatchStats_PlayersAlive_T")]
-	public Span<Int32> MatchStats_PlayersAlive_T => Schema.GetFixedArray<Int32>(this.Handle, "CCSGameRules", "m_iMatchStats_PlayersAlive_T", 30);
+	public Span<Int32> MatchStats_PlayersAlive_T => Schema.GetFixedArrayAt<Int32>(this.Handle, __m_iMatchStats_PlayersAlive_T.Offset, 30);
 
 	// m_TeamRespawnWaveTimes
+	private static readonly SchemaField<byte> __m_TeamRespawnWaveTimes = new("CCSGameRules", "m_TeamRespawnWaveTimes");
 	[SchemaMember("CCSGameRules", "m_TeamRespawnWaveTimes")]
-	public Span<float> TeamRespawnWaveTimes => Schema.GetFixedArray<float>(this.Handle, "CCSGameRules", "m_TeamRespawnWaveTimes", 32);
+	public Span<float> TeamRespawnWaveTimes => Schema.GetFixedArrayAt<float>(this.Handle, __m_TeamRespawnWaveTimes.Offset, 32);
 
 	// m_nActiveMutators
 	private static readonly SchemaField<Int32> __m_nActiveMutators = new("CCSGameRules", "m_nActiveMutators");
@@ -340,8 +350,9 @@ public partial class CCSGameRules : CTeamplayRules
 	public ref Int32 ActiveMutators => ref __m_nActiveMutators.GetRef(this.Handle);
 
 	// m_flNextRespawnWave
+	private static readonly SchemaField<byte> __m_flNextRespawnWave = new("CCSGameRules", "m_flNextRespawnWave");
 	[SchemaMember("CCSGameRules", "m_flNextRespawnWave")]
-	public Span<float> NextRespawnWave => Schema.GetFixedArray<float>(this.Handle, "CCSGameRules", "m_flNextRespawnWave", 32);
+	public Span<float> NextRespawnWave => Schema.GetFixedArrayAt<float>(this.Handle, __m_flNextRespawnWave.Offset, 32);
 
 	// m_vMinimapMins
 	[SchemaMember("CCSGameRules", "m_vMinimapMins")]
@@ -352,8 +363,9 @@ public partial class CCSGameRules : CTeamplayRules
 	public Vector MinimapMaxs => Schema.GetDeclaredClass<Vector>(this.Handle, "CCSGameRules", "m_vMinimapMaxs");
 
 	// m_MinimapVerticalSectionHeights
+	private static readonly SchemaField<byte> __m_MinimapVerticalSectionHeights = new("CCSGameRules", "m_MinimapVerticalSectionHeights");
 	[SchemaMember("CCSGameRules", "m_MinimapVerticalSectionHeights")]
-	public Span<float> MinimapVerticalSectionHeights => Schema.GetFixedArray<float>(this.Handle, "CCSGameRules", "m_MinimapVerticalSectionHeights", 8);
+	public Span<float> MinimapVerticalSectionHeights => Schema.GetFixedArrayAt<float>(this.Handle, __m_MinimapVerticalSectionHeights.Offset, 8);
 
 	// m_ullLocalMatchID
 	private static readonly SchemaField<UInt64> __m_ullLocalMatchID = new("CCSGameRules", "m_ullLocalMatchID");
@@ -361,12 +373,14 @@ public partial class CCSGameRules : CTeamplayRules
 	public ref UInt64 UllLocalMatchID => ref __m_ullLocalMatchID.GetRef(this.Handle);
 
 	// m_nEndMatchMapGroupVoteTypes
+	private static readonly SchemaField<byte> __m_nEndMatchMapGroupVoteTypes = new("CCSGameRules", "m_nEndMatchMapGroupVoteTypes");
 	[SchemaMember("CCSGameRules", "m_nEndMatchMapGroupVoteTypes")]
-	public Span<Int32> EndMatchMapGroupVoteTypes => Schema.GetFixedArray<Int32>(this.Handle, "CCSGameRules", "m_nEndMatchMapGroupVoteTypes", 10);
+	public Span<Int32> EndMatchMapGroupVoteTypes => Schema.GetFixedArrayAt<Int32>(this.Handle, __m_nEndMatchMapGroupVoteTypes.Offset, 10);
 
 	// m_nEndMatchMapGroupVoteOptions
+	private static readonly SchemaField<byte> __m_nEndMatchMapGroupVoteOptions = new("CCSGameRules", "m_nEndMatchMapGroupVoteOptions");
 	[SchemaMember("CCSGameRules", "m_nEndMatchMapGroupVoteOptions")]
-	public Span<Int32> EndMatchMapGroupVoteOptions => Schema.GetFixedArray<Int32>(this.Handle, "CCSGameRules", "m_nEndMatchMapGroupVoteOptions", 10);
+	public Span<Int32> EndMatchMapGroupVoteOptions => Schema.GetFixedArrayAt<Int32>(this.Handle, __m_nEndMatchMapGroupVoteOptions.Offset, 10);
 
 	// m_nEndMatchMapVoteWinner
 	private static readonly SchemaField<Int32> __m_nEndMatchMapVoteWinner = new("CCSGameRules", "m_nEndMatchMapVoteWinner");
@@ -825,8 +839,9 @@ public partial class CCSGameRules : CTeamplayRules
 	public ref bool SwitchingTeamsAtRoundReset => ref __m_bSwitchingTeamsAtRoundReset.GetRef(this.Handle);
 
 	// m_pGameModeRules
+	private static readonly SchemaField<byte> __m_pGameModeRules = new("CCSGameRules", "m_pGameModeRules");
 	[SchemaMember("CCSGameRules", "m_pGameModeRules")]
-	public CCSGameModeRules? GameModeRules => Schema.GetPointer<CCSGameModeRules>(this.Handle, "CCSGameRules", "m_pGameModeRules");
+	public CCSGameModeRules? GameModeRules => Schema.GetPointerAt<CCSGameModeRules>(this.Handle, __m_pGameModeRules.Offset);
 
 	// m_hPlayerResource
 	[SchemaMember("CCSGameRules", "m_hPlayerResource")]
@@ -837,12 +852,14 @@ public partial class CCSGameRules : CTeamplayRules
 	public CRetakeGameRules RetakeRules => Schema.GetDeclaredClass<CRetakeGameRules>(this.Handle, "CCSGameRules", "m_RetakeRules");
 
 	// m_arrTeamUniqueKillWeaponsMatch
+	private static readonly SchemaField<byte> __m_arrTeamUniqueKillWeaponsMatch = new("CCSGameRules", "m_arrTeamUniqueKillWeaponsMatch");
 	[SchemaMember("CCSGameRules", "m_arrTeamUniqueKillWeaponsMatch")]
-	public Span<NetworkedVector<Int32>> TeamUniqueKillWeaponsMatch => Schema.GetFixedArray<NetworkedVector<Int32>>(this.Handle, "CCSGameRules", "m_arrTeamUniqueKillWeaponsMatch", 4);
+	public Span<NetworkedVector<Int32>> TeamUniqueKillWeaponsMatch => Schema.GetFixedArrayAt<NetworkedVector<Int32>>(this.Handle, __m_arrTeamUniqueKillWeaponsMatch.Offset, 4);
 
 	// m_bTeamLastKillUsedUniqueWeaponMatch
+	private static readonly SchemaField<byte> __m_bTeamLastKillUsedUniqueWeaponMatch = new("CCSGameRules", "m_bTeamLastKillUsedUniqueWeaponMatch");
 	[SchemaMember("CCSGameRules", "m_bTeamLastKillUsedUniqueWeaponMatch")]
-	public Span<bool> TeamLastKillUsedUniqueWeaponMatch => Schema.GetFixedArray<bool>(this.Handle, "CCSGameRules", "m_bTeamLastKillUsedUniqueWeaponMatch", 4);
+	public Span<bool> TeamLastKillUsedUniqueWeaponMatch => Schema.GetFixedArrayAt<bool>(this.Handle, __m_bTeamLastKillUsedUniqueWeaponMatch.Offset, 4);
 
 	// m_nMatchEndCount
 	private static readonly SchemaField<byte> __m_nMatchEndCount = new("CCSGameRules", "m_nMatchEndCount");

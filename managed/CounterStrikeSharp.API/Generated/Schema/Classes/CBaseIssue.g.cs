@@ -19,19 +19,21 @@ public partial class CBaseIssue : NativeObject
     public CBaseIssue (IntPtr pointer) : base(pointer) {}
 
 	// m_szTypeString
+	private static readonly SchemaField<byte> __m_szTypeString = new("CBaseIssue", "m_szTypeString");
 	[SchemaMember("CBaseIssue", "m_szTypeString")]
 	public string TypeString
 	{
-		get { return Schema.GetString(this.Handle, "CBaseIssue", "m_szTypeString"); }
-		set { Schema.SetStringBytes(this.Handle, "CBaseIssue", "m_szTypeString", value, 64); }
+		get { return Schema.GetStringAt(this.Handle, __m_szTypeString.Offset); }
+		set { Schema.SetStringBytesAt(this.Handle, __m_szTypeString.Offset, value, 64); }
 	}
 
 	// m_szDetailsString
+	private static readonly SchemaField<byte> __m_szDetailsString = new("CBaseIssue", "m_szDetailsString");
 	[SchemaMember("CBaseIssue", "m_szDetailsString")]
 	public string DetailsString
 	{
-		get { return Schema.GetString(this.Handle, "CBaseIssue", "m_szDetailsString"); }
-		set { Schema.SetStringBytes(this.Handle, "CBaseIssue", "m_szDetailsString", value, 4096); }
+		get { return Schema.GetStringAt(this.Handle, __m_szDetailsString.Offset); }
+		set { Schema.SetStringBytesAt(this.Handle, __m_szDetailsString.Offset, value, 4096); }
 	}
 
 	// m_iNumYesVotes
@@ -50,7 +52,8 @@ public partial class CBaseIssue : NativeObject
 	public ref Int32 NumPotentialVotes => ref __m_iNumPotentialVotes.GetRef(this.Handle);
 
 	// m_pVoteController
+	private static readonly SchemaField<byte> __m_pVoteController = new("CBaseIssue", "m_pVoteController");
 	[SchemaMember("CBaseIssue", "m_pVoteController")]
-	public CVoteController? VoteController => Schema.GetPointer<CVoteController>(this.Handle, "CBaseIssue", "m_pVoteController");
+	public CVoteController? VoteController => Schema.GetPointerAt<CVoteController>(this.Handle, __m_pVoteController.Offset);
 
 }

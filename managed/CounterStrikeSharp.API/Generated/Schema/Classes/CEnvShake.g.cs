@@ -66,8 +66,9 @@ public partial class CEnvShake : CPointEntity
 	public Vector MaxForce => Schema.GetDeclaredClass<Vector>(this.Handle, "CEnvShake", "m_maxForce");
 
 	// m_pShakeController
+	private static readonly SchemaField<byte> __m_pShakeController = new("CEnvShake", "m_pShakeController");
 	[SchemaMember("CEnvShake", "m_pShakeController")]
-	public IPhysicsMotionController? ShakeController => Schema.GetPointer<IPhysicsMotionController>(this.Handle, "CEnvShake", "m_pShakeController");
+	public IPhysicsMotionController? ShakeController => Schema.GetPointerAt<IPhysicsMotionController>(this.Handle, __m_pShakeController.Offset);
 
 	// m_shakeCallback
 	[SchemaMember("CEnvShake", "m_shakeCallback")]

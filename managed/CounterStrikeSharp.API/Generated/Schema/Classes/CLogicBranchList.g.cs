@@ -19,8 +19,9 @@ public partial class CLogicBranchList : CLogicalEntity
     public CLogicBranchList (IntPtr pointer) : base(pointer) {}
 
 	// m_nLogicBranchNames
+	private static readonly SchemaField<byte> __m_nLogicBranchNames = new("CLogicBranchList", "m_nLogicBranchNames");
 	[SchemaMember("CLogicBranchList", "m_nLogicBranchNames")]
-	public Span<string> LogicBranchNames => Schema.GetFixedArray<string>(this.Handle, "CLogicBranchList", "m_nLogicBranchNames", 16);
+	public Span<string> LogicBranchNames => Schema.GetFixedArrayAt<string>(this.Handle, __m_nLogicBranchNames.Offset, 16);
 
 	// m_LogicBranchList
 	[SchemaMember("CLogicBranchList", "m_LogicBranchList")]

@@ -19,12 +19,14 @@ public partial class CBot : NativeObject
     public CBot (IntPtr pointer) : base(pointer) {}
 
 	// m_pController
+	private static readonly SchemaField<byte> __m_pController = new("CBot", "m_pController");
 	[SchemaMember("CBot", "m_pController")]
-	public CCSPlayerController? Controller => Schema.GetPointer<CCSPlayerController>(this.Handle, "CBot", "m_pController");
+	public CCSPlayerController? Controller => Schema.GetPointerAt<CCSPlayerController>(this.Handle, __m_pController.Offset);
 
 	// m_pPlayer
+	private static readonly SchemaField<byte> __m_pPlayer = new("CBot", "m_pPlayer");
 	[SchemaMember("CBot", "m_pPlayer")]
-	public CCSPlayerPawn? Player => Schema.GetPointer<CCSPlayerPawn>(this.Handle, "CBot", "m_pPlayer");
+	public CCSPlayerPawn? Player => Schema.GetPointerAt<CCSPlayerPawn>(this.Handle, __m_pPlayer.Offset);
 
 	// m_bHasSpawned
 	private static readonly SchemaField<bool> __m_bHasSpawned = new("CBot", "m_bHasSpawned");

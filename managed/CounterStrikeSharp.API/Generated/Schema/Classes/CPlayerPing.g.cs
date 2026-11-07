@@ -37,11 +37,12 @@ public partial class CPlayerPing : CBaseEntity
 	public ref bool Urgent => ref __m_bUrgent.GetRef(this.Handle);
 
 	// m_szPlaceName
+	private static readonly SchemaField<byte> __m_szPlaceName = new("CPlayerPing", "m_szPlaceName");
 	[SchemaMember("CPlayerPing", "m_szPlaceName")]
 	public string PlaceName
 	{
-		get { return Schema.GetString(this.Handle, "CPlayerPing", "m_szPlaceName"); }
-		set { Schema.SetStringBytes(this.Handle, "CPlayerPing", "m_szPlaceName", value, 18); }
+		get { return Schema.GetStringAt(this.Handle, __m_szPlaceName.Offset); }
+		set { Schema.SetStringBytesAt(this.Handle, __m_szPlaceName.Offset, value, 18); }
 	}
 
 }

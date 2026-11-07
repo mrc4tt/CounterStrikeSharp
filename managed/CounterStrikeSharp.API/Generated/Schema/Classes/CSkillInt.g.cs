@@ -19,7 +19,8 @@ public partial class CSkillInt : NativeObject
     public CSkillInt (IntPtr pointer) : base(pointer) {}
 
 	// m_pValue
+	private static readonly SchemaField<byte> __m_pValue = new("CSkillInt", "m_pValue");
 	[SchemaMember("CSkillInt", "m_pValue")]
-	public Span<Int32> Value => Schema.GetFixedArray<Int32>(this.Handle, "CSkillInt", "m_pValue", 4);
+	public Span<Int32> Value => Schema.GetFixedArrayAt<Int32>(this.Handle, __m_pValue.Offset, 4);
 
 }

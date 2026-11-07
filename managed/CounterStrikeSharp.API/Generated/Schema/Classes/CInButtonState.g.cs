@@ -19,7 +19,8 @@ public partial class CInButtonState : NativeObject
     public CInButtonState (IntPtr pointer) : base(pointer) {}
 
 	// m_pButtonStates
+	private static readonly SchemaField<byte> __m_pButtonStates = new("CInButtonState", "m_pButtonStates");
 	[SchemaMember("CInButtonState", "m_pButtonStates")]
-	public Span<UInt64> ButtonStates => Schema.GetFixedArray<UInt64>(this.Handle, "CInButtonState", "m_pButtonStates", 3);
+	public Span<UInt64> ButtonStates => Schema.GetFixedArrayAt<UInt64>(this.Handle, __m_pButtonStates.Offset, 3);
 
 }

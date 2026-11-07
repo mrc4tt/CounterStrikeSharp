@@ -57,6 +57,25 @@ struct CNetworkStateChangedInfo
         m_nPathIndex = nPathIndex;
     }
 
+    // Same, with the offset list in a caller-owned buffer instead of a heap allocation. The
+    // constructor above mallocs and frees one CUtlVector buffer per notification, which perf showed
+    // as ~12% of a warm schema write loop (tier0 malloc/free + TLS). The buffer is a non-const
+    // external buffer: if the engine appends to the list, CUtlVectorMemory_Growable::Grow copies it to
+    // the heap and clears the external marker, and the destructor frees that copy, so growing stays
+    // safe. The buffer must outlive this object (declare it first, in the same scope).
+    CNetworkStateChangedInfo(uint32_t* pOffsetBuffer, int nBufferCount, uint32_t nOffset, uint32_t nArrayIndex, uint32_t nPathIndex)
+    {
+        pOffsetBuffer[0] = nOffset;
+        m_vecOffsetData.SetExternalBuffer(pOffsetBuffer, nBufferCount, 1);
+
+        unk_30 = -1;
+
+        unk_3c = 0;
+
+        m_nArrayIndex = nArrayIndex;
+        m_nPathIndex = nPathIndex;
+    }
+
   private:
     int m_nSize; // 0x0
     CUtlVector<uint32_t> m_vecOffsetData; // 0x8

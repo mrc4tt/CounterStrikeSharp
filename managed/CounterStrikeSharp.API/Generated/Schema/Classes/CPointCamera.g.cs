@@ -34,11 +34,12 @@ public partial class CPointCamera : CBaseEntity
 	public ref bool FogEnable => ref __m_bFogEnable.GetRef(this.Handle);
 
 	// m_FogColor
+	private static readonly SchemaField<byte> __m_FogColor = new("CPointCamera", "m_FogColor");
 	[SchemaMember("CPointCamera", "m_FogColor")]
 	public Color FogColor
 	{
-		get { return Schema.GetCustomMarshalledType<Color>(this.Handle, "CPointCamera", "m_FogColor"); }
-		set { Schema.SetCustomMarshalledType<Color>(this.Handle, "CPointCamera", "m_FogColor", value); }
+		get { return Schema.GetColorAt(this.Handle, __m_FogColor.Offset); }
+		set { Schema.SetColorAt(this.Handle, __m_FogColor.Offset, value); }
 	}
 
 	// m_flFogStart
@@ -147,7 +148,8 @@ public partial class CPointCamera : CBaseEntity
 	public ref bool IsOn => ref __m_bIsOn.GetRef(this.Handle);
 
 	// m_pNext
+	private static readonly SchemaField<byte> __m_pNext = new("CPointCamera", "m_pNext");
 	[SchemaMember("CPointCamera", "m_pNext")]
-	public CPointCamera? Next => Schema.GetPointer<CPointCamera>(this.Handle, "CPointCamera", "m_pNext");
+	public CPointCamera? Next => Schema.GetPointerAt<CPointCamera>(this.Handle, __m_pNext.Offset);
 
 }
