@@ -148,6 +148,10 @@ public class PluginManager : IPluginManager
         }
 
         LogPluginSummary();
+
+        // Once the server ticks (a map is loaded): run the API hot paths so plugins' first use of
+        // them does not JIT mid-frame. See RuntimeWarmup.
+        Server.NextFrame(() => RuntimeWarmup.Run(_logger));
     }
 
     // One-shot startup snapshot: a table of every plugin context with its version
