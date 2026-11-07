@@ -34,9 +34,20 @@ internal static unsafe class FastNatives
         public delegate* unmanaged<IntPtr, uint, uint, uint, void> NetworkStateChanged;
         public delegate* unmanaged[SuppressGCTransition]<float> CurrentTime;
         public delegate* unmanaged[SuppressGCTransition]<int> TickCount;
+
+        // Version 2. Only used when Size says the core has them (see HasVersion2).
+        public delegate* unmanaged[SuppressGCTransition]<IntPtr, uint> GetRefFromEntityPointer;
+        // Keeps the GC transition: the first call per function walks the module's sections.
+        public delegate* unmanaged<IntPtr, IntPtr> GetFunctionDirectTarget;
     }
 
+    // Size of the version-1 table (up to and including TickCount). A core with at least this much is
+    // usable; later entries are checked against Size one by one, so a newer API keeps the version-1
+    // fast paths on an older core instead of losing the whole table.
+    private const int Version1Size = 48;
+
     private static readonly Table* s_table = Load();
+    private static readonly bool s_hasVersion2 = s_table != null && s_table->Size >= sizeof(Table);
 
     public static bool Available
     {
@@ -56,7 +67,7 @@ internal static unsafe class FastNatives
         }
 
         var table = (Table*)pointer;
-        if (table == null || table->Size < sizeof(Table)) return null;
+        if (table == null || table->Size < Version1Size) return null;
         return table;
     }
 
@@ -86,6 +97,21 @@ internal static unsafe class FastNatives
     {
         var table = s_table;
         return table != null ? table->TickCount() : NativeAPI.GetTickCount();
+    }
+
+    /// <summary>The entity's raw handle (GetRefEHandle), or 0xFFFFFFFF for a null pointer or an entity without a handle.</summary>
+    public static uint GetRefFromEntityPointer(IntPtr entity)
+    {
+        return s_hasVersion2 ? s_table->GetRefFromEntityPointer(entity) : NativeAPI.GetRefFromEntityPointer(entity);
+    }
+
+    /// <summary>
+    /// The address a MemoryFunction (native ValveFunction handle) calls when not bypassing hooks, or
+    /// <see cref="IntPtr.Zero"/> when the core is too old or ExecuteVirtualFunction would refuse it.
+    /// </summary>
+    public static IntPtr GetFunctionDirectTarget(IntPtr valveFunction)
+    {
+        return s_hasVersion2 ? s_table->GetFunctionDirectTarget(valveFunction) : IntPtr.Zero;
     }
 
     public static void NetworkStateChanged(IntPtr chainEntity, uint offset, uint arrayIndex, uint pathIndex)

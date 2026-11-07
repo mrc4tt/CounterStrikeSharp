@@ -58,7 +58,37 @@ namespace CounterStrikeSharp.API
 
         public static T? CreateEntityByName<T>(string name) where T : CBaseEntity
         {
-            return FastNew.CreateInstance<T, IntPtr>(VirtualFunctions.UTIL_CreateEntityByNameFunc.Invoke(name, -1))!;
+            return FastNew.CreateInstance<T, IntPtr>(CreateEntityByNamePointer(name))!;
+        }
+
+        // UTIL_CreateEntityByName called through a function pointer instead of ExecuteVirtualFunction
+        // (ScriptContext + dyncall per call). Same target: ExecuteVirtualFunction without bypass calls
+        // the function's address too, so a DynamicHook on it (an inline detour) still runs. The
+        // address comes from the native ValveFunction, which refuses the same targets Call() does;
+        // when it refuses, or the core is older than the fast table entry, the ScriptContext path
+        // runs and raises its usual error.
+        private static unsafe delegate* unmanaged<byte*, int, IntPtr> s_createEntityByName;
+        private static bool s_createEntityByNameResolved;
+
+        private static unsafe IntPtr CreateEntityByNamePointer(string name)
+        {
+            if (!s_createEntityByNameResolved)
+            {
+                // Reading Handle resolves the gamedata signature and throws if it is missing, as Invoke did.
+                s_createEntityByName = (delegate* unmanaged<byte*, int, IntPtr>)
+                    Core.FastNatives.GetFunctionDirectTarget(VirtualFunctions.UTIL_CreateEntityByNameFunc.Handle);
+                s_createEntityByNameResolved = true;
+            }
+
+            var function = s_createEntityByName;
+            if (function == null || name.Length > 256)
+                return VirtualFunctions.UTIL_CreateEntityByNameFunc.Invoke(name, -1);
+
+            // Designer names are short ASCII; 256 chars is at most 768 UTF-8 bytes plus the terminator.
+            var buffer = stackalloc byte[769];
+            var length = Encoding.UTF8.GetBytes(name, new Span<byte>(buffer, 768));
+            buffer[length] = 0;
+            return function(buffer, -1);
         }
 
         public static CCSPlayerController? GetPlayerFromIndex(int index)

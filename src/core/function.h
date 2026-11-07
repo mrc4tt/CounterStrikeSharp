@@ -67,6 +67,10 @@ class ValveFunction
 
     bool IsCallable();
 
+    // The address Call() would jump to without bypass, or nullptr when Call() would refuse it
+    // (custom convention, null or data-section target). For managed callers that call it directly.
+    void* DirectCallTarget();
+
     void SetOffset(int offset) { m_offset = offset; }
     void SetSignature(const char* signature) { m_signature = signature; }
 
