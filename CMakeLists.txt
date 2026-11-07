@@ -111,6 +111,7 @@ set(SOURCE_FILES
     src/core/function.h
     src/scripting/natives/natives_memory.cpp
     src/scripting/natives/natives_schema.cpp
+    src/scripting/natives/natives_fastpath.cpp
     src/scripting/natives/natives_entities.cpp
     src/scripting/natives/natives_voice.cpp
     src/scripting/natives/natives_metamod.cpp

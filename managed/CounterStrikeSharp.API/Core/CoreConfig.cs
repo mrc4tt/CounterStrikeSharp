@@ -60,6 +60,9 @@ namespace CounterStrikeSharp.API.Core
         [JsonPropertyName("PluginAutoLoadEnabled")]
         public bool PluginAutoLoadEnabled { get; set; } = true;
 
+        [JsonPropertyName("PluginPreJitEnabled")]
+        public bool PluginPreJitEnabled { get; set; } = true;
+
         [JsonPropertyName("PluginResolveNugetPackages")]
         public bool PluginResolveNugetPackages { get; set; }
 
@@ -166,6 +169,12 @@ namespace CounterStrikeSharp.API.Core
         /// When enabled, plugins are automatically loaded from the plugins directory on server start.
         /// </summary>
         public static bool PluginAutoLoadEnabled => _coreConfig.PluginAutoLoadEnabled;
+
+        /// <summary>
+        /// When enabled, a plugin's methods are JIT-compiled right after it loads, a slice per frame on the
+        /// game thread, instead of on their first call in the middle of a game frame.
+        /// </summary>
+        public static bool PluginPreJitEnabled => _coreConfig.PluginPreJitEnabled;
 
         public static bool PluginResolveNugetPackages => _coreConfig.PluginResolveNugetPackages;
 

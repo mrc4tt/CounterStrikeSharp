@@ -210,6 +210,12 @@ namespace CounterStrikeSharp.API.Core
         private readonly ParameterInfo[] _parameters;
         private readonly bool _isManualScriptContext;
 
+        // Whether Dispatch may hand this handler a reused ScriptContext (ScriptContext.RentCallbackContext).
+        // A typed handler only reads its arguments out of it, and the one manual-context handler in this
+        // assembly (BasePlugin.RegisterListener's wrapper) does too. A plugin's own ScriptContext
+        // handler could keep the object past the call, so it still gets a fresh one.
+        private readonly bool _reuseScriptContext;
+
         // Crash flight recorder label (see CrashRecorder): which plugin this callback belongs to and what
         // it is, shown by crash handlers as the running callback / recent activity.
         private string _crashOwner;
@@ -235,6 +241,7 @@ namespace CounterStrikeSharp.API.Core
                 _parameters.Length > 0 && _parameters[0].ParameterType == typeof(ScriptContext);
 
             var declaring = method.Method.DeclaringType?.Assembly;
+            _reuseScriptContext = !_isManualScriptContext || declaring == typeof(FunctionReference).Assembly;
             _crashOwner = declaring != null && declaring != typeof(FunctionReference).Assembly
                 ? _ownerName
                 : CrashRecorder.CurrentOwner ?? "core";
@@ -354,10 +361,12 @@ namespace CounterStrikeSharp.API.Core
             }
 
             var previousCrashOwner = CrashRecorder.Enter(_crashOwner, _crashKind, _crashDetail);
+            var scriptContext = _reuseScriptContext
+                ? ScriptContext.RentCallbackContext(context)
+                : new ScriptContext(context) { IsCallbackContext = true };
             {
                 try
                 {
-                    var scriptContext = new ScriptContext(context) { IsCallbackContext = true };
 
                     // Allow for manual handling of the script context
                     if (_isManualScriptContext)
@@ -464,6 +473,7 @@ namespace CounterStrikeSharp.API.Core
                 }
                 finally
                 {
+                    if (_reuseScriptContext) ScriptContext.ReturnCallbackContext(scriptContext);
                     CrashRecorder.Exit(previousCrashOwner);
 
                     if (Lifetime == FunctionLifetime.SingleUse)

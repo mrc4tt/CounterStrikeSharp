@@ -237,6 +237,8 @@ namespace CounterStrikeSharp.API.Core.Plugin
             return Task.CompletedTask;
         }
 
+        private PluginPreJit? _preJit;
+
         public void Load(bool hotReload = false)
         {
             if (State == PluginState.Loaded) return;
@@ -471,6 +473,9 @@ namespace CounterStrikeSharp.API.Core.Plugin
                     _logger.LogDebug("Finished loading plugin {Name} in {Ms}ms", Plugin.ModuleName, loadTimer.ElapsedMilliseconds);
 
                 State = PluginState.Loaded;
+
+                if (CoreConfig.PluginPreJitEnabled)
+                    _preJit = PluginPreJit.Start(Plugin.GetType().Assembly, _logger, Plugin.ModuleName ?? Path.GetFileName(_path));
             }
         }
 
@@ -793,6 +798,10 @@ namespace CounterStrikeSharp.API.Core.Plugin
 
             State = PluginState.Unloaded;
             var cachedName = Plugin.ModuleName;
+
+            // Drop the pending pre-JIT slices and their references into the plugin's assembly.
+            _preJit?.Cancel();
+            _preJit = null;
 
             _logger.LogInformation("Unloading plugin {Name}", Plugin.ModuleName);
 

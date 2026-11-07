@@ -641,17 +641,20 @@ std::size_t CModule::CountSignatureMatches(const std::vector<int16_t>& sigBytes,
     if (m_base == nullptr || m_size == 0 || sigBytes.empty() || m_size < sigBytes.size()) return 0;
 
     const auto* data = reinterpret_cast<const std::uint8_t*>(m_base);
-    const auto* last = data + m_size - sigBytes.size();
+    const auto* end = data + m_size;
 
+    // Same matches as comparing at every byte, but through ScanForSignature's first-byte skip
+    // (std::find, vectorised). The plain per-byte compare made this - run after every successful
+    // scan - several times slower than the scan it was checking.
     std::size_t found = 0;
-    for (const auto* current = data; current <= last; ++current)
+    for (const auto* current = data; current < end;)
     {
-        if (std::equal(sigBytes.begin(), sigBytes.end(), current, [](auto opt, auto byte) {
-            return opt == -1 || opt == byte;
-        }))
-        {
-            if (++found >= limit) break;
-        }
+        const auto* match = ScanForSignature(current, static_cast<std::size_t>(end - current), sigBytes, [](const std::uint8_t*) {
+            return true;
+        });
+        if (match == nullptr) break;
+        if (++found >= limit) break;
+        current = match + 1;
     }
 
     return found;
@@ -717,6 +720,22 @@ void* CModule::ScanSignature(const char* signature)
         return nullptr;
     }
 
+    {
+        std::lock_guard lock(m_scanCacheMutex);
+        if (const auto it = m_scanCache.find(signature); it != m_scanCache.end()) return it->second;
+    }
+
+    // Scanned outside the lock: a scan takes milliseconds. Two threads racing on the same new
+    // pattern both scan and store the same answer.
+    void* address = ScanSignatureUncached(signature);
+
+    std::lock_guard lock(m_scanCacheMutex);
+    m_scanCache.emplace(signature, address);
+    return address;
+}
+
+void* CModule::ScanSignatureUncached(const char* signature)
+{
     // Parse before anything scans. The host scanner (KHook::LookupSignature, i.e. khook's
     // Ranges::Lookup) cannot be trusted with the raw string: it splits on spaces and reads only
     // the last two characters of each token, so a code-style "\x48\x8B...\x2A" - one token -

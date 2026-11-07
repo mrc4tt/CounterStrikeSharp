@@ -525,6 +525,23 @@ public class ScriptContextBenchmarks
         Record(name, category, sw, (long)Iterations * callsPerIteration);
     }
 
+    // For scenarios that time their own batches (EntitySpawnBenchmarks) instead of going through Run().
+    internal static void RecordMs(string name, string category, double totalMs, long totalCalls)
+    {
+        lock (_lock)
+        {
+            _results.Add(new BenchmarkResult
+            {
+                Name = name,
+                Category = category,
+                TotalCalls = totalCalls,
+                TotalMs = Math.Round(totalMs, 3),
+                NsPerCall = Math.Round(totalMs * 1e6 / totalCalls, 0),
+                CallsPerSecond = Math.Round(totalCalls / (totalMs / 1000), 0)
+            });
+        }
+    }
+
     private static void Record(string name, string category, Stopwatch sw, long totalCalls)
     {
         var elapsed = sw.Elapsed;

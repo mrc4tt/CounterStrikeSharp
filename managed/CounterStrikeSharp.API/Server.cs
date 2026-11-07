@@ -107,13 +107,13 @@ namespace CounterStrikeSharp.API
         /// e.g. 70.046875 would represent 70 seconds of map time and the 4483rd tick of the server (70.046875 / 0.015625).
         /// </summary>
         /// <remarks>Increments even when server is hibernating</remarks>
-        public static float CurrentTime => NativeAPI.GetCurrentTime();
+        public static float CurrentTime => FastNatives.CurrentTime();
 
         /// <summary>
         /// Returns the current map tick count.
         /// CS2 is a 64 tick server, so the value will increment by 64 every second.
         /// </summary>
-        public static int TickCount => NativeAPI.GetTickCount();
+        public static int TickCount => FastNatives.TickCount();
 
         /// <summary>
         /// Returns the total time the server has been running in seconds.

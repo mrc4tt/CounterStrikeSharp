@@ -78,6 +78,43 @@ namespace CounterStrikeSharp.API.Core
         {
         }
 
+        // Native-to-managed callbacks used to allocate a ScriptContext each, and the object embeds the
+        // 300-byte fxScriptContext: ~4 MB/min of gen0 garbage on an idle 20-bot server, more with every
+        // listener, event and timer. FunctionReference.Dispatch reuses contexts for handlers that cannot
+        // keep them, from a per-thread stack indexed by callback nesting depth, so a callback raised
+        // while another is running (an event fired by a native the outer handler called) gets its own.
+        [ThreadStatic] private static ScriptContext?[]? t_callbackContexts;
+        [ThreadStatic] private static int t_callbackDepth;
+
+        internal static unsafe ScriptContext RentCallbackContext(fxScriptContext* context)
+        {
+            var pool = t_callbackContexts ??= new ScriptContext?[8];
+            var depth = t_callbackDepth++;
+            // Callback contexts: a string result is freed by the next callback, not queued (SetResultString).
+            if (depth >= pool.Length) return new ScriptContext(context) { IsCallbackContext = true };
+
+            var scriptContext = pool[depth];
+            if (scriptContext == null)
+                pool[depth] = scriptContext = new ScriptContext(context) { IsCallbackContext = true };
+            else
+                scriptContext.m_extContext = *context;
+
+            return scriptContext;
+        }
+
+        internal static void ReturnCallbackContext(ScriptContext scriptContext)
+        {
+            var depth = --t_callbackDepth;
+            var pool = t_callbackContexts;
+            if (pool == null || depth >= pool.Length || !ReferenceEquals(pool[depth], scriptContext)) return;
+
+            // A context that took ownership of unmanaged strings keeps them for its own cleanup, as a
+            // fresh context per callback did; it is not handed to the next callback.
+            if (scriptContext.ms_finalizers is { IsEmpty: false } || scriptContext.isCleanupLocked)
+                pool[depth] = null;
+        }
+
+
         public unsafe ScriptContext(fxScriptContext* context)
         {
             m_extContext = *context;
