@@ -122,6 +122,16 @@ namespace CounterStrikeSharp.API.Modules.Timers
             Finished?.Invoke(this);
         }
 
+        /// <summary>
+        /// CounterStrikeSharp is being unloaded: native releases the "OnMapEnd" callback and its
+        /// listeners, but this runtime (and so this flag) is reused by the next `meta load`, which
+        /// then never re-added the listener, so STOP_ON_MAPCHANGE timers outlived every map.
+        /// </summary>
+        internal static void OnCoreShutdown()
+        {
+            _mapEndListenerAdded = false;
+        }
+
         private static void EnsureMapEndListener()
         {
             if (_mapEndListenerAdded) return;

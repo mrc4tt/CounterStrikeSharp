@@ -571,6 +571,12 @@ void CounterStrikeSharpMMPlugin::OnLevelShutdown()
 {
     CSSHARP_CORE_TRACE("name={0}", "LevelShutdown");
 
+    // A genuine level shutdown: the next Hook_StartupServer fires OnLevelEnd (native
+    // TIMER_FLAG_NO_MAPCHANGE timers, PlayerManager). Set before the early return so a
+    // late load (no LevelInit seen) still gets it. a6068d93 rewrote this function and
+    // dropped the line, so OnLevelEnd never fired on a changelevel after it.
+    s_bLevelShutdownOccurred = true;
+
     if (!m_has_level_initialized)
     {
         return;
