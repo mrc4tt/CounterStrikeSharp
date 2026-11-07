@@ -36,8 +36,13 @@ public static class JitProbe
                 var listener = _listener;
                 _listener = null;
                 if (listener == null) { Console.WriteLine("JITPROBE not running"); return; }
-                listener.Dispose();
-                listener.Print(top);
+                // Runtime events reach the listener asynchronously: cut at "now", print a little later.
+                var cut = DateTime.UtcNow;
+                System.Threading.Tasks.Task.Delay(1500).ContinueWith(_ =>
+                {
+                    listener.Dispose();
+                    listener.Print(top, cut);
+                });
             }
             else Console.WriteLine("JITPROBE usage: css_jit start | stop [N]");
         });
@@ -50,7 +55,7 @@ public static class JitProbe
         private const int MethodJittingStarted = 145;
 
         private readonly ConcurrentDictionary<(ulong Id, ulong Thread), DateTime> _started = new();
-        private readonly ConcurrentQueue<(string Name, double Ms, int Tier)> _done = new();
+        private readonly ConcurrentQueue<(string Name, double Ms, int Tier, DateTime End)> _done = new();
         private volatile bool _enabled;
 
         protected override void OnEventSourceCreated(EventSource source)
@@ -77,7 +82,7 @@ public static class JitProbe
                 var name = Get(e, "MethodName");
                 // MethodFlags bit 0x1 = dynamic; OptimizationTier is payload "OptimizationTier" on newer runtimes.
                 var tier = e.PayloadNames?.Contains("OptimizationTier") == true ? Convert.ToInt32(e.Payload[e.PayloadNames.IndexOf("OptimizationTier")]) : -1;
-                _done.Enqueue(($"{ns}::{name}", (e.TimeStamp - start).TotalMilliseconds, tier));
+                _done.Enqueue(($"{ns}::{name}", (e.TimeStamp - start).TotalMilliseconds, tier, e.TimeStamp.ToUniversalTime()));
             }
         }
 
@@ -87,9 +92,9 @@ public static class JitProbe
             return i >= 0 ? e.Payload![i]?.ToString() ?? "" : "";
         }
 
-        public void Print(int top)
+        public void Print(int top, DateTime cut)
         {
-            var all = _done.ToArray();
+            var all = _done.Where(x => x.End <= cut).Select(x => (x.Name, x.Ms, x.Tier)).ToArray();
             Console.WriteLine(FormattableString.Invariant(
                 $"JITPROBE total methods={all.Length} ms={all.Sum(x => x.Ms):F2}"));
             foreach (var group in all.GroupBy(x => Owner(x.Name)).OrderByDescending(g => g.Sum(x => x.Ms)).Take(12))
