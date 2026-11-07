@@ -190,6 +190,51 @@ public class Schema
         return networked;
     }
 
+    // Everything Utilities.SetStateChanged needs about a field, resolved together. It used to ask
+    // three caches per call (networked?, field offset, the class's __m_pChainEntity offset), each a
+    // dictionary lookup on the (class, field) pair. Only networked fields are admitted, so a hit
+    // means "networked"; the guidelines blocklist is still checked on every call because the
+    // config can be reloaded at runtime.
+    private readonly record struct StateChangedTarget(short Offset, short ChainOffset, bool Blocked);
+
+    private static readonly ConcurrentDictionary<(string ClassName, string PropertyName), StateChangedTarget> _stateChangedByRef
+        = new(RefPairComparer.Instance);
+
+    /// <summary>
+    /// Resolves the offsets <see cref="Utilities.SetStateChanged"/> notifies with. Returns false for a
+    /// field that is not send-table networked. Throws like <see cref="GetSchemaOffset"/> for a field
+    /// blocked by FollowCS2ServerGuidelines.
+    /// </summary>
+    internal static bool TryGetStateChangedTarget(string className, string propertyName, out int offset, out int chainOffset)
+    {
+        var key = (className, propertyName);
+        if (!_stateChangedByRef.TryGetValue(key, out var target))
+        {
+            if (!IsSchemaFieldNetworked(className, propertyName))
+            {
+                offset = chainOffset = 0;
+                return false;
+            }
+
+            var entry = Resolve(className, propertyName);
+            target = new StateChangedTarget(entry.Offset, Resolve(className, "__m_pChainEntity").Offset, entry.Blocked);
+
+            // Same admission rule as _offsetsByRef: interned (literal) names only.
+            if (ReferenceEquals(string.IsInterned(className), className) &&
+                ReferenceEquals(string.IsInterned(propertyName), propertyName))
+            {
+                _stateChangedByRef[key] = target;
+            }
+        }
+
+        if (target.Blocked && CoreConfig.FollowCS2ServerGuidelines)
+            throw BlockedFieldException(className, propertyName);
+
+        offset = target.Offset;
+        chainOffset = target.ChainOffset;
+        return true;
+    }
+
     public static unsafe T GetSchemaValue<T>(IntPtr handle, string className, string propertyName)
     {
         if (handle == IntPtr.Zero) throw new ArgumentNullException(nameof(handle), "Schema target points to null.");

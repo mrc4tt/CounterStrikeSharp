@@ -89,7 +89,28 @@ public partial class CBaseEntity
     /// <summary>
     /// Shorthand for accessing an entity's CBodyComponent?.SceneNode?.AbsOrigin;
     /// </summary>
-    public Vector? AbsOrigin => CBodyComponent?.SceneNode?.AbsOrigin;
+    // Same pointer chain and the same Vector view into m_vecAbsOrigin, without building the
+    // CBodyComponent and CGameSceneNode wrappers in between (three allocations per read before).
+    public Vector? AbsOrigin
+    {
+        get
+        {
+            var handle = Handle;
+            if (handle == IntPtr.Zero) throw new ArgumentNullException(nameof(Handle), "Schema target points to null.");
+
+            var body = Marshal.ReadIntPtr(handle + s_bodyComponentField.Offset);
+            if (body == IntPtr.Zero) return null;
+
+            var sceneNode = Marshal.ReadIntPtr(body + s_sceneNodeField.Offset);
+            if (sceneNode == IntPtr.Zero) return null;
+
+            return new Vector(sceneNode + s_absOriginField.Offset);
+        }
+    }
+
+    private static readonly SchemaField<IntPtr> s_bodyComponentField = new("CBaseEntity", "m_CBodyComponent");
+    private static readonly SchemaField<IntPtr> s_sceneNodeField = new("CBodyComponent", "m_pSceneNode");
+    private static readonly SchemaField<IntPtr> s_absOriginField = new("CGameSceneNode", "m_vecAbsOrigin");
 
     /// <summary>
     /// Shorthand for accessing an entity's CBodyComponent?.SceneNode?.AbsRotation;

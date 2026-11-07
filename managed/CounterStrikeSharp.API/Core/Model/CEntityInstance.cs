@@ -23,12 +23,12 @@ public partial class CEntityInstance : IEquatable<CEntityInstance>
     /// <summary>
     /// Checks that the entity handle is valid and the handle points to a valid entity
     /// </summary>
-    public bool IsValid => EntityHandle.IsValid && Handle != IntPtr.Zero;
+    public bool IsValid => (RawEntityHandle & (Utilities.MaxEntities - 1)) != Utilities.MaxEntities - 1 && Handle != IntPtr.Zero;
 
     [Obsolete("Use Index instead", true)]
-    public CEntityIndex? EntityIndex => new CEntityIndex(EntityHandle.Index);
+    public CEntityIndex? EntityIndex => new CEntityIndex(Index);
     
-    public uint Index => EntityHandle.Index;
+    public uint Index => RawEntityHandle & (Utilities.MaxEntities - 1);
     
     // Null for an invalid entity. Declared non-nullable on purpose: annotating it
     // string? would flag every plugin that reads DesignerName, so check IsValid first.
@@ -43,7 +43,7 @@ public partial class CEntityInstance : IEquatable<CEntityInstance>
     
     public bool Equals(CEntityInstance? other)
     {
-        return this.EntityHandle.Equals(other?.EntityHandle);
+        return other is not null && RawEntityHandle == other.RawEntityHandle;
     }
 
     public override bool Equals(object? obj)

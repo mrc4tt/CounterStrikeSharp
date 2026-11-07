@@ -240,25 +240,40 @@ namespace CounterStrikeSharp.API
         /// </summary>
         public static List<CCSPlayerController> GetPlayers()
         {
-            // Pre-sized: plugins call this every tick, and a default-capacity List grows
-            // 0 -> 4 -> 8 -> 16 -> 32 -> 64, discarding every intermediate array as Gen0
-            // garbage on each call.
+            // Plugins call this every tick. Sized exactly: a default-capacity List grows 0 -> 4 -> ... -> 64
+            // discarding every intermediate array, and sizing it to MaxPlayers (64) allocated a 528-byte
+            // backing array per call even with a handful of players. The mask pass is ~64 pointer reads.
+            //
+            // Slots are checked on the raw entity pointer and a wrapper is built only for connected
+            // players. Building one for every slot cost a native handle lookup plus two more handle
+            // resolutions (IsValid, Connected) per slot, every tick, for every plugin calling this.
             var maxPlayers = Server.MaxPlayers;
-            List<CCSPlayerController> players = new(maxPlayers);
-
-            for (int i = 0; i < maxPlayers; i++)
+            if (maxPlayers <= 64)
             {
-                // Check the slot on the raw entity pointer first and only build a wrapper for connected
-                // players. Building one for every slot cost a native handle lookup plus two more handle
-                // resolutions (IsValid, Connected) per slot, every tick, for every plugin calling this.
-                var pointer = GetConnectedControllerPointer(i);
-                if (pointer == IntPtr.Zero)
-                    continue;
+                var mask = GetConnectedPlayersMask();
+                var players = new List<CCSPlayerController>(System.Numerics.BitOperations.PopCount(mask));
+                while (mask != 0)
+                {
+                    var slot = System.Numerics.BitOperations.TrailingZeroCount(mask);
+                    mask &= mask - 1;
 
-                players.Add(new CCSPlayerController(pointer));
+                    var pointer = GetConnectedControllerPointer(slot);
+                    if (pointer != IntPtr.Zero)
+                        players.Add(new CCSPlayerController(pointer));
+                }
+
+                return players;
             }
 
-            return players;
+            var all = new List<CCSPlayerController>(maxPlayers);
+            for (int i = 0; i < maxPlayers; i++)
+            {
+                var pointer = GetConnectedControllerPointer(i);
+                if (pointer != IntPtr.Zero)
+                    all.Add(new CCSPlayerController(pointer));
+            }
+
+            return all;
         }
 
         private static readonly SchemaField<PlayerConnectedState> s_connectedField = new("CBasePlayerController", "m_iConnected");
@@ -275,6 +290,25 @@ namespace CounterStrikeSharp.API
                 return IntPtr.Zero;
 
             return s_connectedField.GetRef(entity) == PlayerConnectedState.Connected ? entity : IntPtr.Zero;
+        }
+
+        // GetConnectedPlayersMask, remembered for the current tick: ~64 slot reads per call otherwise, and
+        // RecipientFilter.AddAllPlayers runs it per message. Within a tick a player who disconnected is
+        // still filtered out by AddAllPlayers' per-slot pointer check; one who connected mid-tick is
+        // picked up on the next tick.
+        private static int s_connectedMaskTick = int.MinValue;
+        private static ulong s_connectedMask;
+
+        internal static ulong GetConnectedPlayersMaskThisTick()
+        {
+            var tick = Server.TickCount;
+            if (tick == System.Threading.Volatile.Read(ref s_connectedMaskTick))
+                return s_connectedMask;
+
+            var mask = GetConnectedPlayersMask();
+            s_connectedMask = mask;
+            System.Threading.Volatile.Write(ref s_connectedMaskTick, tick);
+            return mask;
         }
 
         /// <summary>Bit mask (bit = slot) of the players GetPlayers would return, without building wrappers.</summary>
@@ -336,8 +370,6 @@ namespace CounterStrikeSharp.API
             return FastNew.CreateInstance<T, IntPtr>(pointerTo);
         }
 
-        private static int FindSchemaChain(string className) => Schema.GetSchemaOffset(className, "__m_pChainEntity");
-
         /// <summary>
         /// Marks a field as changed for network transmission.
         /// Not all schema fields are network enabled, so please check the schema before using this.
@@ -358,7 +390,7 @@ namespace CounterStrikeSharp.API
             // weapon-slot sub-fields on CCSPlayerController, e.g. offset 3920). The previous fork
             // behaviour forwarded anyway (commit 727c6f98, no rationale) which caused the spam.
             // Mark the correct networked parent (the pointer/handle field) instead.
-            if (!Schema.IsSchemaFieldNetworked(className, fieldName))
+            if (!Schema.TryGetStateChangedTarget(className, fieldName, out var offset, out var chainOffset))
             {
                 Application.Instance.Logger.LogDebug(
                     "Field {ClassName}:{FieldName} is not send-table networked; skipping SetStateChanged "
@@ -366,9 +398,6 @@ namespace CounterStrikeSharp.API
                     className, fieldName);
                 return;
             }
-
-            int offset = Schema.GetSchemaOffset(className, fieldName);
-            int chainOffset = FindSchemaChain(className);
 
             NotifyStateChanged(entity, offset + extraOffset, chainOffset);
         }
@@ -383,11 +412,11 @@ namespace CounterStrikeSharp.API
         {
             if (chainOffset != 0)
             {
-                NativeAPI.SchemaNetworkStateChanged(entity.Handle + chainOffset, (uint)offset, 0xFFFFFFFF, 0xFFFFFFFF);
+                FastNatives.NetworkStateChanged(entity.Handle + chainOffset, (uint)offset, 0xFFFFFFFF, 0xFFFFFFFF);
                 return;
             }
 
-            NativeAPI.SchemaSetStateChanged(entity.Handle, (uint)offset, 0xFFFFFFFF, 0xFFFFFFFF);
+            FastNatives.SetStateChanged(entity.Handle, (uint)offset, 0xFFFFFFFF, 0xFFFFFFFF);
 
             entity.LastNetworkChange = Server.CurrentTime;
             entity.IsSteadyState.Clear();

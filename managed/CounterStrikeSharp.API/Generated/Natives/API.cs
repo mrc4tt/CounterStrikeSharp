@@ -310,6 +310,15 @@ namespace CounterStrikeSharp.API.Core
 			return _ctx.GetResultString();
 		}
 
+        public static IntPtr GetFastNativeTable(){
+			var _ctx = ScriptContext.GlobalScriptContext;
+			_ctx.Reset();
+			_ctx.SetIdentifier(0x78348693);
+			_ctx.Invoke();
+			_ctx.CheckErrors();
+			return _ctx.GetResultPrimitive<IntPtr>();
+		}
+
         public static IntPtr GetConvarValueAddress(ushort convar){
 			var _ctx = ScriptContext.GlobalScriptContext;
 			_ctx.Reset();

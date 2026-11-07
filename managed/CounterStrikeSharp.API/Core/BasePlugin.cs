@@ -15,6 +15,7 @@
  */
 
 using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -397,6 +398,23 @@ namespace CounterStrikeSharp.API.Core
         /// RegisterListener&lt;Listeners.OnTick&gt;(OnTick);
         /// </code>
         /// </example>
+        private static HookResult ToHookResult(object? result) => result is HookResult hookResult ? hookResult : HookResult.Continue;
+
+        // value => new TParameter((TCastFrom)value), the conversion Activator.CreateInstance(parameterType,
+        // value) performed. Falls back to Activator when there is no constructor taking exactly castFrom.
+        private static Func<object, object> BuildCastFactory(Type parameterType, Type castFrom)
+        {
+            var constructor = parameterType.GetConstructor(new[] { castFrom });
+            if (constructor == null)
+                return value => Activator.CreateInstance(parameterType, value)!;
+
+            var input = System.Linq.Expressions.Expression.Parameter(typeof(object), "value");
+            var body = System.Linq.Expressions.Expression.Convert(
+                System.Linq.Expressions.Expression.New(constructor, System.Linq.Expressions.Expression.Convert(input, castFrom)),
+                typeof(object));
+            return System.Linq.Expressions.Expression.Lambda<Func<object, object>>(body, input).Compile();
+        }
+
         public void RegisterListener<T>(T handler) where T : Delegate
         {
             var listenerName = typeof(T).GetCustomAttribute<ListenerNameAttribute>()?.Name;
@@ -423,36 +441,47 @@ namespace CounterStrikeSharp.API.Core
             var handlerInvoker = FunctionReference.GetCompiledInvoker(handler);
             var handlerTarget = handler.Target;
 
+            // [CastFrom] parameters (CheckTransmit's CCheckTransmitInfoList, OnEntitySpawned's entity...)
+            // were built with Activator.CreateInstance on every call: reflection over the constructors
+            // plus an object[] for its arguments, on listeners that fire per tick or per entity.
+            // One compiled factory per parameter, built here, does the same conversion.
+            var castFactories = new Func<object, object>?[parameterTypes.Length];
+            for (int i = 0; i < parameterTypes.Length; i++)
+            {
+                if (castedParameterTypes[i] is { } castFrom)
+                    castFactories[i] = BuildCastFactory(parameterTypes[i], castFrom);
+            }
+
             var wrappedHandler = new Func<ScriptContext, HookResult>(context =>
             {
                 // Reuse the empty-array singleton for zero-arg listeners (OnTick
                 // etc. fire every frame) instead of allocating object[0] per call.
-                object[] args;
                 if (parameterTypes.Length == 0)
                 {
-                    args = Array.Empty<object>();
+                    return ToHookResult(handlerInvoker != null
+                        ? handlerInvoker(handlerTarget!, Array.Empty<object>())
+                        : handler.DynamicInvoke(Array.Empty<object>()));
                 }
-                else
+
+                // The compiled invoker reads only [0..parameterTypes.Length), so a pooled (possibly
+                // larger) buffer is safe; DynamicInvoke needs the exact length and keeps its own array.
+                var pooled = handlerInvoker != null;
+                var args = pooled ? ArrayPool<object>.Shared.Rent(parameterTypes.Length) : new object[parameterTypes.Length];
+                try
                 {
-                    args = new object[parameterTypes.Length];
                     for (int i = 0; i < parameterTypes.Length; i++)
                     {
-                        args[i] = context.GetArgument(castedParameterTypes[i] ?? parameterTypes[i], i);
-                        if (castedParameterTypes[i] != null)
-                            args[i] = Activator.CreateInstance(parameterTypes[i], new[] { args[i] })!;
+                        var value = context.GetArgument(castedParameterTypes[i] ?? parameterTypes[i], i);
+                        args[i] = castFactories[i] is { } factory ? factory(value) : value;
                     }
+
+                    return ToHookResult(pooled ? handlerInvoker!(handlerTarget!, args) : handler.DynamicInvoke(args));
                 }
-
-                object? result = handlerInvoker != null
-                    ? handlerInvoker(handlerTarget!, args)
-                    : handler.DynamicInvoke(args);
-
-                if (result is HookResult hookResult)
+                finally
                 {
-                    return hookResult;
+                    // clearArray: pooled slots must not keep entity wrappers alive until the next rent.
+                    if (pooled) ArrayPool<object>.Shared.Return(args, clearArray: true);
                 }
-
-                return HookResult.Continue;
             });
 
 #pragma warning disable CS0618 // intentional internal use of the non-generic RemoveListener
