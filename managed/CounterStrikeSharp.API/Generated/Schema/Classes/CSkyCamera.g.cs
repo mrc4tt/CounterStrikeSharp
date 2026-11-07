@@ -32,7 +32,8 @@ public partial class CSkyCamera : CBaseEntity
 	public ref bool UseAngles => ref __m_bUseAngles.GetRef(this.Handle);
 
 	// m_pNext
+	private static readonly SchemaField<byte> __m_pNext = new("CSkyCamera", "m_pNext");
 	[SchemaMember("CSkyCamera", "m_pNext")]
-	public CSkyCamera? Next => Schema.GetPointer<CSkyCamera>(this.Handle, "CSkyCamera", "m_pNext");
+	public CSkyCamera? Next => Schema.GetPointerAt<CSkyCamera>(this.Handle, __m_pNext.Offset);
 
 }

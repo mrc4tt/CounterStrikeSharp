@@ -19,8 +19,9 @@ public partial class CTakeDamageResult : NativeObject
     public CTakeDamageResult (IntPtr pointer) : base(pointer) {}
 
 	// m_pOriginatingInfo
+	private static readonly SchemaField<byte> __m_pOriginatingInfo = new("CTakeDamageResult", "m_pOriginatingInfo");
 	[SchemaMember("CTakeDamageResult", "m_pOriginatingInfo")]
-	public CTakeDamageInfo? OriginatingInfo => Schema.GetPointer<CTakeDamageInfo>(this.Handle, "CTakeDamageResult", "m_pOriginatingInfo");
+	public CTakeDamageInfo? OriginatingInfo => Schema.GetPointerAt<CTakeDamageInfo>(this.Handle, __m_pOriginatingInfo.Offset);
 
 	// m_nHealthLost
 	private static readonly SchemaField<Int32> __m_nHealthLost = new("CTakeDamageResult", "m_nHealthLost");

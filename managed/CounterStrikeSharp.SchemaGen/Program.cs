@@ -516,7 +516,8 @@ internal static partial class Program
             // instead of a dictionary lookup keyed by the two names on every access.
             var usesOffsetField = !usesSchemaField &&
                                   (field.Type is { Category: SchemaTypeCategory.FixedArray } ||
-                                   field.Type is { Category: SchemaTypeCategory.Atomic, Name: "Color" });
+                                   field.Type is { Category: SchemaTypeCategory.Atomic, Name: "Color" } ||
+                                   field.Type is { Category: SchemaTypeCategory.Ptr, Inner.Category: SchemaTypeCategory.DeclaredClass });
             if (usesOffsetField)
             {
                 builder.AppendLine(
@@ -600,7 +601,7 @@ internal static partial class Program
                 if (inner.Category != SchemaTypeCategory.DeclaredClass) continue;
 
                 builder.AppendLine(
-                    $"\tpublic {(requiresNewKeyword ? "new " : "")}{SanitiseTypeName(field.Type.CsTypeName)} {schemaClass.CsPropertyNameForField(schemaClassName, field)} => Schema.GetPointer<{SanitiseTypeName(inner.CsTypeName)}>({handleParams});");
+                    $"\tpublic {(requiresNewKeyword ? "new " : "")}{SanitiseTypeName(field.Type.CsTypeName)} {schemaClass.CsPropertyNameForField(schemaClassName, field)} => Schema.GetPointerAt<{SanitiseTypeName(inner.CsTypeName)}>(this.Handle, {schemaFieldName}.Offset);");
                 builder.AppendLine();
             }
             else if (field.Type is { Category: SchemaTypeCategory.Atomic, Name: "Color" })

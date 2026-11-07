@@ -19,8 +19,9 @@ public partial class CBodyComponent : CEntityComponent
     public CBodyComponent (IntPtr pointer) : base(pointer) {}
 
 	// m_pSceneNode
+	private static readonly SchemaField<byte> __m_pSceneNode = new("CBodyComponent", "m_pSceneNode");
 	[SchemaMember("CBodyComponent", "m_pSceneNode")]
-	public CGameSceneNode? SceneNode => Schema.GetPointer<CGameSceneNode>(this.Handle, "CBodyComponent", "m_pSceneNode");
+	public CGameSceneNode? SceneNode => Schema.GetPointerAt<CGameSceneNode>(this.Handle, __m_pSceneNode.Offset);
 
 	// __m_pChainEntity
 	[SchemaMember("CBodyComponent", "__m_pChainEntity")]

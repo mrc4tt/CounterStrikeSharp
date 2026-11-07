@@ -19,16 +19,18 @@ public partial class CBaseModelEntity : CBaseEntity
     public CBaseModelEntity (IntPtr pointer) : base(pointer) {}
 
 	// m_CRenderComponent
+	private static readonly SchemaField<byte> __m_CRenderComponent = new("CBaseModelEntity", "m_CRenderComponent");
 	[SchemaMember("CBaseModelEntity", "m_CRenderComponent")]
-	public CRenderComponent? CRenderComponent => Schema.GetPointer<CRenderComponent>(this.Handle, "CBaseModelEntity", "m_CRenderComponent");
+	public CRenderComponent? CRenderComponent => Schema.GetPointerAt<CRenderComponent>(this.Handle, __m_CRenderComponent.Offset);
 
 	// m_CHitboxComponent
 	[SchemaMember("CBaseModelEntity", "m_CHitboxComponent")]
 	public CHitboxComponent CHitboxComponent => Schema.GetDeclaredClass<CHitboxComponent>(this.Handle, "CBaseModelEntity", "m_CHitboxComponent");
 
 	// m_pChoreoComponent
+	private static readonly SchemaField<byte> __m_pChoreoComponent = new("CBaseModelEntity", "m_pChoreoComponent");
 	[SchemaMember("CBaseModelEntity", "m_pChoreoComponent")]
-	public CChoreoComponent? ChoreoComponent => Schema.GetPointer<CChoreoComponent>(this.Handle, "CBaseModelEntity", "m_pChoreoComponent");
+	public CChoreoComponent? ChoreoComponent => Schema.GetPointerAt<CChoreoComponent>(this.Handle, __m_pChoreoComponent.Offset);
 
 	// m_nDestructiblePartInitialStateDestructed0
 	private static readonly SchemaField<HitGroup_t> __m_nDestructiblePartInitialStateDestructed0 = new("CBaseModelEntity", "m_nDestructiblePartInitialStateDestructed0");
@@ -106,8 +108,9 @@ public partial class CBaseModelEntity : CBaseEntity
 	public ref bool DestructiblePartInitialStateDestructed4_GenerateBreakpieces => ref __m_bDestructiblePartInitialStateDestructed4_GenerateBreakpieces.GetRef(this.Handle);
 
 	// m_pDestructiblePartsSystemComponent
+	private static readonly SchemaField<byte> __m_pDestructiblePartsSystemComponent = new("CBaseModelEntity", "m_pDestructiblePartsSystemComponent");
 	[SchemaMember("CBaseModelEntity", "m_pDestructiblePartsSystemComponent")]
-	public CDestructiblePartsComponent? DestructiblePartsSystemComponent => Schema.GetPointer<CDestructiblePartsComponent>(this.Handle, "CBaseModelEntity", "m_pDestructiblePartsSystemComponent");
+	public CDestructiblePartsComponent? DestructiblePartsSystemComponent => Schema.GetPointerAt<CDestructiblePartsComponent>(this.Handle, __m_pDestructiblePartsSystemComponent.Offset);
 
 	// m_flDissolveStartTime
 	private static readonly SchemaField<float> __m_flDissolveStartTime = new("CBaseModelEntity", "m_flDissolveStartTime");

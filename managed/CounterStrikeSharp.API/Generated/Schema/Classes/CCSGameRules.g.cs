@@ -839,8 +839,9 @@ public partial class CCSGameRules : CTeamplayRules
 	public ref bool SwitchingTeamsAtRoundReset => ref __m_bSwitchingTeamsAtRoundReset.GetRef(this.Handle);
 
 	// m_pGameModeRules
+	private static readonly SchemaField<byte> __m_pGameModeRules = new("CCSGameRules", "m_pGameModeRules");
 	[SchemaMember("CCSGameRules", "m_pGameModeRules")]
-	public CCSGameModeRules? GameModeRules => Schema.GetPointer<CCSGameModeRules>(this.Handle, "CCSGameRules", "m_pGameModeRules");
+	public CCSGameModeRules? GameModeRules => Schema.GetPointerAt<CCSGameModeRules>(this.Handle, __m_pGameModeRules.Offset);
 
 	// m_hPlayerResource
 	[SchemaMember("CCSGameRules", "m_hPlayerResource")]

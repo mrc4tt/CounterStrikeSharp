@@ -19,7 +19,8 @@ public partial class CHostageExpresserShim : CBaseCombatCharacter
     public CHostageExpresserShim (IntPtr pointer) : base(pointer) {}
 
 	// m_pExpresser
+	private static readonly SchemaField<byte> __m_pExpresser = new("CHostageExpresserShim", "m_pExpresser");
 	[SchemaMember("CHostageExpresserShim", "m_pExpresser")]
-	public CAI_Expresser? Expresser => Schema.GetPointer<CAI_Expresser>(this.Handle, "CHostageExpresserShim", "m_pExpresser");
+	public CAI_Expresser? Expresser => Schema.GetPointerAt<CAI_Expresser>(this.Handle, __m_pExpresser.Offset);
 
 }

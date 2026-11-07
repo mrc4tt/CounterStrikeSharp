@@ -19,8 +19,9 @@ public partial class CPhysForce : CPointEntity
     public CPhysForce (IntPtr pointer) : base(pointer) {}
 
 	// m_pController
+	private static readonly SchemaField<byte> __m_pController = new("CPhysForce", "m_pController");
 	[SchemaMember("CPhysForce", "m_pController")]
-	public IPhysicsMotionController? Controller => Schema.GetPointer<IPhysicsMotionController>(this.Handle, "CPhysForce", "m_pController");
+	public IPhysicsMotionController? Controller => Schema.GetPointerAt<IPhysicsMotionController>(this.Handle, __m_pController.Offset);
 
 	// m_nameAttach
 	[SchemaMember("CPhysForce", "m_nameAttach")]

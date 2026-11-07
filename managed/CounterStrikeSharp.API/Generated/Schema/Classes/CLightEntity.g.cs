@@ -19,7 +19,8 @@ public partial class CLightEntity : CBaseModelEntity
     public CLightEntity (IntPtr pointer) : base(pointer) {}
 
 	// m_CLightComponent
+	private static readonly SchemaField<byte> __m_CLightComponent = new("CLightEntity", "m_CLightComponent");
 	[SchemaMember("CLightEntity", "m_CLightComponent")]
-	public CLightComponent? CLightComponent => Schema.GetPointer<CLightComponent>(this.Handle, "CLightEntity", "m_CLightComponent");
+	public CLightComponent? CLightComponent => Schema.GetPointerAt<CLightComponent>(this.Handle, __m_CLightComponent.Offset);
 
 }

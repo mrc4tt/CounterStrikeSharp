@@ -23,20 +23,24 @@ public partial class CGameSceneNode : NativeObject
 	public CTransform NodeToWorld => Schema.GetDeclaredClass<CTransform>(this.Handle, "CGameSceneNode", "m_nodeToWorld");
 
 	// m_pOwner
+	private static readonly SchemaField<byte> __m_pOwner = new("CGameSceneNode", "m_pOwner");
 	[SchemaMember("CGameSceneNode", "m_pOwner")]
-	public CEntityInstance? Owner => Schema.GetPointer<CEntityInstance>(this.Handle, "CGameSceneNode", "m_pOwner");
+	public CEntityInstance? Owner => Schema.GetPointerAt<CEntityInstance>(this.Handle, __m_pOwner.Offset);
 
 	// m_pParent
+	private static readonly SchemaField<byte> __m_pParent = new("CGameSceneNode", "m_pParent");
 	[SchemaMember("CGameSceneNode", "m_pParent")]
-	public CGameSceneNode? PParent => Schema.GetPointer<CGameSceneNode>(this.Handle, "CGameSceneNode", "m_pParent");
+	public CGameSceneNode? PParent => Schema.GetPointerAt<CGameSceneNode>(this.Handle, __m_pParent.Offset);
 
 	// m_pChild
+	private static readonly SchemaField<byte> __m_pChild = new("CGameSceneNode", "m_pChild");
 	[SchemaMember("CGameSceneNode", "m_pChild")]
-	public CGameSceneNode? Child => Schema.GetPointer<CGameSceneNode>(this.Handle, "CGameSceneNode", "m_pChild");
+	public CGameSceneNode? Child => Schema.GetPointerAt<CGameSceneNode>(this.Handle, __m_pChild.Offset);
 
 	// m_pNextSibling
+	private static readonly SchemaField<byte> __m_pNextSibling = new("CGameSceneNode", "m_pNextSibling");
 	[SchemaMember("CGameSceneNode", "m_pNextSibling")]
-	public CGameSceneNode? NextSibling => Schema.GetPointer<CGameSceneNode>(this.Handle, "CGameSceneNode", "m_pNextSibling");
+	public CGameSceneNode? NextSibling => Schema.GetPointerAt<CGameSceneNode>(this.Handle, __m_pNextSibling.Offset);
 
 	// m_vecOrigin
 	[SchemaMember("CGameSceneNode", "m_vecOrigin")]

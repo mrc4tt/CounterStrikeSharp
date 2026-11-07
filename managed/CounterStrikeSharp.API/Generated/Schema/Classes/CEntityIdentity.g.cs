@@ -58,23 +58,28 @@ public partial class CEntityIdentity : NativeObject
 	public ChangeAccessorFieldPathIndex_t PathIndex => Schema.GetDeclaredClass<ChangeAccessorFieldPathIndex_t>(this.Handle, "CEntityIdentity", "m_PathIndex");
 
 	// m_pAttributes
+	private static readonly SchemaField<byte> __m_pAttributes = new("CEntityIdentity", "m_pAttributes");
 	[SchemaMember("CEntityIdentity", "m_pAttributes")]
-	public CEntityAttributeTable? Attributes => Schema.GetPointer<CEntityAttributeTable>(this.Handle, "CEntityIdentity", "m_pAttributes");
+	public CEntityAttributeTable? Attributes => Schema.GetPointerAt<CEntityAttributeTable>(this.Handle, __m_pAttributes.Offset);
 
 	// m_pPrev
+	private static readonly SchemaField<byte> __m_pPrev = new("CEntityIdentity", "m_pPrev");
 	[SchemaMember("CEntityIdentity", "m_pPrev")]
-	public CEntityIdentity? Prev => Schema.GetPointer<CEntityIdentity>(this.Handle, "CEntityIdentity", "m_pPrev");
+	public CEntityIdentity? Prev => Schema.GetPointerAt<CEntityIdentity>(this.Handle, __m_pPrev.Offset);
 
 	// m_pNext
+	private static readonly SchemaField<byte> __m_pNext = new("CEntityIdentity", "m_pNext");
 	[SchemaMember("CEntityIdentity", "m_pNext")]
-	public CEntityIdentity? Next => Schema.GetPointer<CEntityIdentity>(this.Handle, "CEntityIdentity", "m_pNext");
+	public CEntityIdentity? Next => Schema.GetPointerAt<CEntityIdentity>(this.Handle, __m_pNext.Offset);
 
 	// m_pPrevByClass
+	private static readonly SchemaField<byte> __m_pPrevByClass = new("CEntityIdentity", "m_pPrevByClass");
 	[SchemaMember("CEntityIdentity", "m_pPrevByClass")]
-	public CEntityIdentity? PrevByClass => Schema.GetPointer<CEntityIdentity>(this.Handle, "CEntityIdentity", "m_pPrevByClass");
+	public CEntityIdentity? PrevByClass => Schema.GetPointerAt<CEntityIdentity>(this.Handle, __m_pPrevByClass.Offset);
 
 	// m_pNextByClass
+	private static readonly SchemaField<byte> __m_pNextByClass = new("CEntityIdentity", "m_pNextByClass");
 	[SchemaMember("CEntityIdentity", "m_pNextByClass")]
-	public CEntityIdentity? NextByClass => Schema.GetPointer<CEntityIdentity>(this.Handle, "CEntityIdentity", "m_pNextByClass");
+	public CEntityIdentity? NextByClass => Schema.GetPointerAt<CEntityIdentity>(this.Handle, __m_pNextByClass.Offset);
 
 }

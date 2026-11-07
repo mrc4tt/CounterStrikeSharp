@@ -271,8 +271,9 @@ public partial class CCSBot : CBot
 	public ref float NoiseTimestamp => ref __m_noiseTimestamp.GetRef(this.Handle);
 
 	// m_noiseSource
+	private static readonly SchemaField<byte> __m_noiseSource = new("CCSBot", "m_noiseSource");
 	[SchemaMember("CCSBot", "m_noiseSource")]
-	public CCSPlayerPawn? NoiseSource => Schema.GetPointer<CCSPlayerPawn>(this.Handle, "CCSBot", "m_noiseSource");
+	public CCSPlayerPawn? NoiseSource => Schema.GetPointerAt<CCSPlayerPawn>(this.Handle, __m_noiseSource.Offset);
 
 	// m_noiseBendTimer
 	[SchemaMember("CCSBot", "m_noiseBendTimer")]

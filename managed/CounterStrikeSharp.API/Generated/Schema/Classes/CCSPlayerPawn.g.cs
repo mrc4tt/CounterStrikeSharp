@@ -19,32 +19,39 @@ public partial class CCSPlayerPawn : CCSPlayerPawnBase
     public CCSPlayerPawn (IntPtr pointer) : base(pointer) {}
 
 	// m_pBulletServices
+	private static readonly SchemaField<byte> __m_pBulletServices = new("CCSPlayerPawn", "m_pBulletServices");
 	[SchemaMember("CCSPlayerPawn", "m_pBulletServices")]
-	public CCSPlayer_BulletServices? BulletServices => Schema.GetPointer<CCSPlayer_BulletServices>(this.Handle, "CCSPlayerPawn", "m_pBulletServices");
+	public CCSPlayer_BulletServices? BulletServices => Schema.GetPointerAt<CCSPlayer_BulletServices>(this.Handle, __m_pBulletServices.Offset);
 
 	// m_pHostageServices
+	private static readonly SchemaField<byte> __m_pHostageServices = new("CCSPlayerPawn", "m_pHostageServices");
 	[SchemaMember("CCSPlayerPawn", "m_pHostageServices")]
-	public CCSPlayer_HostageServices? HostageServices => Schema.GetPointer<CCSPlayer_HostageServices>(this.Handle, "CCSPlayerPawn", "m_pHostageServices");
+	public CCSPlayer_HostageServices? HostageServices => Schema.GetPointerAt<CCSPlayer_HostageServices>(this.Handle, __m_pHostageServices.Offset);
 
 	// m_pBuyServices
+	private static readonly SchemaField<byte> __m_pBuyServices = new("CCSPlayerPawn", "m_pBuyServices");
 	[SchemaMember("CCSPlayerPawn", "m_pBuyServices")]
-	public CCSPlayer_BuyServices? BuyServices => Schema.GetPointer<CCSPlayer_BuyServices>(this.Handle, "CCSPlayerPawn", "m_pBuyServices");
+	public CCSPlayer_BuyServices? BuyServices => Schema.GetPointerAt<CCSPlayer_BuyServices>(this.Handle, __m_pBuyServices.Offset);
 
 	// m_pActionTrackingServices
+	private static readonly SchemaField<byte> __m_pActionTrackingServices = new("CCSPlayerPawn", "m_pActionTrackingServices");
 	[SchemaMember("CCSPlayerPawn", "m_pActionTrackingServices")]
-	public CCSPlayer_ActionTrackingServices? ActionTrackingServices => Schema.GetPointer<CCSPlayer_ActionTrackingServices>(this.Handle, "CCSPlayerPawn", "m_pActionTrackingServices");
+	public CCSPlayer_ActionTrackingServices? ActionTrackingServices => Schema.GetPointerAt<CCSPlayer_ActionTrackingServices>(this.Handle, __m_pActionTrackingServices.Offset);
 
 	// m_pAimPunchServices
+	private static readonly SchemaField<byte> __m_pAimPunchServices = new("CCSPlayerPawn", "m_pAimPunchServices");
 	[SchemaMember("CCSPlayerPawn", "m_pAimPunchServices")]
-	public CCSPlayer_AimPunchServices? AimPunchServices => Schema.GetPointer<CCSPlayer_AimPunchServices>(this.Handle, "CCSPlayerPawn", "m_pAimPunchServices");
+	public CCSPlayer_AimPunchServices? AimPunchServices => Schema.GetPointerAt<CCSPlayer_AimPunchServices>(this.Handle, __m_pAimPunchServices.Offset);
 
 	// m_pRadioServices
+	private static readonly SchemaField<byte> __m_pRadioServices = new("CCSPlayerPawn", "m_pRadioServices");
 	[SchemaMember("CCSPlayerPawn", "m_pRadioServices")]
-	public CCSPlayer_RadioServices? RadioServices => Schema.GetPointer<CCSPlayer_RadioServices>(this.Handle, "CCSPlayerPawn", "m_pRadioServices");
+	public CCSPlayer_RadioServices? RadioServices => Schema.GetPointerAt<CCSPlayer_RadioServices>(this.Handle, __m_pRadioServices.Offset);
 
 	// m_pDamageReactServices
+	private static readonly SchemaField<byte> __m_pDamageReactServices = new("CCSPlayerPawn", "m_pDamageReactServices");
 	[SchemaMember("CCSPlayerPawn", "m_pDamageReactServices")]
-	public CCSPlayer_DamageReactServices? DamageReactServices => Schema.GetPointer<CCSPlayer_DamageReactServices>(this.Handle, "CCSPlayerPawn", "m_pDamageReactServices");
+	public CCSPlayer_DamageReactServices? DamageReactServices => Schema.GetPointerAt<CCSPlayer_DamageReactServices>(this.Handle, __m_pDamageReactServices.Offset);
 
 	// m_nCharacterDefIndex
 	private static readonly SchemaField<UInt16> __m_nCharacterDefIndex = new("CCSPlayerPawn", "m_nCharacterDefIndex");
@@ -399,8 +406,9 @@ public partial class CCSPlayerPawn : CCSPlayerPawnBase
 	public ref Int32 LastHitBox => ref __m_LastHitBox.GetRef(this.Handle);
 
 	// m_pBot
+	private static readonly SchemaField<byte> __m_pBot = new("CCSPlayerPawn", "m_pBot");
 	[SchemaMember("CCSPlayerPawn", "m_pBot")]
-	public CCSBot? Bot => Schema.GetPointer<CCSBot>(this.Handle, "CCSPlayerPawn", "m_pBot");
+	public CCSBot? Bot => Schema.GetPointerAt<CCSBot>(this.Handle, __m_pBot.Offset);
 
 	// m_bBotAllowActive
 	private static readonly SchemaField<bool> __m_bBotAllowActive = new("CCSPlayerPawn", "m_bBotAllowActive");

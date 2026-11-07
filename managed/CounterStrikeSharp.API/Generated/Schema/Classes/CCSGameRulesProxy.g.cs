@@ -19,7 +19,8 @@ public partial class CCSGameRulesProxy : CGameRulesProxy
     public CCSGameRulesProxy (IntPtr pointer) : base(pointer) {}
 
 	// m_pGameRules
+	private static readonly SchemaField<byte> __m_pGameRules = new("CCSGameRulesProxy", "m_pGameRules");
 	[SchemaMember("CCSGameRulesProxy", "m_pGameRules")]
-	public CCSGameRules? GameRules => Schema.GetPointer<CCSGameRules>(this.Handle, "CCSGameRulesProxy", "m_pGameRules");
+	public CCSGameRules? GameRules => Schema.GetPointerAt<CCSGameRules>(this.Handle, __m_pGameRules.Offset);
 
 }

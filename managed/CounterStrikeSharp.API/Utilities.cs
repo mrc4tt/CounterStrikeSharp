@@ -136,15 +136,65 @@ namespace CounterStrikeSharp.API
             // entity got a CEntityIdentity wrapper, and its designer name was decoded into a new string twice
             // (null check + Contains), byte by byte: hundreds of allocations per call on a full server.
             // Same rule as before: the designer name contains designerName (ordinal), null names never match.
-            var needle = Encoding.UTF8.GetBytes(designerName);
+            var needle = NeedleBytes(designerName);
             var designerNameOffset = s_identityDesignerNameField.Offset;
             var nextOffset = s_identityNextField.Offset;
+            var walk = ++t_designerNameWalk;
 
             for (var identity = EntitySystem.FirstActiveEntity; identity != IntPtr.Zero; identity = Marshal.ReadIntPtr(identity + nextOffset))
             {
-                if (!DesignerNameContains(identity + designerNameOffset, needle)) continue;
+                if (!DesignerNameMatches(Marshal.ReadIntPtr(identity + designerNameOffset), needle, walk)) continue;
                 yield return new PointerTo<T>(identity).Value;
             }
+        }
+
+        // The needle of the last call on this thread, by reference: callers pass the same literal
+        // every time (per tick, per event), so its UTF-8 bytes are encoded once instead of per call.
+        [ThreadStatic] private static string? t_lastNeedleText;
+        [ThreadStatic] private static byte[]? t_lastNeedle;
+
+        private static byte[] NeedleBytes(string designerName)
+        {
+            if (ReferenceEquals(designerName, t_lastNeedleText) && t_lastNeedle != null)
+                return t_lastNeedle;
+
+            var bytes = Encoding.UTF8.GetBytes(designerName);
+            t_lastNeedleText = designerName;
+            t_lastNeedle = bytes;
+            return bytes;
+        }
+
+        // Entities of one class share their designer name string (same char*), so within one walk
+        // each distinct name is compared once and remembered by its pointer. Entries are stamped
+        // with the walk that wrote them and only trusted by that walk, so nothing carries over
+        // between calls (a freed name's address reused for another name cannot give a stale
+        // answer) and a nested walk with another needle only costs the outer walk a recompare.
+        private const int DesignerNameMemoSize = 64;
+        [ThreadStatic] private static DesignerNameMemoEntry[]? t_designerNameMemo;
+        [ThreadStatic] private static int t_designerNameWalk;
+
+        private struct DesignerNameMemoEntry
+        {
+            public IntPtr Name;
+            public int Walk;
+            public bool Matches;
+        }
+
+        private static unsafe bool DesignerNameMatches(IntPtr name, byte[] needle, int walk)
+        {
+            if (name == IntPtr.Zero)
+                return false;
+
+            var memo = t_designerNameMemo ??= new DesignerNameMemoEntry[DesignerNameMemoSize];
+            ref var entry = ref memo[(int)((ulong)name >> 3) & (DesignerNameMemoSize - 1)];
+            if (entry.Name == name && entry.Walk == walk)
+                return entry.Matches;
+
+            var matches = MemoryMarshal.CreateReadOnlySpanFromNullTerminated((byte*)name).IndexOf(needle) >= 0;
+            entry.Name = name;
+            entry.Walk = walk;
+            entry.Matches = matches;
+            return matches;
         }
 
         // The usual idiom, FindAllEntitiesByDesignerName<CCSGameRulesProxy>("cs_gamerules").First().GameRules,
@@ -212,19 +262,6 @@ namespace CounterStrikeSharp.API
 
         private static readonly SchemaField<IntPtr> s_identityDesignerNameField = new("CEntityIdentity", "m_designerName");
         private static readonly SchemaField<IntPtr> s_identityNextField = new("CEntityIdentity", "m_pNext");
-
-        private static unsafe bool DesignerNameContains(IntPtr designerNameField, byte[] needle)
-        {
-            var name = *(byte**)designerNameField;
-            if (name == null)
-                return false;
-
-            var length = 0;
-            while (name[length] != 0)
-                length++;
-
-            return new ReadOnlySpan<byte>(name, length).IndexOf(needle) >= 0;
-        }
 
         public static IEnumerable<CEntityInstance> GetAllEntities()
         {

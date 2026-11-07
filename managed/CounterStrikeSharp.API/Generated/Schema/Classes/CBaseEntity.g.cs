@@ -19,8 +19,9 @@ public partial class CBaseEntity : CEntityInstance
     public CBaseEntity (IntPtr pointer) : base(pointer) {}
 
 	// m_CBodyComponent
+	private static readonly SchemaField<byte> __m_CBodyComponent = new("CBaseEntity", "m_CBodyComponent");
 	[SchemaMember("CBaseEntity", "m_CBodyComponent")]
-	public CBodyComponent? CBodyComponent => Schema.GetPointer<CBodyComponent>(this.Handle, "CBaseEntity", "m_CBodyComponent");
+	public CBodyComponent? CBodyComponent => Schema.GetPointerAt<CBodyComponent>(this.Handle, __m_CBodyComponent.Offset);
 
 	// m_NetworkTransmitComponent
 	[SchemaMember("CBaseEntity", "m_NetworkTransmitComponent")]
@@ -263,8 +264,9 @@ public partial class CBaseEntity : CEntityInstance
 	public ref Int32 PushEnumCount => ref __m_nPushEnumCount.GetRef(this.Handle);
 
 	// m_pCollision
+	private static readonly SchemaField<byte> __m_pCollision = new("CBaseEntity", "m_pCollision");
 	[SchemaMember("CBaseEntity", "m_pCollision")]
-	public CCollisionProperty? Collision => Schema.GetPointer<CCollisionProperty>(this.Handle, "CBaseEntity", "m_pCollision");
+	public CCollisionProperty? Collision => Schema.GetPointerAt<CCollisionProperty>(this.Handle, __m_pCollision.Offset);
 
 	// m_hEffectEntity
 	[SchemaMember("CBaseEntity", "m_hEffectEntity")]
@@ -408,7 +410,8 @@ public partial class CBaseEntity : CEntityInstance
 	public ref BloodType BloodType => ref __m_nBloodType.GetRef(this.Handle);
 
 	// m_pPulseGraphInstance
+	private static readonly SchemaField<byte> __m_pPulseGraphInstance = new("CBaseEntity", "m_pPulseGraphInstance");
 	[SchemaMember("CBaseEntity", "m_pPulseGraphInstance")]
-	public CPulseGraphInstance_ServerEntity? PulseGraphInstance => Schema.GetPointer<CPulseGraphInstance_ServerEntity>(this.Handle, "CBaseEntity", "m_pPulseGraphInstance");
+	public CPulseGraphInstance_ServerEntity? PulseGraphInstance => Schema.GetPointerAt<CPulseGraphInstance_ServerEntity>(this.Handle, __m_pPulseGraphInstance.Offset);
 
 }

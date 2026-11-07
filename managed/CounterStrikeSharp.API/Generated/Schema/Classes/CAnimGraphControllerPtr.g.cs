@@ -19,7 +19,8 @@ public partial class CAnimGraphControllerPtr : NativeObject
     public CAnimGraphControllerPtr (IntPtr pointer) : base(pointer) {}
 
 	// m_pController
+	private static readonly SchemaField<byte> __m_pController = new("CAnimGraphControllerPtr", "m_pController");
 	[SchemaMember("CAnimGraphControllerPtr", "m_pController")]
-	public CAnimGraphControllerBase? Controller => Schema.GetPointer<CAnimGraphControllerBase>(this.Handle, "CAnimGraphControllerPtr", "m_pController");
+	public CAnimGraphControllerBase? Controller => Schema.GetPointerAt<CAnimGraphControllerBase>(this.Handle, __m_pController.Offset);
 
 }

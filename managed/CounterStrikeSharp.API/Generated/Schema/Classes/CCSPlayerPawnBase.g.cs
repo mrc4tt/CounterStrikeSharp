@@ -23,8 +23,9 @@ public partial class CCSPlayerPawnBase : CBasePlayerPawn
 	public CTouchExpansionComponent CTouchExpansionComponent => Schema.GetDeclaredClass<CTouchExpansionComponent>(this.Handle, "CCSPlayerPawnBase", "m_CTouchExpansionComponent");
 
 	// m_pPingServices
+	private static readonly SchemaField<byte> __m_pPingServices = new("CCSPlayerPawnBase", "m_pPingServices");
 	[SchemaMember("CCSPlayerPawnBase", "m_pPingServices")]
-	public CCSPlayer_PingServices? PingServices => Schema.GetPointer<CCSPlayer_PingServices>(this.Handle, "CCSPlayerPawnBase", "m_pPingServices");
+	public CCSPlayer_PingServices? PingServices => Schema.GetPointerAt<CCSPlayer_PingServices>(this.Handle, __m_pPingServices.Offset);
 
 	// m_blindUntilTime
 	private static readonly SchemaField<float> __m_blindUntilTime = new("CCSPlayerPawnBase", "m_blindUntilTime");

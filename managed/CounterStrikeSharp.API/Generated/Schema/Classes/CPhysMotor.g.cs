@@ -83,12 +83,14 @@ public partial class CPhysMotor : CLogicalEntity
 	public ref float SpeedWhenSpinUpOrSpinDownStarted => ref __m_flSpeedWhenSpinUpOrSpinDownStarted.GetRef(this.Handle);
 
 	// m_pFixedWorldBody
+	private static readonly SchemaField<byte> __m_pFixedWorldBody = new("CPhysMotor", "m_pFixedWorldBody");
 	[SchemaMember("CPhysMotor", "m_pFixedWorldBody")]
-	public IPhysicsBody? FixedWorldBody => Schema.GetPointer<IPhysicsBody>(this.Handle, "CPhysMotor", "m_pFixedWorldBody");
+	public IPhysicsBody? FixedWorldBody => Schema.GetPointerAt<IPhysicsBody>(this.Handle, __m_pFixedWorldBody.Offset);
 
 	// m_pMotorJoint
+	private static readonly SchemaField<byte> __m_pMotorJoint = new("CPhysMotor", "m_pMotorJoint");
 	[SchemaMember("CPhysMotor", "m_pMotorJoint")]
-	public IPhysicsJoint? MotorJoint => Schema.GetPointer<IPhysicsJoint>(this.Handle, "CPhysMotor", "m_pMotorJoint");
+	public IPhysicsJoint? MotorJoint => Schema.GetPointerAt<IPhysicsJoint>(this.Handle, __m_pMotorJoint.Offset);
 
 	// m_motor
 	[SchemaMember("CPhysMotor", "m_motor")]

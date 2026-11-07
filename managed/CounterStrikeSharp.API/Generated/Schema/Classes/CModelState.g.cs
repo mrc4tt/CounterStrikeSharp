@@ -31,8 +31,9 @@ public partial class CModelState : NativeObject
 	}
 
 	// m_pVPhysicsAggregate
+	private static readonly SchemaField<byte> __m_pVPhysicsAggregate = new("CModelState", "m_pVPhysicsAggregate");
 	[SchemaMember("CModelState", "m_pVPhysicsAggregate")]
-	public IPhysAggregateInstance? VPhysicsAggregate => Schema.GetPointer<IPhysAggregateInstance>(this.Handle, "CModelState", "m_pVPhysicsAggregate");
+	public IPhysAggregateInstance? VPhysicsAggregate => Schema.GetPointerAt<IPhysAggregateInstance>(this.Handle, __m_pVPhysicsAggregate.Offset);
 
 	// m_flRootBoneOffset_x
 	private static readonly SchemaField<float> __m_flRootBoneOffset_x = new("CModelState", "m_flRootBoneOffset_x");

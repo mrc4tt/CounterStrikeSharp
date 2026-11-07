@@ -19,7 +19,8 @@ public partial class CSkeletonAnimationController : ISkeletonAnimationController
     public CSkeletonAnimationController (IntPtr pointer) : base(pointer) {}
 
 	// m_pSkeletonInstance
+	private static readonly SchemaField<byte> __m_pSkeletonInstance = new("CSkeletonAnimationController", "m_pSkeletonInstance");
 	[SchemaMember("CSkeletonAnimationController", "m_pSkeletonInstance")]
-	public CSkeletonInstance? SkeletonInstance => Schema.GetPointer<CSkeletonInstance>(this.Handle, "CSkeletonAnimationController", "m_pSkeletonInstance");
+	public CSkeletonInstance? SkeletonInstance => Schema.GetPointerAt<CSkeletonInstance>(this.Handle, __m_pSkeletonInstance.Offset);
 
 }

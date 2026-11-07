@@ -19,8 +19,9 @@ public partial class CBuoyancyHelper : NativeObject
     public CBuoyancyHelper (IntPtr pointer) : base(pointer) {}
 
 	// m_pController
+	private static readonly SchemaField<byte> __m_pController = new("CBuoyancyHelper", "m_pController");
 	[SchemaMember("CBuoyancyHelper", "m_pController")]
-	public IPhysicsMotionController? Controller => Schema.GetPointer<IPhysicsMotionController>(this.Handle, "CBuoyancyHelper", "m_pController");
+	public IPhysicsMotionController? Controller => Schema.GetPointerAt<IPhysicsMotionController>(this.Handle, __m_pController.Offset);
 
 	// m_nFluidType
 	[SchemaMember("CBuoyancyHelper", "m_nFluidType")]

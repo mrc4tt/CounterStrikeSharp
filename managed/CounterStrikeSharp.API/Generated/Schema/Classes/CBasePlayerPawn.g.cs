@@ -19,40 +19,49 @@ public partial class CBasePlayerPawn : CBaseCombatCharacter
     public CBasePlayerPawn (IntPtr pointer) : base(pointer) {}
 
 	// m_pWeaponServices
+	private static readonly SchemaField<byte> __m_pWeaponServices = new("CBasePlayerPawn", "m_pWeaponServices");
 	[SchemaMember("CBasePlayerPawn", "m_pWeaponServices")]
-	public CPlayer_WeaponServices? WeaponServices => Schema.GetPointer<CPlayer_WeaponServices>(this.Handle, "CBasePlayerPawn", "m_pWeaponServices");
+	public CPlayer_WeaponServices? WeaponServices => Schema.GetPointerAt<CPlayer_WeaponServices>(this.Handle, __m_pWeaponServices.Offset);
 
 	// m_pItemServices
+	private static readonly SchemaField<byte> __m_pItemServices = new("CBasePlayerPawn", "m_pItemServices");
 	[SchemaMember("CBasePlayerPawn", "m_pItemServices")]
-	public CPlayer_ItemServices? ItemServices => Schema.GetPointer<CPlayer_ItemServices>(this.Handle, "CBasePlayerPawn", "m_pItemServices");
+	public CPlayer_ItemServices? ItemServices => Schema.GetPointerAt<CPlayer_ItemServices>(this.Handle, __m_pItemServices.Offset);
 
 	// m_pAutoaimServices
+	private static readonly SchemaField<byte> __m_pAutoaimServices = new("CBasePlayerPawn", "m_pAutoaimServices");
 	[SchemaMember("CBasePlayerPawn", "m_pAutoaimServices")]
-	public CPlayer_AutoaimServices? AutoaimServices => Schema.GetPointer<CPlayer_AutoaimServices>(this.Handle, "CBasePlayerPawn", "m_pAutoaimServices");
+	public CPlayer_AutoaimServices? AutoaimServices => Schema.GetPointerAt<CPlayer_AutoaimServices>(this.Handle, __m_pAutoaimServices.Offset);
 
 	// m_pObserverServices
+	private static readonly SchemaField<byte> __m_pObserverServices = new("CBasePlayerPawn", "m_pObserverServices");
 	[SchemaMember("CBasePlayerPawn", "m_pObserverServices")]
-	public CPlayer_ObserverServices? ObserverServices => Schema.GetPointer<CPlayer_ObserverServices>(this.Handle, "CBasePlayerPawn", "m_pObserverServices");
+	public CPlayer_ObserverServices? ObserverServices => Schema.GetPointerAt<CPlayer_ObserverServices>(this.Handle, __m_pObserverServices.Offset);
 
 	// m_pWaterServices
+	private static readonly SchemaField<byte> __m_pWaterServices = new("CBasePlayerPawn", "m_pWaterServices");
 	[SchemaMember("CBasePlayerPawn", "m_pWaterServices")]
-	public CPlayer_WaterServices? WaterServices => Schema.GetPointer<CPlayer_WaterServices>(this.Handle, "CBasePlayerPawn", "m_pWaterServices");
+	public CPlayer_WaterServices? WaterServices => Schema.GetPointerAt<CPlayer_WaterServices>(this.Handle, __m_pWaterServices.Offset);
 
 	// m_pUseServices
+	private static readonly SchemaField<byte> __m_pUseServices = new("CBasePlayerPawn", "m_pUseServices");
 	[SchemaMember("CBasePlayerPawn", "m_pUseServices")]
-	public CPlayer_UseServices? UseServices => Schema.GetPointer<CPlayer_UseServices>(this.Handle, "CBasePlayerPawn", "m_pUseServices");
+	public CPlayer_UseServices? UseServices => Schema.GetPointerAt<CPlayer_UseServices>(this.Handle, __m_pUseServices.Offset);
 
 	// m_pFlashlightServices
+	private static readonly SchemaField<byte> __m_pFlashlightServices = new("CBasePlayerPawn", "m_pFlashlightServices");
 	[SchemaMember("CBasePlayerPawn", "m_pFlashlightServices")]
-	public CPlayer_FlashlightServices? FlashlightServices => Schema.GetPointer<CPlayer_FlashlightServices>(this.Handle, "CBasePlayerPawn", "m_pFlashlightServices");
+	public CPlayer_FlashlightServices? FlashlightServices => Schema.GetPointerAt<CPlayer_FlashlightServices>(this.Handle, __m_pFlashlightServices.Offset);
 
 	// m_pCameraServices
+	private static readonly SchemaField<byte> __m_pCameraServices = new("CBasePlayerPawn", "m_pCameraServices");
 	[SchemaMember("CBasePlayerPawn", "m_pCameraServices")]
-	public CPlayer_CameraServices? CameraServices => Schema.GetPointer<CPlayer_CameraServices>(this.Handle, "CBasePlayerPawn", "m_pCameraServices");
+	public CPlayer_CameraServices? CameraServices => Schema.GetPointerAt<CPlayer_CameraServices>(this.Handle, __m_pCameraServices.Offset);
 
 	// m_pMovementServices
+	private static readonly SchemaField<byte> __m_pMovementServices = new("CBasePlayerPawn", "m_pMovementServices");
 	[SchemaMember("CBasePlayerPawn", "m_pMovementServices")]
-	public CPlayer_MovementServices? MovementServices => Schema.GetPointer<CPlayer_MovementServices>(this.Handle, "CBasePlayerPawn", "m_pMovementServices");
+	public CPlayer_MovementServices? MovementServices => Schema.GetPointerAt<CPlayer_MovementServices>(this.Handle, __m_pMovementServices.Offset);
 
 	// m_ServerViewAngleChanges
 	[SchemaMember("CBasePlayerPawn", "m_ServerViewAngleChanges")]
@@ -96,8 +105,9 @@ public partial class CBasePlayerPawn : CBaseCombatCharacter
 	public ref bool InitHUD => ref __m_fInitHUD.GetRef(this.Handle);
 
 	// m_pExpresser
+	private static readonly SchemaField<byte> __m_pExpresser = new("CBasePlayerPawn", "m_pExpresser");
 	[SchemaMember("CBasePlayerPawn", "m_pExpresser")]
-	public CAI_Expresser? Expresser => Schema.GetPointer<CAI_Expresser>(this.Handle, "CBasePlayerPawn", "m_pExpresser");
+	public CAI_Expresser? Expresser => Schema.GetPointerAt<CAI_Expresser>(this.Handle, __m_pExpresser.Offset);
 
 	// m_hController
 	[SchemaMember("CBasePlayerPawn", "m_hController")]

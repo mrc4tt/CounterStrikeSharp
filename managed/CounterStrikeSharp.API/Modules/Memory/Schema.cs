@@ -330,6 +330,14 @@ public class Schema
         return new Span<T>((void*)(pointer + offset), count);
     }
 
+    internal static T? GetPointerAt<T>(IntPtr pointer, int offset)
+    {
+        if (pointer == IntPtr.Zero) throw new ArgumentNullException(nameof(pointer), "Schema target points to null.");
+
+        var pointerTo = Marshal.ReadIntPtr(pointer + offset);
+        return pointerTo == IntPtr.Zero ? default : FastNew.CreateInstance<T, IntPtr>(pointerTo);
+    }
+
     internal static string GetStringAt(IntPtr pointer, int offset)
     {
         if (pointer == IntPtr.Zero) throw new ArgumentNullException(nameof(pointer), "Schema target points to null.");

@@ -36,8 +36,9 @@ public partial class CBaseAnimGraph : CBaseModelEntity
 	public CEntityIOOutput OnExternalChoreoGraphChanged => Schema.GetDeclaredClass<CEntityIOOutput>(this.Handle, "CBaseAnimGraph", "m_OnExternalChoreoGraphChanged");
 
 	// m_pChoreoServices
+	private static readonly SchemaField<byte> __m_pChoreoServices = new("CBaseAnimGraph", "m_pChoreoServices");
 	[SchemaMember("CBaseAnimGraph", "m_pChoreoServices")]
-	public IChoreoServices? ChoreoServices => Schema.GetPointer<IChoreoServices>(this.Handle, "CBaseAnimGraph", "m_pChoreoServices");
+	public IChoreoServices? ChoreoServices => Schema.GetPointerAt<IChoreoServices>(this.Handle, __m_pChoreoServices.Offset);
 
 	// m_bAnimGraphUpdateEnabled
 	private static readonly SchemaField<bool> __m_bAnimGraphUpdateEnabled = new("CBaseAnimGraph", "m_bAnimGraphUpdateEnabled");
@@ -59,8 +60,9 @@ public partial class CBaseAnimGraph : CBaseModelEntity
 	public ref Int32 ForceBone => ref __m_nForceBone.GetRef(this.Handle);
 
 	// m_pRagdollControl
+	private static readonly SchemaField<byte> __m_pRagdollControl = new("CBaseAnimGraph", "m_pRagdollControl");
 	[SchemaMember("CBaseAnimGraph", "m_pRagdollControl")]
-	public IPhysicsRagdollControl? RagdollControl => Schema.GetPointer<IPhysicsRagdollControl>(this.Handle, "CBaseAnimGraph", "m_pRagdollControl");
+	public IPhysicsRagdollControl? RagdollControl => Schema.GetPointerAt<IPhysicsRagdollControl>(this.Handle, __m_pRagdollControl.Offset);
 
 	// m_RagdollPose
 	[SchemaMember("CBaseAnimGraph", "m_RagdollPose")]

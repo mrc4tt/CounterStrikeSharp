@@ -148,7 +148,8 @@ public partial class CPointCamera : CBaseEntity
 	public ref bool IsOn => ref __m_bIsOn.GetRef(this.Handle);
 
 	// m_pNext
+	private static readonly SchemaField<byte> __m_pNext = new("CPointCamera", "m_pNext");
 	[SchemaMember("CPointCamera", "m_pNext")]
-	public CPointCamera? Next => Schema.GetPointer<CPointCamera>(this.Handle, "CPointCamera", "m_pNext");
+	public CPointCamera? Next => Schema.GetPointerAt<CPointCamera>(this.Handle, __m_pNext.Offset);
 
 }

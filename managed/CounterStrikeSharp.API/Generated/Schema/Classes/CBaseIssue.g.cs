@@ -52,7 +52,8 @@ public partial class CBaseIssue : NativeObject
 	public ref Int32 NumPotentialVotes => ref __m_iNumPotentialVotes.GetRef(this.Handle);
 
 	// m_pVoteController
+	private static readonly SchemaField<byte> __m_pVoteController = new("CBaseIssue", "m_pVoteController");
 	[SchemaMember("CBaseIssue", "m_pVoteController")]
-	public CVoteController? VoteController => Schema.GetPointer<CVoteController>(this.Handle, "CBaseIssue", "m_pVoteController");
+	public CVoteController? VoteController => Schema.GetPointerAt<CVoteController>(this.Handle, __m_pVoteController.Offset);
 
 }
