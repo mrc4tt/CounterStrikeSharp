@@ -29,9 +29,12 @@ public abstract class BaseMemoryFunction : NativeObject
     private static readonly List<HookRegistration> _activeHooks = new();
     private static readonly object _hooksLock = new();
 
+    // No binary given: server, unless the text is a gamedata signature whose entry names another
+    // "library" (GameData.NonServerLibraryPathForSignature).
     private static IntPtr CreateValveFunctionBySignature(string signature, DataType returnType,
         DataType[] argumentTypes) =>
-        NativeFunctionCache.BySignature(Addresses.ServerPath, signature, returnType, argumentTypes);
+        NativeFunctionCache.BySignature(GameData.NonServerLibraryPathForSignature(signature) ?? Addresses.ServerPath,
+            signature, returnType, argumentTypes);
 
     private static IntPtr CreateValveFunctionBySignature(string signature, string binarypath, DataType returnType,
         DataType[] argumentTypes) =>
