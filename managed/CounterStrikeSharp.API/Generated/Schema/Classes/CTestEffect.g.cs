@@ -29,12 +29,14 @@ public partial class CTestEffect : CBaseEntity
 	public ref Int32 IBeam => ref __m_iBeam.GetRef(this.Handle);
 
 	// m_pBeam
+	private static readonly SchemaField<byte> __m_pBeam = new("CTestEffect", "m_pBeam");
 	[SchemaMember("CTestEffect", "m_pBeam")]
-	public Span<CHandle<CBeam>> PBeam => Schema.GetFixedArray<CHandle<CBeam>>(this.Handle, "CTestEffect", "m_pBeam", 24);
+	public Span<CHandle<CBeam>> PBeam => Schema.GetFixedArrayAt<CHandle<CBeam>>(this.Handle, __m_pBeam.Offset, 24);
 
 	// m_flBeamTime
+	private static readonly SchemaField<byte> __m_flBeamTime = new("CTestEffect", "m_flBeamTime");
 	[SchemaMember("CTestEffect", "m_flBeamTime")]
-	public Span<float> BeamTime => Schema.GetFixedArray<float>(this.Handle, "CTestEffect", "m_flBeamTime", 24);
+	public Span<float> BeamTime => Schema.GetFixedArrayAt<float>(this.Handle, __m_flBeamTime.Offset, 24);
 
 	// m_flStartTime
 	private static readonly SchemaField<float> __m_flStartTime = new("CTestEffect", "m_flStartTime");

@@ -32,19 +32,21 @@ public partial class CEnvSky : CBaseModelEntity
 	public ref bool StartDisabled => ref __m_bStartDisabled.GetRef(this.Handle);
 
 	// m_vTintColor
+	private static readonly SchemaField<byte> __m_vTintColor = new("CEnvSky", "m_vTintColor");
 	[SchemaMember("CEnvSky", "m_vTintColor")]
 	public Color TintColor
 	{
-		get { return Schema.GetCustomMarshalledType<Color>(this.Handle, "CEnvSky", "m_vTintColor"); }
-		set { Schema.SetCustomMarshalledType<Color>(this.Handle, "CEnvSky", "m_vTintColor", value); }
+		get { return Schema.GetColorAt(this.Handle, __m_vTintColor.Offset); }
+		set { Schema.SetColorAt(this.Handle, __m_vTintColor.Offset, value); }
 	}
 
 	// m_vTintColorLightingOnly
+	private static readonly SchemaField<byte> __m_vTintColorLightingOnly = new("CEnvSky", "m_vTintColorLightingOnly");
 	[SchemaMember("CEnvSky", "m_vTintColorLightingOnly")]
 	public Color TintColorLightingOnly
 	{
-		get { return Schema.GetCustomMarshalledType<Color>(this.Handle, "CEnvSky", "m_vTintColorLightingOnly"); }
-		set { Schema.SetCustomMarshalledType<Color>(this.Handle, "CEnvSky", "m_vTintColorLightingOnly", value); }
+		get { return Schema.GetColorAt(this.Handle, __m_vTintColorLightingOnly.Offset); }
+		set { Schema.SetColorAt(this.Handle, __m_vTintColorLightingOnly.Offset, value); }
 	}
 
 	// m_flBrightnessScale

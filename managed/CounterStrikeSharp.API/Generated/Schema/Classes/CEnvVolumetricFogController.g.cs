@@ -24,11 +24,12 @@ public partial class CEnvVolumetricFogController : CBaseEntity
 	public ref float Scattering => ref __m_flScattering.GetRef(this.Handle);
 
 	// m_TintColor
+	private static readonly SchemaField<byte> __m_TintColor = new("CEnvVolumetricFogController", "m_TintColor");
 	[SchemaMember("CEnvVolumetricFogController", "m_TintColor")]
 	public Color TintColor
 	{
-		get { return Schema.GetCustomMarshalledType<Color>(this.Handle, "CEnvVolumetricFogController", "m_TintColor"); }
-		set { Schema.SetCustomMarshalledType<Color>(this.Handle, "CEnvVolumetricFogController", "m_TintColor", value); }
+		get { return Schema.GetColorAt(this.Handle, __m_TintColor.Offset); }
+		set { Schema.SetColorAt(this.Handle, __m_TintColor.Offset, value); }
 	}
 
 	// m_flAnisotropy

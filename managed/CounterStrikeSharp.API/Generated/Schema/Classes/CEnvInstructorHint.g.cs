@@ -85,11 +85,12 @@ public partial class CEnvInstructorHint : CPointEntity
 	}
 
 	// m_Color
+	private static readonly SchemaField<byte> __m_Color = new("CEnvInstructorHint", "m_Color");
 	[SchemaMember("CEnvInstructorHint", "m_Color")]
 	public Color Color
 	{
-		get { return Schema.GetCustomMarshalledType<Color>(this.Handle, "CEnvInstructorHint", "m_Color"); }
-		set { Schema.SetCustomMarshalledType<Color>(this.Handle, "CEnvInstructorHint", "m_Color", value); }
+		get { return Schema.GetColorAt(this.Handle, __m_Color.Offset); }
+		set { Schema.SetColorAt(this.Handle, __m_Color.Offset, value); }
 	}
 
 	// m_fIconOffset

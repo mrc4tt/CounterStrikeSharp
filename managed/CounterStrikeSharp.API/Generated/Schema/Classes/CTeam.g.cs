@@ -32,11 +32,12 @@ public partial class CTeam : CBaseEntity
 	public ref Int32 Score => ref __m_iScore.GetRef(this.Handle);
 
 	// m_szTeamname
+	private static readonly SchemaField<byte> __m_szTeamname = new("CTeam", "m_szTeamname");
 	[SchemaMember("CTeam", "m_szTeamname")]
 	public string Teamname
 	{
-		get { return Schema.GetString(this.Handle, "CTeam", "m_szTeamname"); }
-		set { Schema.SetStringBytes(this.Handle, "CTeam", "m_szTeamname", value, 129); }
+		get { return Schema.GetStringAt(this.Handle, __m_szTeamname.Offset); }
+		set { Schema.SetStringBytesAt(this.Handle, __m_szTeamname.Offset, value, 129); }
 	}
 
 }

@@ -19,11 +19,12 @@ public partial class CPointClientUIWorldTextPanel : CPointClientUIWorldPanel
     public CPointClientUIWorldTextPanel (IntPtr pointer) : base(pointer) {}
 
 	// m_messageText
+	private static readonly SchemaField<byte> __m_messageText = new("CPointClientUIWorldTextPanel", "m_messageText");
 	[SchemaMember("CPointClientUIWorldTextPanel", "m_messageText")]
 	public string MessageText
 	{
-		get { return Schema.GetString(this.Handle, "CPointClientUIWorldTextPanel", "m_messageText"); }
-		set { Schema.SetStringBytes(this.Handle, "CPointClientUIWorldTextPanel", "m_messageText", value, 512); }
+		get { return Schema.GetStringAt(this.Handle, __m_messageText.Offset); }
+		set { Schema.SetStringBytesAt(this.Handle, __m_messageText.Offset, value, 512); }
 	}
 
 }

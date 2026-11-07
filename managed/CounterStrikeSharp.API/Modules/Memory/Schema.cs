@@ -320,6 +320,53 @@ public class Schema
         return span;
     }
 
+    // Offset-based accessors for generated properties: the generated class caches the field's
+    // offset in a static SchemaField (resolved once, blocklist honoured by .Offset), so these do
+    // no name lookup at all. Same results as the name-based overloads.
+
+    internal static unsafe Span<T> GetFixedArrayAt<T>(IntPtr pointer, int offset, int count)
+    {
+        if (pointer == IntPtr.Zero) throw new ArgumentNullException(nameof(pointer), "Schema target points to null.");
+        return new Span<T>((void*)(pointer + offset), count);
+    }
+
+    internal static string GetStringAt(IntPtr pointer, int offset)
+    {
+        if (pointer == IntPtr.Zero) throw new ArgumentNullException(nameof(pointer), "Schema target points to null.");
+        return Marshal.PtrToStringUTF8(pointer + offset)!;
+    }
+
+    internal static unsafe void SetStringBytesAt(IntPtr pointer, int offset, string value, int maxLength)
+    {
+        if (pointer == IntPtr.Zero) throw new ArgumentNullException(nameof(pointer), "Schema target points to null.");
+        WriteInlineString(pointer + offset, value, maxLength);
+    }
+
+    internal static unsafe Color GetColorAt(IntPtr pointer, int offset)
+    {
+        if (pointer == IntPtr.Zero) throw new ArgumentNullException(nameof(pointer), "Schema target points to null.");
+        return global::CounterStrikeSharp.API.ColorMarshaler.Unpack(*(uint*)(pointer + offset));
+    }
+
+    internal static unsafe void SetColorAt(IntPtr pointer, int offset, Color value)
+    {
+        if (pointer == IntPtr.Zero) throw new ArgumentNullException(nameof(pointer), "Schema target points to null.");
+        *(uint*)(pointer + offset) = global::CounterStrikeSharp.API.ColorMarshaler.Pack(value);
+    }
+
+    private static unsafe void WriteInlineString(IntPtr address, string value, int maxLength)
+    {
+        // Encode straight into the field instead of allocating a byte[] and copying it byte by byte.
+        var length = Encoding.UTF8.GetByteCount(value);
+        if (length > maxLength)
+        {
+            throw new ArgumentException($"String length exceeds maximum length of {maxLength}");
+        }
+
+        Encoding.UTF8.GetBytes(value, new Span<byte>((void*)address, length));
+        Unsafe.Write((void*)(address + length), (byte)0);
+    }
+
     /// <summary>
     /// Reads a string from the specified pointer, class name, and member name.
     /// These are for non-networked strings, which are just stored as raw char bytes on the server.
@@ -358,15 +405,7 @@ public class Schema
         // buffer bytes => null handle => NRE on write. Compute the address directly.
         var handle = pointer + GetSchemaOffset(className, memberName);
 
-        // Encode straight into the field instead of allocating a byte[] and copying it byte by byte.
-        var length = Encoding.UTF8.GetByteCount(value);
-        if (length > maxLength)
-        {
-            throw new ArgumentException($"String length exceeds maximum length of {maxLength}");
-        }
-
-        Encoding.UTF8.GetBytes(value, new Span<byte>((void*)handle, length));
-        Unsafe.Write((void*)(handle.ToInt64() + length), (byte)0);
+        WriteInlineString(handle, value, maxLength);
     }
 
     public static T GetCustomMarshalledType<T>(IntPtr pointer, string className, string memberName)

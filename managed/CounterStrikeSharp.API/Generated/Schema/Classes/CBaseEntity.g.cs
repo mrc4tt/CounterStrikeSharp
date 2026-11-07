@@ -46,8 +46,9 @@ public partial class CBaseEntity : CEntityInstance
 	public ref bool DisabledContextThinks => ref __m_bDisabledContextThinks.GetRef(this.Handle);
 
 	// m_isSteadyState
+	private static readonly SchemaField<byte> __m_isSteadyState = new("CBaseEntity", "m_isSteadyState");
 	[SchemaMember("CBaseEntity", "m_isSteadyState")]
-	public Span<byte> IsSteadyState => Schema.GetFixedArray<byte>(this.Handle, "CBaseEntity", "m_isSteadyState", 8);
+	public Span<byte> IsSteadyState => Schema.GetFixedArrayAt<byte>(this.Handle, __m_isSteadyState.Offset, 8);
 
 	// m_lastNetworkChange
 	private static readonly SchemaField<float> __m_lastNetworkChange = new("CBaseEntity", "m_lastNetworkChange");

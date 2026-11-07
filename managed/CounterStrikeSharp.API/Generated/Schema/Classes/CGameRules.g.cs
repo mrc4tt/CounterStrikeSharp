@@ -23,11 +23,12 @@ public partial class CGameRules : NativeObject
 	public CNetworkVarChainer __m_pChainEntity => Schema.GetDeclaredClass<CNetworkVarChainer>(this.Handle, "CGameRules", "__m_pChainEntity");
 
 	// m_szQuestName
+	private static readonly SchemaField<byte> __m_szQuestName = new("CGameRules", "m_szQuestName");
 	[SchemaMember("CGameRules", "m_szQuestName")]
 	public string QuestName
 	{
-		get { return Schema.GetString(this.Handle, "CGameRules", "m_szQuestName"); }
-		set { Schema.SetStringBytes(this.Handle, "CGameRules", "m_szQuestName", value, 128); }
+		get { return Schema.GetStringAt(this.Handle, __m_szQuestName.Offset); }
+		set { Schema.SetStringBytesAt(this.Handle, __m_szQuestName.Offset, value, 128); }
 	}
 
 	// m_nQuestPhase

@@ -362,8 +362,9 @@ public partial class CCSPlayerController : CBasePlayerController
 	public ref Int32 RoundsWon => ref __m_iRoundsWon.GetRef(this.Handle);
 
 	// m_recentKillQueue
+	private static readonly SchemaField<byte> __m_recentKillQueue = new("CCSPlayerController", "m_recentKillQueue");
 	[SchemaMember("CCSPlayerController", "m_recentKillQueue")]
-	public Span<byte> RecentKillQueue => Schema.GetFixedArray<byte>(this.Handle, "CCSPlayerController", "m_recentKillQueue", 8);
+	public Span<byte> RecentKillQueue => Schema.GetFixedArrayAt<byte>(this.Handle, __m_recentKillQueue.Offset, 8);
 
 	// m_nFirstKill
 	private static readonly SchemaField<byte> __m_nFirstKill = new("CCSPlayerController", "m_nFirstKill");

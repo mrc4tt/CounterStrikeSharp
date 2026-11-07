@@ -34,11 +34,12 @@ public partial class CColorCorrectionVolume : CBaseTrigger
 	public ref float Weight => ref __m_Weight.GetRef(this.Handle);
 
 	// m_lookupFilename
+	private static readonly SchemaField<byte> __m_lookupFilename = new("CColorCorrectionVolume", "m_lookupFilename");
 	[SchemaMember("CColorCorrectionVolume", "m_lookupFilename")]
 	public string LookupFilename
 	{
-		get { return Schema.GetString(this.Handle, "CColorCorrectionVolume", "m_lookupFilename"); }
-		set { Schema.SetStringBytes(this.Handle, "CColorCorrectionVolume", "m_lookupFilename", value, 512); }
+		get { return Schema.GetStringAt(this.Handle, __m_lookupFilename.Offset); }
+		set { Schema.SetStringBytesAt(this.Handle, __m_lookupFilename.Offset, value, 512); }
 	}
 
 	// m_LastEnterWeight

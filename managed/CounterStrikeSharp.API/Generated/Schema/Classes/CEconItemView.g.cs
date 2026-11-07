@@ -72,35 +72,39 @@ public partial class CEconItemView : IEconItemInterface
 	public CAttributeList NetworkedDynamicAttributes => Schema.GetDeclaredClass<CAttributeList>(this.Handle, "CEconItemView", "m_NetworkedDynamicAttributes");
 
 	// m_szCustomName
+	private static readonly SchemaField<byte> __m_szCustomName = new("CEconItemView", "m_szCustomName");
 	[SchemaMember("CEconItemView", "m_szCustomName")]
 	public string CustomName
 	{
-		get { return Schema.GetString(this.Handle, "CEconItemView", "m_szCustomName"); }
-		set { Schema.SetStringBytes(this.Handle, "CEconItemView", "m_szCustomName", value, 161); }
+		get { return Schema.GetStringAt(this.Handle, __m_szCustomName.Offset); }
+		set { Schema.SetStringBytesAt(this.Handle, __m_szCustomName.Offset, value, 161); }
 	}
 
 	// m_szCustomNameOverride
+	private static readonly SchemaField<byte> __m_szCustomNameOverride = new("CEconItemView", "m_szCustomNameOverride");
 	[SchemaMember("CEconItemView", "m_szCustomNameOverride")]
 	public string CustomNameOverride
 	{
-		get { return Schema.GetString(this.Handle, "CEconItemView", "m_szCustomNameOverride"); }
-		set { Schema.SetStringBytes(this.Handle, "CEconItemView", "m_szCustomNameOverride", value, 161); }
+		get { return Schema.GetStringAt(this.Handle, __m_szCustomNameOverride.Offset); }
+		set { Schema.SetStringBytesAt(this.Handle, __m_szCustomNameOverride.Offset, value, 161); }
 	}
 
 	// m_szCustomNameOverride2
+	private static readonly SchemaField<byte> __m_szCustomNameOverride2 = new("CEconItemView", "m_szCustomNameOverride2");
 	[SchemaMember("CEconItemView", "m_szCustomNameOverride2")]
 	public string CustomNameOverride2
 	{
-		get { return Schema.GetString(this.Handle, "CEconItemView", "m_szCustomNameOverride2"); }
-		set { Schema.SetStringBytes(this.Handle, "CEconItemView", "m_szCustomNameOverride2", value, 161); }
+		get { return Schema.GetStringAt(this.Handle, __m_szCustomNameOverride2.Offset); }
+		set { Schema.SetStringBytesAt(this.Handle, __m_szCustomNameOverride2.Offset, value, 161); }
 	}
 
 	// m_szCustomNameOverride3
+	private static readonly SchemaField<byte> __m_szCustomNameOverride3 = new("CEconItemView", "m_szCustomNameOverride3");
 	[SchemaMember("CEconItemView", "m_szCustomNameOverride3")]
 	public string CustomNameOverride3
 	{
-		get { return Schema.GetString(this.Handle, "CEconItemView", "m_szCustomNameOverride3"); }
-		set { Schema.SetStringBytes(this.Handle, "CEconItemView", "m_szCustomNameOverride3", value, 161); }
+		get { return Schema.GetStringAt(this.Handle, __m_szCustomNameOverride3.Offset); }
+		set { Schema.SetStringBytesAt(this.Handle, __m_szCustomNameOverride3.Offset, value, 161); }
 	}
 
 }

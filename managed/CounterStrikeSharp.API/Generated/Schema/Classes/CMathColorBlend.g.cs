@@ -29,19 +29,21 @@ public partial class CMathColorBlend : CLogicalEntity
 	public ref float InMax => ref __m_flInMax.GetRef(this.Handle);
 
 	// m_OutColor1
+	private static readonly SchemaField<byte> __m_OutColor1 = new("CMathColorBlend", "m_OutColor1");
 	[SchemaMember("CMathColorBlend", "m_OutColor1")]
 	public Color OutColor1
 	{
-		get { return Schema.GetCustomMarshalledType<Color>(this.Handle, "CMathColorBlend", "m_OutColor1"); }
-		set { Schema.SetCustomMarshalledType<Color>(this.Handle, "CMathColorBlend", "m_OutColor1", value); }
+		get { return Schema.GetColorAt(this.Handle, __m_OutColor1.Offset); }
+		set { Schema.SetColorAt(this.Handle, __m_OutColor1.Offset, value); }
 	}
 
 	// m_OutColor2
+	private static readonly SchemaField<byte> __m_OutColor2 = new("CMathColorBlend", "m_OutColor2");
 	[SchemaMember("CMathColorBlend", "m_OutColor2")]
 	public Color OutColor2
 	{
-		get { return Schema.GetCustomMarshalledType<Color>(this.Handle, "CMathColorBlend", "m_OutColor2"); }
-		set { Schema.SetCustomMarshalledType<Color>(this.Handle, "CMathColorBlend", "m_OutColor2", value); }
+		get { return Schema.GetColorAt(this.Handle, __m_OutColor2.Offset); }
+		set { Schema.SetColorAt(this.Handle, __m_OutColor2.Offset, value); }
 	}
 
 }

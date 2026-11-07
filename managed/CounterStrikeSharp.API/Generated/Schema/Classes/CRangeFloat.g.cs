@@ -19,7 +19,8 @@ public partial class CRangeFloat : NativeObject
     public CRangeFloat (IntPtr pointer) : base(pointer) {}
 
 	// m_pValue
+	private static readonly SchemaField<byte> __m_pValue = new("CRangeFloat", "m_pValue");
 	[SchemaMember("CRangeFloat", "m_pValue")]
-	public Span<float> Value => Schema.GetFixedArray<float>(this.Handle, "CRangeFloat", "m_pValue", 2);
+	public Span<float> Value => Schema.GetFixedArrayAt<float>(this.Handle, __m_pValue.Offset, 2);
 
 }

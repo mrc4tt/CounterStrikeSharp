@@ -66,11 +66,12 @@ public partial class CBasePlayerController : CBaseEntity
 	public ref PlayerConnectedState MostConnected => ref __m_iMostConnected.GetRef(this.Handle);
 
 	// m_iszPlayerName
+	private static readonly SchemaField<byte> __m_iszPlayerName = new("CBasePlayerController", "m_iszPlayerName");
 	[SchemaMember("CBasePlayerController", "m_iszPlayerName")]
 	public string PlayerName
 	{
-		get { return Schema.GetString(this.Handle, "CBasePlayerController", "m_iszPlayerName"); }
-		set { Schema.SetStringBytes(this.Handle, "CBasePlayerController", "m_iszPlayerName", value, 128); }
+		get { return Schema.GetStringAt(this.Handle, __m_iszPlayerName.Offset); }
+		set { Schema.SetStringBytesAt(this.Handle, __m_iszPlayerName.Offset, value, 128); }
 	}
 
 	// m_szNetworkIDString

@@ -19,8 +19,9 @@ public partial class CPhysLength : CPhysConstraint
     public CPhysLength (IntPtr pointer) : base(pointer) {}
 
 	// m_offset
+	private static readonly SchemaField<byte> __m_offset = new("CPhysLength", "m_offset");
 	[SchemaMember("CPhysLength", "m_offset")]
-	public Span<Vector> Offset => Schema.GetFixedArray<Vector>(this.Handle, "CPhysLength", "m_offset", 2);
+	public Span<Vector> Offset => Schema.GetFixedArrayAt<Vector>(this.Handle, __m_offset.Offset, 2);
 
 	// m_vecAttach
 	[SchemaMember("CPhysLength", "m_vecAttach")]

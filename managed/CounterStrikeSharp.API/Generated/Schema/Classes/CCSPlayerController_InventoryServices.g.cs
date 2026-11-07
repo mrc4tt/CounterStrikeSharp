@@ -24,8 +24,9 @@ public partial class CCSPlayerController_InventoryServices : CPlayerControllerCo
 	public ref UInt16 MusicID => ref __m_unMusicID.GetRef(this.Handle);
 
 	// m_rank
+	private static readonly SchemaField<byte> __m_rank = new("CCSPlayerController_InventoryServices", "m_rank");
 	[SchemaMember("CCSPlayerController_InventoryServices", "m_rank")]
-	public Span<MedalRank_t> Rank => Schema.GetFixedArray<MedalRank_t>(this.Handle, "CCSPlayerController_InventoryServices", "m_rank", 6);
+	public Span<MedalRank_t> Rank => Schema.GetFixedArrayAt<MedalRank_t>(this.Handle, __m_rank.Offset, 6);
 
 	// m_nPersonaDataPublicLevel
 	private static readonly SchemaField<Int32> __m_nPersonaDataPublicLevel = new("CCSPlayerController_InventoryServices", "m_nPersonaDataPublicLevel");
@@ -53,8 +54,9 @@ public partial class CCSPlayerController_InventoryServices : CPlayerControllerCo
 	public ref Int32 PersonaDataXpTrailLevel => ref __m_nPersonaDataXpTrailLevel.GetRef(this.Handle);
 
 	// m_unEquippedPlayerSprayIDs
+	private static readonly SchemaField<byte> __m_unEquippedPlayerSprayIDs = new("CCSPlayerController_InventoryServices", "m_unEquippedPlayerSprayIDs");
 	[SchemaMember("CCSPlayerController_InventoryServices", "m_unEquippedPlayerSprayIDs")]
-	public Span<UInt32> EquippedPlayerSprayIDs => Schema.GetFixedArray<UInt32>(this.Handle, "CCSPlayerController_InventoryServices", "m_unEquippedPlayerSprayIDs", 1);
+	public Span<UInt32> EquippedPlayerSprayIDs => Schema.GetFixedArrayAt<UInt32>(this.Handle, __m_unEquippedPlayerSprayIDs.Offset, 1);
 
 	// m_unCurrentLoadoutHash
 	private static readonly SchemaField<UInt64> __m_unCurrentLoadoutHash = new("CCSPlayerController_InventoryServices", "m_unCurrentLoadoutHash");

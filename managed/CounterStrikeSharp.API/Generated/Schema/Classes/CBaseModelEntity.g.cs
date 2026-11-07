@@ -134,11 +134,12 @@ public partial class CBaseModelEntity : CBaseEntity
 	public ref bool AllowFadeInView => ref __m_bAllowFadeInView.GetRef(this.Handle);
 
 	// m_clrRender
+	private static readonly SchemaField<byte> __m_clrRender = new("CBaseModelEntity", "m_clrRender");
 	[SchemaMember("CBaseModelEntity", "m_clrRender")]
 	public Color Render
 	{
-		get { return Schema.GetCustomMarshalledType<Color>(this.Handle, "CBaseModelEntity", "m_clrRender"); }
-		set { Schema.SetCustomMarshalledType<Color>(this.Handle, "CBaseModelEntity", "m_clrRender", value); }
+		get { return Schema.GetColorAt(this.Handle, __m_clrRender.Offset); }
+		set { Schema.SetColorAt(this.Handle, __m_clrRender.Offset, value); }
 	}
 
 	// m_vecRenderAttributes
@@ -212,7 +213,8 @@ public partial class CBaseModelEntity : CBaseEntity
 	public CNetworkViewOffsetVector ViewOffset => Schema.GetDeclaredClass<CNetworkViewOffsetVector>(this.Handle, "CBaseModelEntity", "m_vecViewOffset");
 
 	// m_bvDisabledHitGroups
+	private static readonly SchemaField<byte> __m_bvDisabledHitGroups = new("CBaseModelEntity", "m_bvDisabledHitGroups");
 	[SchemaMember("CBaseModelEntity", "m_bvDisabledHitGroups")]
-	public Span<UInt32> DisabledHitGroups => Schema.GetFixedArray<UInt32>(this.Handle, "CBaseModelEntity", "m_bvDisabledHitGroups", 1);
+	public Span<UInt32> DisabledHitGroups => Schema.GetFixedArrayAt<UInt32>(this.Handle, __m_bvDisabledHitGroups.Offset, 1);
 
 }

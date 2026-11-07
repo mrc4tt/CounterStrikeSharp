@@ -34,8 +34,9 @@ public partial class constraint_breakableparams_t : NativeObject
 	public ref float TorqueLimit => ref __torqueLimit.GetRef(this.Handle);
 
 	// bodyMassScale
+	private static readonly SchemaField<byte> __bodyMassScale = new("constraint_breakableparams_t", "bodyMassScale");
 	[SchemaMember("constraint_breakableparams_t", "bodyMassScale")]
-	public Span<float> BodyMassScale => Schema.GetFixedArray<float>(this.Handle, "constraint_breakableparams_t", "bodyMassScale", 2);
+	public Span<float> BodyMassScale => Schema.GetFixedArrayAt<float>(this.Handle, __bodyMassScale.Offset, 2);
 
 	// isActive
 	private static readonly SchemaField<bool> __isActive = new("constraint_breakableparams_t", "isActive");

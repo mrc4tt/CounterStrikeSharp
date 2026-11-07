@@ -127,11 +127,12 @@ public partial class CDynamicProp : CBreakableProp
 	public ref Int32 GlowRangeMin => ref __m_nGlowRangeMin.GetRef(this.Handle);
 
 	// m_glowColor
+	private static readonly SchemaField<byte> __m_glowColor = new("CDynamicProp", "m_glowColor");
 	[SchemaMember("CDynamicProp", "m_glowColor")]
 	public Color GlowColor
 	{
-		get { return Schema.GetCustomMarshalledType<Color>(this.Handle, "CDynamicProp", "m_glowColor"); }
-		set { Schema.SetCustomMarshalledType<Color>(this.Handle, "CDynamicProp", "m_glowColor", value); }
+		get { return Schema.GetColorAt(this.Handle, __m_glowColor.Offset); }
+		set { Schema.SetColorAt(this.Handle, __m_glowColor.Offset, value); }
 	}
 
 	// m_nGlowTeam

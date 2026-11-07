@@ -19,12 +19,14 @@ public partial class CMultiSource : CLogicalEntity
     public CMultiSource (IntPtr pointer) : base(pointer) {}
 
 	// m_rgEntities
+	private static readonly SchemaField<byte> __m_rgEntities = new("CMultiSource", "m_rgEntities");
 	[SchemaMember("CMultiSource", "m_rgEntities")]
-	public Span<CHandle<CBaseEntity>> RgEntities => Schema.GetFixedArray<CHandle<CBaseEntity>>(this.Handle, "CMultiSource", "m_rgEntities", 32);
+	public Span<CHandle<CBaseEntity>> RgEntities => Schema.GetFixedArrayAt<CHandle<CBaseEntity>>(this.Handle, __m_rgEntities.Offset, 32);
 
 	// m_rgTriggered
+	private static readonly SchemaField<byte> __m_rgTriggered = new("CMultiSource", "m_rgTriggered");
 	[SchemaMember("CMultiSource", "m_rgTriggered")]
-	public Span<Int32> RgTriggered => Schema.GetFixedArray<Int32>(this.Handle, "CMultiSource", "m_rgTriggered", 32);
+	public Span<Int32> RgTriggered => Schema.GetFixedArrayAt<Int32>(this.Handle, __m_rgTriggered.Offset, 32);
 
 	// m_OnTrigger
 	[SchemaMember("CMultiSource", "m_OnTrigger")]

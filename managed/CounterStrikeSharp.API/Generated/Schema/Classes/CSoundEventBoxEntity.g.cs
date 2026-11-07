@@ -19,8 +19,9 @@ public partial class CSoundEventBoxEntity : CSoundEventMultiPointEntity
     public CSoundEventBoxEntity (IntPtr pointer) : base(pointer) {}
 
 	// m_iszBoxEntities
+	private static readonly SchemaField<byte> __m_iszBoxEntities = new("CSoundEventBoxEntity", "m_iszBoxEntities");
 	[SchemaMember("CSoundEventBoxEntity", "m_iszBoxEntities")]
-	public Span<string> BoxEntities => Schema.GetFixedArray<string>(this.Handle, "CSoundEventBoxEntity", "m_iszBoxEntities", 16);
+	public Span<string> BoxEntities => Schema.GetFixedArrayAt<string>(this.Handle, __m_iszBoxEntities.Offset, 16);
 
 	// m_vecBoxHelpersNetworked
 	[SchemaMember("CSoundEventBoxEntity", "m_vecBoxHelpersNetworked")]

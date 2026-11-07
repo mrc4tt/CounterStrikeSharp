@@ -19,11 +19,12 @@ public partial class CEnvFade : CLogicalEntity
     public CEnvFade (IntPtr pointer) : base(pointer) {}
 
 	// m_fadeColor
+	private static readonly SchemaField<byte> __m_fadeColor = new("CEnvFade", "m_fadeColor");
 	[SchemaMember("CEnvFade", "m_fadeColor")]
 	public Color FadeColor
 	{
-		get { return Schema.GetCustomMarshalledType<Color>(this.Handle, "CEnvFade", "m_fadeColor"); }
-		set { Schema.SetCustomMarshalledType<Color>(this.Handle, "CEnvFade", "m_fadeColor", value); }
+		get { return Schema.GetColorAt(this.Handle, __m_fadeColor.Offset); }
+		set { Schema.SetColorAt(this.Handle, __m_fadeColor.Offset, value); }
 	}
 
 	// m_Duration

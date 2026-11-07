@@ -24,11 +24,13 @@ public partial class CFilterMultiple : CBaseFilter
 	public ref filter_t FilterType => ref __m_nFilterType.GetRef(this.Handle);
 
 	// m_iFilterName
+	private static readonly SchemaField<byte> __m_iFilterName = new("CFilterMultiple", "m_iFilterName");
 	[SchemaMember("CFilterMultiple", "m_iFilterName")]
-	public Span<string> FilterName => Schema.GetFixedArray<string>(this.Handle, "CFilterMultiple", "m_iFilterName", 10);
+	public Span<string> FilterName => Schema.GetFixedArrayAt<string>(this.Handle, __m_iFilterName.Offset, 10);
 
 	// m_hFilter
+	private static readonly SchemaField<byte> __m_hFilter = new("CFilterMultiple", "m_hFilter");
 	[SchemaMember("CFilterMultiple", "m_hFilter")]
-	public Span<CHandle<CBaseEntity>> Filter => Schema.GetFixedArray<CHandle<CBaseEntity>>(this.Handle, "CFilterMultiple", "m_hFilter", 10);
+	public Span<CHandle<CBaseEntity>> Filter => Schema.GetFixedArrayAt<CHandle<CBaseEntity>>(this.Handle, __m_hFilter.Offset, 10);
 
 }

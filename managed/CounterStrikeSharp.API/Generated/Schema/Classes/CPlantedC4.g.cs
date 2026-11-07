@@ -128,8 +128,9 @@ public partial class CPlantedC4 : CBaseAnimGraph
 	public ref bool VoiceAlertFired => ref __m_bVoiceAlertFired.GetRef(this.Handle);
 
 	// m_bVoiceAlertPlayed
+	private static readonly SchemaField<byte> __m_bVoiceAlertPlayed = new("CPlantedC4", "m_bVoiceAlertPlayed");
 	[SchemaMember("CPlantedC4", "m_bVoiceAlertPlayed")]
-	public Span<bool> VoiceAlertPlayed => Schema.GetFixedArray<bool>(this.Handle, "CPlantedC4", "m_bVoiceAlertPlayed", 4);
+	public Span<bool> VoiceAlertPlayed => Schema.GetFixedArrayAt<bool>(this.Handle, __m_bVoiceAlertPlayed.Offset, 4);
 
 	// m_flNextBotBeepTime
 	private static readonly SchemaField<float> __m_flNextBotBeepTime = new("CPlantedC4", "m_flNextBotBeepTime");

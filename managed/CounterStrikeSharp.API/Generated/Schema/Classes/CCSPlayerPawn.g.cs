@@ -65,11 +65,12 @@ public partial class CCSPlayerPawn : CCSPlayerPawnBase
 	}
 
 	// m_szLastPlaceName
+	private static readonly SchemaField<byte> __m_szLastPlaceName = new("CCSPlayerPawn", "m_szLastPlaceName");
 	[SchemaMember("CCSPlayerPawn", "m_szLastPlaceName")]
 	public string LastPlaceName
 	{
-		get { return Schema.GetString(this.Handle, "CCSPlayerPawn", "m_szLastPlaceName"); }
-		set { Schema.SetStringBytes(this.Handle, "CCSPlayerPawn", "m_szLastPlaceName", value, 18); }
+		get { return Schema.GetStringAt(this.Handle, __m_szLastPlaceName.Offset); }
+		set { Schema.SetStringBytesAt(this.Handle, __m_szLastPlaceName.Offset, value, 18); }
 	}
 
 	// m_bInHostageResetZone
@@ -191,11 +192,12 @@ public partial class CCSPlayerPawn : CCSPlayerPawnBase
 	public Vector RagdollDamageForce => Schema.GetDeclaredClass<Vector>(this.Handle, "CCSPlayerPawn", "m_vRagdollDamageForce");
 
 	// m_szRagdollDamageWeaponName
+	private static readonly SchemaField<byte> __m_szRagdollDamageWeaponName = new("CCSPlayerPawn", "m_szRagdollDamageWeaponName");
 	[SchemaMember("CCSPlayerPawn", "m_szRagdollDamageWeaponName")]
 	public string RagdollDamageWeaponName
 	{
-		get { return Schema.GetString(this.Handle, "CCSPlayerPawn", "m_szRagdollDamageWeaponName"); }
-		set { Schema.SetStringBytes(this.Handle, "CCSPlayerPawn", "m_szRagdollDamageWeaponName", value, 64); }
+		get { return Schema.GetStringAt(this.Handle, __m_szRagdollDamageWeaponName.Offset); }
+		set { Schema.SetStringBytesAt(this.Handle, __m_szRagdollDamageWeaponName.Offset, value, 64); }
 	}
 
 	// m_bRagdollDamageHeadshot
@@ -465,15 +467,17 @@ public partial class CCSPlayerPawn : CCSPlayerPawnBase
 	public Vector DeathInfoOrigin => Schema.GetDeclaredClass<Vector>(this.Handle, "CCSPlayerPawn", "m_vecDeathInfoOrigin");
 
 	// m_vecPlayerPatchEconIndices
+	private static readonly SchemaField<byte> __m_vecPlayerPatchEconIndices = new("CCSPlayerPawn", "m_vecPlayerPatchEconIndices");
 	[SchemaMember("CCSPlayerPawn", "m_vecPlayerPatchEconIndices")]
-	public Span<UInt32> PlayerPatchEconIndices => Schema.GetFixedArray<UInt32>(this.Handle, "CCSPlayerPawn", "m_vecPlayerPatchEconIndices", 5);
+	public Span<UInt32> PlayerPatchEconIndices => Schema.GetFixedArrayAt<UInt32>(this.Handle, __m_vecPlayerPatchEconIndices.Offset, 5);
 
 	// m_GunGameImmunityColor
+	private static readonly SchemaField<byte> __m_GunGameImmunityColor = new("CCSPlayerPawn", "m_GunGameImmunityColor");
 	[SchemaMember("CCSPlayerPawn", "m_GunGameImmunityColor")]
 	public Color GunGameImmunityColor
 	{
-		get { return Schema.GetCustomMarshalledType<Color>(this.Handle, "CCSPlayerPawn", "m_GunGameImmunityColor"); }
-		set { Schema.SetCustomMarshalledType<Color>(this.Handle, "CCSPlayerPawn", "m_GunGameImmunityColor", value); }
+		get { return Schema.GetColorAt(this.Handle, __m_GunGameImmunityColor.Offset); }
+		set { Schema.SetColorAt(this.Handle, __m_GunGameImmunityColor.Offset, value); }
 	}
 
 	// m_grenadeParameterStashTime

@@ -381,7 +381,11 @@ namespace CounterStrikeSharp.API
         /// <exception cref="InvalidOperationException">Entity is not valid</exception>
         public static void SetStateChanged(CBaseEntity entity, string className, string fieldName, int extraOffset = 0)
         {
-            Guard.IsValidEntity(entity);
+            // One handle resolve: Handle is Zero for an entity that is gone or an invalid handle
+            // (what Guard.IsValidEntity checked, with a second resolve).
+            var pointer = entity.Handle;
+            if (pointer == IntPtr.Zero)
+                throw new InvalidOperationException("Entity is not valid");
 
             // Skip non-networked fields BEFORE forwarding on either path (matches upstream).
             // A field with no send-table entry cannot be resolved by the engine; forwarding it
@@ -399,7 +403,7 @@ namespace CounterStrikeSharp.API
                 return;
             }
 
-            NotifyStateChanged(entity, offset + extraOffset, chainOffset);
+            NotifyStateChanged(pointer, offset + extraOffset, chainOffset);
         }
 
         /// <summary>
@@ -410,16 +414,27 @@ namespace CounterStrikeSharp.API
         /// </summary>
         internal static void NotifyStateChanged(CBaseEntity entity, int offset, int chainOffset)
         {
+            NotifyStateChanged(entity.Handle, offset, chainOffset);
+        }
+
+        // m_lastNetworkChange / m_isSteadyState are touched on every notification: offsets cached
+        // once, and the entity pointer resolved once by the caller, instead of the generated
+        // properties (a handle resolve each, and a name lookup for the IsSteadyState span).
+        private static readonly SchemaField<float> s_lastNetworkChange = new("CBaseEntity", "m_lastNetworkChange");
+        private static readonly SchemaField<ulong> s_isSteadyState = new("CBaseEntity", "m_isSteadyState");
+
+        internal static unsafe void NotifyStateChanged(IntPtr entity, int offset, int chainOffset)
+        {
             if (chainOffset != 0)
             {
-                FastNatives.NetworkStateChanged(entity.Handle + chainOffset, (uint)offset, 0xFFFFFFFF, 0xFFFFFFFF);
+                FastNatives.NetworkStateChanged(entity + chainOffset, (uint)offset, 0xFFFFFFFF, 0xFFFFFFFF);
                 return;
             }
 
-            FastNatives.SetStateChanged(entity.Handle, (uint)offset, 0xFFFFFFFF, 0xFFFFFFFF);
+            FastNatives.SetStateChanged(entity, (uint)offset, 0xFFFFFFFF, 0xFFFFFFFF);
 
-            entity.LastNetworkChange = Server.CurrentTime;
-            entity.IsSteadyState.Clear();
+            *(float*)(entity + s_lastNetworkChange.Offset) = FastNatives.CurrentTime();
+            *(ulong*)(entity + s_isSteadyState.Offset) = 0; // CBitVec<64>: 8 bytes, all cleared
         }
 
         /// <summary>

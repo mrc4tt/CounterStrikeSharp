@@ -34,11 +34,12 @@ public partial class CEnvParticleGlow : CParticleSystem
 	public ref float SelfIllumScale => ref __m_flSelfIllumScale.GetRef(this.Handle);
 
 	// m_ColorTint
+	private static readonly SchemaField<byte> __m_ColorTint = new("CEnvParticleGlow", "m_ColorTint");
 	[SchemaMember("CEnvParticleGlow", "m_ColorTint")]
 	public Color ColorTint
 	{
-		get { return Schema.GetCustomMarshalledType<Color>(this.Handle, "CEnvParticleGlow", "m_ColorTint"); }
-		set { Schema.SetCustomMarshalledType<Color>(this.Handle, "CEnvParticleGlow", "m_ColorTint", value); }
+		get { return Schema.GetColorAt(this.Handle, __m_ColorTint.Offset); }
+		set { Schema.SetColorAt(this.Handle, __m_ColorTint.Offset, value); }
 	}
 
 	// m_hTextureOverride

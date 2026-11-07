@@ -43,11 +43,12 @@ public partial class CGlowProperty : NativeObject
 	public ref Int32 GlowRangeMin => ref __m_nGlowRangeMin.GetRef(this.Handle);
 
 	// m_glowColorOverride
+	private static readonly SchemaField<byte> __m_glowColorOverride = new("CGlowProperty", "m_glowColorOverride");
 	[SchemaMember("CGlowProperty", "m_glowColorOverride")]
 	public Color GlowColorOverride
 	{
-		get { return Schema.GetCustomMarshalledType<Color>(this.Handle, "CGlowProperty", "m_glowColorOverride"); }
-		set { Schema.SetCustomMarshalledType<Color>(this.Handle, "CGlowProperty", "m_glowColorOverride", value); }
+		get { return Schema.GetColorAt(this.Handle, __m_glowColorOverride.Offset); }
+		set { Schema.SetColorAt(this.Handle, __m_glowColorOverride.Offset, value); }
 	}
 
 	// m_bFlashing

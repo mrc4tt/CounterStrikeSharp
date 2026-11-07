@@ -82,11 +82,12 @@ public partial class CEnvVolumetricFogVolume : CBaseEntity
 	public ref float NoiseStrength => ref __m_fNoiseStrength.GetRef(this.Handle);
 
 	// m_TintColor
+	private static readonly SchemaField<byte> __m_TintColor = new("CEnvVolumetricFogVolume", "m_TintColor");
 	[SchemaMember("CEnvVolumetricFogVolume", "m_TintColor")]
 	public Color TintColor
 	{
-		get { return Schema.GetCustomMarshalledType<Color>(this.Handle, "CEnvVolumetricFogVolume", "m_TintColor"); }
-		set { Schema.SetCustomMarshalledType<Color>(this.Handle, "CEnvVolumetricFogVolume", "m_TintColor", value); }
+		get { return Schema.GetColorAt(this.Handle, __m_TintColor.Offset); }
+		set { Schema.SetColorAt(this.Handle, __m_TintColor.Offset, value); }
 	}
 
 	// m_bOverrideTintColor

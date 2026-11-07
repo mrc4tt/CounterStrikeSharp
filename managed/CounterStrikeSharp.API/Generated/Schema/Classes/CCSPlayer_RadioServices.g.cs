@@ -34,8 +34,9 @@ public partial class CCSPlayer_RadioServices : CPlayerPawnComponent
 	public ref float C4PlantTalkTimer => ref __m_flC4PlantTalkTimer.GetRef(this.Handle);
 
 	// m_flRadioTokenSlots
+	private static readonly SchemaField<byte> __m_flRadioTokenSlots = new("CCSPlayer_RadioServices", "m_flRadioTokenSlots");
 	[SchemaMember("CCSPlayer_RadioServices", "m_flRadioTokenSlots")]
-	public Span<float> RadioTokenSlots => Schema.GetFixedArray<float>(this.Handle, "CCSPlayer_RadioServices", "m_flRadioTokenSlots", 3);
+	public Span<float> RadioTokenSlots => Schema.GetFixedArrayAt<float>(this.Handle, __m_flRadioTokenSlots.Offset, 3);
 
 	// m_bIgnoreRadio
 	private static readonly SchemaField<bool> __m_bIgnoreRadio = new("CCSPlayer_RadioServices", "m_bIgnoreRadio");

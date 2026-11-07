@@ -510,6 +510,19 @@ internal static partial class Program
                     $"\tprivate static readonly SchemaField<{SanitiseTypeName(field.Type.CsTypeName)}> {schemaFieldName} = new(\"{schemaClassName}\", \"{field.Name}\");");
             }
 
+            // Inline char[] strings, fixed arrays and Color are read and written at the field's
+            // address, so they only need its offset: cache it the same way (a SchemaField<byte>
+            // used as an offset holder, honouring the guidelines blocklist through .Offset)
+            // instead of a dictionary lookup keyed by the two names on every access.
+            var usesOffsetField = !usesSchemaField &&
+                                  (field.Type is { Category: SchemaTypeCategory.FixedArray } ||
+                                   field.Type is { Category: SchemaTypeCategory.Atomic, Name: "Color" });
+            if (usesOffsetField)
+            {
+                builder.AppendLine(
+                    $"\tprivate static readonly SchemaField<byte> {schemaFieldName} = new(\"{schemaClassName}\", \"{field.Name}\");");
+            }
+
             builder.AppendLine($"\t[SchemaMember(\"{schemaClassName}\", \"{field.Name}\")]");
 
             if (field.Type is { Category: SchemaTypeCategory.Ptr, CsTypeName: "string" })
@@ -529,8 +542,8 @@ internal static partial class Program
 
             if (field.Type is { Category: SchemaTypeCategory.FixedArray, CsTypeName: "string" })
             {
-                var getter = $"return Schema.GetString({handleParams});";
-                var setter = $"Schema.SetStringBytes({handleParams}, value, {field.Type.ArraySize});";
+                var getter = $"return Schema.GetStringAt(this.Handle, {schemaFieldName}.Offset);";
+                var setter = $"Schema.SetStringBytesAt(this.Handle, {schemaFieldName}.Offset, value, {field.Type.ArraySize});";
                 builder.AppendLine(
                     $"\tpublic {(requiresNewKeyword ? "new " : "")}{SanitiseTypeName(field.Type.CsTypeName)} {schemaClass.CsPropertyNameForField(schemaClassName, field)}");
                 builder.AppendLine($"\t{{");
@@ -559,7 +572,7 @@ internal static partial class Program
             else if (field.Type.Category == SchemaTypeCategory.FixedArray)
             {
                 var getter =
-                    $"Schema.GetFixedArray<{SanitiseTypeName(field.Type.Inner!.CsTypeName)}>({handleParams}, {field.Type.ArraySize});";
+                    $"Schema.GetFixedArrayAt<{SanitiseTypeName(field.Type.Inner!.CsTypeName)}>(this.Handle, {schemaFieldName}.Offset, {field.Type.ArraySize});";
                 builder.AppendLine(
                     $"\tpublic {(requiresNewKeyword ? "new " : "")}Span<{SanitiseTypeName(field.Type.Inner!.CsTypeName)}> {schemaClass.CsPropertyNameForField(schemaClassName, field)} => {getter}");
                 builder.AppendLine();
@@ -592,8 +605,8 @@ internal static partial class Program
             }
             else if (field.Type is { Category: SchemaTypeCategory.Atomic, Name: "Color" })
             {
-                var getter = $"return Schema.GetCustomMarshalledType<{field.Type.CsTypeName}>({handleParams});";
-                var setter = $"Schema.SetCustomMarshalledType<{field.Type.CsTypeName}>({handleParams}, value);";
+                var getter = $"return Schema.GetColorAt(this.Handle, {schemaFieldName}.Offset);";
+                var setter = $"Schema.SetColorAt(this.Handle, {schemaFieldName}.Offset, value);";
                 builder.AppendLine(
                     $"\tpublic {(requiresNewKeyword ? "new " : "")}{SanitiseTypeName(field.Type.CsTypeName)} {schemaClass.CsPropertyNameForField(schemaClassName, field)}");
                 builder.AppendLine($"\t{{");

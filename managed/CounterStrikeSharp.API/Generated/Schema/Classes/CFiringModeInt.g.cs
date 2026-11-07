@@ -19,7 +19,8 @@ public partial class CFiringModeInt : NativeObject
     public CFiringModeInt (IntPtr pointer) : base(pointer) {}
 
 	// m_nValues
+	private static readonly SchemaField<byte> __m_nValues = new("CFiringModeInt", "m_nValues");
 	[SchemaMember("CFiringModeInt", "m_nValues")]
-	public Span<Int32> Values => Schema.GetFixedArray<Int32>(this.Handle, "CFiringModeInt", "m_nValues", 2);
+	public Span<Int32> Values => Schema.GetFixedArrayAt<Int32>(this.Handle, __m_nValues.Offset, 2);
 
 }

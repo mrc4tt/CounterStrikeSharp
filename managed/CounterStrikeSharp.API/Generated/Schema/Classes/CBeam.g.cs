@@ -62,12 +62,14 @@ public partial class CBeam : CBaseModelEntity
 	public ref UInt32 BeamFlags => ref __m_nBeamFlags.GetRef(this.Handle);
 
 	// m_hAttachEntity
+	private static readonly SchemaField<byte> __m_hAttachEntity = new("CBeam", "m_hAttachEntity");
 	[SchemaMember("CBeam", "m_hAttachEntity")]
-	public Span<CHandle<CBaseEntity>> AttachEntity => Schema.GetFixedArray<CHandle<CBaseEntity>>(this.Handle, "CBeam", "m_hAttachEntity", 10);
+	public Span<CHandle<CBaseEntity>> AttachEntity => Schema.GetFixedArrayAt<CHandle<CBaseEntity>>(this.Handle, __m_hAttachEntity.Offset, 10);
 
 	// m_nAttachIndex
+	private static readonly SchemaField<byte> __m_nAttachIndex = new("CBeam", "m_nAttachIndex");
 	[SchemaMember("CBeam", "m_nAttachIndex")]
-	public Span<AttachmentHandle_t> AttachIndex => Schema.GetFixedArray<AttachmentHandle_t>(this.Handle, "CBeam", "m_nAttachIndex", 10);
+	public Span<AttachmentHandle_t> AttachIndex => Schema.GetFixedArrayAt<AttachmentHandle_t>(this.Handle, __m_nAttachIndex.Offset, 10);
 
 	// m_fWidth
 	private static readonly SchemaField<float> __m_fWidth = new("CBeam", "m_fWidth");

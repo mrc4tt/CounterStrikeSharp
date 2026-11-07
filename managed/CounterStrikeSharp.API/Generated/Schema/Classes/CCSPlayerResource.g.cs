@@ -19,16 +19,19 @@ public partial class CCSPlayerResource : CBaseEntity
     public CCSPlayerResource (IntPtr pointer) : base(pointer) {}
 
 	// m_bHostageAlive
+	private static readonly SchemaField<byte> __m_bHostageAlive = new("CCSPlayerResource", "m_bHostageAlive");
 	[SchemaMember("CCSPlayerResource", "m_bHostageAlive")]
-	public Span<bool> HostageAlive => Schema.GetFixedArray<bool>(this.Handle, "CCSPlayerResource", "m_bHostageAlive", 12);
+	public Span<bool> HostageAlive => Schema.GetFixedArrayAt<bool>(this.Handle, __m_bHostageAlive.Offset, 12);
 
 	// m_isHostageFollowingSomeone
+	private static readonly SchemaField<byte> __m_isHostageFollowingSomeone = new("CCSPlayerResource", "m_isHostageFollowingSomeone");
 	[SchemaMember("CCSPlayerResource", "m_isHostageFollowingSomeone")]
-	public Span<bool> IsHostageFollowingSomeone => Schema.GetFixedArray<bool>(this.Handle, "CCSPlayerResource", "m_isHostageFollowingSomeone", 12);
+	public Span<bool> IsHostageFollowingSomeone => Schema.GetFixedArrayAt<bool>(this.Handle, __m_isHostageFollowingSomeone.Offset, 12);
 
 	// m_iHostageEntityIDs
+	private static readonly SchemaField<byte> __m_iHostageEntityIDs = new("CCSPlayerResource", "m_iHostageEntityIDs");
 	[SchemaMember("CCSPlayerResource", "m_iHostageEntityIDs")]
-	public Span<CEntityIndex> HostageEntityIDs => Schema.GetFixedArray<CEntityIndex>(this.Handle, "CCSPlayerResource", "m_iHostageEntityIDs", 12);
+	public Span<CEntityIndex> HostageEntityIDs => Schema.GetFixedArrayAt<CEntityIndex>(this.Handle, __m_iHostageEntityIDs.Offset, 12);
 
 	// m_bombsiteCenterA
 	[SchemaMember("CCSPlayerResource", "m_bombsiteCenterA")]
@@ -39,16 +42,19 @@ public partial class CCSPlayerResource : CBaseEntity
 	public Vector BombsiteCenterB => Schema.GetDeclaredClass<Vector>(this.Handle, "CCSPlayerResource", "m_bombsiteCenterB");
 
 	// m_hostageRescueX
+	private static readonly SchemaField<byte> __m_hostageRescueX = new("CCSPlayerResource", "m_hostageRescueX");
 	[SchemaMember("CCSPlayerResource", "m_hostageRescueX")]
-	public Span<Int32> HostageRescueX => Schema.GetFixedArray<Int32>(this.Handle, "CCSPlayerResource", "m_hostageRescueX", 4);
+	public Span<Int32> HostageRescueX => Schema.GetFixedArrayAt<Int32>(this.Handle, __m_hostageRescueX.Offset, 4);
 
 	// m_hostageRescueY
+	private static readonly SchemaField<byte> __m_hostageRescueY = new("CCSPlayerResource", "m_hostageRescueY");
 	[SchemaMember("CCSPlayerResource", "m_hostageRescueY")]
-	public Span<Int32> HostageRescueY => Schema.GetFixedArray<Int32>(this.Handle, "CCSPlayerResource", "m_hostageRescueY", 4);
+	public Span<Int32> HostageRescueY => Schema.GetFixedArrayAt<Int32>(this.Handle, __m_hostageRescueY.Offset, 4);
 
 	// m_hostageRescueZ
+	private static readonly SchemaField<byte> __m_hostageRescueZ = new("CCSPlayerResource", "m_hostageRescueZ");
 	[SchemaMember("CCSPlayerResource", "m_hostageRescueZ")]
-	public Span<Int32> HostageRescueZ => Schema.GetFixedArray<Int32>(this.Handle, "CCSPlayerResource", "m_hostageRescueZ", 4);
+	public Span<Int32> HostageRescueZ => Schema.GetFixedArrayAt<Int32>(this.Handle, __m_hostageRescueZ.Offset, 4);
 
 	// m_bEndMatchNextMapAllVoted
 	private static readonly SchemaField<bool> __m_bEndMatchNextMapAllVoted = new("CCSPlayerResource", "m_bEndMatchNextMapAllVoted");

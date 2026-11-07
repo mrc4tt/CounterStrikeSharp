@@ -19,8 +19,9 @@ public partial class audioparams_t : NativeObject
     public audioparams_t (IntPtr pointer) : base(pointer) {}
 
 	// localSound
+	private static readonly SchemaField<byte> __localSound = new("audioparams_t", "localSound");
 	[SchemaMember("audioparams_t", "localSound")]
-	public Span<Vector> LocalSound => Schema.GetFixedArray<Vector>(this.Handle, "audioparams_t", "localSound", 8);
+	public Span<Vector> LocalSound => Schema.GetFixedArrayAt<Vector>(this.Handle, __localSound.Offset, 8);
 
 	// soundscapeIndex
 	private static readonly SchemaField<Int32> __soundscapeIndex = new("audioparams_t", "soundscapeIndex");

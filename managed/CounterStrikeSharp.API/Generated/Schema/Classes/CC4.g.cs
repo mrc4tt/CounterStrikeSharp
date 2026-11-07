@@ -61,8 +61,9 @@ public partial class CC4 : CCSWeaponBase
 	public ref Int32 SpotRules => ref __m_nSpotRules.GetRef(this.Handle);
 
 	// m_bPlayedArmingBeeps
+	private static readonly SchemaField<byte> __m_bPlayedArmingBeeps = new("CC4", "m_bPlayedArmingBeeps");
 	[SchemaMember("CC4", "m_bPlayedArmingBeeps")]
-	public Span<bool> PlayedArmingBeeps => Schema.GetFixedArray<bool>(this.Handle, "CC4", "m_bPlayedArmingBeeps", 7);
+	public Span<bool> PlayedArmingBeeps => Schema.GetFixedArrayAt<bool>(this.Handle, __m_bPlayedArmingBeeps.Offset, 7);
 
 	// m_bBombPlanted
 	private static readonly SchemaField<bool> __m_bBombPlanted = new("CC4", "m_bBombPlanted");

@@ -23,35 +23,39 @@ public partial class fogparams_t : NativeObject
 	public Vector DirPrimary => Schema.GetDeclaredClass<Vector>(this.Handle, "fogparams_t", "dirPrimary");
 
 	// colorPrimary
+	private static readonly SchemaField<byte> __colorPrimary = new("fogparams_t", "colorPrimary");
 	[SchemaMember("fogparams_t", "colorPrimary")]
 	public Color ColorPrimary
 	{
-		get { return Schema.GetCustomMarshalledType<Color>(this.Handle, "fogparams_t", "colorPrimary"); }
-		set { Schema.SetCustomMarshalledType<Color>(this.Handle, "fogparams_t", "colorPrimary", value); }
+		get { return Schema.GetColorAt(this.Handle, __colorPrimary.Offset); }
+		set { Schema.SetColorAt(this.Handle, __colorPrimary.Offset, value); }
 	}
 
 	// colorSecondary
+	private static readonly SchemaField<byte> __colorSecondary = new("fogparams_t", "colorSecondary");
 	[SchemaMember("fogparams_t", "colorSecondary")]
 	public Color ColorSecondary
 	{
-		get { return Schema.GetCustomMarshalledType<Color>(this.Handle, "fogparams_t", "colorSecondary"); }
-		set { Schema.SetCustomMarshalledType<Color>(this.Handle, "fogparams_t", "colorSecondary", value); }
+		get { return Schema.GetColorAt(this.Handle, __colorSecondary.Offset); }
+		set { Schema.SetColorAt(this.Handle, __colorSecondary.Offset, value); }
 	}
 
 	// colorPrimaryLerpTo
+	private static readonly SchemaField<byte> __colorPrimaryLerpTo = new("fogparams_t", "colorPrimaryLerpTo");
 	[SchemaMember("fogparams_t", "colorPrimaryLerpTo")]
 	public Color ColorPrimaryLerpTo
 	{
-		get { return Schema.GetCustomMarshalledType<Color>(this.Handle, "fogparams_t", "colorPrimaryLerpTo"); }
-		set { Schema.SetCustomMarshalledType<Color>(this.Handle, "fogparams_t", "colorPrimaryLerpTo", value); }
+		get { return Schema.GetColorAt(this.Handle, __colorPrimaryLerpTo.Offset); }
+		set { Schema.SetColorAt(this.Handle, __colorPrimaryLerpTo.Offset, value); }
 	}
 
 	// colorSecondaryLerpTo
+	private static readonly SchemaField<byte> __colorSecondaryLerpTo = new("fogparams_t", "colorSecondaryLerpTo");
 	[SchemaMember("fogparams_t", "colorSecondaryLerpTo")]
 	public Color ColorSecondaryLerpTo
 	{
-		get { return Schema.GetCustomMarshalledType<Color>(this.Handle, "fogparams_t", "colorSecondaryLerpTo"); }
-		set { Schema.SetCustomMarshalledType<Color>(this.Handle, "fogparams_t", "colorSecondaryLerpTo", value); }
+		get { return Schema.GetColorAt(this.Handle, __colorSecondaryLerpTo.Offset); }
+		set { Schema.SetColorAt(this.Handle, __colorSecondaryLerpTo.Offset, value); }
 	}
 
 	// start

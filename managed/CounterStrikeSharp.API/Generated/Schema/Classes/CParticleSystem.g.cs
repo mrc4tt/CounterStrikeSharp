@@ -19,11 +19,12 @@ public partial class CParticleSystem : CBaseModelEntity
     public CParticleSystem (IntPtr pointer) : base(pointer) {}
 
 	// m_szSnapshotFileName
+	private static readonly SchemaField<byte> __m_szSnapshotFileName = new("CParticleSystem", "m_szSnapshotFileName");
 	[SchemaMember("CParticleSystem", "m_szSnapshotFileName")]
 	public string SnapshotFileName
 	{
-		get { return Schema.GetString(this.Handle, "CParticleSystem", "m_szSnapshotFileName"); }
-		set { Schema.SetStringBytes(this.Handle, "CParticleSystem", "m_szSnapshotFileName", value, 512); }
+		get { return Schema.GetStringAt(this.Handle, __m_szSnapshotFileName.Offset); }
+		set { Schema.SetStringBytesAt(this.Handle, __m_szSnapshotFileName.Offset, value, 512); }
 	}
 
 	// m_bActive
@@ -66,16 +67,19 @@ public partial class CParticleSystem : CBaseModelEntity
 	public ref float PreSimTime => ref __m_flPreSimTime.GetRef(this.Handle);
 
 	// m_vServerControlPoints
+	private static readonly SchemaField<byte> __m_vServerControlPoints = new("CParticleSystem", "m_vServerControlPoints");
 	[SchemaMember("CParticleSystem", "m_vServerControlPoints")]
-	public Span<Vector> ServerControlPoints => Schema.GetFixedArray<Vector>(this.Handle, "CParticleSystem", "m_vServerControlPoints", 4);
+	public Span<Vector> ServerControlPoints => Schema.GetFixedArrayAt<Vector>(this.Handle, __m_vServerControlPoints.Offset, 4);
 
 	// m_iServerControlPointAssignments
+	private static readonly SchemaField<byte> __m_iServerControlPointAssignments = new("CParticleSystem", "m_iServerControlPointAssignments");
 	[SchemaMember("CParticleSystem", "m_iServerControlPointAssignments")]
-	public Span<byte> ServerControlPointAssignments => Schema.GetFixedArray<byte>(this.Handle, "CParticleSystem", "m_iServerControlPointAssignments", 4);
+	public Span<byte> ServerControlPointAssignments => Schema.GetFixedArrayAt<byte>(this.Handle, __m_iServerControlPointAssignments.Offset, 4);
 
 	// m_hControlPointEnts
+	private static readonly SchemaField<byte> __m_hControlPointEnts = new("CParticleSystem", "m_hControlPointEnts");
 	[SchemaMember("CParticleSystem", "m_hControlPointEnts")]
-	public Span<CHandle<CBaseEntity>> ControlPointEnts => Schema.GetFixedArray<CHandle<CBaseEntity>>(this.Handle, "CParticleSystem", "m_hControlPointEnts", 64);
+	public Span<CHandle<CBaseEntity>> ControlPointEnts => Schema.GetFixedArrayAt<CHandle<CBaseEntity>>(this.Handle, __m_hControlPointEnts.Offset, 64);
 
 	// m_bDataStringLocalized
 	private static readonly SchemaField<bool> __m_bDataStringLocalized = new("CParticleSystem", "m_bDataStringLocalized");
@@ -119,8 +123,9 @@ public partial class CParticleSystem : CBaseModelEntity
 	}
 
 	// m_iszControlPointNames
+	private static readonly SchemaField<byte> __m_iszControlPointNames = new("CParticleSystem", "m_iszControlPointNames");
 	[SchemaMember("CParticleSystem", "m_iszControlPointNames")]
-	public Span<string> ControlPointNames => Schema.GetFixedArray<string>(this.Handle, "CParticleSystem", "m_iszControlPointNames", 64);
+	public Span<string> ControlPointNames => Schema.GetFixedArrayAt<string>(this.Handle, __m_iszControlPointNames.Offset, 64);
 
 	// m_nDataCP
 	private static readonly SchemaField<Int32> __m_nDataCP = new("CParticleSystem", "m_nDataCP");
@@ -137,11 +142,12 @@ public partial class CParticleSystem : CBaseModelEntity
 	public ref Int32 TintCP => ref __m_nTintCP.GetRef(this.Handle);
 
 	// m_clrTint
+	private static readonly SchemaField<byte> __m_clrTint = new("CParticleSystem", "m_clrTint");
 	[SchemaMember("CParticleSystem", "m_clrTint")]
 	public Color Tint
 	{
-		get { return Schema.GetCustomMarshalledType<Color>(this.Handle, "CParticleSystem", "m_clrTint"); }
-		set { Schema.SetCustomMarshalledType<Color>(this.Handle, "CParticleSystem", "m_clrTint", value); }
+		get { return Schema.GetColorAt(this.Handle, __m_clrTint.Offset); }
+		set { Schema.SetColorAt(this.Handle, __m_clrTint.Offset, value); }
 	}
 
 }

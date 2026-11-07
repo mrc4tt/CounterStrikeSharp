@@ -71,27 +71,30 @@ public partial class CTriggerSndSosOpvar : CBaseTrigger
 	public ref bool VolIs2D => ref __m_bVolIs2D.GetRef(this.Handle);
 
 	// m_opvarNameChar
+	private static readonly SchemaField<byte> __m_opvarNameChar = new("CTriggerSndSosOpvar", "m_opvarNameChar");
 	[SchemaMember("CTriggerSndSosOpvar", "m_opvarNameChar")]
 	public string OpvarNameChar
 	{
-		get { return Schema.GetString(this.Handle, "CTriggerSndSosOpvar", "m_opvarNameChar"); }
-		set { Schema.SetStringBytes(this.Handle, "CTriggerSndSosOpvar", "m_opvarNameChar", value, 256); }
+		get { return Schema.GetStringAt(this.Handle, __m_opvarNameChar.Offset); }
+		set { Schema.SetStringBytesAt(this.Handle, __m_opvarNameChar.Offset, value, 256); }
 	}
 
 	// m_stackNameChar
+	private static readonly SchemaField<byte> __m_stackNameChar = new("CTriggerSndSosOpvar", "m_stackNameChar");
 	[SchemaMember("CTriggerSndSosOpvar", "m_stackNameChar")]
 	public string StackNameChar
 	{
-		get { return Schema.GetString(this.Handle, "CTriggerSndSosOpvar", "m_stackNameChar"); }
-		set { Schema.SetStringBytes(this.Handle, "CTriggerSndSosOpvar", "m_stackNameChar", value, 256); }
+		get { return Schema.GetStringAt(this.Handle, __m_stackNameChar.Offset); }
+		set { Schema.SetStringBytesAt(this.Handle, __m_stackNameChar.Offset, value, 256); }
 	}
 
 	// m_operatorNameChar
+	private static readonly SchemaField<byte> __m_operatorNameChar = new("CTriggerSndSosOpvar", "m_operatorNameChar");
 	[SchemaMember("CTriggerSndSosOpvar", "m_operatorNameChar")]
 	public string OperatorNameChar
 	{
-		get { return Schema.GetString(this.Handle, "CTriggerSndSosOpvar", "m_operatorNameChar"); }
-		set { Schema.SetStringBytes(this.Handle, "CTriggerSndSosOpvar", "m_operatorNameChar", value, 256); }
+		get { return Schema.GetStringAt(this.Handle, __m_operatorNameChar.Offset); }
+		set { Schema.SetStringBytesAt(this.Handle, __m_operatorNameChar.Offset, value, 256); }
 	}
 
 	// m_VecNormPos
