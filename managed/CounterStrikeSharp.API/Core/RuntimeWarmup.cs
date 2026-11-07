@@ -28,8 +28,9 @@ namespace CounterStrikeSharp.API.Core;
 /// Calling each path more than 30 times here triggers both at load, and tiered compilation then
 /// replaces them with optimized code on its background thread before gameplay.
 /// <para>
-/// Only side-effect-free work: strings and colours are written to a private scratch buffer, entity
-/// access only reads (the world entity), and schema lookups are pure. Nothing is sent to the engine.
+/// Only harmless work: strings and colours are written to a private scratch buffer, entity access
+/// reads the world entity, schema lookups are pure, and the one engine call is a state-change
+/// notification for the world's (unchanged) health field.
 /// Runs on the game thread (entity access and schema lookups call natives that must run there).
 /// </para>
 /// </remarks>
@@ -111,5 +112,11 @@ internal static class RuntimeWarmup
             // Pure lookup (offset, chain offset, networked) for the notify path; does not notify.
             _ = Schema.TryGetStateChangedTarget("CBaseEntity", "m_iHealth", out _, out _);
         }
+
+        // The notify path itself (SetStateChanged -> engine). Marks the world's unchanged health
+        // field as changed: at worst one redundant delta of an unchanged value, and at load there
+        // are normally no clients to send it to.
+        for (var i = 0; i < Calls; i++)
+            Utilities.SetStateChanged(world, "CBaseEntity", "m_iHealth");
     }
 }
