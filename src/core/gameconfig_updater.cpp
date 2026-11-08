@@ -1891,7 +1891,19 @@ void TryUpdatePluginGamedata()
 
 namespace {
 
-constexpr long kReportTimeoutSeconds = 10;
+// The report runs on its own thread and holds up nothing, so it can afford a retry: one start
+// on a host whose DNS or route is not ready yet used to lose its report to a single timeout.
+constexpr long kReportTimeoutSeconds = 20;
+constexpr int kReportAttempts = 3;
+constexpr auto kReportRetryDelay = std::chrono::seconds(2);
+
+// Worth another attempt: no answer at all, or the proxy in front of the service gave up on it.
+// A 4xx (a bad report, the rate limit) answers the same the next time.
+bool ReportRetryable(const FetchResult& res)
+{
+    if (!res.error.empty()) return res.error != "update time budget spent";
+    return res.status == 502 || res.status == 503 || res.status == 504 || (res.status >= 520 && res.status <= 524);
+}
 constexpr size_t kReportMaxFiles = 200;
 
 // A random id, kept in gamedata/report.id, so VibeSignatures can count servers rather than
@@ -2154,6 +2166,15 @@ void ReportGamedata()
         post.body = &payload;
         post.deadline = &deadline;
         auto res = Fetch(*parsed, url, "", post);
+        for (int attempt = 1; attempt < kReportAttempts && ReportRetryable(res); ++attempt)
+        {
+            // Too little left for a connect plus an answer: report the failure we have.
+            if (deadline - std::chrono::steady_clock::now() < kReportRetryDelay + std::chrono::seconds(kConnectTimeoutSeconds)) break;
+            CSSHARP_CORE_DEBUG("Gamedata report to {}: attempt {} failed ({}), retrying", url, attempt,
+                               res.error.empty() ? "HTTP " + std::to_string(res.status) : res.error);
+            std::this_thread::sleep_for(kReportRetryDelay);
+            res = Fetch(*parsed, url, "", post);
+        }
         if (!res.error.empty() || res.status != 200)
         {
             CSSHARP_CORE_WARN("Gamedata report to {} failed: {}", url,
