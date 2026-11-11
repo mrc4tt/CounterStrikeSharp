@@ -93,4 +93,9 @@ public partial class CMapInfo : CPointEntity
 	[SchemaMember("CMapInfo", "m_flEnvWetnessDryingAmount")]
 	public ref float EnvWetnessDryingAmount => ref __m_flEnvWetnessDryingAmount.GetRef(this.Handle);
 
+	// m_bFrostEnabled
+	private static readonly SchemaField<bool> __m_bFrostEnabled = new("CMapInfo", "m_bFrostEnabled");
+	[SchemaMember("CMapInfo", "m_bFrostEnabled")]
+	public ref bool FrostEnabled => ref __m_bFrostEnabled.GetRef(this.Handle);
+
 }
