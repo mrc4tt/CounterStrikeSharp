@@ -233,6 +233,13 @@ namespace CounterStrikeSharp.API.Core
                 "  Counter-StrikeSharp uses code borrowed from SourceMod, Source.Python, FiveM, Saul Rennison, source2gen and CS2Fixes.\n" +
                 "  See ACKNOWLEDGEMENTS.md for more information.\n" +
                 "  Current API Version: " + versionString);
+
+            // Server console only: the count of unmanaged buffers behind Vector/QAngle/... wrappers
+            // (OwnedNativeBlock). A number that only grows means something keeps wrappers alive.
+            if (caller == null)
+            {
+                info.ReplyToCommand($"  Owned native buffers: {OwnedNativeBlock.LiveCount}");
+            }
             return;
         }
 
