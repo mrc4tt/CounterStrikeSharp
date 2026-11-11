@@ -198,7 +198,9 @@ public class ConVarTests
         // Test min/max constraints
         conVar.Value = 50.0f;
         Assert.Equal(25.0f, conVar.Value);
-        Assert.Equal("25.000000", conVar.ValueAsString);
+        // The text comes from hl2sdk's float type trait: "%f" ("25.000000") up to hl2sdk 10c0198e,
+        // V_FloatToString like the engine ("25") after it. Check the value, not the formatting.
+        Assert.Equal(25.0f, float.Parse(conVar.ValueAsString, System.Globalization.CultureInfo.InvariantCulture));
 
         conVar.ValueAsString = "10.5";
         Assert.Equal(10.5f, conVar.Value);

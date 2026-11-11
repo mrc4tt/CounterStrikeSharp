@@ -116,8 +116,10 @@ public class FrameSchedulingTests
     [Fact]
     public async Task QueueTaskForNextWorldUpdate_ReturnsValue()
     {
-        var tickCount = Server.TickCount;
-        var returnValue = await Server.NextWorldUpdateAsync(() => Server.TickCount);
+        // Same start-stage dependence as ExecutesNestedCallbacks: queue from inside a world update.
+        var (tickCount, inner) = await Server.NextWorldUpdateAsync(() =>
+            (Server.TickCount, Server.NextWorldUpdateAsync(() => Server.TickCount)));
+        var returnValue = await inner;
 
         Assert.Equal(tickCount + 1, returnValue);
     }
@@ -125,18 +127,24 @@ public class FrameSchedulingTests
     [Fact]
     public async Task QueueTaskForNextWorldUpdate_ExecutesNestedCallbacks()
     {
-        int startingTick = Server.TickCount;
         List<int> executionTicks = new List<int>();
-
         Action callback = () => executionTicks.Add(Server.TickCount);
-        Server.NextWorldUpdate(() =>
+
+        // Queue from inside a world update so "next" is unambiguously the following tick. Queued from
+        // wherever the test happens to start (a console command when it runs first in a smoke run), the
+        // tick's own pre world update has not run yet and takes the task on the same tick.
+        int startingTick = await Server.NextWorldUpdateAsync(() =>
         {
-            callback();
             Server.NextWorldUpdate(() =>
             {
                 callback();
-                Server.NextWorldUpdate(() => { callback(); });
+                Server.NextWorldUpdate(() =>
+                {
+                    callback();
+                    Server.NextWorldUpdate(() => { callback(); });
+                });
             });
+            return Server.TickCount;
         });
 
         await Server.RunOnTickAsync(startingTick + 4, () => { });
