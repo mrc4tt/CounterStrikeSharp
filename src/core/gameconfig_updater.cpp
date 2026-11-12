@@ -1468,7 +1468,7 @@ void StartUpdateConfirmTimer()
         std::unique_lock lock(timer->mutex);
         for (int elapsed = 0; elapsed < guard::kConfirmAfterSeconds; elapsed += kProgressEverySeconds)
         {
-            const auto until = started + std::chrono::seconds(std::min(elapsed + kProgressEverySeconds, guard::kConfirmAfterSeconds));
+            const auto until = started + std::chrono::seconds((std::min)(elapsed + kProgressEverySeconds, guard::kConfirmAfterSeconds));
             if (timer->wake.wait_until(lock, until, [&] {
                 return timer->stop;
             }))
@@ -1478,7 +1478,7 @@ void StartUpdateConfirmTimer()
                 std::lock_guard progress(g_progressMutex);
                 map = g_currentMap;
             }
-            guard::NoteProgress(directory, std::min(elapsed + kProgressEverySeconds, guard::kConfirmAfterSeconds), map);
+            guard::NoteProgress(directory, (std::min)(elapsed + kProgressEverySeconds, guard::kConfirmAfterSeconds), map);
         }
         guard::Confirm(directory);
         g_pendingUpdate = false;

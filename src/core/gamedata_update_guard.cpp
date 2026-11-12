@@ -266,12 +266,12 @@ BootCheck CheckPreviousStart(const std::string& directory, const std::string& pl
         json keep = json::array();
         for (const auto& old : rejected["files"])
         {
-            if (old.is_object() && old.value("sha256", "") == sha256) strikes = std::max(strikes, old.value("strikes", 1) + 1);
+            if (old.is_object() && old.value("sha256", "") == sha256) strikes = (std::max)(strikes, old.value("strikes", 1) + 1);
             else
                 keep.push_back(old);
         }
         const auto fileUntil = now + RejectSecondsFor(strikes);
-        until = std::max(until, fileUntil);
+        until = (std::max)(until, fileUntil);
         keep.push_back({ { "sha256", sha256 },
                          { "path", path },
                          { "rejected", UtcString(now) },
