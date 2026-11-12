@@ -314,6 +314,8 @@ bool CounterStrikeSharpMMPlugin::Load(PluginId id, ISmmAPI* ismm, char* error, s
         // garbage-collected-delegate FailFast name the suspect plugin as the LAST
         // console line instead of an anonymous "Process terminated".
         fatal::InstallHandler();
+        // Same ordering reason: runs first on a stop signal, then the CLR's / engine's handler.
+        update::InstallStopSignalMarker();
 
         CSSHARP_CORE_DEBUG("Hooks added.");
         hooks::LogHookSummary();
@@ -370,6 +372,8 @@ KHook::Return<void> CounterStrikeSharpMMPlugin::Hook_StartupServer(INetworkServe
     // timers stall arbitrarily long).
     globals::timerSystem.OnStartupServer(s_bLevelShutdownOccurred);
     s_bLevelShutdownOccurred = false;
+
+    update::NoteMapStart(globals::getGlobalVars()->mapname.ToCStr());
 
     on_activate_callback->ScriptContext().Reset();
     on_activate_callback->ScriptContext().Push(globals::getGlobalVars()->mapname.ToCStr());

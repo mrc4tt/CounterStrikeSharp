@@ -18,6 +18,13 @@ void TryUpdatePluginGamedata();
 void CheckPreviousStart();
 void StartUpdateConfirmTimer();
 void StopUpdateConfirmTimer(bool cleanShutdown);
+// Map of this start, stored with a pending update so a rollback can name it.
+void NoteMapStart(const char* map);
+// Linux: SIGTERM/SIGINT/SIGHUP while an update is pending leave gamedata/update.stopped, so a
+// deliberate stop is not counted as a crash. Install after the .NET runtime (it chains to the
+// handler installed before it); removed again by StopUpdateConfirmTimer(true).
+void InstallStopSignalMarker();
+void RemoveStopSignalMarker();
 
 // Opt-in (GamedataReportEnabled): posts which plugin gamedata files this server runs (names,
 // sha256, key names, broken keys; no file text) to GamedataReportURL from a thread of its own.

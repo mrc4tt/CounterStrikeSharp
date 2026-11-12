@@ -50,6 +50,9 @@ class CCoreConfig
     // signatures that do not resolve in gamedata/*.json (not plugins/*/gamedata/ copies) for the
     // feed's, from the same site as AutoUpdateURL. Needs AutoUpdateEnabled as well.
     bool PluginGamedataAutoUpdate = true;
+    // Crash-loop guard for gamedata updates (core/gamedata_update_guard.h): roll back an update
+    // the server dies with twice in a row. Off: updates are never rolled back or held back.
+    bool GamedataCrashGuard = true;
     // Local file (path relative to addons/counterstrikesharp, or bare file name) -> feed file
     // ("<plugin>/<fileName>" under <site>/latest/), for files the updater cannot identify by
     // itself. An empty value turns the update off for that file.

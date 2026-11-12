@@ -45,7 +45,10 @@
 #include <windows.h>
 #include <winhttp.h>
 #else
+#include <csignal>
 #include <dlfcn.h>
+#include <fcntl.h>
+#include <unistd.h>
 #endif
 
 namespace counterstrikesharp::update {
@@ -900,8 +903,76 @@ struct ConfirmTimer
 };
 std::shared_ptr<ConfirmTimer> g_confirmTimer;
 
+// Map of this start, for the guard's progress note (game thread writes, timer thread reads).
+std::mutex g_progressMutex;
+std::string g_currentMap;
+
+bool GuardEnabled() { return globals::coreConfig->GamedataCrashGuard; }
+
+// "in 59m", "in 5h 59m": how long until a rejection ends.
+std::string Remaining(std::time_t until)
+{
+    const auto left = until - std::time(nullptr);
+    if (left <= 0) return "now";
+    const auto minutes = static_cast<long long>((left + 59) / 60);
+    if (minutes < 60) return "in " + std::to_string(minutes) + "m";
+    return "in " + std::to_string(minutes / 60) + "h " + std::to_string(minutes % 60) + "m";
+}
+
+// Hashes still rejected, empty when the guard is off.
+std::set<std::string> RejectedNow()
+{
+    if (!GuardEnabled()) return {};
+    return guard::Rejected(utils::GamedataDirectory());
+}
+
+#ifndef _WIN32
+// A stop signal is not a crash: mark it, so the next start does not count this one as an early
+// death (core/gamedata_update_guard.h). Path built before the handler is installed; the handler
+// itself only open/write/close (async-signal-safe), then hands the signal on.
+char g_stoppedMarkerPath[4096] = { 0 };
+constexpr int kStopSignals[] = { SIGTERM, SIGINT, SIGHUP };
+struct sigaction g_prevStop[3];
+std::atomic<bool> g_stopHandlerInstalled{ false };
+
+void StopSignalHandler(int sig, siginfo_t* info, void* ucontext)
+{
+    if (g_pendingUpdate.load(std::memory_order_relaxed) && g_stoppedMarkerPath[0])
+    {
+        const int fd = open(g_stoppedMarkerPath, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+        if (fd >= 0)
+        {
+            const char* name = sig == SIGTERM ? "SIGTERM\n" : sig == SIGINT ? "SIGINT\n" : "SIGHUP\n";
+            ssize_t ignored = write(fd, name, strlen(name));
+            (void)ignored;
+            close(fd);
+        }
+    }
+
+    for (size_t i = 0; i < std::size(kStopSignals); ++i)
+    {
+        if (kStopSignals[i] != sig) continue;
+        const auto& prev = g_prevStop[i];
+        if (prev.sa_flags & SA_SIGINFO)
+        {
+            if (prev.sa_sigaction) prev.sa_sigaction(sig, info, ucontext);
+        }
+        else if (prev.sa_handler == SIG_DFL)
+        {
+            // Default action (terminate): put it back and deliver the signal again.
+            signal(sig, SIG_DFL);
+            raise(sig);
+        }
+        else if (prev.sa_handler != SIG_IGN && prev.sa_handler)
+            prev.sa_handler(sig);
+        return;
+    }
+}
+#endif
+
 void NotePendingWrite(const std::string& path, const std::string& backup, const std::string& sha256)
 {
+    if (!GuardEnabled()) return;
     std::string error;
     if (guard::RecordPending(utils::GamedataDirectory(), { path, backup, sha256 }, error)) g_pendingUpdate = true;
     else
@@ -1119,12 +1190,15 @@ bool TryUpdateGameConfig()
         }
     }
 
-    if (guard::Rejected(utils::GamedataDirectory()).count(bodySha256))
+    if (RejectedNow().count(bodySha256))
     {
+        const auto when = Remaining(guard::RejectedUntil(utils::GamedataDirectory(), bodySha256));
         CSSHARP_CORE_WARN("Gamedata update skipped: this gamedata.json (sha256 {}) was rolled back after the server died early "
-                          "with it twice; waiting for a newer one. Delete gamedata/update.rejected to try it again",
-                          bodySha256);
-        outcome("skipped", "this file (sha256 " + bodySha256 + ") was rolled back after the server died early with it twice");
+                          "with it twice. It is tried again {} (or at once when a newer one is published); delete "
+                          "gamedata/update.rejected to try it now",
+                          bodySha256, when);
+        outcome("skipped",
+                "this file (sha256 " + bodySha256 + ") was rolled back after the server died early with it twice; retried " + when);
         return false;
     }
 
@@ -1226,44 +1300,154 @@ void CheckPreviousStart()
     // A new start (or `meta load`): nothing updated yet.
     g_startRecord = {};
     if (!globals::coreConfig->AutoUpdateEnabled) g_startRecord.core.detail = "AutoUpdateEnabled is off";
-
-    auto check = guard::CheckPreviousStart(directory);
-    for (const auto& path : check.restored)
     {
+        std::lock_guard lock(g_progressMutex);
+        g_currentMap.clear();
+    }
+
+    if (!GuardEnabled())
+    {
+        // Off: nothing pending can be confirmed later, and old rejections must not block updates.
+        guard::Disable(directory);
+        g_pendingUpdate = false;
+        return;
+    }
+
+#ifdef _WIN32
+    constexpr auto platform = "windows";
+#else
+    constexpr auto platform = "linux";
+#endif
+    auto check = guard::CheckPreviousStart(directory, platform);
+    auto relativeOf = [](const std::string& path) {
         std::error_code ec;
         auto relative = std::filesystem::relative(path, utils::GetRootDirectory(), ec).generic_string();
-        g_startRecord.rolledBack.push_back(ec || relative.empty() ? path : relative);
-    }
+        return ec || relative.empty() ? path : relative;
+    };
+    for (const auto& path : check.restored)
+        g_startRecord.rolledBack.push_back(relativeOf(path));
     for (const auto& error : check.errors)
         CSSHARP_CORE_WARN("Gamedata crash-loop guard: {}", error);
 
-    g_pendingUpdate = check.outcome == guard::Outcome::Retry;
-    if (check.outcome == guard::Outcome::Retry)
-    {
-        CSSHARP_CORE_WARN("The previous start stopped within {}s of applying a gamedata update, without a clean shutdown. "
-                          "Keeping the update for one more start; if this one dies early too it is rolled back "
-                          "(gamedata/update.pending)",
-                          guard::kConfirmAfterSeconds);
-    }
-    else if (check.outcome == guard::Outcome::RolledBack)
-    {
-        std::string restored;
-        for (const auto& path : check.restored)
-            restored += (restored.empty() ? "" : ", ") + path;
-        CSSHARP_CORE_ERROR("The server died early {} starts in a row after a gamedata update. Rolled back: {}. "
-                           "Those exact files will not be applied again (gamedata/update.rejected; delete it to retry)",
-                           check.earlyDeaths, restored.empty() ? "nothing" : restored);
+    // "after 95s on de_inferno", "within 180s (before any map loaded)"
+    std::string howFar = check.lastUptime >= 0 ? "after about " + std::to_string(check.lastUptime) + "s"
+                                               : "within " + std::to_string(guard::kConfirmAfterSeconds) + "s";
+    howFar += check.lastMap.empty() ? std::string(" (before any map loaded)") : " on " + check.lastMap;
 
-        if (std::find(check.restored.begin(), check.restored.end(), gamedataPath) != check.restored.end())
+    g_pendingUpdate = check.outcome == guard::Outcome::Retry || check.outcome == guard::Outcome::Stopped;
+    switch (check.outcome)
+    {
+        case guard::Outcome::Clean:
+            break;
+        case guard::Outcome::Stopped:
+            CSSHARP_CORE_INFO("The previous start was stopped ({}) {} before its gamedata update was confirmed; not counted as a "
+                              "crash, the update stays",
+                              check.stopSignal.empty() ? "stop signal" : check.stopSignal, howFar);
+            break;
+        case guard::Outcome::Retry:
+            CSSHARP_CORE_WARN("The previous start stopped {} after applying a gamedata update, without a clean shutdown or stop "
+                              "signal. Keeping the update for one more start; if this one dies early too, the files it changed "
+                              "are rolled back (gamedata/update.pending)",
+                              howFar);
+            break;
+        case guard::Outcome::Innocent:
         {
-            // The restored file is not the one the ETag describes, and the updater cannot vouch for its
-            // build any more; it is, however, what the updater last put there.
-            std::error_code ec;
-            std::filesystem::remove(directory + "/gamedata.etag", ec);
-            RecordGamedataBuild("", gamedataPath);
-            RecordWrittenHash(gamedataPath);
+            std::string kept;
+            for (const auto& path : check.kept)
+                kept += (kept.empty() ? "" : ", ") + relativeOf(path);
+            CSSHARP_CORE_WARN("The server died early {} starts in a row after a gamedata update (last one {}), but the update "
+                              "changed no {} signature or offset ({}). Gamedata is not the cause; the update stays. Look at "
+                              "plugins or the map instead",
+                              check.earlyDeaths, howFar, platform, kept.empty() ? "nothing pending" : kept);
+            break;
+        }
+        case guard::Outcome::RolledBack:
+        {
+            std::string restored;
+            for (const auto& path : check.restored)
+                restored += (restored.empty() ? "" : ", ") + relativeOf(path);
+            CSSHARP_CORE_ERROR("The server died early {} starts in a row after a gamedata update (last one {}). Rolled back: {}. "
+                               "Those exact files are tried again {}, or at once when a newer one is published "
+                               "(gamedata/update.rejected; delete it to retry now)",
+                               check.earlyDeaths, howFar, restored.empty() ? "nothing" : restored,
+                               check.rejectedUntil ? Remaining(check.rejectedUntil) : "never");
+            for (const auto& suspect : check.suspects)
+            {
+                std::string keys;
+                constexpr size_t kMaxListed = 20;
+                for (size_t i = 0; i < suspect.keys.size() && i < kMaxListed; ++i)
+                    keys += (keys.empty() ? "" : ", ") + suspect.keys[i];
+                if (suspect.keys.size() > kMaxListed) keys += ", +" + std::to_string(suspect.keys.size() - kMaxListed) + " more";
+                CSSHARP_CORE_ERROR("  {}: {} key(s) changed by that update, one of them the likely cause: {}", relativeOf(suspect.path),
+                                   suspect.keys.size(), keys);
+            }
+            if (!check.kept.empty())
+            {
+                std::string kept;
+                for (const auto& path : check.kept)
+                    kept += (kept.empty() ? "" : ", ") + relativeOf(path);
+                CSSHARP_CORE_WARN("  Kept (no {} signature or offset changed): {}", platform, kept);
+            }
+
+            if (std::find(check.restored.begin(), check.restored.end(), gamedataPath) != check.restored.end())
+            {
+                // The restored file is not the one the ETag describes, and the updater cannot vouch for its
+                // build any more; it is, however, what the updater last put there.
+                std::error_code ec;
+                std::filesystem::remove(directory + "/gamedata.etag", ec);
+                RecordGamedataBuild("", gamedataPath);
+                RecordWrittenHash(gamedataPath);
+            }
+            break;
         }
     }
+}
+
+void NoteMapStart(const char* map)
+{
+    if (!map || !*map) return;
+    {
+        std::lock_guard lock(g_progressMutex);
+        g_currentMap = map;
+    }
+    if (g_pendingUpdate) guard::NoteProgress(utils::GamedataDirectory(), -1, map);
+}
+
+void InstallStopSignalMarker()
+{
+#ifndef _WIN32
+    if (!GuardEnabled() || g_stopHandlerInstalled.exchange(true)) return;
+    const auto path = utils::GamedataDirectory() + "/" + guard::kStoppedMarker;
+    if (path.size() >= sizeof(g_stoppedMarkerPath))
+    {
+        g_stopHandlerInstalled = false;
+        return;
+    }
+    std::memcpy(g_stoppedMarkerPath, path.c_str(), path.size() + 1);
+
+    struct sigaction sa;
+    std::memset(&sa, 0, sizeof(sa));
+    sa.sa_sigaction = StopSignalHandler;
+    sa.sa_flags = SA_SIGINFO | SA_RESTART;
+    sigemptyset(&sa.sa_mask);
+    for (size_t i = 0; i < std::size(kStopSignals); ++i)
+        sigaction(kStopSignals[i], &sa, &g_prevStop[i]);
+#endif
+}
+
+void RemoveStopSignalMarker()
+{
+#ifndef _WIN32
+    if (!g_stopHandlerInstalled.exchange(false)) return;
+    for (size_t i = 0; i < std::size(kStopSignals); ++i)
+    {
+        // Only when ours is still the handler: one installed after us chains to ours and keeps it.
+        struct sigaction current;
+        if (sigaction(kStopSignals[i], nullptr, &current) == 0 && (current.sa_flags & SA_SIGINFO) &&
+            current.sa_sigaction == StopSignalHandler)
+            sigaction(kStopSignals[i], &g_prevStop[i], nullptr);
+    }
+#endif
 }
 
 /// Crash-loop guard, second half: once this start has run kConfirmAfterSeconds, the update it
@@ -1278,11 +1462,24 @@ void StartUpdateConfirmTimer()
     g_confirmTimer = timer;
     const auto directory = utils::GamedataDirectory();
     std::thread([timer, directory] {
+        // Uptime every few seconds, so a rollback can say how far the dead start got.
+        constexpr int kProgressEverySeconds = 10;
+        const auto started = std::chrono::steady_clock::now();
         std::unique_lock lock(timer->mutex);
-        if (timer->wake.wait_for(lock, std::chrono::seconds(guard::kConfirmAfterSeconds), [&] {
-            return timer->stop;
-        }))
-            return;
+        for (int elapsed = 0; elapsed < guard::kConfirmAfterSeconds; elapsed += kProgressEverySeconds)
+        {
+            const auto until = started + std::chrono::seconds(std::min(elapsed + kProgressEverySeconds, guard::kConfirmAfterSeconds));
+            if (timer->wake.wait_until(lock, until, [&] {
+                return timer->stop;
+            }))
+                return;
+            std::string map;
+            {
+                std::lock_guard progress(g_progressMutex);
+                map = g_currentMap;
+            }
+            guard::NoteProgress(directory, std::min(elapsed + kProgressEverySeconds, guard::kConfirmAfterSeconds), map);
+        }
         guard::Confirm(directory);
         g_pendingUpdate = false;
         // No logging from here: the log sinks are not ours to call from a foreign thread.
@@ -1301,6 +1498,7 @@ void StopUpdateConfirmTimer(bool cleanShutdown)
         timer->wake.notify_all();
     }
 
+    if (cleanShutdown) RemoveStopSignalMarker();
     if (cleanShutdown && g_pendingUpdate)
     {
         guard::Confirm(utils::GamedataDirectory());
@@ -1634,11 +1832,11 @@ void TryUpdatePluginGamedata()
     // Backup, write, crash-loop guard: the same for every way a file gets written.
     auto writeFile = [&](LocalFile& file, const std::string& text, status::FilePatch patch) {
         const auto textSha256 = pg::Sha256Hex(text);
-        if (guard::Rejected(utils::GamedataDirectory()).count(textSha256))
+        if (RejectedNow().count(textSha256))
         {
             CSSHARP_CORE_WARN("Plugin gamedata: {} not updated: this exact file was rolled back after the server died early with it "
-                              "twice. Delete gamedata/update.rejected to try it again",
-                              file.relative);
+                              "twice. It is tried again {}; delete gamedata/update.rejected to try it now",
+                              file.relative, Remaining(guard::RejectedUntil(utils::GamedataDirectory(), textSha256)));
             return false;
         }
 
