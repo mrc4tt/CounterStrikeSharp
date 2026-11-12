@@ -214,7 +214,7 @@ void ReplicateConVar(ScriptContext& script_context)
     // Looked up once: the registered message lives as long as the process, and a partial-name
     // search per call was most of what replicating a ConVar cost (plugins call this per player,
     // often per tick).
-    static INetworkMessageInternal* pNetMsg = globals::networkMessages->FindNetworkMessagePartial("SetConVar");
+    static NetMessageInfo_t* pNetMsg = globals::networkMessages->FindNetworkMessagePartial("SetConVar");
     if (!pNetMsg)
     {
         script_context.ThrowNativeError("Network message SetConVar not found");
