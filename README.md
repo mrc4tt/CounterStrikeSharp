@@ -1,91 +1,87 @@
-<div align=right>Table of Contents ↗️</div>
+<div align="center">
+  <h1><code>CounterStrikeSharp (mrc4tt Fork)</code></h1>
+  <p>A server-side modding framework for Counter-Strike 2 implementing a <strong>.NET 10</strong> scripting layer on top of Metamod:Source.</p>
 
-<h1 align=center><code>CounterStrikeSharp - Forked/NOT official</code></h1>
+  <a href="https://github.com/mrc4tt/CounterStrikeSharp/releases">
+    <img src="https://img.shields.io/github/v/release/mrc4tt/CounterStrikeSharp?label=Latest%20Release&style=flat-square" alt="Latest Release" />
+  </a>
+  <a href="https://discord.gg/zuQN3U2ZEh">
+    <img src="https://img.shields.io/badge/Discord-Join%20the%20server-5865F2?style=flat-square&logo=discord&logoColor=white" alt="Discord" />
+  </a>
+  <a href="LICENSE">
+    <img src="https://img.shields.io/badge/License-GPLv3-blue.svg?style=flat-square" alt="License" />
+  </a>
+</div>
+
 <br>
 
-CounterStrikeSharp is a server-side modding framework for Counter-Strike 2. This project implements a .NET 10 scripting layer on top of a Metamod Source Plugin, allowing developers to create plugins that interact with the game server in a modern language (C#) to facilitate the creation of maintainable and testable code.
+## ✨ What's different in this fork?
 
-**Forked version by Miksen for own servers**
-- Supports Debian 13 & Ubuntu 24.04
-- Supports CommandLine API (GetCommandLineString)
+This is a maintained fork of [roflmuffin/CounterStrikeSharp](https://github.com/roflmuffin/CounterStrikeSharp), tailored for modern server environments and extended stability:
 
-## Install
+* **.NET 10 Runtime:** Updated scripting layer running on .NET 10.
+* **Extended Platform Support:** Built and tested for **Windows**, **Debian 13**, and **Ubuntu 24.04**.
+* **CommandLine API:** Added support for `GetCommandLineString`.
+* **Automatic GameData Updates:** Keeps offsets and signatures up-to-date automatically after CS2 updates.
 
-Download the latest build from [here](https://github.com/mrc4tt/CounterStrikeSharp/releases). (Download the with-runtime version if this is your first time installing).
+---
 
-Detailed installation instructions can be found in the [docs](https://docs.cssharp.dev/docs/guides/getting-started.html).
+## 🚀 Installation
 
-## Support
+1. Download the latest build for your OS from the **[Releases page](https://github.com/mrc4tt/CounterStrikeSharp/releases)**. 
+   *(Choose the `with-runtime` archive if this is your first time installing or if you don't have the .NET 10 runtime installed globally).*
+2. Extract the contents into your server's `game/csgo/` directory.
+3. Ensure [Metamod:Source](https://www.sourcemm.net/) is installed and configured properly.
 
-Need help, found a bug, or have a feature idea? Join the Discord support server:
+For general plugin development and configuration guides, refer to the official [CounterStrikeSharp Documentation](https://docs.cssharp.dev/docs/guides/getting-started.html).
 
-[![Discord](https://img.shields.io/badge/Discord-Join%20the%20server-5865F2?logo=discord&logoColor=white)](https://discord.gg/zuQN3U2ZEh)
+---
 
-- **Questions and setup help:** ask in the support channels on Discord.
-- **Bug reports:** open a [GitHub issue](https://github.com/mrc4tt/CounterStrikeSharp/issues) with your server log, plugin version and steps to reproduce. Discord is fine for a quick check first.
-- **Feature requests:** post them on Discord or open an [issue](https://github.com/mrc4tt/CounterStrikeSharp/issues).
+## 💬 Support & Community
 
-Please do not send support requests by direct message. Asking in the public channels means others can help and find the answer later.
+Need help, found a bug, or have a feature idea? Join the community Discord server:
 
-## What works?
+[![Discord](https://img.shields.io/badge/Discord-mrc4tt%20world-5865F2?logo=discord&logoColor=white)](https://discord.gg/zuQN3U2ZEh)
 
-These features are the core of the platform and work pretty well/have a low risk of causing issues.
+* **Questions & Setup Help:** Ask in the support channels on Discord.
+* **Bug Reports:** Open a [GitHub Issue](https://github.com/mrc4tt/CounterStrikeSharp/issues) with your server logs, plugin version, and steps to reproduce. *(Feel free to do a quick check on Discord first).*
+* **Feature Requests:** Post them on Discord or open an [issue](https://github.com/mrc4tt/CounterStrikeSharp/issues).
 
-- [x] Console Commands, Server Commands (e.g. css_mycommand)
-- [x] Chat Commands with `!` and `/` prefixes (e.g. !mycommand)
-- [x] Fake Console Variables (commands which mimic ConVar behaviour as these have not been fully reverse engineered) 
-- [x] Game Event Handlers & Firing of Events (e.g. player_death)
-  - [x] Basic event value get/set (string, bool, int32, float)
-  - [x] Complex event values get/set (ehandle, pawn, player controller)
-- [x] Game Tick Based Timers (e.g. repeating map timers)
-  - [x] Timer Flags (REPEAT, STOP_ON_MAPCHANGE)
-- [x] Listeners (e.g. client connected, disconnected, map start etc.)
-  - [x] Client Listeners (e.g. connect, disconnect, put in server)
-  - [x] OnMapStart
-  - [x] OnTick
-- [x] Server Information (current map, game time)
-- [x] Schema System Access (access player values like current weapon, money, location etc.)
+> *Please do not send support requests via direct message. Asking in public channels ensures others can help and find the answers later.*
 
-## Credits
+---
 
-A lot of code has been borrowed from [SourceMod](https://github.com/alliedmodders/sourcemod) as well as [Source.Python](https://github.com/Source-Python-Dev-Team/Source.Python), two pioneering source engine plugin frameworks which this project lends a lot of its credit to.
-I've also used the scripting context & native system that is implemented in [FiveM](https://github.com/citizenfx/fivem) for GTA5. Also shoutout to the [CS2Fixes](https://github.com/Source2ZE/CS2Fixes) project for providing good reverse-engineering information so shortly after CS2 release.
+## 🛠️ Building from Source
 
-## How to Build
-
-Building requires CMake.
-
-Clone the repository
+Building requires **CMake** and a compatible C++ compiler along with the **.NET 10 SDK**.
 
 ```bash
-git clone https://github.com/roflmuffin/counterstrikesharp
-```
+# Clone the repository
+git clone [https://github.com/mrc4tt/CounterStrikeSharp.git](https://github.com/mrc4tt/CounterStrikeSharp.git)
+cd CounterStrikeSharp
 
-Init and update submodules
-
-```bash
+# Initialize and update submodules
 git submodule update --init --recursive
-```
 
-Make build folder
-
-```bash
-mkdir build
-cd build
-```
-
-Generate CMake Build Files
-
-```bash
+# Generate CMake build files
+mkdir build && cd build
 cmake ..
+
+# Build the project
+cmake --build . --config Release
 ```
 
-Build
+---
 
-```bash
-cmake --build . --config Debug
-```
+## 🙏 Credits
 
-License
--------
-CounterStrikeSharp is licensed under the GNU General Public License version 3. A special exemption is outlined regarding published plugins, which you can find in the [LICENSE](LICENSE) file.
+* **[roflmuffin](https://github.com/roflmuffin/CounterStrikeSharp)** for creating the original CounterStrikeSharp framework.
+* **[SourceMod](https://github.com/alliedmodders/sourcemod)** & **[Source.Python](https://github.com/Source-Python-Dev-Team/Source.Python)** for pioneering Source engine plugin architecture.
+* **[FiveM](https://github.com/citizenfx/fivem)** for inspiration on the scripting context and native system.
+* **[CS2Fixes](https://github.com/Source2ZE/CS2Fixes)** for early CS2 reverse-engineering work.
+
+---
+
+## 📄 License
+
+CounterStrikeSharp is licensed under the **GNU General Public License v3.0**. A special exemption is outlined regarding published plugins, which you can find in the [LICENSE](LICENSE) file.
