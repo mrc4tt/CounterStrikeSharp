@@ -276,7 +276,7 @@
     "signatures": {
       "library": "server",
       "windows": "48 8B C4 4C 89 48 ? 48 89 50 ? 48 89 48 ? 55 48 8D A8 ? ? ? ?",
-      "linux": "55 49 89 CA 48 89 E5 41 57 41 89 D7"
+      "linux": "55 48 89 E5 41 57 49 89 FF 41 56 41 55 4C 63 EA 41 54 49 89 CC"
     },
     "vtable": {
       "class": "CSource2GameEntities",
@@ -319,7 +319,7 @@
   "CCSNavArea_IsValidNavMesh": {
     "signatures": {
       "library": "server",
-      "windows": "48 83 3D ? ? ? ? ? 0F 95 C0 C3 ? ? ? ? C2 ? ?",
+      "windows": "48 83 3D 90 39 56 ? ?",
       "linux": "48 8D 05 ? ? ? ? 48 83 38 ? 0F 95 C0 C3"
     }
   },
