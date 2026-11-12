@@ -916,7 +916,8 @@ std::string Remaining(std::time_t until)
     if (left <= 0) return "now";
     const auto minutes = static_cast<long long>((left + 59) / 60);
     if (minutes < 60) return "in " + std::to_string(minutes) + "m";
-    return "in " + std::to_string(minutes / 60) + "h " + std::to_string(minutes % 60) + "m";
+    const auto hours = "in " + std::to_string(minutes / 60) + "h";
+    return minutes % 60 ? hours + " " + std::to_string(minutes % 60) + "m" : hours;
 }
 
 // Hashes still rejected, empty when the guard is off.
