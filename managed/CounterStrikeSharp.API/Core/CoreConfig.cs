@@ -82,6 +82,9 @@ namespace CounterStrikeSharp.API.Core
         [JsonPropertyName("PluginGamedataAutoUpdate")]
         public bool PluginGamedataAutoUpdate { get; set; } = true;
 
+        [JsonPropertyName("GamedataCrashGuard")]
+        public bool GamedataCrashGuard { get; set; } = true;
+
         [JsonPropertyName("PluginGamedataFeeds")]
         public System.Collections.Generic.Dictionary<string, string?>? PluginGamedataFeeds { get; set; }
 

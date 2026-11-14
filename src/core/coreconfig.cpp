@@ -102,6 +102,7 @@ bool CCoreConfig::Init(char* conf_error, int conf_error_size)
         }
         LogVerbosity = m_json.value("LogVerbosity", LogVerbosity);
         PluginGamedataAutoUpdate = m_json.value("PluginGamedataAutoUpdate", PluginGamedataAutoUpdate);
+        GamedataCrashGuard = m_json.value("GamedataCrashGuard", GamedataCrashGuard);
         GamedataReportEnabled = m_json.value("GamedataReportEnabled", GamedataReportEnabled);
         GamedataReportURL = m_json.value("GamedataReportURL", GamedataReportURL);
         GamedataUploadEnabled = m_json.value("GamedataUploadEnabled", GamedataUploadEnabled);

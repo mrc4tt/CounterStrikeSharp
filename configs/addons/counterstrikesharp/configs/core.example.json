@@ -12,6 +12,7 @@
     "AutoUpdateEnabled": true,
     "AutoUpdateURL": "https://sig.miksen.me/latest/CounterStrikeSharp/gamedata.json",
     "PluginGamedataAutoUpdate": true,
+    "GamedataCrashGuard": true,
     "PluginGamedataFeeds": {},
     "GamedataReportEnabled": false,
     "GamedataReportURL": "https://sig-api.miksen.me/api/report",
