@@ -162,10 +162,15 @@ double GetTickedTime(ScriptContext& script_context) { return globals::timerSyste
 void QueueTaskForFrame(ScriptContext& script_context)
 {
     auto tick = script_context.GetArgument<int>(0);
-    auto func = script_context.GetArgument<void*>(1);
+    auto func = script_context.GetArgument<CallbackT>(1);
 
-    typedef void(voidfunc)(void);
-    globals::tickScheduler.schedule(tick, reinterpret_cast<voidfunc*>(func));
+    // The managed stub is a CallbackT and wraps its first argument in a ScriptContext.
+    // Calling it as void(void) handed it whatever was left in the first argument
+    // register, so give it an empty context like every other callback path does.
+    globals::tickScheduler.schedule(tick, [func]() {
+        fxNativeContext context{};
+        func(&context);
+    });
 }
 
 enum InterfaceType
