@@ -492,7 +492,9 @@ namespace CounterStrikeSharp.API.Core
                 LazyInitializer.EnsureInitialized(ref ms_finalizers).Enqueue(ptr);
             }
 
-            *(IntPtr*)(&cxt->result[8]) = ptr;
+            // result is the last 8 bytes of fxNativeContext. This wrote at result[8], past the end of
+            // the struct, and left the real result slot unset.
+            *(IntPtr*)(&cxt->result[0]) = ptr;
         }
 
         [SecuritySafeCritical]
@@ -569,6 +571,9 @@ namespace CounterStrikeSharp.API.Core
         {
             // Common primitive results without Marshal.PtrToStructure. Same values it returned:
             // bool reads the 4-byte BOOL the marshaller used.
+            // A nullable value type (int?, IntPtr?) is accepted as an argument type, so read it as its
+            // underlying type here too; Marshal.SizeOf below throws for a generic type.
+            type = Nullable.GetUnderlyingType(type) ?? type;
             if (type == typeof(IntPtr)) return *(IntPtr*)ptr;
             if (type == typeof(int)) return *(int*)ptr;
             if (type == typeof(uint)) return *(uint*)ptr;

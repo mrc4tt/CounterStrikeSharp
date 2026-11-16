@@ -264,7 +264,8 @@ struct EmitSound_t
 		m_nSpeakerEntity( -1 ),
 		m_nForceGuid( 0 ),
 		m_nSourceSoundscape( 0 ),
-		m_nPitch( PITCH_NORM )
+		m_nPitch( PITCH_NORM ),
+		m_nFlags( 1 ) // the SDK's defaults: bit 0 set, source-soundscape and use-origin bits clear
 	{
 	}
 
