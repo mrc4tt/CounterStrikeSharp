@@ -150,19 +150,19 @@ namespace CounterStrikeSharp.API.Core
         // arguments (e.g. an API generic instantiated with a plugin type), which roots them just as well.
         private static bool ReferencesAssembly(MethodInfo mi, Assembly assembly)
         {
-            if (mi.Module.Assembly == assembly) return true;
+            if (Plugin.PluginAssemblyOwnership.Owns(assembly, mi.Module.Assembly)) return true;
 
             if (mi.IsGenericMethod)
             {
                 foreach (var t in mi.GetGenericArguments())
-                    if (t.Assembly == assembly) return true;
+                    if (Plugin.PluginAssemblyOwnership.Owns(assembly, t)) return true;
             }
 
             var declaring = mi.DeclaringType;
             if (declaring is { IsGenericType: true })
             {
                 foreach (var t in declaring.GetGenericArguments())
-                    if (t.Assembly == assembly) return true;
+                    if (Plugin.PluginAssemblyOwnership.Owns(assembly, t)) return true;
             }
 
             return false;

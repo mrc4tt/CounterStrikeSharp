@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
+using CounterStrikeSharp.API.Core.Plugin;
 
 namespace CounterStrikeSharp.API.Core.Capabilities;
 
@@ -13,8 +15,7 @@ public static class Capabilities
     // for every T. Without this, a registered supplier delegate pins the
     // plugin's AssemblyLoadContext forever, so the ALC can never be collected
     // on reload (memory leak).
-    private static readonly List<Action<Assembly>> _purgers = new();
-    private static readonly HashSet<Type> _purgerTypes = new();
+    private static readonly Dictionary<Type, Action<Assembly>> _purgers = new();
     private static readonly object _lock = new();
 
     public static void RegisterPluginCapability<T>(PluginCapability<T> capability, Func<T> supplier)
@@ -52,9 +53,20 @@ public static class Capabilities
     {
         lock (_lock)
         {
-            foreach (var purge in _purgers)
+            foreach (var purge in _purgers.Values)
             {
                 purge(assembly);
+            }
+
+            // A capability over one of the plugin's own types (its contract shipped next to the plugin
+            // instead of in shared/) leaves a purger for PluginCapability<ThatType> here, and that
+            // generic instantiation roots the plugin's load context just like a supplier did.
+            foreach (var capabilityType in _purgers.Keys.ToList())
+            {
+                if (capabilityType.GetGenericArguments().Any(argument => ReferencesPluginType(assembly, argument)))
+                {
+                    _purgers.Remove(capabilityType);
+                }
             }
         }
     }
@@ -63,10 +75,7 @@ public static class Capabilities
     {
         lock (_lock)
         {
-            if (_purgerTypes.Add(capabilityType))
-            {
-                _purgers.Add(purger);
-            }
+            _purgers.TryAdd(capabilityType, purger);
         }
     }
 
@@ -75,7 +84,18 @@ public static class Capabilities
     {
         foreach (var list in providers.Values)
         {
-            list.RemoveAll(d => d.Method.DeclaringType?.Assembly == assembly);
+            // By load context, not by the plugin's main assembly: a supplier declared in a private
+            // dependency of the plugin stayed first in the list, so Get() kept handing out objects
+            // from the unloaded plugin after a reload.
+            list.RemoveAll(d => PluginAssemblyOwnership.Owns(assembly, d));
         }
+    }
+
+    private static bool ReferencesPluginType(Assembly assembly, Type type)
+    {
+        if (PluginAssemblyOwnership.Owns(assembly, type)) return true;
+        if (type.HasElementType) return ReferencesPluginType(assembly, type.GetElementType()!);
+
+        return type.IsGenericType && type.GetGenericArguments().Any(argument => ReferencesPluginType(assembly, argument));
     }
 }
