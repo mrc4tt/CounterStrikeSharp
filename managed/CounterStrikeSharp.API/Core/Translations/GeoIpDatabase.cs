@@ -117,7 +117,7 @@ internal sealed class GeoIpDatabase : IDisposable
         var urls = _downloadUrls() ?? Array.Empty<string>();
         if (urls.Count == 0)
         {
-            if (_reader == null) LogFailureOnce($"GeoIP language guess is off: no database at {path} and no GeoIpDownloadUrls");
+            if (_reader == null) LogFailureOnce($"GeoIP language guess is off: no database at {path} and no DownloadUrls in geoip.json");
             return;
         }
 

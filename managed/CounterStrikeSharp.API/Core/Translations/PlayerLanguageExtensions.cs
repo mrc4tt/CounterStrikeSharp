@@ -8,7 +8,7 @@ public static class PlayerLanguageExtensions
     /// <summary>
     /// Returns the player's language: the one chosen with the "css_lang" command (kept across reconnects
     /// and restarts), else a guess from the country of their IP address (GeoIP, core.json
-    /// "GeoIpLanguageEnabled"), else the server language.
+    /// geoip.json "Enabled"), else the server language.
     /// </summary>
     public static CultureInfo GetLanguage(this CCSPlayerController? player)
     {

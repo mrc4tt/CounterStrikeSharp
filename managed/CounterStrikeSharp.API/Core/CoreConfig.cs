@@ -109,29 +109,6 @@ namespace CounterStrikeSharp.API.Core
         [JsonPropertyName("PersistPlayerLanguage")]
         public bool PersistPlayerLanguage { get; set; } = true;
 
-        [JsonPropertyName("GeoIpLanguageEnabled")]
-        public bool GeoIpLanguageEnabled { get; set; } = true;
-
-        [JsonPropertyName("GeoIpLanguageNotify")]
-        public bool GeoIpLanguageNotify { get; set; } = true;
-
-        [JsonPropertyName("GeoIpDatabasePath")]
-        public string? GeoIpDatabasePath { get; set; } = "configs/geoip/GeoLite2-Country.mmdb";
-
-        [JsonPropertyName("GeoIpDownloadUrls")]
-        public List<string>? GeoIpDownloadUrls { get; set; } = new()
-        {
-            "https://github.com/P3TERX/GeoLite.mmdb/raw/download/GeoLite2-Country.mmdb",
-            "https://github.com/P3TERX/GeoLite.mmdb/releases/latest/download/GeoLite2-Country.mmdb",
-        };
-
-        [JsonPropertyName("GeoIpMaxAgeDays")]
-        public int GeoIpMaxAgeDays { get; set; } = 7;
-
-        // Language -> ISO country codes, merged over the built-in table (GeoIpLanguages.DefaultCountryLanguages).
-        [JsonPropertyName("GeoIpCountryLanguages")]
-        public Dictionary<string, List<string>>? GeoIpCountryLanguages { get; set; }
-
         // Keys in core.json that match no property above (typos, or keys of removed features
         // such as the UpdateWatcher* set). Collected only so Load() can say they are ignored.
         [JsonExtensionData]
@@ -220,40 +197,6 @@ namespace CounterStrikeSharp.API.Core
         /// When false, choices still apply for the rest of the process but are not written.
         /// </summary>
         public static bool PersistPlayerLanguage => _coreConfig.PersistPlayerLanguage;
-
-        /// <summary>
-        /// Guess a player's language from the country of their IP address (GeoIP) when they never chose one
-        /// with css_lang. The guess is kept in memory only. Uses the database at <see cref="GeoIpDatabasePath"/>,
-        /// downloaded from <see cref="GeoIpDownloadUrls"/>.
-        /// </summary>
-        public static bool GeoIpLanguageEnabled => _coreConfig.GeoIpLanguageEnabled;
-
-        /// <summary>
-        /// Tell a player in chat, once per connection, that their language was set from their location.
-        /// </summary>
-        public static bool GeoIpLanguageNotify => _coreConfig.GeoIpLanguageNotify;
-
-        /// <summary>
-        /// Country .mmdb file (GeoLite2-Country or a compatible country database), relative to the
-        /// counterstrikesharp directory unless absolute.
-        /// </summary>
-        public static string GeoIpDatabasePath => _coreConfig.GeoIpDatabasePath ?? "";
-
-        /// <summary>
-        /// Where the country database is downloaded from, tried in order. Empty: never download, use the file as is.
-        /// </summary>
-        public static IReadOnlyList<string> GeoIpDownloadUrls =>
-            (IReadOnlyList<string>?)_coreConfig.GeoIpDownloadUrls ?? Array.Empty<string>();
-
-        /// <summary>
-        /// Re-download the country database when the file is older than this many days. 0 or less: never re-download.
-        /// </summary>
-        public static int GeoIpMaxAgeDays => _coreConfig.GeoIpMaxAgeDays;
-
-        /// <summary>
-        /// Language -> ISO 3166-1 country codes, merged over the built-in table.
-        /// </summary>
-        public static IReadOnlyDictionary<string, List<string>>? GeoIpCountryLanguages => _coreConfig.GeoIpCountryLanguages;
 
     }
 
@@ -346,7 +289,8 @@ namespace CounterStrikeSharp.API.Core
             CultureInfo.CurrentUICulture = serverCulture;
             CultureInfo.CurrentCulture = serverCulture;
 
-            // Start, stop or re-read the GeoIP language guess (core.json Geo* keys); css_core_reload included.
+            // Start, stop or re-read the GeoIP language guess (configs/geoip.json); css_core_reload included.
+            Translations.GeoIpConfig.Load(Path.GetDirectoryName(_coreConfigPath)!, _logger);
             (Translations.PlayerLanguageManager.Instance as Translations.PlayerLanguageManager)?.ConfigureGeoIp(_rootPath);
 
             // Apply configured verbosity to the live Serilog level switch. Hot-reloadable

@@ -608,7 +608,7 @@ namespace CounterStrikeSharp.API.Core
                 if (!steamId.IsValid()) return; // bots, HLTV
 
                 var guessed = manager.GuessLanguage(steamId, NativeAPI.GetPlayerIpAddress(slot));
-                if (guessed == null || !CoreConfig.GeoIpLanguageNotify) return;
+                if (guessed == null || !Translations.GeoIpConfig.Notify) return;
 
                 if (_slotsInServer.Contains(slot)) ScheduleLanguageNotice(manager, slot, steamId, guessed);
                 else _pendingLanguageNotices[slot] = (steamId, guessed);

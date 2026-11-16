@@ -11,7 +11,7 @@ internal static class GeoIpLanguages
 {
     // Only languages the core and our usual plugins ship. Countries with several common languages
     // (BE, CH-fr/it, UA, CY, FI, EE, LV, LT, MK, ...) are left out on purpose; hosts add them in
-    // core.json "GeoIpCountryLanguages".
+    // geoip.json "CountryLanguages".
     public static readonly IReadOnlyDictionary<string, string[]> DefaultCountryLanguages = new Dictionary<string, string[]>
     {
         ["da"] = new[] { "DK", "GL", "FO" },

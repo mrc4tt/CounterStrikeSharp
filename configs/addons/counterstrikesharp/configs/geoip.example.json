@@ -1,0 +1,11 @@
+{
+    "Enabled": true,
+    "Notify": true,
+    "DatabasePath": "configs/geoip/GeoLite2-Country.mmdb",
+    "DownloadUrls": [
+        "https://github.com/P3TERX/GeoLite.mmdb/raw/download/GeoLite2-Country.mmdb",
+        "https://github.com/P3TERX/GeoLite.mmdb/releases/latest/download/GeoLite2-Country.mmdb"
+    ],
+    "MaxAgeDays": 7,
+    "CountryLanguages": {}
+}

@@ -101,26 +101,26 @@ public class PlayerLanguageManager : IPlayerLanguageManager
     }
 
     /// <summary>
-    /// Starts (or restarts, after css_core_reload) the GeoIP database according to core.json.
+    /// Starts (or restarts, after css_core_reload) the GeoIP database according to configs/geoip.json.
     /// </summary>
     internal void ConfigureGeoIp(string rootPath)
     {
-        _countryLanguages = GeoIpLanguages.BuildCountryMap(CoreConfig.GeoIpCountryLanguages);
+        _countryLanguages = GeoIpLanguages.BuildCountryMap(GeoIpConfig.CountryLanguages);
 
-        if (!CoreConfig.GeoIpLanguageEnabled)
+        if (!GeoIpConfig.Enabled)
         {
             StopGeoIp();
             _guessedLanguages.Clear();
             return;
         }
 
-        var configured = CoreConfig.GeoIpDatabasePath;
+        var configured = GeoIpConfig.DatabasePath;
         var path = string.IsNullOrWhiteSpace(configured)
             ? null
             : Path.IsPathRooted(configured) ? configured : Path.GetFullPath(Path.Join(rootPath, configured));
         if (path == null)
         {
-            _logger?.LogWarning("GeoIP language guess is off: GeoIpDatabasePath is empty");
+            _logger?.LogWarning("GeoIP language guess is off: DatabasePath in geoip.json is empty");
             StopGeoIp();
             _guessedLanguages.Clear();
             return;
@@ -133,7 +133,7 @@ public class PlayerLanguageManager : IPlayerLanguageManager
 
         _geoIpPath = path;
         _geoIp = new GeoIpDatabase(_logger ?? (ILogger)Microsoft.Extensions.Logging.Abstractions.NullLogger.Instance,
-            () => path, () => CoreConfig.GeoIpDownloadUrls, () => CoreConfig.GeoIpMaxAgeDays);
+            () => path, () => GeoIpConfig.DownloadUrls, () => GeoIpConfig.MaxAgeDays);
         _geoIp.Start();
     }
 
