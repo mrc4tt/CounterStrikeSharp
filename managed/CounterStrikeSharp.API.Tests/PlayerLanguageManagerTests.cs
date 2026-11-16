@@ -32,7 +32,9 @@ public class PlayerLanguageManagerTests : IDisposable
     public void LanguageSurvivesRestart()
     {
         var steamId = new SteamID(76561197960265729UL);
-        CreateManager().SetLanguage(steamId, CultureInfo.GetCultureInfo("pl"));
+        var first = CreateManager();
+        first.SetLanguage(steamId, CultureInfo.GetCultureInfo("pl"));
+        first.FlushSaves();
 
         Assert.Equal("pl", CreateManager().GetLanguage(steamId).Name);
     }
@@ -45,7 +47,47 @@ public class PlayerLanguageManagerTests : IDisposable
         var manager = CreateManager();
         var steamId = new SteamID(76561197960265729UL);
         manager.SetLanguage(steamId, CultureInfo.GetCultureInfo("de"));
+        manager.FlushSaves();
 
         Assert.Equal("de", CreateManager().GetLanguage(steamId).Name);
+    }
+
+    [Fact]
+    public void ResetForgetsChoiceAcrossRestart()
+    {
+        var steamId = new SteamID(76561197960265729UL);
+        var manager = CreateManager();
+        manager.SetLanguage(steamId, CultureInfo.GetCultureInfo("da"));
+        Assert.Equal(PlayerLanguageSource.Manual, manager.GetLanguageSource(steamId));
+
+        Assert.True(manager.ResetLanguage(steamId));
+        Assert.False(manager.ResetLanguage(steamId));
+        manager.FlushSaves();
+
+        var restarted = CreateManager();
+        Assert.Equal(PlayerLanguageSource.Server, restarted.GetLanguageSource(steamId));
+        Assert.Equal(restarted.GetDefaultLanguage(), restarted.GetLanguage(steamId));
+    }
+
+    [Fact]
+    public void LatestChoiceWinsWhenSavesQueueUp()
+    {
+        var steamId = new SteamID(76561197960265729UL);
+        var manager = CreateManager();
+        foreach (var language in new[] { "de", "pl", "sv", "da" })
+            manager.SetLanguage(steamId, CultureInfo.GetCultureInfo(language));
+        manager.FlushSaves();
+
+        Assert.Equal("da", CreateManager().GetLanguage(steamId).Name);
+    }
+
+    [Fact]
+    public void GuessWithoutGeoIpDoesNothing()
+    {
+        var steamId = new SteamID(76561197960265729UL);
+        var manager = CreateManager();
+
+        Assert.Null(manager.GuessLanguage(steamId, "80.1.2.3:27005"));
+        Assert.Equal(PlayerLanguageSource.Server, manager.GetLanguageSource(steamId));
     }
 }

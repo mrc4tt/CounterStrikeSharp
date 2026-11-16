@@ -20,5 +20,6 @@
   "More than one client matched": "Mer än en klient matchade det angivna mönstret.",
   "Missing permissions": "Du saknar rätt behörigheter",
   "Missing one permission": "Du saknar en av de nödvändiga behörigheterna",
-  "Command permission denied": "[CSS] {0} ({1}) för att köra detta kommando."
+  "Command permission denied": "[CSS] {0} ({1}) för att köra detta kommando.",
+  "lang.geoip.applied": "Språket har satts till {0} utifrån din plats. Skriv {1} en för att ändra det."
 }

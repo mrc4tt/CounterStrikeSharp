@@ -79,6 +79,7 @@ cmake --build . --config Release
 * **[SourceMod](https://github.com/alliedmodders/sourcemod)** & **[Source.Python](https://github.com/Source-Python-Dev-Team/Source.Python)** for pioneering Source engine plugin architecture.
 * **[FiveM](https://github.com/citizenfx/fivem)** for inspiration on the scripting context and native system.
 * **[CS2Fixes](https://github.com/Source2ZE/CS2Fixes)** for early CS2 reverse-engineering work.
+* **[MaxMind](https://www.maxmind.com)**: the per-player language guess uses GeoLite2 data. This product includes GeoLite2 data created by MaxMind, available from https://www.maxmind.com.
 
 ---
 

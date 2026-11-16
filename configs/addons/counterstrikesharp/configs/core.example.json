@@ -19,5 +19,15 @@
     "GamedataUploadEnabled": false,
     "MaximumFrameTasksExecutedPerTick": 1024,
     "LogVerbosity": "information",
-    "PluginLogFiles": false
+    "PluginLogFiles": false,
+    "PersistPlayerLanguage": true,
+    "GeoIpLanguageEnabled": true,
+    "GeoIpLanguageNotify": true,
+    "GeoIpDatabasePath": "configs/geoip/GeoLite2-Country.mmdb",
+    "GeoIpDownloadUrls": [
+        "https://github.com/P3TERX/GeoLite.mmdb/raw/download/GeoLite2-Country.mmdb",
+        "https://github.com/P3TERX/GeoLite.mmdb/releases/latest/download/GeoLite2-Country.mmdb"
+    ],
+    "GeoIpMaxAgeDays": 7,
+    "GeoIpCountryLanguages": {}
 }

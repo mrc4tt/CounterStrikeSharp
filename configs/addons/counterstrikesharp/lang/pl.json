@@ -20,5 +20,6 @@
   "More than one client matched": "Do podanego wzorca pasuje więcej niż jeden gracz.",
   "Missing permissions": "Nie masz odpowiednich uprawnień",
   "Missing one permission": "Brakuje ci jednego z wymaganych uprawnień",
-  "Command permission denied": "[CSS] {0} ({1}), aby wykonać tę komendę."
+  "Command permission denied": "[CSS] {0} ({1}), aby wykonać tę komendę.",
+  "lang.geoip.applied": "Ustawiono język {0} na podstawie Twojej lokalizacji. Wpisz {1} en, aby go zmienić."
 }

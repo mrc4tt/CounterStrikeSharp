@@ -102,6 +102,12 @@ namespace CounterStrikeSharp.API.Core
                 }
             }
 
+            if (_playerLanguageManager is PlayerLanguageManager languageManager)
+            {
+                languageManager.StopGeoIp();
+                languageManager.FlushSaves();
+            }
+
             Server.ClearPendingTasks();
             CounterStrikeSharp.API.Modules.Timers.Timer.OnCoreShutdown();
         }
@@ -202,6 +208,7 @@ namespace CounterStrikeSharp.API.Core
             AdminManager.AddCommands();
 
             RegisterPluginCommands();
+            RegisterLanguageListeners();
 
             InotifyDiagnostics.WarnIfNearLimit(Logger);
 
@@ -536,11 +543,18 @@ namespace CounterStrikeSharp.API.Core
             if (player == null) return;
 
             var steamId = (SteamID)player.SteamID;
+            var manager = _playerLanguageManager as PlayerLanguageManager;
 
             if (command.ArgCount == 1)
             {
                 var language = _playerLanguageManager.GetLanguage(steamId);
-                command.ReplyToCommand($"Current language is \"{language.Name}\" ({language.NativeName})");
+                var source = manager?.GetLanguageSource(steamId) switch
+                {
+                    PlayerLanguageSource.Manual => "chosen with css_lang",
+                    PlayerLanguageSource.GeoIp => "guessed from your location",
+                    _ => "server default",
+                };
+                command.ReplyToCommand($"Current language is \"{language.Name}\" ({language.NativeName}, {source})");
                 return;
             }
 
@@ -549,17 +563,88 @@ namespace CounterStrikeSharp.API.Core
                 return;
             }
 
-            try
+            var argument = command.GetArg(1);
+            if (manager != null && (argument.Equals("reset", StringComparison.OrdinalIgnoreCase) ||
+                                    argument.Equals("auto", StringComparison.OrdinalIgnoreCase)))
             {
-                var language = command.GetArg(1);
-                var cultureInfo = CultureInfo.GetCultures(CultureTypes.AllCultures).Single(x => x.Name == language);
-                _playerLanguageManager.SetLanguage(steamId, cultureInfo);
-                command.ReplyToCommand($"Language set to {cultureInfo.NativeName}");
+                manager.ResetLanguage(steamId);
+                var guessed = manager.GuessLanguage(steamId, player.IpAddress);
+                var now = _playerLanguageManager.GetLanguage(steamId);
+                command.ReplyToCommand(guessed != null
+                    ? $"Language reset, using {now.NativeName} from your location"
+                    : $"Language reset, using the server language ({now.NativeName})");
+                return;
             }
-            catch (InvalidOperationException)
+
+            var cultureInfo = KnownCultures.Find(argument);
+            if (cultureInfo == null)
             {
                 command.ReplyToCommand("Language not found.");
+                return;
             }
+
+            _playerLanguageManager.SetLanguage(steamId, cultureInfo);
+            command.ReplyToCommand($"Language set to {cultureInfo.NativeName}");
+        }
+
+        // GeoIP first guess: OnClientAuthorized is the first point where both the SteamID and the IP
+        // (stored by native at connect) are known. The lookup is in memory; no I/O on the game thread.
+        // The chat line waits a few seconds after OnClientPutInServer, since chat sent while the client
+        // is still loading is not shown.
+        // Native authorizes in RunAuthChecks every 0.5 s, which can be before or after ClientPutInServer
+        // (slow Steam auth). The notice is sent from whichever of the two comes second.
+        private readonly Dictionary<int, (SteamID SteamId, CultureInfo Culture)> _pendingLanguageNotices = new();
+        private readonly HashSet<int> _slotsInServer = new();
+
+        private void RegisterLanguageListeners()
+        {
+            if (_playerLanguageManager is not PlayerLanguageManager manager) return;
+
+            NativeAPI.AddListener("OnClientAuthorized", FunctionReference.Create(new Action<int, ulong>((slot, steamId64) =>
+            {
+                _pendingLanguageNotices.Remove(slot);
+
+                var steamId = new SteamID(steamId64);
+                if (!steamId.IsValid()) return; // bots, HLTV
+
+                var guessed = manager.GuessLanguage(steamId, NativeAPI.GetPlayerIpAddress(slot));
+                if (guessed == null || !CoreConfig.GeoIpLanguageNotify) return;
+
+                if (_slotsInServer.Contains(slot)) ScheduleLanguageNotice(manager, slot, steamId, guessed);
+                else _pendingLanguageNotices[slot] = (steamId, guessed);
+            })));
+
+            NativeAPI.AddListener("OnClientPutInServer", FunctionReference.Create(new Action<int>(slot =>
+            {
+                _slotsInServer.Add(slot);
+                if (_pendingLanguageNotices.Remove(slot, out var notice))
+                    ScheduleLanguageNotice(manager, slot, notice.SteamId, notice.Culture);
+            })));
+
+            // The guess itself is kept until the player's next OnClientAuthorized replaces it: dropping it
+            // here would lose it for good if a disconnect callback ever fires without a re-authorization.
+            NativeAPI.AddListener("OnClientDisconnect", FunctionReference.Create(new Action<int>(slot =>
+            {
+                _pendingLanguageNotices.Remove(slot);
+                _slotsInServer.Remove(slot);
+            })));
+        }
+
+        private void ScheduleLanguageNotice(PlayerLanguageManager manager, int slot, SteamID steamId, CultureInfo culture)
+        {
+            // Chat sent while the client is still loading is not shown, so wait a few seconds.
+            new CounterStrikeSharp.API.Modules.Timers.Timer(8.0f, () =>
+            {
+                var player = Utilities.GetPlayerFromSlot(slot);
+                if (player == null || !player.IsValid || player.SteamID != steamId.SteamId64) return;
+                if (manager.GetLanguageSource(steamId) != PlayerLanguageSource.GeoIp) return;
+
+                using var _ = new WithTemporaryCulture(culture);
+                var name = culture.NativeName;
+                if (name.Length > 0) name = char.ToUpper(name[0], culture) + name[1..];
+                var trigger = CoreConfig.PublicChatTrigger.FirstOrDefault() ?? "!";
+                player.PrintToChat(_localizer["lang.geoip.applied", name, $"{trigger}lang"]);
+            }, CounterStrikeSharp.API.Modules.Timers.TimerFlags.STOP_ON_MAPCHANGE);
         }
 
         private void RegisterPluginCommands()
@@ -582,7 +667,7 @@ namespace CounterStrikeSharp.API.Core
             _commandManager.RegisterCommand(new("css_lang", "Set Counter-Strike Sharp language.", OnLangCommand)
             {
                 ExecutableBy = CommandUsage.CLIENT_AND_SERVER,
-                UsageHint = "[language code, e.g. \"de\", \"pl\", \"en\"]",
+                UsageHint = "[language code, e.g. \"de\", \"pl\", \"en\", or \"reset\" to use the automatic language]",
             });
         }
     }
