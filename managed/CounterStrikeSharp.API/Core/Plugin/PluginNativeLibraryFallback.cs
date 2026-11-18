@@ -25,7 +25,10 @@ namespace CounterStrikeSharp.API.Core.Plugin;
 /// loaded in memory and their Assembly.Location is "".
 /// </para>
 /// <para>
-/// The library is loaded from a copy in a per-context temp folder, never from the plugin folder.
+/// The library is loaded from a copy in a temp folder, never from the plugin folder. The copy's path
+/// is the same for every load of the same unchanged file: the runtime never unloads a library a
+/// resolving handler returned, not even when the collectible context is collected, so a new path per
+/// context left one more mapped copy of the library behind on every plugin reload.
 /// </para>
 /// </summary>
 internal static class PluginNativeLibraryFallback
@@ -43,14 +46,64 @@ internal static class PluginNativeLibraryFallback
             Attached.Add(context, pluginDirectory);
         }
 
-        // The handlers capture only strings: they live on the context and must not root the plugin.
-        var shadowDirectory = Path.Join(Path.GetTempPath(), "css-native-" + Path.GetRandomFileName());
-        context.ResolvingUnmanagedDll += (_, name) => Resolve(pluginDirectory, name, shadowDirectory);
-        context.Unloading += _ => DeleteShadowCopies(shadowDirectory);
+        // The handler captures only a string: it lives on the context and must not root the plugin.
+        context.ResolvingUnmanagedDll += (_, name) => Resolve(pluginDirectory, name);
     }
 
-    internal static IntPtr Resolve(string pluginDirectory, string libraryName, string shadowDirectory)
+    // One folder per process. Nothing in it is deleted while the process runs: a loaded copy stays
+    // mapped until exit, and the next reload of the plugin loads the same path again.
+    private static readonly Lazy<string> ShadowRoot = new(CreateShadowRoot);
+
+    private static string CreateShadowRoot()
     {
+        var temp = Path.GetTempPath();
+        var root = Path.Join(temp, "css-native-" + Environment.ProcessId.ToString(System.Globalization.CultureInfo.InvariantCulture));
+
+        // Left by an earlier process: ours if the pid was reused, otherwise of a pid that is gone.
+        // A folder of another running server is left alone.
+        try
+        {
+            foreach (var directory in Directory.EnumerateDirectories(temp, "css-native-*"))
+            {
+                var suffix = Path.GetFileName(directory).Substring("css-native-".Length);
+                if (!int.TryParse(suffix, System.Globalization.NumberStyles.None,
+                        System.Globalization.CultureInfo.InvariantCulture, out var pid))
+                    continue;
+
+                if (pid == Environment.ProcessId || !IsProcessRunning(pid)) DeleteDirectory(directory);
+            }
+        }
+        catch (Exception)
+        {
+            // Housekeeping only.
+        }
+
+        AppDomain.CurrentDomain.ProcessExit += (_, _) => DeleteDirectory(root);
+        return root;
+    }
+
+    private static bool IsProcessRunning(int pid)
+    {
+        try
+        {
+            using var process = System.Diagnostics.Process.GetProcessById(pid);
+            return !process.HasExited;
+        }
+        catch (ArgumentException)
+        {
+            return false;
+        }
+        catch (Exception)
+        {
+            // Cannot tell (no access): keep its folder.
+            return true;
+        }
+    }
+
+    internal static IntPtr Resolve(string pluginDirectory, string libraryName)
+    {
+        var shadowDirectory = ShadowRoot.Value;
+
         foreach (var candidate in Candidates(pluginDirectory, libraryName, OperatingSystem.IsWindows(), PortableRid()))
         {
             if (!File.Exists(candidate)) continue;
@@ -78,19 +131,43 @@ internal static class PluginNativeLibraryFallback
         return IntPtr.Zero;
     }
 
-    private static string ShadowCopy(string file, string shadowDirectory)
+    /// <summary>
+    /// Copies <paramref name="file"/> to a path that depends only on where the file is and which
+    /// version of it this is (size and write time). An unchanged file therefore maps to one path for the
+    /// life of the process, however often its plugin is reloaded; a deployed update gets a new one.
+    /// </summary>
+    internal static string ShadowCopy(string file, string shadowDirectory)
     {
-        Directory.CreateDirectory(shadowDirectory);
-        var copy = Path.Join(shadowDirectory, Path.GetFileName(file));
-        if (!File.Exists(copy)) File.Copy(file, copy);
+        var info = new FileInfo(file);
+        var identity = info.FullName + "|" + info.Length.ToString(System.Globalization.CultureInfo.InvariantCulture) + "|" +
+                       info.LastWriteTimeUtc.Ticks.ToString(System.Globalization.CultureInfo.InvariantCulture);
+        var key = Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(identity)), 0, 8);
+
+        var directory = Path.Join(shadowDirectory, key);
+        var copy = Path.Join(directory, info.Name);
+        if (File.Exists(copy)) return copy;
+
+        // Copy under another name and rename: a half-written file must never be found by the check above.
+        Directory.CreateDirectory(directory);
+        var partial = copy + "." + Path.GetRandomFileName();
+        File.Copy(file, partial);
+        try
+        {
+            File.Move(partial, copy);
+        }
+        catch (IOException) when (File.Exists(copy))
+        {
+            File.Delete(partial);
+        }
+
         return copy;
     }
 
-    private static void DeleteShadowCopies(string shadowDirectory)
+    private static void DeleteDirectory(string directory)
     {
         try
         {
-            if (Directory.Exists(shadowDirectory)) Directory.Delete(shadowDirectory, recursive: true);
+            if (Directory.Exists(directory)) Directory.Delete(directory, recursive: true);
         }
         catch (Exception)
         {

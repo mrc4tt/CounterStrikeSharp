@@ -94,4 +94,67 @@ public class PluginNativeLibraryFallbackTests
             catch (IOException) { }
         }
     }
+
+    // The runtime never unloads a library a resolving handler returned. With a new shadow path per
+    // context every plugin reload left one more copy of the library mapped.
+    [Fact]
+    public void ReloadingThePlugin_MapsTheNativeOnce()
+    {
+        const string systemLib = "/lib/x86_64-linux-gnu/libz.so.1";
+        if (!OperatingSystem.IsLinux() || RuntimeInformation.ProcessArchitecture != Architecture.X64 ||
+            !File.Exists(systemLib))
+            return;
+
+        var dir = Path.Combine(Path.GetTempPath(), "css-native-fallback-" + Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(dir);
+        File.Copy(systemLib, Path.Combine(dir, "libcssreloadtest.so"));
+
+        try
+        {
+            for (var i = 0; i < 4; i++)
+            {
+                var context = new AssemblyLoadContext("css-native-reload-test", isCollectible: true);
+                var assembly = context.LoadFromAssemblyPath(typeof(PluginNativeLibraryFallbackTests).Assembly.Location);
+                PluginNativeLibraryFallback.Attach(context, dir);
+                Assert.True(NativeLibrary.TryLoad("cssreloadtest", assembly, null, out _));
+                context.Unload();
+            }
+
+            var mapped = File.ReadAllLines("/proc/self/maps").Where(l => l.Contains("libcssreloadtest.so"))
+                .Select(l => l.Substring(l.IndexOf('/'))).Distinct().ToList();
+            Assert.Single(mapped);
+        }
+        finally
+        {
+            try { Directory.Delete(dir, true); }
+            catch (IOException) { }
+        }
+    }
+
+    [Fact]
+    public void ShadowCopy_SamePathForAnUnchangedFile_NewPathAfterAnUpdate()
+    {
+        var dir = Path.Combine(Path.GetTempPath(), "css-native-fallback-" + Guid.NewGuid().ToString("N"));
+        var shadow = Path.Combine(dir, "shadow");
+        Directory.CreateDirectory(dir);
+        var file = Path.Combine(dir, "libx.so");
+
+        try
+        {
+            File.WriteAllText(file, "one");
+            var first = PluginNativeLibraryFallback.ShadowCopy(file, shadow);
+            Assert.Equal(first, PluginNativeLibraryFallback.ShadowCopy(file, shadow));
+            Assert.Equal("one", File.ReadAllText(first));
+
+            File.WriteAllText(file, "three");
+            var updated = PluginNativeLibraryFallback.ShadowCopy(file, shadow);
+            Assert.NotEqual(first, updated);
+            Assert.Equal("three", File.ReadAllText(updated));
+            Assert.Equal("one", File.ReadAllText(first));
+        }
+        finally
+        {
+            Directory.Delete(dir, true);
+        }
+    }
 }
