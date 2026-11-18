@@ -301,4 +301,56 @@ public class TimerTests
             inner?.Kill();
         }
     }
+
+    // A fired one-shot must leave nothing behind: not in BasePlugin.Timers, no FunctionReference,
+    // no native timer. Up to 1.0.407 each one stayed until the plugin unloaded (86,400 a day for a
+    // plugin that re-arms a 1 s one-shot). 3000 is more than the 2048 fired-stub window, so the
+    // rooted stubs are shown to be bounded too.
+    [Fact]
+    public async Task OneShot_ReleasesEverything_AfterFiring()
+    {
+        await WaitOneFrame();
+
+        const int count = 3000;
+        var plugin = NativeTestsPlugin.Instance;
+        var listedBefore = plugin.Timers.Count;
+        var liveBefore = Timer.LiveCounts.Live;
+        var referencesBefore = FunctionReference.GetMapStats();
+        var nativeBefore = NativeAPI.GetNativeStat(0);
+
+        var fired = 0;
+        var timers = new List<Timer>(count);
+        for (var i = 0; i < count; i++)
+        {
+            // Half through AddTimer, half direct: only the first kind is in BasePlugin.Timers.
+            timers.Add(i % 2 == 0
+                ? plugin.AddTimer(0.05f, () => fired++)
+                : new Timer(0.05f, () => fired++, TimerFlags.STOP_ON_MAPCHANGE));
+        }
+
+        Assert.Equal(listedBefore + count / 2, plugin.Timers.Count);
+        Assert.Equal(nativeBefore + count, NativeAPI.GetNativeStat(0));
+
+        await WaitForSeconds(0.3f);
+        await WaitFrames(2);
+
+        Assert.Equal(count, fired);
+        Assert.Equal(listedBefore, plugin.Timers.Count);
+        Assert.Equal(liveBefore, Timer.LiveCounts.Live);
+
+        var referencesAfter = FunctionReference.GetMapStats();
+        // The waits above run on single-use references of their own, hence the small slack.
+        Assert.True(referencesAfter.References - referencesBefore.References < 16,
+            $"references {referencesBefore.References} -> {referencesAfter.References}");
+        Assert.True(referencesAfter.RootedStubs - referencesBefore.RootedStubs <= 2048 + 16,
+            $"rooted stubs {referencesBefore.RootedStubs} -> {referencesAfter.RootedStubs}");
+        Assert.True(NativeAPI.GetNativeStat(0) - nativeBefore < 16,
+            $"native one-shot timers {nativeBefore} -> {NativeAPI.GetNativeStat(0)}");
+
+        // Plugins keep the handle and kill it later (`_timer?.Kill()`): must stay a no-op.
+        foreach (var timer in timers)
+            timer.Kill();
+
+        Assert.Equal(listedBefore, plugin.Timers.Count);
+    }
 }

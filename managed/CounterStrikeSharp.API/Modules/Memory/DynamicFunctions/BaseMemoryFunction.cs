@@ -242,6 +242,22 @@ public abstract class BaseMemoryFunction : NativeObject
     /// <paramref name="assembly"/>. Called on plugin unload so hooks the plugin did not
     /// explicitly <see cref="Unhook"/> do not keep its AssemblyLoadContext alive.
     /// </summary>
+    /// <summary>Active MemoryFunction hooks, all and those whose handler belongs to <paramref name="assembly"/>. For css_memstats.</summary>
+    internal static (int Total, int ForAssembly) CountHooks(Assembly? assembly)
+    {
+        lock (_hooksLock)
+        {
+            var mine = 0;
+            if (assembly != null)
+            {
+                foreach (var hook in _activeHooks)
+                    if (hook.Handler.Method.Module.Assembly == assembly) mine++;
+            }
+
+            return (_activeHooks.Count, mine);
+        }
+    }
+
     internal static void RemoveHooksForAssembly(Assembly assembly)
     {
         List<HookRegistration> toRemove;

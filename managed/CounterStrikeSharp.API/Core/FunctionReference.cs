@@ -580,6 +580,36 @@ namespace CounterStrikeSharp.API.Core
             return sb.ToString();
         }
 
+        /// <summary>Sizes of the static maps, for css_memstats.</summary>
+        internal readonly record struct MapStats(int References, int Permanent, int SingleUse, int IndexedByDelegate,
+            int RootedStubs, int FiredStubWindow, int RemovedOwners, int DeadCallbacksLogged, int CompiledInvokers);
+
+        /// <summary>
+        /// Counts the live references, and per owning plugin when <paramref name="perOwner"/> is given.
+        /// Walks the id map once; meant for a console command, not for a hot path.
+        /// </summary>
+        internal static MapStats GetMapStats(Dictionary<string, (int Permanent, int SingleUse)>? perOwner = null)
+        {
+            int permanent = 0, singleUse = 0;
+            foreach (var pair in IdToFunctionReferencesMap)
+            {
+                var isPermanent = pair.Value.Lifetime == FunctionLifetime.Permanent;
+                if (isPermanent) permanent++;
+                else singleUse++;
+
+                if (perOwner == null) continue;
+                var owner = pair.Value._crashOwner;
+                perOwner.TryGetValue(owner, out var counts);
+                perOwner[owner] = isPermanent
+                    ? (counts.Permanent + 1, counts.SingleUse)
+                    : (counts.Permanent, counts.SingleUse + 1);
+            }
+
+            return new MapStats(permanent + singleUse, permanent, singleUse, TargetMethodToFunctionReferencesMap.Count,
+                NativeCallbackKeepAlive.Count, System.Threading.Volatile.Read(ref _firedStubWindowCount), RemovedOwners.Count,
+                DeadCallbackLogged.Count, InvokerCache.Count);
+        }
+
         public static FunctionReference Create(Delegate method, FunctionLifetime lifetime = FunctionLifetime.Permanent)
         {
             // We always want to create a new reference if the lifetime is single use.

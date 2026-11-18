@@ -93,6 +93,9 @@ class TimerSystem : public GlobalClass
     // Kill by the handle managed code holds (Timer::m_serial); unknown/stale serials are a no-op.
     void KillTimerBySerial(uint64_t serial);
     double GetTickedTime();
+    // Live timers, for css_memstats. Includes ones flagged for the end-of-frame sweep.
+    size_t GetOnceOffTimerCount() const { return m_once_off_timers.size(); }
+    size_t GetRepeatTimerCount() const { return m_repeat_timers.size(); }
 
   private:
     bool m_has_map_ticked = false;

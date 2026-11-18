@@ -60,6 +60,9 @@ class CallbackManager : public GlobalClass
     bool TryAddFunction(const char* szName, CallbackT fnCallable);
     bool TryRemoveFunction(const char* szName, CallbackT fnCallable);
     void PrintCallbackDebug();
+    // For css_memstats: live ScriptCallback objects, and the managed listeners attached to them.
+    size_t GetCallbackCount() const { return m_managed.size(); }
+    size_t GetListenerCount() const;
 
   private:
     std::vector<ScriptCallback*> m_managed;

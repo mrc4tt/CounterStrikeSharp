@@ -90,6 +90,18 @@ namespace CounterStrikeSharp.API.Modules.Timers
             LiveTimers.Add(this);
         }
 
+        /// <summary>Live timers (not fired, not killed) and how many of them stop on map change. For css_memstats.</summary>
+        internal static (int Live, int StopOnMapChange) LiveCounts => (LiveTimers.Count, MapChangeTimers.Count);
+
+        /// <summary>Live timers whose callback belongs to <paramref name="assembly"/>, including ones made with <c>new Timer(...)</c>.</summary>
+        internal static int CountLiveForAssembly(System.Reflection.Assembly assembly)
+        {
+            var count = 0;
+            foreach (var timer in LiveTimers)
+                if (timer._ownerAssembly == assembly) count++;
+            return count;
+        }
+
         /// <summary>Kills every live timer whose callback belongs to <paramref name="assembly"/>. Called on plugin unload.</summary>
         internal static void KillTimersForAssembly(System.Reflection.Assembly assembly)
         {
