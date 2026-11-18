@@ -90,4 +90,29 @@ public class PlayerLanguageManagerTests : IDisposable
         Assert.Null(manager.GuessLanguage(steamId, "80.1.2.3:27005"));
         Assert.Equal(PlayerLanguageSource.Server, manager.GetLanguageSource(steamId));
     }
+
+    // Guesses outlive the player's session, so the map needs a limit: it used to grow by one entry
+    // per player that ever joined.
+    [Fact]
+    public void GuessedLanguages_AreLimited_OldestGoFirst()
+    {
+        var manager = CreateManager();
+        var polish = CultureInfo.GetCultureInfo("pl");
+        SteamID Player(int i) => new(76561197960265729UL + (ulong)i);
+
+        for (var i = 0; i < PlayerLanguageManager.MaxGuessedLanguages; i++)
+            manager.RememberGuess(Player(i), polish);
+
+        // Guessed again (a reconnect): now the newest, and its earlier queue entry must not evict it.
+        manager.RememberGuess(Player(0), polish);
+        for (var i = 0; i < 10; i++)
+            manager.RememberGuess(Player(PlayerLanguageManager.MaxGuessedLanguages + i), polish);
+
+        Assert.True(manager.GuessedLanguageCount <= PlayerLanguageManager.MaxGuessedLanguages);
+        Assert.Equal(PlayerLanguageSource.GeoIp, manager.GetLanguageSource(Player(0)));
+        Assert.Equal("pl", manager.GetLanguage(Player(0)).Name);
+        Assert.Equal(PlayerLanguageSource.Server, manager.GetLanguageSource(Player(1)));
+        Assert.Equal(PlayerLanguageSource.GeoIp,
+            manager.GetLanguageSource(Player(PlayerLanguageManager.MaxGuessedLanguages + 9)));
+    }
 }

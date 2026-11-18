@@ -30,7 +30,15 @@ public enum PlayerLanguageSource
 public class PlayerLanguageManager : IPlayerLanguageManager
 {
     private readonly ConcurrentDictionary<SteamID, CultureInfo> _playerLanguages = new();
-    private readonly ConcurrentDictionary<SteamID, CultureInfo> _guessedLanguages = new();
+    private readonly ConcurrentDictionary<SteamID, (CultureInfo Culture, long Sequence)> _guessedLanguages = new();
+
+    // A guess is kept after the player disconnects (see the OnClientDisconnect listener in Application),
+    // so without a limit the map grew by one entry per player that ever joined. The oldest guesses go
+    // first; with far more room than a server has slots, a connected player's guess is never the oldest.
+    // Sequence tells a queue entry of an earlier guess for the same player from the current one.
+    internal const int MaxGuessedLanguages = 4096;
+    private readonly Queue<(SteamID SteamId, long Sequence)> _guessOrder = new();
+    private long _guessSequence;
     private readonly object _saveLock = new();
     private readonly string? _storePath;
     private readonly ILogger<PlayerLanguageManager>? _logger;
@@ -81,7 +89,7 @@ public class PlayerLanguageManager : IPlayerLanguageManager
     public CultureInfo GetLanguage(SteamID steamId)
     {
         if (_playerLanguages.TryGetValue(steamId, out var cultureInfo)) return cultureInfo;
-        if (_guessedLanguages.TryGetValue(steamId, out cultureInfo)) return cultureInfo;
+        if (_guessedLanguages.TryGetValue(steamId, out var guessed)) return guessed.Culture;
         return GetDefaultLanguage();
     }
 
@@ -110,7 +118,7 @@ public class PlayerLanguageManager : IPlayerLanguageManager
         if (!GeoIpConfig.Enabled)
         {
             StopGeoIp();
-            _guessedLanguages.Clear();
+            ClearGuesses();
             return;
         }
 
@@ -122,7 +130,7 @@ public class PlayerLanguageManager : IPlayerLanguageManager
         {
             _logger?.LogWarning("GeoIP language guess is off: DatabasePath in geoip.json is empty");
             StopGeoIp();
-            _guessedLanguages.Clear();
+            ClearGuesses();
             return;
         }
 
@@ -157,8 +165,37 @@ public class PlayerLanguageManager : IPlayerLanguageManager
         var culture = GuessFromAddress(ipAddress);
         if (culture == null || SameLanguage(culture, GetDefaultLanguage())) return null;
 
-        _guessedLanguages[steamId] = culture;
+        RememberGuess(steamId, culture);
         return culture;
+    }
+
+    private void ClearGuesses()
+    {
+        lock (_guessOrder)
+        {
+            _guessedLanguages.Clear();
+            _guessOrder.Clear();
+        }
+    }
+
+    internal int GuessedLanguageCount => _guessedLanguages.Count;
+
+    internal void RememberGuess(SteamID steamId, CultureInfo culture)
+    {
+        lock (_guessOrder)
+        {
+            var sequence = ++_guessSequence;
+            _guessedLanguages[steamId] = (culture, sequence);
+            _guessOrder.Enqueue((steamId, sequence));
+
+            while (_guessOrder.Count > MaxGuessedLanguages)
+            {
+                var oldest = _guessOrder.Dequeue();
+                // Only if it is still that guess: the player may have been guessed again since.
+                if (_guessedLanguages.TryGetValue(oldest.SteamId, out var current) && current.Sequence == oldest.Sequence)
+                    _guessedLanguages.TryRemove(oldest.SteamId, out _);
+            }
+        }
     }
 
     // A guess that the server culture already covers through its parents ("de" on a "de-DE" server) is
