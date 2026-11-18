@@ -1025,6 +1025,15 @@ namespace CounterStrikeSharp.API.Core
             // Timers made with `new Timer(...)` instead of AddTimer are not in Timers.
             Timer.KillTimersForAssembly(GetType().Assembly);
 
+            // Whatever the plugin registered behind BasePlugin's back (FunctionReference.Create, a
+            // delegate passed straight to NativeAPI). Last, so everything above unhooks natively first.
+            var leftover = FunctionReference.RemoveForAssembly(GetType().Assembly);
+            if (leftover > 0)
+            {
+                Application.Instance.Logger.LogInformation(
+                    "Plugin {Plugin} left {Count} callback reference(s) registered on unload; removed.", ModuleName, leftover);
+            }
+
             // Compiled invokers for this plugin's handlers live in a static cache keyed by MethodInfo.
             FunctionReference.RemoveInvokersForAssembly(GetType().Assembly);
 

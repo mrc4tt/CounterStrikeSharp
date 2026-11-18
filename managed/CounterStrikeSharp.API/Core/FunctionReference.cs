@@ -146,6 +146,31 @@ namespace CounterStrikeSharp.API.Core
             }
         }
 
+        /// <summary>
+        /// Removes every reference whose handler belongs to <paramref name="assembly"/>. BasePlugin.Dispose
+        /// has already removed what the plugin registered through its own methods; what is left was made
+        /// with <see cref="Create"/> directly or by passing a delegate straight to a NativeAPI call, and
+        /// nothing else ever removes those. Each one holds the plugin's delegate in the static maps, so the
+        /// unloaded plugin (and every dependency it loaded) stayed in memory for the life of the process.
+        /// The stubs stay rooted: native may still hold the pointers, and calling one is then the
+        /// defused, logged no-op instead of code of an unloaded plugin.
+        /// </summary>
+        internal static int RemoveForAssembly(Assembly assembly)
+        {
+            var removed = 0;
+            foreach (var pair in IdToFunctionReferencesMap)
+            {
+                var method = pair.Value._targetMethod;
+                if (!ReferencesAssembly(method.Method, assembly) && method.Target?.GetType().Assembly != assembly)
+                    continue;
+
+                Remove(pair.Key);
+                removed++;
+            }
+
+            return removed;
+        }
+
         // A method can belong to another assembly and still close over plugin types through generic
         // arguments (e.g. an API generic instantiated with a plugin type), which roots them just as well.
         private static bool ReferencesAssembly(MethodInfo mi, Assembly assembly)
