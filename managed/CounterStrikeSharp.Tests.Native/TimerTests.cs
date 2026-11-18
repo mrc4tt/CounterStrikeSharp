@@ -353,4 +353,46 @@ public class TimerTests
 
         Assert.Equal(listedBefore, plugin.Timers.Count);
     }
+
+    // Two things plugins do all the time: a one-shot that kills its own handle from inside its
+    // callback, and a one-shot that re-arms itself. Neither may leave a timer or a reference behind.
+    [Fact]
+    public async Task OneShot_KillFromOwnCallback_AndRearm_ReleaseEverything()
+    {
+        await WaitOneFrame();
+
+        var plugin = NativeTestsPlugin.Instance;
+        var listedBefore = plugin.Timers.Count;
+        var liveBefore = Timer.LiveCounts.Live;
+        var referencesBefore = FunctionReference.GetMapStats().References;
+        var nativeBefore = NativeAPI.GetNativeStat(0);
+
+        Timer? self = null;
+        var selfFired = 0;
+        self = plugin.AddTimer(0.05f, () =>
+        {
+            selfFired++;
+            self!.Kill();
+        });
+
+        var rearmed = 0;
+        void Rearm()
+        {
+            if (++rearmed < 5) plugin.AddTickTimer(2, Rearm);
+        }
+
+        plugin.AddTickTimer(2, Rearm);
+
+        await WaitForSeconds(0.5f);
+        await WaitFrames(2);
+
+        Assert.Equal(1, selfFired);
+        Assert.Equal(5, rearmed);
+        Assert.Equal(listedBefore, plugin.Timers.Count);
+        Assert.Equal(liveBefore, Timer.LiveCounts.Live);
+        Assert.True(FunctionReference.GetMapStats().References - referencesBefore < 16);
+        Assert.True(NativeAPI.GetNativeStat(0) - nativeBefore < 16);
+
+        self.Kill();
+    }
 }

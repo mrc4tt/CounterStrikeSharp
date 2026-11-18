@@ -94,7 +94,9 @@ internal static class MemStats
             ("compiled_invokers", references.CompiledInvokers),
             ("next_frame_pending", tasks.NextFrame), ("next_world_update_pending", tasks.NextWorldUpdate),
             ("memory_hooks", BaseMemoryFunction.CountHooks(null).Total),
-            ("owned_native_buffers", OwnedNativeBlock.LiveCount));
+            // Vector/QAngle/... buffers: all not yet freed, and of those the ones only waiting to be freed.
+            ("owned_native_buffers", OwnedNativeBlock.LiveCount),
+            ("owned_native_buffers_pending", OwnedNativeBlock.PendingCount));
 
         PrintLoadContexts(info, liveContexts, collect);
         PrintNative(info);

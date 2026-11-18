@@ -35,6 +35,18 @@ namespace CounterStrikeSharp.API
         internal static long LiveCount => Interlocked.Read(ref _liveCount);
 
         /// <summary>
+        /// Buffers whose wrapper has been collected and that are waiting out the grace period. They are
+        /// released when the next wrapper is finalized, so an idle server keeps the last batch.
+        /// </summary>
+        internal static int PendingCount
+        {
+            get
+            {
+                lock (_pendingLock) return _pending.Count;
+            }
+        }
+
+        /// <summary>
         /// Test hook, raised with the pointer of every buffer as it is released. <see cref="LiveCount"/> is
         /// process-wide, so a test sharing the server with other code can only follow its own buffer this way.
         /// </summary>
