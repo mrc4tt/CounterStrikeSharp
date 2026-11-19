@@ -58,7 +58,9 @@ public class RayTraceTests
         await InitializeAsync();
 
         var start = pawn.AbsOrigin!;
-        var angles = new QAngle(0, -90, 0);
+        // Pitch 90 is straight down, onto the floor the bot stands on. A level trace from the feet depends on
+        // where the bot spawned: it can run its 8192 units through open space, or end on a clip or a prop.
+        var angles = new QAngle(90, 0, 0);
         var result = Trace.TraceShape(start, angles, ignoreEntity: pawn,
             options: new TraceOptions { InteractsWith = Masks.SolidBrushOnly, InteractsExclude = Contents.Pickup });
         Assert.True(result.DidHit());
