@@ -171,6 +171,14 @@ bool CallbackManager::TryRemoveFunction(const char* szName, CallbackT fnCallable
     return false;
 }
 
+size_t CallbackManager::GetListenerCount() const
+{
+    size_t nCount = 0;
+    for (auto* pCallback : m_managed)
+        nCount += pCallback->GetFunctionCount();
+    return nCount;
+}
+
 void CallbackManager::PrintCallbackDebug()
 {
     CSSHARP_CORE_INFO("----CALLBACKS----");

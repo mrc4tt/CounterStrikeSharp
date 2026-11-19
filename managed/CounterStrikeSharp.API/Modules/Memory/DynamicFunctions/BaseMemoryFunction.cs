@@ -237,6 +237,22 @@ public abstract class BaseMemoryFunction : NativeObject
             FunctionReference.RemoveReleased(registration.ReferenceId);
     }
 
+    /// <summary>Active MemoryFunction hooks, all and those whose handler belongs to <paramref name="assembly"/>. For css_memstats.</summary>
+    internal static (int Total, int ForAssembly) CountHooks(Assembly? assembly)
+    {
+        lock (_hooksLock)
+        {
+            var mine = 0;
+            if (assembly != null)
+            {
+                foreach (var hook in _activeHooks)
+                    if (Core.Plugin.PluginAssemblyOwnership.Owns(assembly, hook.Handler)) mine++;
+            }
+
+            return (_activeHooks.Count, mine);
+        }
+    }
+
     /// <summary>
     /// Removes every dynamic-function hook installed by handlers belonging to
     /// <paramref name="assembly"/>. Called on plugin unload so hooks the plugin did not

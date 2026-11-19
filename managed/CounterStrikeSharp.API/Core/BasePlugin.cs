@@ -245,6 +245,21 @@ namespace CounterStrikeSharp.API.Core
 
         public readonly List<Timer> Timers = new List<Timer>();
 
+        /// <summary>What this plugin has registered right now. For css_memstats.</summary>
+        internal readonly record struct RegistrationCounts(int Timers, int Handlers, int Listeners, int CommandListeners,
+            int EntityOutputHooks, int SingleEntityOutputHooks, int Commands, int ConVars);
+
+        internal RegistrationCounts GetRegistrationCounts()
+        {
+            var singleEntityHooks = 0;
+            foreach (var hooks in EntitySingleOutputHooks.Values)
+                singleEntityHooks += hooks.Count;
+
+            return new RegistrationCounts(Timers.Count, _handlerRegistrations.Count, _listenerRegistrations.Count,
+                _commandListenerRegistrations.Count, _entityOutputRegistrations.Count, singleEntityHooks,
+                CommandDefinitions.Count, ConVars.Count);
+        }
+
         public delegate HookResult GameEventHandler<T>(T @event, GameEventInfo info) where T : GameEvent;
 
         private void RegisterEventHandlerInternal<T>(string name, GameEventHandler<T> handler, bool post)
@@ -1017,6 +1032,19 @@ namespace CounterStrikeSharp.API.Core
 
             // Timers made with `new Timer(...)` instead of AddTimer are not in Timers.
             DisposeStep("timers", () => Timer.KillTimersForAssembly(assembly));
+
+            // Whatever the plugin registered behind BasePlugin's back (FunctionReference.Create, a
+            // delegate passed straight to NativeAPI). Last, so everything above unhooks natively first.
+            DisposeStep("callback references", () =>
+            {
+                var leftover = FunctionReference.RemoveForAssembly(assembly);
+                if (leftover > 0)
+                {
+                    Application.Instance.Logger.LogInformation(
+                        "Plugin {Plugin} left {Count} callback reference(s) registered on unload; removed.", ModuleName,
+                        leftover);
+                }
+            });
 
             // Compiled invokers for this plugin's handlers live in a static cache keyed by MethodInfo.
             DisposeStep("compiled invokers", () => FunctionReference.RemoveInvokersForAssembly(assembly));
