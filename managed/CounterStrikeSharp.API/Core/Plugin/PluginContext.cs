@@ -246,6 +246,8 @@ namespace CounterStrikeSharp.API.Core.Plugin
             using (Loader.EnterContextualReflection())
             {
                 var defaultAssembly = Loader.LoadDefaultAssembly();
+                PluginNativeLibraryFallback.Attach(System.Runtime.Loader.AssemblyLoadContext.GetLoadContext(defaultAssembly),
+                    Path.GetDirectoryName(_path)!);
                 Diagnostics.MemStats.TrackLoadContext(defaultAssembly);
                 Diagnostics.PluginDiagnostics.Reset(Diagnostics.PluginDiagnostics.SafeAssemblyName(defaultAssembly));
 
