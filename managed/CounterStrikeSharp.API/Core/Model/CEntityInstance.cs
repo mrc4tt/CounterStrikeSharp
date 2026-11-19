@@ -53,7 +53,10 @@ public partial class CEntityInstance : IEquatable<CEntityInstance>
 
     public override int GetHashCode()
     {
-        return this.Handle.GetHashCode();
+        // Hash what Equals compares. Handle is the entity pointer, resolved again on every read and
+        // zero once the entity is gone, so the hash of an entity stored in a Dictionary or HashSet
+        // changed when it was removed and the entry could no longer be found or deleted.
+        return RawEntityHandle.GetHashCode();
     }
 
     public static bool operator ==(CEntityInstance? left, CEntityInstance? right)

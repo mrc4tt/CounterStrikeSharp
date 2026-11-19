@@ -53,7 +53,7 @@ namespace CounterStrikeSharp.API.Modules.Timers
         // made through AddTimer, so a repeating `new Timer(...)` kept running the unloaded plugin's
         // code and its reference rooted the plugin. Game thread only, like the timers.
         private static readonly System.Collections.Generic.HashSet<Timer> LiveTimers = new();
-        private readonly System.Reflection.Assembly? _ownerAssembly;
+        private readonly Action _ownerCallback;
 
         public Timer(float interval, Action callback, TimerFlags? flags = null) : base(IntPtr.Zero)
         {
@@ -77,7 +77,7 @@ namespace CounterStrikeSharp.API.Modules.Timers
             }
 
             _functionReferenceIdentifier = functionReference.Identifier;
-            _ownerAssembly = callback.Method.Module.Assembly;
+            _ownerCallback = callback;
             // Handle is the native timer's serial, not a pointer (see natives_timers.cpp).
             Handle = NativeAPI.CreateTimer(interval, functionReference, (int)(flags ?? 0));
 
@@ -90,12 +90,24 @@ namespace CounterStrikeSharp.API.Modules.Timers
             LiveTimers.Add(this);
         }
 
+        /// <summary>Live timers (not fired, not killed) and how many of them stop on map change. For css_memstats.</summary>
+        internal static (int Live, int StopOnMapChange) LiveCounts => (LiveTimers.Count, MapChangeTimers.Count);
+
+        /// <summary>Live timers whose callback belongs to <paramref name="assembly"/>, including ones made with <c>new Timer(...)</c>.</summary>
+        internal static int CountLiveForAssembly(System.Reflection.Assembly assembly)
+        {
+            var count = 0;
+            foreach (var timer in LiveTimers)
+                if (Core.Plugin.PluginAssemblyOwnership.Owns(assembly, timer._ownerCallback)) count++;
+            return count;
+        }
+
         /// <summary>Kills every live timer whose callback belongs to <paramref name="assembly"/>. Called on plugin unload.</summary>
         internal static void KillTimersForAssembly(System.Reflection.Assembly assembly)
         {
             foreach (var timer in new System.Collections.Generic.List<Timer>(LiveTimers))
             {
-                if (timer._ownerAssembly == assembly)
+                if (Core.Plugin.PluginAssemblyOwnership.Owns(assembly, timer._ownerCallback))
                     timer.Kill();
             }
         }

@@ -41,6 +41,13 @@ public class ConVar
     {
         var type = typeof(T);
         var convarType = _cachedType ??= Type;
+
+        // Valve regularly retypes a bool ConVar as an integer (and back) between game updates, and
+        // plugins built against the old type read it with the wrong T. That used to throw out of the
+        // plugin's handler on every read. Bool and integer types are converted instead.
+        if (IsBoolIntegerMismatch(convarType, type))
+            return ref GetConvertedPrimitiveValue<T>(convarType);
+
         switch (convarType)
         {
             case ConVarType.Bool:
@@ -100,6 +107,56 @@ public class ConVar
         }
 
         return ref Unsafe.AsRef<T>((void*)address);
+    }
+
+    private static bool IsIntegerType(ConVarType type) => type is ConVarType.Int16 or ConVarType.UInt16
+        or ConVarType.Int32 or ConVarType.UInt32 or ConVarType.Int64 or ConVarType.UInt64;
+
+    private static bool IsIntegerType(Type type) => type == typeof(short) || type == typeof(ushort)
+        || type == typeof(int) || type == typeof(uint) || type == typeof(long) || type == typeof(ulong);
+
+    private static bool IsBoolIntegerMismatch(ConVarType convarType, Type requested) =>
+        (requested == typeof(bool) && IsIntegerType(convarType)) ||
+        (convarType == ConVarType.Bool && IsIntegerType(requested));
+
+    private static int IntegerSize(ConVarType type) => type switch
+    {
+        ConVarType.Int16 or ConVarType.UInt16 => 2,
+        ConVarType.Int32 or ConVarType.UInt32 => 4,
+        _ => 8,
+    };
+
+    // Scratch storage for a converted value. The returned ref points here, so a write through it
+    // does not reach the ConVar; use SetValue to change a ConVar whose type differs from T.
+    private ulong _convertedValue;
+
+    private unsafe ref T GetConvertedPrimitiveValue<T>(ConVarType convarType)
+    {
+        var address = GetValueAddress();
+        if (address == IntPtr.Zero)
+        {
+            throw new InvalidOperationException($"ConVar {Name} is not initialized or does not have a value.");
+        }
+
+        ulong raw = convarType == ConVarType.Bool
+            ? (*(byte*)address != 0 ? 1UL : 0UL)
+            : IntegerSize(convarType) switch
+            {
+                2 => *(ushort*)address,
+                4 => *(uint*)address,
+                _ => *(ulong*)address,
+            };
+
+        _convertedValue = 0;
+        fixed (ulong* scratch = &_convertedValue)
+        {
+            if (typeof(T) == typeof(bool))
+                *(bool*)scratch = raw != 0;
+            else
+                *scratch = raw; // 0 or 1, little-endian: the low bytes hold it for any integer width
+        }
+
+        return ref Unsafe.As<ulong, T>(ref _convertedValue);
     }
 
     // The value address through the fast native table (~5 ns instead of a ~40 ns ScriptContext call).

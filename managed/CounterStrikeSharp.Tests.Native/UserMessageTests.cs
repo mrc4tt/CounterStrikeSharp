@@ -192,4 +192,17 @@ public class UserMessageTests
         // Debug string should contain something about the message
         Assert.True(debugString.Length > 0, "Debug string should not be empty");
     }
+
+    [Fact]
+    public void ThrowNativeError_WithAPercentSignInThePassedString_ReportsItLiterally()
+    {
+        // ThrowNativeError used to format its message twice, so a plugin-supplied
+        // string reaching the message (here a field name) was re-read as a format
+        // string and "%n" took the server down. It must come back verbatim.
+        using var message = UserMessage.FromPartialName("TextMsg");
+        var field = "nonexistent_%s_%n_%x_field";
+
+        var ex = Assert.Throws<NativeException>(() => message.ReadInt(field));
+        Assert.Contains(field, ex.Message);
+    }
 }

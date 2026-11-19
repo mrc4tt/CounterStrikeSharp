@@ -17,6 +17,16 @@ public class VirtualFunctionTests
     private const int HookInstallFrames = 64;
 
     [Fact]
+    public void VTable_SymbolNameAndBinaryPath_FindsTheSameTable()
+    {
+        var byName = new VTable("CCSGameRules");
+        var byNameAndPath = new VTable("CCSGameRules", Addresses.ServerPath);
+
+        Assert.NotEqual(IntPtr.Zero, byName.Handle);
+        Assert.Equal(byName.Handle, byNameAndPath.Handle);
+    }
+
+    [Fact]
     public async Task ShouldHook()
     {
         var calls = 0;

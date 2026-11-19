@@ -579,6 +579,14 @@ namespace CounterStrikeSharp.API.Core
                             "  stop / unload - Unloads a plugin currently loaded.\n" +
                             "  restart / reload - Reloads a plugin currently loaded.",
             });
+            _commandManager.RegisterCommand(new("css_memstats", "Print timer, callback and memory counters.",
+                (caller, info) => Diagnostics.MemStats.Print(info, _pluginManager.GetLoadedPlugins()))
+            {
+                ExecutableBy = CommandUsage.SERVER_ONLY,
+                UsageHint = "[gc]\n" +
+                            "  gc - run full garbage collections first (stalls the server for a moment), so the\n" +
+                            "       numbers show what is still referenced and unloaded plugins can be judged.",
+            });
             _commandManager.RegisterCommand(new("css_lang", "Set Counter-Strike Sharp language.", OnLangCommand)
             {
                 ExecutableBy = CommandUsage.CLIENT_AND_SERVER,

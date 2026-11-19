@@ -159,13 +159,44 @@ float GetSoundDuration(ScriptContext& script_context)
 
 double GetTickedTime(ScriptContext& script_context) { return globals::timerSystem.GetTickedTime(); }
 
+extern size_t GetVirtualFunctionCacheSize();
+extern std::unordered_set<IGameEvent*> managed_game_events;
+
+// Counters for the managed css_memstats command. Append-only: an id this build does not know
+// answers -1, so a newer managed side can ask an older core.
+int64_t GetNativeStat(ScriptContext& script_context)
+{
+    switch (script_context.GetArgument<int>(0))
+    {
+        case 0:
+            return static_cast<int64_t>(globals::timerSystem.GetOnceOffTimerCount());
+        case 1:
+            return static_cast<int64_t>(globals::timerSystem.GetRepeatTimerCount());
+        case 2:
+            return static_cast<int64_t>(globals::callbackManager.GetCallbackCount());
+        case 3:
+            return static_cast<int64_t>(globals::callbackManager.GetListenerCount());
+        case 4:
+            return static_cast<int64_t>(GetVirtualFunctionCacheSize());
+        case 5:
+            return static_cast<int64_t>(managed_game_events.size());
+        default:
+            return -1;
+    }
+}
+
 void QueueTaskForFrame(ScriptContext& script_context)
 {
     auto tick = script_context.GetArgument<int>(0);
-    auto func = script_context.GetArgument<void*>(1);
+    auto func = script_context.GetArgument<CallbackT>(1);
 
-    typedef void(voidfunc)(void);
-    globals::tickScheduler.schedule(tick, reinterpret_cast<voidfunc*>(func));
+    // The managed stub is a CallbackT and wraps its first argument in a ScriptContext.
+    // Calling it as void(void) handed it whatever was left in the first argument
+    // register, so give it an empty context like every other callback path does.
+    globals::tickScheduler.schedule(tick, [func]() {
+        fxNativeContext context{};
+        func(&context);
+    });
 }
 
 enum InterfaceType
@@ -314,6 +345,7 @@ REGISTER_NATIVES(engine, {
     // ScriptEngine::RegisterNativeHandler("EMIT_SOUND", EmitSound);
 
     ScriptEngine::RegisterNativeHandler("GET_TICKED_TIME", GetTickedTime);
+    ScriptEngine::RegisterNativeHandler("GET_NATIVE_STAT", GetNativeStat);
     ScriptEngine::RegisterNativeHandler("QUEUE_TASK_FOR_FRAME", QueueTaskForFrame);
     ScriptEngine::RegisterNativeHandler("GET_VALVE_INTERFACE", GetValveInterface);
     ScriptEngine::RegisterNativeHandler("GET_COMMAND_PARAM_VALUE", GetCommandParamValue);

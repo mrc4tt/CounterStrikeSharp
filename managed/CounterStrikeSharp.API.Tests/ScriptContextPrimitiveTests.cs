@@ -76,4 +76,44 @@ public class ScriptContextPrimitiveTests
             Assert.Equal(expected, actual);
         }
     }
+
+    [Fact]
+    public unsafe void GetResultReadsANullableValueTypeAsItsUnderlyingType()
+    {
+        var context = new ScriptContext();
+        var slot = stackalloc byte[8];
+        *(long*)slot = 0;
+        *(int*)slot = -42;
+
+        Assert.Equal(-42, context.GetResult(typeof(int?), slot));
+
+        *(long*)slot = 0x1234_5678_9ABC;
+        Assert.Equal((IntPtr)0x1234_5678_9ABC, context.GetResult(typeof(IntPtr?), slot));
+    }
+
+    // fxScriptContext is exactly what native allocates: the string result used to be written 8 bytes
+    // past its end, with the result slot left untouched.
+    [Fact]
+    public unsafe void SetResultStringWritesThePointerIntoTheResultSlot()
+    {
+        var block = (byte*)NativeMemory.AllocZeroed((nuint)(sizeof(fxScriptContext) + 8));
+        try
+        {
+            var guard = (ulong*)(block + sizeof(fxScriptContext));
+            *guard = 0xDEAD_BEEF_CAFE_F00D;
+
+            var native = (fxScriptContext*)block;
+            var context = new ScriptContext(native) { IsCallbackContext = true };
+            context.SetResultString(native, "héllo");
+
+            Assert.Equal(0xDEAD_BEEF_CAFE_F00D, *guard);
+            var pointer = *(IntPtr*)native->result;
+            Assert.NotEqual(IntPtr.Zero, pointer);
+            Assert.Equal("héllo", Marshal.PtrToStringUTF8(pointer));
+        }
+        finally
+        {
+            NativeMemory.Free(block);
+        }
+    }
 }

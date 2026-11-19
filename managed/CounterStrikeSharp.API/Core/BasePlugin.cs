@@ -245,6 +245,21 @@ namespace CounterStrikeSharp.API.Core
 
         public readonly List<Timer> Timers = new List<Timer>();
 
+        /// <summary>What this plugin has registered right now. For css_memstats.</summary>
+        internal readonly record struct RegistrationCounts(int Timers, int Handlers, int Listeners, int CommandListeners,
+            int EntityOutputHooks, int SingleEntityOutputHooks, int Commands, int ConVars);
+
+        internal RegistrationCounts GetRegistrationCounts()
+        {
+            var singleEntityHooks = 0;
+            foreach (var hooks in EntitySingleOutputHooks.Values)
+                singleEntityHooks += hooks.Count;
+
+            return new RegistrationCounts(Timers.Count, _handlerRegistrations.Count, _listenerRegistrations.Count,
+                _commandListenerRegistrations.Count, _entityOutputRegistrations.Count, singleEntityHooks,
+                CommandDefinitions.Count, ConVars.Count);
+        }
+
         public delegate HookResult GameEventHandler<T>(T @event, GameEventInfo info) where T : GameEvent;
 
         private void RegisterEventHandlerInternal<T>(string name, GameEventHandler<T> handler, bool post)
@@ -944,79 +959,115 @@ namespace CounterStrikeSharp.API.Core
             // Deregister*/Remove*, which mutates the same dictionary. Iterating
             // .Values directly would throw InvalidOperationException partway
             // through the first loop and leak the remaining subscribers/timers.
+            //
+            // Every step runs on its own (DisposeStep): one registration that throws while it is
+            // removed used to skip everything after it, sweeps included, leaving the rest of the
+            // plugin hooked into the engine and its load context pinned.
             foreach (var registration in _handlerRegistrations.ToList())
             {
-                registration.Subscriber.Dispose();
+                DisposeStep("event handler", registration.Subscriber.Dispose);
             }
 
             foreach (var subscriber in Handlers.Values.ToList())
             {
-                subscriber.Dispose();
+                DisposeStep("handler", subscriber.Dispose);
             }
 
             foreach (var registration in _commandListenerRegistrations.ToList())
             {
-                registration.Subscriber.Dispose();
+                DisposeStep("command listener", registration.Subscriber.Dispose);
             }
 
             foreach (var registration in _listenerRegistrations.ToList())
             {
-                registration.Subscriber.Dispose();
+                DisposeStep("listener", registration.Subscriber.Dispose);
             }
 
             foreach (var subscriber in Listeners.Values.ToList())
             {
-                subscriber.Dispose();
+                DisposeStep("listener", subscriber.Dispose);
             }
 
             foreach (var registration in _entityOutputRegistrations.ToList())
             {
-                registration.Subscriber.Dispose();
+                DisposeStep("entity output hook", registration.Subscriber.Dispose);
             }
 
             foreach (var subscriber in EntityOutputHooks.Values.ToList())
             {
-                subscriber.Dispose();
+                DisposeStep("entity output hook", subscriber.Dispose);
             }
 
             foreach (var convar in ConVars.ToList())
             {
-                if (!convar.IsValid) continue;
-
-                convar.Delete();
+                DisposeStep("ConVar", () =>
+                {
+                    if (convar.IsValid) convar.Delete();
+                });
             }
 
             foreach (var definition in CommandDefinitions.ToList())
             {
-                CommandManager.RemoveCommand(definition);
+                DisposeStep("command", () => CommandManager.RemoveCommand(definition));
             }
 
             foreach (var timer in Timers.ToList())
             {
-                timer.Kill();
+                DisposeStep("timer", timer.Kill);
             }
+
+            var assembly = GetType().Assembly;
 
             // Drop any capability suppliers this plugin registered. Their
             // delegates live in static Providers dictionaries and would
             // otherwise pin this plugin's AssemblyLoadContext forever.
-            Capabilities.Capabilities.RemoveProvidersForAssembly(GetType().Assembly);
+            DisposeStep("capability providers", () => Capabilities.Capabilities.RemoveProvidersForAssembly(assembly));
 
             // Remove any dynamic-function hooks the plugin installed via
             // MemoryFunction*.Hook but never explicitly Unhooked. These are not tracked
             // per-plugin (the function objects are static/shared), so their handler
             // delegates would otherwise pin this plugin's AssemblyLoadContext forever.
-            Modules.Memory.DynamicFunctions.BaseMemoryFunction.RemoveHooksForAssembly(GetType().Assembly);
+            DisposeStep("dynamic hooks",
+                () => Modules.Memory.DynamicFunctions.BaseMemoryFunction.RemoveHooksForAssembly(assembly));
 
             // Timers made with `new Timer(...)` instead of AddTimer are not in Timers.
-            Timer.KillTimersForAssembly(GetType().Assembly);
+            DisposeStep("timers", () => Timer.KillTimersForAssembly(assembly));
+
+            // Whatever the plugin registered behind BasePlugin's back (FunctionReference.Create, a
+            // delegate passed straight to NativeAPI). Last, so everything above unhooks natively first.
+            DisposeStep("callback references", () =>
+            {
+                var leftover = FunctionReference.RemoveForAssembly(assembly);
+                if (leftover > 0)
+                {
+                    Application.Instance.Logger.LogInformation(
+                        "Plugin {Plugin} left {Count} callback reference(s) registered on unload; removed.", ModuleName,
+                        leftover);
+                }
+            });
 
             // Compiled invokers for this plugin's handlers live in a static cache keyed by MethodInfo.
-            FunctionReference.RemoveInvokersForAssembly(GetType().Assembly);
+            DisposeStep("compiled invokers", () => FunctionReference.RemoveInvokersForAssembly(assembly));
 
             // Open menus of this plugin hold it (and its option delegates) in a static dictionary.
-            Modules.Menu.MenuManager.RemoveMenusForAssembly(this, GetType().Assembly);
+            DisposeStep("menus", () => Modules.Menu.MenuManager.RemoveMenusForAssembly(this, assembly));
 
             _disposed = true;
+        }
+
+        private void DisposeStep(string what, Action step)
+        {
+            try
+            {
+                step();
+            }
+            catch (Exception e)
+            {
+                // Logger is set by the host and can be missing for a plugin that never finished loading.
+                (Logger ?? Application.Instance?.Logger)?.LogError(e,
+                    "Plugin {Plugin}: removing its {What} failed while unloading; the rest of the cleanup continues",
+                    GetType().Name, what);
+            }
         }
     }
 }

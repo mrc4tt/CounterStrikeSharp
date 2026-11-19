@@ -1,0 +1,21 @@
+<Project>
+  <!--
+    Source paths in the PDBs show up in every exception stack trace ("at /root/CounterStrikeSharp/...").
+    Map the checkout root to a fixed alias so the build machine's directory layout is never printed.
+    DeterministicSourcePaths makes the SDK derive PathMap from the SourceRoot items, which keeps
+    SourceLink consistent with the mapped paths; the target below swaps the SDK's "/_/" for the alias.
+    Override with -p:SourceRootAlias=/some/path.
+  -->
+  <PropertyGroup>
+    <DeterministicSourcePaths>true</DeterministicSourcePaths>
+    <SourceRootAlias Condition="'$(SourceRootAlias)' == ''">/home/mrc4tt-aka-miksen/CounterStrikeSharp</SourceRootAlias>
+  </PropertyGroup>
+
+  <Target Name="_AliasSourceRootMappedPaths" AfterTargets="InitializeSourceRootMappedPaths">
+    <ItemGroup>
+      <SourceRoot Update="@(SourceRoot)" Condition="$([System.String]::Copy('%(SourceRoot.MappedPath)').StartsWith('/_/'))">
+        <MappedPath>$(SourceRootAlias)/$([System.String]::Copy('%(SourceRoot.MappedPath)').Substring(3))</MappedPath>
+      </SourceRoot>
+    </ItemGroup>
+  </Target>
+</Project>

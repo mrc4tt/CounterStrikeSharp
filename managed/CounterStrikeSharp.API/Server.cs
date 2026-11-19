@@ -43,6 +43,10 @@ namespace CounterStrikeSharp.API
             GameThreadReleaseQueue.RearmAfterClear();
         }
 
+        /// <summary>NextFrame and NextWorldUpdate tasks not run yet. For css_memstats.</summary>
+        internal static (int NextFrame, int NextWorldUpdate) PendingTaskCounts =>
+            (_onTickTaskQueue.Count, _onWorldUpdateTaskQueue.Count);
+
         internal static void OnTick()
         {
             ExecuteTickTasks(_onTickTaskQueue);

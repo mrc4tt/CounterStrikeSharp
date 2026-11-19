@@ -899,6 +899,16 @@ namespace CounterStrikeSharp.API.Core
 			return _ctx.GetResultPrimitive<double>();
 		}
 
+        public static long GetNativeStat(int stat){
+			var _ctx = ScriptContext.GlobalScriptContext;
+			_ctx.Reset();
+			_ctx.PushPrimitive(stat);
+			_ctx.SetIdentifier(0x18BB7840);
+			_ctx.Invoke();
+			_ctx.CheckErrors();
+			return _ctx.GetResultPrimitive<long>();
+		}
+
         public static void QueueTaskForFrame(int tick, InputArgument callback){
 			var _ctx = ScriptContext.GlobalScriptContext;
 			_ctx.Reset();

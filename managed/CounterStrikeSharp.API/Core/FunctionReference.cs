@@ -146,23 +146,48 @@ namespace CounterStrikeSharp.API.Core
             }
         }
 
+        /// <summary>
+        /// Removes every reference whose handler belongs to <paramref name="assembly"/>. BasePlugin.Dispose
+        /// has already removed what the plugin registered through its own methods; what is left was made
+        /// with <see cref="Create"/> directly or by passing a delegate straight to a NativeAPI call, and
+        /// nothing else ever removes those. Each one holds the plugin's delegate in the static maps, so the
+        /// unloaded plugin (and every dependency it loaded) stayed in memory for the life of the process.
+        /// The stubs stay rooted: native may still hold the pointers, and calling one is then the
+        /// defused, logged no-op instead of code of an unloaded plugin.
+        /// </summary>
+        internal static int RemoveForAssembly(Assembly assembly)
+        {
+            var removed = 0;
+            foreach (var pair in IdToFunctionReferencesMap)
+            {
+                var method = pair.Value._targetMethod;
+                if (!ReferencesAssembly(method.Method, assembly) && !Plugin.PluginAssemblyOwnership.Owns(assembly, method))
+                    continue;
+
+                Remove(pair.Key);
+                removed++;
+            }
+
+            return removed;
+        }
+
         // A method can belong to another assembly and still close over plugin types through generic
         // arguments (e.g. an API generic instantiated with a plugin type), which roots them just as well.
         private static bool ReferencesAssembly(MethodInfo mi, Assembly assembly)
         {
-            if (mi.Module.Assembly == assembly) return true;
+            if (Plugin.PluginAssemblyOwnership.Owns(assembly, mi.Module.Assembly)) return true;
 
             if (mi.IsGenericMethod)
             {
                 foreach (var t in mi.GetGenericArguments())
-                    if (t.Assembly == assembly) return true;
+                    if (Plugin.PluginAssemblyOwnership.Owns(assembly, t)) return true;
             }
 
             var declaring = mi.DeclaringType;
             if (declaring is { IsGenericType: true })
             {
                 foreach (var t in declaring.GetGenericArguments())
-                    if (t.Assembly == assembly) return true;
+                    if (Plugin.PluginAssemblyOwnership.Owns(assembly, t)) return true;
             }
 
             return false;
@@ -578,6 +603,36 @@ namespace CounterStrikeSharp.API.Core
             sb.AppendLine("Action:    Report this trace to the plugin author; disable the plugin if it spams.");
             sb.Append("=============================================================");
             return sb.ToString();
+        }
+
+        /// <summary>Sizes of the static maps, for css_memstats.</summary>
+        internal readonly record struct MapStats(int References, int Permanent, int SingleUse, int IndexedByDelegate,
+            int RootedStubs, int FiredStubWindow, int RemovedOwners, int DeadCallbacksLogged, int CompiledInvokers);
+
+        /// <summary>
+        /// Counts the live references, and per owning plugin when <paramref name="perOwner"/> is given.
+        /// Walks the id map once; meant for a console command, not for a hot path.
+        /// </summary>
+        internal static MapStats GetMapStats(Dictionary<string, (int Permanent, int SingleUse)>? perOwner = null)
+        {
+            int permanent = 0, singleUse = 0;
+            foreach (var pair in IdToFunctionReferencesMap)
+            {
+                var isPermanent = pair.Value.Lifetime == FunctionLifetime.Permanent;
+                if (isPermanent) permanent++;
+                else singleUse++;
+
+                if (perOwner == null) continue;
+                var owner = pair.Value._crashOwner;
+                perOwner.TryGetValue(owner, out var counts);
+                perOwner[owner] = isPermanent
+                    ? (counts.Permanent + 1, counts.SingleUse)
+                    : (counts.Permanent, counts.SingleUse + 1);
+            }
+
+            return new MapStats(permanent + singleUse, permanent, singleUse, TargetMethodToFunctionReferencesMap.Count,
+                NativeCallbackKeepAlive.Count, System.Threading.Volatile.Read(ref _firedStubWindowCount), RemovedOwners.Count,
+                DeadCallbackLogged.Count, InvokerCache.Count);
         }
 
         public static FunctionReference Create(Delegate method, FunctionLifetime lifetime = FunctionLifetime.Permanent)
