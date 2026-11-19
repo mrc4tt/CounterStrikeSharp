@@ -98,7 +98,7 @@ namespace CounterStrikeSharp.API.Modules.Timers
         {
             var count = 0;
             foreach (var timer in LiveTimers)
-                if (timer._ownerAssembly == assembly) count++;
+                if (Core.Plugin.PluginAssemblyOwnership.Owns(assembly, timer._ownerCallback)) count++;
             return count;
         }
 

@@ -1035,12 +1035,16 @@ namespace CounterStrikeSharp.API.Core
 
             // Whatever the plugin registered behind BasePlugin's back (FunctionReference.Create, a
             // delegate passed straight to NativeAPI). Last, so everything above unhooks natively first.
-            var leftover = FunctionReference.RemoveForAssembly(GetType().Assembly);
-            if (leftover > 0)
+            DisposeStep("callback references", () =>
             {
-                Application.Instance.Logger.LogInformation(
-                    "Plugin {Plugin} left {Count} callback reference(s) registered on unload; removed.", ModuleName, leftover);
-            }
+                var leftover = FunctionReference.RemoveForAssembly(assembly);
+                if (leftover > 0)
+                {
+                    Application.Instance.Logger.LogInformation(
+                        "Plugin {Plugin} left {Count} callback reference(s) registered on unload; removed.", ModuleName,
+                        leftover);
+                }
+            });
 
             // Compiled invokers for this plugin's handlers live in a static cache keyed by MethodInfo.
             DisposeStep("compiled invokers", () => FunctionReference.RemoveInvokersForAssembly(assembly));

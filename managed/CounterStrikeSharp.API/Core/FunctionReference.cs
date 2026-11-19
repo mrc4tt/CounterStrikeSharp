@@ -161,7 +161,7 @@ namespace CounterStrikeSharp.API.Core
             foreach (var pair in IdToFunctionReferencesMap)
             {
                 var method = pair.Value._targetMethod;
-                if (!ReferencesAssembly(method.Method, assembly) && method.Target?.GetType().Assembly != assembly)
+                if (!ReferencesAssembly(method.Method, assembly) && !Plugin.PluginAssemblyOwnership.Owns(assembly, method))
                     continue;
 
                 Remove(pair.Key);
