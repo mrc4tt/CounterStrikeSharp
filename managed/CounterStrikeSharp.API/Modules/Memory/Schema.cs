@@ -366,9 +366,11 @@ public class Schema
     {
         // Encode straight into the field instead of allocating a byte[] and copying it byte by byte.
         var length = Encoding.UTF8.GetByteCount(value);
-        if (length > maxLength)
+        // >=, not >: the terminator needs a byte too. A string exactly as long as the field put
+        // its terminator on the first byte of the next field.
+        if (length >= maxLength)
         {
-            throw new ArgumentException($"String length exceeds maximum length of {maxLength}");
+            throw new ArgumentException($"String length exceeds maximum length of {maxLength - 1} bytes (field is {maxLength} bytes including the terminator)");
         }
 
         Encoding.UTF8.GetBytes(value, new Span<byte>((void*)address, length));

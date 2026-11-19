@@ -99,6 +99,45 @@ public class SchemaPropertyTests : IDisposable
         Assert.Equal(color, this.entity.Render);
     }
 
+    [Fact]
+    public void SchemaProperty_CharArray_LongestStringLeavesTheNextFieldAlone()
+    {
+        var text = Utilities.CreateEntityByName<CPointWorldText>("point_worldtext")!;
+        try
+        {
+            text.FontName = "Arial";
+            text.Enabled = true;
+
+            // MessageText is char[512], BackgroundMaterialName is char[64]: 511 and 63 bytes plus the terminator.
+            text.MessageText = new string('a', 511);
+            text.BackgroundMaterialName = new string('b', 63);
+
+            Assert.Equal(new string('a', 511), text.MessageText);
+            Assert.Equal(new string('b', 63), text.BackgroundMaterialName);
+            Assert.Equal("Arial", text.FontName);
+            Assert.True(text.Enabled);
+        }
+        finally
+        {
+            text.Remove();
+        }
+    }
+
+    [Fact]
+    public void SchemaProperty_CharArray_StringFillingTheFieldThrows()
+    {
+        var text = Utilities.CreateEntityByName<CPointWorldText>("point_worldtext")!;
+        try
+        {
+            Assert.Throws<ArgumentException>(() => text.MessageText = new string('a', 512));
+            Assert.Throws<ArgumentException>(() => text.BackgroundMaterialName = new string('b', 64));
+        }
+        finally
+        {
+            text.Remove();
+        }
+    }
+
     public void Dispose()
     {
         this.entity.Remove();

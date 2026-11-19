@@ -41,4 +41,20 @@ public class EntityTests
         Assert.Equal(proxy.GameRules!.Handle, rules.Handle);
         Assert.Same(rules, Utilities.GetGameRules());
     }
+
+    [Fact]
+    public async Task HashCode_StaysTheSameAfterTheEntityIsRemoved()
+    {
+        var entity = Utilities.CreateEntityByName<CBaseModelEntity>("prop_dynamic")!;
+        var set = new System.Collections.Generic.HashSet<CEntityInstance> { entity };
+        var hash = entity.GetHashCode();
+
+        entity.Remove();
+        await Server.NextFrameAsync(() => { });
+        await Server.NextFrameAsync(() => { });
+
+        Assert.Equal(IntPtr.Zero, entity.Handle);
+        Assert.Equal(hash, entity.GetHashCode());
+        Assert.True(set.Remove(entity));
+    }
 }
