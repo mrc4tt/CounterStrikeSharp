@@ -351,7 +351,7 @@ void PlayerManager::RunThink() const
         return;
     }
 
-    for (int i = 0; i <= MaxClients(); i++)
+    for (int i = 0; i < MaxClients(); i++)
     {
         auto player = GetPlayerBySlot(i);
         auto pController = (CCSPlayerController*)globals::entitySystem->GetEntityInstance(CEntityIndex(i + 1));
