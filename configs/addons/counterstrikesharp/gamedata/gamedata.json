@@ -319,7 +319,7 @@
   "CCSNavArea_IsValidNavMesh": {
     "signatures": {
       "library": "server",
-      "windows": "48 83 3D F0 35 56 ? ?",
+      "windows": "48 83 3D 10 36 56 ? ?",
       "linux": "48 8D 05 ? ? ? ? 48 83 38 ? 0F 95 C0 C3"
     }
   },
