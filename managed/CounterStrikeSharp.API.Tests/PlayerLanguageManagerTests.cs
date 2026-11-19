@@ -32,7 +32,9 @@ public class PlayerLanguageManagerTests : IDisposable
     public void LanguageSurvivesRestart()
     {
         var steamId = new SteamID(76561197960265729UL);
-        CreateManager().SetLanguage(steamId, CultureInfo.GetCultureInfo("pl"));
+        var first = CreateManager();
+        first.SetLanguage(steamId, CultureInfo.GetCultureInfo("pl"));
+        first.FlushSaves();
 
         Assert.Equal("pl", CreateManager().GetLanguage(steamId).Name);
     }
@@ -45,7 +47,72 @@ public class PlayerLanguageManagerTests : IDisposable
         var manager = CreateManager();
         var steamId = new SteamID(76561197960265729UL);
         manager.SetLanguage(steamId, CultureInfo.GetCultureInfo("de"));
+        manager.FlushSaves();
 
         Assert.Equal("de", CreateManager().GetLanguage(steamId).Name);
+    }
+
+    [Fact]
+    public void ResetForgetsChoiceAcrossRestart()
+    {
+        var steamId = new SteamID(76561197960265729UL);
+        var manager = CreateManager();
+        manager.SetLanguage(steamId, CultureInfo.GetCultureInfo("da"));
+        Assert.Equal(PlayerLanguageSource.Manual, manager.GetLanguageSource(steamId));
+
+        Assert.True(manager.ResetLanguage(steamId));
+        Assert.False(manager.ResetLanguage(steamId));
+        manager.FlushSaves();
+
+        var restarted = CreateManager();
+        Assert.Equal(PlayerLanguageSource.Server, restarted.GetLanguageSource(steamId));
+        Assert.Equal(restarted.GetDefaultLanguage(), restarted.GetLanguage(steamId));
+    }
+
+    [Fact]
+    public void LatestChoiceWinsWhenSavesQueueUp()
+    {
+        var steamId = new SteamID(76561197960265729UL);
+        var manager = CreateManager();
+        foreach (var language in new[] { "de", "pl", "sv", "da" })
+            manager.SetLanguage(steamId, CultureInfo.GetCultureInfo(language));
+        manager.FlushSaves();
+
+        Assert.Equal("da", CreateManager().GetLanguage(steamId).Name);
+    }
+
+    [Fact]
+    public void GuessWithoutGeoIpDoesNothing()
+    {
+        var steamId = new SteamID(76561197960265729UL);
+        var manager = CreateManager();
+
+        Assert.Null(manager.GuessLanguage(steamId, "80.1.2.3:27005"));
+        Assert.Equal(PlayerLanguageSource.Server, manager.GetLanguageSource(steamId));
+    }
+
+    // Guesses outlive the player's session, so the map needs a limit: it used to grow by one entry
+    // per player that ever joined.
+    [Fact]
+    public void GuessedLanguages_AreLimited_OldestGoFirst()
+    {
+        var manager = CreateManager();
+        var polish = CultureInfo.GetCultureInfo("pl");
+        SteamID Player(int i) => new(76561197960265729UL + (ulong)i);
+
+        for (var i = 0; i < PlayerLanguageManager.MaxGuessedLanguages; i++)
+            manager.RememberGuess(Player(i), polish);
+
+        // Guessed again (a reconnect): now the newest, and its earlier queue entry must not evict it.
+        manager.RememberGuess(Player(0), polish);
+        for (var i = 0; i < 10; i++)
+            manager.RememberGuess(Player(PlayerLanguageManager.MaxGuessedLanguages + i), polish);
+
+        Assert.True(manager.GuessedLanguageCount <= PlayerLanguageManager.MaxGuessedLanguages);
+        Assert.Equal(PlayerLanguageSource.GeoIp, manager.GetLanguageSource(Player(0)));
+        Assert.Equal("pl", manager.GetLanguage(Player(0)).Name);
+        Assert.Equal(PlayerLanguageSource.Server, manager.GetLanguageSource(Player(1)));
+        Assert.Equal(PlayerLanguageSource.GeoIp,
+            manager.GetLanguageSource(Player(PlayerLanguageManager.MaxGuessedLanguages + 9)));
     }
 }

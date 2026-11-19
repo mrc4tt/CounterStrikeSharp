@@ -19,5 +19,6 @@
     "GamedataUploadEnabled": false,
     "MaximumFrameTasksExecutedPerTick": 1024,
     "LogVerbosity": "information",
-    "PluginLogFiles": false
+    "PluginLogFiles": false,
+    "PersistPlayerLanguage": true
 }

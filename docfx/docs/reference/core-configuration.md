@@ -44,6 +44,14 @@ When enabled (the default), a plugin's methods are compiled right after it loads
 
 Configures the default language to use for server commands & messages. The format for the culture name based on RFC 4646 is `languagecode2-country`/`regioncode2`, where `languagecode2` is the two-letter language code and `country/regioncode2` is the two-letter subculture code. Examples include `ja-JP` for Japanese (Japan) and `en-US` for English (United States). Defaults to "en".
 
+## PersistPlayerLanguage
+
+When enabled (the default), the language a player picks with `css_lang <code>` is stored per SteamID64 in `configs/player_languages.json` and applied again on every later connect, map change and server restart. `css_lang reset` (or `css_lang auto`) forgets the choice, so the GeoIP guess or the server language applies again. `css_lang` without an argument shows the current language and where it comes from (chosen, guessed from location, or server default).
+
+## GeoIP language guess
+
+A player who never chose a language with `css_lang` can get one guessed from the country of their IP address. Its settings live in their own file, `configs/geoip.json`: see [GeoIP configuration](geoip-configuration.md).
+
 ## UnlockConCommands
 
 When enabled, will remove the `FCVAR_HIDDEN`,`FCVAR_DEVELOPMENTONLY`, `FCVAR_MISSING0`, `FCVAR_MISSING1`, `FCVAR_MISSING2`, `FCVAR_MISSING3` flags from all console commands.

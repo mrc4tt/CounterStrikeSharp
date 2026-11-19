@@ -20,5 +20,6 @@
   "More than one client matched": "Más de un cliente coincidió con el patrón dado.",
   "Missing permissions": "No tienes los permisos correctos",
   "Missing one permission": "No tienes uno de los permisos correctos",
-  "Command permission denied": "[CSS] {0} ({1}) para ejecutar este comando."
+  "Command permission denied": "[CSS] {0} ({1}) para ejecutar este comando.",
+  "lang.geoip.applied": "Idioma establecido en {0} según tu ubicación. Escribe {1} en para cambiarlo."
 }

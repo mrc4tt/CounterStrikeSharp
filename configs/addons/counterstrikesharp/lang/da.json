@@ -20,5 +20,6 @@
   "More than one client matched": "Mere end én spiller matchede det angivne mønster.",
   "Missing permissions": "Du mangler de korrekte rettigheder",
   "Missing one permission": "Du mangler en af de korrekte rettigheder",
-  "Command permission denied": "[CSS] {0} ({1}) til at udføre denne kommando."
+  "Command permission denied": "[CSS] {0} ({1}) til at udføre denne kommando.",
+  "lang.geoip.applied": "Sproget er sat til {0} ud fra din placering. Skriv {1} en for at skifte."
 }

@@ -106,6 +106,9 @@ namespace CounterStrikeSharp.API.Core
         [JsonPropertyName("MaximumFrameTasksExecutedPerTick")]
         public int MaximumFrameTasksExecutedPerTick { get; set; } = 1024;
 
+        [JsonPropertyName("PersistPlayerLanguage")]
+        public bool PersistPlayerLanguage { get; set; } = true;
+
         // Keys in core.json that match no property above (typos, or keys of removed features
         // such as the UpdateWatcher* set). Collected only so Load() can say they are ignored.
         [JsonExtensionData]
@@ -189,6 +192,12 @@ namespace CounterStrikeSharp.API.Core
 
         public static int MaximumFrameTasksExecutedPerTick => _coreConfig.MaximumFrameTasksExecutedPerTick;
 
+        /// <summary>
+        /// Keep languages chosen with css_lang in configs/player_languages.json across reconnects and restarts.
+        /// When false, choices still apply for the rest of the process but are not written.
+        /// </summary>
+        public static bool PersistPlayerLanguage => _coreConfig.PersistPlayerLanguage;
+
     }
 
     public partial class CoreConfig : IStartupService
@@ -258,8 +267,7 @@ namespace CounterStrikeSharp.API.Core
                     _coreConfigPath);
             }
 
-            var serverCulture = CultureInfo.GetCultures(CultureTypes.AllCultures)
-                .FirstOrDefault(x => x.Name == ServerLanguage);
+            var serverCulture = Translations.KnownCultures.Find(ServerLanguage);
             if (serverCulture == null)
             {
                 try
@@ -280,6 +288,10 @@ namespace CounterStrikeSharp.API.Core
             CultureInfo.DefaultThreadCurrentCulture = serverCulture;
             CultureInfo.CurrentUICulture = serverCulture;
             CultureInfo.CurrentCulture = serverCulture;
+
+            // Start, stop or re-read the GeoIP language guess (configs/geoip.json); css_core_reload included.
+            Translations.GeoIpConfig.Load(Path.GetDirectoryName(_coreConfigPath)!, _logger);
+            (Translations.PlayerLanguageManager.Instance as Translations.PlayerLanguageManager)?.ConfigureGeoIp(_rootPath);
 
             // Apply configured verbosity to the live Serilog level switch. Hot-reloadable
             // via css_core_reload — lowering to "debug" surfaces the demoted boot lines.

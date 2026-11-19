@@ -20,5 +20,6 @@
   "More than one client matched": "Под указанный шаблон подходит больше одного игрока.",
   "Missing permissions": "У тебя нет нужных прав",
   "Missing one permission": "У тебя нет одного из нужных прав",
-  "Command permission denied": "[CSS] {0} ({1}) для выполнения этой команды."
+  "Command permission denied": "[CSS] {0} ({1}) для выполнения этой команды.",
+  "lang.geoip.applied": "Язык установлен на {0} по вашему местоположению. Введите {1} en, чтобы изменить."
 }
