@@ -263,10 +263,10 @@ public abstract class BaseMemoryFunction : NativeObject
         List<HookRegistration> toRemove;
         lock (_hooksLock)
         {
-            toRemove = _activeHooks.Where(h => h.Handler.Method.DeclaringType?.Assembly == assembly).ToList();
+            toRemove = _activeHooks.Where(h => Core.Plugin.PluginAssemblyOwnership.Owns(assembly, h.Handler)).ToList();
             if (toRemove.Count == 0) return;
 
-            _activeHooks.RemoveAll(h => h.Handler.Method.DeclaringType?.Assembly == assembly);
+            _activeHooks.RemoveAll(h => toRemove.Contains(h));
         }
 
         foreach (var h in toRemove)

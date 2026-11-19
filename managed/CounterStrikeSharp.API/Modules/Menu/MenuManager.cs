@@ -17,6 +17,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using CounterStrikeSharp.API.Core.Plugin;
 
 namespace CounterStrikeSharp.API.Modules.Menu;
 
@@ -88,10 +89,10 @@ public static class MenuManager
         foreach (var (key, instance) in ActiveMenus)
         {
             if (instance is CenterHtmlMenuInstance html && html.Plugin == plugin
-                || instance.GetType().Assembly == assembly
+                || PluginAssemblyOwnership.Owns(assembly, instance.GetType())
                 || instance is BaseMenuInstance { Menu: var menu }
-                   && (menu.GetType().Assembly == assembly
-                       || menu.MenuOptions.Any(o => o.OnSelect?.Method.Module.Assembly == assembly)))
+                   && (PluginAssemblyOwnership.Owns(assembly, menu.GetType())
+                       || menu.MenuOptions.Any(o => PluginAssemblyOwnership.Owns(assembly, o.OnSelect))))
             {
                 (stale ??= new()).Add(key);
             }

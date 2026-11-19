@@ -53,7 +53,7 @@ namespace CounterStrikeSharp.API.Modules.Timers
         // made through AddTimer, so a repeating `new Timer(...)` kept running the unloaded plugin's
         // code and its reference rooted the plugin. Game thread only, like the timers.
         private static readonly System.Collections.Generic.HashSet<Timer> LiveTimers = new();
-        private readonly System.Reflection.Assembly? _ownerAssembly;
+        private readonly Action _ownerCallback;
 
         public Timer(float interval, Action callback, TimerFlags? flags = null) : base(IntPtr.Zero)
         {
@@ -77,7 +77,7 @@ namespace CounterStrikeSharp.API.Modules.Timers
             }
 
             _functionReferenceIdentifier = functionReference.Identifier;
-            _ownerAssembly = callback.Method.Module.Assembly;
+            _ownerCallback = callback;
             // Handle is the native timer's serial, not a pointer (see natives_timers.cpp).
             Handle = NativeAPI.CreateTimer(interval, functionReference, (int)(flags ?? 0));
 
@@ -107,7 +107,7 @@ namespace CounterStrikeSharp.API.Modules.Timers
         {
             foreach (var timer in new System.Collections.Generic.List<Timer>(LiveTimers))
             {
-                if (timer._ownerAssembly == assembly)
+                if (Core.Plugin.PluginAssemblyOwnership.Owns(assembly, timer._ownerCallback))
                     timer.Kill();
             }
         }
