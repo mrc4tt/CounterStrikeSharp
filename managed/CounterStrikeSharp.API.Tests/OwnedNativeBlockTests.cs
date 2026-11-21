@@ -85,15 +85,21 @@ public class OwnedNativeBlockTests
     // Upstream issue 1486: a plugin allocating Vector/QAngle every tick outran NativeHandleTracker's
     // sweep, and its list of dead entries (each still holding its HGlobal) grew until OOM. Here each buffer
     // is released by its own block's finalizer, so live buffers must track the allocation rate over the
-    // grace period, not the total ever allocated. Steady ~200k/s (100x the issue's rate) for 3 s, no
-    // forced GC during the run.
+    // grace period, not the total ever allocated. Steady ~200k/s (100x the issue's rate) for 3 s.
+    //
+    // A gen0 collection is requested every 250 ms, as a server's other allocations cause them. Without it
+    // the run depends on the machine's gen0 budget: on a CI runner 3 s of these small objects never filled
+    // it, no finalizer ran and every buffer was still live (plus the previous test's, waiting for a
+    // finalizer to flush them), which failed this test for a reason that is not the one it guards.
     [Fact]
     public void SteadyAllocation_DoesNotAccumulate()
     {
         const int perBatch = 2_000;
         var total = 0L;
         var peakLastSecond = 0L;
+        var baseline = OwnedNativeBlock.LiveCount;
         var clock = System.Diagnostics.Stopwatch.StartNew();
+        var nextCollection = TimeSpan.FromMilliseconds(250);
 
         while (clock.Elapsed < TimeSpan.FromSeconds(3))
         {
@@ -104,14 +110,20 @@ public class OwnedNativeBlockTests
             }
             total += perBatch * 2;
 
+            if (clock.Elapsed >= nextCollection)
+            {
+                GC.Collect(0, GCCollectionMode.Forced, blocking: false);
+                nextCollection = clock.Elapsed + TimeSpan.FromMilliseconds(250);
+            }
+
             if (clock.Elapsed > TimeSpan.FromSeconds(2))
-                peakLastSecond = Math.Max(peakLastSecond, OwnedNativeBlock.LiveCount);
+                peakLastSecond = Math.Max(peakLastSecond, OwnedNativeBlock.LiveCount - baseline);
 
             Thread.Sleep(10);
         }
 
-        // Bounded by roughly what was allocated in the last ~2 s (1 s grace + GC/finalizer lag),
-        // never the whole run.
+        // Bounded by roughly what was allocated in the last ~1.5 s (1 s grace + GC/finalizer lag),
+        // never the whole run. Counted from the buffers that were live before this test began.
         Assert.True(peakLastSecond < total * 3 / 4, $"live {peakLastSecond} of {total} allocated");
 
         // And everything dead is released one grace period after its finalizer ran. The grace clock starts

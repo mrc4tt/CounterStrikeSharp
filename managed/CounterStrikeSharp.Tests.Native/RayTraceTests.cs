@@ -38,7 +38,11 @@ public class RayTraceTests
         Assert.NotEqual(0, maxs.X);
         Assert.NotEqual(0, maxs.Y);
         Assert.NotEqual(0, maxs.Z);
-        Assert.Equal(72, maxs.Z - mins.Z, 4); // Player hull height is 72 units
+        // The pawn's own hull: 72 units standing, 54 while the bot ducks. Bots move on their own, so a fixed
+        // 72 failed whenever the bot happened to crouch.
+        var hull = pawn.Collision;
+        Assert.Contains(hull.Maxs.Z - hull.Mins.Z, new[] { 72f, 54f });
+        Assert.Equal(hull.Maxs.Z - hull.Mins.Z, maxs.Z - mins.Z, 4);
     }
 
     [Fact(Skip = "Ignore for now")]
