@@ -140,7 +140,56 @@ namespace CounterStrikeSharp.API.Core
         // reference every frame) reuse one compiled invoker instead of compiling each time.
         // A null entry means "this method shape is unsupported (multicast/ref/compile
         // failure) -> fall back to DynamicInvoke" and is cached so we never retry the compile.
-        private static readonly ConcurrentDictionary<MethodInfo, Func<object, object[], object>?> InvokerCache = new();
+        private static readonly ConcurrentDictionary<MethodInfo, MethodShape> InvokerCache = new();
+
+        // What the constructor needs to know about a handler method, resolved once per method
+        // instead of once per reference. A timer or single-use callback creates a reference each
+        // time, and reading this by reflection (GetParameters, the declaring assembly's name, the
+        // crash label) was about 300 ns and 500 bytes of every one. Lives in InvokerCache, so
+        // RemoveInvokersForAssembly drops it with the plugin.
+        private sealed class MethodShape
+        {
+            private readonly MethodInfo _method;
+            private Func<object, object[], object>? _invoker;
+            private bool _invokerBuilt;
+
+            public readonly ParameterInfo[] Parameters;
+            public readonly bool IsManualScriptContext;
+            public readonly bool DeclaredInApi;
+            public readonly bool HasDeclaringAssembly;
+            public readonly string OwnerName;
+            public readonly string CrashDetail;
+
+            public MethodShape(MethodInfo method)
+            {
+                _method = method;
+                var declaring = method.DeclaringType?.Assembly;
+                Parameters = method.GetParameters();
+                IsManualScriptContext = Parameters.Length > 0 && Parameters[0].ParameterType == typeof(ScriptContext);
+                HasDeclaringAssembly = declaring != null;
+                DeclaredInApi = declaring == typeof(FunctionReference).Assembly;
+                OwnerName = Diagnostics.PluginDiagnostics.SafeAssemblyName(declaring);
+                CrashDetail = (method.DeclaringType?.Name ?? "?") + "." + method.Name;
+            }
+
+            // Compiled on first use: an Action handler is called directly and never needs one.
+            // Two threads may both compile; either result is equivalent.
+            public Func<object, object[], object>? Invoker
+            {
+                get
+                {
+                    if (!System.Threading.Volatile.Read(ref _invokerBuilt))
+                    {
+                        _invoker = BuildInvokerForMethod(_method);
+                        System.Threading.Volatile.Write(ref _invokerBuilt, true);
+                    }
+
+                    return _invoker;
+                }
+            }
+        }
+
+        private static MethodShape GetMethodShape(MethodInfo method) => InvokerCache.GetOrAdd(method, static mi => new MethodShape(mi));
 
         private readonly Func<object, object[], object>? _invoker;
 
@@ -155,7 +204,7 @@ namespace CounterStrikeSharp.API.Core
         internal static Func<object, object[], object>? GetCompiledInvoker(Delegate method)
         {
             if (!method.HasSingleTarget) return null;
-            return InvokerCache.GetOrAdd(method.Method, BuildInvokerForMethod);
+            return GetMethodShape(method.Method).Invoker;
         }
 
         // The cache is static in the default load context and its keys and compiled invokers reference
@@ -282,20 +331,19 @@ namespace CounterStrikeSharp.API.Core
         {
             Lifetime = lifetime;
             _targetMethod = method;
-            _invoker = GetCompiledInvoker(method);
+            var shape = GetMethodShape(method.Method);
             _action = method as Action;
+            // An Action is called directly (see Dispatch), so its invoker is never compiled.
+            _invoker = _action != null || !method.HasSingleTarget ? null : shape.Invoker;
             _invokerTarget = method.Target;
-            _ownerName = Diagnostics.PluginDiagnostics.SafeAssemblyName(method.Method.DeclaringType?.Assembly);
-            _parameters = method.Method.GetParameters();
-            _isManualScriptContext =
-                _parameters.Length > 0 && _parameters[0].ParameterType == typeof(ScriptContext);
-
-            var declaring = method.Method.DeclaringType?.Assembly;
-            _reuseScriptContext = !_isManualScriptContext || declaring == typeof(FunctionReference).Assembly;
-            _crashOwner = declaring != null && declaring != typeof(FunctionReference).Assembly
+            _ownerName = shape.OwnerName;
+            _parameters = shape.Parameters;
+            _isManualScriptContext = shape.IsManualScriptContext;
+            _reuseScriptContext = !_isManualScriptContext || shape.DeclaredInApi;
+            _crashOwner = shape.HasDeclaringAssembly && !shape.DeclaredInApi
                 ? _ownerName
                 : CrashRecorder.CurrentOwner ?? "core";
-            _crashDetail = (method.Method.DeclaringType?.Name ?? "?") + "." + method.Method.Name;
+            _crashDetail = shape.CrashDetail;
         }
 
         /// <summary>
