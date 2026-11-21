@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -509,6 +510,116 @@ public class ScriptContextBenchmarks
         finally
         {
             message.Dispose();
+        }
+    }
+
+    // ── Callbacks ───────────────────────────────────────────────────────
+    // Native -> managed dispatch (FunctionReference.Dispatch), called the way the native side
+    // calls it: through the function pointer with a native context. Bytes per call are printed
+    // next to the time because the dispatch path is meant to allocate nothing of its own.
+
+    [Fact]
+    public void Benchmark_Callback_Action()
+    {
+        RunCallback("Callback Action", new Action(() => { }));
+    }
+
+    private delegate void ParameterlessHandler();
+
+    [Fact]
+    public void Benchmark_Callback_ParameterlessDelegate()
+    {
+        // Same work as Benchmark_Callback_Action through the general path (argument array +
+        // compiled invoker): the difference between the two rows is what the Action path saves.
+        RunCallback("Callback parameterless delegate (general path)", new ParameterlessHandler(() => { }));
+    }
+
+    [Fact]
+    public void Benchmark_Trace_FreshVectors()
+    {
+        // A trace with vectors built for the call, as plugins write it.
+        var allocated = GC.GetAllocatedBytesForCurrentThread();
+        Run("Trace.TraceEndShape(new Vector, new Vector)", "Trace", () =>
+            CounterStrikeSharp.API.Modules.Utils.Trace.TraceEndShape(new CounterStrikeSharp.API.Modules.Utils.Vector(0, 0, 100), new CounterStrikeSharp.API.Modules.Utils.Vector(0, 0, -100)));
+        allocated = GC.GetAllocatedBytesForCurrentThread() - allocated;
+        Console.WriteLine($"        {allocated / (Iterations + WarmupIterations)} B/call");
+    }
+
+    [Fact]
+    public void Benchmark_Trace_FreshVectors_NativeBuffers()
+    {
+        // The same trace with both vectors given a native buffer first, which is what passing
+        // vector.Handle to the native did before the arguments were copied to the stack.
+        var allocated = GC.GetAllocatedBytesForCurrentThread();
+        Run("Trace.TraceEndShape, vectors with native buffers", "Trace", () =>
+        {
+            var start = new CounterStrikeSharp.API.Modules.Utils.Vector(0, 0, 100);
+            var end = new CounterStrikeSharp.API.Modules.Utils.Vector(0, 0, -100);
+            _ = start.Handle;
+            _ = end.Handle;
+            CounterStrikeSharp.API.Modules.Utils.Trace.TraceEndShape(start, end);
+        });
+        allocated = GC.GetAllocatedBytesForCurrentThread() - allocated;
+        Console.WriteLine($"        {allocated / (Iterations + WarmupIterations)} B/call");
+    }
+
+    [Fact]
+    public void Benchmark_Callback_Primitives()
+    {
+        RunCallback("Callback Func<int, IntPtr, HookResult>", new Func<int, IntPtr, HookResult>((_, _) => HookResult.Continue), 1, 2);
+    }
+
+    [Fact]
+    public unsafe void Benchmark_Callback_SingleUse()
+    {
+        // What a timer or NextFrame costs: a new single-use reference per iteration, called once.
+        Action handler = () => { };
+        var context = (fxScriptContext*)NativeMemory.AllocZeroed((nuint)sizeof(fxScriptContext));
+        try
+        {
+            var allocated = GC.GetAllocatedBytesForCurrentThread();
+            Run("Callback single use Action (create + call)", "Callback", () =>
+            {
+                var reference = FunctionReference.Create(handler, FunctionLifetime.SingleUse);
+                ((delegate* unmanaged<fxScriptContext*, void>)reference.GetFunctionPointer())(context);
+            });
+            allocated = GC.GetAllocatedBytesForCurrentThread() - allocated;
+            Console.WriteLine($"        {allocated / (Iterations + WarmupIterations)} B/call");
+        }
+        finally
+        {
+            NativeMemory.Free(context);
+        }
+    }
+
+    private static unsafe void RunCallback(string name, Delegate handler, params ulong[] arguments)
+    {
+        var reference = FunctionReference.Create(handler);
+        var context = (fxScriptContext*)NativeMemory.AllocZeroed((nuint)sizeof(fxScriptContext));
+        try
+        {
+            var callback = (delegate* unmanaged<fxScriptContext*, void>)reference.GetFunctionPointer();
+            context->numArguments = arguments.Length;
+            for (int i = 0; i < arguments.Length; i++)
+                *(ulong*)&context->functionData[i * 8] = arguments[i];
+
+            for (int i = 0; i < WarmupIterations; i++)
+                callback(context);
+
+            var allocated = GC.GetAllocatedBytesForCurrentThread();
+            var sw = Stopwatch.StartNew();
+            for (int i = 0; i < Iterations; i++)
+                callback(context);
+            sw.Stop();
+            allocated = GC.GetAllocatedBytesForCurrentThread() - allocated;
+
+            Record(name, "Callback", sw, Iterations);
+            Console.WriteLine($"        {allocated / Iterations} B/call");
+        }
+        finally
+        {
+            FunctionReference.Remove(reference.Identifier);
+            NativeMemory.Free(context);
         }
     }
 

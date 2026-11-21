@@ -123,6 +123,10 @@ namespace CounterStrikeSharp.API.Core
         private static readonly ConcurrentDictionary<MethodInfo, Func<object, object[], object>?> InvokerCache = new();
 
         private readonly Func<object, object[], object>? _invoker;
+
+        // Set when the handler is a plain Action (timers, NextFrame, single-use callbacks): Dispatch
+        // calls it directly, without the argument array and the compiled invoker.
+        private readonly Action? _action;
         private readonly object? _invokerTarget;
 
         // Returns a compiled invoker for the delegate's method, or null if the shape is not
@@ -259,6 +263,7 @@ namespace CounterStrikeSharp.API.Core
             Lifetime = lifetime;
             _targetMethod = method;
             _invoker = GetCompiledInvoker(method);
+            _action = method as Action;
             _invokerTarget = method.Target;
             _ownerName = Diagnostics.PluginDiagnostics.SafeAssemblyName(method.Method.DeclaringType?.Assembly);
             _parameters = method.Method.GetParameters();
@@ -392,6 +397,11 @@ namespace CounterStrikeSharp.API.Core
             {
                 try
                 {
+                    if (_action != null)
+                    {
+                        _action();
+                        return;
+                    }
 
                     // Allow for manual handling of the script context
                     if (_isManualScriptContext)
