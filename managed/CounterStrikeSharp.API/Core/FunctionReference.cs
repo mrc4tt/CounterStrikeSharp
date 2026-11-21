@@ -81,6 +81,26 @@ namespace CounterStrikeSharp.API.Core
         // name the operator saw in the load-failure banner so they connect the two.
         private static readonly ConcurrentDictionary<string, string> LoadFailureDisplayNames = new();
         private const int RemovedOwnersCap = 4096;
+        // Insertion order and size of RemovedOwners, kept beside it. The cap used to be checked
+        // with RemovedOwners.Count, which takes every lock of a ConcurrentDictionary: measured at
+        // ~9 us per call once the map held 4096 entries, paid on every Remove (every finished
+        // timer). And a full map stopped recording, so after the first 4096 removals of a session
+        // no later callback could be attributed. The oldest entry now makes room for the newest.
+        private static readonly ConcurrentQueue<int> RemovedOwnerOrder = new();
+        private static int _removedOwnersCount;
+
+        private static void RememberRemovedOwner(int reference, string owner)
+        {
+            if (!RemovedOwners.TryAdd(reference, owner)) return;
+
+            RemovedOwnerOrder.Enqueue(reference);
+            var count = System.Threading.Interlocked.Increment(ref _removedOwnersCount);
+            while (count > RemovedOwnersCap && RemovedOwnerOrder.TryDequeue(out var oldest))
+            {
+                if (RemovedOwners.TryRemove(oldest, out _))
+                    count = System.Threading.Interlocked.Decrement(ref _removedOwnersCount);
+            }
+        }
 
         // Records the rendered load-failure banner, keyed by assembly name (matches the
         // owner attribution used for dead callbacks). Called from PluginContext.
@@ -134,7 +154,7 @@ namespace CounterStrikeSharp.API.Core
         // params can't be marshalled through object[]). Callers fall back to DynamicInvoke.
         internal static Func<object, object[], object>? GetCompiledInvoker(Delegate method)
         {
-            if (method.GetInvocationList().Length > 1) return null;
+            if (!method.HasSingleTarget) return null;
             return InvokerCache.GetOrAdd(method.Method, BuildInvokerForMethod);
         }
 
@@ -641,7 +661,8 @@ namespace CounterStrikeSharp.API.Core
             }
 
             return new MapStats(permanent + singleUse, permanent, singleUse, TargetMethodToFunctionReferencesMap.Count,
-                NativeCallbackKeepAlive.Count, System.Threading.Volatile.Read(ref _firedStubWindowCount), RemovedOwners.Count,
+                NativeCallbackKeepAlive.Count, System.Threading.Volatile.Read(ref _firedStubWindowCount),
+                System.Threading.Volatile.Read(ref _removedOwnersCount),
                 DeadCallbackLogged.Count, InvokerCache.Count);
         }
 
@@ -754,8 +775,7 @@ namespace CounterStrikeSharp.API.Core
                 // id is blamed on the right plugin (see LogDeadCallback) instead of being
                 // an anonymous no-op. Bounded to stop high-volume single-use traffic
                 // growing it without limit.
-                if (RemovedOwners.Count < RemovedOwnersCap)
-                    RemovedOwners[reference] = functionReference._ownerName;
+                RememberRemovedOwner(reference, functionReference._ownerName);
 
                 // The stub may ONLY be reclaimed when we know native will never call the
                 // pointer again. That is true only for a single-use callback that already
