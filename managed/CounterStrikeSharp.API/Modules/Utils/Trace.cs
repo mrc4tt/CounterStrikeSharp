@@ -14,6 +14,7 @@
  *  along with CounterStrikeSharp.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+using System.Numerics;
 using System.Runtime.InteropServices;
 using CounterStrikeSharp.API.Core;
 
@@ -98,6 +99,12 @@ public static unsafe class Trace
     private static (Contents ia, Contents iw, Contents ie) Unpack(TraceOptions? opts)
         => opts is null ? (0UL, (Contents)~0UL, 0UL) : (opts.InteractsAs, opts.InteractsWith, opts.InteractsExclude);
 
+    // The vector arguments are copied to the stack and the native gets the address of the copy.
+    // Passing vector.Handle made every vector built for the call (new Vector(x, y, z)) allocate a
+    // native buffer plus a finalizable owner, per argument and per trace, and left the buffer's
+    // lifetime to the finalizer's grace period. The natives only read these during the call
+    // (natives_raytrace.cpp), so a stack copy is enough.
+
     /// <summary>
     /// Performs a line trace from <paramref name="startPos"/> in the direction of
     /// <paramref name="angles"/> for up to 8192 units.
@@ -105,8 +112,10 @@ public static unsafe class Trace
     public static TraceResult TraceShape(Vector startPos, QAngle angles, CBaseEntity? ignoreEntity = null, TraceOptions? options = null)
     {
         var (ia, iw, ie) = Unpack(options);
+        var start = (Vector3)startPos;
+        var direction = (Vector3)angles;
         TraceResult result = default;
-        NativeAPI.TraceShape(startPos.Handle, angles.Handle, ignoreEntity?.Handle ?? nint.Zero, (ulong)ia, (ulong)iw, (ulong)ie,
+        NativeAPI.TraceShape((nint)(&start), (nint)(&direction), ignoreEntity?.Handle ?? nint.Zero, (ulong)ia, (ulong)iw, (ulong)ie,
             (nint)(&result));
         return result;
     }
@@ -115,8 +124,10 @@ public static unsafe class Trace
     public static TraceResult TraceEndShape(Vector startPos, Vector endPos, CBaseEntity? ignoreEntity = null, TraceOptions? options = null)
     {
         var (ia, iw, ie) = Unpack(options);
+        var start = (Vector3)startPos;
+        var end = (Vector3)endPos;
         TraceResult result = default;
-        NativeAPI.TraceEndShape(startPos.Handle, endPos.Handle, ignoreEntity?.Handle ?? nint.Zero, (ulong)ia, (ulong)iw, (ulong)ie,
+        NativeAPI.TraceEndShape((nint)(&start), (nint)(&end), ignoreEntity?.Handle ?? nint.Zero, (ulong)ia, (ulong)iw, (ulong)ie,
             (nint)(&result));
         return result;
     }
@@ -126,16 +137,22 @@ public static unsafe class Trace
         TraceOptions? options = null)
     {
         var (ia, iw, ie) = Unpack(options);
+        var start = (Vector3)startPos;
+        var end = (Vector3)endPos;
+        var hullMins = (Vector3)mins;
+        var hullMaxs = (Vector3)maxs;
         TraceResult result = default;
-        NativeAPI.TraceHullShape(startPos.Handle, endPos.Handle, mins.Handle, maxs.Handle, ignoreEntity?.Handle ?? nint.Zero, (ulong)ia, (
-                ulong)iw, (ulong)ie,
-            (nint)(&result));
+        NativeAPI.TraceHullShape((nint)(&start), (nint)(&end), (nint)(&hullMins), (nint)(&hullMaxs), ignoreEntity?.Handle ?? nint.Zero,
+            (ulong)ia, (ulong)iw, (ulong)ie, (nint)(&result));
         return result;
     }
 
     /// <summary>Returns the contents bitmask at the given world position.</summary>
     public static Contents PointContents(Vector pos, Contents contentsMask = Contents.Empty)
-        => (Contents)NativeAPI.PointContents(pos.Handle, (ulong)contentsMask);
+    {
+        var point = (Vector3)pos;
+        return (Contents)NativeAPI.PointContents((nint)(&point), (ulong)contentsMask);
+    }
 
     /// <summary>
     /// Returns whether a nav area overlaps with an entity's bounding box.
@@ -147,8 +164,11 @@ public static unsafe class Trace
     /// <summary>Returns the world-space axis-aligned bounding box of <paramref name="entity"/>.</summary>
     public static void GetEntityWorldSpaceAABB(CBaseEntity entity, out Vector mins, out Vector maxs)
     {
-        mins = new Vector();
-        maxs = new Vector();
-        NativeAPI.GetEntityWorldSpaceAabb(entity.Handle, mins.Handle, maxs.Handle);
+        // The native writes both corners; they land on the stack and the vectors are built from
+        // the values, so neither needs a native buffer.
+        Vector3 nativeMins = default, nativeMaxs = default;
+        NativeAPI.GetEntityWorldSpaceAabb(entity.Handle, (nint)(&nativeMins), (nint)(&nativeMaxs));
+        mins = new Vector(nativeMins.X, nativeMins.Y, nativeMins.Z);
+        maxs = new Vector(nativeMaxs.X, nativeMaxs.Y, nativeMaxs.Z);
     }
 }
