@@ -123,6 +123,41 @@ public sealed class GameDataProvider : IStartupService
         }
     }
 
+    // A key is found under either spelling of the class separator: a plugin asking for
+    // "CAttributeList_SetOrAddAttributeValueByName" gets the entry a gamedata file names
+    // "CAttributeList::SetOrAddAttributeValueByName", and the other way round. Which one a server
+    // has depends on which release of the plugin (or which feed) its file came from, and the
+    // mismatch otherwise reads as a missing key although the signature is right there.
+    // An exact match always wins; the alias only answers for a spelling no file has.
+    internal static string CanonicalKey(string key) => key.Replace("::", "_", StringComparison.Ordinal);
+
+    private Dictionary<string, string>? _aliases;
+    private Dictionary<string, LoadedGameData>? _aliasSource;
+    private readonly object _aliasLock = new();
+
+    internal bool TryGetEntry(string key, out LoadedGameData entry)
+    {
+        var methods = Methods;
+        if (methods.TryGetValue(key, out entry!)) return true;
+
+        Dictionary<string, string>? aliases;
+        lock (_aliasLock)
+        {
+            // Rebuilt whenever Methods is a new dictionary (Load builds one per reload).
+            if (!ReferenceEquals(_aliasSource, methods) || _aliases == null)
+            {
+                _aliases = new Dictionary<string, string>(StringComparer.Ordinal);
+                foreach (var name in methods.Keys)
+                    _aliases[CanonicalKey(name)] = name;
+                _aliasSource = methods;
+            }
+
+            aliases = _aliases;
+        }
+
+        return aliases.TryGetValue(CanonicalKey(key), out var actual) && methods.TryGetValue(actual, out entry!);
+    }
+
     private static bool IsCoreFile(string fileName) => fileName.Equals("gamedata.json", StringComparison.OrdinalIgnoreCase);
 
     // Core gamedata comes from native, which has already layered gamedata/custom/*.json over
@@ -209,12 +244,11 @@ public static class GameData
     public static string GetSignature(string key)
     {
         Application.Instance.Logger.LogDebug("Getting signature: {Key}", key);
-        if (!GameDataProvider.Methods.ContainsKey(key))
+        if (!GameDataProvider.TryGetEntry(key, out var methodMetadata))
         {
             throw new ArgumentException(BuildMissingKeyMessage(key));
         }
 
-        var methodMetadata = GameDataProvider.Methods[key];
         if (methodMetadata.Signatures == null)
         {
             throw new InvalidOperationException($"No signatures found for {key} in gamedata.json");
@@ -241,7 +275,7 @@ public static class GameData
     /// </summary>
     public static string GetSignatureLibraryPath(string key)
     {
-        if (!GameDataProvider.Methods.TryGetValue(key, out var methodMetadata))
+        if (!GameDataProvider.TryGetEntry(key, out var methodMetadata))
         {
             throw new ArgumentException(BuildMissingKeyMessage(key));
         }
@@ -304,7 +338,7 @@ public static class GameData
     // Called per invoke by high-level wrappers (e.g. CBaseEntity.IsPlayerPawn), so one lookup.
     public static int GetOffset(string key)
     {
-        if (!GameDataProvider.Methods.TryGetValue(key, out var methodMetadata))
+        if (!GameDataProvider.TryGetEntry(key, out var methodMetadata))
         {
             throw new ArgumentException(BuildMissingKeyMessage(key));
         }

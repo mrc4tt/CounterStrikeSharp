@@ -369,6 +369,39 @@ inline Candidates FindCandidates(const std::string& fileName,
 
 inline bool IsGamedataKey(const std::string& key) { return !key.empty() && key[0] != '_'; }
 
+// "CAttributeList::SetOrAddAttributeValueByName" and "CAttributeList_SetOrAddAttributeValueByName"
+// are the same function: which spelling a plugin file uses depends on the plugin release it came
+// from, and the feed has one of them. Keys are compared in this form wherever a local file is
+// matched against a feed file, so a file is not left unidentified or unpatched over the
+// separator. The file's own spelling is never rewritten.
+inline std::string CanonicalKey(const std::string& key)
+{
+    std::string out;
+    out.reserve(key.size());
+    for (size_t i = 0; i < key.size(); ++i)
+    {
+        if (key[i] == ':' && i + 1 < key.size() && key[i + 1] == ':')
+        {
+            out += '_';
+            ++i;
+        }
+        else
+            out += key[i];
+    }
+    return out;
+}
+
+// The entry of `object` for `key`: the exact key, else one that differs only in the separator.
+inline const ordered_json* FindEntry(const ordered_json& object, const std::string& key)
+{
+    if (!object.is_object()) return nullptr;
+    if (auto it = object.find(key); it != object.end()) return &it.value();
+    const auto wanted = CanonicalKey(key);
+    for (auto it = object.begin(); it != object.end(); ++it)
+        if (IsGamedataKey(it.key()) && CanonicalKey(it.key()) == wanted) return &it.value();
+    return nullptr;
+}
+
 // Index into `options` of the feed file sharing the most gamedata keys with `local`;
 // kOverlapTie when two share the same, highest number, kOverlapNone when none shares any.
 constexpr int kOverlapTie = -1;
@@ -384,7 +417,7 @@ inline int PickByKeyOverlap(const ordered_json& local, const std::vector<const o
         if (!options[i] || !options[i]->is_object()) continue;
         size_t count = 0;
         for (const auto& [key, value] : local.items())
-            if (IsGamedataKey(key) && options[i]->contains(key)) ++count;
+            if (IsGamedataKey(key) && FindEntry(*options[i], key)) ++count;
         if (count == 0) continue;
         if (count > bestCount)
         {
@@ -457,12 +490,13 @@ PatchBrokenSignatures(ordered_json& local, const ordered_json& feed, const char*
         auto& signatures = local[key]["signatures"];
         const auto library = LibraryOf(signatures);
 
-        if (!feed.is_object() || !feed.contains(key))
+        const auto* found = FindEntry(feed, key);
+        if (!found)
         {
             result.unresolved.push_back(key + ": the feed does not have it");
             continue;
         }
-        const auto& feedEntry = feed[key];
+        const auto& feedEntry = *found;
         const auto feedSignature = SignatureOf(feedEntry, platform);
         if (feedSignature.empty())
         {
@@ -569,7 +603,7 @@ inline std::vector<std::string> DroppedKeys(const ordered_json& local, const ord
     std::vector<std::string> out;
     if (!local.is_object()) return out;
     for (const auto& [key, value] : local.items())
-        if (IsGamedataKey(key) && (!incoming.is_object() || !incoming.contains(key))) out.push_back(key);
+        if (IsGamedataKey(key) && !FindEntry(incoming, key)) out.push_back(key);
     return out;
 }
 

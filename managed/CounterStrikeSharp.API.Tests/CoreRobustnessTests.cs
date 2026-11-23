@@ -91,6 +91,40 @@ public class GameDataProviderTests
         Assert.Equal(new[] { "gamedata.json", "a.json", "b.json" }, provider.LoadedFiles);
         Assert.Equal("B", provider.Methods["Dup"].Signatures!.Linux);
     }
+
+    [Fact]
+    public void KeyIsFoundUnderEitherClassSeparator()
+    {
+        using var dir = new TempDir();
+        dir.Write("gamedata.json", "{" + Entry("CBaseEntity_Teleport", "CORE") + "}");
+        dir.Write("weaponpaints.json", "{" + Entry("CAttributeList::SetOrAddAttributeValueByName", "WP") + "}");
+
+        var provider = Load(dir);
+
+        Assert.True(provider.TryGetEntry("CAttributeList_SetOrAddAttributeValueByName", out var underscore));
+        Assert.Equal("WP", underscore.Signatures!.Linux);
+        Assert.True(provider.TryGetEntry("CAttributeList::SetOrAddAttributeValueByName", out var colons));
+        Assert.Same(underscore, colons);
+        Assert.True(provider.TryGetEntry("CBaseEntity::Teleport", out var core));
+        Assert.Equal("CORE", core.Signatures!.Linux);
+        Assert.False(provider.TryGetEntry("CAttributeList_Missing", out _));
+    }
+
+    [Fact]
+    public void ExactSpellingWinsOverTheAlias()
+    {
+        using var dir = new TempDir();
+        dir.Write("gamedata.json", "{}");
+        dir.Write("a.json", "{" + Entry("Foo::Bar", "COLONS") + "}");
+        dir.Write("b.json", "{" + Entry("Foo_Bar", "UNDERSCORE") + "}");
+
+        var provider = Load(dir);
+
+        Assert.True(provider.TryGetEntry("Foo::Bar", out var colons));
+        Assert.Equal("COLONS", colons.Signatures!.Linux);
+        Assert.True(provider.TryGetEntry("Foo_Bar", out var underscore));
+        Assert.Equal("UNDERSCORE", underscore.Signatures!.Linux);
+    }
 }
 
 public class PluginDiscoveryTests

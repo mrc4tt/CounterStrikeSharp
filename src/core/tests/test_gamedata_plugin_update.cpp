@@ -306,6 +306,40 @@ TEST_CASE("DroppedKeys lists gamedata keys the incoming file lacks", "[plugin-ga
     CHECK(DroppedKeys(local, ordered_json::parse(R"({ "A": {} })")) == std::vector<std::string>{ "B" });
 }
 
+TEST_CASE("Keys match across the :: and _ class separators", "[plugin-gamedata]")
+{
+    CHECK(CanonicalKey("CAttributeList::SetOrAddAttributeValueByName") == "CAttributeList_SetOrAddAttributeValueByName");
+    CHECK(CanonicalKey("A::B::C_D") == "A_B_C_D");
+    CHECK(CanonicalKey("A:B:") == "A:B:");
+
+    auto local = ordered_json::parse(R"({
+        "CAttributeList::SetOrAddAttributeValueByName": { "signatures": { "library": "server", "linux": "OLD" } },
+        "Other_Key": { "signatures": { "library": "server", "linux": "OLD2" } }
+    })");
+    auto feed = ordered_json::parse(R"({
+        "CAttributeList_SetOrAddAttributeValueByName": { "signatures": { "library": "server", "linux": "NEW" } },
+        "Other::Key": { "signatures": { "library": "server", "linux": "NEW2" } }
+    })");
+    auto stranger = ordered_json::parse(R"({ "Other_Key": {} })");
+
+    CHECK(PickByKeyOverlap(local, { &stranger, &feed }) == 1);
+    CHECK(DroppedKeys(local, feed).empty());
+
+    auto result = PatchBrokenSignatures(local, feed, "linux", ResolvesOnly({ "NEW", "NEW2" }));
+    CHECK(result.patched.size() == 2);
+    CHECK(result.unresolved.empty());
+    // The file keeps its own spelling; only the signature text changes.
+    CHECK(local["CAttributeList::SetOrAddAttributeValueByName"]["signatures"]["linux"] == "NEW");
+    CHECK(local["Other_Key"]["signatures"]["linux"] == "NEW2");
+    CHECK(local.size() == 2);
+
+    // An exact key is preferred over one that only matches by separator.
+    auto both = ordered_json::parse(R"({ "A::B": { "x": 1 }, "A_B": { "x": 2 } })");
+    CHECK((*FindEntry(both, "A_B"))["x"] == 2);
+    CHECK((*FindEntry(both, "A::B"))["x"] == 1);
+    CHECK(FindEntry(both, "A_C") == nullptr);
+}
+
 TEST_CASE("DiffEntries names the platform of every changed signature and offset", "[plugin-gamedata]")
 {
     auto before = ordered_json::parse(R"({
