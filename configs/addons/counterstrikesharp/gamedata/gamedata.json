@@ -9,7 +9,7 @@
   "ClientPrint": {
     "signatures": {
       "library": "server",
-      "windows": "48 85 C9 0F 84 ? ? ? ? 48 89 5C 24 ? 48 89 74 24 ?",
+      "windows": "48 85 C9 0F 84 ? ? ? ? 48 89 5C 24 ? 48 89 74 24 ? 48 89 7C 24 ? 55",
       "linux": "55 48 89 E5 41 57 41 56 41 55 41 54 53 48 83 EC ? 4C 89 45 ? 4C 89 4D ?"
     }
   },
@@ -205,7 +205,7 @@
   "CBasePlayerPawn_RemovePlayerItem": {
     "signatures": {
       "library": "server",
-      "windows": "48 85 D2 0F 84 ? ? ? ? 48 89 5C 24 ? 57 48 83 EC ? 48 8B DA 48 8B F9 E8 ? ? ? ?",
+      "windows": "48 85 D2 0F 84 ? ? ? ? 48 89 5C 24 ? 57 48 83 EC ? 48 8B DA 48 8B F9 E8 ? ? ? ? 48 3B C3",
       "linux": "48 85 F6 74 ? E9 ? ? ? ? 66 0F 1F 44 00 00 C3 CC CC CC CC CC CC CC CC CC CC CC CC CC CC CC 55 48 89 E5 41 54 41 89 F4"
     }
   },
@@ -319,7 +319,7 @@
   "CCSNavArea_IsValidNavMesh": {
     "signatures": {
       "library": "server",
-      "windows": "48 83 3D D0 34 56 ? ?",
+      "windows": "48 83 3D E0 4F 56 ? ?",
       "linux": "48 8D 05 ? ? ? ? 48 83 38 ? 0F 95 C0 C3"
     }
   },
