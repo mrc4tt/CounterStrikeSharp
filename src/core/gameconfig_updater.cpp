@@ -872,6 +872,8 @@ void RecordWrittenHash(const std::string& gamedataPath)
         CSSHARP_CORE_WARN("Could not record the written gamedata.json ({}); local edits will not be detected", error);
 }
 
+// Per file, while an update can still be rolled back. guard::PruneBackups cuts it to the newest
+// one once the update is confirmed (and at a start with nothing pending).
 constexpr size_t kMaxBackups = 5;
 
 // "20261106-142233": sorts lexically, safe in a file name.

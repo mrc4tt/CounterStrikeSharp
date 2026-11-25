@@ -323,3 +323,40 @@ TEST_CASE("Guard: Disable forgets everything", "[gamedata-guard]")
     CHECK_FALSE(fs::exists(dir / "update.rejected"));
     CHECK_FALSE(fs::exists(dir / guard::kStoppedMarker));
 }
+
+TEST_CASE("Guard: confirmed or idle, only the newest backup of each file stays", "[gamedata-guard]")
+{
+    TempDir dir;
+    fs::create_directories(dir.path / "backup" / "plugins");
+    const auto backup = [&](const std::string& name) {
+        return (dir.path / "backup" / name).string();
+    };
+    for (const auto* name : { "gamedata-20261101-000000.json", "gamedata-20261102-000000.json", "gamedata-20261103-000000.json",
+                              "plugins/a.json.20261101-000000.bak", "plugins/a.json.20261102-000000.bak",
+                              "plugins/sub_b.json.20261101-000000.bak", "notes.txt", "plugins/a.json.bak", "gamedata-mine.json" })
+        Put(backup(name), "x");
+
+    SECTION("pending: nothing is touched, the rollback may need any of them")
+    {
+        std::string error;
+        REQUIRE(guard::RecordPending(dir.path.string(), { dir / "gamedata.json", backup("gamedata-20261101-000000.json"), "aa" }, error));
+        guard::CheckPreviousStart(dir.path.string(), "linux");
+        CHECK(fs::exists(backup("gamedata-20261101-000000.json")));
+        CHECK(fs::exists(backup("plugins/a.json.20261101-000000.bak")));
+
+        REQUIRE(guard::Confirm(dir.path.string()));
+    }
+    SECTION("nothing pending at start") { guard::CheckPreviousStart(dir.path.string(), "linux"); }
+    SECTION("guard turned off") { guard::Disable(dir.path.string()); }
+
+    CHECK_FALSE(fs::exists(backup("gamedata-20261101-000000.json")));
+    CHECK_FALSE(fs::exists(backup("gamedata-20261102-000000.json")));
+    CHECK(fs::exists(backup("gamedata-20261103-000000.json")));
+    CHECK_FALSE(fs::exists(backup("plugins/a.json.20261101-000000.bak")));
+    CHECK(fs::exists(backup("plugins/a.json.20261102-000000.bak")));
+    CHECK(fs::exists(backup("plugins/sub_b.json.20261101-000000.bak")));
+    // Not the updater's names: not ours to delete.
+    CHECK(fs::exists(backup("notes.txt")));
+    CHECK(fs::exists(backup("plugins/a.json.bak")));
+    CHECK(fs::exists(backup("gamedata-mine.json")));
+}

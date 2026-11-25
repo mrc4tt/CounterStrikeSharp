@@ -93,6 +93,14 @@ BootCheck CheckPreviousStart(const std::string& directory, const std::string& pl
 // Returns whether there was one.
 bool Confirm(const std::string& directory);
 
+// Backups under <directory>/backup pile up otherwise (the updater keeps several per file while an
+// update can still be rolled back, because a file written twice before a confirmation needs its
+// first one). Once nothing is pending only the newest of each file is worth keeping: the last
+// pre-update state, hand edits included. Keeps the newest `keep` of gamedata-<time>.json and of
+// each plugins/<file>.<time>.bak; other files are left alone. Returns how many were deleted.
+// Called by Confirm, Disable and a CheckPreviousStart that finds nothing pending.
+int PruneBackups(const std::string& directory, size_t keep = 1);
+
 // The guard is turned off: forget update.pending, update.stopped and every rejection.
 void Disable(const std::string& directory);
 
