@@ -5,7 +5,9 @@
 #include <filesystem>
 #include <fstream>
 #include <iterator>
+#include <map>
 #include <mutex>
+#include <string_view>
 
 #include <nlohmann/json.hpp>
 
@@ -184,6 +186,55 @@ std::vector<std::string> SuspectKeys(const std::string& before, const std::strin
     return out;
 }
 
+int PruneBackups(const std::string& directory, size_t keep)
+{
+    // "20261106-142233", the updater's UtcStamp(): sorts lexically.
+    constexpr size_t kStamp = 15;
+    const fs::path root = fs::path(directory) / "backup";
+    std::error_code ec;
+    int removed = 0;
+
+    auto prune = [&](const fs::path& dir, auto groupOf) {
+        std::map<std::string, std::vector<fs::path>> groups;
+        for (fs::directory_iterator it(dir, ec), end; !ec && it != end; it.increment(ec))
+        {
+            std::error_code ignored;
+            if (!it->is_regular_file(ignored)) continue;
+            const auto group = groupOf(it->path().filename().string());
+            if (!group.empty()) groups[group].push_back(it->path());
+        }
+        for (auto& [group, files] : groups)
+        {
+            std::sort(files.begin(), files.end());
+            for (size_t i = 0; i + keep < files.size(); ++i)
+            {
+                std::error_code ignored;
+                if (fs::remove(files[i], ignored)) ++removed;
+            }
+        }
+    };
+
+    // backup/gamedata-<stamp>.json
+    prune(root, [](const std::string& name) -> std::string {
+        constexpr std::string_view prefix = "gamedata-", suffix = ".json";
+        const bool ours = name.size() == prefix.size() + kStamp + suffix.size() && name.rfind(prefix, 0) == 0 &&
+                          name.compare(name.size() - suffix.size(), suffix.size(), suffix) == 0;
+        return ours ? "gamedata" : "";
+    });
+    // backup/plugins/<file>.<stamp>.bak, one group per <file>
+    prune(root / "plugins", [](const std::string& name) -> std::string {
+        constexpr std::string_view suffix = ".bak";
+        const size_t tail = 1 + kStamp + suffix.size();
+        const bool ours =
+            name.size() > tail && name[name.size() - tail] == '.' && name.compare(name.size() - suffix.size(), suffix.size(), suffix) == 0;
+        return ours ? name.substr(0, name.size() - tail) : "";
+    });
+    // Only when empty: remove() refuses a directory that still holds someone's file.
+    fs::remove(root / "plugins", ec);
+    fs::remove(root, ec);
+    return removed;
+}
+
 BootCheck CheckPreviousStart(const std::string& directory, const std::string& platform, std::time_t now)
 {
     std::lock_guard lock(g_fileMutex);
@@ -198,7 +249,12 @@ BootCheck CheckPreviousStart(const std::string& directory, const std::string& pl
     while (!check.stopSignal.empty() && (check.stopSignal.back() == '\n' || check.stopSignal.back() == '\r'))
         check.stopSignal.pop_back();
 
-    if (!fs::exists(pendingPath, ec)) return check;
+    if (!fs::exists(pendingPath, ec))
+    {
+        // Nothing to roll back: backups (and the piles earlier versions left) can go.
+        PruneBackups(directory);
+        return check;
+    }
 
     auto pending = ReadObject(pendingPath);
     check.lastUptime = pending.contains("uptime") && pending["uptime"].is_number_integer() ? pending["uptime"].get<int>() : -1;
@@ -298,7 +354,10 @@ bool Confirm(const std::string& directory)
     for (const auto& entry : FilesOf(pending))
         if (entry.is_object() && !entry.value("sha256", "").empty()) hashes.insert(entry.value("sha256", ""));
     Unreject(directory, hashes);
-    return fs::remove(PendingPath(directory), ec);
+    const bool removed = fs::remove(PendingPath(directory), ec);
+    // No rollback can want the backups any more.
+    PruneBackups(directory);
+    return removed;
 }
 
 void Disable(const std::string& directory)
@@ -308,6 +367,7 @@ void Disable(const std::string& directory)
     fs::remove(PendingPath(directory), ec);
     fs::remove(StoppedPath(directory), ec);
     fs::remove(RejectedPath(directory), ec);
+    PruneBackups(directory);
 }
 
 std::set<std::string> Rejected(const std::string& directory, std::time_t now)

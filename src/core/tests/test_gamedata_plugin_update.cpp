@@ -365,3 +365,55 @@ TEST_CASE("DiffEntries names the platform of every changed signature and offset"
     CHECK(diff[3].name == "Gone");
     CHECK(diff[3].changed == std::vector<std::string>{ "removed" });
 }
+
+TEST_CASE("OffsetsTrusted: only a signed feed and a file known to be that plugin's", "[plugin-gamedata]")
+{
+    CHECK(OffsetsTrusted(Match::Explicit, false, true));
+    CHECK(OffsetsTrusted(Match::Hash, false, true));
+    CHECK(OffsetsTrusted(Match::Remembered, true, true));
+    // Remembered from a name match or the report's answer: a guess.
+    CHECK_FALSE(OffsetsTrusted(Match::Remembered, false, true));
+    CHECK_FALSE(OffsetsTrusted(Match::Name, true, true));
+    CHECK_FALSE(OffsetsTrusted(Match::Explicit, true, false));
+}
+
+TEST_CASE("PatchStaleOffsets sets only this platform's existing offsets that differ", "[plugin-gamedata]")
+{
+    auto local = ordered_json::parse(R"({
+        "Moved": {"offsets": {"linux": 10, "windows": 9}},
+        "Same": {"offsets": {"linux": 20, "windows": 19}},
+        "CClass::Sep": {"offsets": {"linux": 30, "windows": 29}},
+        "WindowsOnly": {"offsets": {"windows": 5}},
+        "NotInFeed": {"offsets": {"linux": 40}},
+        "FeedHasNoLinux": {"offsets": {"linux": 50}},
+        "FeedNotANumber": {"offsets": {"linux": 60}},
+        "Sig": {"signatures": {"library": "server", "linux": "AA"}},
+        "_meta": {"offsets": {"linux": 1}}
+    })");
+    const auto feed = ordered_json::parse(R"({
+        "Moved": {"offsets": {"linux": 11, "windows": 12}},
+        "Same": {"offsets": {"linux": 20, "windows": 99}},
+        "CClass_Sep": {"offsets": {"linux": 31, "windows": 29}},
+        "WindowsOnly": {"offsets": {"linux": 6, "windows": 7}},
+        "FeedHasNoLinux": {"offsets": {"windows": 51}},
+        "FeedNotANumber": {"offsets": {"linux": "61"}},
+        "Sig": {"signatures": {"library": "server", "linux": "BB"}, "offsets": {"linux": 3}},
+        "_meta": {"offsets": {"linux": 2}},
+        "OnlyInFeed": {"offsets": {"linux": 70}}
+    })");
+    const auto before = local;
+
+    const auto patched = PatchStaleOffsets(local, feed, "linux");
+    CHECK(patched == std::vector<std::string>{ "Moved", "CClass::Sep" });
+    CHECK(local["Moved"]["offsets"]["linux"] == 11);
+    CHECK(local["CClass::Sep"]["offsets"]["linux"] == 31);
+
+    // The other platform, and everything the rule does not name, is as it was.
+    auto expected = before;
+    expected["Moved"]["offsets"]["linux"] = 11;
+    expected["CClass::Sep"]["offsets"]["linux"] = 31;
+    CHECK(local == expected);
+    CHECK(local.dump() == expected.dump());
+
+    CHECK(PatchStaleOffsets(local, feed, "linux").empty());
+}
