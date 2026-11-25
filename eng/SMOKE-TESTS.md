@@ -23,7 +23,12 @@ cs2-smoke-test --ref main --custom /path/to/custom-dir        # gamedata/custom/
 cs2-smoke-test --ref main --keep                              # leave the server running afterwards
 ```
 
-Nothing runs it automatically, and it does not need the PR to be merged.
+It does not need the PR to be merged, and no PR event or timer starts it. One thing runs it by
+itself: a release. `server-ops release --only CounterStrikeSharp` (the release workflow and the
+dashboard go through it) runs `cs2-smoke-test --gate --local <branch>` on the branch
+`create-release.sh` is about to tag, and publishes only when it passes. A failed run, or a smoke
+server that is busy, stops the release; a dry run is tested as well. `--no-smoke` skips the test
+and can only be given by hand on re.
 
 ## What runs
 
