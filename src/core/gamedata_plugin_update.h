@@ -18,10 +18,13 @@
 //
 // gamedata/gamedata.json is replaced whole by the core updater: the feed owns that file. A plugin's
 // gamedata file is different. Its author owns it, a server may run a plugin release the feed has
-// never seen, and the file can carry keys the feed does not know. So a plugin file is never
-// replaced; only the signatures that do not resolve on this server are swapped for the feed's, and
-// only when the feed's signature resolves here (same library, same platform). Working keys,
-// offsets, unknown keys, key order and formatting all stay as they were.
+// never seen, and the file can carry keys the feed does not know. So a plugin file is patched one
+// key at a time: a signature that does not resolve on this server is swapped for the feed's, only
+// when the feed's resolves here (same library, same platform); an offset is set to the feed's
+// only in a file known to be that feed file's (PatchStaleOffsets). Working signatures, unknown
+// keys, the other platform, key order and formatting all stay as they were. The one exception is
+// an unmodified published copy from an earlier build, which is replaced by this build's file
+// (DecideWholeFileRefresh).
 //
 // Which feed file a local file is: the VibeSignatures Pages site publishes
 // latest/<plugin>/<fileName> per plugin, and several plugins can share a file name
@@ -524,6 +527,53 @@ PatchBrokenSignatures(ordered_json& local, const ordered_json& feed, const char*
         result.patched.push_back(key);
     }
     return result;
+}
+
+// --- Stale offsets, one key at a time ---
+//
+// A game update moves offsets without breaking any signature, and a file that is no longer a
+// published copy (an operator's edit, or signatures patched above) never qualifies for the
+// whole-file step below, so its offsets would stay at the old build's values for good. Offsets
+// cannot be checked in this process, so the evidence has to be about where the value comes from:
+// the feed file is in this build's signed manifest, and the local file is known to be that
+// plugin's (OffsetsTrusted). Then every `platform` offset the feed has a different value for is
+// set to the feed's. Only an offset the file already has is touched: no key, no platform and
+// nothing else is added. An operator who wants their own offsets turns the file off with "" in
+// PluginGamedataFeeds.
+
+// Whether a file identified this way may have its offsets set from the feed. A file name, key
+// overlap or the report service's answer are guesses; `provenBefore` says this file was once
+// byte-identical to a published copy of the very feed file it is matched to now.
+inline bool OffsetsTrusted(Match match, bool provenBefore, bool signedManifest)
+{
+    if (!signedManifest) return false;
+    return match == Match::Explicit || match == Match::Hash || (match == Match::Remembered && provenBefore);
+}
+
+inline const ordered_json* OffsetOf(const ordered_json& entry, const char* platform)
+{
+    if (!entry.is_object() || !entry.contains("offsets") || !entry["offsets"].is_object()) return nullptr;
+    const auto& offsets = entry["offsets"];
+    if (!offsets.contains(platform) || !offsets[platform].is_number_integer()) return nullptr;
+    return &offsets[platform];
+}
+
+// Sets, in `local`, every `platform` offset that differs from the feed's for the same key.
+// Returns the keys changed.
+inline std::vector<std::string> PatchStaleOffsets(ordered_json& local, const ordered_json& feed, const char* platform)
+{
+    std::vector<std::string> patched;
+    if (!local.is_object()) return patched;
+    for (auto it = local.begin(); it != local.end(); ++it)
+    {
+        if (!IsGamedataKey(it.key()) || !OffsetOf(it.value(), platform)) continue;
+        const auto* found = FindEntry(feed, it.key());
+        const auto* wanted = found ? OffsetOf(*found, platform) : nullptr;
+        if (!wanted || *wanted == it.value()["offsets"][platform]) continue;
+        it.value()["offsets"][platform] = *wanted;
+        patched.push_back(it.key());
+    }
+    return patched;
 }
 
 // --- Taking this build's file whole (offsets included) ---

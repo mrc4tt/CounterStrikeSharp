@@ -229,6 +229,9 @@ int PruneBackups(const std::string& directory, size_t keep)
             name.size() > tail && name[name.size() - tail] == '.' && name.compare(name.size() - suffix.size(), suffix.size(), suffix) == 0;
         return ours ? name.substr(0, name.size() - tail) : "";
     });
+    // Only when empty: remove() refuses a directory that still holds someone's file.
+    fs::remove(root / "plugins", ec);
+    fs::remove(root, ec);
     return removed;
 }
 
@@ -248,7 +251,7 @@ BootCheck CheckPreviousStart(const std::string& directory, const std::string& pl
 
     if (!fs::exists(pendingPath, ec))
     {
-        // Nothing to roll back: older backups (and the piles earlier versions left) can go.
+        // Nothing to roll back: backups (and the piles earlier versions left) can go.
         PruneBackups(directory);
         return check;
     }
@@ -352,7 +355,7 @@ bool Confirm(const std::string& directory)
         if (entry.is_object() && !entry.value("sha256", "").empty()) hashes.insert(entry.value("sha256", ""));
     Unreject(directory, hashes);
     const bool removed = fs::remove(PendingPath(directory), ec);
-    // No rollback can want the older backups any more.
+    // No rollback can want the backups any more.
     PruneBackups(directory);
     return removed;
 }

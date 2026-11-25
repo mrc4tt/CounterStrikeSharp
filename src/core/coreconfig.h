@@ -48,7 +48,8 @@ class CCoreConfig
     std::string LogVerbosity = "information";
     // Plugin gamedata auto-update (gameconfig_updater.cpp, core/gamedata_plugin_update.h): swaps
     // signatures that do not resolve in gamedata/*.json (not plugins/*/gamedata/ copies) for the
-    // feed's, from the same site as AutoUpdateURL. Needs AutoUpdateEnabled as well.
+    // feed's, and sets offsets that moved in files known to be a feed file's, from the same site
+    // as AutoUpdateURL. Needs AutoUpdateEnabled as well.
     bool PluginGamedataAutoUpdate = true;
     // Crash-loop guard for gamedata updates (core/gamedata_update_guard.h): roll back an update
     // the server dies with twice in a row. Off: updates are never rolled back or held back.

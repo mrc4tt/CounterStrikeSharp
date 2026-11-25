@@ -872,8 +872,8 @@ void RecordWrittenHash(const std::string& gamedataPath)
         CSSHARP_CORE_WARN("Could not record the written gamedata.json ({}); local edits will not be detected", error);
 }
 
-// Per file, while an update can still be rolled back. guard::PruneBackups cuts it to the newest
-// one once the update is confirmed (and at a start with nothing pending).
+// Per file, while an update can still be rolled back. guard::PruneBackups deletes them once the
+// update is confirmed (and at a start with nothing pending).
 constexpr size_t kMaxBackups = 5;
 
 // "20261106-142233": sorts lexically, safe in a file name.
@@ -1709,7 +1709,9 @@ void TryUpdatePluginGamedata()
     }
 
     // Which feed file each local file was patched from last time: a patched file no longer
-    // matches any published hash. Not ".json", so no gamedata reader picks it up. "_build": the
+    // matches any published hash. Not ".json", so no gamedata reader picks it up. "_proven": the
+    // files that were a published copy of that feed file when identified (by hash), which is what
+    // lets their offsets be set from it after they stopped being one. "_build": the
     // game build every file was last looked at for (below).
     const auto statePath = utils::GamedataDirectory() + "/plugin-gamedata.state";
     auto state = nlohmann::json::parse(ReadWholeFile(statePath), nullptr, false);
@@ -1725,9 +1727,10 @@ void TryUpdatePluginGamedata()
         return;
     }
 
-    // Offsets go stale on a game update without any signature breaking, and only a published copy
-    // can have them refreshed (DecideWholeFileRefresh). So once per game build every file is
-    // looked at; otherwise only files with a broken signature go to the network.
+    // Offsets go stale on a game update without any signature breaking, and only a file known to be
+    // a feed file's can have them refreshed (DecideWholeFileRefresh for an unmodified copy,
+    // PatchStaleOffsets otherwise). So once per game build every file is looked at; otherwise only
+    // files with a broken signature go to the network.
     const bool buildCheck = !files.empty() && upload::Text(state, "_build") != serverTag;
     if (brokenFiles == 0 && !buildCheck)
     {
@@ -1782,7 +1785,7 @@ void TryUpdatePluginGamedata()
         indexFetched = true;
     }
     else
-        CSSHARP_CORE_WARN("Plugin gamedata: {}; identifying plugin files by name only, offsets are not updated", error);
+        CSSHARP_CORE_WARN("Plugin gamedata: {}; identifying plugin files by name or memory only, no file is replaced whole", error);
 
     struct FeedBody
     {
@@ -1823,7 +1826,7 @@ void TryUpdatePluginGamedata()
         return &*slot;
     };
 
-    size_t filesPatched = 0, filesRefreshed = 0, keysPatched = 0, keysLeft = 0;
+    size_t filesPatched = 0, filesRefreshed = 0, keysPatched = 0, offsetsPatched = 0, keysLeft = 0;
     std::map<std::string, std::string> uploadsWritten; // relative path -> sha256 written
     // Read links the service answered 404 for (deleted, or expired unread after 90 days): dropped,
     // so the next report uploads the file again.
@@ -1867,12 +1870,15 @@ void TryUpdatePluginGamedata()
     };
 
     // Signature-only patch of `file` from `source`, written back in the file's own style.
-    auto patchSignatures = [&](LocalFile& file, const pg::ordered_json& source, status::FilePatch patch) {
+    // `offsets`: keys whose offset the caller already set in file.json (PatchStaleOffsets); they
+    // are written with the signatures, or on their own when no signature was replaced.
+    auto patchSignatures = [&](LocalFile& file, const pg::ordered_json& source, status::FilePatch patch,
+                               const std::vector<std::string>& offsets = {}) {
         auto result = pg::PatchBrokenSignatures(file.json, source, platform, SignatureResolvesInProcess);
         for (const auto& reason : result.unresolved)
             CSSHARP_CORE_WARN("Plugin gamedata: {} {} ({} {})", file.relative, reason, patch.source, patch.feed);
         keysLeft += result.unresolved.size();
-        if (result.patched.empty()) return;
+        if (result.patched.empty() && offsets.empty()) return;
 
         std::string text;
         try
@@ -1889,18 +1895,24 @@ void TryUpdatePluginGamedata()
         const auto sourceName = patch.source;
         const auto feedName = patch.feed;
         const auto matchedBy = patch.matchedBy;
-        patch.mode = "signatures";
-        patch.keys = status::SignatureChanges(result.patched, platform);
+        patch.mode = result.patched.empty() ? "offsets" : "signatures";
+        patch.keys = status::PatchChanges(result.patched, offsets, platform);
         if (!writeFile(file, text, std::move(patch)))
         {
             keysLeft += result.patched.size();
             return;
         }
-        CSSHARP_CORE_INFO("Plugin gamedata: {} fixed {} {} signature(s) from {} {} (matched by {}, backup {}): {}", file.relative,
-                          result.patched.size(), platform, sourceName, feedName, matchedBy, g_startRecord.files.back().backup,
-                          JoinKeys(result.patched));
+        if (!result.patched.empty())
+            CSSHARP_CORE_INFO("Plugin gamedata: {} fixed {} {} signature(s) from {} {} (matched by {}, backup {}): {}", file.relative,
+                              result.patched.size(), platform, sourceName, feedName, matchedBy, g_startRecord.files.back().backup,
+                              JoinKeys(result.patched));
+        if (!offsets.empty())
+            CSSHARP_CORE_INFO("Plugin gamedata: {} set {} {} offset(s) to build {}'s from {} {} (matched by {}, backup {}): {}",
+                              file.relative, offsets.size(), platform, found->published, sourceName, feedName, matchedBy,
+                              g_startRecord.files.back().backup, JoinKeys(offsets));
         ++filesPatched;
         keysPatched += result.patched.size();
+        offsetsPatched += offsets.size();
     };
 
     for (auto& file : files)
@@ -1947,10 +1959,15 @@ void TryUpdatePluginGamedata()
             if (res.error.empty() && res.status == 404) uploadsGone.insert(file.relative);
         }
 
+        // Once byte-identical to a published copy of the feed file it is remembered as: the one
+        // case where a remembered feed is known rather than guessed (pg::OffsetsTrusted).
+        const auto provenUrl = state.contains("_proven") ? upload::Text(state["_proven"], file.relative.c_str()) : std::string();
+        const bool provenMatch = candidates.match == pg::Match::Remembered && candidates.urls.front() == provenUrl;
+
         // A file without broken signatures is only here for the build check, which concerns
-        // published copies: nothing to say about the rest.
+        // files known to be a feed file's: nothing to say about the rest.
         const bool quiet = file.broken == 0;
-        if (quiet && !strongMatch) continue;
+        if (quiet && !strongMatch && !provenMatch) continue;
 
         if (candidates.urls.empty())
         {
@@ -1996,6 +2013,14 @@ void TryUpdatePluginGamedata()
             stateChanged = true;
         }
 
+        if (candidates.match == pg::Match::Hash && provenUrl != chosen)
+        {
+            if (!state.contains("_proven") || !state["_proven"].is_object()) state["_proven"] = nlohmann::json::object();
+            state["_proven"][file.relative] = chosen;
+            stateChanged = true;
+        }
+        const bool offsetsTrusted = pg::OffsetsTrusted(candidates.match, provenUrl == chosen, SigningEnabled());
+
         // Our own unmodified file from an earlier build: take this build's whole, offsets included.
         const auto decision =
             pg::DecideWholeFileRefresh(file.sha256s, chosen, found->published, feedSha256(chosen), SigningEnabled(), publications);
@@ -2039,28 +2064,33 @@ void TryUpdatePluginGamedata()
                 checkAgain = true;
             }
             else
-                CSSHARP_CORE_WARN("Plugin gamedata: {} not replaced with build {}'s {} ({}); signatures only", file.relative,
+                CSSHARP_CORE_WARN("Plugin gamedata: {} not replaced with build {}'s {} ({}); one key at a time", file.relative,
                                   found->published, chosen, refused);
         }
         else if (quiet)
-        {
-            CSSHARP_CORE_DEBUG("Plugin gamedata: {} ({}) not refreshed: {}", file.relative, chosen, decision.why);
-            continue;
-        }
+            CSSHARP_CORE_DEBUG("Plugin gamedata: {} ({}) not replaced whole: {}", file.relative, chosen, decision.why);
 
-        if (file.broken == 0) continue;
+        // Not a published copy any more (or the whole file was refused): what is left is one key
+        // at a time. Offsets only for a file known to be this feed file's, signatures for any.
+        const bool offsetsWanted = offsetsTrusted && !decision.current;
+        if (file.broken == 0 && !offsetsWanted) continue;
 
         const auto* loaded = loadFeed(chosen);
         if (!loaded)
         {
             keysLeft += file.broken;
+            if (offsetsWanted) checkAgain = true;
             continue;
         }
+        const auto offsets = offsetsWanted ? pg::PatchStaleOffsets(file.json, loaded->json, platform) : std::vector<std::string>();
+        const auto filesBefore = g_startRecord.files.size();
         status::FilePatch patch;
         patch.feed = chosen;
         patch.build = found->published;
         patch.matchedBy = pg::MatchName(candidates.match);
-        patchSignatures(file, loaded->json, std::move(patch));
+        patchSignatures(file, loaded->json, std::move(patch), offsets);
+        // Offsets that should have been written and were not: the build check runs again.
+        if (!offsets.empty() && g_startRecord.files.size() == filesBefore) checkAgain = true;
     }
 
     // Every file has been looked at for this build; offsets need not be looked at again until the
@@ -2084,10 +2114,10 @@ void TryUpdatePluginGamedata()
     }, error))
         CSSHARP_CORE_WARN("Plugin gamedata: could not record the updated files in plugin-gamedata.uploads ({})", error);
 
-    if (keysPatched > 0 || keysLeft > 0 || filesRefreshed > 0)
-        CSSHARP_CORE_INFO("Plugin gamedata: fixed {} signature(s) in {} file(s), replaced {} unmodified file(s) with this build's, "
-                          "{} signature(s) still don't resolve",
-                          keysPatched, filesPatched, filesRefreshed, keysLeft);
+    if (keysPatched > 0 || offsetsPatched > 0 || keysLeft > 0 || filesRefreshed > 0)
+        CSSHARP_CORE_INFO("Plugin gamedata: fixed {} signature(s) and {} offset(s) in {} file(s), replaced {} unmodified file(s) with "
+                          "this build's, {} signature(s) still don't resolve",
+                          keysPatched, offsetsPatched, filesPatched, filesRefreshed, keysLeft);
 }
 
 namespace {

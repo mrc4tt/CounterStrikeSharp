@@ -1,5 +1,6 @@
 #pragma once
 
+#include <algorithm>
 #include <string>
 #include <vector>
 
@@ -33,7 +34,8 @@ struct FilePatch
     // "feed": the signed VibeSignatures feed; "upload": this server's own uploaded copy on the
     // GamedataReportURL host (unsigned, so signatures only).
     std::string source = "feed";
-    // "signatures": broken signatures swapped one by one (gamedata_plugin_update.h);
+    // "signatures": broken signatures swapped one by one (gamedata_plugin_update.h), with any
+    // stale offsets (keys[].changed says which); "offsets": stale offsets only;
     // "file": an unmodified older published copy replaced by this build's file, offsets included.
     std::string mode = "signatures";
     std::string feed; // "<plugin>/<fileName>" for the feed, the read URL for an upload
@@ -96,6 +98,23 @@ inline std::vector<plugin_gamedata::KeyChange> SignatureChanges(const std::vecto
     std::vector<plugin_gamedata::KeyChange> out;
     for (const auto& key : keys)
         out.push_back({ key, { "signatures." + platform } });
+    return out;
+}
+
+// The same, plus the keys whose "offsets.<platform>" was set from the feed (PatchStaleOffsets).
+inline std::vector<plugin_gamedata::KeyChange>
+PatchChanges(const std::vector<std::string>& signatures, const std::vector<std::string>& offsets, const std::string& platform)
+{
+    auto out = SignatureChanges(signatures, platform);
+    for (const auto& key : offsets)
+    {
+        auto it = std::find_if(out.begin(), out.end(), [&](const plugin_gamedata::KeyChange& change) {
+            return change.name == key;
+        });
+        if (it == out.end()) out.push_back({ key, { "offsets." + platform } });
+        else
+            it->changed.push_back("offsets." + platform);
+    }
     return out;
 }
 

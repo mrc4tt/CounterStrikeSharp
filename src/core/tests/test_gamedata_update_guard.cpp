@@ -324,7 +324,7 @@ TEST_CASE("Guard: Disable forgets everything", "[gamedata-guard]")
     CHECK_FALSE(fs::exists(dir / guard::kStoppedMarker));
 }
 
-TEST_CASE("Guard: confirmed or idle, only the newest backup of each file stays", "[gamedata-guard]")
+TEST_CASE("Guard: confirmed or idle, no backup stays", "[gamedata-guard]")
 {
     TempDir dir;
     fs::create_directories(dir.path / "backup" / "plugins");
@@ -351,12 +351,31 @@ TEST_CASE("Guard: confirmed or idle, only the newest backup of each file stays",
 
     CHECK_FALSE(fs::exists(backup("gamedata-20261101-000000.json")));
     CHECK_FALSE(fs::exists(backup("gamedata-20261102-000000.json")));
-    CHECK(fs::exists(backup("gamedata-20261103-000000.json")));
+    CHECK_FALSE(fs::exists(backup("gamedata-20261103-000000.json")));
     CHECK_FALSE(fs::exists(backup("plugins/a.json.20261101-000000.bak")));
-    CHECK(fs::exists(backup("plugins/a.json.20261102-000000.bak")));
-    CHECK(fs::exists(backup("plugins/sub_b.json.20261101-000000.bak")));
+    CHECK_FALSE(fs::exists(backup("plugins/a.json.20261102-000000.bak")));
+    CHECK_FALSE(fs::exists(backup("plugins/sub_b.json.20261101-000000.bak")));
     // Not the updater's names: not ours to delete.
     CHECK(fs::exists(backup("notes.txt")));
     CHECK(fs::exists(backup("plugins/a.json.bak")));
     CHECK(fs::exists(backup("gamedata-mine.json")));
+}
+
+TEST_CASE("Guard: PruneBackups keeps the newest N and removes directories it emptied", "[gamedata-guard]")
+{
+    TempDir dir;
+    fs::create_directories(dir.path / "backup" / "plugins");
+    const auto backup = [&](const std::string& name) {
+        return (dir.path / "backup" / name).string();
+    };
+    for (const auto* name : { "gamedata-20261101-000000.json", "gamedata-20261102-000000.json", "plugins/a.json.20261101-000000.bak",
+                              "plugins/a.json.20261102-000000.bak" })
+        Put(backup(name), "x");
+
+    CHECK(guard::PruneBackups(dir.path.string(), 1) == 2);
+    CHECK(fs::exists(backup("gamedata-20261102-000000.json")));
+    CHECK(fs::exists(backup("plugins/a.json.20261102-000000.bak")));
+
+    CHECK(guard::PruneBackups(dir.path.string()) == 2);
+    CHECK_FALSE(fs::exists(dir.path / "backup"));
 }
