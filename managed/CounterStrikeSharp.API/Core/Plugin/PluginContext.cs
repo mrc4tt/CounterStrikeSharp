@@ -185,6 +185,7 @@ namespace CounterStrikeSharp.API.Core.Plugin
                 fresh.Reloaded += async (s, e) => await OnReloadedAsync(s, e);
 
             Loader = fresh;
+            _loaderUsed = false;
             // Unloads the old AssemblyLoadContext (collectible) and stops its file watcher.
             old.Dispose();
         }
@@ -222,6 +223,8 @@ namespace CounterStrikeSharp.API.Core.Plugin
                 try
                 {
                     Unload(hotReload: true);
+                    // McMaster has already given the loader a new load context for this reload.
+                    _loaderUsed = false;
                     Load(hotReload: true);
                     Plugin?.OnAllPluginsLoaded(hotReload: true);
                 }
@@ -239,9 +242,18 @@ namespace CounterStrikeSharp.API.Core.Plugin
 
         private PluginPreJit? _preJit;
 
+        // Set once Load() has loaded the assembly through the current loader's load context.
+        private bool _loaderUsed;
+
         public void Load(bool hotReload = false)
         {
             if (State == PluginState.Loaded) return;
+
+            // A loader hands back the assembly it already loaded, statics included, so loading
+            // through a used one runs the old code with the old state. css_plugins load/reload
+            // refreshes before calling; this covers every other Unload() + Load() on one context.
+            if (_loaderUsed) RefreshLoader();
+            _loaderUsed = true;
 
             using (Loader.EnterContextualReflection())
             {
