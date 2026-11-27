@@ -806,7 +806,7 @@ namespace CounterStrikeSharp.API.Core.Plugin
             _preJit?.Cancel();
             _preJit = null;
 
-            _logger.LogInformation("Unloading plugin {Name}", Plugin.ModuleName);
+            _logger.Log(Application.UnloadLogLevel, "Unloading plugin {Name}", Plugin.ModuleName);
 
             // Safe name: a plugin whose DLL was overwritten while mapped has unreadable metadata,
             // and GetName() throwing here aborted the unload before anything was torn down.
@@ -833,7 +833,7 @@ namespace CounterStrikeSharp.API.Core.Plugin
                 ServiceProvider = null;
             }
 
-            _logger.LogInformation("Finished unloading plugin {Name}", cachedName);
+            _logger.Log(Application.UnloadLogLevel, "Finished unloading plugin {Name}", cachedName);
         }
 
         public void Dispose()
