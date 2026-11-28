@@ -86,15 +86,56 @@ namespace CounterStrikeSharp.API.Core
         /// </summary>
         internal void Shutdown()
         {
-            Logger.LogInformation("Unloading all plugins (CounterStrikeSharp is being unloaded)");
+            var plugins = _pluginManager.GetLoadedPlugins().Reverse().ToList();
+            Logger.LogInformation("Unloading {Count} plugin(s) (CounterStrikeSharp is being unloaded)", plugins.Count);
+            // The per-plugin and per-hook unload lines are only interesting for a reload of one
+            // plugin; on a server stop or restart they are a screenful of noise.
+            IsShuttingDown = true;
+            try
+            {
+                ShutdownCore(plugins);
+            }
+            finally
+            {
+                // The runtime survives `meta unload`, so a later load must log normally again.
+                IsShuttingDown = false;
+            }
+        }
+
+        /// <summary>
+        /// True while every plugin is being unloaded because CounterStrikeSharp itself is going
+        /// away. Routine unload messages are logged at Debug instead of Information meanwhile.
+        /// </summary>
+        internal static volatile bool IsShuttingDown;
+
+        private const int SlowUnloadWarningSeconds = 5;
+
+        internal static LogLevel UnloadLogLevel => IsShuttingDown ? LogLevel.Debug : LogLevel.Information;
+
+        private void ShutdownCore(List<PluginContext> plugins)
+        {
             // Reverse load order, dependents first: the CS2-SimpleAdmin modules unregister their
             // commands through CS2-SimpleAdmin's API in their own Unload, which threw
             // KeyNotFoundException when CS2-SimpleAdmin had already unloaded and removed them.
-            foreach (var plugin in _pluginManager.GetLoadedPlugins().Reverse().ToList())
+            foreach (var plugin in plugins)
             {
+                // The routine unload lines are hidden during shutdown, so a plugin that hangs in
+                // Unload() would leave no trace of which one it was. The game thread is the one
+                // that is stuck, so the warning has to come from a timer thread.
+                var name = Path.GetFileNameWithoutExtension(plugin.FilePath);
+                var started = Stopwatch.GetTimestamp();
+                var warned = false;
+                using var slowUnload = new System.Threading.Timer(_ =>
+                {
+                    warned = true;
+                    Logger.LogWarning("Plugin {Name} is still unloading after {Seconds} s, shutdown is waiting on it", name, SlowUnloadWarningSeconds);
+                }, null, TimeSpan.FromSeconds(SlowUnloadWarningSeconds), System.Threading.Timeout.InfiniteTimeSpan);
+
                 try
                 {
                     _pluginManager.RemovePlugin(plugin);
+                    if (System.Threading.Volatile.Read(ref warned))
+                        Logger.LogWarning("Plugin {Name} took {Seconds:F1} s to unload", name, Stopwatch.GetElapsedTime(started).TotalSeconds);
                 }
                 catch (Exception e)
                 {

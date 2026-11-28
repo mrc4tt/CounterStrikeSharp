@@ -227,7 +227,7 @@ public abstract class BaseMemoryFunction : NativeObject
 
         NativeAPI.UnhookFunction(handle, registration.Reference, post);
 
-        Application.Instance.Logger.LogInformation("Plugin '{Owner}' unhooked {Handler} ({Mode}) at 0x{Address:X}",
+        Application.Instance.Logger.Log(Application.UnloadLogLevel, "Plugin '{Owner}' unhooked {Handler} ({Mode}) at 0x{Address:X}",
             FunctionReference.OwnerOf(handler), DescribeHandler(handler), post ? "post" : "pre", (long)handle);
 
         // Drop the managed reference so the handler delegate (and the plugin ALC it captures) is no
